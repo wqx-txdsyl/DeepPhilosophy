@@ -1,0 +1,55 @@
+{
+ "V12_MODEL_REQUEST_CONTRACT": true,
+ "audit_scope": "PhiAgent production 实际使用的 DeepSeek request envelope（只审计实际使用字段）",
+ "transports": {
+  "agent_loop": {
+   "client": "langchain_deepseek.ChatDeepSeek",
+   "construction": "CC.build_candidate_langchain_client(cfg, mode)（qualification 生产路径注入 EG.get_llm/get_repair_llm）或 engine get_llm（服务默认 AG.MODEL=deepseek-chat, 非 v4-flash）",
+   "endpoint": "https://api.deepseek.com（langchain api_base, 自动拼接 /chat/completions）",
+   "http_mode": "POST, non-streaming (.invoke)",
+   "request_fields": {
+    "model": "cfg.requested_model（qualification: deepseek-v4-flash → V12 迁移目标 deepseek-flash）",
+    "temperature": "0.7 (normal V4PRO_NORMAL) / 0.0 (repair RP_B)",
+    "max_tokens": "8000 (candidate cfg) / 4000 (engine 默认 get_llm)",
+    "messages": "LangChain 消息序列（system+human+ai+tool 轮次）",
+    "tools": "bind_tools(get_tools(agent)) — OpenAI tool-calling schema, 29 工具注册表",
+    "tool_choice": "默认 auto（bind_tools 未显式覆盖）",
+    "thinking": "extra_body: {type: enabled}（normal, 含 reasoning_effort=low）/ {type: disabled}（repair RP_B）",
+    "reasoning_effort": "extra_body: low（仅 normal）",
+    "top_p": "未设置（provider 默认）",
+    "response_format": "未使用（DeepSeek 路径）",
+    "stream": "false（agent 轮 .invoke）"
+   },
+   "retry": "AR.MODEL_RETRY: 首次失败后额外 2 次, backoff [1.5, 4.0]",
+   "timeout": "langchain 默认（未显式设置）",
+   "special_variant": "repair 资源上限时 no_tools=True: .invoke(m) 不绑定工具"
+  },
+  "eval_raw_client": {
+   "client": "CC.build_candidate_client（raw urllib）",
+   "endpoint": "cfg.base_url + /chat/completions",
+   "payload_fields": [
+    "model",
+    "temperature",
+    "max_tokens",
+    "messages",
+    "thinking{type}",
+    "reasoning_effort"
+   ],
+   "timeout": 300,
+   "retry": "无"
+  },
+  "judge_path": {
+   "note": "frozen O7A judge = glm-4-plus @ bigmodel（与 DeepSeek 迁移无关, 冻结不动）"
+  }
+ },
+ "production_active_old_id_references": {
+  "audit": "grep backend/ production-active deepseek-v4-flash",
+  "sites": [
+   "backend/tools/evaluation/o7e_production_calibration.py main(requested_model='deepseek-v4-flash') — qualification 运行器默认值（V9/V10/V11 即此路径）",
+   "backend/tools/evaluation/o7e_bakeoff.py PROVIDER/MODEL 映射表",
+   "backend/tools/evaluation/o7e_bakeoff_b.py model 映射"
+  ],
+  "engine_service_default": "AG.MODEL 默认 deepseek-chat（.env 未设 AGENT_MODEL）——非 v4-flash, 不在本迁移范围",
+  "historical_keep": "V7-V11 evidence artifacts 中的旧 id 原样保留（不得篡改历史）"
+ }
+}

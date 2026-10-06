@@ -1,0 +1,264 @@
+{
+ "case_id": "DEV_G01",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请介绍学界对「虚构悖论」（paradox of fiction：我们为何会为明知虚构的人物动情）的主要研究与代表论文，给出研究文献而不是百科式解释。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_ll43PARxEY8tveCAVdDP5405"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_VF0hfLxhBnvoJlKGTADr8217",
+   "args": {
+    "query": "paradox of fiction emotional response to fiction",
+    "limit": 10
+   },
+   "result_head": "{'query': 'paradox of fiction emotional response to fiction', 'results': [{'source_record_id': 'doi:10.1016/j.actpsy.2016.02.003', 'title': 'The paradox of fict"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_xLcMgmyQV725x92C9wkC9912"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_or1KOJ1noeZxNq9uKVPX9957",
+   "args": {
+    "query": "fearing fictions Walton make-believe quasi-emotion",
+    "limit": 8
+   },
+   "result_head": "{'query': 'fearing fictions Walton make-believe quasi-emotion', 'results': [{'source_record_id': 'doi:10.2307/2025831', 'title': 'Fearing Fictions', 'authors': "
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_BwvY2CrdwRSlfNfrkYGi5745"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_qoMMVNkgm8h1kEIl5ZaS3559"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_Jxyep4V6xtR8Wd6Mrhi23656"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_03_1rakVh7Ph9sSnbR8wLbU8802",
+   "args": {
+    "source_record_id": "doi:10.1017/s0031819199000674",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_rUbm2VcRqEDaTk9kLOri1372",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚未取得任何一篇虚构悖论文献的摘要或正文；目前只有书目元数据，无法对作者立场做内容性归因，也无法满足用户\"给出研究文献\"的请求",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求给出学界研究与代表论文（SCHOLARLY 硬需求）；若只停留于书目层，答案将退化为\"列标题\"，且按合同禁止凭标题推断论文立场。需要读取至少若干篇可读来源（摘要/正文）才能做真实的内容归因与阵营区分。",
+    "unresolved_evidence_gap": "(1) 是否检索到开放获取、含摘要的虚构悖论综述或实证研究；(2) 对可读来源取得 abstract/段落级证据以支撑\"谁主张什么\""
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 尚未取得任何一篇虚构悖论文献的摘要或正文；目前只有书目元数据，无法对作者立场做内容性归因，也无法满足用户\"给出研究文献\"的请求）。soft 检"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_v3x4fi4EmLoy76Lv7ut79946",
+   "args": {
+    "query": "fiction paradox Radford Walton Carroll debate irrational emotion make-believe",
+    "limit": 10
+   },
+   "result_head": "{'query': 'fiction paradox Radford Walton Carroll debate irrational emotion make-believe', 'results': [{'source_record_id': 'doi:10.2307/2219853', 'title': 'Mim"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_aAvnpoYnQucB2QB5oG8f4997",
+   "args": {
+    "source_record_id": "doi:10.1007/978-3-030-71830-5_22",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1007/978-3-030-71830-5_22', 'bibliographic_record': {'source_record_id': 'doi:10.1007/978-3-030-71830-5_22', 'title': 'Reality, Fic"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "虚构悖论（paradox of fiction）的主要学术文献：代表论文、作者、核心论证（Radford/Walton/Carroll 等），需真实书目与可读内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚未取得任何一篇虚构悖论文献的摘要或正文；目前只有书目元数据，无法对作者立场做内容性归因，也无法满足用户\"给出研究文献\"的请求",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求给出学界研究与代表论文（SCHOLARLY 硬需求）；若只停留于书目层，答案将退化为\"列标题\"，且按合同禁止凭标题推断论文立场。需要读取至少若干篇可读来源（摘要/正文）才能做真实的内容归因与阵营区分。",
+    "unresolved_evidence_gap": "(1) 是否检索到开放获取、含摘要的虚构悖论综述或实证研究；(2) 对可读来源取得 abstract/段落级证据以支撑\"谁主张什么\""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2918,
+ "final_answer": "## 先说清楚证据边界\n\n按你的要求，我做的是文献检索而非百科转述。必须坦白说明结果：本次在学术文献库中检索了\"paradox of fiction / emotional response to fiction\"\"Anna Karenina / Radford\"\"Fearing Fictions / Walton / make-believe\"等方向，**返回的记录几乎全部停留在书目元数据层（METADATA_ONLY），我没能取得任何一篇的摘要或正文**。因此下面分两部分：(A) 本次真实定位到的**文献记录**（题名、作者、期刊/书名、DOI——这些字段是检索核验过的）；(B) 虚构悖论的**研究脉络导览**（这是基于学界通行理解的框架，其中凡未标注\"已定位\"的文献，我**未能**在本次检索中核验其记录或内容，仅凭记忆列出，请自行核对）。\n\n这么做是为了不把\"我记得某篇讲了什么\"冒充成\"我查证过\"。\n\n---\n\n## 一、本次会话真实定位到的文献记录\n\n以下记录来自本次文献库检索，书目字段（作者/年份/期刊/DOI）是核验过的；但我**没有读到它们的摘要或正文**，所以不对其内容下任何断言：\n\n| DOI | 题名 | 作者 | 年份/载体 |\n|---|---|---|---|\n| 10.2307/2025831 | *Fearing Fictions* | Kendall L. Walton | 1978，*Journal of Philosophy*（期刊论文） |\n| 10.2307/2219853 | *Mimesis as Make-Believe* | Noel Carroll（与 Kendall L. Walton 并列于返回字段） | 年份字段在返回中被截断，未确认 |\n| 10.1017/s0031819199000674 | *How We Can Be Moved by Anna Karenina, Green Slime, and a Red Pony* | Hartz | 1999，*Philosophy*（剑桥） |\n| 10.1016/j.actpsy.2016.02.003 | *The paradox of fiction: Emotional response toward fiction and the modulatory role of self-relevance* | Sperduti, Arcangeli, Makowski, Wantzen, Zalla, Lemaire | 2016，*Acta Psychologica*（实证/心理学） |\n| 10.1007/978-3-030-71830-5_22 | *Reality, Fiction, and Make-Believe in Kendall Walton* | Emanuele Arielli | 2021，*The Palgrave Handbook of Image Studies*（书章） |\n\n**一个必须点出的缺口**：公认的题名起点——Colin Radford 的 *How Can We Be Moved by the Fate of Anna Karenina?*（我记得载于 *Proceedings of the Aristotelian Society, Supplementary Volume*, 1975）——**本次检索没有把它作为一条记录返回给我**（返回的是上面 Hartz 1999 那篇借\"安娜·卡列尼娜\"命题发挥的文章）。所以 Radford 原文我只能列为\"记忆中的起点，未经本次库内定位\"。\n\n---\n\n## 二、研究脉络导览（框架部分，请视为未核验的通行理解）\n\n⚠️ 以下文献除上表 5 条外，都是**我凭记忆列出的、本次未核验其记录或内容的**；对\"谁主张什么\"的描述属于学界通行叙事，不是我在本次检索中读到的证据。\n\n- **问题被命名与系统化**：通常归于 Radford（1975，记忆未核验）。他把看似互不相容的三点摆在一起，常被概括为：(1) 我们会对虚构人物产生真实情感反应；(2) 我们同时相信这些人物并不存在；(3) 理性上只有相信对象存在才可能对其动情。三者不能同真，故为\"悖论\"。（此三分法为通行表述，非逐字原文。）\n\n- **Walton 路线**：*Fearing Fictions*（**本次已定位书目**）与 *Mimesis as Make-Believe*（1990 专著，记忆）。通行理解是 Walton 认为对虚构的情感是发生在\"假装/游戏\"（make-believe）框架内的\"准情感\"（quasi-emotion），因而不构成真正的悖论。（\"quasi-emotion\"这一术语的使用是我记忆中 Walton 的方案，**本次未核验其措辞**。）\n\n- **反对路线**：Noël Carroll 通常被归为\"思想理论\"（thought theory）一方，主张激起情感不必依赖对对象存在的信念，思想（thought）即可。（Carroll 的 *The Philosophy of Horror*, 1990 为记忆；本次仅定位到与 Walton 并列的 *Mimesis as Make-Believe* 评论记录。）\n\n- **实证转向**：Sperduti 等人 2016 的心理学研究（**已定位书目**）把\"自我相关性\"作为调节变量带入讨论——这代表近年用实验方法介入该悖论的方向，但**我未读到其摘要，无法说明其具体发现**。\n\n- 其余常被列入综述的名字（如 Levinson、Lamarque、Gendler & Kovakovich 等）我这次**都没有定位到记录**，不列举以免造成\"查过\"的假象。\n\n---\n\n## 三、怎样继续\n\n要把上面这张\"书目骨架\"变成可引用的研究，关键是补上**内容证据**。建议你这样推进（这些操作在本次会话中未能完成）：\n\n1. 按表中 DOI 直接获取原文，优先读 **Walton 1978**（奠基性方案）与 **Carroll 对 Walton 的评论**，二者构成本领域最核心的一次交锋。\n2. 用 **Hartz 1999**（*Philosophy*）作入门的二手导览——{它的副标题借安娜·卡列尼娜、绿黏怪、红马驹铺开，看起来覆盖多个案例}（此为标题信息，非内容断言）。\n3. 若要\"学界综述\"，可检索 **Routledge Companion / SEP \"Fiction\" 条目**及 *Paradoxes of Emotion and Fiction*（2015）一书，逐条核对其参考文献表——这比任何二手概述都可靠。\n\n如果你愿意，我可以就**其中某一篇**（比如 Walton 1978 与 Carroll 的正面交锋）定向再查，力求这次真正读进摘要或正文，给你带内容归因的细读。你说方向，我来追。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "尚未取得任何一篇虚构悖论文献的摘要或正文；目前只有书目元数据，无法对作者立场做内容性归因，也无法满足用户\"给出研究文献\"的请求",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:16:34",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "虚构悖论（paradox of fiction）的主要学术文献：代表论文、作者、核心论证（Radford/Walton/Carroll 等），需真实书目与可读内容证据",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:16:52",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "尚未取得任何一篇虚构悖论文献的摘要或正文；目前只有书目元数据，无法对作者立场做内容性归因，也无法满足用户\"给出研究文献\"的请求",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:16:52",
+    "reason": "用户明确要求给出学界研究与代表论文（SCHOLARLY 硬需求）；若只停留于书目层，答案将退化为\"列标题\"，且按合同禁止凭标题推断论文立场。需要读取至少若干篇可读来源（摘要/正文）才能做真实的内容归因与阵营区分。",
+    "unresolved_gap": "(1) 是否检索到开放获取、含摘要的虚构悖论综述或实证研究；(2) 对可读来源取得 abstract/段落级证据以支撑\"谁主张什么\""
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:16:46"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:16:46"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:16:46"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 111576,
+   "output_tokens": 9673,
+   "total_tokens": 121249
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 18262,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11897,
+     "output_tokens": 387,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14139,
+     "output_tokens": 498,
+     "tool_chars_added": 5311
+    },
+    {
+     "round": 3,
+     "input_tokens": 15677,
+     "output_tokens": 752,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 4,
+     "input_tokens": 14781,
+     "output_tokens": 870,
+     "tool_chars_added": 1855
+    },
+    {
+     "round": 5,
+     "input_tokens": 16681,
+     "output_tokens": 1373,
+     "tool_chars_added": 2386
+    },
+    {
+     "round": 6,
+     "input_tokens": 18459,
+     "output_tokens": 2324,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 7,
+     "input_tokens": 19942,
+     "output_tokens": 3469,
+     "tool_chars_added": 993
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 111576,
+  "output_tokens": 9673,
+  "total_tokens": 121249
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 73.4
+}

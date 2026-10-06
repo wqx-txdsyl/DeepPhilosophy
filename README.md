@@ -33,7 +33,7 @@
 - **智能体**：LangGraph 流式编排（`backend/engine_langgraph.py`）+ DeepSeek thinking 模式
 - **数据流（单向）**：`backend/tools/` 构建/修复 → `backend/data/book_chapters`（git 跟踪，唯一章节源）→ CDN 分发 → 前端只读
 - **Worker 静态资产**：`workers/api/src/books.json` 是 **CDN manifest**（书 id → OSS/GitHub 文件直链映射，`backend/tools/generate_worker_assets.py` 从 `oss_manifest.json` + `github_manifest.json` 生成），与 `app/public/books.json`（前端书单，`dp_sync_books.py` 生成）是两份不同结构/来源/用途的文件，**非重复副本**（N7，2026-08-18）
-- **数据库**：生产 = D1（`deepphilosophy-db`）；本地开发 = SQLite（同 schema，见 [docs/DATABASE.md](docs/DATABASE.md)）
+- **数据库**：生产 = D1（`deepphilosophy-db`）；本地开发 = SQLite（同 schema，见 [docs/operations/database.md](docs/operations/database.md)）
 
 ## 🛠 本地开发
 
@@ -67,7 +67,7 @@ cd agent-app && npm install && npm run dev
 
 ## 📁 项目结构
 
-完整文件树见 [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)（由 `backend/tools/gen_structure.py` 生成）。
+完整文件树见 [docs/reference/project-structure.md](docs/reference/project-structure.md)（由 `backend/tools/gen_structure.py` 生成）。
 
 ```
 DeepPhilosophy/

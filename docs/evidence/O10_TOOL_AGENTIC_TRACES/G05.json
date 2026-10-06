@@ -1,0 +1,372 @@
+{
+ "case_id": "G05",
+ "section": "G",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "列一下数据库里斯宾诺莎的书。",
+ "injection": null,
+ "QUESTION": "列一下数据库里斯宾诺莎的书。",
+ "PUBLIC_WORK_NOTE": [
+  "我先按作者检索数据库里的斯宾诺莎藏书，然后据实列出。",
+  "书目清单确实依赖数据库实际收录，需要升级类别才能查。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准）",
+ "TOOL_SELECTED": [
+  "list_books"
+ ],
+ "TOOL_ARGS": {
+  "list_books": [
+   {
+    "author": "斯宾诺莎"
+   },
+   {
+    "author": "斯宾诺莎"
+   },
+   {
+    "author": "斯宾诺莎"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'RESEARCH_NEED_DECLARATION_REQUIRED', 'message': '检索被拒: 本轮尚未登记研究需求。请先调用 declare_research_need 登记 RESEARCH_NEED（NONE/PRIMARY/SCHOLARLY/WEB/MIXED）与 EVIDENCE_GAP, 再决定是否检索; 若无需检索, 直接综合作答。', 'val"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'RESEARCH_NEED_NONE_NO_RETRIEVAL', 'message': '检索被拒: 本轮研究需求为 NONE（TOOL_BUDGET=0）——基本概念/普通推理/日常哲学类问题不检索, 直接基于可靠知识综合作答（记忆性表述按证据分级降级标注）。若你判断确实存在证据依赖, 先重新 declare_research_need 升级类别。'}"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': '32fb0956b9b1', 'title': '伦理学', 'author': '巴鲁赫·斯宾诺莎', 'region': '西方', 'rank': 45.7, 'summary': '《伦理学》是斯宾诺莎的代表作，全名为《用几何学方法作论证的伦理学》，耗时13年以拉丁文撰写，于1677年作者去世后出版。全书模仿欧几里得几何学的公理体系，从定义、公理出发，"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "list_books",
+   "head": "{'error': 'RESEARCH_NEED_DECLARATION_REQUIRED', 'message': '检索被拒: 本轮尚未登记研究需求。请先调用 declare_research_need 登记 RESEARCH_NEED（NONE/PRIMARY/SCHOLARLY/WEB/MIXED）与 EVIDENCE_GAP, 再决定是否检索; 若无需检索, 直接综合作答。', 'val"
+  },
+  {
+   "name": "list_books",
+   "head": "{'error': 'RESEARCH_NEED_NONE_NO_RETRIEVAL', 'message': '检索被拒: 本轮研究需求为 NONE（TOOL_BUDGET=0）——基本概念/普通推理/日常哲学类问题不检索, 直接基于可靠知识综合作答（记忆性表述按证据分级降级标注）。若你判断确实存在证据依赖, 先重新 declare_research_need 升级类别。'}"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': '32fb0956b9b1', 'title': '伦理学', 'author': '巴鲁赫·斯宾诺莎', 'region': '西方', 'rank': 45.7, 'summary': '《伦理学》是斯宾诺莎的代表作，全名为《用几何学方法作论证的伦理学》，耗时13年以拉丁文撰写，于1677年作者去世后出版。全书模仿欧几里得几何学的公理体系，从定义、公理出发，"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:RESEARCH_NEED_NONE_NO_RETRIEVAL",
+ "FINAL_ANSWER": "数据库里目前收录的斯宾诺莎（巴鲁赫·斯宾诺莎）著作共 **2 本**：\n\n| 书名 | 作者 | 简介要点 |\n|---|---|---|\n| **《伦理学》** | 巴鲁赫·斯宾诺莎 | 全名《用几何学方法作论证的伦理学》，以拉丁文历时约 13 年写成，1677 年作者去世后出版。全书仿欧几里得几何体系，由定义、公理出发，经命题、证明、绎理、附释层层推演，分五部分：论神、论心灵的性质和起源、论情感的起源和性质等。 |\n| **《神学政治学》**（即通常译作《神学政治论》） | 巴鲁赫·斯宾诺莎 | 1670 年匿名出版，批判宗教权威、捍卫思想自由与政教分离；首次系统运用理性方法分析《圣经》，揭示其历史性与隐喻性质，主张信仰服从于理性。 |\n\n说明两点：\n\n- 以上是**数据库实际收录**的条目标题，与你可能熟悉的一些通行译名略有出入——例如第二条库中题作《神学政治学》，学界通常译作《神学政治论》（*Tractatus Theologico-Politicus*），这是同一部书的不同译法，并非另一本著作。\n- 斯宾诺莎的其他重要著作（如《知性改进论》《政治论》《书信集》等）**未见于当前数据库**，本库只收了上述两种。如果你需要，我可以就其中某本展开原文阅读或做概念梳理。\n\n要不要我针对《伦理学》或《神学政治学》给你一条具体的阅读入口（比如从哪一部分、哪个命题入手）？",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先按作者检索数据库里的斯宾诺莎藏书，然后据实列出。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "blocked",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_head": "{'error': 'RESEARCH_NEED_DECLARATION_REQUIRED', 'message': '检索被拒: 本轮尚未登记研究需求。请先调用 declare_research_need 登记 RESEARCH_NEED（NONE/PRIMARY/SCHOLARLY/WEB/MIXED）与 EVIDENCE_GAP, 再决定是否检索; 若无需检索, 直接综合作答。', 'val"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "NONE",
+    "evidence_gap": "确认数据库中收录的斯宾诺莎著作清单（书目查询，非原典释义）",
+    "source_dependent": false,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "blocked",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_head": "{'error': 'RESEARCH_NEED_NONE_NO_RETRIEVAL', 'message': '检索被拒: 本轮研究需求为 NONE（TOOL_BUDGET=0）——基本概念/普通推理/日常哲学类问题不检索, 直接基于可靠知识综合作答（记忆性表述按证据分级降级标注）。若你判断确实存在证据依赖, 先重新 declare_research_need 升级类别。'}"
+  },
+  {
+   "kind": "note",
+   "content": "书目清单确实依赖数据库实际收录，需要升级类别才能查。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_head": "{'books': [{'id': '32fb0956b9b1', 'title': '伦理学', 'author': '巴鲁赫·斯宾诺莎', 'region': '西方', 'rank': 45.7, 'summary': '《伦理学》是斯宾诺莎的代表作，全名为《用几何学方法作论证的伦理学》，耗时13年以拉丁文撰写，于1677年作者去世后出版。全书模仿欧几里得几何学的公理体系，从定义、公理出发，"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "NONE",
+    "evidence_gap": "确认数据库中收录的斯宾诺莎著作清单（书目查询，非原典释义）",
+    "source_dependent": false,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [
+  "RESEARCH_NEED_DECLARATION_REQUIRED",
+  "RESEARCH_NEED_NONE_NO_RETRIEVAL"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:03:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "NONE",
+    "prev": null,
+    "evidence_gap": "确认数据库中收录的斯宾诺莎著作清单（书目查询，非原典释义）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:03:56",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "NONE",
+    "evidence_gap": "数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准）",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 1,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "RESEARCH_NEED_DECLARATION_REQUIRED",
+    "ts": "2026-09-13 17:03:52"
+   },
+   {
+    "tool": "list_books",
+    "code": "RESEARCH_NEED_NONE_NO_RETRIEVAL",
+    "ts": "2026-09-13 17:03:54"
+   }
+  ],
+  "blocked_codes": [
+   "RESEARCH_NEED_DECLARATION_REQUIRED",
+   "RESEARCH_NEED_NONE_NO_RETRIEVAL"
+  ],
+  "token_usage": {
+   "input_tokens": 52226,
+   "output_tokens": 1394,
+   "total_tokens": 53620
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 985,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12058,
+     "output_tokens": 175,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 12361,
+     "output_tokens": 397,
+     "tool_chars_added": 262
+    },
+    {
+     "round": 3,
+     "input_tokens": 13407,
+     "output_tokens": 284,
+     "tool_chars_added": 1466
+    },
+    {
+     "round": 4,
+     "input_tokens": 14400,
+     "output_tokens": 538,
+     "tool_chars_added": 2317
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 593,
+ "token_usage": {
+  "input_tokens": 52226,
+  "output_tokens": 1394,
+  "total_tokens": 53620
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 11.0,
+ "tool_calls_full": [
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_summary": "{'error': 'RESEARCH_NEED_DECLARATION_REQUIRED', 'message': '检索被拒: 本轮尚未登记研究需求。请先调用 declare_research_need 登记 RESEARCH_NEED（NONE/PRIMARY/SCHOLARLY/WEB/MIXED）与 EVIDENCE_GAP, 再决定是否检索; 若无需检索, 直接综合作答。', 'val",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "NONE",
+    "evidence_gap": "确认数据库中收录的斯宾诺莎著作清单（书目查询，非原典释义）",
+    "source_dependent": false,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=NONE（EVIDENCE_GAP: 确认数据库中收录的斯宾诺莎著作清单（书目查询，非原典释义））。soft 检索预算=0 次。', 'snapshot': {'active_class': 'NONE', 'evidence_gap': '确认数据库中收录的斯宾诺莎著",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_summary": "{'error': 'RESEARCH_NEED_NONE_NO_RETRIEVAL', 'message': '检索被拒: 本轮研究需求为 NONE（TOOL_BUDGET=0）——基本概念/普通推理/日常哲学类问题不检索, 直接基于可靠知识综合作答（记忆性表述按证据分级降级标注）。若你判断确实存在证据依赖, 先重新 declare_research_need 升级类别。'}",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 数据库实际收录的斯宾诺莎著作书目清单（书名/版本信息需以库内为准））。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引用与",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_summary": "{'books': [{'id': '32fb0956b9b1', 'title': '伦理学', 'author': '巴鲁赫·斯宾诺莎', 'region': '西方', 'rank': 45.7, 'summary': '《伦理学》是斯宾诺莎的代表作，全名为《用几何学方法作论证的伦理学》，耗时13年以拉丁文撰写，于1677年作者去世后出版。全书模仿欧几里得几何学的公理体系，从定义、公理出发，",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "list_books",
+   "args": {
+    "author": "斯宾诺莎"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "32fb0956b9b1",
+      "title": "伦理学",
+      "author": "巴鲁赫·斯宾诺莎",
+      "region": "西方",
+      "rank": 45.7,
+      "summary": "《伦理学》是斯宾诺莎的代表作，全名为《用几何学方法作论证的伦理学》，耗时13年以拉丁文撰写，于1677年作者去世后出版。全书模仿欧几里得几何学的公理体系，从定义、公理出发，通过命题、证明、绎理和附释层层推演，构建了一个严密的形而上学系统。全书分为五部分：论神、论心灵的性质和起源、论情感的起源和性质、"
+     },
+     {
+      "id": "e11d896c98e9",
+      "title": "神学政治学",
+      "author": "巴鲁赫·斯宾诺莎",
+      "region": "西方",
+      "rank": 38.8,
+      "summary": "《神学政治学》是斯宾诺莎在1670年匿名出版的一部极具争议性的著作，旨在批判宗教权威、捍卫思想自由与政教分离。书中斯宾诺莎首次运用理性方法系统分析《圣经》，揭示其历史性、成书背景和隐喻性质，否定神迹与超自然启示的真实性，认为《圣经》的意义必须通过历史批判和语言分析来理解。他主张信仰应服从于理性，宗教"
+     }
+    ],
+    "total": 2
+   }
+  }
+ ],
+ "retrieval_calls_executed": 1
+}

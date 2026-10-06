@@ -1,0 +1,87 @@
+{
+ "O9_COMPARISON": true,
+ "QUERYSET_FROZEN_BEFORE_RUN": true,
+ "QUERY_COUNT": 30,
+ "TOP_K": 10,
+ "SAME_QUERYSET_ACROSS_PROVIDERS": true,
+ "TOP_K_CONSTANT": true,
+ "RAW_RESULTS_PRESERVED": "backend/tools/_tmp/o9_provider_results.json（30 行全量原始结果）",
+ "A_crossref": {
+  "queries_completed": 30,
+  "errors": 0,
+  "error_detail": null,
+  "TOP_K_RELEVANCE": 0.887,
+  "DOI_COVERAGE": 1.0,
+  "READABLE_EVIDENCE_RATE(abstract)": 0.26,
+  "METADATA_ACCURACY": 0.787,
+  "DUPLICATE_RATE": 0.03,
+  "LATENCY_S_mean": 1.6,
+  "CHINESE_COVERAGE_note": "CJK 命中仅出现在中/跨语言类查询, 见 per-category"
+ },
+ "B_openalex": {
+  "queries_completed": 30,
+  "errors": 30,
+  "error_detail": "OpenAlex: PROVIDER_RATE_LIMIT 429（X-RateLimit-Remaining: 0, Retry-After: 31830s, 共享出口 IP 日配额耗尽——外部硬墙）",
+  "TOP_K_RELEVANCE": 0.0,
+  "DOI_COVERAGE": 0.0,
+  "READABLE_EVIDENCE_RATE(abstract)": 0.0,
+  "METADATA_ACCURACY": 0.0,
+  "DUPLICATE_RATE": 0.0,
+  "LATENCY_S_mean": 0.336,
+  "CHINESE_COVERAGE_note": "CJK 命中仅出现在中/跨语言类查询, 见 per-category"
+ },
+ "C_crossref+openalex": {
+  "queries_completed": 30,
+  "errors": 0,
+  "error_detail": null,
+  "TOP_K_RELEVANCE": 0.887,
+  "DOI_COVERAGE": 1.0,
+  "READABLE_EVIDENCE_RATE(abstract)": 0.26,
+  "METADATA_ACCURACY": 0.787,
+  "DUPLICATE_RATE": 0.03,
+  "LATENCY_S_mean": null,
+  "CHINESE_COVERAGE_note": "CJK 命中仅出现在中/跨语言类查询, 见 per-category",
+  "degraded_note": "B 腿被 OpenAlex 日配额耗尽(429, Retry-After 31830s)全阻, C 实际=A; B 恢复后需重测"
+ },
+ "D_metaso": {
+  "status": "BLOCKED_AUTH",
+  "AUTHENTICATION_REQUIRED": true,
+  "reason": "MetaSo API key 需注册登录获取（https://metaso.cn/search-api/api-keys）; 当前环境无 credential（.env 无 METASO* 键）; 无凭证 MCP 实测返回 JSON-RPC -32603 API密钥无效; 获取 credential 属用户决策项",
+  "METASO_AUTH_REQUIRED": true,
+  "metrics": null
+ },
+ "E_metaso+crossref+openalex": {
+  "status": "BLOCKED_AUTH",
+  "AUTHENTICATION_REQUIRED": true,
+  "reason": "MetaSo API key 需注册登录获取（https://metaso.cn/search-api/api-keys）; 当前环境无 credential（.env 无 METASO* 键）; 无凭证 MCP 实测返回 JSON-RPC -32603 API密钥无效; 获取 credential 属用户决策项",
+  "METASO_AUTH_REQUIRED": true,
+  "metrics": null
+ },
+ "crossref_by_category": {
+  "chinese_philosophy": {
+   "TOP_K_RELEVANCE": 0.817,
+   "ABSTRACT_RATE": 0.433,
+   "METADATA_ACCURACY": 0.833
+  },
+  "western_philosophy": {
+   "TOP_K_RELEVANCE": 1.0,
+   "ABSTRACT_RATE": 0.2,
+   "METADATA_ACCURACY": 0.733
+  },
+  "rare_non_western": {
+   "TOP_K_RELEVANCE": 0.967,
+   "ABSTRACT_RATE": 0.283,
+   "METADATA_ACCURACY": 0.817
+  },
+  "current_scholarly_disputes": {
+   "TOP_K_RELEVANCE": 1.0,
+   "ABSTRACT_RATE": 0.35,
+   "METADATA_ACCURACY": 0.867
+  },
+  "cross_lingual_bibliographic": {
+   "TOP_K_RELEVANCE": 0.65,
+   "ABSTRACT_RATE": 0.033,
+   "METADATA_ACCURACY": 0.683
+  }
+ }
+}

@@ -1,0 +1,298 @@
+{
+ "V5_F2_SCHOLARLY_PIPELINE_REPAIR": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V5_F2_SCHOLARLY_PIPELINE_REPAIR_TASK.md",
+ "BASE_SHA": "8f9376cdb7ad106e1a952350a3856322acbaa19a",
+ "CONTENT_HEAD": "5155be88148ad2ca21daebc8c3137b60bf276c5b",
+ "CONTENT_COMMIT_CHAIN": [
+  "9de6ee2d2 §A-§F 生产修复+corpus",
+  "251e95a07 §H 基线前移",
+  "5155be881 §G dev probes manifest+preflight"
+ ],
+ "CORPUS_BEFORE": {
+  "records": 316,
+  "accepted_curated": 282,
+  "discovery_only": 34,
+  "abstract_evidence": 31,
+  "passages": 0,
+  "fulltext_read": 0
+ },
+ "CORPUS_AFTER": {
+  "records": 527,
+  "accepted_curated": 396,
+  "discovery_only": 131,
+  "abstract_evidence": 73,
+  "passages": 0,
+  "fulltext_read": 0
+ },
+ "CORPUS_PIPELINE": "正常 O7-D 管线: coverage manifest 扩展(14 cluster) → SCHOLARLY_NETWORK_MODE=TRUSTED_PROXY 增量 discovery(crossref; openalex 429 限流如实入 errors) → curation decisions(+214, judge=glm-5.3-builder) → dp_o7d_registry build() 确定性重建",
+ "COVERAGE_MATRIX": {
+  "dev_topics": {
+   "searle-chinese-room": {
+    "DIRECT_RECORDS": 7,
+    "CONTENT_READABLE_DIRECT_RECORDS": 5
+   },
+   "moral-luck": {
+    "DIRECT_RECORDS": 9,
+    "CONTENT_READABLE_DIRECT_RECORDS": 3
+   },
+   "nishida-pure-experience": {
+    "DIRECT_RECORDS": 8,
+    "CONTENT_READABLE_DIRECT_RECORDS": 2
+   },
+   "averroes-philosophy-religion": {
+    "DIRECT_RECORDS": 14,
+    "CONTENT_READABLE_DIRECT_RECORDS": 2
+   },
+   "anscombe-virtue-ethics": {
+    "DIRECT_RECORDS": 13,
+    "CONTENT_READABLE_DIRECT_RECORDS": 2
+   },
+   "mackie-error-theory": {
+    "DIRECT_RECORDS": 8,
+    "CONTENT_READABLE_DIRECT_RECORDS": 3
+   }
+  },
+  "matrix_clusters": [
+   "indian-nyaya-epistemology",
+   "african-ubuntu-ethics",
+   "phenomenology-embodiment",
+   "kierkegaard-faith-ethics",
+   "leibniz-preestablished-harmony",
+   "augustine-time-confessions",
+   "zhuangzi-skill-aesthetics",
+   "madhyamaka-emptiness-two-truths"
+  ],
+  "note": "§A 硬指标（DIRECT≥3 且 CONTENT_READABLE≥2）对六个 dev topic 全部满足; 矩阵 cluster 各有 3-9 条 accepted 记录入 discovery 层"
+ },
+ "RETRIEVAL_RELEVANCE_REGRESSIONS": {
+  "mechanism": "search_local: OR/BM25 只做召回池(limit×8), 通用覆盖率重排——≤3 词全词命中, >3 词 ≥60%, bm25 tie-break, 全零兜底",
+  "dev_query_topk": {
+   "Searle Chinese room": "5 条全 cov=1.0",
+   "moral luck Williams Nagel": "7 条(6×cov=1.0)",
+   "Nishida Kitaro pure experience": "4 条(3×cov=1.0)",
+   "Averroes Ibn Rushd philosophy religion": "2 条(cov=0.6)",
+   "Anscombe modern moral philosophy virtue": "2 条(cov=0.6, 均为直接争论文献)",
+   "Mackie error theory queerness": "1 条(cov=0.75, Mackie 专著研究)"
+  },
+  "collision_fix_example": "\"moral luck\" 不再返回仅含 moral 的记录（luck 缺失即被降出）"
+ },
+ "LOCATE_READ_CHANGES": [
+  "search 响应新增 READABLE_RESULT_COUNT/READABLE_SOURCE_IDS（机械派生）",
+  "note 分级: 可读>0→必须 get_scholarly_source 后才能内容性归因; 全 METADATA_ONLY→禁内容推断",
+  "SCHOLARLY_CONTRACT 增 E2 硬化段（相关可读先读后归因; 全离题诚实 fallback）"
+ ],
+ "BIBLIOGRAPHY_GUARD_REGRESSIONS": {
+  "new_issue_code": "UNGROUNDED_BIBLIOGRAPHIC_DETAIL（final_validator, 进入 repair/fail-closed）",
+  "unit_tests": [
+   "不可溯源 (OUP, 2011) 括注→flag ✓",
+   "可溯源 (Clarendon Press, 1977)→pass ✓",
+   "DOI 可溯源→pass ✓",
+   "无 scholarly 工具调用→不触发 ✓",
+   "validate_final_candidate 集成→FAIL+issue ✓"
+  ]
+ },
+ "HARNESS_QUERY_ARGS": {
+  "fix": "scholarly_calls_detail 改从 type=\"tool\" 事件采集 tool_call_id/name/args/result",
+  "roundtrip_evidence": {
+   "DP-02": 19,
+   "DP-03": 10,
+   "DP-04": 14,
+   "DP-05": 17,
+   "DP-06": 18,
+   "DP-01": 15
+  },
+  "canonical_query_log_note": "不再依赖 pytest 可覆写的 scholarly_cache.json; query 直接进 run artifacts"
+ },
+ "PROVIDER_PREFLIGHT": {
+  "V5_F2_PROVIDER_PREFLIGHT": true,
+  "NETWORK_MODE": "TRUSTED_PROXY",
+  "CROSSREF_REACHABLE": true,
+  "CROSSREF_ERROR": null,
+  "CROSSREF_LATENCY_S": 0.89,
+  "OPENALEX_REACHABLE": false,
+  "OPENALEX_ERROR": "PROVIDER_RATE_LIMIT: 429",
+  "OPENALEX_LATENCY_S": null,
+  "LIVE_PROVIDER_AVAILABLE": true,
+  "OFFLINE_MODE": false,
+  "note": "OFFLINE_MODE=true 时 scholarly 发现层只剩本地 curated registry; qualification 结果解释必须显式携带该状态, 不得静默当作在线运行"
+ },
+ "DEV_BEHAVIORAL_PROBES": {
+  "manifest": "docs/evidence/V5_F2_DEV_PROBE_MANIFEST.json（V5 消费主题, 永久禁入 V6）",
+  "model": "deepseek-v4-flash（production 路径, TRUSTED_PROXY）",
+  "per_case": [
+   {
+    "case_id": "DP-02",
+    "published": true,
+    "repairs": 1,
+    "scholarly_search_calls": 12,
+    "scholarly_read_calls": 7,
+    "content_evidence_records": 4,
+    "queries_recovered": [
+     "moral luck Kantian ethics challenge",
+     "moral luck control principle response",
+     "denial of moral luck responsibility control condition",
+     "moral luck agency causation epistemic condition",
+     "skepticism about moral luck control principle defense",
+     "moral luck resultant luck blameworthiness",
+     "Kant moral worth luck independence",
+     "Williams moral luck agent regret justification",
+     "moral luck responsibility control review",
+     "tragedy moral luck Nussbaum luck and ethics",
+     "moral luck overview introduction control principle",
+     "moral luck desert responsibility outcome"
+    ],
+    "final_issue_codes": []
+   },
+   {
+    "case_id": "DP-03",
+    "published": true,
+    "repairs": 1,
+    "scholarly_search_calls": 5,
+    "scholarly_read_calls": 5,
+    "content_evidence_records": 3,
+    "queries_recovered": [
+     "Nishida Kitaro pure experience William James",
+     "Nishida Kitaro pure experience James consciousness",
+     "Nishida Kitaro An Inquiry into the Good pure experience immediate experience",
+     "William James stream of consciousness pure experience radical empiricism",
+     "Nishida James pure experience self-awareness religion metaphysics"
+    ],
+    "final_issue_codes": []
+   },
+   {
+    "case_id": "DP-04",
+    "published": true,
+    "repairs": 0,
+    "scholarly_search_calls": 11,
+    "scholarly_read_calls": 3,
+    "content_evidence_records": 1,
+    "queries_recovered": [
+     "Averroes double truth misreading philosophy religion harmony",
+     "Ibn Rushd Fasl al-maqal harmony of philosophy and religion",
+     "Averroism double truth doctrine Latin West invention historiography",
+     "Averroes Ibn Rushd reason revelation interpretation truth levels",
+     "Averroes Fasl al-maqal demonstrative dialectical rhetorical classes accord religion philosophy",
+     "Averroes Tahafut al-tahafut reconciliation Ghazali philosophy",
+     "double truth Averroism Siger of Brabant Latin reception Aquinas",
+     "Averroes unity of truth faith and reason Islamic philosophy",
+     "Ibn Rushd Averroism Latin scholasticism doctrine two truths myth",
+     "Averroes truth does not contradict truth harmony religion philosophy Iberia",
+     "Averroes Ibn Rushd philosophy religion double truth modern scholarship revision"
+    ],
+    "final_issue_codes": []
+   },
+   {
+    "case_id": "DP-05",
+    "published": true,
+    "repairs": 0,
+    "scholarly_search_calls": 11,
+    "scholarly_read_calls": 6,
+    "content_evidence_records": 6,
+    "queries_recovered": [
+     "Anscombe \"Modern Moral Philosophy\" virtue ethics critique consequentialism deontology",
+     "rule consequentialism Hooker debate",
+     "Anscombe modern moral philosophy moral ought divine law virtue ethics revival",
+     "criticism of rule consequentialism collapse into act consequentialism",
+     "modern moral philosophy legacy virtue ethics",
+     "Anscombe \"Modern Moral Philosophy\" moral ought obligation divine law critique Kantianism utilitarianism",
+     "Hooker rule consequentialism ideal code real world objections defense",
+     "neo-Aristotelian virtue ethics revival Anscombe Foot MacIntyre twentieth century",
+     "rule consequentialism versus act consequentialism debate contemporary normative ethics",
+     "Hooker rule consequentialism internalization costs moral education acceptance argument",
+     "Anscombe modern moral philosophy critique consequentialism side effects intention absolutism"
+    ],
+    "final_issue_codes": []
+   },
+   {
+    "case_id": "DP-06",
+    "published": true,
+    "repairs": 1,
+    "scholarly_search_calls": 12,
+    "scholarly_read_calls": 6,
+    "content_evidence_records": 4,
+    "queries_recovered": [
+     "Mackie argument from queerness moral error theory realism",
+     "Parfit Enoch response to Mackie queerness argument robust realism",
+     "Enoch Taking Morality Seriously robust realism deliberative indispensability",
+     "Mackie argument from relativity moral disagreement",
+     "Parfit On What Matters non-naturalist moral realism response error theory",
+     "robust moral realism reply to Mackie queerness",
+     "non-naturalism moral truth Mackie queerness objectivity",
+     "Mackie argument from queerness metaphysics moral properties supervenience",
+     "moral error theory queerness response",
+     "robust realism objectivity",
+     "moral realism non-naturalism objectivity",
+     "debunking evolutionary moral realism epistemology disagreement"
+    ],
+    "final_issue_codes": []
+   },
+   {
+    "case_id": "DP-01",
+    "published": true,
+    "repairs": 1,
+    "scholarly_search_calls": 8,
+    "scholarly_read_calls": 5,
+    "content_evidence_records": 5,
+    "queries_recovered": [
+     "Chinese room argument strong artificial intelligence Searle",
+     "中文屋论证 塞尔 批评 回应",
+     "Chinese room argument systems reply functionalism simulation duplication",
+     "Searle Chinese room critique consciousness intentionality reply",
+     "Chinese room argument artificial intelligence",
+     "中文屋 塞尔 人工智能",
+     "robot reply brain simulator reply Chinese room argument objections",
+     "Searle Chinese room syntax semantics intentionality computers"
+    ],
+    "final_issue_codes": []
+   }
+  ],
+  "acceptance": {
+   "SEARCH_6_of_6": true,
+   "SCHOLARLY_READ_at_least_5_of_6": true,
+   "CONTENT_EVIDENCE_at_least_5_of_6": true,
+   "UNGROUNDED_BIBLIOGRAPHIC_DETAIL": 0,
+   "FABRICATED_PRECISE_BIBLIOGRAPHY": 0,
+   "SAFE_FALLBACK": "DP 探针无「全离题」情形（corpus 扩充后六主题均有可读直接记录）——safe-fallback 行为由 contract E2 文本约束+V5-F1 分析覆盖, 未在本次探针单独诱导",
+   "PUBLISHED": "6/6, repair 触发 4 收敛 4"
+  },
+  "aggregate": {
+   "search_calls": 59,
+   "read_calls": 32,
+   "content_evidence_records": 23
+  }
+ },
+ "FULL_TEST_RESULT": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "run_at": "5155be88148ad2ca21daebc8c3137b60bf276c5b",
+  "passed": 837,
+  "failed": 0,
+  "skipped": 0
+ },
+ "FROZEN_UNTOUCHED": "judge/rubric/threshold/final-gate/quote_bound/evidence_contract/agents 零改动; V5 canonical artifacts 零触碰",
+ "changed_files_git_diff": [
+  "backend/data/scholarly/corpus_manifest.json",
+  "backend/data/scholarly/evidence.jsonl",
+  "backend/data/scholarly/registry.jsonl",
+  "backend/engine_langgraph.py",
+  "backend/final_validator.py",
+  "backend/routes/agent_tools_scholarly.py",
+  "backend/scholarly_registry.py",
+  "backend/tests/test_o6_q2_quality_closeout.py",
+  "backend/tests/test_o7a_scholarly_evaluator.py",
+  "backend/tests/test_o7b_bibliographic_metadata.py",
+  "backend/tests/test_o7c_scholarly_retrieval.py",
+  "backend/tests/test_o7d_scholarly_corpus.py",
+  "backend/tests/test_o7e_repair_compat.py",
+  "backend/tests/test_o7e_rp2_repair_convergence.py",
+  "backend/tests/test_o7e_v5f2_scholarly_repair.py",
+  "backend/tools/evaluation/o7e_production_calibration.py",
+  "backend/tools/evaluation/o7e_provider_preflight.py",
+  "docs/evidence/PHIAGENT_O7D_COVERAGE_MANIFEST.json",
+  "docs/evidence/PHIAGENT_O7D_CURATION_DECISIONS.json",
+  "docs/evidence/PHIAGENT_O7D_DISCOVERY_SNAPSHOT.json",
+  "docs/evidence/V5_F2_DEV_PROBE_MANIFEST.json",
+  "docs/evidence/V5_F2_PROVIDER_PREFLIGHT.json",
+  "docs/tasks/PHIAGENT_O7E_V5_F2_SCHOLARLY_PIPELINE_REPAIR_TASK.md"
+ ],
+ "changed_files_git_diff_note": "精确等于 git diff --name-only 8f9376cdb7ad106e1a952350a3856322acbaa19a..5155be88148ad2ca21daebc8c3137b60bf276c5b"
+}

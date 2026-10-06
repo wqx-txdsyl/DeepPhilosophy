@@ -1,0 +1,113 @@
+{
+  "O8_FINAL_ISSUE_LEDGER": true,
+  "version": "1.0",
+  "created": "2026-09-12",
+  "authority": "PhiAgent Mainline Correction Prompt（用户/Reviewer 主线修正令）",
+  "purpose": "O9-O14 的唯一问题集输入。O8_FINAL=PASS 保持成立；本台账为后续阶段的 canonical 修复对象清单。",
+  "roadmap_correction": {
+    "METASO_EXPERIMENT": "DEFERRED_OPTIONAL",
+    "BLOCKS_MAINLINE": false,
+    "USER_DECISION_REQUIRED": false,
+    "new_mainline": ["O8 Audit (PASS)", "O9 UI/UX Design", "O10 Core Repair + Final Requalification",
+                     "O11 Adaptive Reader", "O12 Persistent Conversation / User State",
+                     "O13 Full Product Integration & UX Polish", "O14 Production Release Gate",
+                     "PHIAGENT 1.0"]
+  },
+  "evidence_sources": [
+    "docs/evidence/O8_CAPABILITY_AUDIT.md/.json",
+    "docs/evidence/O8_R2_CAPABILITY_RESULTS.json",
+    "docs/evidence/O8_R2_EFFICIENCY.json",
+    "docs/evidence/O8_R2_TOOL_AUDIT.json",
+    "docs/evidence/O8_R2_EFFICIENCY.json",
+    "docs/evidence/O8_R2_RETRIEVAL_CENSUS.json",
+    "docs/evidence/O8_R2_REPAIR_SAFETY_AUDIT.json",
+    "docs/evidence/O8_R2_INTERACTION_OWNERSHIP.json",
+    "docs/evidence/O8_R3_AGENTIC_MATRIX.json",
+    "docs/evidence/O8_R3_EVERYDAY_PHILOSOPHY_RESULTS.json",
+    "docs/evidence/O8_R3_FINAL_REPORT.md",
+    "docs/evidence/O8_R2_FINAL_REPORT.md"
+  ],
+  "issue_count": 15,
+  "issues": [
+    {
+      "id": "P0-01", "severity": "P0", "title": "Over-research 系统性过度检索", "OWNER": "O10",
+      "problem": "系统为回答哲学问题进行了明显过量检索",
+      "evidence": {
+        "O8-R2": "793 duplicate calls; 69/72 cases duplicated; 51/72 overresearch flags; simple cases avg TOOL_CALLS=8.83; efficiency dim mean=0.89",
+        "O8-R3-EP": "4/6 overresearch; 84 tool calls / 6 cases; 59 duplicate calls"
+      },
+      "refs": ["O8_R2_EFFICIENCY.json#aggregate", "O8_R2_CAPABILITY_RESULTS.json#dimension_statistics.efficiency"]
+    },
+    {
+      "id": "P0-02", "severity": "P0", "title": "Duplicate Retrieval / Convergence", "OWNER": "O10",
+      "problem": "现有 DuplicateGuard 未阻止实际重复检索模式：same tool、same/similar arguments、no-new-information retrieval、repair/research spinning",
+      "evidence": {"O8-R2": "793 duplicate calls (same tool + same normalized args), 69/72 cases"}
+    },
+    {
+      "id": "P0-03", "severity": "P0", "title": "Tool Selection Discipline", "OWNER": "O10",
+      "problem": "工具选择纪律缺失：简单问题不应检索却检索（cat10 均值 8.83 次工具调用）；hard-primary case 不接触原典（O8R2-13: 0 工具/4.1s）；get_scholarly_source second-hop 不稳定（Agentic SHOULD_CALL FAIL）；错误工具替代正确工具（paper_review 被 analyze_argument 替代）",
+      "evidence": {"O8-R2": "tool_selection mean=2.22; retrieval_strategy mean=1.61", "O8-R3": "AGENTIC_MATRIX SHOULD_CALL 2 FAIL 保留"}
+    },
+    {
+      "id": "P1-01", "severity": "P1", "title": "philosopher_debate argument robustness", "OWNER": "O10",
+      "problem": "speakers 传 JSON 数组 → speakers.replace() → AttributeError 崩溃",
+      "evidence": {"mechanical": "agent_tools_memory.py:520; O8R2-MECH-1"}
+    },
+    {
+      "id": "P1-02", "severity": "P1", "title": "search_books relevance / empty-query behavior", "OWNER": "O10",
+      "problem": "empty query guard missing; vector relevance floor too low (~0.35); irrelevant result can masquerade as useful; EMPTY_RESULT semantic unreachable",
+      "evidence": {"mechanical": "O8R2-MECH-2; 空查询/伪查询实测返回不相关结果"}
+    },
+    {
+      "id": "P1-03", "severity": "P1", "title": "FULL_REWRITE Repair Safety Parity", "OWNER": "O10",
+      "problem": "LOCAL_PATCH 已有 post-repair semantic validation / AMBIGUOUS fail-closed / evidence-family detection / rollback / candidate preservation；FULL_REWRITE / non-local repair 无等价 parity",
+      "evidence": {"O8-R2": "engine_langgraph.py:1488 定义/:2378 调用守卫 _lp_meta is not None; REPAIR_SAFETY_AUDIT static analysis"}
+    },
+    {
+      "id": "P1-04", "severity": "P1", "title": "Repair Transient Regression", "OWNER": "O10",
+      "problem": "47/50 repair cases 出现 repair 引入问题→后续再清除；需降低 repair-induced transient errors 与额外成本",
+      "evidence": {"O8-R2": "REPAIR_SAFETY_AUDIT BENCHMARK_TELEMETRY; repair 60 轮/50 案例"}
+    },
+    {
+      "id": "P1-05", "severity": "P1", "title": "Primary-text Anchoring in Comparison", "OWNER": "O10",
+      "problem": "比较类问题越出已验证语料进行逐字引用；Final Gate 能挡住但 Agent 本身应更早收敛",
+      "evidence": {"O8-R2": "O8R2-23/24（04 类 2/6 未发布: UNVERIFIED_CITATION + UNSUPPORTED_EXACT_QUOTE）"}
+    },
+    {
+      "id": "P1-06", "severity": "P1", "title": "Scholarly Second Hop", "OWNER": "O10",
+      "problem": "search_scholarship → 没有稳定继续 get_scholarly_source；找到文献 ≠ 真正读取文献证据",
+      "evidence": {"O8-R3": "AGENTIC_MATRIX get_scholarly_source/SHOULD_CALL=FAIL（AG-FAULT-3 亦未触发 fetch）"}
+    },
+    {
+      "id": "P1-07", "severity": "P1", "title": "paper_review Routing", "OWNER": "O10",
+      "problem": "paper_review SHOULD_CALL=FAIL，常被 analyze_argument 替代",
+      "evidence": {"O8-R3": "AGENTIC_MATRIX paper_review/SHOULD_CALL=FAIL"}
+    },
+    {
+      "id": "P2-01", "severity": "P2", "title": "Empty Input Defaults", "OWNER": "O10",
+      "problem": "query_graph / get_philosopher / get_school 对空输入静默回退柏拉图",
+      "evidence": {"mechanical": "O8R2-MECH-3; FAILURE_PATH FAIL"}
+    },
+    {
+      "id": "P2-02", "severity": "P2", "title": "Empty Result Semantics", "OWNER": "O10",
+      "problem": "concept_trace / list_books / history_timeline 不存在目标时可能模糊命中或返回全集",
+      "evidence": {"mechanical": "O8R2-MECH-4; EMPTY_RESULT FAIL"}
+    },
+    {
+      "id": "P2-03", "severity": "P2", "title": "LOCAL_CURATED Metadata", "OWNER": "O10_POLICY",
+      "problem": "587 records; DOI ~99.8%; long abstract coverage ~13.5%; language metadata missing——先记录，不自动扩 corpus",
+      "evidence": {"O9-census 期实测": "O8_R2_RETRIEVAL_CENSUS.json LOCAL_CURATED"}
+    },
+    {
+      "id": "P2-04", "severity": "P2", "title": "Primary Text Corpus", "OWNER": "O10_POLICY",
+      "problem": "CANONICAL_COUNT=410 vs old manifest=409；333 works with real text；77 txt placeholders——不得擅自扩库",
+      "evidence": {"O9-census 期实测": "O8_R2_RETRIEVAL_CENSUS.json PRIMARY_TEXT"}
+    },
+    {
+      "id": "P2-05", "severity": "P2", "title": "Orphan Files", "OWNER": "O13/O14 cleanup review",
+      "problem": "6 个零引用孤儿文件为 DELETE_CANDIDATE 而非 DELETE_AUTHORIZED：backend/jwt_verify.py, backend/upstream.py, backend/user_profile_store.py, backend/routes/agent_history.py, backend/routes/auth_proxy.py, agent-app/src/data/conversationSync.js",
+      "evidence": {"O8-R2": "O8_R2_INTERACTION_OWNERSHIP.json 全部零引用"}
+    }
+  ],
+  "frozen_note": "O8 发现已在 O9（旧 MetaSo 轮）期间冻结未修；全部修复集中在 O10 统一进行（除 P2-05 归属 O13/O14 cleanup review 与两项 POLICY 归属）。"
+}

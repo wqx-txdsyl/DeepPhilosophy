@@ -1,0 +1,71 @@
+{
+ "batch_id": "zcode_review_r2_20261003",
+ "checks": {
+  "rows_648": {
+   "pass": true,
+   "detail": "648/648，9对象×60题×72轮"
+  },
+  "input_packets_unchanged": {
+   "pass": true,
+   "detail": "prepare_benchmark_r2.py verify → verified_packets: 648；冻结清单内648包+9份参考文件hash一致"
+  },
+  "controls_passed": {
+   "pass": true,
+   "detail": "T1-T6：critical_sensitivity 6/6、good_and_concise 12/12、brevity_gap、verbosity_gain、position_fairness全部通过（control_check.json）"
+  },
+  "review_schema_valid": {
+   "pass": true,
+   "detail": "validate_reviews.py：648份键齐全、值合法、单位ID存在、无总分泄漏、空包全0、无内在矛盾"
+  },
+  "no_U": {
+   "pass": true,
+   "detail": "全部3996个等级无U"
+  },
+  "empty_answer_A05": {
+   "pass": true,
+   "detail": "Rda7c0616869afc全维0保留在分母，E4 pending"
+  },
+  "error_adjudication_complete": {
+   "pass": true,
+   "detail": "45条初始指控全部复核：最终confirmed 1（R638952b1f88226，phiagent-0.1.2）/ pending 42 / rejected 2；30条状态变更留痕"
+  },
+  "spotchecks": {
+   "pass": true,
+   "detail": "A04-T1（1处审计轨补记，不改分）、J01-T4（uniform=true）、F03-T1（1处改判R55b1aa681153f5 C3/R2 4→3，已应用并留痕）"
+  },
+  "aggregate_reproducible": {
+   "pass": true,
+   "detail": "aggregate.json与frozen_r2 SCORES.json主分一致（<0.005）；aggregate_benchmark_scores.py --check通过"
+  },
+  "r2_freeze_manifest": {
+   "pass": true,
+   "detail": "657个源文件+2个记录文件hash全部一致"
+  },
+  "r1_untouched": {
+   "pass": true,
+   "detail": "R1冻结清单4个记录文件hash校验通过；freeze_benchmark_results.py verify通过"
+  },
+  "matrix_entry_is_r2": {
+   "pass": true,
+   "detail": "matrix.json record_id=R2-20261004；--record r1可再生成R1视图"
+  },
+  "ledger_consistent": {
+   "pass": true,
+   "detail": "benchmark-ledger.md总览由aggregate脚本从R2冻结记录再生成"
+  }
+ },
+ "failures": [],
+ "not_covered": [
+  "5道K纯核验题与5道故障fixture未评（任务范围外，与R1口径一致）",
+  "评分者间一致性未建立（单一评审族）",
+  "浏览器主体的执行事实不可核验（采集层无回执），其pending指控非无罪判定",
+  "控制样本标签角色在语义上可部分辨认（已登记，检查考察的是评分行为）"
+ ],
+ "hashes": {
+  "scores_json": "a004feb80bbaf5c3d4d0f9b6eb54fd47f28980449e9449887748053b1057297d",
+  "aggregate_json": "e878febf29b3ad33b891b8b68dbeca46f908c9e5dcadf3d465c94347164f6861",
+  "source_audit_json": "0540d27b170d9ca13562c8ff45219958410069d266ef47bda7805920e0ecafad",
+  "frozen_r2_scores": "c3eddacc3a7891f821f6d2f77ba3678b1abf5e6f4d6fd24a7f8b108c158942ba",
+  "frozen_r2_manifest": "f42d2b2f9b141f5e79fd18225523b8e7c58b4322458a4889001faca4b46556a2"
+ }
+}

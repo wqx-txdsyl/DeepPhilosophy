@@ -1,0 +1,314 @@
+{
+ "case_id": "DEV_P06",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《庄子·逍遥游》开篇的大鹏意象想说明什么？请读取原文，引用「小知不及大知」附近的段落，解释「小大之辩」在篇中的论证作用。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_0vRCBLNVLr2GZuQH1lVk6582"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_PTbapcapNUllPV2FxLNF3401"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_OCejUDmdi4Nt4qA0wZNB4945",
+   "args": {
+    "query": "鹏之背 不知其几千里也 逍遥游"
+   },
+   "result_head": "{'results': [{'book_id': 'ea6f47b169f0', 'book_title': '庄子今注今译', 'author': '陈鼓应', 'chapter_idx': 7, 'chapter_title': '逍遥游', 'citation_label': '【《庄子今注今译》·逍遥游】', "
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_KlNJmvCKQgoA2zu8BX8e4102"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_uVByq3euSvJItMw0ix1j7726",
+   "args": {
+    "book_id": "ea6f47b169f0",
+    "chapter_idx": 7
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_Q67oGK9kStX8NcrX342i1608"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_LiZpCl4xVXmt5bZpYtMy3188"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_rahwlKRM9P4zBu8DCW5P5893",
+   "args": {
+    "query": "逍遥游 大鹏 北冥有鱼"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_0a494p7wEvxGj8vDrJ343110",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知，小年不及大年\"段落及其上下文（\"之二虫又何知\"、汤之问棘等）的逐字原文，用于精确引用与解释小大之辩的论证作用",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取原文\"并引用\"小知不及大知\"附近段落，回答的正确性完全依赖该段原文措辞与上下文位置；此前检索预算已耗尽但尚未取得可用的逐字原文，若不读取原文则无法完成用户要求的原文引用",
+    "unresolved_evidence_gap": "《逍遥游》开篇大鹏段与\"小知不及大知\"段的连续原文文本及其在库中的书名/章节身份"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《庄子·逍遥游》\"小知不及大知，小年不及大年\"段落及其上下文（\"之二虫又何知\"、汤之问棘等）的逐字原文，用于精确引用与解释小大之辩的论证作用）。s"
+  },
+  {
+   "name": "list_books",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_a6cNEQ7E5vIwWNGRkNZf2285"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_LOSIXTroRYt4J3AlVprd1919",
+   "args": {
+    "query": "北冥有鱼 其名为鲲 化而为鸟"
+   },
+   "result_head": "{'results': [{'book_id': 'ea6f47b169f0', 'book_title': '庄子今注今译', 'author': '陈鼓应', 'chapter_idx': 7, 'chapter_title': '逍遥游', 'citation_label': '【《庄子今注今译》·逍遥游】', "
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_T9D6nIobv0FUmMOTFqsR4023"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_Z4dfnXkn3ecm0wPlXzCU1185",
+   "args": {
+    "book_id": "ea6f47b169f0",
+    "chapter_idx": 7
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》开篇大鹏段与「小知不及大知」前后原文措辞、上下文位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知，小年不及大年\"附近段落的原文措辞与章节归属",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知，小年不及大年\"段落及其上下文（\"之二虫又何知\"、汤之问棘等）的逐字原文，用于精确引用与解释小大之辩的论证作用",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取原文\"并引用\"小知不及大知\"附近段落，回答的正确性完全依赖该段原文措辞与上下文位置；此前检索预算已耗尽但尚未取得可用的逐字原文，若不读取原文则无法完成用户要求的原文引用",
+    "unresolved_evidence_gap": "《逍遥游》开篇大鹏段与\"小知不及大知\"段的连续原文文本及其在库中的书名/章节身份"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1885,
+ "final_answer": "# 《庄子·逍遥游》大鹏意象与\"小大之辩\"的论证作用\n\n## 一、先说证据边界\n\n我在库中定位到两处《逍遥游》文本身份：\n\n- 库藏《庄子》（三十三篇本），含\"逍遥游\"篇；\n- 陈鼓应《庄子今注今译》中的\"逍遥游\"篇，篇首有注译者对全篇主旨的概说。\n\n对陈鼓应的篇章概说，我核验到如下原文：\n\n> 〈逍遥游〉篇，主旨是说一个人当透破功名利禄、权势尊位的束缚，而使精神活动臻于优游自在、无挂无碍的境地。\n\n【《庄子今注今译》· 逍遥游】\n\n但需要如实说明：本次会话中，我**未能取得\"小知不及大知\"一段的连续逐字原文文本**（库内检索通道已用尽）。因此下文凡涉及该段具体措辞之处，一律以**大意转述**呈现，不作逐字引号，以免把记忆中的措辞冒充为已核验原文。这个边界请你留意。\n\n## 二、大鹏意象想说明什么\n\n开篇先铺陈\"大\"的极致：北冥之鲲化而为鹏，其背不知几千里，怒而飞，其翼如垂天之云，海运则徙于南冥——这是把读者的想象拉到一种**极大尺度**的存在之上。它要说明的不是\"鹏比人厉害\"，而是两层递进的意思：\n\n1. **存在的尺度规定了认知的尺度**。大鹏所见的天地，是蜩与学鸠在榆枋之间决起而飞时所无法进入的。\n2. **连大鹏也还不是\"逍遥\"本身**。大鹏之所以能飞九万里，是\"有待\"于厚风、有待于海运；它虽\"大\"，仍未\"无待\"。全篇最后归结到\"至人无己，神人无功，圣人无名\"，才是真正无待的逍遥。\n\n也就是说，大鹏是一个**中介性意象**：它把读者从\"小\"引向\"大\"，再从\"大\"引向\"无待\"。它既是\"超越\"的象征，也是\"超越尚未完成\"的象征。\n\n## 三、\"小知不及大知\"段落的转述\n\n（以下为大意转述，非逐字原文）\n\n该段紧接在蜩与学鸠嘲笑大鹏的对话之后，庄子由此引出\"小知不及大知，小年不及大年\"的判断，并以一组类比加以印证：\n\n- 朝菌不知一月的始终，蟪蛄不知一年的春秋——此之谓\"小年\"；\n- 楚之冥灵以五百岁为一春、五百岁为一秋，上古大椿以八千岁为一春、八千岁为一秋——此之谓\"大年\"；\n- 而彭祖仅以长寿特闻于世，众人却争相与他相比，庄子因而感叹\"不亦悲乎\"。\n\n其后又借\"汤之问棘\"重述大鹏南徙、斥鴳讥笑的故事，并以\"此小大之辩也\"作结。\n\n## 四、\"小大之辩\"在篇中的论证作用\n\n我认为\"小大之辩\"承担了三重功能，且必须放在全篇的推进链条中理解：\n\n**第一，认识论的：揭示认知的相对性与受限制性。** \"小知\"与\"大知\"的区分，实质是说——认知者的视域被其存在方式所框定；蜩、学鸠、斥鴳\"不知\"大鹏之所至，不是因为它们愚蠢，而是因为它们的生存尺度容不下那个尺度。这是后来\"井蛙不可以语于海\"一类说法的思想前身。\n\n**第二，批判性的：破除\"以己量彼\"的独断与自足。** 小虫嘲笑大鹏，恰恰是\"小知\"把自己的尺度当成唯一尺度的表现。庄子让它们开口嘲笑，正是要让这种自足显得可笑——这就是\"小知不及大知\"的讽刺锋芒所在。\n\n**第三，结构性的：小大之辩是通向\"无待\"的阶梯，而非终点。** 这是最容易被误读的一点。如果庄子只是要褒扬大鹏、贬斥小虫，那么\"逍遥\"就仍停留在\"大\"这一级。但全篇显然更进一步——大鹏\"有待\"，仍未逍遥。所以\"小大之辩\"的作用是**逐级抬升参照系**：先证明\"小\"不足，再把\"大\"也相对化，最终逼出\"无待\"的绝对超越（\"至人无己\"云云）。\n\n**一处值得点出的张力**：本篇铺陈小大之别，而《齐物论》却主张齐平万物、消解大小对待。两者看似矛盾。我的理解是层次不同——《逍遥游》讲的是**境界向上超越的方向**（有方向、有阶梯），《齐物论》讲的是**破除是非彼此的对待**（取消执定）。逍遥之\"辩\"是引路的工具，而非最终要固守的立场；一旦抵达无待，小大之别本身也应被放下。这是解释上的一个经典议题，你若感兴趣可深入《齐物论》与之对读。\n\n## 五、小结\n\n大鹏意象以一个\"极大\"的形象，先把读者从日常的小格局中拔出来；\"小知不及大知\"一段则把这种拔升提炼为\"小大之辩\"，用以说明认知受存在尺度所限、并讽刺以己量彼的自足。但\"小大之辩\"在篇中不是结论，而是**过渡**——它从\"小\"引向\"大\"，又从\"大\"的\"有待\"引向\"无待\"的逍遥。陈鼓应对全篇主旨的概括（透破功名利禄、权势尊位的束缚，使精神臻于优游自在、无挂无碍）正可与此链条相印证。\n\n如果你希望，我可以改用逐字原文对照的方式，把\"小知不及大知\"到\"此小大之辩也\"的连续段落补齐核验后重新呈现——只是在当前会话内，我尚未取得该段的连续原文文本，故先以上述转述为限。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《庄子·逍遥游》\"小知不及大知，小年不及大年\"段落及其上下文（\"之二虫又何知\"、汤之问棘等）的逐字原文，用于精确引用与解释小大之辩的论证作用",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:14:18",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《庄子·逍遥游》开篇大鹏段与「小知不及大知」前后原文措辞、上下文位置",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:15:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知，小年不及大年\"附近段落的原文措辞与章节归属",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:15:07",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知，小年不及大年\"段落及其上下文（\"之二虫又何知\"、汤之问棘等）的逐字原文，用于精确引用与解释小大之辩的论证作用",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:15:07",
+    "reason": "用户明确要求\"读取原文\"并引用\"小知不及大知\"附近段落，回答的正确性完全依赖该段原文措辞与上下文位置；此前检索预算已耗尽但尚未取得可用的逐字原文，若不读取原文则无法完成用户要求的原文引用",
+    "unresolved_gap": "《逍遥游》开篇大鹏段与\"小知不及大知\"段的连续原文文本及其在库中的书名/章节身份"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:14:20"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:03"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:03"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:13"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:13"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 135398,
+   "output_tokens": 13849,
+   "total_tokens": 149247
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 9,
+   "compacted_chars_saved": 15837,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11903,
+     "output_tokens": 406,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17551,
+     "output_tokens": 309,
+     "tool_chars_added": 9162
+    },
+    {
+     "round": 3,
+     "input_tokens": 14986,
+     "output_tokens": 3536,
+     "tool_chars_added": 2224
+    },
+    {
+     "round": 4,
+     "input_tokens": 18135,
+     "output_tokens": 4000,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 5,
+     "input_tokens": 12286,
+     "output_tokens": 342,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 6,
+     "input_tokens": 13643,
+     "output_tokens": 616,
+     "tool_chars_added": 2304
+    },
+    {
+     "round": 7,
+     "input_tokens": 14917,
+     "output_tokens": 360,
+     "tool_chars_added": 2663
+    },
+    {
+     "round": 8,
+     "input_tokens": 16725,
+     "output_tokens": 439,
+     "tool_chars_added": 4273
+    },
+    {
+     "round": 9,
+     "input_tokens": 15252,
+     "output_tokens": 3841,
+     "tool_chars_added": 486
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 135398,
+  "output_tokens": 13849,
+  "total_tokens": 149247
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 84.4
+}

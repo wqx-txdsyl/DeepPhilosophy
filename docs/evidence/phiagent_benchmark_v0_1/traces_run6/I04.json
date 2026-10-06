@@ -1,0 +1,90 @@
+{
+ "case_id": "I04",
+ "category": "I",
+ "prompt": "请解释这段话的逻辑，不需要猜作者：“如果所有公正制度都允许申诉，而这个制度不允许申诉，那么它不是公正制度。”",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "60675439c081c8db8150a2196de28c96e354f432",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T14:01:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.5",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "请解释这段话的逻辑，不需要猜作者：“如果所有公正制度都允许申诉，而这个制度不允许申诉，那么它不是公正制度。”",
+   "wall_s": 11.7,
+   "ttft_s": 6.8,
+   "public_notes": [],
+   "provider_reasoning": "The user asks to explain the logic of this statement. It's a simple modus tollens / categorical syllogism structure. Let me analyze.\n\nThe statement: \"如果所有公正制度都允许申诉，而这个制度不允许申诉，那么它不是公正制度。\"\n\nStructure: For all x, if (x is a just institution → x permits appeal). This institution does not permit appeal. Therefore this institution is not just. That's modus tollens with universal instantiation.\n\nKey logical points to explain:\n1. Premise 1: universal conditional ∀x (Jx → Ax)\n2. Premise 2: ¬Aa (this institution a does not permit appeal)\n3. Conclusion: ¬Ja\n\nValid form: modus tollens (否定后件式). Valid.\n\nLet me distinguish: The \"如果...那么\" wraps the whole thing — outer conditional whose antecedent is the conjunction (premise1 ∧ premise2), consequent is the conclusion. So the sentence as a whole is a conditional claim: \"若[P1且P2], 则[结论]\". The validity of the inference is modus tollens.\n\nNote nuances:\n- Quantifier scope: \"所有公正制度都允许申诉\" = ∀x(Jx→Ax). Not \"所有公正的制度\" as existence claim.\n- The inference is universally valid (form-valid), independent of whether premise 1 is true.\n- Note the relation between necessity and sufficiency: \"允许申诉\" is a necessary condition for being just; \"不允许申诉\" is a sufficient condition for being not just. Careful: from Ax you cannot infer Jx (allowing appeal doesn't make it just). Only one-direction.\n- Contrapositive: ∀x(¬Ax → ¬Jx) is logically equivalent to ∀x(Jx→Ax). So actually the conclusion follows even more directly — the contrapositive is logically equivalent.\n- Also note: it's valid regardless of content; truth of premises is separate from validity.\n- Potential edge: \"所有公正制度都允许申诉\" — if there were no just institutions, vacuously true. Not relevant.\n- Also: The statement says \"如果所有公正制度都允许申诉\" — note \"所有\" gives universal. The inference applies the universal to a particular instance (\"这个制度\"), which some might flag as needing the implicit premise that this institution is an institution in the relevant domain (i.e., a candidate for being just). That's a real subtlety: to instantiate, we need a to be in the domain of \"制度\".\n\nThe user says \"不需要猜作者\" — don't guess the author. So just explain logic, don't attribute.\n\nShould I use tools? The task says: only search when needed. This is a pure logic question. I can answer directly. Maybe I could use analyze_argument to stress-test, but it's optional. The instructions say \"复杂思辨可用一次来压力测试关键推理\". This is fairly simple. I think I can answer directly, but using analyze_argument could be good to verify. Hmm. Given the guidance to not use tools unnecessarily and that this is a clear pedagogical logic question, I'll answer directly and carefully. Actually let me consider — \"不用它代替理由\". I'll answer directly.\n\nLet me write a clear explanation.\n\nStructure of answer:\n1. 整体形式：这是一个\"推理形式\"的表述（外层条件句：前提→结论）。\n2. 拆解：\n   - P1 (全称条件): ∀x(Jx → Ax)\n   - P2: ¬Aa\n   - C: ¬Ja\n3. 推理规则：全称实例化 + 否定后件式（modus tollens）。有效。\n4. 等价的另一说法：逆否命题 ∀x(¬Ax→¬Ja 的每个实例)，P1 ≡ ∀x(¬Ax → ¬Jx)。所以可以直接用逆否。\n5. 逻辑要点/易混点：\n   - 有效 ≠ 前提真。形式上有效，但 P1 是否为真需另证。\n   - 充分/必要方向：允许申诉是公正的必要条件；不允许申诉是不公正的充分条件。反向不成立（A 不能推出 J）。\n   - 全称量词的作用：不是\"存在公正制度且它们允许申诉\"，而是每个公正制度都如此。\n   - 隐含的小前提：这个制度须落在\"制度\"这个论域内（否则无法实例化）。这个通常由语境保证。\n   - 否定前件/肯定后件的谬误不适用于此。\n6. 反驳该结论的途径（如果结论错，问题出在哪）：只能否定 P1（存在不允许申诉的公正制度）或指出这个对象不在论域。不能通过\"允许申诉的制度未必公正\"来反驳，因为那攻击的是逆命题。\n\nLet me also mention: 一个可能的歧义 — \"允许申诉\" 与 \"所有公正制度都允许申诉\" 的真值。Also the phrasing \"如果所有公正制度都允许申诉\" could be read as a hypothesis being assumed for the sake of argument.\n\nI'll write it concisely but substantively. No need for tools.\n\nActually, let me reconsider whether to call analyze_argument. The system prompt strongly emphasizes independent verification and tool use for complex reasoning. But this is a standard logic exercise where I'm confident. The rule: \"只据假设或不查资料时，不调用检索与读取工具\" — suggests when not needing lookup, don't call. analyze_argument is a reasoning tool though. I think direct answer is fine and better. I'll answer directly.\n\nWrite in Chinese.",
+   "tool_calls_full": [],
+   "tool_timeline": [],
+   "answer": "这段话本身不是结论，而是一个**推理形式**：它把两个前提和一个结论打包成一个条件句，断言\"在给定的两个前提下，结论必然成立\"。拆开看是这样的。\n\n## 一、形式结构\n\n设 J(x) = \"x 是公正制度\"，A(x) = \"x 允许申诉\"，a = 这个制度。\n\n- **前提1（全称条件句）**：∀x(J(x) → A(x))，即\"凡公正制度，皆允许申诉\"。\n- **前提2（单称否定）**：¬A(a)，即\"这个制度不允许申诉\"。\n- **结论**：¬J(a)，即\"这个制度不是公正制度\"。\n\n整体即：**(前提1 ∧ 前提2) → 结论**。\n\n## 二、为什么它成立：否定后件式\n\n推理分两步，都是标准规则：\n\n1. **全称实例化**：从 ∀x(J(x)→A(x)) 得到 J(a)→A(a)。\n2. **否定后件（modus tollens）**：由 J(a)→A(a) 与 ¬A(a)，推出 ¬J(a)。\n\nmodus tollens 是有效式：条件句为真时，后件为假必然迫使前件为假。\n\n还有更直接的看法：前提1 与它的**逆否命题** ∀x(¬A(x) → ¬J(x)) 在经典逻辑中**逻辑等价**。所以\"不允许申诉 ⇒ 非公正\"根本不用另立规则，它已经是前提1 的另一种说法。这一整段话可以理解为在提醒这个逆否等价。\n\n## 三、容易混的几个点\n\n**1. 有效 ≠ 前提为真。** 上述只证明\"结构上推得通\"。前提1（是否真有任何不允许申诉的公正制度）在逻辑之外，需要另行论证。逻辑保证的是：如果你接受前提1，就没法同时接受前提2 而否认结论。\n\n**2. 方向是单向的——必要/充分要分清。**\n- \"允许申诉\"是\"公正\"的**必要条件**（不满足它就不公正）；\n- \"不允许申诉\"是\"不公正\"的**充分条件**；\n- 但\"允许申诉\"**不**推出\"公正\"（A 不能推出 J）。所以不能用\"某个允许申诉的制度其实不公正\"来反驳这段话——那攻击的是逆命题，而逆命题从未被断言。\n\n**3. \"所有\"的作用范围。** 前提1 不是说\"存在一些公正制度，并且它们允许申诉\"，而是\"每一个公正制度都如此\"。若理解为前者，逆否推理就不成立，只能得出关于那些制度的具体结论。措辞里的\"所有\"在这里是承重的。\n\n**4. 有一个静默的小前提。** 要把全称命题用到\"这个制度\"上，需要 a 落在\"制度\"这个论域里（即它是可以被评价为公正与否的候选对象）。这一般由语境保证，但严格说它是实例化的条件，不是结论自动带来的。\n\n## 四、若要抵制这个结论，只有两条路\n\n- 否认前提1：举出一个不允许申诉却仍属公正的制度；\n- 指出 a 不在论域内（例如它根本不是\"制度\"意义上的东西）。\n\n不能走的路：说\"允许申诉的制度未必公正\"——这既不否定前提1，也不触及前提2，对结论无关。\n\n顺带说明：由于整句是\"前提 → 结论\"的条件句形式，即使你不认同前提1 为真，这句话作为**推理表述**仍然正确——它只是说：若接受前提1，加上前提2，结论就不可拒绝。",
+   "answer_chars": 1278,
+   "done_content": "这段话本身不是结论，而是一个**推理形式**：它把两个前提和一个结论打包成一个条件句，断言\"在给定的两个前提下，结论必然成立\"。拆开看是这样的。\n\n## 一、形式结构\n\n设 J(x) = \"x 是公正制度\"，A(x) = \"x 允许申诉\"，a = 这个制度。\n\n- **前提1（全称条件句）**：∀x(J(x) → A(x))，即\"凡公正制度，皆允许申诉\"。\n- **前提2（单称否定）**：¬A(a)，即\"这个制度不允许申诉\"。\n- **结论**：¬J(a)，即\"这个制度不是公正制度\"。\n\n整体即：**(前提1 ∧ 前提2) → 结论**。\n\n## 二、为什么它成立：否定后件式\n\n推理分两步，都是标准规则：\n\n1. **全称实例化**：从 ∀x(J(x)→A(x)) 得到 J(a)→A(a)。\n2. **否定后件（modus tollens）**：由 J(a)→A(a) 与 ¬A(a)，推出 ¬J(a)。\n\nmodus tollens 是有效式：条件句为真时，后件为假必然迫使前件为假。\n\n还有更直接的看法：前提1 与它的**逆否命题** ∀x(¬A(x) → ¬J(x)) 在经典逻辑中**逻辑等价**。所以\"不允许申诉 ⇒ 非公正\"根本不用另立规则，它已经是前提1 的另一种说法。这一整段话可以理解为在提醒这个逆否等价。\n\n## 三、容易混的几个点\n\n**1. 有效 ≠ 前提为真。** 上述只证明\"结构上推得通\"。前提1（是否真有任何不允许申诉的公正制度）在逻辑之外，需要另行论证。逻辑保证的是：如果你接受前提1，就没法同时接受前提2 而否认结论。\n\n**2. 方向是单向的——必要/充分要分清。**\n- \"允许申诉\"是\"公正\"的**必要条件**（不满足它就不公正）；\n- \"不允许申诉\"是\"不公正\"的**充分条件**；\n- 但\"允许申诉\"**不**推出\"公正\"（A 不能推出 J）。所以不能用\"某个允许申诉的制度其实不公正\"来反驳这段话——那攻击的是逆命题，而逆命题从未被断言。\n\n**3. \"所有\"的作用范围。** 前提1 不是说\"存在一些公正制度，并且它们允许申诉\"，而是\"每一个公正制度都如此\"。若理解为前者，逆否推理就不成立，只能得出关于那些制度的具体结论。措辞里的\"所有\"在这里是承重的。\n\n**4. 有一个静默的小前提。** 要把全称命题用到\"这个制度\"上，需要 a 落在\"制度\"这个论域里（即它是可以被评价为公正与否的候选对象）。这一般由语境保证，但严格说它是实例化的条件，不是结论自动带来的。\n\n## 四、若要抵制这个结论，只有两条路\n\n- 否认前提1：举出一个不允许申诉却仍属公正的制度；\n- 指出 a 不在论域内（例如它根本不是\"制度\"意义上的东西）。\n\n不能走的路：说\"允许申诉的制度未必公正\"——这既不否定前提1，也不触及前提2，对结论无关。\n\n顺带说明：由于整句是\"前提 → 结论\"的条件句形式，即使你不认同前提1 为真，这句话作为**推理表述**仍然正确——它只是说：若接受前提1，加上前提2，结论就不可拒绝。",
+   "done_matches_tokens": true,
+   "citations": [],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 0,
+    "display_citations": 0,
+    "primary_research": {
+     "status": "not_requested",
+     "sources": [],
+     "total": 0,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 10.576,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 10.6,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 774
+  }
+ ],
+ "total_wall_s": 11.7,
+ "status": "COMPLETED"
+}

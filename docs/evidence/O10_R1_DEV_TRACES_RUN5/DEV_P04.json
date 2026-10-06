@@ -1,0 +1,395 @@
+{
+ "case_id": "DEV_P04",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "马可·奥勒留在《沉思录》里如何处理「被外界打扰」这件事？请找到相关原文章节，引用关键句，并说明斯多葛式的处理技术是什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_3DVE5PpVmxangtCqdlVp5172"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_dwKCWniYGp7c4ErFplEe1632"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_U3a7GnizPsikepqEKQZy6875",
+   "args": {
+    "book_id": "沉思录"
+   },
+   "result_head": "{'id': 'a43cd7310a57', 'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎马倥偬的军旅生涯中，是斯多葛哲学最著名的实践文本之"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_B3iZeNSiGu0mkYOzWvoJ7652"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_jqq89f5aXiUASOpHjDNK3485",
+   "args": {
+    "query": "别人 伤害 我 判断 看法 打扰",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_pjtCXtvAsnQrRiBodNu13972"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_hyIvYH9pS5iPeBd2G9ph5287",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 5
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_mQUYpi0tfcCyfh7CWJiB8569",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《沉思录》第十一卷含相关片段，但尚未读取任何章节全文，无法核对措辞与卷号；需读取第十一卷及第四卷原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "检索仅返回片段，正式引用与逐字引文必须基于已读章节原文；仅有片段无法可靠作答，需读取命中卷（第十一卷）原文核验",
+    "unresolved_evidence_gap": "《沉思录》第十一卷及第四卷中处理\"被外界打扰\"的原文段落全文（措辞、上下文、卷次）"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 已定位《沉思录》第十一卷含相关片段，但尚未读取任何章节全文，无法核对措辞与卷号；需读取第十一卷及第四卷原文）。soft 检索预算=3 次。（PRI"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_D8J9RCJw6MbEn9GiCkcR5981"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_MhV8fvvvZtpfvOSxbX1Z5774",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 5
+   },
+   "result_head": "{'book_id': 'a43cd7310a57', 'chapter_idx': 5, 'title': '第四卷', 'book_title': '沉思录', 'citation_label': '【《沉思录》·第四卷】', 'text': '在内心世界，你只需坚持少许重要的原则，它们能轻易消除你所有的痛苦，它们"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_yGnxp9MhICa5ltBm3RKF2401"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_PD73N7fCaSH2fZSscuWh1210"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_n64dI1JAAm8HO498kPdS4916"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_03_GAeKO1WKVUDm0GpAoP1i7404",
+   "args": {
+    "query": "沉思录 判断 意见 在你自己 力量"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_wm4XWgoYMEVHDBKHtlzC1818",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尚未读取《沉思录》任何章节全文，无法核对\"退入内心\"\"他人行为与我无关\"\"判断在我\"等段落的卷次与措辞，无法给出可靠逐字引文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "此前检索仅返回片段线索且章节读取被预算拦截，正式引用与逐字引文必须基于已读章节原文；仅凭片段无法可靠作答，需读取命中的卷次原文以核验措辞与出处",
+    "unresolved_evidence_gap": "《沉思录》中处理\"被外界打扰\"的原文段落全文（卷次、措辞、上下文）"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 尚未读取《沉思录》任何章节全文，无法核对\"退入内心\"\"他人行为与我无关\"\"判断在我\"等段落的卷次与措辞，无法给出可靠逐字引文）。soft 检索预算"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_MMbrYb5bzt7PmNQUechH3968"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_PumFzBgVRbfa2OYqlDy62386",
+   "args": {
+    "book_id": "沉思录",
+    "chapter_idx": 3
+   },
+   "result_head": "{'book_id': 'a43cd7310a57', 'chapter_idx': 3, 'title': '第二卷', 'book_title': '沉思录', 'citation_label': '【《沉思录》·第二卷】', 'text': '只要你做每件事的时候，都把它当作人生中的最后一件事，你就能做到心无杂念"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中处理\"被外界打扰\"的相关章节原文（措辞与卷号），需定位并读取原典",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《沉思录》第十一卷含相关片段，但尚未读取任何章节全文，无法核对措辞与卷号；需读取第十一卷及第四卷原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "检索仅返回片段，正式引用与逐字引文必须基于已读章节原文；仅有片段无法可靠作答，需读取命中卷（第十一卷）原文核验",
+    "unresolved_evidence_gap": "《沉思录》第十一卷及第四卷中处理\"被外界打扰\"的原文段落全文（措辞、上下文、卷次）"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中处理\"被外界打扰/被冒犯\"的原文措辞与具体卷节出处（退入内心、他人行为不在我掌控、判断在我等段落）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尚未读取《沉思录》任何章节全文，无法核对\"退入内心\"\"他人行为与我无关\"\"判断在我\"等段落的卷次与措辞，无法给出可靠逐字引文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "此前检索仅返回片段线索且章节读取被预算拦截，正式引用与逐字引文必须基于已读章节原文；仅凭片段无法可靠作答，需读取命中的卷次原文以核验措辞与出处",
+    "unresolved_evidence_gap": "《沉思录》中处理\"被外界打扰\"的原文段落全文（卷次、措辞、上下文）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "尚未读取《沉思录》任何章节全文，无法核对\"退入内心\"\"他人行为与我无关\"\"判断在我\"等段落的卷次与措辞，无法给出可靠逐字引文",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:52:15",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《沉思录》中处理\"被外界打扰\"的相关章节原文（措辞与卷号），需定位并读取原典",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:52:28",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已定位《沉思录》第十一卷含相关片段，但尚未读取任何章节全文，无法核对措辞与卷号；需读取第十一卷及第四卷原文",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:53:16",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》中处理\"被外界打扰/被冒犯\"的原文措辞与具体卷节出处（退入内心、他人行为不在我掌控、判断在我等段落）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:53:20",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "尚未读取《沉思录》任何章节全文，无法核对\"退入内心\"\"他人行为与我无关\"\"判断在我\"等段落的卷次与措辞，无法给出可靠逐字引文",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:52:28",
+    "reason": "检索仅返回片段，正式引用与逐字引文必须基于已读章节原文；仅有片段无法可靠作答，需读取命中卷（第十一卷）原文核验",
+    "unresolved_gap": "《沉思录》第十一卷及第四卷中处理\"被外界打扰\"的原文段落全文（措辞、上下文、卷次）"
+   },
+   {
+    "ts": "2026-09-13 12:53:20",
+    "reason": "此前检索仅返回片段线索且章节读取被预算拦截，正式引用与逐字引文必须基于已读章节原文；仅凭片段无法可靠作答，需读取命中的卷次原文以核验措辞与出处",
+    "unresolved_gap": "《沉思录》中处理\"被外界打扰\"的原文段落全文（卷次、措辞、上下文）"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:52:19"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:52:25"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:52:25"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:53:16"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:53:16"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:53:16"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 172166,
+   "output_tokens": 14288,
+   "total_tokens": 186454
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 16317,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11900,
+     "output_tokens": 510,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15434,
+     "output_tokens": 524,
+     "tool_chars_added": 5928
+    },
+    {
+     "round": 3,
+     "input_tokens": 15776,
+     "output_tokens": 998,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 4,
+     "input_tokens": 14977,
+     "output_tokens": 487,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 5,
+     "input_tokens": 16514,
+     "output_tokens": 262,
+     "tool_chars_added": 2195
+    },
+    {
+     "round": 6,
+     "input_tokens": 20720,
+     "output_tokens": 3885,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 7,
+     "input_tokens": 16921,
+     "output_tokens": 4000,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 8,
+     "input_tokens": 12283,
+     "output_tokens": 481,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 9,
+     "input_tokens": 14314,
+     "output_tokens": 620,
+     "tool_chars_added": 3442
+    },
+    {
+     "round": 10,
+     "input_tokens": 15603,
+     "output_tokens": 633,
+     "tool_chars_added": 3559
+    },
+    {
+     "round": 11,
+     "input_tokens": 17724,
+     "output_tokens": 1888,
+     "tool_chars_added": 4748
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 172166,
+  "output_tokens": 14288,
+  "total_tokens": 186454
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 84.6
+}

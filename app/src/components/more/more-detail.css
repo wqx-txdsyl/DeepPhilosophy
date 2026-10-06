@@ -1,0 +1,364 @@
+/* ═══════════════════════════════════════════════════════════
+   神话体系详情页（mtd- 前缀）— 运行在 .school-detail 主题内
+   视觉全面复用流派页样式（SchoolDetailPage.css / ConstellationMap.css / TimelineSection.css）
+   本文件只保留神话专属的少量布局与文字样式
+   ═══════════════════════════════════════════════════════════ */
+
+.school-detail.mtd { --disc: var(--ochre); }
+
+/* 星丛区块在 school-section 内，去掉流派自带的大留白 */
+.school-detail .school-constellation.mtd-star { padding: 0; }
+.mtd-deity-empty {
+  font-size: 13px; font-style: italic; color: var(--text-dim);
+  line-height: 2; margin: 0;
+}
+.mtd-deity-story {
+  font-size: 12.5px; color: var(--text-dim);
+  line-height: 1.95; margin: 12px 0 0;
+}
+.mtd-deity-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.mtd-deity-tags .tag { font-size: 10px; }
+.mtd-pantheon-note {
+  margin: 16px 0 0 !important;
+  font-size: 11.5px !important; font-style: italic;
+  color: var(--text-dim) !important; text-align: center;
+}
+
+/* ── 章节标题：居中（同流派 .centered） ── */
+.mtd-sec-head { margin-bottom: 34px; }
+.mtd-sec-head h2 { margin-top: 10px; }
+.mtd-sec-note {
+  font-size: 13px; color: var(--text-dim);
+  margin: 12px auto 0; max-width: 640px; line-height: 1.9;
+}
+
+/* ── I · 概述 ── */
+.mtd-overview-sec { margin-top: 38px; }
+.mtd-overview-sec h3 {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 23px; color: var(--ink); letter-spacing: 0.06em;
+  margin: 0 0 18px;
+  text-align: center;
+}
+
+/* ── II · 创世叙事（school-branch 单元内部） ── */
+.mtd-act-quote {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 14.5px; color: var(--text-dim);
+  margin: 2px 0 12px; line-height: 1.95;
+}
+.mtd-act-meaning {
+  font-size: 13px; color: var(--text-dim);
+  border-left: 2px solid color-mix(in srgb, var(--ochre) 45%, transparent);
+  padding-left: 12px; margin: 12px 0 4px; line-height: 1.9;
+}
+.mtd-act-meaning i, .mtd-motif-line i {
+  font-style: normal;
+  font-size: 10px; letter-spacing: 0.14em;
+  color: var(--ochre); margin-right: 10px;
+  text-transform: uppercase;
+}
+
+/* ── IV · 母题分组间距 ── */
+.mtd-motif-cat { margin-top: 8px; }
+.mtd-motif-cat + .mtd-motif-cat { margin-top: 44px; }
+.mtd-motif-line { font-size: 13px; color: var(--text-dim); line-height: 1.95; margin: 9px 0 0; }
+
+/* ── V · 河流时间轴补笔 ── */
+.school-river.mtd-river { position: relative; padding: 8px 0 0; }
+.mtd-river-spine {
+  content: ''; position: absolute; left: 50%; top: 0; bottom: 40px;
+  width: 1px; transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ochre) 40%, transparent) 9%, color-mix(in srgb, var(--ochre) 40%, transparent) 92%, transparent);
+  opacity: 0.55; pointer-events: none;
+}
+.mtd-era {
+  font-family: var(--font-serif) !important;
+  font-style: normal !important;
+  letter-spacing: 0.1em !important;
+  opacity: 0.9;
+}
+
+/* ── VI · 哲学勾连：居中对话体 ── */
+.mtd-dialogue {
+  border-top: 1px solid var(--border);
+  padding: 44px 24px;
+  text-align: center;
+}
+.mtd-dialogues .mtd-dialogue:first-child { border-top: none; padding-top: 10px; }
+.mtd-dialogue-myth {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 24px; color: var(--ink); line-height: 1.7;
+  letter-spacing: 0.04em; margin: 18px auto 0; max-width: 680px;
+  text-wrap: balance;
+}
+.mtd-dialogue-x {
+  display: block;
+  font-family: var(--font-serif); font-size: 17px;
+  color: var(--ochre); opacity: 0.7;
+  margin: 14px 0; letter-spacing: 0.3em;
+}
+.mtd-dialogue-philo {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 19px; color: var(--ochre); line-height: 1.75;
+  letter-spacing: 0.05em; margin: 0 auto; max-width: 620px;
+  text-wrap: balance;
+}
+.mtd-dialogue-note {
+  font-size: 13px; color: var(--text-dim); line-height: 1.95;
+  margin: 18px auto 0; max-width: 580px;
+}
+.mtd-dialogue-links {
+  margin-top: 16px;
+  display: flex; flex-wrap: wrap; gap: 6px 30px; justify-content: center;
+}
+
+/* ── VII · 交叉入口 ── */
+.mtd-colophon { text-align: center; margin: 6px 0 34px; }
+.mtd-colophon-line {
+  font-family: var(--font-serif);
+  font-size: 14px; line-height: 2.5; letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin: 12px auto 0; max-width: 780px;
+}
+.mtd-keyword {
+  background: none; border: 0; padding: 2px 3px;
+  font: inherit; letter-spacing: inherit;
+  color: var(--text-dim); cursor: pointer;
+  border-bottom: 1px dotted color-mix(in srgb, var(--text-dim) 45%, transparent);
+  transition: color 0.2s, border-color 0.2s;
+}
+.mtd-keyword:hover { color: var(--ochre); border-bottom-color: var(--ochre); }
+.mtd-keyword:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; border-radius: 2px; }
+.mtd-kw-sep { color: var(--border); padding: 0 10px; }
+
+/* 辞条浮层（辞海式：悬停浮现 · 点击钉住）
+   portal 到 body 渲染，脱离 .school-detail 变量作用域 → 自带主题变量与明暗两套 */
+.mtd-kw-pop {
+  --card-bg: #faf7ef; --border: #d2cdbc; --ochre: #947744;
+  --text-dim: #687166; --ink: #2b3e35; --bg: #f5f0e6;
+  position: fixed; z-index: 80;
+  width: 330px; transform: translateX(-50%);
+  background: var(--card-bg);
+  border: 1px solid color-mix(in srgb, var(--ochre) 30%, var(--border));
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(81, 70, 51, 0.08), 0 8px 28px rgba(81, 70, 51, 0.16);
+  padding: 18px 20px 13px;
+  text-align: left;
+  animation: mtd-pop-in 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.dark-mode .mtd-kw-pop {
+  --card-bg: #2b332d; --border: #4b574a; --ochre: #c5a771;
+  --text-dim: #b6bcae; --ink: #eee9dc; --bg: #20231f;
+  box-shadow: 0 2px 4px rgba(5, 11, 7, 0.25), 0 8px 28px rgba(5, 11, 7, 0.4);
+}
+.mtd-kw-pop.is-above { transform: translateX(-50%) translateY(-100%); animation-name: mtd-pop-in-above; }
+.mtd-kw-pop.is-pinned { border-color: var(--ochre); }
+@keyframes mtd-pop-in { from { opacity: 0; transform: translateX(-50%) translateY(7px); } to { opacity: 1; transform: translateX(-50%); } }
+@keyframes mtd-pop-in-above { from { opacity: 0; transform: translateX(-50%) translateY(calc(-100% - 7px)); } to { opacity: 1; transform: translateX(-50%) translateY(-100%); } }
+.mtd-kw-pop h4 {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 18px; color: var(--ochre); letter-spacing: 0.12em;
+  margin: 0 0 8px;
+}
+.mtd-kw-pop p { font-size: 12.5px; line-height: 1.95; color: var(--text-dim); margin: 0; }
+.mtd-kw-pop-foot {
+  display: flex; gap: 20px; align-items: center;
+  margin-top: 12px; padding-top: 9px;
+  border-top: 1px dashed var(--border);
+}
+.mtd-kw-pop-foot button {
+  background: none; border: 0; padding: 0;
+  font: 11px/1.6 var(--font-sans, sans-serif);
+  color: var(--ochre); cursor: pointer;
+}
+.mtd-kw-pop-foot button:hover { color: var(--ink); }
+.mtd-cross-links { text-align: center; margin: 0 0 34px; }
+.mtd-cross-links .school-ending-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 34px; justify-content: center; }
+.mtd-cross-links .mtd-relation-link { font-size: 13px; }
+.school-detail .school-sources { text-align: center; }
+.school-detail .school-sources ul { justify-content: center; display: flex; flex-wrap: wrap; gap: 10px 30px; list-style: none; padding: 0; margin: 14px 0 0; }
+.school-detail .school-sources li { font-size: 13px; color: var(--text); }
+.school-detail .school-sources li small { color: var(--text-dim); font-size: 11px; margin-left: 8px; }
+
+/* ── 名册（词海式无框赭字） ── */
+.mtd-roster { padding: 6px 0 0; margin-top: 20px; }
+.mtd-roster-row { padding: 14px 2px; border-top: 1px solid var(--border); }
+.mtd-roster-row:first-child { border-top: none; }
+.mtd-roster-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+.mtd-roster-name { font-family: var(--font-serif); font-size: 15px; color: var(--ochre); letter-spacing: 0.08em; }
+.mtd-roster-note {
+  font-size: 11.5px; color: var(--text-dim); letter-spacing: 0.02em;
+  flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mtd-roster-count { font-family: Georgia, serif; font-style: italic; font-size: 12px; color: var(--text-dim); }
+.mtd-roster-chips { display: flex; flex-wrap: wrap; gap: 3px 18px; }
+.mtd-roster-chip {
+  background: none; border: 0; cursor: pointer;
+  font-size: 12.5px; letter-spacing: 0.04em;
+  color: var(--ochre); padding: 5px 0;
+  transition: color 0.2s;
+}
+.mtd-roster-chip:hover { color: var(--ink); }
+.mtd-roster-chip.active {
+  color: var(--ink); font-weight: 600;
+  border-bottom: 1px solid var(--ochre);
+}
+
+/* ── 关联跳转（对标流派「进入人物详情 ↗」） ── */
+.mtd-relation-link {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  background: none; border: 0; padding: 0 0 4px;
+  font: 12px/1.6 var(--font-sans, sans-serif);
+  color: var(--ochre); text-align: left; cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s;
+}
+.mtd-relation-link:hover { color: var(--ink); border-bottom-color: var(--ochre); }
+.mtd-relation-link small { color: var(--text-dim); font-size: 10px; }
+.mtd-relation-link i { font-style: normal; font-size: 11px; }
+
+/* ── 宗教页专属（ReligionDetail） ── */
+.mtd-doctrine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+.mtd-doctrine-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px 20px 16px;
+  background: color-mix(in srgb, var(--card-bg) 60%, transparent);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.mtd-doctrine-card:hover {
+  border-color: color-mix(in srgb, var(--ochre) 45%, var(--border));
+  box-shadow: var(--shadow-sm);
+}
+.mtd-doctrine-sanskrit {
+  font-size: 10px; letter-spacing: 0.12em; color: var(--text-dim);
+  font-style: italic; display: block; margin-bottom: 4px;
+}
+.mtd-doctrine-card h3 {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 19px; color: var(--ink); letter-spacing: 0.05em;
+  margin: 0 0 8px;
+}
+.mtd-doctrine-explain {
+  font-size: 13px; color: var(--text-dim); line-height: 1.9;
+  margin: 0 0 8px;
+}
+.mtd-doctrine-significance {
+  font-size: 12px; color: var(--text-dim);
+  border-left: 2px solid color-mix(in srgb, var(--ochre) 45%, transparent);
+  padding-left: 12px; margin: 0; line-height: 1.8;
+}
+.mtd-doctrine-significance i, .mtd-ritual-purpose i {
+  font-style: normal; font-size: 10px; letter-spacing: 0.14em;
+  color: var(--ochre); margin-right: 10px; text-transform: uppercase;
+}
+.mtd-scripture-list { display: flex; flex-direction: column; }
+.mtd-scripture-item {
+  display: grid; grid-template-columns: 96px 1fr; gap: 16px;
+  padding: 16px 4px; border-top: 1px solid var(--border);
+}
+.mtd-scripture-item:first-child { border-top: none; }
+.mtd-scripture-era {
+  font-family: var(--font-serif); font-size: 12px;
+  color: var(--ochre); letter-spacing: 0.04em;
+  padding-top: 2px;
+}
+.mtd-scripture-name {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 17px; color: var(--ink); letter-spacing: 0.03em; margin: 0 0 5px;
+}
+.mtd-scripture-type { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 4px; }
+.mtd-scripture-sig { font-size: 13px; color: var(--text-dim); line-height: 1.85; margin: 0; }
+.mtd-ritual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.mtd-ritual-item {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 16px 18px 12px;
+  background: color-mix(in srgb, var(--card-bg) 50%, transparent);
+}
+.mtd-ritual-item h4 {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 16px; color: var(--ink); margin: 0 0 8px; letter-spacing: 0.04em;
+}
+.mtd-ritual-item p { font-size: 12.5px; color: var(--text-dim); line-height: 1.85; margin: 0 0 6px; }
+.mtd-ritual-purpose { border-left: 2px solid color-mix(in srgb, var(--ochre) 45%, transparent); padding-left: 10px; }
+.mtd-branch-distinction {
+  font-size: 13px; color: var(--text-dim); line-height: 1.9;
+  margin: 8px 0 0; padding-top: 8px;
+  border-top: 1px dashed var(--border);
+}
+
+/* ── 基督教三分支枢纽页 ── */
+.mtd-branch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 960px; margin: 0 auto;
+}
+.mtd-branch-card {
+  background: none; border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; cursor: pointer; text-align: left; padding: 0;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  font-family: var(--font-sans);
+  display: flex; flex-direction: column; justify-content: flex-start;
+  align-items: stretch; line-height: normal;
+}
+.mtd-branch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--ochre);
+}
+.mtd-branch-hero {
+  width: 100%; height: 180px; object-fit: cover; display: block; flex-shrink: 0;
+}
+.mtd-branch-card h3 {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 22px; color: var(--ink); margin: 14px 16px 4px;
+}
+.mtd-branch-card small {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ochre); display: block; margin: 0 16px 8px;
+}
+.mtd-branch-card p {
+  font-size: 12.5px; color: var(--text-dim); line-height: 1.85;
+  margin: 0 16px 14px;
+}
+.mtd-branch-arrow {
+  display: block; text-align: right;
+  font-size: 18px; color: var(--ochre);
+  padding: 0 16px 14px;
+  transition: transform 0.2s;
+}
+.mtd-branch-card:hover .mtd-branch-arrow { transform: translateX(4px); }
+@media (max-width: 720px) {
+  .mtd-branch-cards { grid-template-columns: 1fr; }
+}
+
+
+/* ── 隐藏滚动条 ── */
+.mtd, .mtd * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.mtd::-webkit-scrollbar,
+.mtd *::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+/* ── 宗教/基督教 hero 全屏覆盖 ── */
+.school-detail .school-hero-section.school-hero {
+  min-height: 100svh !important;
+  max-height: 100svh;
+}

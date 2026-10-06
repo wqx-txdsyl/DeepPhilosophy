@@ -1,0 +1,144 @@
+{
+  "id": "C3863df2a9795",
+  "ratings": {
+    "C1": 0,
+    "C2": 0,
+    "C3": 0,
+    "C4": 0,
+    "C5": 1
+  },
+  "reasons": {
+    "C1": {
+      "reason": "未保持题设固定的“甲和乙对他人全部短期长期影响相同”，反而改成甲能使对方长期更受益、长期收益更高，直接违反required_work中的“保持效果相同”。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "current_question；task_required_work",
+      "answer_spans": [
+        "甲一定更好，因为喜欢做这件事的人必然能使对方长期更受益。",
+        "虽然题设把短长期影响固定相同，但甲的长期收益确实更高。"
+      ]
+    },
+    "C2": {
+      "reason": "没有区分“对他人影响相同”“行动者自身收益”“动机价值”等比较标准，并把对他人影响与甲/对方的长期收益混同。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "current_question；task_required_work",
+      "answer_spans": [
+        "甲一定更好，因为喜欢做这件事的人必然能使对方长期更受益。",
+        "虽然题设把短长期影响固定相同，但甲的长期收益确实更高。"
+      ]
+    },
+    "C3": {
+      "reason": "桥接“喜欢做这件事”到“必然能使对方长期更受益”无有效前提，且与题设已固定影响相同冲突，结论越界。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "current_question；task_required_work",
+      "answer_spans": [
+        "甲一定更好，因为喜欢做这件事的人必然能使对方长期更受益。",
+        "虽然题设把短长期影响固定相同，但甲的长期收益确实更高。"
+      ]
+    },
+    "C4": {
+      "reason": "未处理任何竞争解释、反例或适用边界，只作“一定更好”“必然”的断言。",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "evidence": "current_question",
+      "answer_spans": [
+        "甲一定更好，因为喜欢做这件事的人必然能使对方长期更受益。"
+      ]
+    },
+    "C5": {
+      "reason": "文字简短可读，但未完成“区分比较标准”的明确任务，且内容与固定条件冲突，任务适配不足。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "task_required_work",
+      "answer_spans": [
+        "甲一定更好，因为喜欢做这件事的人必然能使对方长期更受益。",
+        "虽然题设把短长期影响固定相同，但甲的长期收益确实更高。"
+      ]
+    }
+  },
+  "audit": {
+    "condition_changes": [
+      {
+        "unit_id": "A001",
+        "issue": "把题设固定的“对他人全部短期长期影响相同”改成“必然能使对方长期更受益”。"
+      },
+      {
+        "unit_id": "A002",
+        "issue": "在承认题设固定影响相同后，仍推出“甲的长期收益确实更高”，改变决定性比较条件。"
+      }
+    ],
+    "unsupported_bridges": [
+      {
+        "unit_id": "A001",
+        "issue": "从“喜欢做这件事”推出“必然能使对方长期更受益”，缺少支持且与题设固定影响相同冲突。",
+        "decisive": true
+      },
+      {
+        "unit_id": "A002",
+        "issue": "从题设“影响相同”推出“甲长期收益更高”，无前提支持并偷换比较对象。",
+        "decisive": true
+      }
+    ],
+    "source_scope_issues": []
+  },
+  "errors": [
+    {
+      "code": "E2",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "reference_or_condition": "题设固定“甲和乙对他人的全部短期长期影响相同”；required_work“保持效果相同”。",
+      "reason": "答案把已固定的相同影响改成甲长期更受益、收益更高，直接改变决定主结论的条件。",
+      "answer_span": "甲一定更好，因为喜欢做这件事的人必然能使对方长期更受益。\n虽然题设把短长期影响固定相同，但甲的长期收益确实更高。"
+    },
+    {
+      "code": "E3",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A002"
+      ],
+      "reference_or_condition": "题设“影响相同”与答案“但甲的长期收益确实更高”并用。",
+      "reason": "表述自相矛盾，并混淆“对他人影响”与“甲自身/长期收益”，该偷换决定主结论。",
+      "answer_span": "虽然题设把短长期影响固定相同，但甲的长期收益确实更高。"
+    }
+  ],
+  "strength": "简短、直接，立场明确，未捏造资料引用。",
+  "limits": [
+    "未提供 previous_turns 或工具回执，无法核验任何实际检索或阅读范围。",
+    "给定 S1、S2 为与本题无关的虚构控制材料，不能支持答案中的必然性主张。"
+  ],
+  "family": "C",
+  "attempt": 1,
+  "packet_sha256": "29d1008f2cf5f4d94f7a1a0b1af6511dfbbb28db72d60d52b1f587ad38cdbef2",
+  "response_file": "docs/evidence/benchmark_ledger/review_r2_20261003/calibration_a/responses/C3863df2a9795-a1.json",
+  "response_sha256": "d2925918db167641ea8e29f3295ec3a599c5121816a7f887045d9d58383f9e80",
+  "model_returned": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "usage": {
+    "prompt_tokens": 2417,
+    "completion_tokens": 3712,
+    "total_tokens": 6129,
+    "prompt_tokens_details": {
+      "cached_tokens": 1920
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 2923
+    },
+    "prompt_cache_hit_tokens": 1920,
+    "prompt_cache_miss_tokens": 497
+  },
+  "protocol_normalization": "v2_uniform_structural_validation"
+}

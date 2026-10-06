@@ -1,0 +1,2700 @@
+{
+  "id": "Bb1d8444425a5",
+  "family": "C",
+  "rating_keys": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5"
+  ],
+  "original_question": "生成式 AI 学过我的作品却没问过我，这是不是偷窃？我问的既是法律，也是什么叫“拿走了我的东西”。",
+  "task_required_work": [
+    "明确地区、用途和时间，核查相关法律或判决的实际范围",
+    "区分复制、训练、侵权、剽窃与日常偷窃比喻",
+    "说明法律结论不自动穷尽道德问题"
+  ],
+  "current_question": "生成式 AI 学过我的作品却没问过我，这是不是偷窃？我问的既是法律，也是什么叫“拿走了我的东西”。",
+  "previous_turns": [],
+  "target_answer": "## 先给结论\n\n**法律上**，几乎没有哪个法域会把这件事定成\"偷\"——不是因为太轻，而是因为盗窃的构成要件对不上：盗窃要求剥夺占有，而复制不剥夺你的占有。你能主张的是另外几个独立请求，成败高度取决于法域和事实。\n\n**概念上**，你的直觉抓到了真东西，但位置偏了：被拿走的不是\"作品\"这件东西，而是你对它的**排他决定权**。后面我给出这个改写的理由。\n\n---\n\n## 一、先把\"作品被学过\"拆成不同的事\n\n这是全部分歧的根源。中国实务界解读最高法《意见》时反复强调的第一点就是：要区分**训练、生成、传播**三个阶段——\"各阶段需要查明的事实、可能受到侵害的权利以及责任主体并不完全相同\"（[中伦·对最高法《意见》的实务解读](https://www.zhonglun.com/research/articles/56701.html)）。具体至少有五件被塞进\"偷\"这个字里的事：\n\n1. **摄取**：作品被爬取、入库\n2. **记忆**：表达被编码进参数（这是唯一\"你的东西进入它体内\"的环节）\n3. **再现**：输出与你作品逐字或近似\n4. **风格模仿**\n5. **市场替代与未付酬**\n\n这五个的过错理由、举证对象、救济手段全都不同。把它们压成一个\"偷\"，后果是：最强的那条（记忆与再现）和最弱的那条（\"你学过我就算偷\"）会互相拖累——对方只需要打赢最弱的那条，就能让你看起来是无理取闹。\n\n---\n\n## 二、\"偷\"对不上，但它指向的东西是真的\n\n盗窃的结构是：未经同意 + 取走他人之物 + 使原主丧失占有。你手上还有原件，还能卖、还能署名。所以严格意义上不是偷。\n\n但这不等于\"无事发生\"。**被拿走的是\"说不\"的权力**。这个说法需要理由，不是修辞：\n\n- 黑格尔《法哲学原理》§41说\"从自由的角度看，财产是自由最初的**定在**，它本身是本质的目的\"，\"人唯有在所有权中才是作为理性而存在的\"。更关键的是§43附释：学问、艺术、才能本来是\"精神的内在的东西\"，但\"精神同样可以通过**表达**而给它们以外部的定在\"，从而被归入物的范畴。按这个框架，你的作品不只是商品，它是你意志的外在定在。未经同意拿它当原料，问题不在\"少了一件东西\"，而在**把人当成了资源**。这就是你直觉的来源——但论证路径换了一条。\n- 洛克的劳动论在这里是个**反例警戒**，值得特别注意。《政府论》下篇§27讲\"劳动是劳动者的无可争辩的所有物\"，但§28他自己追问：不经全体同意就把共有物拨归私用，\"是否是盗窃行为呢？\"他的回答是**否**，条件是还有\"足够的同样好的东西\"留给他人共有（§27）。这条论证双向可用：模型方完全可以说它也在你的作品上\"掺进了劳动\"。所以洛克不能直接判你赢——他的用处是提示，劳动创权的条件恰恰是\"不使他人处境变坏\"，而那正是争议焦点，不是终点。（本地《政府论》版本是早期译本的扫描本，有大量形近字错讹，我只按§号核对了文意。）\n\n---\n\n## 三、法律现实（按法域，截至我能核到的 2026 年）\n\n**美国：短期内对创作者不利。** 加州北区法院 2025 年两案都判训练属合理使用：*Kadrey v. Meta*（Chhabria 法官，2025-06-25）认为训练具有高度转换性、原告市场损害证据不足，并称\"训练许可市场受损\"的论证是循环论证；*Bartz v. Anthropic*（Alsup 法官）同样认定用合法获得的图书训练属合理使用，**但盗版书库不属于**。结果 Anthropic 于 2026 年 7 月获法院批准 15 亿美元和解，约每部作品 3000 美元，仅约 350 名作者退出（[Ars Technica](https://arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors/)）。**划重点：美国惩罚的不是\"训练\"，而是盗版来源和输出再现。** 另：Chhabria 明确说，若原告能提出更强的市场损害证据，结论可能不同——这不是终点。\n\n**德国/欧盟：格式与你的问题高度相关。** 慕尼黑第一地方法院 2025-11-11（GEMA 诉 OpenAI，42 O 14139/24）认定：LLM 把受保护文本**记住并编码进参数**本身已构成复制，用简单提示词还原出实质原创要素是又一次复制，向用户提供构成向公众提供，**TDM 例外在本案不适用**；判了停止侵害与信息请求权，损害额另定，判决尚未终局（[Osborne Clarke](https://www.osborneclarke.com/insights/gema-vs-openai-ai-memorisation-reproduction-relevant-copyright-law-and-tdm-exception-does)）。欧盟整体方向则是 TDM 例外加退出机制（AI Act 第53条要求公开训练数据摘要）——不是禁止训练，而是**给你一个\"说不\"的开关**。\n\n**英国：** Getty 诉 Stability 一审中训练侵权的核心主张被驳回（商标部分胜诉），已获上诉许可，2026 年仍在上诉程序中。\n\n**中国：最高法明确**没有**回答你这个问题。** 2026 年 9 月《关于依法审理涉人工智能纠纷案件的意见》的答记者问说明，\"未经许可使用他人作品训练大模型的定性\"因分歧较大**暂未作出规定**；生成内容的可版权性同样未定。它给的是别的线：第4条——未经同意用自然人声音作训练语料、生成可识别合成人声，支持声音权益主张（殷某某案，法院判相关公司连带赔 25 万元）；第12条把训练数据来源、训练过程记录、模型运行方式的举证责任压给主张不侵权的开发者（[China IP Law Update 对《意见》的报道](https://chinaiplawupdate.com/2026/09/chinas-supreme-peoples-court-issues-first-national-judicial-rules-on-ai-disputes-but-sidesteps-copyrightability-of-ai-generated-works/)）。上海首例大模型著作权案中，用户截取动漫角色图集训练 LoRA 并生成角色图，被判赔 5 万元——说明**如果你的作品是可被复现的形象/角色，中国法院会管**。\n\n一句话：法律不会用\"偷\"回答你，它会问三件事——**来源合法吗？记忆并再现了吗？你声明过退出吗？**\n\n---\n\n## 四、最强的反驳，和我的回应\n\n**反驳**：如果\"被学过\"就等于偷，那人类一切学习和创作都是赃物——你读别人的小说学写法，是不是也该付钱？\n\n**回应**：差别不在\"学\"，在**学的结果是什么**。人学风格，长出来的是不可与自身分离、也无法出售的能力；黑格尔讲\"内部的精神的东西\"与\"转让\"的关系，恰好划出这条界线。模型的\"学\"，结果是可以复制、可以出售、可以替代你的权重。所以判准不是\"是否学习\"，而是**是否形成了可交易且能替代你的资产，且这种形成是可避免地不付酬的**。前半句挡掉滑坡，后半句挡掉\"只是学习\"的辩解。\n\n但\"用'偷'这个词\"本身有代价：它让你期待追赃、返还、刑事禁令这类不存在的救济。所以我认为**准确的说法是**：\n\n> 不是\"你拿走了我的东西\"，而是\"在我的不同意无法执行的地方，你把我的不同意变成了默认同意\"。\n\n可辩护的最强版本是：被侵犯的是**排他决定权及其带来的议价地位**，不是占有。救济方向也随之分化：记忆与再现 → 停止侵害与许可（德国路径）；来源非法 → 赔偿，但你往往必须进入集体程序（Anthropic 路径）；\"没问我\" → 可执行的退出与数据披露（欧盟路径）。\n\n---\n\n## 五、要让你这个问题从思辨变成可推进的，我还需要三件事\n\n1. **法域**：中国大陆、美国、欧盟、英国，答案差别很大（尤其\"训练本身能否被诉\"这一条）。\n2. **作品类型**：文本、图像、音乐、还是角色形象/声音？形象与声音在中国目前有一条明显更好走的人格权路径。\n3. **是否有近似复现的输出**：这决定你能不能从最弱的那条主张（\"你学过\"）跳到最强的那条（\"你把我记住了并还给了我\"）。\n\n补充一句证据边界：美国版权局 2025 年 5 月关于 AI 训练的第三份报告（预发布版），我试图读取其全文但工具返回格式不支持，因此上面的美国部分只依据两案判决与和解的实际报道，未引用版权局的结论。",
+  "tools_this_turn": [
+    {
+      "tool_index": 1,
+      "name": "search_books",
+      "args": {
+        "query": "劳动 财产 所有权 自然权利",
+        "author": "洛克"
+      },
+      "status": "success",
+      "result": {
+        "query": "劳动 财产 所有权 自然权利",
+        "results": [
+          {
+            "book_id": "d0e4041355ed",
+            "book_title": "洛克",
+            "author": "约翰·洛克",
+            "chapter_idx": 8,
+            "chapter_title": "第二章 信任的政治学",
+            "citation_label": "【《洛克》·第二章 信任的政治学】",
+            "snippet": "旨，即人们何以对共同财产中的任意部分拥有私有 权 。正是对这一问题的著名回应赋予他的财产权理论巨大而多样的历史影响力。是劳动从共有物中区分出私有物，而劳动是指身体和双手的劳作。毫无疑问，劳动是劳动者的财产，通过将劳动与物质对象相结合，例如打猎（II 30）、采集（II 28）、耕作（II 32-34），人类便有权获得他劳动的对象，以及他用该材料制造出来的东西。而“人类生活的条件既然需要劳动和从事劳动的材料，就必然导致私人 占有 ”（II 35）。上帝将世界赐予人类，是“为了他们的利益，为了使他们尽可能从中获得最大的生活便利”。但是上帝将世界赐予人类，是要他们物尽其用——“供勤劳而理性的人使用”，而不是要满足“吵闹好辩之徒的喜好和贪婪",
+            "score": 179,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "d0e4041355ed",
+              "chapter_idx": 8,
+              "focus": "劳动 财产 所有权 自然权利"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          }
+        ],
+        "method": "exact_fulltext",
+        "catalogue_matches": [
+          {
+            "book_id": "44a32441dabe",
+            "book_title": "人类理解论",
+            "author": "约翰·洛克",
+            "citation_label": "【《人类理解论》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          },
+          {
+            "book_id": "e3a52553c303",
+            "book_title": "政府论（下篇）",
+            "author": "约翰·洛克",
+            "citation_label": "【《政府论（下篇）》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          },
+          {
+            "book_id": "d0e4041355ed",
+            "book_title": "洛克",
+            "author": "约翰·洛克",
+            "citation_label": "【《洛克》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          }
+        ],
+        "catalogue_match_count": 3,
+        "search_coverage": {
+          "chapter_entries_examined": 100
+        },
+        "search_scope": {
+          "author": "洛克",
+          "book_id": null
+        },
+        "total_passage_hits": 1,
+        "note": "片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。"
+      }
+    },
+    {
+      "tool_index": 2,
+      "name": "search_books",
+      "args": {
+        "query": "财产 所有权 占有 人格",
+        "author": "黑格尔"
+      },
+      "status": "success",
+      "result": {
+        "query": "财产 所有权 占有 人格",
+        "results": [
+          {
+            "book_id": "17c85f942c78",
+            "book_title": "法哲学原理",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "chapter_idx": 5,
+            "chapter_title": "第一章 所有权",
+            "citation_label": "【《法哲学原理》·第一章 所有权】",
+            "snippet": "这一方面则构成占有的真实而合法的因素，即构成 所有权 的规定。 附释 如果把需要当作首要的东西，那么从需要方面看来，拥有财产就好像是满足需要的一种手段。但真正的观点在于，从自由的角度看，财产是自由最初的 定在 ，它本身是本质的目的。 第46节 因为我的意志作为人的意志，从而作为单个人的意志，在所有权中，对我说来是成为客观的了，所以所有权获得了 私人所有权 的性质；共同所有权由于它的本性可变为个别所有，也获得了一种 自在地可分解的 共同性的规定。至于我把我的应有部分留在其中，这本身是一种任意的事。 附释 自然界 各种对象的利用，按其本性来说，是不能特异化而成为私人占有的。 罗马的 土地法 包含着关于土地占有的公有和私有之间的斗争。后者",
+            "score": 263,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "17c85f942c78",
+              "chapter_idx": 5,
+              "focus": "财产 所有权 占有 人格"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          },
+          {
+            "book_id": "bbac1be0bb4b",
+            "book_title": "黑格尔作品集（套装共14册）",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "chapter_idx": 163,
+            "chapter_title": "第一章 所有权",
+            "citation_label": "【《黑格尔作品集（套装共14册）》·第一章 所有权】",
+            "snippet": "这一方面则构成占有的真实而合法的因素，即构成 所有权 的规定。 附释 如果把需要当作首要的东西，那么从需要方面看来，拥有财产就好像是满足需要的一种手段。但真正的观点在于，从自由的角度看，财产是自由最初的 定在 ，它本身是本质的目的。 第46节 因为我的意志作为人的意志，从而作为单个人的意志，在所有权中，对我说来是成为客观的了，所以所有权获得了 私人所有权 的性质；共同所有权由于它的本性可变为个别所有，也获得了一种 自在地可分解的 共同性的规定。至于我把我的应有部分留在其中，这本身是一种任意的事。 附释 自然界 各种对象的利用，按其本性来说，是不能特异化而成为私人占有的。 罗马的 土地法 包含着关于土地占有的公有和私有之间的斗争。后者",
+            "score": 255,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "bbac1be0bb4b",
+              "chapter_idx": 163,
+              "focus": "财产 所有权 占有 人格"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          },
+          {
+            "book_id": "17c85f942c78",
+            "book_title": "法哲学原理",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "chapter_idx": 1,
+            "chapter_title": "黑格尔著《法哲学原理》一书评述",
+            "citation_label": "【《法哲学原理》·黑格尔著《法哲学原理》一书评述】",
+            "snippet": "只存在着 禁令 ”，“即 不得侵害 人格。” [26] 抽象法作为自由的直接体现，也包含有三个环节：（一）对于物的占有或所有权，因为只有自由的人才有占有物的权利，而物是非精神的、不自由的，即被占有的。（二）转移所有权的自由或权利，这就是由于依据共同意志并在保持双方权利的条件下将所有权由一方移转于他方而获得实存。这就是契约。（三）自由意志作为特殊意志与自身本来的意愿相殊异、相反对，而侵犯了他人的权利。这就是 不法 和 犯罪。 [27] 黑格尔从永恒化合理化私有财产出发，大肆宣扬“所有权〔即财产，按德文Eigentum一字有所有权及财产二义〕所以合乎理性不在于满足需要，而在于扬弃人格的纯粹主观性。人唯有在所有权〔或财产〕中才是作为理性而",
+            "score": 213,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "17c85f942c78",
+              "chapter_idx": 1,
+              "focus": "财产 所有权 占有 人格"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          },
+          {
+            "book_id": "bbac1be0bb4b",
+            "book_title": "黑格尔作品集（套装共14册）",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "chapter_idx": 159,
+            "chapter_title": "黑格尔著《法哲学原理》一书评述",
+            "citation_label": "【《黑格尔作品集（套装共14册）》·黑格尔著《法哲学原理》一书评述】",
+            "snippet": "只存在着 禁令 ”，“即 不得侵害 人格。” [26] 抽象法作为自由的直接体现，也包含有三个环节：（一）对于物的占有或所有权，因为只有自由的人才有占有物的权利，而物是非精神的、不自由的，即被占有的。（二）转移所有权的自由或权利，这就是由于依据共同意志并在保持双方权利的条件下将所有权由一方移转于他方而获得实存。这就是契约。（三）自由意志作为特殊意志与自身本来的意愿相殊异、相反对，而侵犯了他人的权利。这就是 不法 和 犯罪。 [27] 黑格尔从永恒化合理化私有财产出发，大肆宣扬“所有权〔即财产，按德文Eigentum一字有所有权及财产二义〕所以合乎理性不在于满足需要，而在于扬弃人格的纯粹主观性。人唯有在所有权〔或财产〕中才是作为理性而",
+            "score": 205,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "bbac1be0bb4b",
+              "chapter_idx": 159,
+              "focus": "财产 所有权 占有 人格"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          },
+          {
+            "book_id": "497b0228c3a6",
+            "book_title": "哲学科学全书纲要",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "chapter_idx": 33,
+            "chapter_title": "第二部分. 客观精神.",
+            "citation_label": "【《哲学科学全书纲要》·第二部分. 客观精神.】",
+            "snippet": "24. 各个个人的特殊性首先在自身总含着他们的种种需要。满足这些需要的可能性在此是在于社会的联系，这一联系是一种普遍性的财产，一切人都努力从这一财产中达到那一满足。对外在对象之为达到这点的手段的 直接的 占取（ § . 488. ），在这一中介立场于中被实现的状况内，是不再发生的，或几乎不发生的。种种对象现在是所有。占有者的意志作为特殊性的意志，以满足多样规定的需要为目的，那些对象的经营一方面以他们的这种意志为条件和为中介，另一方面同样也以通过 自己的劳动 不断更新地制出可交换的手段为条件和为中介。 β） 劳动分工. § . 525. 普遍性首先这样来映现到需要的特殊性之内：知性在需要上进行区分，并把它们无限地复制出来，如同是将之当",
+            "score": 180,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "497b0228c3a6",
+              "chapter_idx": 33,
+              "focus": "财产 所有权 占有 人格"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          }
+        ],
+        "method": "exact_fulltext",
+        "catalogue_matches": [
+          {
+            "book_id": "053203b03b6c",
+            "book_title": "精神现象学",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "citation_label": "【《精神现象学》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          },
+          {
+            "book_id": "497b0228c3a6",
+            "book_title": "哲学科学全书纲要",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "citation_label": "【《哲学科学全书纲要》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          },
+          {
+            "book_id": "bbac1be0bb4b",
+            "book_title": "黑格尔作品集（套装共14册）",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "citation_label": "【《黑格尔作品集（套装共14册）》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          },
+          {
+            "book_id": "17c85f942c78",
+            "book_title": "法哲学原理",
+            "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+            "citation_label": "【《法哲学原理》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          }
+        ],
+        "catalogue_match_count": 4,
+        "search_coverage": {
+          "chapter_entries_examined": 519
+        },
+        "search_scope": {
+          "author": "黑格尔",
+          "book_id": null
+        },
+        "total_passage_hits": 21,
+        "note": "片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。"
+      }
+    },
+    {
+      "tool_index": 3,
+      "name": "websearch",
+      "args": {
+        "query": "生成式人工智能 训练数据 著作权 判决 中国 法院 2025"
+      },
+      "status": "success",
+      "result": {
+        "query": "生成式人工智能 训练数据 著作权 判决 中国 法院 2025",
+        "results": [
+          {
+            "title": "上海金山法院审结上海市首例AI大模型著作权侵权案",
+            "url": "https://www.sohu.com/a/964350113_121181007?scm=10001.325_13-325_13.0.0-0-0-0-0.5_32#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI Litigation Case Law Tracker",
+            "url": "https://digital-client-solutions.hlc.com/resources/ai-litigation-case-law-tracker/case/a-cultural-co-ltd-v-a-ai-company/decision/63",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "【民企法务微窗】截取动漫角色图集训练LoRA模型，上海首例人工智能大模型著作权侵权案一审宣判了，来看详情→",
+            "url": "https://finance.sina.com.cn/roll/2025-12-08/doc-inhaavuy3484597.shtml?cref=cj#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "在司法层面，2025年3月7日，江苏省常熟市人民法院作出判决，确认AI生成图像在满足人类用户通过提示词工程、多轮输出选择和后期编辑作出有意义创造性贡献的条件下，可获得版权保护",
+            "url": "https://www.ctils.com/cms/article/file/download?path=Article/2026/08/07/11-32-2636039.pdf#4#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "上海首例人工智能大模型著作权侵权案一审落槌 - 上海首例人工智能大模型著作权侵权案一审落槌",
+            "url": "https://www.sohu.com/a/950876767_114760?scm=10001.325_13-325_13.0.0.5_32&spm=smpc.channel_248.block3_308_NDdFbm_1_fd.4.1762254343631U8SXVms_324#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "上海首例人工智能大模型著作权侵权案一审落槌",
+            "url": "https://tech.ifeng.com/c/8o0mz52V4G5?ch=ttsearch",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI大模型训练中的著作权侵权风险与司法实践",
+            "url": "https://www.lexology.com/library/detail.aspx?g=7da3345a-2cfd-4f37-bd55-5b43b516030d",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "上海首例AI大模型侵权案，《斗破苍穹》美杜莎被“喂”给AI大模型 法院判侵权",
+            "url": "https://www.yangtse.com/news/wy/202511/t20251104_285306.html#1#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "发展与安全的双轮驱动：中国人工智能立法演进与治理前瞻 - 这两个案例共同揭示了一个重要的司法趋势：法院正在穿透平台“技术中立”的表象，对其算法在内容生态中的实际作用进行实质性审查",
+            "url": "https://www.secrss.com/articles/85853#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "in Changshu (2024) and Wuhan (2025) reached consistent conclusions: when an author exercises “process control + originality of o...",
+            "url": "https://www.whitecase.com/sites/default/files/2025-07/dp25-e-edition-whitecase-reduced.pdf#107#5",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "生成式人工智能 训练数据 著作权 判决 中国 法院 2025"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908329.977229,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 13230,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 807,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 4,
+      "name": "websearch",
+      "args": {
+        "query": "NYT v OpenAI fair use ruling status 2025 2026"
+      },
+      "status": "success",
+      "result": {
+        "query": "NYT v OpenAI fair use ruling status 2025 2026",
+        "results": [
+          {
+            "title": "SUSMAN GODFREY L",
+            "url": "https://storage.courtlistener.com/recap/gov.uscourts.nysd.640396/gov.uscourts.nysd.640396.1395.0.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "U.S. Government Backs OpenAI in AI Fair Use Case - U.S. Government Backs OpenAI in AI Fair Use Case",
+            "url": "https://www.chosun.com/english/industry-en/2026/09/03/4HYSO5ZO2RHBNA45JBRGSW6XYA/?outputType=native#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Trump administration says a New York Times win in OpenAI lawsuit would “threaten national security” and hurt small newsrooms",
+            "url": "https://www.niemanlab.org/2026/09/trump-administration-says-a-new-york-times-win-in-openai-lawsuit-would-threaten-national-security-and-hurt-small-newsrooms/?trk=article-ssr-frontend-pulse_little-text-block",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI's promise does not justify using any means to build it",
+            "url": "https://digitalcontentnext.org/blog/2026/09/08/ais-promise-does-not-justify-using-any-means-to-build-it/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI против авторского права: решающие этапы в делах NYT v. OpenAI и Getty v. Stability AI по fair use - AI и авторское право на распутье: NYT v. OpenAI и Getty v. Stability AI приближаются к ключевым решениям по fair use",
+            "url": "https://nevskylaw.ru/blog/ai-i-avtorskoe-pravo-sudy#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The Algorithm And The Author",
+            "url": "https://thebarbulletin.com/ai-training-copyright-cases-creative-industries/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The US government comes to OpenAI's defense - Korben - The US government comes to OpenAI's defense",
+            "url": "https://korben.info/en/us-government-defends-openai.html?utm_source=rss&utm_medium=feed&utm_campaign=flux-complet#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "美정부 “AI 학습 막으면 경제·안보 타격”…NYT 대신 오픈AI 손 들어",
+            "url": "https://chosun-chosun-prod.cdn.arcpublishing.com/economy/tech_it/2026/09/03/73SX3GB3BJERHG5VKTGGBWMZJY/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Historic NYT v. OpenAI copyright battle heats up",
+            "url": "https://www.axios.com/2026/09/08/nyt-openai-microsoft-copyright-lawsuit",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Vlada SAD-a podržala OpenAI protiv medija. Kaže da bi zabrana kočila razvoj AI-ja - Vlada SAD-a podržala OpenAI protiv medija. Kaže da bi zabrana kočila razvoj AI-ja",
+            "url": "https://www.index.hr/amp/vijesti/clanak/openai-dobio-podrsku-trumpove-administracije-u-sporu-s-new-york-timesom/2830296.aspx?index_ref=read_more_amp#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "NYT v OpenAI fair use ruling status 2025 2026"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908330.131624,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 7262,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 858,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 5,
+      "name": "websearch",
+      "args": {
+        "query": "GEMA v OpenAI Munich Regional Court ruling November 2025 memorization lyrics TDM"
+      },
+      "status": "success",
+      "result": {
+        "query": "GEMA v OpenAI Munich Regional Court ruling November 2025 memorization lyrics TDM",
+        "results": [
+          {
+            "title": "AI Litigation Case Law Tracker",
+            "url": "https://digital-client-solutions.hlc.com/resources/ai-litigation-case-law-tracker/case/gema-v-openai/decision/9",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI Training Meets Copyright Law: Munich Court Sides With GEMA Against OpenAI - ARTICLE",
+            "url": "https://webiis08.mondaq.com/licensing-syndication/1804682/#authors#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI Training Meets Copyright Law: Munich Court Sides with GEMA Against OpenAI - aera",
+            "url": "https://aera-ip.com/ai-training-meets-copyright-law/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Rightsholders Take the Lead: GEMA v. OpenAI - Regional Court of Munich I — 11 November 2025, Case No",
+            "url": "https://www.taylorwessing.com/de/insights-and-events/insights/2025/11/gema-v-openai#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI and Copyright Law: Munich Regional Court Rules Against OpenAI | Grünecker",
+            "url": "https://grunecker.de/en/insights/ai-and-copyright-law-munich-regional-court-rules-against-openai/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Landmark ruling of the Munich Regional Court (GEMA v OpenAI) on copyright and AI training - Landmark ruling of the Munich Regional Court (GEMA v OpenAI) on copyright and AI training",
+            "url": "https://cm.twobirds.com/en/insights/2025/landmark-ruling-of-the-munich-regional-court-(gema-v-openai)-on-copyright-and-ai-training#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Rightsholders Take the Lead: GEMA v. OpenAI - Regional Court of Munich I — 11 November 2025, Case No",
+            "url": "https://www.taylorwessing.com.cn/zh-hant/insights-and-events/insights/2025/11/gema-v-openai#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "GEMA vs. OpenAI | AI memorisation is a reproduction relevant to copyright law, and the TDM exception does not help in LLM training, Munich I Regional Court holds",
+            "url": "https://www.osborneclarke.com/insights/gema-vs-openai-ai-memorisation-reproduction-relevant-copyright-law-and-tdm-exception-does",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Landmark ruling of the Munich Regional Court (GEMA v OpenAI) on copyright and AI training - Register now for your free, tailored, daily legal newsfeed service.",
+            "url": "https://www.lexology.com/library/detail.aspx?g=521fdcc6-3735-4acb-a14b-b62acfa78f0b#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI in the sights: German court sets new standards for music rights - gunnercooke llp",
+            "url": "https://gunnercooke.com/ai-in-the-sights-german-court-sets-new-standards-for-music-rights/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "GEMA v OpenAI Munich Regional Court ruling November 2025 memorization lyrics TDM"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908330.167802,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 9326,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 901,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 6,
+      "name": "websearch",
+      "args": {
+        "query": "Bartz v Anthropic ruling fair use training books ruling Alsup 2025"
+      },
+      "status": "success",
+      "result": {
+        "query": "Bartz v Anthropic ruling fair use training books ruling Alsup 2025",
+        "results": [
+          {
+            "title": "June 26, 2025",
+            "url": "https://www.sullcrom.com/SullivanCromwell/_Assets/PDFs/Memos/First-US-Rulings-Fair-Use-AI-Context.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI IP Year in Review - The Market Harm Dilemma: What Bartz and Kadrey Reveal About Fair Useʼs Future in Generative AI",
+            "url": "https://www.sternekessler.com/news-insights/insights/ai-ip-year-in-review-the-market-harm-dilemma-what-bartz-and-kadrey-reveal-about-fair-use%ca%bcs-future-in-generative-ai/#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Who Pays For AI? - Biswajit Sarkar Blog",
+            "url": "https://www.biswajitsarkar.com/blog/who-pays-for-ai.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Two days apart, two judges in the Northern District of California decided on summary judgment that two examples of using copyrig...",
+            "url": "https://www.lexology.com/library/document.ashx?g=80536112-deac-4e7e-8eaf-5994bd2e6223&__cf_chl_tk=bN1pvivzCgHL2S2WdtvzHCYy3DhiznsYf4_n2GytYCI-1776174894-1.0.1.1-qlXrZPCVCWkZz90_qBhUuGcAXWEAx3n0WaBpJqwEMts#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "MSF Client Alert",
+            "url": "https://meisterseelig.com/wp-content/uploads/2025/07/Client-Alert_IP-Group_-Two-Key-Federal-Court-Rulings-on-AI-Training-and-Copyright.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Al and Copyright in the Entertainment Industry: Where 2025 Leaves Us",
+            "url": "https://www.munckwilson.com?pdf=1&postid=4693.#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Insights: Alert",
+            "url": "https://ktslaw.com/en/Pdf?page=%7bA0D96302-24E0-4EDB-AFE9-ED81CE05A4B3%7d&pdf=1#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "District Court Rules AI Training Can Be Fair Use in Bartz v. Anthropic",
+            "url": "https://www.akingump.com/print/v2/content/1116356/district-court-rules-ai-training-can-be-fair-use-in-bartz-v-anthropic.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "IP Hot Topic: A Clash in California: Judicial Tug of War Between the Primacy of Transformative Use and Market Effect in GenAI Fair Use Cases - 2025 Summer Associate Wade Marshall contributed to this article",
+            "url": "https://www.sternekessler.com/news-insights/client-alerts/ip-hot-topic-a-clash-in-california-judicial-tug-of-war-between-the-primacy-of-transformative-use-and-market-effect-in-genai-fair-use-cases/#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "THOUGHT LEADERSHIP",
+            "url": "https://huschblackwell.azurewebsites.net/getpdf.aspx?type=insight&show=98603&format=pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "Bartz v Anthropic ruling fair use training books ruling Alsup 2025"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908330.9392378,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 8204,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 930,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 7,
+      "name": "websearch",
+      "args": {
+        "query": "Anthropic $1.5 billion settlement authors books final approval"
+      },
+      "status": "success",
+      "result": {
+        "query": "Anthropic $1.5 billion settlement authors books final approval",
+        "results": [
+          {
+            "title": "Anthropic to pay $1.5 billion copyright settlement to authors, publishers - Anthropic to pay $1.5 billion copyright settlement to authors, publishers",
+            "url": "https://courthousenews.com/anthropic-to-pay-1-5-billion-copyright-settlement-to-authors-publishers/?trk=article-ssr-frontend-pulse_little-text-block#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Federal judge approves Anthropic's $1.5B settlement of copyright lawsuit - Missouri Lawyers Media",
+            "url": "https://molawyersmedia.com/2026/07/21/federal-judge-approves-anthropic-1-5-billion-copyright-settlement/?taxo-post",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Intelligence Piracy: Anthropic Agrees To US$1.5 Billion Copyright Settlement In Landmark AI Case - ARTICLE",
+            "url": "https://webiis08.mondaq.com/unitedstates/copyright/1821102/intelligence-piracy-anthropic-agrees-to-us%2415-billion-copyright-settlement-in-landmark-ai-case#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Federal Court Approves $1.5 Billion Anthropic Copyright Settlement — Largest in History - Register now for your free, tailored, daily legal newsfeed service.",
+            "url": "https://www.lexology.com/library/detail.aspx?g=b7526e9e-8883-445d-901e-b73eb5342bc8#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "US judge approves Anthropic's US$1.5bil settlement of copyright lawsuit | New Straits Times - US judge approves Anthropic's US$1.5bil settlement of copyright lawsuit",
+            "url": "https://www.nst.com.my/business/corporate/2026/07/1493748/us-judge-approves-anthropics-us15bil-settlement-copyright?source=widget#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Authors push back as publishers and agents make claims on Anthropic settlement | TechCrunch - Some authors hoping to receive their share of Anthropic’s $1.5 billion copyright settlement said they received surprising emails...",
+            "url": "https://techcrunch.com/2026/09/06/authors-push-back-as-publishers-and-agents-seek-share-of-anthropic-settlement/?utm_source=aibreakfast.beehiiv.com&utm_medium=newsletter&utm_campaign=openai-s-chief-scientist-argues-for-a-slowdown&_bhlid=4a83d772449ef233cd510fe4ce6ee6ca98946ad6#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Judge approves Anthropic's record-breaking $1.5 billion settlement for AI copyright lawsuit - Engadget",
+            "url": "https://www.engadget.com/2219475/judge-approves-anthropic-1-5-billion-settlement-authors/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Judge approves Anthropic’s $1.5B settlement of authors’ AI copyright lawsuit — first major case to settle - A federal judge in San Francisco on Monday signed off on artificial intelligence company Anthropic’s landmark $1.5 billion settl...",
+            "url": "https://nypost.com/2026/07/20/business/anthropics-1-5b-settlement-of-authors-ai-copyright-lawsuit-gets-greenlight/#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Anthropic must pay $1.5 billion for pillaging books, including Harry Potter - Korben",
+            "url": "https://korben.info/en/anthropic-pays-1-5-billion-pirating-books-harry-potter.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Authors and Publishers Win Historic $1.5 Billion Copyright Settlement Against Anthropic - Books",
+            "url": "https://www.timesnownews.com/lifestyle/books/authors-and-publishers-win-historic-1-5-billion-copyright-settlement-against-anthropic-article-155143535#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "Anthropic $1.5 billion settlement authors books final approval"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908340.050434,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 7001,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 820,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 8,
+      "name": "websearch",
+      "args": {
+        "query": "上海 首例 人工智能 大模型 著作权侵权案 判决 结果 LoRA 训练"
+      },
+      "status": "success",
+      "result": {
+        "query": "上海 首例 人工智能 大模型 著作权侵权案 判决 结果 LoRA 训练",
+        "results": [
+          {
+            "title": "上海首例涉AI大模型著作权侵权案二审落槌——既要保护版权，也要为AI创新留空间",
+            "url": "https://www.nmcpo.cn/bqbh/detailed/1751.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "上海金山法院审结上海市首例AI大模型著作权侵权案",
+            "url": "https://m.sohu.com/a/964350113_121181007/?pvid=000115_3w_a&scm=10001.325_13-325_13.0.0-0-0-0-0.5_32#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "《斗破苍穹》美杜莎形象被抄袭 人工智能大模型著作权侵权案一审落槌",
+            "url": "http://www2.iprdaily.cn/news_40981.html#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "每日一法 | 用AI“复刻”动漫角色，边界在哪？",
+            "url": "http://chaiqianzu.com/%e6%af%8f%e6%97%a5%e4%b8%80%e6%b3%95-%e7%94%a8ai%e5%a4%8d%e5%88%bb%e5%8a%a8%e6%bc%ab%e8%a7%92%e8%89%b2%ef%bc%8c%e8%be%b9%e7%95%8c%e5%9c%a8%e5%93%aa%ef%bc%9f/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "上海首例人工智能大模型著作权侵权案宣判，用户被判赔偿5万元",
+            "url": "https://www.shobserver.cn/wx/detail.do?id=1011568",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "【民企法务微窗】既要保护版权，也要为AI创新留空间，上海首例涉AI大模型著作权侵权案二审落槌 - 新浪财经",
+            "url": "https://finance.sina.cn/2026-06-04/detail-iniafvzn3600038.d.html?vt=4#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "《斗破苍穹》美杜莎形象被抄袭",
+            "url": "http://www.shfzb.com.cn/shfzb/resfile/2025-11-05/A07/A071105.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "【民企法务微窗】截取动漫角色图集训练LoRA模型，上海首例人工智能大模型著作权侵权案一审宣判了，来看详情→",
+            "url": "https://finance.sina.cn/2025-12-08/detail-inhaavuy3484597.d.html?from=wap#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "判了！用斗破苍穹人气角色训练AI模型构成侵权",
+            "url": "https://k.sina.cn/article_6145283913_v16e49974902002dpmq.html?from=news&subch=onews",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "用户投喂AI大模型生成《斗破苍穹》角色图片，被判赔5万元",
+            "url": "https://m.mp.oeeee.com/a/BAAFRD0000202511051469476.html#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "上海 首例 人工智能 大模型 著作权侵权案 判决 结果 LoRA 训练"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908340.052157,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 9940,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 824,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 9,
+      "name": "websearch",
+      "args": {
+        "query": "fair use AI training ruling 2026 summary judgment authors writers lawsuit outcome"
+      },
+      "status": "success",
+      "result": {
+        "query": "fair use AI training ruling 2026 summary judgment authors writers lawsuit outcome",
+        "results": [
+          {
+            "title": "AI Training Fair Use: Inside the $1.5B Bartz v. Anthropic Settlement",
+            "url": "https://keyhanillc.com/2026/09/03/ai-training-fair-use-bartz-anthropic/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "COPYRIGHT—N.D. Cal.: Landmark Anthropic settlement becomes final",
+            "url": "https://www.vitallaw.com/news/copyright-n-d-cal-landmark-anthropic-settlement-becomes-final/ipm014516313ef76645e9b0ac981f50ca98ff#.",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Federal judge approves Anthropic's $1.5B settlement of copyright lawsuit - Missouri Lawyers Media",
+            "url": "https://molawyersmedia.com/2026/07/21/federal-judge-approves-anthropic-1-5-billion-copyright-settlement/?taxo-post",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Intelligence Piracy: Anthropic Agrees To US$1.5 Billion Copyright Settlement In Landmark AI Case - ARTICLE",
+            "url": "https://webiis08.mondaq.com/unitedstates/copyright/1821102/#authors#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Anthropic’s $1.5B copyright settlement approved; only 350 authors opted out - Skip to content",
+            "url": "https://arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors/?utm_source=newsletter.dsurfer.com&utm_medium=referral&utm_campaign=a-paraphrase-scores-near-zero#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Anthropic、著作権訴訟で史上最大「2400億円」和解金支払いへ 学習利用は「フェアユース」認定",
+            "url": "https://www.itmedia.co.jp/aiplus/article/2607/21/2000000210/#utm_medium=email&utm_source=aip&utm_campaign=20260722",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "US judge approves Anthropic's $1.5 billion settlement of copyright lawsuit - July 20 : A federal judge in San Francisco on Monday signed off on artificial intelligence company Anthropic's landmark $1.5 bil...",
+            "url": "https://www.channelnewsasia.com/business/us-judge-approves-anthropics-15-billion-settlement-copyright-lawsuit-6266596#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Who Pays For AI? - Biswajit Sarkar Blog",
+            "url": "https://www.biswajitsarkar.com/blog/who-pays-for-ai.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "U.S. judge approves Anthropic’s US$1.5B settlement of copyright lawsuit - ADVERTISEMENT",
+            "url": "https://www.ctvnews.ca/sci-tech/article/us-judge-approves-anthropics-us15b-settlement-of-copyright-lawsuit/?link_source=ta_bluesky_link&taid=6a5f0b0e1fe70a000174fe17&ref=feedbagel.com#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "US judge approves Anthropic’s $1.5 billion settlement of copyright lawsuit - Journalism of Courage",
+            "url": "https://indianexpress.com/article/technology/artificial-intelligence/us-judge-approves-anthropics-1-5-billion-settlement-of-copyright-lawsuit-10796581/?ref=latestnews_hp#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "fair use AI training ruling 2026 summary judgment authors writers lawsuit outcome"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908340.103372,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 8535,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 845,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 10,
+      "name": "websearch",
+      "args": {
+        "query": "Getty Images v Stability AI UK High Court judgment appeal copyright training"
+      },
+      "status": "success",
+      "result": {
+        "query": "Getty Images v Stability AI UK High Court judgment appeal copyright training",
+        "results": [
+          {
+            "title": "High Court grants permission to appeal in Getty Images v Stability AI - Wiggin LLP",
+            "url": "https://www.wiggin.co.uk/insight/high-court-grants-permission-to-appeal-in-getty-images-v-stability-ai/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Copyright and AI remain in focus for 2026 with Getty appeal given the green light - Register now for your free, tailored, daily legal newsfeed service.",
+            "url": "https://www.lexology.com/library/detail.aspx?g=e9f4bd4c-9603-4116-902d-758e8f87e68f#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Getty Images vs. Stability AI: Copyright Explained - ARTICLE",
+            "url": "https://webiis08.mondaq.com/uk/copyright/1813360/#authors#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Copyright and AI remain in focus for 2026 with Getty appeal given the green light - Keystone",
+            "url": "https://keystonelaw.com/keynotes/copyright-and-ai-remain-in-focus-for-2026-with-getty-appeal-given-the-green-light/#main",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Permission to appeal granted in Getty Images v Stability copyright claim",
+            "url": "https://ipkitten.blogspot.com/2026/01/permission-to-appeal-granted-in-getty.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "A Model Decision? The High Court’s Take on AI and IP | Tozers",
+            "url": "https://www.tozers.co.uk/insight/articles/a-model-decision-the-high-courts-take-on-ai-and-ip/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Getty Images v. Stability AI - Register now for your free, tailored, daily legal newsfeed service.",
+            "url": "https://www.lexology.com/library/detail.aspx?g=36ea12f8-8e75-478a-af52-179ca651ae95#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Getty Images v Stability AI: The UK Courts’ First Word on Use of Copyright Works in AI Model Development - Register now for your free, tailored, daily legal newsfeed service.",
+            "url": "https://www.lexology.com/library/detail.aspx?g=f72f37d6-fa4a-4f29-9441-246a4a9119bd#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Stable Diffusion, unstable claims – AI copyright claims thrown out in the High Court - Barker Brettell",
+            "url": "https://www.barkerbrettell.co.uk/stable-diffusion-unstable-claims-ai-copyright-claims-thrown-out-in-the-high-court/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "recognising that scraping the entire internet for individual licences is an impossible task that would stifle AI development in ...",
+            "url": "https://www.ibanet.org/document?id=Intern-newsletter-Summer-2026#6#5",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "Getty Images v Stability AI UK High Court judgment appeal copyright training"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908340.310008,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 9544,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 751,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 11,
+      "name": "websearch",
+      "args": {
+        "query": "中国 法院 AI 训练 著作权侵权 判决 2026 大模型 数据来源"
+      },
+      "status": "success",
+      "result": {
+        "query": "中国 法院 AI 训练 著作权侵权 判决 2026 大模型 数据来源",
+        "results": [
+          {
+            "title": "全球AI经典案例视野下凝练中国智慧：从案例到规则——《关于依法审理涉人工智能纠纷案件的意见》解读（下）",
+            "url": "https://www.sundiallawfirm.com/viewpoint/1584.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "广悦专业研究丨AI生成内容的著作权保护边界",
+            "url": "https://www.wjngh.cn/jofacolumn/info.aspx?itemid=5338&lcid=215",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Mankun Legal Education | A Model May Be a Black Box, but a Company Cannot Be a Black Box — Starting from the Supreme People's Court's Latest Opinion on AI-Related Disputes - CN EN",
+            "url": "https://www.mankunlaw.com/en/insights/supreme-court-ai-dispute-opinion-compliance-evidence/#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI短剧的刑事风险，可能从你开始训练模型那一刻就已经启动了！",
+            "url": "https://kindinglaw.com/news/shownews.php?id=166",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "From Adversarial Litigation to Licensing Markets AI Copyright Governance in Transition",
+            "url": "https://www.atlantis-press.com/article/126027353.pdf#2#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "在司法层面，2025年3月7日，江苏省常熟市人民法院作出判决，确认AI生成图像在满足人类用户通过提示词工程、多轮输出选择和后期编辑作出有意义创造性贡献的条件下，可获得版权保护",
+            "url": "https://www.ctils.com/cms/article/file/download?path=Article/2026/08/07/11-32-2636039.pdf#4#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "China's Supreme People's Court Issues First National Judicial Rules on AI Disputes — But Sidesteps Copyrightability of AI-Generated Works - China IP Law Update",
+            "url": "https://chinaiplawupdate.com/2026/09/chinas-supreme-peoples-court-issues-first-national-judicial-rules-on-ai-disputes-but-sidesteps-copyrightability-of-ai-generated-works/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "From AI-generated works to training data: China’s highest court draws the lines on AI disputes | JD Supra - From AI-generated works to training data: China’s highest court draws the lines on AI disputes",
+            "url": "https://www.jdsupra.com/legalnews/from-ai-generated-works-to-training-2642404/#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "China’s Supreme People’s Court Issues First National Judicial Rules on AI Disputes — But Sidesteps Copyrightability of AI-Generated Works - September 08,2026,",
+            "url": "https://natlawreview.com/article/chinas-supreme-peoples-court-issues-first-national-judicial-rules-ai-disputes?amp#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "최신동향 상세 | 국회도서관 국가전략포털",
+            "url": "https://nsp.nanet.go.kr/trend/latest/detail.do?latestTrendControlNo=TREN0000004383&listChk=list",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "中国 法院 AI 训练 著作权侵权 判决 2026 大模型 数据来源"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908340.966968,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 8593,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 1131,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 12,
+      "name": "websearch",
+      "args": {
+        "query": "EU AI Act Article 53 training data summary copyright opt-out TDM enforcement 2026"
+      },
+      "status": "success",
+      "result": {
+        "query": "EU AI Act Article 53 training data summary copyright opt-out TDM enforcement 2026",
+        "results": [
+          {
+            "title": "EN E- 005023/2025 Answer given by Executive Vice- President Virkkunen on behalf of the European Commission (20.2.2026)",
+            "url": "https://www.europarl.europa.eu/doceo/document/E-10-2025-005023-ASW_EN.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Question for written answer E-002819/2026/rev.1 to the Commission Rule 144 Andreas Schwab (PPE)",
+            "url": "https://www.europarl.europa.eu/doceo/document/E-10-2026-002819_EN.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "rightsholder concerned unless relevant copyright exceptions and limitations apply",
+            "url": "https://www.europarl.europa.eu/meetdocs/2024_2029/plmrep/COMMITTEES/JURI/DV/2025/05-12/2025.05.12_item6_Study_GenAIfromacopyrightperspective_EN.pdf#50#8",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Vom Opt-out zur Marktordnung: Die Entschließung des Europäischen Parlaments zu GenAI und Urheberrecht vom 10. März 2026 - Die Entschließung des Europäischen Parlaments vom 10. März 2026 zu Urheberrecht und generativer künstlicher Intelligenz – Chance...",
+            "url": "https://www.taylorwessing.com/de/insights-and-events/insights/2026/03/parlamentresolution#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "이른바 학습 데이터 공시 의무는 EU AI Act(Regulation (EU) 2024/1689) 제53조 제1항 (d)호에 규정되어 있다",
+            "url": "http://ils.konkuk.ac.kr/board_common/file_download.asp?Board_Key=105&File_Key=1364&flag=3#7#5",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "L’application de l’exception TDM à l’entraînement des modèles d’IA semble avoir été confirmée par l’article 53 du règlement euro...",
+            "url": "https://www.assemblee-nationale.fr/dyn/17/rapports/cion-cedu/l17b2864_rapport-fond.pdf#8#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The EU AI Act for Authors and Book Publishers: The Complete 2026 Guide for Indie Writers and the Publishing Industry",
+            "url": "https://publishdrive.com/the-eu-ai-act-for-authors-and-book-publishers-the-complete-2026-guide-for-indie-writers-and-the-publishing-industry.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Creation of music with generative AI may be copyright infringement - Munich Regional Court rules in GEMA’s lawsuit against Suno",
+            "url": "https://www.lexology.com/library/detail.aspx?g=efd0d232-fdf0-4d8c-a23c-53a3ba5922b5#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Who Owns AI Output? Training Data and Copyright Under FSEK and EU Law - Vircon Legal",
+            "url": "https://virconlegal.com/ai-output-copyright-fsek-eu-training-data/#elementor-toc__heading-anchor-1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Noi perspective referitoare la antrenarea modelelor de inteligență artificială și dreptul de autor: jurisprudență, studii și propuneri tehnice, precum și rapoarte adoptate de autorități în UE și SUA",
+            "url": "https://www.asdpi.ro/index.php/revista/article/view/384",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "EU AI Act Article 53 training data summary copyright opt-out TDM enforcement 2026"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908341.5587132,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 9446,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 1095,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 13,
+      "name": "search_books",
+      "args": {
+        "author": "洛克",
+        "book_id": "e3a52553c303",
+        "query": "劳动 财产 共有 所有权"
+      },
+      "status": "success",
+      "result": {
+        "query": "劳动 财产 共有 所有权",
+        "results": [
+          {
+            "book_id": "e3a52553c303",
+            "book_title": "政府论（下篇）",
+            "author": "约翰·洛克",
+            "chapter_idx": 4,
+            "chapter_title": "第五章 论财产",
+            "citation_label": "【《政府论（下篇）》·第五章 论财产】",
+            "snippet": "．土地和一切低等动物为一切人所共有，但是每人对他自已的人身享有一种所有权，除他以外任何人都没有这种权利。他的身体所从事的劳动和他的双手所进行的工作，我們可以，是正当地属于他的。所以只要他使任何东西脱离自然所提供的和那个东西所处的状态，他就已經掺进他的劳动，在这上面参加他自已所有的某些东西，因而使它成为他的财产。既然是由他来使这件东西脱离自然所安排給它的一般状态，那么在这上面就由他的劳动加上了一些东西，从而排斥了其他人的共同权利。因为，既然劳动是劳动者的无可争羲的所有物，那么对于这一有所增盆的东西，除他以外就没有人能够享有权利，至少在还留有足够的同样好的东西給其他人所共有的情况下，事情就是如此。 28.把橡树下拾得的橡实或树林的树上摘",
+            "score": 275,
+            "match_type": "exact_passage",
+            "evidence_scope": "search_excerpt",
+            "needs_read": true,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "focus": "劳动 财产 共有 所有权"
+            },
+            "material_role": "UNCLASSIFIED",
+            "role_basis": "title_heuristic_not_academic_review"
+          }
+        ],
+        "method": "exact_fulltext",
+        "catalogue_matches": [
+          {
+            "book_id": "e3a52553c303",
+            "book_title": "政府论（下篇）",
+            "author": "约翰·洛克",
+            "citation_label": "【《政府论（下篇）》】",
+            "match_type": "book_metadata",
+            "evidence_scope": "catalogue",
+            "needs_read": true,
+            "snippet": ""
+          }
+        ],
+        "catalogue_match_count": 1,
+        "search_coverage": {
+          "chapter_entries_examined": 19
+        },
+        "search_scope": {
+          "author": "洛克",
+          "book_id": "e3a52553c303"
+        },
+        "total_passage_hits": 1,
+        "note": "片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。"
+      }
+    },
+    {
+      "tool_index": 14,
+      "name": "search_scholarship",
+      "args": {
+        "query": "generative AI training copyright theft metaphor consent unjust enrichment",
+        "limit": 6
+      },
+      "status": "success",
+      "result": {
+        "query": "generative AI training copyright theft metaphor consent unjust enrichment",
+        "results": [
+          {
+            "source_record_id": "doi:10.2139/ssrn.6854680",
+            "title": "Beyond Consent: Collective Contestability and the Governance of Generative AI Training Data",
+            "authors": [
+              "Gary Liu"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.6854680",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.7323260",
+            "title": "Consent-Aware Data Pipelines: Tracking Training Data Provenance for Generative AI Compliance",
+            "authors": [
+              "jagan ankam"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.7323260",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5281/zenodo.15097649",
+            "title": "Legal frictions for data openness: Reflections from a case-study on re-use of the open web for AI training",
+            "authors": [
+              "Chandrasekhar, Ramya"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": "HAL (Le Centre pour la Communication Scientifique Directe)",
+            "doi": "10.5281/zenodo.15097649",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1332/policypress/9781529241822.002.0002",
+            "title": "Copyright Page",
+            "authors": [
+              "Joshua Castellino"
+            ],
+            "year": 2024,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "Calibrating Colonial Crime",
+            "doi": "10.1332/policypress/9781529241822.002.0002",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1093/acprof:oso/9780199653201.003.0005",
+            "title": "Consent",
+            "authors": [
+              "Charlie Webb"
+            ],
+            "year": 2016,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "Reason and Restitution",
+            "doi": "10.1093/acprof:oso/9780199653201.003.0005",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1093/acprof:oso/9780199567751.002.0003",
+            "title": "Copyright Page",
+            "authors": [],
+            "year": 2009,
+            "publication_type": "OTHER",
+            "venue": "Philosophical Foundations of the Law of Unjust Enrichment",
+            "doi": "10.1093/acprof:oso/9780199567751.002.0003",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 3,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.2139/ssrn.6854680",
+          "doi:10.2139/ssrn.7323260",
+          "doi:10.5281/zenodo.15097649"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "success",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "generative AI training copyright theft metaphor consent unjust enrichment",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "query": "generative AI training copyright theft metaphor consent unjust enrichment",
+            "status": "success",
+            "raw_result_count": 6
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 5,
+          "kept_relevant": 7
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "note": "结果中有 3 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点"
+      }
+    },
+    {
+      "tool_index": 15,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.osborneclarke.com/insights/gema-vs-openai-ai-memorisation-reproduction-relevant-copyright-law-and-tdm-exception-does",
+        "focus": "TDM exception memorandum"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.osborneclarke.com/insights/gema-vs-openai-ai-memorisation-reproduction-relevant-copyright-law-and-tdm-exception-does",
+        "requested_url": "https://www.osborneclarke.com/insights/gema-vs-openai-ai-memorisation-reproduction-relevant-copyright-law-and-tdm-exception-does",
+        "title": "GEMA vs. OpenAI | AI memorisation is a reproduction relevant to copyright law, and the TDM exception does not help in LLM training, Munich I Regional Court holds | Osborne Clarke",
+        "text": "GEMA vs. OpenAI | AI memorisation is a reproduction relevant to copyright law, and the TDM exception does not help in LLM training, Munich I Regional Court holds\n\nPublished on 12 November 2025\n\nIn its judgment of 11 November 2025 (42 O 14139/24), the Munich I Regional Court (Germany) issued a widely noted precedent on the copyright assessment of AI training and outputs under German and EU law. According to its press release 1 , the Court found that large language models (LLMs) could memorise copyright-protected texts and that this fixation within the model already constituted reproduction under copyright law. If the LLM reproduced essential and original elements of such texts in response to simple prompts, that was a further act of reproduction, according to the Court. Providing the output to users further constituted making the work available to the public and the text and data mining (TDM) exception did not apply in this case, the Court found.\n\nThus, the Court granted injunctive relief and information claims and found liability for damages, the quantum yet to be determined. However, claims based on personality rights for incorrect attribution were dismissed. The judgment is not yet final.\n\nWhat was the case about?\n\nThe Court dealt with a lawsuit brought by GEMA against OpenAI, provider of ChatGPT, whose versions 4 and 4o allegedly had \"fixed\" nine well-known German song lyrics in the LLM in a way that, in response to simple prompts, they were output largely true to the original. OpenAI alleged that the ChatGPT did not store specific training data but only statistical knowledge in its parameters and claimed that any infringements were caused by user prompts, whereas the training was covered by the TDM exception.\n\nMemorisation as reproduction, according to the Court\n\nThe key issue for the Court to decide was whether so‑called memorisation constituted reproduction under Sec. 16 of the German Copyright Act ( Urheberrechtsgesetz , UrhG ) and Art. 2 InfoSoc Directive (2001/29/EC). Reproduction in this sense covers copies “ in any form and by any means ” and does not require direct perceptibility. The Court held it to be sufficient if protected texts were encoded in model parameters so they could be largely faithful to the original when extracted via simple prompts. The fact that this encoding takes the form of probability weights did not preclude classification ",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 7443,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "dbb90cc018c727608e924d562a9a2614d7bda4aa34a4e7ef5f6e902bba290c4d",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 16,
+      "name": "websearch",
+      "args": {
+        "url": "https://chinaiplawupdate.com/2026/09/chinas-supreme-peoples-court-issues-first-national-judicial-rules-on-ai-disputes-but-sidesteps-copyrightability-of-ai-generated-works/",
+        "focus": "training data"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://chinaiplawupdate.com/2026/09/chinas-supreme-peoples-court-issues-first-national-judicial-rules-on-ai-disputes-but-sidesteps-copyrightability-of-ai-generated-works/",
+        "requested_url": "https://chinaiplawupdate.com/2026/09/chinas-supreme-peoples-court-issues-first-national-judicial-rules-on-ai-disputes-but-sidesteps-copyrightability-of-ai-generated-works/",
+        "title": "China's Supreme People's Court Issues First National Judicial Rules on AI Disputes — But Sidesteps Copyrightability of AI-Generated Works - China IP Law Update",
+        "text": "Protection Law, and Civil Procedure Law – to AI-related civil and criminal disputes, on the express premise that China has not yet enacted dedicated AI legislation.\n\nSubstantively, the Opinions devote a full section to intellectual property, addressing infringement liability for AI-generated content that infringes copyright, including the burden on developers asserting non-infringement to produce training data sources, training process records, and model operation modes (Article XII); liability allocation among open-source software developers, providers, and downstream developers, with express provision for appropriate liability exemptions (Article XIII); patent subject-matter eligibility, inventorship where a natural person makes a creative contribution to the substantive features of an AI-assisted invention, and sufficiency of disclosure (Article XIV); breach standards for AI technology development, transfer, licensing, consulting, and service contracts (Article XV); and protection of data and datasets as compilation works, trade secrets, or under Article 13 of the Anti-Unfair Competition Law (Article XVI). Beyond IP, the Opinions address personality-rights infringement arising from AI training and generation, regulating “AI face-swapping and voice cloning” and “AI resurrection of the deceased”—using a natural person’s voice as training corpus to generate an identifiable synthetic voice, or generating and publishing an identifiable virtual digital likeness, without consent gives rise to liability for infringement of name, portrait, or voice rights (Article IV) – along with “network doxing” conducted by AI aggregation of published information (Article V) and the conditions under which training on self-published or lawfully published personal information falls within a “reasonable scope” (Article VI). The Opinions also set out liability rules for road traffic accidents involving autonomous vehicles and vehicles with driver-assist functions, including product-liability claims against manufacturers and sellers for vehicle defects, concurrent liability where a defect and driver fault combine to cause the same harm, liability for false or misleading advertising of automation level and performance, and the court’s authority to order data controllers to produce autonomous-driving and driver-assist records needed to establish accident causation (Article XI).\n\nAbsen",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 624,
+        "end_offset": 3024,
+        "has_more": true,
+        "next_offset": 3024,
+        "text_chars": 38685,
+        "focus_found": true,
+        "document_truncated": false,
+        "content_hash": "c3557f20f5ece0e48e36e4e9ec1aac79d5cfa90f3e612fcee3a1e8183ae076f9",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 17,
+      "name": "websearch",
+      "args": {
+        "url": "https://arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors/",
+        "focus": "fair use ruling pirated"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors/",
+        "requested_url": "https://arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors/",
+        "title": "Anthropic’s $1.5B copyright settlement approved; only 350 authors opted out - Ars Technica",
+        "text": "On Monday, a judge approved a $1.5 billion settlement between Anthropic and authors, ending the largest copyright class-action ever certified and granting the largest copyright settlement ever reached .\n\nBack in May, some authors fought to block the settlement , which was proposed after the court ruled that Anthropic training AI on books was fair use; however, its piracy of works was likely not.\n\nAuthors opposing the settlement argued that lawyers’ fees were too high and authors’ payouts were too low. Hoping to avoid accepting the estimated $3,000-per-work payout and file separate lawsuits to seek higher damages, a handful of authors tried to opt out past the deadline.\n\nIn her order, US District Judge Araceli Martínez-Olguín overruled objections to the settlement as lacking merit. She emphasized that about 95 percent of the class received notifications and approximately 91 percent of authors and publishers impacted have already filed claims. Only 350 class members opted out, while another 54 sought to object or filed late opt-out requests, Martínez-Olguín said.\n\nThe high rate of participation suggested that most authors received timely notice of the distribution plan, agreed it was “fair,” and supported the settlement, Martínez-Olguín wrote. She also noted that the $3,000-per-work payouts were “four times the minimum statutory damages.”\n\nLawyers fees, plaintiffs awards cut\n\nAlthough Martínez-Olguín approved the total settlement amount, she reduced both lawyers’ fees and the requested awards for the three authors who represented the class in the litigation.\n\nLawyers originally asked for 20 percent of the settlement in fees, requesting $300 million. Ahead of Martínez-Olguín’s ruling, that percentage was reduced to 12.5, with the total fees requested amounting to approximately $187 million.\n\nThe judge ruled that 12.5 percent was too high, however, cutting fees down to less than 7 percent of the settlement fund, which is about $101 million.\n\nSome of those fees include future work that lawyers will do to distribute funds, and some authors argued that lawyers’ projections for time spent were alarmingly inflated. Acknowledging these concerns, Martínez-Olguín wrote in a footnote that the court decided to take “an additional step to protect the interests of the Class.” Once payouts have been finalized, lawyers will be required to file a post-distribution accounting, ",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 8606,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "397dedf15a3790f358f1bd666138e901104a8a50bfe74ededc10199ec08268dd",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 18,
+      "name": "websearch",
+      "args": {
+        "query": "NYT v OpenAI judge ruling 2026 fair use decision latest"
+      },
+      "status": "success",
+      "result": {
+        "query": "NYT v OpenAI judge ruling 2026 fair use decision latest",
+        "results": [
+          {
+            "title": "AI's promise does not justify using any means to build it",
+            "url": "https://digitalcontentnext.org/blog/2026/09/08/ais-promise-does-not-justify-using-any-means-to-build-it/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "미 법무부, 법원에 \"인공지능 저작권 침해 안해\" 의견서",
+            "url": "https://www.newsis.com/view/NISX20260903_0003774329",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "SUSMAN GODFREY L",
+            "url": "https://storage.courtlistener.com/recap/gov.uscourts.nysd.640396/gov.uscourts.nysd.640396.1395.0.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The New York Times Company v. Microsoft Corporation et al - September 04, 2026",
+            "url": "https://www.law360.com/cases/658c2668ce10b801d176291a/articles#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI Archives",
+            "url": "https://digitalcontentnext.org/blog/category/ai/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "In Re: OpenAI, Inc. Copyright Infringement Litigation - Try our Advanced Search for more refined results",
+            "url": "https://www.law360.com/cases/67f98400b846722600e8f03f/articles?page=1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The Algorithm And The Author",
+            "url": "https://thebarbulletin.com/ai-training-copyright-cases-creative-industries/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "纽约时报诉OpenAI案解封文件曝光：微软内部称用全网内容训练模型是”人类历史上最大劳动盗窃",
+            "url": "https://qifukexue.com/?p=39272",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "美정부 “AI 학습 막으면 경제·안보 타격”…NYT 대신 오픈AI 손 들어",
+            "url": "https://www.chosun.com/economy/tech_it/2026/09/03/73SX3GB3BJERHG5VKTGGBWMZJY/?utm_source=daum&utm_medium=related02&utm_campaign=daum-related",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Vlada SAD-a podržala OpenAI protiv medija. Kaže da bi zabrana kočila razvoj AI-ja - Vlada SAD-a podržala OpenAI protiv medija. Kaže da bi zabrana kočila razvoj AI-ja",
+            "url": "https://www.index.hr/amp/vijesti/clanak/openai-dobio-podrsku-trumpove-administracije-u-sporu-s-new-york-timesom/2830296.aspx?index_ref=read_more_amp#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "NYT v OpenAI judge ruling 2026 fair use decision latest"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908352.784981,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 7226,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 873,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 19,
+      "name": "get_chapter",
+      "args": {
+        "book_id": "17c85f942c78",
+        "chapter_idx": 5,
+        "focus": "财产是自由最初的定在"
+      },
+      "status": "success",
+      "result": {
+        "book_id": "17c85f942c78",
+        "book_title": "法哲学原理",
+        "chapter_idx": 5,
+        "title": "第一章 所有权",
+        "citation_label": "【《法哲学原理》·第一章 所有权】",
+        "text": "第41节\n人为了作为理念而存在，必须给 它的自由 以外部的 领域 。因为人在这种最初还是完全抽象的规定中是绝对无限的意志，所以这个有别于意志的东西，即可以构成它的自由的领域的那个东西，也同样被规定为与意志 直接不同 而 可以与它分离的 东西。\n补充（ 所有权的合理性 ） 所有权所以合乎理性不在于满足需要，而在于扬弃人格的纯粹主观性。人唯有在所有权中才是作为理性而存在的。即使我的自由这种实在性最初存在于一个外界事物中，从而是一种坏的实在性，然而抽象人格，就因为它存在于其直接性中，所以除了在直接性的规定中的定在以外不可能具有任何其他定在。\n第42节\n跟自由精神直接不同的东西，无论对精神说来或者在其自身中，一般都是 外在的 东西——即 物 ，某种不自由的、无人格的以及无权的东西。\n附释 物 象客观一样，有两种不同而是对立的意义。有时，譬如当我们说： 就是这个东西 ，问题在于 事物 ，而不在于人——这是指 实体性的 东西而言；有时用来与人（不是特殊的主体）相对比，这时物正是指 与实体性东西相反的 东西而言，即按其规定是纯粹外在的东西。对自由精神——必须与单纯意识很好加以区别——说来，外在的东西是绝对外在的，因此， 自然界 的概念规定就在于 它本身 是 外在的 东西。\n补充（ 外在的东西 ） 由于物欠缺主观性，所以它不仅对主体说来而且它本身是外在的东西。这样说来，空间和时间是外在的。作为感性的东西，我本身是外在的，是空间性的和时间性的。我所具有的感性直观，乃是我对某种其本身是外在的东西所具有的直观。动物也能直观，但是它的灵魂不是以灵魂即它本身为对象，而仅仅以外在的东西为对象。\n第43节\n人作为 直接 概念，并从而作为本质上单一的东西，具有 自然的 实存。这种实存一方面是在它本身中的；另一方面是像人对待外部世界那样来对待它的那实存。在这里关于人，即其本身尚在最初的直接性中的人，我们所要谈的，仅仅是这些作为直接存在的事物的事物，而不是那些通过意志的中介而能变成事物的规定。\n附释 精神技能、科学知识、艺术，甚至宗教方面的东西（讲道、弥撒、祈祷、献物祝福），以及发明等等，都可成为契约的对象，而与在买卖等方式中所承认的 物 同视，但是，艺术家和学者等等是否在法律上占有着他的艺术、科学知识，以及传道说教和诵读弥撒的能力等等，即诸如此类的对象是否也是 物 ，却是一个问题。如果把这类技能、知识和能力等都称为 物 ，我们不免有所踌躇，因一方面关于诸如此类的占有固然可以像物那样进行交易并缔结契约，但是另一方面它是内部的精神的东西，所以理智对于它的法律上性质可能感到困惑，因为呈现在理智面前的仅仅是一种对立； 或是 某物 或是 非物，非彼即此（像 或是 有限 或是 无限那样）。学问、科学知识、才能等等固然是自由精神所特有的，是精神的内在的东西，而不是外在的东西，但是精神同样可以通过 表达 而给它们以外部的定在，而且把它们 转让 （见下文） [5] ，这样就可把它们归在 物 的范畴之内了。所以它们不是自始就是直接的东西，只是通过精神的中介把内在的东西降格为直接性和外在物，才成为直接的东西。\n按照罗马法那种不合法的和不合乎伦理的规定，孩子对父亲来说是 物 ，因而父亲可在法律上占有他的孩子，不过他对孩子仍处于爱这种伦理关系中（自然不能不由于那种不法而大大减弱了）。因之在罗马法中产生了物与非物这两种规定完全不法的结合。\n抽象法是单单以人本身以及属于他的自由的定在和领域的那特殊物为对象的，只要它作为与人可分离而殊异的东西而存在，不问这种可分离性构成特殊物的本质规定，或是特殊物仅仅通过主观意志的中介才能取得它都好。所以在抽象法中，精神技能和科学知识等等，仅以法律上认为可占有者为限，才在被考察之列。至于通过教养、研究、习惯等等而对身体和精神所取得的占有，作为精神的 内部财物 而存在的，不在此处讨论范围之内。关于这种精神上财物 过渡到 外在物而把它列入法律上财物的范畴的问题，且待述及 转让 时再谈。 [6]\n第44节\n人有权把他的意志体现在任何物中，因而使该物成为 我的东西 ；人具有这种权利作为他的实体性的目的，因为物在其自身中不具有这种目的，而是从我意志中获得它的规定和灵魂的。这就是人对一切物 据为己有的 绝对 权利。\n附释 对直接的单一事物、不属于人的东西，赋予实在性（指独立性以及真正自为的和在自身中的存在而言）的那种所谓哲学 [7] ，遭到对待这些事物的那自由意念的态度的直接反驳。断定精神不能认识真理，不能知道 自在 之物的那种哲学 [8] ，也是这样。如果对意识、直观和表象说，所谓 外物 是具有独立性这种外观的，那么与这相反，自由意志是理想主义，是这种现实性的真理。\n补充（ 意志的理想主义 ） 所有的物都可变为人们所有，因为人就是自由意志，作为自由意志，它是自在和自为地存在着的，至于与他对立的东西是不具有这种性质的。因此每一个人都有权把它的意志变成物，或者物变成他的意志，换句话说，他有权把物扬弃而改变为自己的东西。其实作为外在性的物没有自身目的，它不是（自己对自己的）无限的自我相关，而是某种对它本身说来是外在的东西。生物（动物）也是这种外在的东西，因而其本身是物。唯有意志是无限的，对其他一切东西说来是 绝对的 ，至于其他东西就其本身说只是 相对的 。所以据为己有，归根到底无非是：表示我的意志对物的优越性，并显示出物不是自在自为地存在着的，不是自身目的。这种表示是采用下列方式的：我把不同于物所直接具有的另一个目的体现于物内。当生物成为我所有的时候，我给它不同于它原有的灵魂，就是说，我把我的灵魂给它。所以自由意志是理想主义，它不把物的本来面貌看做是绝对的。至于实在主义呢，尽管这些物仅仅以有限性的形式存在着，它仍宣布它们为绝对的。可是就拿动物来说，也已不再具有这种实在主义哲学了，因为它们把物吃掉，因而证明物不是绝对独立的。\n第45节\n我把某物置于我自己外部力量的支配之下，这样就构成占有；同样，我由于自然需要、冲动和任性而把某物变为我的东西，这一特殊方面就是占有的特殊利益。但是，我作为自由意志在占有中成为我自己的对象，从而我初次成为现实的意志，这一方面则构成占有的真实而合法的因素，即构成 所有权 的规定。\n附释 如果把需要当作首要的东西，那么从需要方面看来，拥有财产就好像是满足需要的一种手段。但真正的观点在于，从自由的角度看，财产是自由最初的 定在 ，它本身是本质的目的。\n第46节\n因为我的意志作为人的意志，从而作为单个人的意志，在所有权中，对我说来是成为客观的了，所以所有权获得了 私人所有权 的性质；共同所有权由于它的本性可变为个别所有，也获得了一种 自在地可分解的 共同性的规定。至于我把我的应有部分留在其中，这本身是一种任意的事。\n附释 自",
+        "evidence_scope": "chapter_excerpt",
+        "excerpt_start": 0,
+        "excerpt_end": 2800,
+        "chapter_text_length": 20288,
+        "has_more": true,
+        "next_offset": 2800,
+        "has_previous": false,
+        "previous_offset": null,
+        "focus_found": false,
+        "focus_terms_matched": [],
+        "focus_terms_found_in_chapter": [],
+        "note": "text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。",
+        "material_role": "UNCLASSIFIED",
+        "role_basis": "title_heuristic_not_academic_review",
+        "focus_locations": [],
+        "reader_coordinate_valid": true
+      }
+    },
+    {
+      "tool_index": 20,
+      "name": "get_chapter",
+      "args": {
+        "book_id": "e3a52553c303",
+        "chapter_idx": 4,
+        "focus": "劳动 财产 共有 所有权"
+      },
+      "status": "success",
+      "result": {
+        "book_id": "e3a52553c303",
+        "book_title": "政府论（下篇）",
+        "chapter_idx": 4,
+        "title": "第五章 论财产",
+        "citation_label": "【《政府论（下篇）》·第五章 论财产】",
+        "text": "一出生即享有生存权利，因而可以享用肉食和欱料以及自然所供应的以雉持他们的生存的其他物品；或者就上帝的启示来脱，上帝如何把世界上的东西给予亚当、抬予挪亚和他的儿子们；这都很明显，正如大卫王所说(«旧豹寸峙篇第一百十五篇，第十六节），上帝＇｀把地拾了世人“，抬人类共有。但即使假定这样，有人似乎还很难理解：怎能使任何人对任何东西享有财产权呢？我井不认为作如下的回答可以满意：如果脱，根据上帝将世界拾予亚当和他的后人为他们所共有的假股，难以理解财产权，那么，根据上帝将世界皊予亚当和他的继承人井排斥亚当的其他后人这一假段，除了唯一的全世界君主之外，誰也不可能享有任何财产。可是我将股法说明，在上帝拾予人类为人类所共有的东西之中，人们如何能使其中的某些部分成为他们的财产，井且这还不必舰过全体世人的明确协膜。\n26.上帝既将世界拾予人类共有，亦给予他们以理性，让他们为了生活和便利的最大好处而加以利用。土地和其中的一切，都是抬人们用来椎持他们的生存和舒适生活的。土地上所有自然生产的果实和它所养活的兽类，既是自然自发地生产的，就都归人类所共有，而没有人对于这种处在自然状态中的东西原来就具有排斥其余人类的私人所有权；但是，这些既是皊人类使用的，那就必然要通过某种拨归私用的方式，然后才能对于某一个人有用处蜘或者有好处。野蛮的印第安人既不懂得圈用土地，还是无主土地的住民就必须把养活他的鹿肉或果实变为己有，即变为他的一部分，而别人不能再对它享有任何权利，才能对椎持他的生命有任何好处。\n27．土地和一切低等动物为一切人所共有，但是每人对他自已的人身享有一种所有权，除他以外任何人都没有这种权利。他的身体所从事的劳动和他的双手所进行的工作，我們可以，是正当地属于他的。所以只要他使任何东西脱离自然所提供的和那个东西所处的状态，他就已經掺进他的劳动，在这上面参加他自已所有的某些东西，因而使它成为他的财产。既然是由他来使这件东西脱离自然所安排給它的一般状态，那么在这上面就由他的劳动加上了一些东西，从而排斥了其他人的共同权利。因为，既然劳动是劳动者的无可争羲的所有物，那么对于这一有所增盆的东西，除他以外就没有人能够享有权利，至少在还留有足够的同样好的东西給其他人所共有的情况下，事情就是如此。\n28.把橡树下拾得的橡实或树林的树上摘下的果果腹时，就确已把它們拨归己用。都不能否认，食物是完全应由他滑受的。因此我要問，这些东西从什么时候开始是属于他的呢？是在他滑化的时候，还是在他吃的时候，还是他煮的时候，还是他把它們带回家的时候，还是他检取它們的时候呢？很明显，如果最初的朵集不使它們成为他的东西，其他的情形就更不可能了。劳动使它們同公共的东西有所区别，劳动在方物之母的自然所已完成的作业上简加上一些东西，这样它們就成为他的私有的权利了。会，因为他不會得到全人类的同意使橡实或萃果成为他的所有物，他就对于这种拨归私用的东西不享有权利呢？这样把属于全体共有的东西归属自己，是否是盗锡行为呢？如果这样的同意是必要的話，那么，尽管上帝給予人类很丰富的东西，人类早已死了。我們在以合豹保持的共有关系中看到，那是从共有的东西中取出任何一部分抖使它脱离自然所安置的状态，才开始有财产权的；若不是这样，共有的东西就毫无用处了。而取出这一或那一部分，并不取决于一切共有人的明白同意。因此我的馬所吃的草、我的人所割的草皮以及我在同他人共同享有开朵权的地方挖掘的矿石，都成为我的财产，毋需任何人的让与或同意。我的劳动使它們脱离原来所处的共同状态，确定了我对于它們的财产权。\n29.如果规定任何人在把共有的东西的任何部分拨归私用的时侯，必须得到每一个共有人的明确同意，那么孩子和人們就不能割取他們的父亲或主人为他們共同准备而没有指定各人应得部分的肉。虽然泉源的流水是人人有份的，但是能怀疑盛在水壶里的水是只属于汲水人的呢？他的劳动把它从自然手里取了出来，从而把它拨归私用，而当它还在自然手里时，它是共有的，是同等地属于所有的人的。\n30.因此，这一理性的法则使印第安人所杀死的鹿归他所有；尽管原来是人人所共同享有权利的东西，在有人对它施加劳动以后，就成为他的财物了。被认为是文明的一部分人类已經制定拌且增訂了一些明文法来确定财产权，但是这一关于原来共有的东西中产生财产权的原始的自然法仍旧适用。根据这一点，任何人在那广關的、仍为人类所共有的海洋中所捕获的魚或在那里朵集的龙诞香，由于劳动使它脱离了自然原来給它安置的共同状态，就·a1·成为对此肯费劳力的人的财产。而即使在我們中間，无是只要在围場时紧赶一只野兔，那只野更就被认为是他的所有物。因为野兽仍被看做是共有的，不属任何人私有，只要有人对这类动物花费了这样多的劳动去发现抖追赶它，他就使它脱离原来是共有的自然状态，而开始成为一种财产。\n31．有人或許会反对这种法，认为如果朵集橡实或其他土地生长的果实等等，就构成了对这些东西的权利，那么任何人可以按其意尽量占取。我的回答是，并非这样。同一自然法，以这种方式給我們财产权，同时也对这种财产加以限制。“上帝厚百物給我們享受”《新豹》提摩太前书，第六章，第十七节）是神的启示所證实的理性之声。但上帝是以什么限度給我們财产的呢？以供我們享用为度。能在一件东西败坏之前尽量用它来供生活所需，就可以在那个限度内以他的劳动在这件东西上确定他的财产权；超过这个限度就不是他的份所应得，就归他人所有。上帝創造的东西不是供人們糟踢或败坏的。所以，考虑到在很长一段时期内，世界上天然物资丰富，消费者很少，一个人的勤劳所能达到的抖对它独占而不让别人分享的一部分物资（特别是限于理性所规定的可以供他使用的范围）数量很小，那时对这样确定的财产大概就很少发生争执或新粉。\n32.但是，尽管财产的主要对象现在不是土地所生产的果实：和依靠土地而生存的野兽，而是包括和带有其余一切东西的土地本身，我认为很明显，土地的所有权也是和前者一一样取得的。一个人能耕耘、播种、改良、栽培多少土地和能用多少土地的产品，这多少土地就是他的财产。这好像是他用他的劳动从公地圈来的那样。即使旁人对此都有同等权利，所以如果没有取得他的全体共有人、即全人类的同意，他就不能拨归私用、不能圈用土地，这样的法也不能使他的权利失效。上帝将世界給予全人类所共有时，也命令人們要从事劳动，而人的贫乏处境也需要他从事劳动。上帝和人的理性指示他垦殖土地，这就是，为了生活需要而改良土地，从而把属于他的东西、即劳动施加于土地之上。谁服从了上帝的命合对土地的任何部分加以开拓、耕耘和播种，他就在上面增加了原来属于他所有的某种东西，这种所有物是旁人无权要求的，如果加以夺取，就不能不造成損害。\n33.这种开垦任何一块土地而把它据为己有的行为，也不捐及任何旁人的利益，因为还剩有足够的同样好的土地，比尚未取得土",
+        "evidence_scope": "chapter_excerpt",
+        "excerpt_start": 17,
+        "excerpt_end": 2817,
+        "chapter_text_length": 9892,
+        "has_more": true,
+        "next_offset": 2817,
+        "has_previous": true,
+        "previous_offset": 0,
+        "focus_found": true,
+        "focus_terms_matched": [
+          "劳动",
+          "财产",
+          "共有",
+          "所有权"
+        ],
+        "focus_terms_found_in_chapter": [
+          "劳动",
+          "财产",
+          "共有",
+          "所有权"
+        ],
+        "note": "text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。",
+        "material_role": "UNCLASSIFIED",
+        "role_basis": "title_heuristic_not_academic_review",
+        "focus_locations": [
+          {
+            "term": "劳动",
+            "offset": 717,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 517,
+              "focus": "劳动"
+            }
+          },
+          {
+            "term": "劳动",
+            "offset": 782,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 582,
+              "focus": "劳动"
+            }
+          },
+          {
+            "term": "劳动",
+            "offset": 849,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 649,
+              "focus": "劳动"
+            }
+          },
+          {
+            "term": "财产",
+            "offset": 181,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 0,
+              "focus": "财产"
+            }
+          },
+          {
+            "term": "财产",
+            "offset": 236,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 36,
+              "focus": "财产"
+            }
+          },
+          {
+            "term": "财产",
+            "offset": 297,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 97,
+              "focus": "财产"
+            }
+          },
+          {
+            "term": "共有",
+            "offset": 147,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 0,
+              "focus": "共有"
+            }
+          },
+          {
+            "term": "共有",
+            "offset": 226,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 26,
+              "focus": "共有"
+            }
+          },
+          {
+            "term": "共有",
+            "offset": 320,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 120,
+              "focus": "共有"
+            }
+          },
+          {
+            "term": "所有权",
+            "offset": 517,
+            "read_args": {
+              "book_id": "e3a52553c303",
+              "chapter_idx": 4,
+              "offset": 317,
+              "focus": "所有权"
+            }
+          }
+        ],
+        "reader_coordinate_valid": true
+      }
+    },
+    {
+      "tool_index": 21,
+      "name": "websearch",
+      "args": {
+        "query": "US Copyright Office report generative AI training prepublication fair use conclusions"
+      },
+      "status": "success",
+      "result": {
+        "query": "US Copyright Office report generative AI training prepublication fair use conclusions",
+        "results": [
+          {
+            "title": "Newsletters",
+            "url": "https://www.obwb.com/?t=40&an=144855&anc=2056&format=xml&directive=print&printformat=printpdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Client Alerts",
+            "url": "https://www.munckwilson.com/news-insights/copyright-office-generative-ai-training-guidance-2025/pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "J E N N E R & B L O C K",
+            "url": "https://www.jenner.com/print/v2/content/95114/client-alert-us-copyright-office-releases-pre-publication-version-of-report-on-copyright-issues-in-generative-ai-training.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "FINNEGAN",
+            "url": "http://www.finnegan.com/print/content/418985/US-Copyright-Office-Issues-Pre-Publication-Version-of-Report--Regarding-Generative-AI-Training.pdf?q=#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "U.S. Copyright Office Releases Third Report on AI and Copyright Addressing Training AI Models with Copyrighted Materials",
+            "url": "https://www.crowell.com/print/v2/content/111669/us-copyright-office-releases-third-report-on-ai-and-copyright-addressing-training-ai-models-with-copyrighted-materials.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "SCOTUS Ruling Re-opens The Door On The Copyright Office’s AI Training Report - ARTICLE",
+            "url": "https://webiis08.mondaq.com/unitedstates/licensing-syndication/1812988/scotus-ruling-re-opens-the-door-on-the-copyright-offices-ai-training-report#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "COPYRIGHT AND AI, PART III US. COPYRIGHT OFFICE REPORT",
+            "url": "https://copyrightsociety.org/wp-content/uploads/2025/07/722-Aaron-Moss-2.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "UNITED STATES COPYRIGHT OFFICE",
+            "url": "https://patentlyo.com/media/2025/05/Copyright-and-Artificial-Intelligence-Part-3-Generative-AI-Training-Report-Pre-Publication-Version.pdf#23#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Client Alert",
+            "url": "https://www.lowenstein.com/media/g0ueo4nr/20250512-ip-tech-transactions-us-copyright-office-releases-long-awaited-report-on-generative-ai-training-and-copyright-law.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Copyright Office Stakes Out Position on Use of Works for AI Training | Perkins Coie",
+            "url": "https://www.ashurstperkinscoie.com/en/insights/copyright-office-stakes-out-position-on-use-of-works-for-ai-training/#a3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "US Copyright Office report generative AI training prepublication fair use conclusions"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908364.105029,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 9544,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 944,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 22,
+      "name": "websearch",
+      "args": {
+        "query": "作者 作品 被用于训练 模型 可否 主张 侵权 训练阶段 中国 律师 分析 2026"
+      },
+      "status": "success",
+      "result": {
+        "query": "作者 作品 被用于训练 模型 可否 主张 侵权 训练阶段 中国 律师 分析 2026",
+        "results": [
+          {
+            "title": "垦丁动态 - 从\"从最高法审理涉人工智能纠纷意见谈人工智能实务案例研讨会\"圆满举办!",
+            "url": "https://kindinglaw.com/news/shownews.php?id=249",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "汉坤法律评述",
+            "url": "https://hankunlaw.com/upload/portal/20260422/65bd2ba1e2333df8cfb5f487c9804057.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "模型企业、应用企业和个人应该怎么做？——对最高院《关于依法审理涉人工智能纠纷案件的意见》的实务解读与思考",
+            "url": "https://www.zhonglun.com/research/articles/56701.html#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "五、结论在2026年的全球AI竞争中，合规能力已成为企业的核心竞争力之一",
+            "url": "https://www.hankunlaw.com/upload/portal/20260617/58c326f0088585985675ef7f78cb0a54.pdf#6#4",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "·经济法·",
+            "url": "http://hdxbcjb.cnjournals.net/ch/reader/download_pdf.aspx?file_no=20260419&year_id=2026&quarter_id=4&flag=1#2#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "在司法层面，2025年3月7日，江苏省常熟市人民法院作出判决，确认AI生成图像在满足人类用户通过提示词工程、多轮输出选择和后期编辑作出有意义创造性贡献的条件下，可获得版权保护",
+            "url": "https://www.ctils.com/cms/article/file/download?path=Article/2026/08/07/11-32-2636039.pdf#4#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "新华社就AI侵权责任承担法律问题专访唐青林律师-云亭资讯-云亭律师事务所",
+            "url": "http://www.yuntinglaw.com/news/542",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "广悦专业研究丨AI生成内容的著作权保护边界",
+            "url": "https://www.wjngh.cn/jofacolumn/info.aspx?itemid=5338&lcid=215",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "全球AI经典案例视野下凝练中国智慧：从案例到规则——《关于依法审理涉人工智能纠纷案件的意见》解读（下）",
+            "url": "https://www.sundiallawfirm.com/viewpoint/1584.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "人工智能纠纷的司法回应： 实体规则与程序机制协同发力-法治前沿-中国法学创新网",
+            "url": "http://fxcxw.mzyfz.com/html/135/2026-09/content-29492.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "作者 作品 被用于训练 模型 可否 主张 侵权 训练阶段 中国 律师 分析 2026"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908364.659271,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 9817,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 1071,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 23,
+      "name": "websearch",
+      "args": {
+        "query": "\"New York Times\" OpenAI Microsoft copyright case ruling August September 2026"
+      },
+      "status": "success",
+      "result": {
+        "query": "\"New York Times\" OpenAI Microsoft copyright case ruling August September 2026",
+        "results": [
+          {
+            "title": "US judge spares Microsoft expanded AI infringement claims by newspapers | MLex | Specialist news and analysis on legal risk and regulation",
+            "url": "https://www.mlex.com/mlex/intellectual-property/articles/2510775/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "US judge denies motion to amend contributory infringement claims against Microsoft | MLex | Specialist news and analysis on legal risk and regulation",
+            "url": "https://www.mlex.com/mlex/articles/2510772/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "US judge denies motion to amend contributory infringement claims against Microsoft | MLex | Specialist news and analysis on legal risk and regulation",
+            "url": "https://www.law360.com/mlex/artificial-intelligence/articles/2510772/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The New York Times Company v. Microsoft Corporation, 1:23-cv-11195 - CourtListener.com - The New York Times Company v. Microsoft Corporation (1:23-cv-11195)",
+            "url": "https://www.courtlistener.com:443/docket/68117049/the-new-york-times-company-v-microsoft-corporation/?entry_gte=46&page=8#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "In Re: OpenAI, Inc. Copyright Infringement Litigation, 1:25-md-03143 - CourtListener.com - Aug 6, 2026",
+            "url": "https://www.courtlistener.com/docket/69879510/in-re-openai-inc-copyright-infringement-litigation/?entry_gte=12&page=9#5",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Order – #1662 in In Re: OpenAI, Inc. Copyright Infringement Litigation (S.D.N.Y., 1:25-md-03143) – CourtListener.com - 🚀 CourtListener is now available in ChatGPT",
+            "url": "https://www.courtlistener.com/docket/69879510/1662/in-re-openai-inc-copyright-infringement-litigation/#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "In Re: OpenAI, Inc. Copyright Infringement Litigation - September 04, 2026",
+            "url": "https://www.law360.com/cases/67f98400b846722600e8f03f/articles#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "AI's promise does not justify using any means to build it",
+            "url": "https://digitalcontentnext.org/blog/2026/09/08/ais-promise-does-not-justify-using-any-means-to-build-it/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Raymond James | Independent Financial Advisors, Financial Planning, Investment Banking and Asset Management - Judge allows newspaper copyright lawsuit against OpenAI to proceed",
+            "url": "https://raymondjames.websol.barchart.com/?module=topNews&storyID=31596151&selected=news&symbol=&moreHeadlines=1&feed[]=AP&header=AP%20Headlines&region=#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Summary judgement motions in NYT-Microsoft copyright suit highlight dispute over ‘amount and substantiality’",
+            "url": "https://insideaipolicy.com/ai-daily-news/summary-judgement-motions-nyt-microsoft-copyright-suit-highlight-dispute-over-amount",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "\"New York Times\" OpenAI Microsoft copyright case ruling August September 2026"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908365.274814,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 5277,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 1201,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 24,
+      "name": "websearch",
+      "args": {
+        "query": "opt out AI training dataset creators haveibeentrained Spawning EU TDM reservation how to"
+      },
+      "status": "success",
+      "result": {
+        "query": "opt out AI training dataset creators haveibeentrained Spawning EU TDM reservation how to",
+        "results": [
+          {
+            "title": "By default all content is opted out",
+            "url": "https://www.europarl.europa.eu/meetdocs/2024_2029/plmrep/COMMITTEES/JURI/DV/2025/05-12/2025.05.12_item6_Study_GenAIfromacopyrightperspective_EN.pdf#50#24",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "36 Alternatively, if Robots",
+            "url": "https://www.jipitec.eu/jipitec/issue/download/54/76#38#31",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "channels",
+            "url": "https://openfuture.eu/wp-content/uploads/2023/09/Best-_practices_for_optout_ML_training.pdf#2#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "이에 비해 ai",
+            "url": "https://kiip.re.kr/download.do?attach_no=10563&bd_gb=data#12#6",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Brussels, 24 June 2024",
+            "url": "https://data.consilium.europa.eu/doc/document/WK-9051-2024-INIT/en/pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "is korlátozott vagy épp lehetetlen",
+            "url": "https://www.sztnh.gov.hu/sw/static/file/202410-szemle.pdf#57#27",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Recital 105 of the AI Act confirms that the use of literary and artistic works for AI training purposes has copyright relevance ...",
+            "url": "https://www.jipitec.eu/jipitec/issue/download/54/76#38#28",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "What is TDM?",
+            "url": "https://www.w3.org/2023/05/pbg-first-day-slides/TDM.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "OPEN",
+            "url": "http://openfuture.eu/wp-content/uploads/2025/03/250307_Vocabulary_for_opting_out_of_AI_training_and_other_forms_of_TDM.pdf#2#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "OPEN",
+            "url": "http://www.ftp.funet.fi/pub/mirrors/ftp.ietf.org/slides/slides-aicontrolws-considerations-for-opt-out-compliance-policies-by-ai-model-developers-00.pdf#2#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "opt out AI training dataset creators haveibeentrained Spawning EU TDM reservation how to"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908367.815917,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 11088,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 1522,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 25,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.crowell.com/print/v2/content/111669/us-copyright-office-releases-third-report-on-ai-and-copyright-addressing-training-ai-models-with-copyrighted-materials.pdf",
+        "focus": "fair use market dilution licensing"
+      },
+      "status": "error",
+      "result": {
+        "error": "UNSUPPORTED_WEB_FORMAT",
+        "message": "这次未能读取网页正文；不要将其当作已读来源。"
+      }
+    },
+    {
+      "tool_index": 26,
+      "name": "websearch",
+      "args": {
+        "query": "Kadrey v Meta summary judgment ruling authors Chhabria outcome"
+      },
+      "status": "success",
+      "result": {
+        "query": "Kadrey v Meta summary judgment ruling authors Chhabria outcome",
+        "results": [
+          {
+            "title": "Second District Court Rules AI Training Can Be Fair Use",
+            "url": "https://www.akingump.com/print/v2/content/1116808/second-district-court-rules-ai-training-can-be-fair-use.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "FisherBroyles",
+            "url": "https://fisherbroyles.com/wp-content/uploads/2025/06/Client-Alert-Summary-and-Strategic-Analysis-of-Judge-Chhabrias-Fair-Use-Ruling-in-Kadrey-v.-Meta.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Skadden",
+            "url": "https://www.skadden.com/-/media/files/publications/2025/07/fair_use_and_ai_training_two_recent_decisions_highlight_the_complexity_of_this_issue.pdf?rev=74112a50d23c4a3ab6e95377806aece9#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Court Sides With Meta On Fair Use And DMCA Questions, But Leaves Door Open For Future Challenges - ARTICLE",
+            "url": "https://webiis08.mondaq.com/unitedstates/copyright/1654540/court-sides-with-meta-on-fair-use-and-dmca-questions-but-leaves-door-open-for-future-challenges#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Two US decisions find that reproducing works to train large language models is fair use - Part 2: Kadrey v Meta - Register now for your free, tailored, daily legal newsfeed service.",
+            "url": "https://www.lexology.com/library/detail.aspx?g=b28cd7dd-c341-411f-b245-085c24f8a94f#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Court Sides With Meta on Fair Use and DMCA Questions, but Leaves Door Open for Future Challenges | Perkins Coie",
+            "url": "https://www.ashurstperkinscoie.com/en/insights/court-sides-with-meta-on-fair-use-and-dmca-questions-but-leaves-door-open-for-future-challenges/",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Kadrey v. Meta Platforms, Inc. No. 3:23-cv-03417-VC (N.D. Cal. June 25, 2025)",
+            "url": "https://usfblogs.usfca.edu/iptlj/files/2026/03/06.-Liu.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Meta Wins Blockbuster AI Copyright Case—but There’s a Catch - Skip to main content",
+            "url": "https://www.wired.com/story/meta-scores-victory-ai-copyright-case/?bxid=679bc1d4db590aad3f0dc888&cndid=86063549&esrc=MARTECH_ORDERFORM&hasha=92e9eae471500d1c5ee5ecc23f1bd3f7&hashc=ece5c63daab51d8f51a90cf9657ab30aaf5dd0e0374582565b35fd252bd6489f&utm_brand=wired&utm_campaign=aud-dev&utm_mailing=WIR_Daily_062625&utm_term=WIR_Daily_Active#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "FINNEGAN",
+            "url": "https://www.finnegan.com/print/v2/content/423368/Second-District-Court-Finds-Fair-Use-in-Evaluating--Use-of-Copyrighted-Works-for-LLM-Training.pdf?q=#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Judge allows authors' AI copyright lawsuit against Meta to move forward | TechCrunch - Skip to content",
+            "url": "https://techcrunch.com/2025/03/08/judge-allows-authors-ai-copyright-lawsuit-against-meta-to-move-forward/?utm_source=tldrai#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "Kadrey v Meta summary judgment ruling authors Chhabria outcome"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790908394.7312682,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 11076,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 895,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 27,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.zhonglun.com/research/articles/56701.html",
+        "focus": "训练数据 来源 著作权"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.zhonglun.com/research/articles/56701.html",
+        "requested_url": "https://www.zhonglun.com/research/articles/56701.html",
+        "title": "中伦律师事务所官方网站",
+        "text": "ARTICLES\n\n专业文章\n\n模型企业、应用企业和个人应该怎么做？——对最高院《关于依法审理涉人工智能纠纷案件的意见》的实务解读与思考\n\n模型企业、应用企业和个人应该怎么做？——对最高院《关于依法审理涉人工智能纠纷案件的意见》的实务解读与思考\n\n人工智能（AI）的商业应用，通常涉及多个相互衔接的环节。数据供应方提供素材，模型开发者决定如何训练，应用企业将模型接入具体业务，用户再通过输入指令获得结果。一项损害结果可能在最后的输出环节才显现，形成原因却分布在不同主体控制的环节之中。既有法律所保护的声音、个人信息、作品和交易自主权，也可能在同一过程中受到不同方式的影响。\n\n因此，理解《意见》，需要沿着一项服务实际运行的过程，分析权利如何受到影响、哪些行为参与了损害形成，以及相关主体具有什么样的预见和干预能力。声音合成、图像生成和算法定价等已有争议，为这种分析提供了具体的观察对象。本文据此讨论数据使用、平台责任、竞争秩序与证据规则之间的联系，并进一步考察这些规则对企业合同和业务管理的要求。\n\n一、理解裁判规则，首先需要区分训练、生成与传播\n\n同一模型所涉及的法律问题，往往发生在不同阶段。例如，企业收集他人文章用于训练，首先涉及数据取得和作品使用；模型根据指令生成近似内容，进一步涉及输出内容与在先作品的关系；平台将相关内容公开展示或供其他用户调用，又涉及传播行为。各阶段需要查明的事实、可能受到侵害的权利以及责任主体并不完全相同。将这些环节区分开来，才能确定当事人实际提出了什么请求，并找到相应的法律依据。\n\n《意见》在现行法律基础上提出裁判指引。对于归责原则，第3条规定：\n\n“法律没有明确规定适用无过错责任或者过错推定责任的，应当依照民法典第一千一百六十五条第一款规定的过错责任原则认定行为人是否承担侵权责任。”\n\n这项规定为一般情形下的责任认定确立了起点：法院需要判断行为人是否违反其应当履行的注意义务，进而考察该过错与损害之间的联系。对于企业而言，这意味着风险评估、功能设计和争议处置均可能成为说明自身行为是否合理的材料。但要明确的是，在特定法律另有规定时，仍须适用相应规则。例如，个人信息保护法第69条规定，处理个人信息侵害个人信息权益并造成损害时，处理者不能证明自己没有过错的，应当承担损害赔偿等侵权责任。\n\n同时，《意见》没有对所有涉及模型训练和生成内容的争议作出统一结论。最高人民法院在同日答记者问中说明，人工智能生成内容的可版权性，以及未经许可使用他人作品训练大模型的定性，因存在较大分歧，暂未作出规定。\n\n这两项问题分别关系到生成内容能否作为作品获得保护，以及训练过程中的作品使用应当如何评价。它们与具体输出是否侵害已有作品，属于相互关联而又需要分别判断的问题。即使某次输出没有再现特定作品，也仍需调查训练数据的取得和使用；即使训练资料具有合法来源，用户输入侵权内容、平台公开传播相关结果等后续行为，也需要单独评价。\n\n这种区分应当反映在交易文件中。企业采购模型时，供应商关于数据来源合法的承诺，应当对应可提供的来源和授权材料；关于输出风险的承诺，则应说明适用场景、使用条件和争议处理方式。出现权利主张后，由谁提供证明、谁协助停用相关功能、替换服务费用如何承担，需要进一步约定。只有把风险承诺落实到具体义务，采购方才能在纠纷发生时提出有明确对象的履约请求。\n\n二、从配音素材到合成人声：用途变化为何需要重新审查授权\n\n数据进入模型之前，企业首先需要回答的，是拟实施的使用行为是否处于其取得的权限范围。殷某某声音权益案说明，持有某项素材，与有权利用该素材提供新的服务，可能是两个不同的问题。\n\n该案中，殷某某曾为甲公司录制录音制品。甲公司随后将音频提供给乙公司，乙公司以其为素材进行AI处理，形成可以用殷某某声音呈现任意文字内容的软件产品。丙公司购买该产品后，再包装成自己的产品供用户使用。殷某某发现，一些短视频中的配音虽然并非其本人录制，却呈现出能够识别其身份的声音特征，相关配音来源于丙公司的产品。殷某某并未授权这些公司将其声音或音频进行AI化处理，遂提起诉讼。\n\n争议的关键在于，音频作为录音制品的利用，与自然人的声音被用于持续生成新内容，分别涉及不同的权利。原有录音记录的是特定表演或表达；声音合成服务则使他人能够反复调用相同声音特征，表达原配音者从未说过的内容。法院以可识别性判断声音权益的保护范围：经处理的声音仍能使一般公众或者相关领域公众关联到特定自然人的，其人格权益仍受保护。《意见》第4条将相关行为表述为：\n\n“除法律另有规定的外，未经自然人同意，使用自然人的声音作为训练语料，模仿该自然人的音色、语调和发音风格等生成能够识别该自然人的合成人声，该自然人主张行为人侵害其声音权益的，人民法院依法予以支持。”\n\n该案还区分了不同责任形式。甲、乙公司未经合法授权利用殷某某的声音，具有过错，法院判令二者连带赔偿25万元。丙公司以合理价格购买产品，对其具有合法授权存在合理信赖，法院据此认定其没有主观过错，未判令其承担赔偿责任；但乙、丙公司仍须赔礼道歉。\n\n法院的处理有助于理解数据采购审查的实际作用。能够说明合理信赖的交易材料，可能影响过错和赔偿责任的判断；但相关材料的证明作用，需要放在具体请求中评价。对供应商的一项概括担保，企业还应进一步了解其覆盖的是录音制品使用，还是包括自然人声音合成及后续商业调用。获知授权争议后，继续提供相关服务又会形成新的行为事实。\n\n对于语音合成业务，合同和操作流程因此应当围绕用途建立对应关系：哪些录音可供处理，是否允许模拟可识别的自然人，合成人声可以用于哪些场景，是否允许转交第三方使用。授权文件、素材批次与实际部署的服务之间，应当能够相互查对。否则，业务部门虽然持有合同，仍可能无法解释用户正在调用的声音究竟依据哪一项授",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 10704,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "0654ea2715593cd17d15ed7e3aa66e5f7d4a3845fa87213205287e2bce14b31e",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 28,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.ashurstperkinscoie.com/en/insights/court-sides-with-meta-on-fair-use-and-dmca-questions-but-leaves-door-open-for-future-challenges/",
+        "focus": "fair use market dilution transformative"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.ashurstperkinscoie.com/en/insights/court-sides-with-meta-on-fair-use-and-dmca-questions-but-leaves-door-open-for-future-challenges/",
+        "requested_url": "https://www.ashurstperkinscoie.com/en/insights/court-sides-with-meta-on-fair-use-and-dmca-questions-but-leaves-door-open-for-future-challenges/",
+        "title": "Court Sides With Meta on Fair Use and DMCA Questions, but Leaves Door Open for Future Challenges | Perkins Coie",
+        "text": "Legal development\n\nCourt Sides With Meta on Fair Use and DMCA Questions, but Leaves Door Open for Future Challenges\n\nJuly 17, 2025\n\nShare\n\nKey Takeaways\n\nJudge Chhabria recently granted summary judgment for Meta Platforms, Inc. (Meta) in two key rulings finding that:\n\nMeta's use of copyrighted books to train LLMs is fair use due to its highly transformative nature and the lack of market harm evidence.\n\nThe training use is transformative, as its purpose is to train tools to generate varied outputs, unlike the original works, which are meant for entertainment/education.\n\nThe argument that training use harmed the licensing market for training content is circular and should not be considered.\n\nAI-generated works could cause market harm through indirect substitution, but found the plaintiffs lacked sufficient evidence to prove such harm.\n\nMeta’s LLMs do not produce substantial portions of plaintiffs’ works, supporting its fair use arguments.\n\nPlaintiffs’ DMCA claims fail because fair use is a full defense to infringement.\n\nJudge Vince Chhabria of the U.S. District Court for the Northern District of California recently issued a pair of significant summary judgment rulings in Kadrey v. Meta , one of the first copyright cases to squarely address “fair use” in the context of training AI models. While the first ruling addressed the fair use question, the second addressed the plaintiffs’ claims for removal of copyright management information under the Digital Millennium Copyright Act (DMCA).\n\nMeta prevailed in both rulings, although Judge Chhabria suggested that he expects future litigants may be able to present stronger arguments against fair use if they can show sufficient evidence of market impacts.\n\nFair Use Ruling\n\nThe parties filed cross-motions for partial summary judgment on the question of fair use. Fair use permits certain unauthorized uses of copyrighted works that would otherwise constitute infringement. The Copyright Act (17 U.S.C. §107) sets out four nonexclusive factors for determining whether an unauthorized use of another’s work is a fair use. In a June 25 order , Judge Chhabria reviewed each of these factors in turn and ultimately denied the plaintiffs’ motion and granted Meta’s motion, finding that the training use constituted fair use.\n\nUnder the first factor, courts assess the purpose and character of the use. While a number of elements—including w",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 15304,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "b97694cd01d47114a1742ce1e517a76b35996b81739d7a232f1f12d04f69b6de",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    }
+  ],
+  "citations_this_turn": [
+    {
+      "book": "法哲学原理",
+      "chapter": "第一章 所有权",
+      "book_id": "17c85f942c78",
+      "chapter_idx": 5,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "evidence_id": "read_a972b438a0f3",
+      "used": true,
+      "source_type": "primary",
+      "access_level": "PASSAGE_READ",
+      "excerpt": "那个东西，也同样被规定为与意志 直接不同 而 可以与它分离的 东西。\n补充（ 所有权的合理性 ） 所有权所以合乎理性不在于满足需要，而在于扬弃人格的纯粹主观性。人唯有在所有权中才是作为理性而存在的。即使我的自由这种实在性最初存在于一个外界事物中，从而是一种坏的实在性，然而抽象人格，就因为它存在于其直接性中，所以除了在直接性的规定中的定在以外不可能具有任何其他定在。\n第42节\n跟自由精神直接不同的东西，无论对精神说来或者在其自身中，一般都是 外在的 东西——即 物 ，某种不自由的、无人格的以及无权的东西。\n附释 物 象客观一样，有两种不同而是对立的意义。有时，譬如当我们说： 就是这个东西 ，问题在于 事物 ，而不在于人——这是指 实体性的 东西而言；有时用来与人（不是特殊的主体）相对比，这时物正是指 与实体性东西相反的 东西而言，即按其规定是纯粹外在的东西。对自由精神——必须与单纯意识很好加以区别——说来，外在的东西是绝对外在的，因此， 自然界 的概念规定就在于 它本身 是 外在的 东西。\n补充（ 外在的东西 ） 由于物欠缺主观性，所以它不仅对主体说来而且它本身是外在的东西。这样说来，空间和时间是外在的。作为感性的东西，我本身是外在的，是空间性的和时间性的。我所具有的感性直观，乃是我对某种其本身是外在的东西所具有的直观。动物也能直观，但是它的灵魂不是以灵魂即它本身为对象，而仅仅以外在",
+      "quoted_passages": [
+        "人唯有在所有权中才是作为理性而存在的",
+        "精神的内在的东西"
+      ],
+      "material_role": "UNCLASSIFIED",
+      "role_basis": "title_heuristic_not_academic_review",
+      "chapter_text_length": 20288,
+      "reader_coordinate_valid": true
+    },
+    {
+      "evidence_id": "web_0864312224dd",
+      "source_type": "web",
+      "used": true,
+      "title": "中伦律师事务所官方网站",
+      "url": "https://www.zhonglun.com/research/articles/56701.html",
+      "excerpt": "ARTICLES\n\n专业文章\n\n模型企业、应用企业和个人应该怎么做？——对最高院《关于依法审理涉人工智能纠纷案件的意见》的实务解读与思考\n\n模型企业、应用企业和个人应该怎么做？——对最高院《关于依法审理涉人工智能纠纷案件的意见》的实务解读与思考\n\n人工智能（AI）的商业应用，通常涉及多个相互衔接的环节。数据供应方提供素材，模型开发者决定如何训练，应用企业将模型接入具体业务，用户再通过输入指令获得结果。一项损害结果可能在最后的输出环节才显现，形成原因却分布在不同主体控制的环节之中。既有法律所保护的声音、个人信息、作品和交易自主权，也可能在同一过程中受到不同方式的影响。\n\n因此，理解《意见》，需要沿着一项服务实际运行的过程，分析权利如何受到影响、哪些行为参与了损害形成，以及相关主体具有什么样的预见和干预能力。声音合成、图像生成和算法定价等已有争议，为这种分析提供了具体的观察对象。本文据此讨论数据使用、平台责任、竞争秩序与证据规则之间的联系，并进一步考察这些规则对企业合同和业务管理的要求。\n\n一、理解裁判规则，首先需要区分训练、生成与传播\n\n同一模型所涉及的法律问题，往往发生在不同阶段。例如，企业收集他人文章用于训练，首先涉及数据取得和作品使用；模型根据指令生成近似内容，进一步涉及输出内容与在先作品的关系；平台将相关内容公开展示或供其他用户调用，又涉及传播行为。各阶段需要查明的事实、可能",
+      "access_level": "WEB_PASSAGE_READ",
+      "content_hash": "0654ea2715593cd17d15ed7e3aa66e5f7d4a3845fa87213205287e2bce14b31e",
+      "document_truncated": false
+    },
+    {
+      "evidence_id": "web_878389a947a3",
+      "source_type": "web",
+      "used": true,
+      "title": "Anthropic’s $1.5B copyright settlement approved; only 350 authors opted out - Ars Technica",
+      "url": "https://arstechnica.com/tech-policy/2026/07/judge-approves-anthropics-1-5-billion-copyright-settlement-with-authors/",
+      "excerpt": "On Monday, a judge approved a $1.5 billion settlement between Anthropic and authors, ending the largest copyright class-action ever certified and granting the largest copyright settlement ever reached .\n\nBack in May, some authors fought to block the settlement , which was proposed after the court ruled that Anthropic training AI on books was fair use; however, its piracy of works was likely not.\n\nAuthors opposing the settlement argued that lawyers’ fees were too high and authors’ payouts were too low. Hoping to avoid accepting the estimated $3,000-per-work payout and file separate lawsuits to ",
+      "access_level": "WEB_PASSAGE_READ",
+      "content_hash": "397dedf15a3790f358f1bd666138e901104a8a50bfe74ededc10199ec08268dd",
+      "document_truncated": false
+    },
+    {
+      "evidence_id": "web_0ecfdebb719c",
+      "source_type": "web",
+      "used": true,
+      "title": "GEMA vs. OpenAI | AI memorisation is a reproduction relevant to copyright law, and the TDM exception does not help in LLM training, Munich I Regional Court holds | Osborne Clarke",
+      "url": "https://www.osborneclarke.com/insights/gema-vs-openai-ai-memorisation-reproduction-relevant-copyright-law-and-tdm-exception-does",
+      "excerpt": "GEMA vs. OpenAI | AI memorisation is a reproduction relevant to copyright law, and the TDM exception does not help in LLM training, Munich I Regional Court holds\n\nPublished on 12 November 2025\n\nIn its judgment of 11 November 2025 (42 O 14139/24), the Munich I Regional Court (Germany) issued a widely noted precedent on the copyright assessment of AI training and outputs under German and EU law. According to its press release 1 , the Court found that large language models (LLMs) could memorise copyright-protected texts and that this fixation within the model already constituted reproduction unde",
+      "access_level": "WEB_PASSAGE_READ",
+      "content_hash": "dbb90cc018c727608e924d562a9a2614d7bda4aa34a4e7ef5f6e902bba290c4d",
+      "document_truncated": false
+    },
+    {
+      "evidence_id": "web_bb5d1455eb15",
+      "source_type": "web",
+      "used": true,
+      "title": "China's Supreme People's Court Issues First National Judicial Rules on AI Disputes — But Sidesteps Copyrightability of AI-Generated Works - China IP Law Update",
+      "url": "https://chinaiplawupdate.com/2026/09/chinas-supreme-peoples-court-issues-first-national-judicial-rules-on-ai-disputes-but-sidesteps-copyrightability-of-ai-generated-works/",
+      "excerpt": "Protection Law, and Civil Procedure Law – to AI-related civil and criminal disputes, on the express premise that China has not yet enacted dedicated AI legislation.\n\nSubstantively, the Opinions devote a full section to intellectual property, addressing infringement liability for AI-generated content that infringes copyright, including the burden on developers asserting non-infringement to produce training data sources, training process records, and model operation modes (Article XII); liability allocation among open-source software developers, providers, and downstream developers, with express",
+      "access_level": "WEB_PASSAGE_READ",
+      "content_hash": "c3557f20f5ece0e48e36e4e9ec1aac79d5cfa90f3e612fcee3a1e8183ae076f9",
+      "document_truncated": false
+    }
+  ]
+}

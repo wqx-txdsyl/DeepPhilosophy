@@ -1,0 +1,549 @@
+{
+ "case_id": "L05",
+ "section": "L",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": 2,
+ "question": "用一句话回答：“我思故我在”出自笛卡尔哪部著作？（只要出处，不要展开）",
+ "injection": null,
+ "QUESTION": "用一句话回答：“我思故我在”出自笛卡尔哪部著作？（只要出处，不要展开）",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记研究需求：这是明确的出处核验问题（\"我思故我在\"出自哪部著作），需要确认原文措辞与著作归属，属 PRIMARY 类。我记忆中的工作假设是它出现在《谈谈方法》与《第一哲学沉思集》两处，待原文核验。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "\"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处",
+ "TOOL_SELECTED": [
+  "search_books"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "我思故我在"
+   },
+   {
+    "query": "cogito ergo sum"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "我思故我在"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '49c80096b16d', 'book_title': '方法论·情志论', 'author': '勒内·笛卡尔', 'chapter_idx': 0, 'chapter_title': '导读', 'citation_label': '【《方法论·情志论》·导读】', 'snippet': '还是当年在中国社会科学院研究生院哲学系西方哲学史专"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "cogito ergo sum"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'ec338ccc63b6', 'book_title': '论演说家', 'author': '西塞罗', 'chapter_idx': 7, 'chapter_title': '拉丁原文附录', 'citation_label': '【《论演说家》·拉丁原文附录】', 'snippet': 'Cogitanti mihi saepe numer"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '49c80096b16d', 'book_title': '方法论·情志论', 'author': '勒内·笛卡尔', 'chapter_idx': 0, 'chapter_title': '导读', 'citation_label': '【《方法论·情志论》·导读】', 'snippet': '还是当年在中国社会科学院研究生院哲学系西方哲学史专"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'ec338ccc63b6', 'book_title': '论演说家', 'author': '西塞罗', 'chapter_idx': 7, 'chapter_title': '拉丁原文附录', 'citation_label': '【《论演说家》·拉丁原文附录】', 'snippet': 'Cogitanti mihi saepe numer"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "\"我思故我在\"出自笛卡尔的《谈谈方法》（Discours de la méthode, 1637）第四部分【《谈谈方法》·第四部分】。（其拉丁语形式\" Cogito ergo sum\"另见于《第一哲学沉思集》。）",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记研究需求：这是明确的出处核验问题（\"我思故我在\"出自哪部著作），需要确认原文措辞与著作归属，属 PRIMARY 类。我记忆中的工作假设是它出现在《谈谈方法》与《第一哲学沉思集》两处，待原文核验。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "我思故我在"
+   },
+   "result_head": "{'results': [{'book_id': '49c80096b16d', 'book_title': '方法论·情志论', 'author': '勒内·笛卡尔', 'chapter_idx': 0, 'chapter_title': '导读', 'citation_label': '【《方法论·情志论》·导读】', 'snippet': '还是当年在中国社会科学院研究生院哲学系西方哲学史专"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "cogito ergo sum"
+   },
+   "result_head": "{'results': [{'book_id': 'ec338ccc63b6', 'book_title': '论演说家', 'author': '西塞罗', 'chapter_idx': 7, 'chapter_title': '拉丁原文附录', 'citation_label': '【《论演说家》·拉丁原文附录】', 'snippet': 'Cogitanti mihi saepe numer"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "\"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:18:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "\"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 2,
+  "soft_limit": 3,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 29131,
+   "output_tokens": 787,
+   "total_tokens": 29918
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12071,
+     "output_tokens": 516,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17060,
+     "output_tokens": 271,
+     "tool_chars_added": 9234
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 106,
+ "token_usage": {
+  "input_tokens": 29131,
+  "output_tokens": 787,
+  "total_tokens": 29918
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 5.7,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: \"我思故我在\"(Cogito ergo sum / Je pense, donc je suis)的确切著作出处）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chap",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "我思故我在"
+   },
+   "result_summary": "{'results': [{'book_id': '49c80096b16d', 'book_title': '方法论·情志论', 'author': '勒内·笛卡尔', 'chapter_idx': 0, 'chapter_title': '导读', 'citation_label': '【《方法论·情志论》·导读】', 'snippet': '还是当年在中国社会科学院研究生院哲学系西方哲学史专",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "cogito ergo sum"
+   },
+   "result_summary": "{'results': [{'book_id': 'ec338ccc63b6', 'book_title': '论演说家', 'author': '西塞罗', 'chapter_idx': 7, 'chapter_title': '拉丁原文附录', 'citation_label': '【《论演说家》·拉丁原文附录】', 'snippet': 'Cogitanti mihi saepe numer",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "我思故我在"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "49c80096b16d",
+      "book_title": "方法论·情志论",
+      "author": "勒内·笛卡尔",
+      "chapter_idx": 0,
+      "chapter_title": "导读",
+      "citation_label": "【《方法论·情志论》·导读】",
+      "snippet": "还是当年在中国社会科学院研究生院哲学系西方哲学史专业学习时，因为专业的需要，因写论文《论拉美特利的心灵论》的需要，我才知道笛卡尔的大名，知道其“我思故我在”的名言。拉美特利是位医生，用唯物主义解释人的生理，把人的身体看作一架机器。而他的这一观点，正来自笛卡尔。为写论文，我只好去拜读笛卡尔的著作，如《方法论》、《哲学原理》、《沉思集》、《形而上学的沉思》等等。一接触笛卡尔，立刻就喜爱上了。因为其所讲的道理清楚明白，引人入胜。读了笛卡尔的书",
+      "score": 0.536
+     },
+     {
+      "book_id": "8c3044772b18",
+      "book_title": "谈谈方法",
+      "author": "勒内·笛卡尔",
+      "chapter_idx": 5,
+      "chapter_title": "第四部分",
+      "citation_label": "【《谈谈方法》·第四部分】",
+      "snippet": "◆ “我思故我在”的洞见如何产生 ◆ 上帝和灵魂存在的证明 ◆ 对感官世界的怀疑 不知该不该和大家讲一讲我这些年经过沉思获得的首批成果。因为它们十分形而上，没那么通俗易懂，可能大家对此也不感兴趣。尽管如此，为了让大家可以评判我打下的基础是否坚实，即使我觉得有些拘束，但还是得和大家谈谈。很早之前我就注意到，由于习俗使然，有时还是需要遵循一些完全不可靠的观点，把它们当成不容置疑的，这是以上我已经讲过的。但因为我只着眼于对真理的追寻，那么我想",
+      "score": 0.509
+     },
+     {
+      "book_id": "eabb3ba3c423",
+      "book_title": "文心雕龙",
+      "author": "刘勰",
+      "chapter_idx": 27,
+      "chapter_title": "神思",
+      "citation_label": "【《文心雕龙》·神思】",
+      "snippet": "古人云：“形在江海之上，心存魏阙之下。”神思之谓也。文之思也，其神远矣。故寂然凝虑，思接千载；悄焉动容，视通万里；吟咏之间，吐纳珠玉之声；眉睫之前，卷舒风云之色；其思理之致乎！故思理为妙，神与物游。神居胸臆，而志气统其关键；物沿耳目，而辞令管其枢机。枢机方通，则物无隐貌；关键将塞，则神有遁心。 是以陶钧文思，贵在虚静，疏瀹五藏，澡雪精神。积学以储宝，酌理以富才，研阅以穷照，驯致以绎辞，然后使玄解之宰，寻声律而定墨；独照之匠，窥意象而运斤",
+      "score": 0.469
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 79,
+      "chapter_title": "25 请求",
+      "citation_label": "【《尼采文集（合集）》·25 请求】",
+      "snippet": " 请求 我知道一些人的心思 却不知道自己是谁！ 我的双眼离我太近了—— 我不是我见到和曾经见过的。 如果我坐得离自己远一些， 就能对自己更有助益。 虽然没有我的敌人那么远！ 我的挚友坐得太远—— 但中心就在他与我之间！ 你们猜猜看，我在请求什么？",
+      "score": 0.432
+     },
+     {
+      "book_id": "48f7bf321598",
+      "book_title": "快乐的科学",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 21,
+      "chapter_title": "第四部圣雅努斯（第276—342节）",
+      "citation_label": "【《快乐的科学》·第四部圣雅努斯（第276—342节）】",
+      "snippet": "至美的雅努斯！热那亚，1882年1月。致新年。一—我还活着，我还在思考；我必须活下去，因为我必须思考下去。Sum，ergocogito：cogito，ergosum[我在故我思：我思故我在]。2今天，人人都可以随意地表达自己的愿望和最爱的想法：所以，我也想来说说我今天对自1.准备稿：笔记本MⅢI5：这是我的愿望，是对自已的愿望：但愿总是越来越多地用审美的天平来称量，总是越来越少地用道德的天平来称量！但愿道德判断的出现于我【显现]为一种暗",
+      "score": 0.425
+     },
+     {
+      "book_id": "1aee525fffe2",
+      "book_title": "加缪全集（散文卷Ⅰ）",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 3,
+      "chapter_title": "若有若无之间",
+      "citation_label": "【《加缪全集（散文卷Ⅰ）》·若有若无之间】",
+      "snippet": "如果说，真正的天堂是曾失落的天堂，那么我对自己如今充溢心头的感受，就应当知道何以名状了。这感受柔情似水，超乎伦常。一名海外游子回归故园。个中甘苦，我记忆犹新。有冷言冷语者、有态度僵硬者。俱往矣，我反正回到了家乡。我没有重温旧梦的意思。事情比这要简单、容易得多。我从遗忘的深渊里找回了昔日的时光，其中记忆犹新、依然完好的感觉，主要是一种纯净的激情，一种捕获于永恒中的瞬间。在我心中只有这是真切的，等我明白过来总是为时已晚。看见某人弯臂躬腰的某",
+      "score": 0.42
+     },
+     {
+      "book_id": "9bd452eb8422",
+      "book_title": "反与正·婚礼集·夏",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 2,
+      "chapter_title": "若有若无之间",
+      "citation_label": "【《反与正·婚礼集·夏》·若有若无之间】",
+      "snippet": "如果说，真正的天堂是曾失落的天堂，那么我对自己如今充溢心头的感受，就应当知道何以名状了。这感受柔情似水，超乎伦常。一名海外游子回归故园。个中甘苦，我记忆犹新。有冷言冷语者、有态度僵硬者。俱往矣，我反正回到了家乡。我没有重温旧梦的意思。事情比这要简单、容易得多。我从遗忘的深渊里找回了昔日的时光，其中记忆犹新、依然完好的感觉，主要是一种纯净的激情，一种捕获于永恒中的瞬间。在我心中只有这是真切的，等我明白过来总是为时已晚。看见某人弯臂躬腰的某",
+      "score": 0.42
+     },
+     {
+      "book_id": "2cbf90eb6f69",
+      "book_title": "大问题",
+      "author": "罗伯特•所罗门",
+      "chapter_idx": 9,
+      "chapter_title": "第六章 自我",
+      "citation_label": "【《大问题》·第六章 自我】",
+      "snippet": "因此，人是一个特殊的个体，同样，他也是总体，观念的总体，被思考和被感知的社会的自为的主体存在，正如他在现实中既作为对社会存在的直观和现实享受而存在，又作为人的生命表现的总体而存在一样。——卡尔·马克思，《1844年手稿》 我思，故我在……然而这样一来，我又是什么呢？一个思想的东西。 ——笛卡儿，《第一哲学沉思集》 开篇问题 1.把你当成小说中的人物，描述一下自己。谈谈你的姿态、举止、习惯以及特征用语。你会把自己描绘成什么样的人？ 2.你",
+      "score": 0.418
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 283,
+      "chapter_title": "166",
+      "citation_label": "【《尼采文集（合集）》·166】",
+      "snippet": " 总是与自己做伴 。——在自然和历史方面我的本性所具有的一切都在对我说话，都在赞美我，推动我前进，安慰我——：别的我听不见，或者很快就会忘掉。我们始终只与自己做伴。 边码：499",
+      "score": 0.416
+     },
+     {
+      "book_id": "c13b139d1db3",
+      "book_title": "哲学导论",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 38,
+      "chapter_title": "1.3 东方的终极实在：印度、波斯和中国 孔子",
+      "citation_label": "【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 孔子】",
+      "snippet": "在中国，早期形式的哲学不怎么关注我们所谓的“原始科学”问题，更多关注的是人、人的关系和人的行动。公元前六世纪的一位中国思想家，叫作孔子，他主张，思是我们的基本天性。在本质上，他所关注的是人之仁（good），即他所谓的“君子风度”，他及其追随者规定了后来数千年中国社会的形态。与西方的诸种本体论不同，孔子的形而上学主要关注的是人。 孔子及其追随者宣称，人在自身内有所区分——人的激情、野心和混乱的忠诚分散了他们的道德义务。他们认为，通过自觉和",
+      "score": 0.408
+     },
+     {
+      "book_id": "e2845fe17764",
+      "book_title": "作为意欲和表象的世界（第2卷）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 15,
+      "chapter_title": "第14章论联想",
+      "citation_label": "【《作为意欲和表象的世界（第2卷）》·第14章论联想】",
+      "snippet": "第14章论联想 表象和思想在我们的意识中出现，严格受制于根据律的不同形态，一如身体的运动严格受制于因果律。正如一样物体不会没有原因就活动起来，同样，一个想法没有因由就进入意识也是不可能的。那么，这因由要么是外在的，亦即给感官留下的某一印象；要么是内在的，亦即本身也有一个想法，现在由于联想而带来了另一个想法。这联想文是要么取决于这两种想法的原因和结果的关系，要么取决于这两者的相似性，甚至只是类似性；又或者是因为在同一时间有了这些想法，而这",
+      "score": 0.406
+     },
+     {
+      "book_id": "d3f79625368c",
+      "book_title": "知行合一王阳明大全集(套装共5册）",
+      "author": "度阴山",
+      "chapter_idx": 35,
+      "chapter_title": "真正的学习是在世俗中修行：《赣州书示四侄正思等》",
+      "citation_label": "【《知行合一王阳明大全集(套装共5册）》·真正的学习是在世俗中修行：《赣州书示四侄正思等》】",
+      "snippet": "真正的学习是在世俗中修行：《赣州书示四侄正思等》 原文 近闻尔曹学业有进，有司考校，获居前列，吾闻之喜而不寐。 此是家门好消息，继吾书香者，在尔辈矣。勉之勉之！ 吾非徒望尔辈但取青紫荣身肥家，如世俗所尚，以夸市井小儿。尔辈须以仁礼存心，以孝弟为本，以圣贤自期，务在光前裕后，斯可矣。 吾惟幼而失学无行，无师友之助，迨今中年，未有所成。尔辈当鉴吾既往，及时勉力，毋又自贻他日之悔，如吾今日也。 习俗移人，如油渍面，虽贤者不免，况尔曹初学小子能",
+      "score": 0.405
+     },
+     {
+      "book_id": "274c59617693",
+      "book_title": "存在与虚无",
+      "author": "让-保罗·萨特",
+      "chapter_idx": 7,
+      "chapter_title": "第一章 自为的直接结构",
+      "citation_label": "【《存在与虚无》·第一章 自为的直接结构】",
+      "snippet": "第二卷自为的存在111第一章自为的直接结构一、面对自我的在场否定已经把我们推到自由，自由把我们推向自欺，面自欺则把我们推向作为可能性条件的意识的存在。因此，应该在前几章所确立的条件的指引下重提我们在本书导言部分已经希翼的描述，就是说，应该回到反思前的我思的范围中来。但是，我思从来只是提供人们向它要求的东西。笛卡尔从我思的功能形态：“我怀疑，故我思”对我思进行过质疑，但由于他企图从这一功能形态过渡到存在的辩证法而不凭借导引线索，他陷人了实",
+      "score": 0.404
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 537,
+      "chapter_title": "初版自序",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·初版自序】",
+      "snippet": "运厄阳九，窜伏海疆，矮屋风檐，尘生釜甑。客来自远，顾而让之曰：子脱屣圭缨，栖情衡泌有日矣；曩者掩室岷峨，行脚康藏，风霜凋其短鬓，烟水历乎百城，矻矻穷年，究此一事；虽梦宅虚无，本乏可留之迹，而空书斐，终成不著之文，际兹慧命丝悬，魔言鼎沸，同舟俨分乎楚汉，一室而判若参商，正法衰微，乾坤几息，不有津梁，罔克攸济，金针密固，庸所安乎？闻已而思，瞿然有省。夫妙契匪意，真证难言，动念已乖，况涉文字。然无说自说，瓶泻云兴，从上祖师，皆非得已，矧余末学",
+      "score": 0.404
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 662,
+      "chapter_title": "再版记言",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·再版记言】",
+      "snippet": "本书自今年端午节出版之后，蒙广大读者的爱好，现在即须再版。这实在是始料所不及的事。 由此可见社会人心的向背，孔子学说的可贵，毕竟是万古常新，永远颠扑不破。因此反而使我深为惭愧，当时并未加以严谨的发挥，未免罪过。当初版问世之时，承蒙朋友们的盛意，纷纷惠示意见，希望继续开讲《孟子》等经书，俾使儒家一系列的学说，以现代化的姿态出现。此情极为可感。无奈青春顽劣、白首疏狂的我，向来只图懒散。况且先孔子而生，非孔子无以圣；后孔子而生，非孔子无以明。",
+      "score": 0.403
+     }
+    ],
+    "query": "我思故我在",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "cogito ergo sum"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "ec338ccc63b6",
+      "book_title": "论演说家",
+      "author": "西塞罗",
+      "chapter_idx": 7,
+      "chapter_title": "拉丁原文附录",
+      "citation_label": "【《论演说家》·拉丁原文附录】",
+      "snippet": "Cogitanti mihi saepe numero et memoria uetera repetenti perbeati fuisse, Quinte frater, illi uideri solent, qui in optima re publica, cum et honoribus et rerum gestarum gloria florerent, eum uitae cursum tenere potuerunt",
+      "score": 0.481
+     },
+     {
+      "book_id": "390398aff8d0",
+      "book_title": "康德文集",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 4,
+      "chapter_title": "题词",
+      "citation_label": "【《康德文集》·题词】",
+      "snippet": "题词 BACO DEVERULAMIO Instauratio magna ． Praefatio De nobis ipsis silemus：De re autem，quae agitur，petimus：ut homines eam non opinionem，sed opus esse cogitent；ac pro certo habeant，non sectae nos alicuius，aut placiti，sed ut",
+      "score": 0.46
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 359,
+      "chapter_title": "242",
+      "citation_label": "【《尼采文集（合集）》·242】",
+      "snippet": " Suum cuique［ 各得其所 ］ (112) 。——不管我对知识的贪婪多么大：除了原本已经属于我的，我不能从事物中获取别的任何东西，——别人所占有的依然留在事物里。一个人怎么可能当小偷或者强盗呢！",
+      "score": 0.448
+     },
+     {
+      "book_id": "eca1899561c4",
+      "book_title": "纯粹理性批判(注释本)",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 0,
+      "chapter_title": "题词",
+      "citation_label": "【《纯粹理性批判(注释本)》·题词】",
+      "snippet": "BACO DE VERULAMIO Instauratio magna. Praefatio De nobis ipsis silemus: De re autem, quae agitur, petimus: ut homines eam non opinionem, sed opus esse cogitent; ac pro certo habeant, non sectae nos alicuius, aut placiti, ",
+      "score": 0.438
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 12,
+      "chapter_title": "第12章",
+      "citation_label": "【《信仰寻求理解》·第12章】",
+      "snippet": "提要：至高的实体通过它自身创造万有。但是，它是通过那生来而最内在的“言”创造万有的。因此，至高实体那生来的“言”就是至高实体本身。然而，正如理性所教导的，这同样是确定无疑的：那至高的实体无论创造什么，它都仅仅通过它自身进行创造；它无论创造什么，它都仅仅通过它自身那最内在的“言”（persuamintimamlo-cutionem）进行创造，要么通过说出一个一个的“言”（singulisverbis）创造一个一个的事物，要么通过说出一个“",
+      "score": 0.435
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 5,
+      "chapter_title": "第5章",
+      "citation_label": "【《信仰寻求理解》·第5章】",
+      "snippet": "通过它（而存在），同样，它从它自身（而存在），其他的东西都从它（而存在）因此，由于前面的论证是令人信服的，这有助于我们进而探究是否这个本性以及存在着的其他一切东西都只能从这个本性（exipsa）而存在，正如它们只能通过它（peripsam）而存在一样。显然，我们能够说：从某样东西（exaliquo）而存在的，也通过那样东西（peridipsum）而存在；通过某样东西（peraliquid）而存在的，也从那样东西（exeoipso）而存在",
+      "score": 0.422
+     },
+     {
+      "book_id": "e1fabd8e802c",
+      "book_title": "论存在者与本质",
+      "author": "托马斯·阿奎那",
+      "chapter_idx": 14,
+      "chapter_title": "附录六 主要术语外中文对照表",
+      "citation_label": "【《论存在者与本质》·附录六 主要术语外中文对照表】",
+      "snippet": "（以外文字母为序）abstractio/abstraction，抽象animalitas/animality，动物性accidens/accidents，偶性aptitudo/aptitude，倾向accidens superveniens/the superve-apprehensio/perception，知觉ningaccident，附着他物的偶性actus primus et purus/the primary bipes/bi",
+      "score": 0.42
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 139,
+      "chapter_title": "第二卷 第4章",
+      "citation_label": "【《信仰寻求理解》·第二卷 第4章】",
+      "snippet": "安瑟伦：从这些可以很容易地看出，要么上帝将实现他对人已经开始进行的工作，要么他徒劳地为了那如此大的善而创造了如此崇高的种类（tam sublimemnaturam）。如果我们认识到，在上帝所创造的万有中，没有什么比这能享乐他的理性的存在者（ration-alemnaturam）更珍贵，那么，我们也将明白，他绝不会听任这理性的存在者完全毁灭。①博索：理性的心灵（corrationale）不能作他想。安瑟伦：因此，他必然实现他对于人已经开始",
+      "score": 0.416
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 136,
+      "chapter_title": "第二卷 第1章",
+      "citation_label": "【《信仰寻求理解》·第二卷 第1章】",
+      "snippet": "安瑟伦：为上帝所造的理性的人类（rationalemnaturam）原本是公义的，以至于他能以上帝为乐而得福，对此，不应有任何的怀疑。正因为人是理性的（rationalis），所以他能区分义与不义（inter iustum et iniustum）、善与恶（interbonum etmalum），以及大善与小善（intermagisbonumetminusbonum），否则，他被创造为理性的就毫无意义了。然而，上帝绝不会徒劳地将之创造为",
+      "score": 0.411
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 110,
+      "chapter_title": "序",
+      "citation_label": "【《信仰寻求理解》·序】",
+      "snippet": "由于在我完成和仔细校订这部著作以前，它的第一部分在我并不知情的情形下已经被一些人抄写了，因此，我不得不尽可能快地、简短地将它提交出来，而这些都不是我当初所希望的。如果我被允许在-个平静而合适的时间（inquieteetcongruospatio）出版它，我会引人和增补许多我曾保持沉默的东西。因为，在心灵遭受巨大痛苦的情形下一一上帝知道它的起因和缘由，因一些人的恳请，我在英格兰（inAnglia）开始撰写这部作品，并在卡普阿纳（inCap",
+      "score": 0.41
+     },
+     {
+      "book_id": "93e725e1247d",
+      "book_title": "普通语言学教程",
+      "author": "费尔迪南·德·索绪尔",
+      "chapter_idx": 37,
+      "chapter_title": "第三章 重建",
+      "citation_label": "【《普通语言学教程》·第三章 重建】",
+      "snippet": "1.重建的性质和目的如果重建的唯一方法是比较，那么，反过来说，比较的唯一自的也只是为了重建。我们应该把在几个形式间所看到的对应放在时间的展望里，最后重建出一个单一的形式，否则就会徒劳无功。这一点，我们已经不止一次地强调过（参看第20页以下和第278页）。例如，要解释拉丁语medius“中间的”和希腊语mesos“中间的”的关系，即使不追溯到印欧语，也必须提出一个在历史上可能跟medius和mesos相联系的更古老的形式*methyos。",
+      "score": 0.409
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 147,
+      "chapter_title": "第二卷 第12章",
+      "citation_label": "【《信仰寻求理解》·第二卷 第12章】",
+      "snippet": "博索：这一切都清楚地表明，他应当是要死的，并分担我们的不幸（incommodorumnostrorum）①。然而，一切的不幸也都是我们的痛苦，难道他也将是痛苦的吗？安瑟伦：绝非如此。因为，正如凡违背一个人的意志而加给他的好处并不是他真正的幸福，同样，凡出于自愿而非出于必然性的强迫而明智地接受的不幸，也不是他真正的痛苦。博索：对此不可否认。何以化①incommodorum，本义是“不利条件”。369",
+      "score": 0.409
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 9,
+      "chapter_title": "第9章",
+      "citation_label": "【《信仰寻求理解》·第9章】",
+      "snippet": "前，已经存在于创造者的理性中提要：没有任何东西被某人理性地创造，除非要被创造的事物的形式预先存在于创造者的理性中。因此，在世界万有被创造出来以前，在至高本性的理性中存在着它们将来的“所是”、“所属”以及“如何是”。所以，在它们存在以前，它们不是“无”；对于创造者的理性而言，它们也不从“无”中而来。我似乎看见了某个真理，它迫使我仔细地辨析，那些已经被创造出来的东西在它们被创造以前，我们在何种意义上能够说它们是“无”。因为，任何事物都绝不可",
+      "score": 0.406
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 31,
+      "chapter_title": "第31章",
+      "citation_label": "【《信仰寻求理解》·第31章】",
+      "snippet": "物是那真理的某种模仿。存在着的事物的本性在等级上有高低提要：万有由之被创造出来的“言”与那至高的不变性是同体的，因为它自己的不变性同那至高的本性是同体的。因此，那“言”不是可变事物的真肖像，相反，可变的事物以它为原型被创造出来。然而，既然那“言”的本质是至高的，并且惟有它的本质是真的，故它自身就是存在着的事物的真理，而其他的万有只能通过对它的模仿才能存在。因此，受造物有多相似于那至高、至大的“言”，也就有多高和多卓越。因此，有生命的东西",
+      "score": 0.403
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 13,
+      "chapter_title": "第13章",
+      "citation_label": "【《信仰寻求理解》·第13章】",
+      "snippet": "高本质而生机勃勃提要：正如万有都通过某样别的东西而存在，惟有那东西通过它自身而存在；同样，万有都通过某样别的东西而生机勃勃，惟有那东西通过它自身而生机勃勃。因此，正如没有任何东西被创造出来，除非通过那创造性的本质；同样，没有任何东西生机勃勃，除非通过创造性本质那维持性的临在。因此，任何异于那至高本性的东西显然都是通过那至高本性而被创造的。然而，在那至高本性（它从虚无中创造了它们，让它们是其所是）的维持下，被创造出来的万有才能够如它们所是",
+      "score": 0.399
+     }
+    ],
+    "query": "cogito ergo sum",
+    "method": "vector"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 2
+}

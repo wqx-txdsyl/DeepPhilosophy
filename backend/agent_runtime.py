@@ -1,50 +1,39 @@
 # -*- coding: utf-8 -*-
-"""Agent Runtime Reliability（Phase A, 2026-08-30）——tool loop 治理单一真源
+"""Agent Runtime Reliability（Phase A, 2026-08-30; O4 Cognitive Layer Collapse 后瘦身）——
+tool loop 机械治理单一真源
 
-覆盖 A1-A5 五个子项的配置与纯规则实现（不联网、不调 LLM、不改 Persona/Memory/Answer 风格）:
+O4 后本模块只保留两类东西（Shadow cognition 已删除——runtime 不再判断"证据是否充分/
+该不该停/义务是否满足"; 这些判断全部归还 Main Agent）:
 
-  A1 ToolLoopTrace       单轮 invocation 观测: conversation/message/agent/invocation id、
+  1. 机械可靠性核心（O4 §13 Deterministic Core, 全部保留）:
+     ToolLoopTrace       单轮 invocation 观测: conversation/message/agent/invocation id、
                          工具名、归一化参数+hash、call index、时长、成败、结果摘要/hash、
-                         evidence 数、information gain、model retry、总时长 → JSONL
+                         evidence 数、model retry、总时长 → JSONL
                          （禁止记录原始 chain-of-thought——只有运行轨迹字段与简短 rationale）
-  A2 DuplicateGuard      同 turn 内 same tool + effectively same args → 复用已有结果
+     DuplicateGuard      同 turn 内 same tool + effectively same args → 复用已有结果
                          （仅确定性只读检索工具; 生成类/交互类豁免; 失败后重试放行;
-                           参数实质变化/范围变化/过滤器变化自动放行）
-  A3 ToolBudget          有界 per-turn 预算: soft（提醒优先用已有 evidence）/
-                         hard（终止工具循环 → graceful answer completion）;
-                         区分 useful / retry / duplicate / no-information-gain
-  A4 错误分类            模型 API 错误可恢复性判定 + agent_node 有限重试（引擎接线）;
-                         重试耗尽 → 用已取得 evidence graceful completion（引擎接线）
-  A5 终止条件            显式枚举 Agent turn 结束条件; 连续无信息增益轮 → 提醒/强制收口
+                           参数实质变化/范围变化自动放行）
+     ToolBudget          有界 per-turn 硬资源预算（hard → 终止工具循环 → graceful
+                         answer completion）; 区分 useful / retry / duplicate / no-gain
+                         计数（纯遥测, snapshot 输出, 无任何控制分支）
+     错误分类            模型 API 错误可恢复性判定 + agent_node 有限重试（引擎接线）;
+                         重试耗尽 → ModelCallError（引擎 graceful completion）
+     RECURSION_LIMIT     graph 步数兜底
 
-────────────────────────────────────────────────────────────────────
-根因记录（ROOT_CAUSE_13_CALLS）——RAM audit 第 9 轮"约 13 次工具调用后以模型侧
-error 结束":
+  执行事实登记（EvidenceState）已并入 evidence_contract.py（O5 MERGE: agent_runtime
+  旧义务台账整类删除——只记 WHAT HAPPENED, 无义务/准入语义, 现归 Evidence Store）。
 
-  agent_stats.jsonl 2026-08-30 11:34:46（nietzsche, 72.8s）:
-  "peer closed connection without sending complete message body (incomplete chunked read)"
+已删除（O4, CONTROL_EFFECT=0 且无独立数据价值）:
+  soft 预算提示 / no_gain warn+force / sufficiency 期望与收敛 / 检索准入（admission）/
+  查询族判重 / 义务满足总闸 / RECOVERY_* 第二 writer 文案 / RetrievalState 语义增益统计。
+已删除（O5）: 义务台账类（含 term / exact_quote_verified 死字段与 _QUOTE_NORM
+  归一重复——归一真源 = quote_bound.norm_q）。
 
-  即 DeepSeek 流式响应在长回合（约 13 次工具调用、70s+ 的多轮 LLM 流式请求）中被上游
-  中断。三个叠加因素:
-  1. openai SDK / ChatDeepSeek 不重试"已开始输出的"流式请求（连接建立阶段的错误才重试）;
-  2. 引擎 agent_node 的 LLM 调用无应用层重试;
-  3. stream_agent 外层 except 直接以 error 事件终止整轮——已完成的 13 次工具调用所
-     取得的 evidence 全部丢弃（done/citations 不再发出）。
-  修复（引擎接线）: agent_node 有限重试（可恢复错误分类 + 退避）→ 耗尽后 graceful
-  completion（用已取得 evidence 直接完成回答, 明确降低置信度）, 证据契约/引用面板照常。
-  次要根因（同文件 stats）: ① except 路径把工具调用数硬编码记 0（观测盲区, 已修）;
-  ② AIMessage.tool_call_chunks 未防御（2026-08-30 10:12 三连错误, 已加 getattr 防御）。
-  不是"模型调了 13 次工具触发上限"——recursion_limit 60 / 检索硬上限均未触达, 不存在
-  因调用次数本身导致的模型侧报错; 降 max calls 是掩盖, 不采用。
 ────────────────────────────────────────────────────────────────────
 预算取值依据（agent_stats.jsonl 665 条真实记录, 2026-08-06 ~ 08-30）:
-  - 成功回合中位工具数 0-2（简单事实/解释类几乎不检索）;
-  - 复杂跨主题比较/哲学家人格回合 8-12 次常见, 最高 26 次（08-29 15:46, 成功完成）;
-  - 无上限时期出现过 26/21/18 次的长尾——其中确有同参数重复检索（浪费 token/时延）。
-  → soft_total=10 / soft_retrieval=8（覆盖绝大多数复杂回合, 之后开始提醒收敛）;
-    hard_total=24 / hard_retrieval=20（高于观测到的成功复杂回合 21-26 区间下沿,
-    只拦截真正失控的长尾; 连续无增益轮守卫会更早触发, 不依赖硬上限兜底）。
-    全部可用环境变量覆盖（AGENT_SOFT_TOTAL 等）, 引擎内不散落 magic numbers。
+  - 成功回合中位工具数 0-2; 复杂回合 8-12 次常见, 最高 26 次（成功完成）;
+  - hard_total=24 / hard_retrieval=20: 高于观测成功区间, 只拦截真正失控的长尾。
+    全部可用环境变量覆盖（AGENT_HARD_TOTAL 等）, 引擎内不散落 magic numbers。
 """
 import hashlib
 import json
@@ -58,7 +47,7 @@ BASE = Path(__file__).resolve().parent          # backend/
 TRACE_FILE = BASE / "data" / "agent_loop_trace.jsonl"
 
 # ═══════════════════════════════════════════════════════
-# A3 配置（env 可覆盖; 引擎从本模块 import, 不允许就地写死）
+# 配置（env 可覆盖; 引擎从本模块 import, 不允许就地写死）
 # ═══════════════════════════════════════════════════════
 def _env_int(name, default):
     try:
@@ -66,15 +55,7 @@ def _env_int(name, default):
     except (TypeError, ValueError):
         return default
 
-def _env_float(name, default):
-    try:
-        return float(os.environ.get(name, "") or default)
-    except (TypeError, ValueError):
-        return default
-
 TOOL_BUDGET = {
-    "soft_retrieval": _env_int("AGENT_SOFT_RETRIEVAL", 8),
-    "soft_total": _env_int("AGENT_SOFT_TOTAL", 10),
     "hard_retrieval": _env_int("AGENT_HARD_RETRIEVAL", 20),
     "hard_total": _env_int("AGENT_HARD_TOTAL", 24),
 }
@@ -85,10 +66,6 @@ MODEL_RETRY = {
 TOOL_RETRY = {"attempts": _env_int("AGENT_TOOL_RETRY_ATTEMPTS", 1)}   # 工具失败重试（原行为收编为配置）
 TOOL_TIMEOUT = _env_int("AGENT_TOOL_TIMEOUT", 90)
 RECURSION_LIMIT = _env_int("AGENT_RECURSION_LIMIT", 60)       # graph 步数兜底（≈29 轮工具）
-
-# A5: 连续"无信息增益"检索轮 → 提醒 / 强制收口（比总数预算更早拦截原地打转）
-NO_GAIN_WARN_STREAK = _env_int("AGENT_NO_GAIN_WARN_STREAK", 2)
-NO_GAIN_FORCE_STREAK = _env_int("AGENT_NO_GAIN_FORCE_STREAK", 3)
 
 # A4: 可恢复错误判定（对异常文本匹配, 覆盖 openai SDK/httpx/langchain 各层措辞;
 #     未命中的错误一律视为不可恢复——直接走 graceful completion, 不浪费重试）
@@ -126,6 +103,9 @@ SCOPE_PARAMS = {"limit", "top_k", "k", "count", "max_results", "num"}
 REUSE_SAFE_TOOLS = {
     "search_books", "get_chapter", "get_book_detail", "query_graph", "get_philosopher",
     "get_school", "list_books", "query_database", "concept_trace", "websearch",
+    # O7-C/O10-T2: scholarly 二见/读取为只读查询（设计职责含 dedup/cache）——
+    # 同 source_record_id 重复读取应机械复用缓存, 不重复执行
+    "search_scholarship", "get_scholarly_source",
     "philosopher_memory", "philosopher_quote", "philosopher_corpus", "philosopher_graph",
     "philosopher_concepts", "philosopher_user", "philosopher_style", "philosopher_period",
 }
@@ -183,11 +163,11 @@ def result_is_empty(res):
 class DuplicateGuard:
     """同 turn 内重复调用防护（生命周期 = 单次 invocation）
 
-    决策规则:
+    决策规则（纯机械, 与证据充分性无关）:
       - 同 (tool, 完整指纹) 此前成功 且 工具只读 → reuse（复用已有结果, 不再执行）
       - 同 (tool, 完整指纹) 此前失败 → execute（retry_after_fail, 重试合理）
       - 剥离 scope 参数后核心指纹相同（如仅 limit 不同）且工具只读 → execute 但标记
-        scope_variant（放行——"明确需要不同证据范围"合法; 预算统计上施加收敛压力）
+        scope_variant（放行——"明确需要不同证据范围"合法）
       - 其余（参数实质变化/过滤器变化/period 变化 → 指纹必然不同）→ execute
     """
 
@@ -222,18 +202,17 @@ class DuplicateGuard:
             self._success.pop(full, None)
 
 # ═══════════════════════════════════════════════════════
-# A3 ToolBudget
+# A3 ToolBudget（O4: 只剩硬资源上限 + 遥测计数）
 # ═══════════════════════════════════════════════════════
 class ToolBudget:
     """per-turn 工具预算（生命周期 = 单次 invocation; 数值来自 TOOL_BUDGET 配置）
 
-    分类口径:
+    分类口径（纯遥测——这些计数不触发任何控制分支）:
       useful          新指纹且执行成功
       retry           失败后的重试（跨轮; 轮内重试计入工具自身 attempts, 不重复计数）
       duplicate       同参数重复调用（已被复用替代, 未执行, 不占执行预算）
-      no_gain         执行成功但结果与此前完全相同或空命中（无新增信息）
-    soft 达标 → 引擎注入"优先用已有 evidence 作答"提醒（不强制）;
-    hard 达标 → 引擎终止工具循环, 进入 graceful answer completion。
+      no_gain         执行成功但结果为空命中（无新增信息）
+    hard 达标 → 引擎终止工具循环, 进入 graceful answer completion（唯一保留的停止机制）。
     """
 
     def __init__(self, retrieval_tools=frozenset(), cfg=None):
@@ -263,10 +242,6 @@ class ToolBudget:
         else:
             self.useful += 1
 
-    def soft_reached(self):
-        return (self.total_executed >= self.cfg["soft_total"]
-                or self.retrieval_executed >= self.cfg["soft_retrieval"])
-
     def hard_reached(self):
         return (self.total_executed >= self.cfg["hard_total"]
                 or self.retrieval_executed >= self.cfg["hard_retrieval"])
@@ -277,7 +252,7 @@ class ToolBudget:
                 "duplicate_reused": self.duplicate_reused, "no_gain": self.no_gain,
                 "total_executed": self.total_executed,
                 "retrieval_executed": self.retrieval_executed,
-                "soft": self.soft_reached(), "hard": self.hard_reached(),
+                "hard": self.hard_reached(),
                 "cfg": dict(self.cfg)}
 
 # ═══════════════════════════════════════════════════════
@@ -297,18 +272,24 @@ class ToolLoopTrace:
         self.agent_id = agent_id or "general"
         self.question_chars = int(question_chars or 0)
         self.calls = []
+        self.phases = []   # O1: 机械 timing observability（llm/tool/validator 阶段时长）
         self.model_retries = 0
         self._started = time.time()
 
     def record_call(self, call_index, tool, args, duration_ms, success, error,
                     result_summary, rh, budget_cls, info_gain, evidence_items,
-                    executed=True, thought=""):
+                    executed=True, thought="", initiated_by="main_agent",
+                    decision_group=None, tool_call_id=None):
         rec = {
             "type": "call", "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
             "conversation_id": self.conversation_id, "message_id": self.message_id,
             "agent_id": self.agent_id, "invocation_id": self.invocation_id,
             "call_index": call_index, "tool": tool,
             "args_normalized": normalize_args(args), "args_hash": call_fingerprint(tool, args)[0],
+            # O1 provenance: 谁发起? main_agent=模型宣告 / runtime_mechanical=引擎机械动作 /
+            # tool_internal=工具内部实现细节（引擎层不再产生认知性代执行）
+            "initiated_by": initiated_by, "decision_group": decision_group,
+            "tool_call_id": tool_call_id,
             "executed": bool(executed), "duration_ms": round(duration_ms or 0, 1),
             "success": bool(success), "error": (str(error)[:160] if error else None),
             "result_hash": rh, "result_summary": (result_summary or "")[:200],
@@ -318,6 +299,25 @@ class ToolLoopTrace:
         }
         self.calls.append(rec)
         _trace_write(rec)
+
+    def record_phase(self, phase, t_start, **extra):
+        """O1: 机械阶段计时（llm_invocation / validator_* 等）。duration_ms 记录, 不展示思考。"""
+        rec = {"type": "phase", "phase": phase,
+               "duration_ms": round((time.time() - t_start) * 1000, 1), **extra}
+        self.phases.append(rec)
+        _trace_write(rec)
+        return rec
+
+    # ── O1: Main Agent decision group（因果归属: 每次模型 invocation = 一组工具决定）──
+    def begin_group(self):
+        """agent_node 在每次 Main Agent LLM invocation 前调用 → 组号 +1, 返回组标识"""
+        self._groups = getattr(self, "_groups", 0) + 1
+        self._current_group = f"inv-{self._groups}"
+        return self._current_group
+
+    @property
+    def current_group(self):
+        return getattr(self, "_current_group", "inv-1")
 
     def finalize(self, total_duration_s, error=None, answer_chars=0, evidence_ids=None,
                  budget_snapshot=None):
@@ -372,42 +372,23 @@ def invoke_llm_with_retry(invoke_fn, msgs, on_retry=None):
     raise ModelCallError(str(last or "model call failed"))
 
 # ═══════════════════════════════════════════════════════
-# A5 终止条件（显式枚举, 引擎 should_continue/agent_node 接线）
+# 终止条件（显式枚举, 引擎 should_continue/agent_node 接线; O4 后无语义终止源）
 # ═══════════════════════════════════════════════════════
-# Agent turn 结束条件（任一满足即收敛, 前 4 项为"正常收口", 后 4 项为"保护性收口"）:
-#   T1 模型不再宣告工具调用（已有足够 evidence / 义务满足）        → end（既有）
-#   T2 soft 预算达标 → 提醒模型优先用已有 evidence 作答（模型自主停）→ 提醒（A3）
-#   T3 后续调用预计无新增信息 → 连续无增益轮守卫                    → 提醒/强制（本模块）
-#   T4 生成类成品工具已返回完整结果（系统提示铁律 5' 引导, 不在本层强制）
-#   T5 hard 预算达标 → 终止工具循环 → graceful answer completion    → 强制（A3）
-#   T6 强制回答后模型仍宣告工具调用 → 补跑一轮后截断（既有 forced 机制）
-#   T7 graph recursion_limit 兜底                                  → 异常→graceful（引擎）
-#   T8 模型/工具错误重试耗尽                                       → graceful（A4, 引擎）
+# Agent turn 结束条件（任一满足即收敛; 停止权威 = Main Agent 自主宣告 + 机械兜底）:
+#   T1 模型不再宣告工具调用（Main Agent 自主判定证据已足）        → end（既有）
+#   T2 生成类成品工具已返回完整结果（系统提示铁律 5' 引导, 不在本层强制）
+#   T3 hard 预算达标 → 终止工具循环 → graceful answer completion    → 强制（A3）
+#   T4 强制回答后模型仍宣告工具调用 → 补跑一轮后截断（既有 forced 机制）
+#   T5 graph recursion_limit 兜底                                  → 异常→graceful（引擎）
+#   T6 模型/工具错误重试耗尽                                       → graceful（A4, 引擎）
 
-def no_gain_verdict(streak):
-    """连续无增益轮数 → 'none' | 'warn' | 'force'"""
-    if streak >= NO_GAIN_FORCE_STREAK:
-        return "force"
-    if streak >= NO_GAIN_WARN_STREAK:
-        return "warn"
-    return "none"
-
-# 引擎提示文案（集中于此, 避免散落; 均为约束性提醒, 不改变回答风格要求）
-SOFT_BUDGET_HINT = ("（工具调用预算提示: 本轮已进行多次检索。请评估现有材料是否足以回答: "
-                    "充分则停止检索直接作答; 确有必要再用新关键词补充检索, 但避免无意义重复。）")
+# 硬预算指令（机械资源约束文案——只表达资源上限, 绝不暗含"证据已充分"）
 HARD_BUDGET_DIRECTIVE = ("（工具预算已达上限。现在进入最终回答: 禁止调用任何工具, "
                          "禁止输出任何 XML/工具调用标记（如 <invoke>、{TOOL:}）。"
                          "请直接基于已取得的检索结果输出最终回答正文, 引用标注【《书名》· 章节】; "
                          "材料不足的部分明确说明尚未核验。只输出回答文本。）")
-NO_GAIN_WARN_HINT = ("（提示: 最近几轮检索未带来新信息。请基于已有材料回答, "
-                     "或换用实质不同的检索词/工具; 不要重复已有查询。）")
-NO_GAIN_FORCE_DIRECTIVE = ("（连续多轮检索均无新增信息。现在进入最终回答: 禁止调用任何工具, "
-                           "禁止输出任何工具调用标记。请直接基于已取得的检索结果输出最终回答, "
-                           "材料不足处明确说明。只输出回答文本。）")
-RECOVERY_SYSTEM_DIRECTIVE = ("模型服务在回答生成前中断。请严格基于下面给出的检索材料直接输出最终回答"
-                             "（可省略开场白）; 材料不足以支撑的部分必须明确说明'未能核验'并降低确定性措辞, "
-                             "严禁编造引文。禁止输出任何工具调用标记。")
-RECOVERY_NOTE_ZH = "（说明: 服务连接在回答生成前中断，以下回答基于已检索到的材料整理；材料不足处已降低确定性。）"
-RECOVERY_NOTE_EN = ("(Note: the service connection dropped before the answer was generated; "
-                    "the following is organized from the material already retrieved. "
-                    "Confidence is reduced where the material was insufficient.)")
+
+
+# O5: 执行事实登记已整体并入 evidence_contract.EvidenceState
+# ——执行事实归 Evidence Store（done.evidence.facts 输出）, 本模块只剩机械执行状态
+# （trace / guard / budget / 重试; 旧义务台账类已整体删除）。

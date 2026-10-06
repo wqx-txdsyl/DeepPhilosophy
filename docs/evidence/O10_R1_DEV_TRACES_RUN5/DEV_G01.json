@@ -1,0 +1,270 @@
+{
+ "case_id": "DEV_G01",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请介绍学界对「虚构悖论」（paradox of fiction：我们为何会为明知虚构的人物动情）的主要研究与代表论文，给出研究文献而不是百科式解释。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_twj1wsA8olUvRnll0GaO3468"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_nIDrzYwBPCSgf1xYf3ER2022"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_mMn9Q5vbjK3uLBkvAIzJ4990"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_mmYwg53VmcHNuTg732z82450"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_kwanta16bYkpONXHaXZt4658",
+   "args": {
+    "query": "Carroll thought theory emotion fiction",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Carroll thought theory emotion fiction', 'results': [{'source_record_id': 'doi:10.1162/jocn.2008.21029', 'title': 'The Common Neural Basis of Autobio"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_w2DSJObQfMWv7eROtFhp9165"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_YLPDR3zSeTn0zWeRfHlr6799"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_2gL5U1qzcyGbcfP348hL6239"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_g8DDqvfiGBvcqWGObuci8072"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_eLEBnppFe2QIqhdHox4Z2717",
+   "args": {
+    "source_record_id": "doi:10.1515/jlt-2018-0016",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_dQ5bIDDB80SyVK9aH9Xj0143",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要对已定位的可读来源（Radford&Weston 1975、Cova&Teroni 2016、Adair 2019、Davies 2009、Van de Mosselaer 2018）取得摘要级内容证据，才能说明它们各自的主张与争论位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"研究文献而非百科式解释\"，目前仅取得书目存在性（LOCATE 层），尚未取得任何 READ 层内容证据；若就此收口，只能列出题名而无法对任何学者做内容性归因，直接违背 E2 硬化要求。",
+    "unresolved_evidence_gap": "Radford、Cova&Teroni、Adair、Davies 等核心文献的摘要内容与实际主张"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 需要对已定位的可读来源（Radford&Weston 1975、Cova&Teroni 2016、Adair 2019、Davies 2009"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_a9VH9ynlY3XwExiZJumD7525"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_iTc9bSR2BB9zNdKyUprb9733",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1080/09515089.2016.1164306"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1080/09515089.2016.1164306', 'bibliographic_record': {'source_record_id': 'doi:10.1080/09515089.2016.1164306', 'title': 'Is the par"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "虚构悖论（paradox of fiction）研究的主要文献记录：Radford/Walton/Carroll 等关于\"明知虚构仍动情\"的核心论文存在性、书目信息与可读摘要内容",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要对已定位的可读来源（Radford&Weston 1975、Cova&Teroni 2016、Adair 2019、Davies 2009、Van de Mosselaer 2018）取得摘要级内容证据，才能说明它们各自的主张与争论位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"研究文献而非百科式解释\"，目前仅取得书目存在性（LOCATE 层），尚未取得任何 READ 层内容证据；若就此收口，只能列出题名而无法对任何学者做内容性归因，直接违背 E2 硬化要求。",
+    "unresolved_evidence_gap": "Radford、Cova&Teroni、Adair、Davies 等核心文献的摘要内容与实际主张"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2838,
+ "final_answer": "## 关于「虚构悖论」的学界研究：一份有证据边界的文献地图\n\n### 一、悖论的问题结构\n\n先把这个\"悖论\"到底悖论在哪里说清楚，否则文献地图会失去坐标。下面这段是我在本次检索中确证到的一段学界表述（Cova & Teroni 论文摘要），它把结构讲得最紧凑：\n\n该摘要将这一结构概括为三层：感受一种真实情感要求相信其对象实际存在；而我们不太可能对虚构实体持有这种信念；于是问题就在于，我们究竟如何能对这些实体产生真实的情感。\n\n即：若（P1）感受一种**真实**情感要求相信其对象实际存在，（P2）而我们不太可能对虚构实体持有这种信念，那么（C）我们究竟如何能对虚构实体产生真实情感？三个命题各自都像是常识，但合起来冲突——这就是悖论的位置。\n\n需要指出：这**不是**\"人怎么会哭\"的心理好奇，而是一个关于**情感的对象依赖性与信念条件**的概念难题。不同解法之间的分歧，本质上是对\"情感是什么\"（P1 是否成立）的分歧。\n\n### 二、已核验的两份核心文献\n\n**1. Colin Radford & Michael Weston, \"How Can We Be Moved by the Fate of Anna Karenina?\"**\n*Aristotelian Society Supplementary Volume*, Vol. 49, Issue 1, 1975. DOI: 10.1093/aristoteliansupp/49.1.67\n\n这是本次检索中确证书目信息的经典文献（作者、卷期、年份、DOI 均已核验）。**其题名本身即是悖论的经典表述形式**——\"我们如何能被安娜·卡列尼娜的命运所感动\"。我必须诚实说明证据边界：这一条我只取得了书目信息，返回内容并未包含实质摘要，因此我**不描述它内部的具体论证与结论**。凡是把 Radford 的具体论证讲得头头是道而我未读到的说法，都超出我此处的证据。\n\n**2. Florián Cova & Fabrice Teroni, \"Is the paradox of fiction soluble in psychology?\"**\n*Philosophical Psychology*, 2016. DOI: 10.1080/09515089.2016.1164306\n\n这一条摘要完整可读，信息量最大，而且它本身就是一份**学界状态的自述**。摘要给出的图景是：\n\n- 该悖论自提出以来已产生**大量文献**（\"has generated a substantial literature\"）；\n- **主导策略曾长期是\"解决\"（solve）它**；\n- **但近来，越来越多的学者试图借助心理学的数据与理论来\"消解/取消\"（dismiss）它**；\n- 作者明确**反对**这一趋势，主张该悖论不能被近期文献所推荐的方式消解。其论证要点是：当代的\"消解\"尝试都预设了该悖论产生自**关于情感本质的理论承诺**；而作者认为，悖论实际上产生自**日常观察**，这些观察的有效性独立于任何此类理论承诺。因此，仅仅援引心理学来否定那些理论承诺，并不能消解悖论。\n- 文章的正面结论是：悖论**可以**由一个恰当的（adequate）情感理论来真正解决。\n\n这篇文献的价值在于它把争论的**元层面**点出来了。我据此可以概括出这场讨论的两条主要轴线。\n\n### 三、学界争论的两条主轴线\n\n**轴线一：解决（solve）还是消解（dissolve）？**\n一派认为这是一个需要被**解答**的真问题，答案应来自一种更好的情感理论；另一派认为它是**伪问题**——由错误的哲学预设（尤其是\"情感必须满足存在信念\"）制造出来的，一旦澄清预设，问题就蒸发了。Cova & Teroni 明确站在这场争论的第一派，并称第二派为近期日益流行的趋势。\n\n**轴线二：概念分析还是经验心理学？**\n\"消解派\"的一个核心武器是心理学证据——如果经验研究显示情感的产生并不需要存在信念，那么 P1 就被经验地驳倒了，悖论随之瓦解。Cova & Teroni 的反驳策略很值得注意：他们不否认心理学证据，而是**否认这些证据的论证效力**——他们主张悖论源自日常观察而非理论承诺，所以推翻理论承诺并不等于推翻悖论本身。（这是我的转述，依据其摘要）\n\n以上两条轴线的**存在**有 Cova & Teroni 摘要的支撑；把具体学者归入哪一派，我没有足够证据，因此不逐一归类。\n\n### 四、我记忆中、但本次未能核验的经典文献线索（请自行核验）\n\n以下是我基于一般学界印象的工作假设，**本次检索未能取得其记录或内容**，因此我把它们作为\"线索\"而非\"证据\"给出：\n\n- **Kendall Walton, \"Fearing Fictions\"**（记忆中为 *Journal of Philosophy*, 1978）——通常被归为\"假装/虚构\"路线：对虚构对象的情感是\"准情感\"，是在游戏（make-believe）中进行的假装。（记忆，未经库中核验；我本次以 Walton 为主题的检索返回的却是艺术接受心理学方向的记录，未取回该文。）\n- **Noël Carroll 的\"思想理论\"（thought theory）**——主张情感可以由**思想/想象内容**而非信念引起，从而否认 P1。（记忆，未经核验；本次相关检索返回的是神经科学方向的记录。）\n- **Peter Lamarque、Stephen Davies、Eva Dadlez、Tamar Szabó Gendler** 等学者的相关工作。（均为记忆中的线索，未核验）\n\n如果你需要，我可以就其中任一条件**单独做一次定点核验**，把书目与摘要落到实处——这比一次性列长名单更符合你的\"要文献不要百科\"的要求。\n\n### 五、研究入口建议\n\n若你要进入这个问题的真实研究结构，我建议的路径是：\n\n1. **先读 Radford & Weston 1975**，抓住悖论的原始问题形式；\n2. **再读 Cova & Teroni 2016**，因为它用一篇论文的篇幅给你**当前争论的地形图**（解决 vs 消解、哲学 vs 心理学），并附有它自己对\"消解派\"的反驳；\n3. **然后顺着它引用的文献去定位 Walton 与 Carroll 两条经典路线**——它们是这场争论的两块基石，但恰恰是我本次未能核验的部分。\n\n最后提一个值得你注意的方法论问题：这场讨论的一个深层困难在于，**\"情感\"这个词在哲学概念分析与心理学经验研究里并非同一个对象**。Cova & Teroni 的整篇论文其实就是在处理这个错位——他们问的不只是\"悖论能不能在心理学里解决\"，而是\"用心理学来解决它，本身是不是一个范畴错误\"。这个问法，可能比悖论本身更值得追下去。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "需要对已定位的可读来源（Radford&Weston 1975、Cova&Teroni 2016、Adair 2019、Davies 2009、Van de Mosselaer 2018）取得摘要级内容证据，才能说明它们各自的主张与争论位置",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:54:38",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "虚构悖论（paradox of fiction）研究的主要文献记录：Radford/Walton/Carroll 等关于\"明知虚构仍动情\"的核心论文存在性、书目信息与可读摘要内容",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:54:48",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "需要对已定位的可读来源（Radford&Weston 1975、Cova&Teroni 2016、Adair 2019、Davies 2009、Van de Mosselaer 2018）取得摘要级内容证据，才能说明它们各自的主张与争论位置",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:54:48",
+    "reason": "用户明确要求\"研究文献而非百科式解释\"，目前仅取得书目存在性（LOCATE 层），尚未取得任何 READ 层内容证据；若就此收口，只能列出题名而无法对任何学者做内容性归因，直接违背 E2 硬化要求。",
+    "unresolved_gap": "Radford、Cova&Teroni、Adair、Davies 等核心文献的摘要内容与实际主张"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:54:45"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:54:45"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:54:45"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:54:45"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:54:45"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 93181,
+   "output_tokens": 7288,
+   "total_tokens": 100469
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 11,
+   "compacted_chars_saved": 18050,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11897,
+     "output_tokens": 762,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18284,
+     "output_tokens": 1031,
+     "tool_chars_added": 17335
+    },
+    {
+     "round": 3,
+     "input_tokens": 14892,
+     "output_tokens": 503,
+     "tool_chars_added": 1225
+    },
+    {
+     "round": 4,
+     "input_tokens": 16719,
+     "output_tokens": 484,
+     "tool_chars_added": 2637
+    },
+    {
+     "round": 5,
+     "input_tokens": 17307,
+     "output_tokens": 3408,
+     "tool_chars_added": 3859
+    },
+    {
+     "round": 6,
+     "input_tokens": 14082,
+     "output_tokens": 1100,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 93181,
+  "output_tokens": 7288,
+  "total_tokens": 100469
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 51.9
+}

@@ -98,6 +98,20 @@ def test_ai_guard_rate_limit():
     assert 200 in results and 429 in results
 
 
+# ── auth_guard 限流（2026-08-30: agent.deepphilosophy.top 公开后新增）────────
+def test_auth_guard_rate_limit():
+    """注册/登录防刷: 突发容量内放行, 超出返回 429（按 IP 计桶 + 每日配额）"""
+    from guard import auth_guard, AUTH_BURST, _bucket_reset, _quota_reset
+    results = []
+    for _ in range(AUTH_BURST + 3):
+        resp = _call_guard(auth_guard, headers={})
+        results.append(resp.status_code)
+    # 突发容量内放行，超出返回 429（令牌桶随时间回填, 不精确断言放行数量）
+    assert 200 in results and 429 in results
+    _bucket_reset("auth", "auth:ip:testclient")
+    _quota_reset("auth:ip:testclient")
+
+
 # ── routes.text 路径白名单 ────────────────────────────────────
 def test_safe_name_rejects_traversal():
     from routes.text import _safe_name

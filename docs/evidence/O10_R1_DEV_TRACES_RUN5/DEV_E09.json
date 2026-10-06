@@ -1,0 +1,181 @@
+{
+ "case_id": "DEV_E09",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "和老朋友的联系只剩下互相点赞。这种「弱连接」还算友谊吗？还是说友谊需要某种最低限度的「共同在场」？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_pK6FpUYXj9shI1Y9OOhB6121"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_mF0IGa6conTzkZQUCayd1457"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_gLJBkZfboCPa8ypjXUVn3554",
+   "args": {
+    "query": "朋友 第二个自我 共同生活",
+    "limit": 8
+   },
+   "result_head": "{'results': [{'book_id': '7657ef4a2cd3', 'book_title': '与神对话(全5卷）', 'author': '尼尔·唐纳德·沃尔什', 'chapter_idx': 0, 'chapter_title': '总目录', 'citation_label': '【《与神对话("
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_9umVX3JjAMLlUDLJbAh66817"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_xGqQEhbArvgGvVmRSNmo8556",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 9
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_Cr0HfMhZWASVXaJOpjgS9546",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德《尼各马可伦理学》友谊分类与\"共同生活\"作为友谊条件的原文——已由第八卷取得",
+    "source_dependent": true,
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '亚里"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德《尼各马可伦理学》关于友谊的分类，以及\"共同生活/共同度过时间\"是否为德性友谊必要条件的原文措辞与章节位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德《尼各马可伦理学》友谊分类与\"共同生活\"作为友谊条件的原文——已由第八卷取得",
+    "source_dependent": true,
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1414,
+ "final_answer": "## 先拆问题：你问的其实是两件事\n\n第一个是**划界**问题：点赞式互动算不算\"友谊\"——即我们愿不愿意把\"友谊\"这个词的边界划到哪里。第二个是**条件**问题：友谊是否需要某种最低限度的\"共同在场\"。两者相关，但不重合。若第二个答\"必须\"，第一个便自动被否；若\"共同在场\"可以被放宽，第一个就还有余地。所以真正要先回答的是第二个。\n\n## 一个古典参照系：亚里士多德的三种友爱\n\n亚里士多德的《尼各马可伦理学》第八卷正是从这个地基上开始的。他先给出一个强判断：友爱\"对生活是最必需的东西\"，因为没有人想过没有朋友的生活（【《尼各马可伦理学[注释导读本]》· 第八卷 友爱论】）。接着他按\"可爱的因缘\"把友爱分成三类——因对方**有用**、因对方**令人快乐**、因对方**本身的善**。前两种是偶然的、易逝的：朋友一旦不再有用或不再带来快乐，友爱就随之消散。\n\n这条分析里有一点和你的问题直接相关。亚里士多德说，要成为朋友，\"就必须不仅要……互有善意……且双方都要让对方感受得到这种善意\"（同上）。也就是说，友爱不只是我单方面对你有好感，而是**双向的、且双方都能感知到**的相互承认。更关键的是，他对\"有用型\"友爱的判语：这种人之间\"根本不适合于过共同生活\"（同上）。这句很重要——它把\"共同生活\"当成了友爱的一条**标志性维度**，有用型恰恰因为过不了共同生活而被排除在真正的友爱之外。\n\n需要说明的是，\"共同生活\"在亚氏那里不等于物理上同处一室；他在同卷也承认朋友因分离而淡出。但它的确有一种实质内容：**一种持续的、互惠的、共同做点什么的活动**。\n\n## 那么点赞处在什么位置\n\n按这个框架，点赞式弱连接几乎够不上任何一档。它既不真\"有用\"（没有可交换的实质)，也不提供德性层面的相互成就；更要命的是，它**没有共同做点什么**——点赞是两个人各自对着屏幕完成的动作，不是\"一起\"完成的。它有善意，却没有\"双方都让对方感受得到\"所要求的那种相互承认的**厚度**。它顶多是一种**承认的最小信号**：我还记得你，我还认这条连接。\n\n不过弱连接并非无价值。社会学里（通常归于格兰诺维特\"弱连接的力量\"这一说法，**记忆，未经库中核验**）弱连接的功能恰恰在于它是**信息的桥**——它维系着一条低维护成本、可随时唤醒的通道。它真实，但它承载的是\"通道\"，不是\"友谊\"本身。\n\n## \"共同在场\"应被怎样理解\n\n如果把它理解成\"当下物理同框\"，那会把远程友谊、书信友谊、乃至年迈故交都判成非友谊，这显然过苛，也不符合亚氏自己承认分离的态度。更站得住的理解是三件事的交叠：**时间的持续性、善意的可感知的互惠、以及某种共同活动的重复**。三者缺一，友谊就退化为它的记忆或它的壳。\n\n## 我的综合判断\n\n弱连接不是友谊，但也并不因此是\"假的\"——它更像友谊的**潜在通道或残骸**：有唤醒的可能，却无当下的内容。所以我会把\"共同在场\"读作一条**门槛而非刻度**：它要求的不是同框，而是\"曾经共同生活过、且善意仍在双向流通\"。点赞替代不了它，但点赞可以证明这条通道还没断。真正值钱的老友谊，往往靠的不是点赞的密度，而是那条通道被唤醒时，你们还能立刻回到\"共同做点什么\"的状态。\n\n所以不妨反过来问自己一句：你点赞的时候，维系的是这段友谊，还是你对这段友谊的**纪念**？——这两者在屏幕上是同一动作，在心里却是两个位置。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "亚里士多德《尼各马可伦理学》关于友谊的分类，以及\"共同生活/共同度过时间\"是否为德性友谊必要条件的原文措辞与章节位置",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:50:48",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "亚里士多德《尼各马可伦理学》关于友谊的分类，以及\"共同生活/共同度过时间\"是否为德性友谊必要条件的原文措辞与章节位置",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:51:05",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:50:54"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 64582,
+   "output_tokens": 6128,
+   "total_tokens": 70710
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 5,
+   "compacted_chars_saved": 11704,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11889,
+     "output_tokens": 1234,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17812,
+     "output_tokens": 1082,
+     "tool_chars_added": 9242
+    },
+    {
+     "round": 3,
+     "input_tokens": 17171,
+     "output_tokens": 1890,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 4,
+     "input_tokens": 17710,
+     "output_tokens": 1922,
+     "tool_chars_added": 1486
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 64582,
+  "output_tokens": 6128,
+  "total_tokens": 70710
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 40.6
+}

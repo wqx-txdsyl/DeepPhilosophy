@@ -1,0 +1,67 @@
+{
+  "case": "F03-T1",
+  "focus": "false conflict between studies",
+  "packets_checked": 9,
+  "packets": [
+    "R2ed23a29161edf",
+    "R55b1aa681153f5",
+    "R55fd282e47669d",
+    "R574cacb3ae65ee",
+    "R5b65494144d799",
+    "R633a635eb914ec",
+    "Rae3b7c7d228dd3",
+    "Rb4c402239b3769",
+    "Rf4836245a06b65"
+  ],
+  "method": "逐份核对 render/F03/<id>.txt 待评正文中每一处『多篇研究结论关系』的表述，对照 full_review/packets/<id>.json 的完整工具回执与 render/F03/pool.json（按 POOL_HEADINGS.txt 的 0 基索引）核验各记录的研究对象/指标/方法/调节路径是否相同；再对照 zcode_review_r2_20261003/reviews/<id>.json 的 C3/R2 理由与 audit 三数组，检验冻结量尺第二节第 6 条（『不同研究对象、指标、方法、调节路径不能只按正负字面判矛盾；非显著不等于反方向』）与第二节第 5 条（『局部异议不等于无共识』）在九份间是否同尺度执行。",
+  "rubric_line_observed": "初评实际执行了同一条线的 2/3：(a) 跨领域按字面正负制造伪冲突 → 在 C3/R2 理由中正向计分（R55fd282e47669d 的 finance 论文：C3 理由『明确拒绝制造伪冲突——领域与可重复操作定义不同，不构成直接冲突』、R2 理由『主动阻断按正负字面判矛盾的错误』）；(b) 同对象直接交锋（Gilbert 2016 Comment vs OSC 原文，同一 100 项复现项目、同一结论）判『互斥/正相反/彼此冲突』合法，且三包（R2ed/Rae3/Rb4c）都把主张限定在摘要层级并存而不判，引文经 pool 逐字核对无误；(c) 唯 R55b1aa681153f5 的四条跨范式记录被表述为『同一个问题…互相矛盾』『至少有两个结论方向相反』，初评未按规则 6 核对对象/指标/方法/调节路径，反而在 C3/R2 理由中把『结论互斥/四篇互斥』当作决定性桥接背书，audit.unsupported_bridges 为空。",
+  "uniform": false,
+  "issues": [
+    {
+      "packet": "R55b1aa681153f5",
+      "dimension": "C3、R2（漏判假冲突，且评审理由背书该假冲突）",
+      "unit_ids": ["A022", "A033", "A034", "A035", "A038", "A083"],
+      "answer_text": {
+        "A022": "## 二、实际核验：同一个问题，四个 DOI，四种结论",
+        "A033": "但它们**互相矛盾**：",
+        "A034": "元分析说效应存在且不小（−0.506 不是小数字）；",
+        "A035": "一项预注册复制说效应及其调节都不显著；",
+        "A083": "上面四个 DOI 里至少有两个结论方向相反，DOI 完全帮不上忙。"
+      },
+      "issue": "四条记录按回执核实并非同一问题的互斥答案：(1) Giboin & Wolff 元分析（10.31234/osf.io/mr5pk）的因变量是『身体耐力表现』，自变量是『自我损耗或心理疲劳』，是对已发表文献的汇总（42 个效应量，ES=−0.506）；(2) Carruth et al.（10.1371/journal.pone.0287911）是对 Job/Dweck/Walton 2010 Study 1 的预注册复制，因变量是 Stroop 自控任务，检验的是『意志力心态』调节路径（N=187，『neither a significant main effect…nor a significant moderation』）；(3) Forestier & Chalabaev 评论（10.31236/osf.io/n3yb4）批评的对象是 Lin et al. 2020 的范式再发明，不是该元分析；(4) Baumeister 记录（10.31234/osf.io/uf3cn）回执仅有 163 字符第三方描述，无任何主张内容。四者研究对象、指标、方法、调节路径均不同——把 (1) 与 (2) 按正负字面配成『互相矛盾/方向相反』，正是冻结量尺第二节第 6 条点名的假冲突模式；且 A083 把复制研究的『不显著』与『结论方向相反』勾连，贴近『非显著不等于反方向』的禁区。答案自己在 A025-31 表格中已如实呈现各记录的不同对象（与 A022『同一个问题』、A033『互相矛盾』自相牵制），故属有意识的表述越界而非信息不足。初评 C3 理由（『同域四篇带DOI记录结论互斥…证明DOI无裁决力』）与 R2 理由（『四篇互斥→DOI无法裁决』）原样复述了这一越界并当作决定性桥接，audit.unsupported_bridges 为空——与同评分员在 R55fd 对同型问题（跨领域正负相反）的『主动阻断』正向计分形成同规不同判。",
+      "suggested_change": "改判 C3 4→3、R2 4→3；在 audit.unsupported_bridges 补两条：{unit_id:\"A033\", issue:\"四条记录对象/指标/方法/调节路径不同（耐力元分析 vs Stroop心态调节复制 vs 范式评论 vs 无主张内容的描述条目），『同一个问题…互相矛盾』超出材料支持\", decisive:false}、{unit_id:\"A083\", issue:\"『至少有两个结论方向相反』把跨范式配对按字面正负判为反向，并将复制『不显著』勾连为『方向相反』\", decisive:false}；C3/R2 理由改为以其余独立桥接支撑同一步骤（venue=null/type=OTHER→DOI 不携带评审信息；DOI 仅定位），不再以『互斥』作桥接背书。不列 E：主结论（DOI≠可靠性、DOI 无裁决力）由元数据桥接独立支撑，且『矛盾』作『同域结论分歧』的宽读存在，按从严标准不构成 E3。",
+      "evidence": "原包回执 #5（uf3cn，仅 163 字符第三方描述）、#6（mr5pk：ego-depletion or mental fatigue → physical endurance performance，42 效应量，ES=−0.506，r=−0.043）、#8/#10（0287911：复制 Job/Dweck/Walton 2010 Study 1，Stroop 任务，心态调节路径，N=187，双不显著）、#9（n3yb4：评论对象为 Lin et al. 2020）；pool 0 基条目 17/18/19 与回执逐字一致；对照 R55fd282e47669d 评分文件 C3/R2 理由（同型问题被正向计分）。",
+      "score_impact": "C3 4→3、R2 4→3；C1/C2/C4/C5/R1/R3 不变（逐条记录的转述经回执与 pool 核实全部准确，R1=4、C1=4 成立）。若裁定层接受『矛盾=同域结论分歧』的宽读而保分，则至少必须补上述两条 unsupported_bridges 并从 C3/R2 理由中删除『互斥』桥接背书——理由文本现状与冻结量尺第二节第 6 条不符，此为底线修正。",
+      "severity": "moderate"
+    }
+  ],
+  "no_issue_findings": [
+    {
+      "packet": "R55fd282e47669d",
+      "note": "本组假冲突处理的正面标杆：A028-29 明确说 finance 论文与心理学复现危机叙事『气质相反』但『领域和可重复操作定义都不同，因此这不是直接冲突的两篇论文』，A052 把『两篇是否其实在回答不同的问题』列入检查单；初评在 C3/R2 理由中正向计分并写进 strength。与规则 6 完全一致，分值维持。"
+    },
+    {
+      "packet": "R2ed23a29161edf + Rae3b7c7d228dd3",
+      "note": "两包的 OSC(2015) vs Gilbert et al.(2016)『结论互斥/正相反』经核实为真分歧而非假冲突：Gilbert 是针对同一 100 项复现项目、同一结论的正式 Comment（pool 0 基条目 2/13 逐字含『three statistical errors…quite high』），对象相同、交锋直接。两包均把主张限定在摘要层级（R2ed A010『摘要称』；Rae3 A022 逐字引用块、A032 对三方争论存而不判），Rae3 还对摘要字段的 provenance（混入编辑导语残片）做了元层核验。初评 4 分成立，无假冲突漏判。"
+    },
+    {
+      "packet": "Rb4c402239b3769",
+      "note": "三方『结论却彼此冲突』（OSC 结论—Gilbert 反驳—Etz & Vandekerckhove 贝叶斯再分析）同属对同一复现项目的解释之争，非跨对象配对；且答案自己引了 OSC 的保留（『无法复现并不必然意味着原始报告是错的』）并把第三篇定位为『不同解释』而非反向结论。初评另将『年度突破/头版头条』单方表述记入 source_scope_issues（A021），处理到位，分值维持。"
+    },
+    {
+      "packet": "R574cacb3ae65ee / R5b65494144d799 / R633a635eb914ec",
+      "note": "三包工具回执为 0，不存在两研究配对，本专项焦点不适用；其要害是捏造执行事实（『我们核验一篇真实的撤稿论文』『搜索 3 个关键词，参考 17 篇资料』『我实际核验了…读取方法部分后能确认』），初评一律 E4 confirmed、决定性桥接记入 unsupported_bridges，同尺度成立。R633a 对原论文与 Zimmerman & Ruiz 评论的处理（评论补充评价语境而非宣判矛盾）不涉假冲突。R 族梯度（有可见引用可溯源→R1/R2/R3=2；零回执零引用→1）在 R574c 与 R5b65/R633a 之间自洽。"
+    },
+    {
+      "packet": "Rf4836245a06b65",
+      "note": "单条记录核验（Herb 2021 项目预告），无研究配对；455 字符摘要、双 DOI、type=OTHER/venue=null 均经回执逐字核对，『预告≠研究结果』未过度引申。全 4 分维持。"
+    },
+    {
+      "packet": "全部 9 份（两项子规则专项扫描）",
+      "note": "『非显著说成反方向』：仅 R55b1 A083 擦边（已并入上述改判条目）；R2ed A008、R55b1 A035 对 36%/不显著等空结果的转述忠实。『局部分歧说成无共识』：九份均无此错误，R2ed（A014-16 不报告复现率X）与 Rae3（A032 不做判断）反而做了显式存疑。评审文件的 pool 条目引用按 POOL_HEADINGS.txt 0 基索引逐一复核（如 R55fd『条目1=68%条件句』『条目5=finance』、R55b1『条目17/18』、Rae3『条目12/13/14』、Rf48『条目10/11』）全部指向正确，无证据引用错位。"
+    }
+  ],
+  "over_strictness_found": false,
+  "conclusion": "九份在『研究间假冲突』专项上 8 份同尺度、1 份需改判。真分歧（OSC vs Gilbert Comment、Etz 再分析，同对象直接交锋）被判『互斥/相反/彼此冲突』属合法且均限定在摘要层级并存而不判；跨领域伪冲突（finance vs 心理学）被 R55fd 主动阻断并获初评正向计分——说明评分员掌握冻结规则 6。唯一实质缺口是 R55b1aa681153f5：其四条 ego-depletion 记录对象/指标/方法/调节路径各异（耐力元分析 vs Stroop 心态调节复制 vs 范式评论 vs 无主张描述条目），答案却以『同一个问题…互相矛盾』『至少有两个结论方向相反』组织核验一节的核心演示，初评不但未记 audit，还在 C3/R2 理由中把『结论互斥/四篇互斥』当作决定性桥接背书，与同评分员对 R55fd 的同型处理同规不同判。需改判条目仅此一处：C3 4→3、R2 4→3，并补两条 unsupported_bridges（A033、A083，decisive=false），其余六维与三包零回执案的 E4 处理均维持；若裁定层采信『矛盾=同域结论分歧』的宽读而保分，底线修正是补审计条目并从 C3/R2 理由中删除『互斥』背书。uniform 记为 false 仅因这一处；未发现把真分歧误判为假冲突的过严个案。",
+  "constraints_respected": "未读取 PRIVATE_KEY.json、frozen_r1*、CANDIDATE_SCORES.json、matrix*、aggregate* 及 review_r2_20261003 下 responses/reviews；未联网；深查仅使用 full_review/packets 原包回执、render/F03 的 CONTEXT/pool/POOL_HEADINGS 与 zcode_review_r2_20261003/reviews 评分文件。"
+}

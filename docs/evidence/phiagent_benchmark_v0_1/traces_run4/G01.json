@@ -1,0 +1,1264 @@
+{
+ "case_id": "G01",
+ "category": "G",
+ "prompt": "假设两位老师给学生的全部短期和长期影响完全一样，学生也永远不知道动机：一位出于关心，一位只为履职。前者一定更好吗？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "假设两位老师给学生的全部短期和长期影响完全一样，学生也永远不知道动机：一位出于关心，一位只为履职。前者一定更好吗？",
+   "wall_s": 78.9,
+   "ttft_s": 5.3,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "bf30d25d332d4aafa3b346d5420027b5:1:note:0",
+     "content": "这个问题值得分清\"更好\"是在哪个层面说的。我先核对几处原典表述，再回答。"
+    }
+   ],
+   "provider_reasoning": "The user asks a philosophical question: if two teachers have identical short- and long-term effects on students, and students never know the motive, is the caring one necessarily better?\n\nThis is a classic question about the moral relevance of motives. Key positions: consequentialism (only outcomes matter), Kant (good will is the only unconditionally good thing), virtue ethics (character/motive matters intrinsically), Hume (moral merit of an action lies in motive), and the debate over \"moral luck\" / the \"moral worth\" of actions.\n\nThe user asks for a philosophical analysis. Should I use tools? The question is conceptual, but tools could help ground in original texts. Let me think about what would strengthen: Kant's opening of Groundwork (\"Es ist überall nichts in der Welt... als allein ein guter Wille\"), Kant on the \"honest merchant\" / beneficent person vs the dutiful person (the famous passage about the philanthrope whose mind is clouded by sorrow, acting from duty — first proposition of morality). Also the \"Menschenfreund\" passage in Groundwork I.\n\nAlso Hume: Treatise 3.2.1 \"Of the origin of our ideas... moral distinctions derived from a moral sense\"? Actually Hume: \"the merit of an action consists in the motive\" — Treatise 3.2.1, and the famous claim that a virtuous action done from a bad motive loses merit.\n\nAlso possible: Noddings' care ethics; but the question is about the \"necessarily better\" — the alethic modality. Also consequentialist: Sidgwick, Mill on motive (Mill's Utilitarianism chapter 2: the motive has nothing to do with the morality of the action, though much with the worth of the agent). That's a great precise quote.\n\nSo there's a sharp distinction: the action's rightness vs. the agent's worth/praiseworthiness. The question conflates or asks about \"更好\" — better in what respect? Better teacher, better person, better state of affairs?\n\nAlso the condition \"students also never know the motive\" — but does that exhaust the effects? The premise says all short and long-term effects identical. So by stipulation, no difference in effects. Then the question: is the caring one necessarily better?\n\nNote a subtlety: \"全部影响完全一样\" — if motive itself is part of what we evaluate, then motive isn't an \"effect.\" The evaluative question is whether motive has intrinsic moral relevance independent of effects.\n\nAlso worth noting: there's an epistemic point — if the students never know, we as evaluators might still know (the premise says students never know; the evaluator's knowledge is different). Does the comparison presuppose a standpoint — God's-eye, or an observer? If literally no difference observable, then a purely observational/evidence-based standard would say they're indistinguishable.\n\nI should check local texts for accurate quotes. Let me search: Kant's Grundwerk on \"guter Wille\" and the \"Menschenfreund\" / duty passage in Chinese translation (likely 苗力田 or 李秋零 translation). Also Mill Utilitarianism on motive. Hume Treatise.\n\nLet me do a few searches in parallel.\n\nLet me search:\n1. search_books query \"善良意志\" author 康德\n2. search_books query \"动机\" author? maybe \"行为的道德性\" — Mill.\n3. Hume 动机.\n\nLet me start.I need the specific Groundwork passage: \"Es ist überall nichts in der Welt... was für uneingeschränkt gut gehalten werden könnte, als allein ein guter Wille\" — 苗力田/李秋零译本: \"在世界之内，一般而言甚至在世界之外，除了一个善良意志之外，不可能设想任何东西能够被无限制地（无条件地）认为是善的。\"\n\nAlso the duty passage: \"去帮助他人\" from duty vs the \"sympathetic\" person. And the honest merchant (ehrlicher Kaufmann).\n\nAlso Mill Utilitarianism ch2: \"the motive has nothing to do with the morality of the action, though much with the worth of the agent.\" Let me search for that in Chinese translation.\n\nAnd Hume's Treatise on the merit of motive.\n\nLet me search these. Also check catalogue of 康德著作集 chapter list to find 《道德形而上学奠基》.\n\nLet me do parallel searches:\n1. search_books \"在世界之内，一般而言甚至在世界之外\" (Kant Groundwork)\n2. search_books 密尔 功利主义 \"动机\" \n3. search_books 休谟 \"动机\" \"德的 merit\" — 人性论.Let me find the Groundwork in the 康德著作集. Get book detail with focus \"道德形而上学奠基\" or \"奠基\".\n\nAlso search for the Mill passage with different keywords: \"动机\" \"值得称赞\" or \"行为者\". Let me read 功利主义 chapter 2 with focus 动机.\n\nAlso 休谟 人性论: search \"德 的 价值 在于 动机\" or \"善良的动机\".\n\nLet me do parallel: get_book_detail for 康德著作集 focus 奠基; get_chapter for 功利主义 ch2 focus 动机; search 休谟 人性论 \"动机\".Excellent — I have Mill's Utilitarianism ch2 passage: \"动机跟'行为是否合乎道德'没有关系，而是与行为人的品格有很大关系\" — great, exactly the distinction. Also \"没有哪种已知的道德标准会根据行为实施者的善恶来判断这种行为的好坏\" and \"一种正确的行为并不一定说明行为人具有高尚的品格\".\n\nNow I need Kant's Groundwork. The 康德著作集 has 81 chapters; the chapter list wasn't returned (chapters: []). Let me search within that book for the Groundwork text. Search book_id 309de54e4392 for \"道德形而上学基础\" or search \"善良意志\" within that book with focus.\n\nActually, search_books with book_id and query \"善良意志\" gave nothing earlier in that book? The first search gave chapter 12 and 71 candidates. Let me search within book_id=309de54e4392 for \"善良意志\".\n\nAlso there's 康德文集 (390398aff8d0) which may have 道德形而上学奠基. Let me search \"道德形而上学奠基\" or \"善良意志\" in that book.\n\nAlso for Hume, let me search 人性论 with different terms: \"德 的 价值 在于\" or \"仁爱\" \"义务感\". Try search_books author 休谟 query \"德行 的 价值 取决于 动机\".\n\nLet me run parallel searches.Hume's Treatise seems not searchable by these terms — maybe the 人性论 file is scanned/differently worded (关文运译 uses \"德\" \"仁慈\" \"义务感\" maybe \"责任感\"). Let me try searching within book 178e7d06d42d with query \"仁慈\" or \"动机\".\n\nActually the earlier search within that book for \"动机 德的 merit 善良\" returned nothing with coverage 6 chapter entries only — suggesting the book has few chapters indexed (4册 → maybe 6 chapter entries). Let me try get_book_detail for 178e7d06d42d to see chapters.\n\nAlso I still want the Kant Groundwork \"在世界之内...\" sentence. The 康德著作集 may not include 《道德形而上学奠基》 full text? Chapter 12 is 实践理性批判. Let me check the chapter list of 309de54e4392 with focus on \"奠基\" returned no chapters (chapters: []). Let me list chapters without focus, limit 40, offset 0.\n\nParallel: get_book_detail 309de54e4392 limit 40 (no focus); get_book_detail 178e7d06d42d limit 20.Hume's Treatise vol 3 (morals) isn't in this file (only vol 1). So I can't cite Hume's Treatise on motive directly. I'll skip Hume or note not verified.\n\nKant's 道德形而上学奠基 — the 康德著作集 chapters 0-39 listed don't include it; let me check offset 40.\n\nAlso let me search for the Groundwork sentence in a broader search: query \"在世界之内\" — maybe in 康德文集 (390398aff8d0) which has 《道德形而上学的奠基》? Its chapter 27 是 实践理性批判, 29 道德形而上学. Let me check its chapter list with focus \"奠基\".\n\nParallel: get_book_detail 309de54e4392 offset 40 limit 41; get_book_detail 390398aff8d0 focus \"奠基\" limit 30.So 康德著作集 chapters 46-49 = 《道德形而上学探本》(唐钺译, 第一章/第二章/第三章). That's the Groundwork! Chapter 46 title: \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\" — contains the famous opening \"在世界内，除了善良意志之外，绝没有什么可以无条件地称为善的\" (唐钺译: \"在世界里面，也许甚至在世界以外，除了善意之外，绝没有什么能被无限制地认为善的东西\").\n\nLet me read chapter 46 with focus \"善意\".\n\nAlso read 390398aff8d0 chapter 26 (道德形而上学的奠基) with focus \"善良意志\" for another translation.\n\nLet me also consider the \"两个商人\" and \"同情心的人\" passages — in chapter 46.\n\nParallel: get_chapter 309de54e4392 idx 46 focus \"善意\"; get_chapter 390398aff8d0 idx 26 focus \"善良意志\".I need the opening of Groundwork chapter 1 with the \"善意\" statement, and the \"sympathetic person\" / \"duty\" passage, and the \"honest merchant\" passage. In 309de54e4392 chapter 46, the beginning contains the opening. Let me read from offset 0 (or focus \"善意\" — matched at 20374 only, in the world where \"同情,说善意\"). Hmm, the唐钺 translation uses \"善意\" for goodwill. The opening: \"在世界里面，也许甚至在世界以外，没有什么可以无限制地被认为善的东西，除了善意之外\" — let me read the chapter beginning.\n\nLet me read 309de54e4392 ch46 from offset 0 with max_chars 4500.\n\nAlso I want the \"义务\" vs \"爱好\" famous passage: \"一个人由于同情心去帮助人\" vs \"由于义务\" — in 唐钺译本 it's like \"有些行为...例如，一个商人...\". Let's read the beginning and see.\n\nAlso, I might want the \"值得称赞\" / \"道德价值\" point: \"行为的道德价值不在于由之预期的效果，也不在于任何需要从这种预期效果借来的原则... 而只在于意志的原则，即意愿的准则\".\n\nLet me read the opening of ch46.I now have Kant (唐钺译本) chapter 1 with the key claims:\n- \"在这世界内，或是就是在这世界以外，除了好的意志之外，没有什么东西有可以无限制地被认为好的可能。\"\n- \"好意志所以好，并不是因为它的工作或成就... 乃是只因为立志作用\"\n- The honest merchant example and the sympathetic-but-dutiful philanthropist example.\n\nNote: this translation is 唐钺's 《道德形而上学探本》 (汉译世界学术名著). The 商务印书馆 汉译名著 actually has 唐钺译《道德形而上学探本》. Good.\n\nAlso I might want an additional modern angle: the debate over whether \"moral worth\" depends on motive in a way that \"the students never know\" is beside the point — Julia Markovits' \"Acting for the Right Reasons\" argues moral worth requires acting for the right reasons (i.e., the motive must be non-accidentally related). Also there is the literature on \"moral worth and motive\" vs. Nomy Arpaly's \"Praise, Blame and the Whole Self\" / \"Unprincipled Virtue\" arguing that the agent's responsiveness to moral reasons (not the deliberate motive) matters.\n\nAlso the \"no difference in effects\" premise: this points to a question about whether well-being/outcome is the only evaluable dimension. Also a key asymmetry: if the two teachers' effects are truly identical including all long-term effects, then for a purely consequentialist \"better teacher\" evaluation, they're tied. But Mill says the motive matters for \"行为人的品格\" — the agent's worth.\n\nAnother consideration: The caring teacher has a more reliable disposition — reliability is itself a dispositional property that may not show up in these particular observed effects. But the premise stipulates all effects identical, so this counterfactual reliability is stipulated away... Actually no: the premise says \"全部短期和长期影响完全一样\" — that's about actual effects. A counterfactual difference (caring teacher would respond better in a different scenario) might be a real difference not covered by \"actual effects.\" This is a subtle point worth raising: if \"effects\" means actual effects only, then differences in counterfactual robustness remain. But the questioner probably means: there is no observable difference in what happens to students. I should note the ambiguity carefully.\n\nAlso: is \"better\" being asked about the teacher (agent), the relationship, or the state of affairs? Three readings:\n(a) instrumentally better teacher → tied by stipulation.\n(b) better person (moral worth) → Kant: the caring one is better, and it's intrinsic, not affected by effects or by whether students know. Indeed Kant's point: the good will's value doesn't depend on efficacy — even if it achieves nothing, it shines like a jewel.\n(c) The students never knowing is irrelevant to both (a) and (b) — knowledge affects the effect dimension; if knowledge is stipulated absent, then effects are equal. So the \"students never know\" clause only eliminates certain effects (gratitude, trust, motivation contagion). But note: it also matters for a distinct question — epistemic warrant for praise. If no one could ever tell, can we still say one is better? Yes, on Kant's view: value attaches to the will, and the evaluator's epistemic access isn't part of the value; but it matters for whether praise/blame is fair/possible.\n\nAlso there's an important asymmetry worth flagging: \"只为履职\" (only fulfilling duty for its own sake of duty? or merely going through the motions for pay/contract?). Actually \"只为履职\" is ambiguous between (i) acting from duty (Kant's conscientious teacher) and (ii) acting merely out of self-interested compliance, no concern. If \"履职\" means \"doing what the job requires without caring\", that's not Kant's dutiful agent, that's more like... hmm. Kant's dutiful agent acts from duty, which Kant regards as morally valuable — arguably MORE valuable than the naturally sympathetic one (the philanthropist passage). So interestingly: if the second teacher acts from a sense of duty, Kant would say the second may be the one with genuine moral worth, and the first (out of inclination/care) has \"no true moral value\" — \"无论是多么正当，多么可爱，总没有真正的道德价值\". That's a striking reversal of the intuitive answer! That's the strongest philosophical payoff: Kant's answer is not simply \"the caring one is better\" — it may be the opposite for the dimension of moral worth.\n\nBut careful: \"只为履职\" — \"only to fulfill the job/role obligations.\" If it's \"履行职责\" out of respect for duty, then Kant's answer favors the dutiful one. If it means \"just doing the job to get paid / avoid trouble\" (i.e., external compliance, no inner commitment), then Kant would say neither has moral worth in the relevant sense... wait no: the caring one acts from inclination (care), which Kant says lacks moral worth; the other acts from self-interest — also lacks moral worth. Then on Kant's account, NEITHER has moral worth, and the question \"前者一定更好吗\" gets answered: not on the moral-worth dimension.\n\nSo there's a genuinely tripartite answer:\n- If \"只为履职\" = 出于义务/敬重法则 → Kant: on the moral-worth axis, the caring-from-inclination one may be *lower*; so not necessarily better.\n- If \"只为履职\" = 外部服从/自利 → on Kant's axis neither has moral worth; the caring one isn't better *because* of care, though it's \"可爱/值得赞美\" (Kant grants it deserves praise and encouragement, but not 敬重).\n- Mill/功利主义: motive irrelevant to rightness of action; relevant to agent's character → so \"更好\" must be disambiguated.\n- Virtue ethics / care ethics: the caring teacher's motive partly constitutes the relationship; but if effects identical and students never know, the relationship is not different in the students' experience...\n\nAlso a key point for the answer: whether X is better depends on the value standard adopted, and the choice of standard can't be read off the scenario. But that's not purely relativist: we can say, under each standard, what follows. And we can identify a genuinely standard-independent point: if the ONLY candidate difference is an unobservable motive and all effects are stipulated identical, then any \"better\" must be a claim about non-consequential value — it cannot be defended by appeal to consequences. So the question \"一定更好吗\" — the word \"一定\" (necessarily) — the answer: No, not necessarily; it's better only if you accept a value theory on which motive has intrinsic/non-instrumental moral significance. And on Kant's own theory, the answer is surprisingly not simply yes.\n\nOne more: a possible drift issue — \"学生永远不知道动机\" — does that matter? For consequentialist assessment it removes motive-based effects. But there's a subtlety: does an identical-effects stipulation even make sense if the teacher's character shapes countless micro-interactions? The premise is a stipulation, so fine, but I should note that it's a strong idealization, and that the question is really a conceptual/axiological one, not an empirical one.\n\nAlso a mention: this question is a modern dress of the \"moral worth\" debate — includes \"moral luck\" (Williams/Nagel) but relevant: Kant's position already anticipates \"the value of the good will is independent of results,\" while critics (e.g., consequentialists, and also virtue epistemologists of motive) say motive-only value wrongly ignores outcomes.\n\nShould I use tools more? Possibly search_scholarship for the \"moral worth and motive\" debate to add a contemporary check, e.g., work on whether motives matter. That would strengthen. Also perhaps check whether there's a care ethics source (Noddings) in the library. But the question is a philosophical analysis, not a request for a literature review. I've got two solid original-text anchors (Kant Groundwork ch1, Mill Utilitarianism ch2). That's enough. Maybe one scholarship check for the contemporary debate would add value about whether \"moral worth depends on motive\" is contested. Let me do a quick search_scholarship on \"moral worth motive\" and maybe \"modes of moral worth\". Also maybe check 亚里士多德 on virtue/motive (Nicomachean Ethics 1105a30s: actions done from virtue require a certain state). Hmm, the \"just/brave person\" passage: \"actions are called just and temperate when they are such as a just or temperate person would do... but what the agent does must be done in a certain way: from choice and for the sake of the fine\" — this is a good third anchor: Aristotle requires the agent's state. Let me verify Aristotle in the library.\n\nLet me search 亚里士多德 尼各马可伦理学 for \"选择\" \"由于某种状态\" or the passage \"合于德性的行为\" \"出于何种状态\".\n\nAnd scholarship search.\n\nLet me run: search_books query \"出于某种状态 选择 行为 公正\" author 亚里士多德; search_scholarship query \"moral worth motive\" limit 5.The scholarship results are metadata only (no abstracts read). I have Stratton-Lake's book title \"Kant, Duty and Moral Worth\" with chapter titles — but access_level METADATA_ONLY, and I shouldn't infer content. I could try get_scholarly_source with ABSTRACT for one record, but source_category UNKNOWN and METADATA_ONLY. Let me try one to see if an abstract exists — probably not. I'll skip; better to not overclaim. Actually a quick attempt is cheap and could add a modern voice. Let me try the book chapter \"On the value of acting from duty\" ABSTRACT. But it's from Crossref book chapters — likely no abstract. I'll skip to keep focus; the philosophical analysis doesn't need it, and I have Aristotle 1105a30 verified snippet (though it's a 注释导读本 with translation and commentary — the snippet shows translated text plus editorial notes; I should attribute carefully: the text is a Chinese translation with commentary of NE II.4, 1105a30. The excerpt: \"而是只有当行为者在行动时1105a30满足了相应的条件才是德行。首先，他知道他所做的事，其次，他是基于一种明确的意愿执择并且这种执择是全然为了这件事情本身而故意行动的，第三，他是坚定地和毫不动摇地行动\". Note \"这种执择\" is likely OCR of \"抉择\". I should quote carefully — the extracted text has obvious OCR garbling (\"意愿执择\"). I'll paraphrase rather than quote verbatim, or quote with a note. Better: read the chapter to confirm context. Let me read that chapter 2 around offset for accuracy — I want to make sure the passage is the right one (NE 1105a28-b1: acts done from virtue require the agent to be in a certain state: knowing, choosing, and choosing for the sake of the acts themselves, and steadfastly).\n\nLet me read chapter 2 with focus \"1105a30\".\n\nActually, given the garbled OCR, quoting may be risky. Let me read to get a cleaner window.Good. Aristotle NE II.4 1105a30-b1: 行为在德性领域内，只有当行为者满足条件才算德性行为：知道、基于抉择且为行为本身、坚定不动摇；\"这些行为，只有当它们是如同有公正和节制品德的人所施行的，才被称之为公正的和有节制的行为\"（1105b5-6）。Note the OCR renders 抉择 as \"执择\" — I'll paraphrase and use standard 1105a30 定位, quoting the clean parts carefully: \"只有当行为者在行动时满足了相应的条件才是德行\" and \"这些行为，只有当它们是如同有公正和节制品德的人所施行的，才被称之为公正的和有节制的行为\". These are clean enough. I'll note the text is from a 注释导读本 with 译文+编者注 mixed, so I should attribute as 中译本 (译注本) 译文.\n\nNow I have three anchors:\n1. Kant, Groundwork ch1 (唐钺译《道德形而上学探本》 in 康德著作集): good will alone unconditionally good; good will's value not from works/achievements; duty vs inclination: the sympathetic philanthropist's action \"总没有真正的道德价值\", only acting from duty has moral worth.\n2. Mill, Utilitarianism ch2: motive has nothing to do with the morality of the action, much with the worth of the agent; \"一种正确的行为并不一定说明行为人具有高尚的品格\".\n3. Aristotle NE II.4: virtue requires the agent's state (knowing, choosing for its own sake, steadfast) — the action counts as just/temperate only if done as the virtuous person does.\n\nNow let me construct the answer.\n\nStructure:\n1. 先拆题干：三个\"更好\"的读法。\n   - 更好的老师（工具性评价）：由前提直接推出并列。学生不知道动机，且全部影响相同 → 在效果维度上无差别。所以若\"更好\"只指效果，答案是否定的：不一定，且这里\"一样好\"。\n   - 更好的行为（行为的正当性/道德性）：Mill 的区分——行为对错与动机无关；这里两个行为在\"合乎义务\"上等同。\n   - 更好的人（行为者的道德价值/品格）：这是唯一可能有差别的地方，也是康德争议所在。\n\n2. 关键：这个题的答案不取决于\"学生不知道\"，而取决于你愿意让哪种价值标准裁决\"更好\"。学生不知道只排除了效果维度的差别；它不能自己决定动机有无内在价值。这里要指出一个常见的偷换：把\"没人知道\"当作\"没有差别\"，这是把\"认识论上不可分辨\"当成\"价值论上无差别\"。\n\n3. 各立场的具体答案：\n   - 后果论/密尔：行为评价上不分高下；但密尔自己说动机与\"行为人的品格\"关系很大——所以\"更好\"若指人，则差别存在；若指行为，则没有。密尔明确：\"拯救溺水同胞的人做的是道德正确的事情，不管此人的动机是责任感还是希望他的付出能够得到回报\"。\n   - 康德：动机是唯一决定道德价值的。但康德的答案不是直觉的那个：不以效果论（\"好意志的有无结果，对于这个价值既不能增加分毫，也不能减少分毫\"），所以学生是否知道、结果是否一样，与道德价值无关——这一点上他与\"学生永远不知道\"这个条件无关。但\"出于关心\"（爱好/同情）在康德看来没有真正的道德价值；出于义务才有。所以如果把\"只为履职\"读成\"出于义务/敬重法则\"，那么康德会说后者才具有道德价值，甚至说\"生来不适宜于做慈善家\"却有义务心的人有\"高得多多的道德的人品\"。这是题目的一个反转。\n     - 但若\"只为履职\"读成\"仅为保住工作/契约要求/避免麻烦\"，那是自利，康德会说两人都没有道德价值（一个出于爱好，一个出于利己）。那么\"前者一定更好吗\"的答案是：在道德价值维度上，两者都不合格，差别不在\"关心\"。\n   - 亚里士多德：行为的德性靠行为者的状态（1105a30-b1），所以动机是行为评价的一部分——但他要的是\"为了行为本身而抉择\"这种状态，不是\"关心\"这种情感。所以关心 vs 履职的二分对亚里士多德也不是现成的问题。\n   - 关心伦理学（Noddings）会强调关系本身，但这条我要小心，没核对本地原文；可以不引用具体文本，只作为可选方向说明，或者干脆省略。我觉得可以提一句但标明未核。\n\n4. 还有一个不能被前提抹掉的差别，需要检查：\n   - \"全部影响完全一样\"是强理想化。如果只指实际效果，反事实的可靠性差异仍然存在（关心的老师在不同情形下会怎样）。但如果你真的把反事实差别也规定掉了（两人的一切可能情形下的行为都一样），那你实际上已经假设了两种动机在因果上完全等价——这时\"动机不同\"就不再有任何东西可以附着，\"更好\"只剩下纯粹的价值论立场选择。这一点值得点明。\n   - 还有一个：学生永远不知道动机，但\"关心\"通常在其它通道表现？不，前提规定全部影响一样，所以那些通道已被抹平。\n\n5. 结论的强度：不能说\"前者一定更好\"。可以说的：\n   - 在效果/行为正当性维度：不更好，二者并列。\n   - 在\"人\"的维度：取决于价值标准；若你是康德式的（且\"履职\"=出于义务），答案反而是后者；若是美德伦理，则要看两人各自的品格状态，而不是\"关心\"这个词。\n   - 唯一确定的是：题干里\"学生不知道\"不能替你做这个判断；它消除的是效果差异，不是价值差异。而\"一定更好\"这个强断言在任何一种立场上都得不到\"一定\"——它至多是某种价值论内部成立的\"更好\"。\n\n6. 还可以加一个有实际意义的追问：为什么这个问题重要？可能是\"如果我做老师的动机不纯，我的好行为还算不算好\"。这里的答案对实践有影响：Kant式的答案会让人焦虑动机，Mill式的答案说行为可以是对的、人格另说。\n\n我不应该堆太多。保持精悍。也可以点一句：这个题的结构等同于\"道德运气\"与\"内在价值\"的争论；但不展开（未核材料）。\n\n注意引用规范：\n- 康德引文（唐钺译，收于《康德著作集（套装10册）》）：\"在这世界内，或是就是在这世界以外，除了好的意志之外，没有什么东西有可以无限制地被认为好的可能。\"；\"好意志所以好，并不是因为它的工作或成就……只讲它本身，就比一切它可以为任何爱好……都要更应被看重得多\"；\"它的有用或是无结果，对于这个价值既不能增加分毫，也不能减少分毫\"；关于行善者：\"这样的行为，无论是多么正当，多么可爱，总没有真正的道德价值\"；\"他所以仁慈，不是由于爱好，而是由于义务心\"；\"难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑，是可以的\"。我要小心：这个译本把 Grundwerk 第一章里\"他生来不适宜做慈善家却出于义务行善的人\"说成更高道德人品——这是康德原文的意思（\"hier zeigt sich erst der moralische Wert des Charakters\"）不错。但注意康德这句话的比较对象是\"那个天生慈善的人\"，这正好对应题干。好。\n  提到书本 ID/书名：我应该用 citation_label 形式：【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】。并说明这是唐钺译本？该版本元数据未提供译者；实际文本风格是唐钺译《道德形而上学探本》。我不该凭记忆断言译者。我可以只说\"中译本（汉译世界学术名著丛书版）\"，并可提示译文用词为\"好的意志/善意\"。安全做法：不指认译者。\n\n- 密尔《功利主义》第二章：\"动机跟'行为是否合乎道德'没有关系，而是与行为人的品格有很大关系\"；\"拯救溺水同胞的人做的是道德正确的事情，不管此人的动机是责任感还是希望他的付出能够得到回报\"；\"没有哪种已知的道德标准会根据行为实施者的善恶来判断这种行为的好坏\"；\"一种正确的行为并不一定说明行为人具有高尚的品格\"。\n\n- 亚里士多德《尼各马可伦理学》译注本 II.4：条件是 知道、基于抉择且为行为本身、坚定不动摇（1105a30-b1）；\"这些行为，只有当它们是如同有公正和节制品德的人所施行的，才被称之为公正的和有节制的行为\"。\n\n注意：亚里士多德那句\"只有当它们如同有德者所施行的，才被称之为公正和有节制的行为\"有争议（\"被称为\"），我可以点一句不必展开。\n\n我应该提醒：OCR 版的引文用词，如\"执择\"是\"抉择\"的OCR，我不引用那个词。\n\n另外我应该说明搜寻结果：休谟《人性论》本库只有第一卷，无法核验其\"德的价值在于动机\"的表述；不引用。这是诚实的处理，但可能太细；可以一句带过或不提。如果我要说休谟的观点（动机是道德价值所在），那是常见的解释，但我没核对到文本。我可以选择不提休谟，或提一句\"未核\"。我倾向于不提，保持精悍——除非有价值。我会省略，因为 Kant/Mill/Aristotle 已足。\n\n现在，关于格式：用户问的是一个明确的问题。回答应该：先给直接答案（\"不一定；而且分维度看，答案不一样；在最常被拿来支持'一定更好'的那个维度（道德价值）上，康德会给相反的答案\"），然后拆维度、给原典、给反转、给反驳/限制。结尾可以做一段收束，指出\"学生不知道\"这个条件实际上什么都没解决。\n\n长度：中等偏长，约 900-1300 字？不要过长。用小标题会帮助阅读。避免模板化的\"首先其次最后\"堆砌，但要清楚。\n\n我写的时候要注意：\"更好的老师\"——工具性；\"更好的行为\"——正当性；\"更好的人\"——品格/道德价值。这三者不能互相替代，这正是要说的。\n\n一个额外的精细点：题干\"学生也永远不知道动机\"其实是多余的，除非它意在切断某些效果（感激、信任、动机感染等）。在已经把全部影响规定为相同之后，它只是冗余的强调。其真正的功能是：排除\"知道动机\"本身作为效果。这一点值得指出——它表明出题人在想的是\"如果动机完全不可见，它还有价值吗\"。而答案依赖价值论立场，不依赖可见性。\n\n还有一个更锋利的反驳/限制：\"全部短期和长期影响完全一样\"如果是真的（完全一样，含反事实），那么两个老师实际上是同一个因果系统中可互换的部件，而\"关心\"这个动机就必须被理解为对世界没有任何差别的东西。这时唯一剩下的差别是\"内在状态\"。所以这道题真正问的是：世界无差别的内在状态有没有价值。这是个纯粹的价值论问题，不能用后果来回答，也不能用\"学生不知道\"来反驳——\"不知道\"不是\"不存在\"。\n\n我也可以提一个让步给\"前者的实用主义理由\"：关心通常更可靠、更能维持长期行为，但前提已规定效果相同，所以这个理由在本题里被剥夺了——它只有在至少允许反事实或未来差异时才能用。\n\n好，写吧。\n\n结尾应该给出一个不至于太极端的回答：**不一定**。而且更值得注意：在\"更好的人\"这个维度上，康德本人的答案与直觉相反。若坚持\"学生永远不知道、效果完全一样\"这个前提到底，唯一剩下的判断依据是你的价值标准；标准的选择不是前提给出的。\n\n需要标注每个引文的出处标签。用【】形式。\n\n写作时注意不要用\"正反合\"、不要用\"我们来\"这种填充。直接。\n\n草稿：\n\n---\n\n不一定。而且如果按三个不同的\"更好\"来分开看，答案不只不同，还有一个会反转。\n\n**一、\"学生不知道\"这个条件本身没做什么。**\n它排除的是效果：感激、信任、模仿、动力传递——这些如果算影响，题干已经用\"全部影响完全一样\"一并抹平了。所以\"学生永远不知道动机\"是冗余的强调。它真正想说的是：动机完全不可见。但不可见不等于不存在。把\"认识不到差别\"当成\"没有差别\"，是这道题最容易翻车的地方。\n\n**二、按\"行为正当性\"问：不更好，并列。**\n密尔在《功利主义》第二章里说得直接：\"动机跟'行为是否合乎道德'没有关系，而是与行为人的品格有很大关系\"；\"拯救溺水同胞的人做的是道德正确的事情，不管此人的动机是责任感还是希望他的付出能够得到回报\"。在效果的账本上两人已经并列；在行为的对错上，密尔也让它并列，并把差别挪到第三个问题上。\n\n**三、按\"人/品格\"问：这才是有争议的地方，而且答案取决于标准。**\n密尔的同一章说：一种正确的行为并不一定说明行为人具有高尚的品格。所以若\"更好\"指人，他承认差别存在——但差别不在行为，而在品格。\n\n康德的答案最有意思，因为它和直觉相反。康德把全部价值押在动机上，但同时宣布这个价值与效果无关：好意志\"所以好，并不是因为它的工作或成就……只讲它本身，就比一切它可以为任何爱好……取得的东西，都要更应被看重得多\"；哪怕它\"完全缺乏达到它愿望的能力……还是像宝珠似的，会自己放光\"。所以他也不需要\"学生知道\"这个条件——知道的只是旁观者，价值在意志那里。\n\n但接下来他就把题干的二分拆了：出于同情心去行善，\"这样的行为，无论是多么正当，多么可爱，总没有真正的道德价值\"，因为\"道德的意义就在于这种行为应该出于义务心，不是出于爱好\"。他随即给了一个正好对着题干的例子：一个人\"生来不适宜于做慈善家\"，本性冷淡，但摆脱麻木、单因为义务而施惠，\"难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑，是可以的\"。\n\n也就是说：如果把\"只为履职\"理解为\"出于义务、敬重法则\"——那个只按职责做的老师，在康德的账上才是道德价值所在的一方；出于关心的那一位，行为可嘉、人心可亲，但在道德价值上并不因此更高。这就是\"前者一定更好吗\"的反例，而且不是外人给的，是康德自己的文本给的。\n\n当然还有第三种读法：\"只为履职\"若指仅为保住饭碗、避免麻烦，那就是利己动机，康德会说两个人都不合格——一个出于爱好，一个出于自利，都没有道德价值。那么\"前者更好\"的理由也不能是\"他关心\"。\n\n**四、亚里士多德：动机属于行为本身。**\n《尼各马可伦理学》第二卷区分技艺与德性：技艺作品的品质在作品本身，德性行为却只有\"行为者在行动时满足了相应的条件才是德行\"——知道自己在做什么、基于抉择并且是为了这件事本身、坚定不动摇；\"这些行为，只有当它们是如同有公正和节制品德的人所施行的，才被称之为公正的和有节制的行为\"。所以他也不接受\"只看效果\"。但要注意他要的不是\"关心\"这种感情，而是行为者的抉择状态；同情心属于他列为既非德也非恶的\"性情\"，被称赞或谴责的不是发怒本身，\"而是由于我们德性的优劣\"。\n\n**五、结论。**\n- 若\"更好\"指老师的功用：前提已规定并列，答案是否定的（一样好）。\n- 若\"更好\"指行为的正当性：并列。\n- 若\"更好\"指人：差别只可能在这里；但这需要选一种价值论。选后果论，差别仍在品格而不在行为；选康德，答案可能反过来；选亚里士多德，要问的是两人各自的抉择状态，而不是\"关心\"这个标签。\n- 唯一可以确定的是\"学生不知道\"不能替你做判断，而\"一定更好\"这个强断言在任何立场上都得不到\"一定\"——它至多是某一价值标准内部的\"更好\"。\n\n最后一个技术性提醒：题干说\"全部影响完全一样\"。如果这只指实际发生过的效果，那两个人在别的可能情形下会不会不同，仍然是未被规定的差异，许多人支持\"关心更好\"的理由（更可靠、更能持续、更少崩塌）走的正是这条路。要把它彻底关掉，就得连反事实也规定为相同；那样一来，\"动机不同\"就剩下一个对世界毫无差别的内在状态。这时问题就不再是关于老师或学生，而是纯价值论的问题：无差别的内在状态，值不值得算进\"更好\"。\n\n---\n\nThat's good but maybe a bit long. It's fine — the question is substantive. Let me tighten slightly and check quotes accuracy.\n\nCheck quotes:\n1. Mill: \"动机跟'行为是否合乎道德'没有关系，而是与行为人的品格有很大关系\" ✓ (原文: \"动机跟\"行为是否合乎道德\"没有关系，而是与行为人的品格有很大关系，这一点几乎胜过了其他所有伦理学家的观点\")\n2. \"拯救溺水同胞的人做的是道德正确的事情，不管此人的动机是责任感还是希望他的付出能够得到回报\" ✓\n3. \"一种正确的行为并不一定说明行为人具有高尚的品格\" ✓\n4. Kant: \"在这世界内，或是就是在这世界以外，除了好的意志之外，没有什么东西有可以无限制地被认为好的可能\" — maybe include.\n5. \"好意志所以好，并不是因为它的工作或成就\" ✓ \"只讲它本身，就比一切它可以为任何爱好，其实，就是为尽所有的爱好而取得的东西，都要更应被看重得多\" ✓\n6. \"这个好意志也还是像宝珠似的，会自己放光\" ✓ — I wrote \"还是像宝珠似的，会自己放光\"; the full: \"纵然本人虽则极端努力，还是毫无成就，还只有这个好意志（当然不单是一个发愿，而是尽心力而为之的企图),这个好意志也还是像宝珠似的，会自己放光，还是个自身具有全部价值的东西。\" and \"它的有用或是无结果，对于这个价值既不能增加分毫，也不能减少分毫。\" ✓\n   Note condition: \"纵然因为运命特别不利，或是因为晚娘似的自然界的供给过于吝啬，这个好意志完全缺乏达到它愿望的能力\" ✓ — good, my paraphrase \"完全缺乏达到它愿望的能力\" is verbatim-ish. Use carefully: \"纵然……完全缺乏达到它愿望的能力\". OK.\n7. \"无论是多么正当，多么可爱，总没有真正的道德价值\" ✓ (context: 出于同情/爱好的仁慈行为)\n8. \"道德的意义就在于这种行为应该出于义务心，不是出于爱好\" ✓\n9. \"难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑，是可以的。\" ✓ — the 原文: \"这种人假如生来不适宜于做慈善家，难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑，是可以的。\" ✓\n10. Aristotle: \"只有当行为者在行动时1105a30满足了相应的条件才是德行\" — I'd quote as \"只有当行为者在行动时满足了相应的条件才是德行\" ✓; \"这些行为，只有当它们是如同有公正和节制品德的人所施行的，才被称之为公正的和有节制的行为\" ✓ (1105b5-6); \"性情既非德也非恶\"; \"我们也不是由于性情被称赞或被谴责……而是由于我们德性的优劣被赞美或谴责\" — approximate: 原文 \"而且我们也不是由于性情被称赞或被遣责一因为一个人不是由于他感到恐惧或者发怒而不被称赞...而是由于我们德性的优劣被赞美或遣责\". I'll paraphrase rather than quote this one, or quote a clean short bit \"我们也不是由于性情被称赞或被谴责……而是由于我们德性的优劣被赞美或谴责\" — hmm, contains OCR \"遣责\". Safer to paraphrase: 亚里士多德把同情之类列为既非德也非恶的\"性情\"，被称赞或谴责的不是性情本身，而是\"我们德性的优劣\"。\n\nI need citation labels for each. Use:\n【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】\n【《功利主义》·第二章 什么是功利主义】\n【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\n\nI should also state the caveat: 康德's text is a Chinese translation (汉译世界学术名著丛书版); I read it in the local library's extracted text; not checked against the original German. Perhaps one brief note at the end: 引文取自本地版本的抽取文本，未与原版德语/英语校勘。That's honest and brief.\n\nAlso I should mention that Hume's Treatise vol.3 isn't available? Skip - not necessary. But maybe one line: 休谟常被引作\"德的价值在于动机\"，本库只收《人性论》第一卷，无法核验，故未引。Hmm, this could be viewed as unnecessary. But it's a common expectation in this debate, and honesty about scope is good. I'll add a very short parenthetical at the end. Actually it adds noise. I'll skip it — the answer doesn't need Hume.\n\nLet me finalize with cleaner formatting. Use headers, keep quotes accurate.\n\nOne more check on my claim \"在效果的账本上两人已经并列\" — yes by stipulation.\n\nAlso I want to make sure I don't overclaim that Mill \"承认差别存在\" for 品格 — yes: \"动机...与行为人的品格有很大关系\" and \"这些考量因素评价的并不是行为，而是人\" ✓. Good — that quote \"这些考量因素评价的并不是行为，而是人\" is in the passage: \"这些考量因素评价的并不是行为，而是人；但是，除了人们行为的对错，还有其他方面让我们对他们感兴趣\". Good.\n\nWrite final.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "善良意志 在世界之内 无条件",
+      "author": "康德",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.193,
+     "result_full": "{\"query\": \"善良意志 在世界之内 无条件\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 7, \"chapter_title\": \"附录 目的论判断力的方法论\", \"citation_label\": \"【《判断力批判》·附录 目的论判断力的方法论】\", \"snippet\": \"值，并且是在他所做的事中，在他不是作为自然的成员、而是以自己的欲求能力的自由怎样及根据什么原则来行动中的那种价值，也就是善良意志，才是人的存有唯一能借以具有某种绝对价值、而世界的存有能据以拥有某种终极目的的欲求能力。 哪怕人的健全理性的最平凡的判断都与之完全一致的就是：人只有作为道德的存在者才可能是创造的一个终极目的，如果我们把这个评判只引向这一问题并引起对此问题的尝试的话。当我们说，这个人具有如此多的才能，以至于他甚至因此而极有作为，借此他把某种有利的影响施加在公共事务上，因而既在自己的幸运方面又在对别人的好处上都有某种巨大的价值时，如果他314丝毫不具有善良意志，那又有什么用呢？当我们从他的内心来看他时，他就是一个可部的客体；而\", \"score\": 226, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 7, \"focus\": \"善良 意志 世界 之内 无条件\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 在世界之内 无条件\", \"query_terms\": [\"善良\", \"意志\", \"世界\", \"之内\", \"无条件\"]}, {\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一部　纯粹实践理性要素论\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一部　纯粹实践理性要素论】\", \"snippet\": \"与 一个客体 的关系，而不依照情感表达表象与主体的关系。于是，只有在主体期待于对象现实性的那种愉悦感受决定欲求能力的范围之内，这种快乐才是实践的。但是，现在一个理性存在者有关贯穿他整个此在的人生愉悦的意识就是 幸福 ，而使幸福成为意愿的最高决定根据的那个原则，正是自爱原则。于是，一切质料的原则，既然将意愿的决定根据置于从任何一个对象的现实性那里感受到的快乐与不快之中，便在它们一并属于自爱原则或个人幸福的范围以内，皆为 同一种类。 第三节　定理二 系　定　理 一切 质料的 实践规则都把意志的决定根据置于 低级的欲求能力 之中，倘使没有足以决定意志的 单纯形式 的意志法则，那么 任何高级的欲求能力 都可能会得 不 到承认了。 注　释　一\", \"score\": 225, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 12, \"focus\": \"善良 意志 世界 之内 无条件\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 在世界之内 无条件\", \"query_terms\": [\"善良\", \"意志\", \"世界\", \"之内\", \"无条件\"]}, {\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"snippet\": \"他才能赋予他的存有作为一个人格的生存以某种绝对的价值；而幸福则连同其快意的全部丰 第一部分审美判断力批判富性都还远远不是无条件的善。①但无论快适和善之间的差异有多大，二者毕竞在一点上是一致的：它们任46何时候都是与其对象上的某种利害结合着的，不仅是快适，以及作为达到某个快意的手段而令人喜欢的间接的善（有利的东西），而且就是那绝对的、在一切意图中的善，也就是带有最高利益的道德的善，也都是这样。因为善就是意志（即某种通过理性规定的欲求能力）的客体，但意愿某物和对它的存有具有某种愉悦感，即对之感到某种兴趣，这两者是同一的。 5.三种不同特性的愉悦之比较 学上的东西（通过刺激，stimulos）为条件的愉悦，后者带有纯粹实践性的愉悦，这不只\", \"score\": 225, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"focus\": \"善良 意志 世界 之内 无条件\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 在世界之内 无条件\", \"query_terms\": [\"善良\", \"意志\", \"世界\", \"之内\", \"无条件\"]}, {\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 71, \"chapter_title\": \"论通常的说法：这在理论上可能是正确的，但在实践上是行不通的\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·论通常的说法：这在理论上可能是正确的，但在实践上是行不通的】\", \"snippet\": \"自身的力量，而且还要仇视自己的人民了。 一族人民所据以 消极地 、也就是单纯地判断什么可以认为是最高立法 并未 以自己最善良的意志加以 制定 的东西，其普遍原则可以归结为如下的命题： 凡是人民所不会加之于其自身的东西，立法者也不得加之于人民。 例如，当问题是：宣布某种曾经一度奠定的教会体制永世长存的那种法律，是不是可以看作出自立法者自身的意志（他本人的观点）？那么我们就得首先问：一族人民是不是可以自身制定法律，使某些曾一度采用过的信仰命题和外表的宗教形式垂之永久；因此还有，是不是它本身就可以防止它的后代在宗教理解上继续进步，或纠正古来的某些错误？显然的是，一项人民的原始契约而把这些都定为法律，则其本身就会是空洞无效的，因为它违反了人\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 71, \"focus\": \"善良 意志 世界 之内 无条件\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 在世界之内 无条件\", \"query_terms\": [\"善良\", \"意志\", \"世界\", \"之内\", \"无条件\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 28, \"chapter_title\": \"纯粹实践理性的要素论\", \"citation_label\": \"【《康德文集》·纯粹实践理性的要素论】\", \"snippet\": \"（通过想象力）把感性也召来一并发挥作用。赫拉克勒斯只是在制伏了各种怪物之后才成为缪斯九女神的首领，在这样的工作面前，那班善良的姐妹们将栗然而退。维纳斯·乌拉尼亚的这些女伴们一旦想插手规定义务的事务，并为此提供动机，就会成为追随维纳斯·狄俄涅的情姐妹。（注：在古希腊神话中，乌拉尼亚既是缪斯九女神之一，又是作为高尚纯粹爱情之体现的阿佛洛狄忒（即古罗马神话中的维纳斯）的别名。关于阿佛洛狄忒，一说她是由天神乌拉诺斯的肉体落入海中激起的浪花所生，故别名乌拉尼亚；一说她是宙斯和大洋神女狄俄涅的女儿，但有时又把她与狄俄涅混为一谈。于是，在流传的过程中就有了阿佛洛狄忒·乌拉尼亚［即上文的维纳斯·乌拉尼亚］和阿佛洛狄忒·狄俄涅［即上文的维纳斯·狄俄涅\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 28, \"focus\": \"善良 意志 世界 之内 无条件\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 在世界之内 无条件\", \"query_terms\": [\"善良\", \"意志\", \"世界\", \"之内\", \"无条件\"]}], \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "动机 行为的道德性 行为者 价值",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.806,
+     "result_full": "{\"query\": \"动机 行为的道德性 行为者 价值\", \"results\": [{\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 9, \"chapter_title\": \"第二编先验辩证论\", \"citation_label\": \"【《纯粹理性批判》·第二编先验辩证论】\", \"snippet\": \"性的品格，这种品格无非他的理性的某种原因性，只要这种原因性在其现象中的结果上显示出一条规则，根据这条规则我们可以将理性的动机及其行动 按照其种类和程度来接受，并能对他的任意的那些主观原则进行评判。由于这种经验性的品格本身必须从作为结果的现象申、以及从这些现象的提供出经验来的那个规则中引！出来：所以人在现象中的一切出自经验性的品格和其他共同起作用的原因的行动都是按照自然秩序而被规定的，并且如果我们有可能把A550人的任意之一切现象一直探索到底，那就决不会有任何单独的B578人的行动是我们不能肯定地预言并从其先行的诸条件中作为必然的来认识的。所以在这种经验性的品格方面没有任何自由，但惟有按照这种品格我们才能考察人，如果我们只是想观察人，\", \"score\": 176, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"8c0c6955c793\", \"chapter_idx\": 9, \"focus\": \"动机 行为的道德性 行为者 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"某些行动成为义务的原理是一种实践法则。行动者出自主观的根据使之成为自己的原则的规则，叫做他的准则；因此，即便法则相同，但行为者的准则却可能大相径庭。 一般而言，仅仅表示什么是责任的定言命令式就是：按照一个同时能够被视为一条普遍法则的准则行动！——因此，你必须首先按照其主观的原理来看待你的行动，但是，这条原理是否也是客观有效的，你只能根据下面一点来认识：由于你的理性使它经受这样的检验，即通过它同时把你自己看做普遍立法的，所以它就取得了这种普遍立法的资格。 这一法则与可能由此得出的重大且众多的结论相比较，它的简单性，此外显然不带有一个动机就提出要求的威望，当然一开始就必定使人惊奇。但是，如果人们在对我们理性通过一个准则取得一条实践法则的\", \"score\": 170, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"动机 行为的道德性 行为者 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 45, \"chapter_title\": \"法权论的形而上学初始根据\", \"citation_label\": \"【《康德文集》·法权论的形而上学初始根据】\", \"snippet\": \"某些行动成为义务的原理是一种实践法则。行动者出自主观的根据使之成为自己的原则的规则，叫做他的准则；因此，即便法则相同，但行为者的准则却可能大相径庭。 一般而言，仅仅表示什么是责任的定言命令式就是：按照一个同时能够被视为一条普遍法则的准则行动！——因此，你必须首先按照其主观的原理来看待你的行动，但是，这条原理是否也是客观有效的，你只能根据下面一点来认识：由于你的理性使它经受这样的检验，即通过它同时把你自己看做普遍立法的，所以它就取得了这种普遍立法的资格。 这一法则与可能由此得出的重大且众多的结论相比较，它的简单性，此外显然不带有一个动机就提出要求的威望，当然一开始就必定使人惊奇。但是，如果人们在对我们理性通过一个准则取得一条实践法则的\", \"score\": 166, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 45, \"focus\": \"动机 行为的道德性 行为者 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "动机 与行为的道德性无关 行为者的品格 价值",
+      "author": "密尔",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.027,
+     "result_full": "{\"query\": \"动机 与行为的道德性无关 行为者的品格 价值\", \"results\": [{\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 什么是功利主义\", \"citation_label\": \"【《功利主义》·第二章 什么是功利主义】\", \"snippet\": \"个人可以想见，自己与公众利益相悖的行为不可能给他带来幸福，而且一种促进公众利益的直接冲动还有可能变成每一个人的习惯性行为动机，与之相关的情感也有可能在每一个人的情感生活中占据一个重要而突出的位置。如果说，质疑功利主义道德的人是根据功利主义道德的这种真实性质去理解它的，那么我就不知道，他们还能断言有什么样的可取之处，是其他任何一种道德都拥有、功利主义道德却不具备的；我也不知道，除此之外他们还能认为有其他任何一种道德体系能够促进那些更加美好、更加高尚的人性发展，还能说明这些道德体系是依赖哪些行为动力去实施它们的强制要求，而功利主义者却无法获得这些行为动力的。 我们不能总是指责反对者，说他们是在贬损功利主义。恰恰相反，他们当中那些对功利主\", \"score\": 264, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"focus\": \"动机 行为 道德性 无关 品格 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"动机 与行为的道德性无关 行为者的品格 价值\", \"query_terms\": [\"动机\", \"行为\", \"道德性\", \"无关\", \"品格\", \"价值\"]}], \"catalogue_matches\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"bece6ea379fa\", \"book_title\": \"妇女的屈从地位\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《妇女的屈从地位》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《功利主义》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": \"密尔\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "行为的价值 在于动机 仁爱的动机 义务感",
+      "author": "休谟",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.028,
+     "result_full": "{\"query\": \"行为的价值 在于动机 仁爱的动机 义务感\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "在世界之内 甚至在世界之外 善良意志 无限制地 善",
+      "limit": 5
+     },
+     "status": "empty",
+     "duration_seconds": 1.652,
+     "result_full": "{\"query\": \"在世界之内 甚至在世界之外 善良意志 无限制地 善\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e23d6fac862d",
+      "chapter_idx": 2,
+      "focus": "动机",
+      "max_chars": 3500
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"chapter_idx\": 2, \"title\": \"第二章 什么是功利主义\", \"citation_label\": \"【《功利主义》·第二章 什么是功利主义】\", \"text\": \"在多久，也不担忧它们会有什么样的必然结局。\\n与此同时，功利主义者可以永远声称他们有权拥有自我奉献的品德，就像斯多葛学派或先验论者(Transcendentalist)一样。功利主义道德的确承认，人类拥有为了别人的利益而牺牲自身最大利益的能力。它只不过是拒绝承认牺牲本身是一种善行罢了。这种道德认为，一种牺牲若是不会增进幸福，或没有增进幸福的倾向，那就是一种浪费。功利主义道德唯一颂扬的一种自我舍弃，就是为了他人的幸福或为了他人获得幸福的某些手段而做出牺牲；所谓的他人既可以是全人类，也可以是人类集体利益限定范围之内的个人。\\n我还须重申一下：抨击功利主义的人很少公正地承认，构成功利主义作为评价正确行为之标准的幸福，并不是行为人自身的幸福，而是所有相关者的幸福。功利主义要求，一个人在自身的幸福和他人的幸福之间应该像一个公正而仁慈的旁观者，严格地做到不偏不倚。在拿撒勒人耶稣的金科玉律中，我们就可以看到功利伦理学的全部精髓。“己所欲，施于人”和“爱邻如己”，正是功利主义道德理想而完美的形式。功利主义思想是最接近于实现这种理想的手段，它首先要求，法律和社会制度应当让每一个人的幸福或者（实际上可称的）利益尽可能地与全人类的利益保持一致；其次，教育和舆论会对人的品性产生巨大的影响，因此应当充分利用那种力量，让每一个人的内心都在自身的幸福与全人类的利益之间确立一种不可分割的联系，尤其是要把自身的幸福与为了追求普遍的幸福而采取的各种积极和消极的行为模式牢固地联系起来。这样的话，不但一个人可以想见，自己与公众利益相悖的行为不可能给他带来幸福，而且一种促进公众利益的直接冲动还有可能变成每一个人的习惯性行为动机，与之相关的情感也有可能在每一个人的情感生活中占据一个重要而突出的位置。如果说，质疑功利主义道德的人是根据功利主义道德的这种真实性质去理解它的，那么我就不知道，他们还能断言有什么样的可取之处，是其他任何一种道德都拥有、功利主义道德却不具备的；我也不知道，除此之外他们还能认为有其他任何一种道德体系能够促进那些更加美好、更加高尚的人性发展，还能说明这些道德体系是依赖哪些行为动力去实施它们的强制要求，而功利主义者却无法获得这些行为动力的。\\n我们不能总是指责反对者，说他们是在贬损功利主义。恰恰相反，他们当中那些对功利主义的无私性质多少持有一种公正看法的人有时还会挑剔地说，功利主义的标准对人性而言太过高尚。他们声称，要人们总是根据促进公众利益的动机去行事，这种要求太过苛刻了。但是，这种看法其实是误解了一种道德标准的确切含义，并且把行为准则与行为动机混淆了。伦理学的任务，就是指出我们的义务是什么，或我们可以凭借什么样的检验准则去了解这些义务；但是，没有哪种伦理体系要求我们一切行为的唯一动机都必须是一种责任感。相反，我们有百分之九十九的行为都是出于其他动机，并且只要义务准则不会谴责，这些行为就属于正当之举。其实对功利主义更不公平的是，有些人竟然把这种特定的误解当成反对功利主义的理由，因为功利主义伦理学家已经肯定地指出，动机跟“行为是否合乎道德”没有关系，而是与行为人的品格有很大关系，这一点几乎胜过了其他所有伦理学家的观点。拯救溺水同胞的人做的是道德正确的事情，不管此人的动机是责任感还是希望他的付出能够得到回报；背叛一个信任自己的朋友不啻为犯罪，哪怕这样做的目的是有益于另一位更应去帮助的朋友。不过，单就出于义务动机并且直接遵从原则的行为而言，若是以为功利主义的思维模式是指人们应当一心去关注像全世界或全社会这样宽泛的普遍性对象，那就是一种误解。绝大多数善行，其实并不是为了维护整个世界的利益，而是为了维护构成世界利益的个人利益；在这种场合下，就算是最高尚的人也不需要去考虑特定相关者以外的人，除非是有必要确保他在维护相关人员的利益时，没有侵犯其他任何一个人的权利——也就是没有侵犯别人合法且获得了认可的期望。根据功利主义伦理学来看，增进幸福就是美德的目标。但是，任何一个人（只有极少数人除外）都只是在例外情况下，才有能力极大程度地增进幸福感，也就是成为一个施惠于公众的人；也只有在这种情况下，此人才应当去考虑公众的功利，而在其他所有情况下，此人只需要注意个人的功利和少数人的利益或幸福就行了。只有其行为会影响到整个社会的那些人，才需要习惯性地去关心范围如此宽泛的目标。实际上，在节制的问题上——即人们出于道德考量而克制自身不去做某些事情，尽管在特定的场合下，这些事情导致的结果可能有益——一个理智的行为人不自觉地认识到此类行为若是普遍践行就会有害于公众，而这一点也是必须克制此类行为的原因之后，他就会觉得不该那样去做了。这种认识中蕴含的对公众利益的尊重程度，并未逾越每一种道德体系的要求，因为它们全都要求世人戒除明显有害于整个社会的行为。\\n这些相同的考量因素，还可以解决另一种反对功利学说的观点；这种指责的根源，是反对者更加严重地误解了一种道德标准的目的以及“是”“非”二字的确切含义。常常有人断言，说功利主义会让人们变得冷酷无情，说功利主义会让人减少他们对个人怀有的道德情感，说功利主义会让人们只是毫无感情、铁石心肠地去考虑行为的后果，而不对那些行为呈现出来的本质进行道德评价。这种论断若是指他们不允许自己对一种行为的对错所做的判断受到他人对行为人品质所形成的看法的影响，那么它就不是在反对功利主义，而是在反对存在的任何一种道德标准了；因为毫无疑问，没有哪种已知的道德标准会根据行为实施者的善恶来判断这种行为的好坏，更别说会根据行为实施者和蔼可亲、勇敢、仁慈或与之相反的诸多秉性来判定了。这些考量因素评价的并不是行为，而是人；但是，除了人们行为的对错，还有其他方面让我们对他们感兴趣，这个事实与功利主义理论之间没有任何矛盾。的确，斯多葛学派喜欢说“拥有美德者就拥有了一切，也只有拥有美德的人才富有、美丽，才是人中之龙”；这是因为，自相矛盾地滥用语言属于他们理论体系中的一部分，他们还力图通过这种滥用来让自己超然于外，做到不关注美德之外的一切。但是，功利主义理论不会这样来描述有德之人。功利主义者非常清楚，除了美德，世界上还有其他值得追求的财富与品质，并且完全乐意让它们全都充分发挥出各自的价值。他们也明白，一种正确的行为并不一定说明行为人具有高尚的品格，而有些应该受到谴责的行为，却经常源自行为人那些值得颂扬的品质。当这一点在特定的情况下表现得非常明显时，它就会改变功利主义者的评价——当然，改变的不是他们对行为的评价，而是他们对行为人的评价。我承认，尽管如此，功利主义者还是认为，从长远来看，一种良好品质的最佳证据就是善良的行为；但是，他们绝对不会把任何一种主要倾向于作恶的秉性视为良好的品质。这一点，使得功利主义者不受很多人的待见，但每一个严肃对待是非之别的人，必定都会像他们一样不受人待见；这种指责，一个严肃尽责的功利主义者也不需要急着反驳。\\n假如反对功利主义的观点仅仅是说，许多功利主义者都是根据功利主义的标准，用一种太过狭隘的态度去衡量行为的道德性，因此没有充分重视一种使人变得可爱或可敬的性格中的其他美好之处，那么，这种反对意见还是可以接受的。那些陶冶出了道德情操，却既没有培养出同理之心、也没有培养出艺术审美能力的功利主义者，确实会犯这样的错误；而在同样的情况下，其他所有的伦理学家也是如此。能够替其他伦理学家开脱的辩解之辞，同样可以替功利主义者开脱：也就是说，如果一定要犯错的话，在那个方面犯错要好于在其他方面犯错。事实上，我们还可以肯定地说，功利主义者应用他们的标准时，在宽严的尺度方面具有各种可以想见的差异，而信奉其他伦理体系的人也是如此。有些人会像清教徒一样严苛，还有一些人却会尽量宽容，就像罪人或感伤主义者所渴望的那样。但总的来说，一种学说若是突出强调了人类在压制和避免那些在违背道德准则的行为过程中获得的利益，那么它引起舆论对这些违背道德准则的行为进行惩处的能力，就很可能并不逊色于其他任何一种学说。确实，对于“什么行为违背了道德准则？”这个问题，奉行不同道德标准的人可能会时不时地产生分歧。不过，道德问题方面的意见分歧并不是功利主义率先带到世界上来的；但无论怎么说，功利主义学说也确实提供了一种解决这些分歧的方法，就算它并非易行，也是一种切实和可以理解的方法。/書 分 享 公 眾 號 晚 霞 书 房\\n我们不妨再来看一看人们对功利主义伦理学持有的一些常见误解，其中有些误解还极其明显和肤浅，任何一个坦率而聪明的人似乎都是不可能陷入其中的。这种探究不算是多余之\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8921, \"excerpt_end\": 12421, \"chapter_text_length\": 16389, \"has_more\": true, \"next_offset\": 12421, \"has_previous\": true, \"previous_offset\": 5421, \"focus_found\": true, \"focus_terms_matched\": [\"动机\"], \"focus_terms_found_in_chapter\": [\"动机\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"动机\", \"offset\": 9621, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"offset\": 9421, \"focus\": \"动机\"}}, {\"term\": \"动机\", \"offset\": 9944, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"offset\": 9744, \"focus\": \"动机\"}}, {\"term\": \"动机\", \"offset\": 9995, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"offset\": 9795, \"focus\": \"动机\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"a002967b78aa6679ff818db2705fd9b53d5985ec2e9213a084f197e6a9aa0f5e\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e23d6fac862d?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"功利主义\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8921, 12421]], \"covered_characters\": 3500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "309de54e4392",
+      "focus": "奠基",
+      "limit": 30
+     },
+     "status": "success",
+     "duration_seconds": 0.03,
+     "result_full": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作集涵盖了其批判哲学体系的全部核心内容，包括《纯粹理性批判》、《实践理性批判》和《判断力批判》三大批判。康德在《纯粹理性批判》中探讨了人类知识的界限，提出了先验感性论和先验逻辑，试图调和理性主义与经验主义。在《实践理性批判》中，他阐述了道德律令和自由意志，强调道德行为的自律性。在《判断力批判》中，他分析了审美判断和目的论，将自然与自由联系起来。此外，该著作集还收录了康德的其他重要作品，如《道德形而上学基础》、《未来形而上学导论》等。康德的哲学思想深刻影响了后来的德国唯心主义、现象学、存在主义等流派，其关于理性、自由、道德和美的思考至今仍是哲学研究的重要课题。这套著作集不仅是研究康德哲学的必备文献，也是理解现代哲学发展的关键文本。\", \"rank\": 48.8, \"chapterCount\": 81, \"declared_chapter_count\": 81, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 81, \"readable\": true, \"chapters\": [], \"matched_chapters\": 0, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "book_id": "178e7d06d42d",
+      "limit": 5,
+      "query": "动机 德的 merit 善良"
+     },
+     "status": "success",
+     "duration_seconds": 0.036,
+     "result_full": "{\"query\": \"动机 德的 merit 善良\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 6}, \"search_scope\": {\"author\": null, \"book_id\": \"178e7d06d42d\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "book_id": "309de54e4392",
+      "limit": 6,
+      "query": "善良意志"
+     },
+     "status": "success",
+     "duration_seconds": 0.075,
+     "result_full": "{\"query\": \"善良意志\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一部　纯粹实践理性要素论\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一部　纯粹实践理性要素论】\", \"snippet\": \"具备理性的存在者之外的存在者，并且在动力是 由理性表象 出来的范围之内，关切意谓着意志的一个 动力 。因为法则本身在一个善良意志里面必定是动力，所以 道德的关切 是单纯实践理性的一个纯粹非感觉的关切。在关切的概念之上还建立有 准则 的概念。因此只有当这个准则依赖于人们对于遵守法则的单纯关切时，它才在道德上是真的。但是，所有这三个概念， 动力 概念， 关切 概念和 准则 概念，只能运用于有限的存在者。因为它们一概以存在者本性的局限性为先决条件，盖缘存在者意愿的主观性质并非自发地符合实践理性的客观法则；它们设定存在者有一种以任何方式被推动而至活动的需要，因为一种内在的障碍遏止这个活动。这些概念因此不能运用于上帝的意志。 实践理性呈现给我\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 12, \"focus\": \"善良意志\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 81}, \"search_scope\": {\"author\": null, \"book_id\": \"309de54e4392\"}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "善良意志 道德形而上学奠基 义务 爱好",
+      "book_id": "390398aff8d0"
+     },
+     "status": "success",
+     "duration_seconds": 0.099,
+     "result_full": "{\"query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"意志与终极目的的协调一致的智慧，在人这里首先需要清除内在的障碍（一个在人心中丛生的恶的意志），然后需要发展在他心中的一个善良意志的那种永远不会失去的源始的禀赋（只有自我认识的地狱之行才开辟出一条神化之路 [8] ）。 第15节 这种道德的自我认识将首先排除对作为（其整个族类的）一般人的自己的狂热蔑视；因为这种蔑视是自相矛盾的。——甚至惟有通过存在于我们心中的美好的、使人配得上敬重的向善禀赋，才能使他认为违背这种禀赋而行动的人（自己，但不是其心中的人性）是应当受到轻视的。——但这样一来，它也就与如下自爱的自我评价相悖，即认为纯然的愿望如果是以还如此强烈的渴望发生的，在它们就自身而言毕竟没有付诸行动的时候，就是一个善良心灵的证明（祈祷也\", \"score\": 366, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 70, \"chapter_title\": \"纯粹理性批判\", \"citation_label\": \"【《康德文集》·纯粹理性批判】\", \"snippet\": \"时是为《纯粹理性批判》计划的。 [3] 1764年初，哈曼（Hamann）就已经在康德“脑子里所拥有的”工作中，除了对“道德性”的研究之外，思念着“一种新形而上学的尝试”了。 [4] 康德自己在一年半之后，希望不久就能够完备地阐明能有助于他为自己的陈述奠基的东西，而且建议自己的读者再次想到一部形而上学教程。 [5] 在这里，大概像1764年初一样，涉及的是关于形而上学的独特方法的著作，康德在1765年底就已经决定把它再放一放，因为他在其进程中察觉到，非常缺乏他能够具体地指出［形而上学的］独特方法的例证。 [6] 这种猜测是否有道理，什么理念是当时所计划的著作的基础，这部著作看样子应当包含什么样的思想序列，在多大程度上它就一切迹象来看\", \"score\": 309, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 70, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 27, \"chapter_title\": \"实践理性批判\", \"citation_label\": \"【《康德文集》·实践理性批判】\", \"snippet\": \"辛劳是多还是少，我必须留待这一类工作的行家去评判。它虽然以《道德形而上学的奠基》为前提条件，但只是就这部著作使人预先熟悉义务的原则、陈述和辩白义务的一个确定公式而言的 [4] ；除此之外它是独立自存的。至于没有像思辨理性的批判所提供的那样为了完备性而附加上一切实践科学的划分，在这种实践理性能力的性状中也可找到这方面的有效根据。因为把义务特别规定为人类义务，以便对它们进行划分，这惟有当这一规定的主体（人）按照他成为现实所凭借的性状事先被认识到，虽然只是就一般义务而言在必要的范围被认识到时，才是可能的；但这种规定不属于一般实践理性批判，后者只应当完备地说明实践理性的可能性、其范围和界限的原则，并不与人的本性有特别的关系。因此，该划分在这\", \"score\": 308, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 27, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 73, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"书”出版。——译者据科学院版编者注 [3] 达里斯（Joachim Georg Daries，1714—1791），耶拿道德和法学教授，后到奥得河畔的法兰克福。著有《形而上学基础》。——科学院版编者注 第二章 论规定的、普遍充足的理由律 定义 命题四 规定就是以排除对立面来设定一个谓词。就其谓词而言来规定主词的东西，被称做理由。理由被分为在先规定的理由和在后规定的理由。在先规定的理由，其概念先行于被规定者，也就是说，不假定它，被规定者就不可理解。 [1] 在后规定的理由，如果被它规定的概念不是事先已经从某处得到设定，就不会设定它。前一种理由也可以称做为什么的理由或者存在或者产生的理由，后一种理由也可以称做是什么的理由或者认识的理由。\", \"score\": 305, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 73, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}], \"catalogue_matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 91}, \"search_scope\": {\"author\": null, \"book_id\": \"390398aff8d0\"}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "仁爱 的 价值 义务感 行为的功过",
+      "author": "休谟"
+     },
+     "status": "success",
+     "duration_seconds": 0.102,
+     "result_full": "{\"query\": \"仁爱 的 价值 义务感 行为的功过\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "309de54e4392",
+      "limit": 40
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作集涵盖了其批判哲学体系的全部核心内容，包括《纯粹理性批判》、《实践理性批判》和《判断力批判》三大批判。康德在《纯粹理性批判》中探讨了人类知识的界限，提出了先验感性论和先验逻辑，试图调和理性主义与经验主义。在《实践理性批判》中，他阐述了道德律令和自由意志，强调道德行为的自律性。在《判断力批判》中，他分析了审美判断和目的论，将自然与自由联系起来。此外，该著作集还收录了康德的其他重要作品，如《道德形而上学基础》、《未来形而上学导论》等。康德的哲学思想深刻影响了后来的德国唯心主义、现象学、存在主义等流派，其关于理性、自由、道德和美的思考至今仍是哲学研究的重要课题。这套著作集不仅是研究康德哲学的必备文献，也是理解现代哲学发展的关键文本。\", \"rank\": 48.8, \"chapterCount\": 81, \"declared_chapter_count\": 81, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 81, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"汉译世界学术名著丛书（分科本）出版说明\"}, {\"index\": 1, \"title\": \"梵罗拉美之倍科：大革新 序文\"}, {\"index\": 2, \"title\": \"与国务大臣男爵瑞特立芝书\"}, {\"index\": 3, \"title\": \"第一版序文\"}, {\"index\": 4, \"title\": \"第二版序文\"}, {\"index\": 5, \"title\": \"导言\"}, {\"index\": 6, \"title\": \"一 先验原理论\"}, {\"index\": 7, \"title\": \"二 先验方法论\"}, {\"index\": 8, \"title\": \"译者后记\"}, {\"index\": 9, \"title\": \"汉译世界学术名著丛书出版说明\"}, {\"index\": 10, \"title\": \"序言\"}, {\"index\": 11, \"title\": \"导言　实践理性批判的理念\"}, {\"index\": 12, \"title\": \"第一部　纯粹实践理性要素论\"}, {\"index\": 13, \"title\": \"第二部　纯粹实践理性方法论\"}, {\"index\": 14, \"title\": \"结论\"}, {\"index\": 15, \"title\": \"索引\"}, {\"index\": 16, \"title\": \"译后记\"}, {\"index\": 17, \"title\": \"译 序\"}, {\"index\": 18, \"title\": \"第一节 论崇高感与优美感的不同对象\"}, {\"index\": 19, \"title\": \"第二节 论人类的崇高与优美的一般性质\"}, {\"index\": 20, \"title\": \"第三节 论崇高和优美在两性相对关系上的区别\"}, {\"index\": 21, \"title\": \"第四节 论民族性——就其有赖于对崇高与优美的不同感受立论(1)\"}, {\"index\": 22, \"title\": \"译名对照表\"}, {\"index\": 23, \"title\": \"汉译世界学术名著丛书　出版说明\"}, {\"index\": 24, \"title\": \"译者的话\"}, {\"index\": 25, \"title\": \"序　言\"}, {\"index\": 26, \"title\": \"道德形而上学总导言\"}, {\"index\": 27, \"title\": \"权利科学\"}, {\"index\": 28, \"title\": \"第一部分　私人权利（私法）\"}, {\"index\": 29, \"title\": \"第二部分　公共权利（公法）\"}, {\"index\": 30, \"title\": \"汉译世界学术名著丛书（分科本）出版说明\"}, {\"index\": 31, \"title\": \"序\"}, {\"index\": 32, \"title\": \"导论\"}, {\"index\": 33, \"title\": \"上卷 审美判断力的批判 第一部分 审美判断力的分析\"}, {\"index\": 34, \"title\": \"第二部分 审美判断力的辩证论\"}, {\"index\": 35, \"title\": \"译后记\"}, {\"index\": 36, \"title\": \"附录：康德美学原理评述\"}, {\"index\": 37, \"title\": \"汉译世界学术名著丛书（分科本）出版说明\"}, {\"index\": 38, \"title\": \"下卷 目的论判断力的批判\"}, {\"index\": 39, \"title\": \"附录： 目的论判断力的方法的理论\"}], \"matched_chapters\": 81, \"has_more\": true, \"next_offset\": 40, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "178e7d06d42d",
+      "limit": 20
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"id\": \"178e7d06d42d\", \"title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和因果关系的基础之上。休谟提出了著名的“印象与观念”区分，认为所有复杂观念都可以还原为简单的感觉印象，从而彻底贯彻了经验主义原则。在知识论方面，休谟对因果关系进行了深刻剖析，指出我们所谓的“因果必然性”实际上只是心理习惯的产物，而非客观实在。这一观点动摇了传统形而上学的根基。在道德哲学方面，休谟认为道德判断源于情感而非理性，提出了“同情”作为道德的基础。该书虽然出版后反响平平，但后来被公认为经验主义哲学的巅峰之作，深刻影响了康德、实证主义以及现代科学方法。休谟的怀疑论虽然激进，却为哲学开辟了新的思考方向，成为后世哲学家无法绕过的思想资源。\", \"rank\": 45.1, \"chapterCount\": 6, \"bibliographic_metadata\": {\"work\": {\"author\": \"大卫·休谟\", \"canonical_title\": \"人性论（全4册）\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 6, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 6, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"出版说明\"}, {\"index\": 1, \"title\": \"一、二卷的公告\"}, {\"index\": 2, \"title\": \"导论\"}, {\"index\": 3, \"title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\"}, {\"index\": 4, \"title\": \"第一卷 第二章 论空间和时间观念\"}, {\"index\": 5, \"title\": \"第一卷 第三章 论知识和或然性\"}], \"matched_chapters\": 6, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "309de54e4392",
+      "limit": 41,
+      "offset": 40
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作集涵盖了其批判哲学体系的全部核心内容，包括《纯粹理性批判》、《实践理性批判》和《判断力批判》三大批判。康德在《纯粹理性批判》中探讨了人类知识的界限，提出了先验感性论和先验逻辑，试图调和理性主义与经验主义。在《实践理性批判》中，他阐述了道德律令和自由意志，强调道德行为的自律性。在《判断力批判》中，他分析了审美判断和目的论，将自然与自由联系起来。此外，该著作集还收录了康德的其他重要作品，如《道德形而上学基础》、《未来形而上学导论》等。康德的哲学思想深刻影响了后来的德国唯心主义、现象学、存在主义等流派，其关于理性、自由、道德和美的思考至今仍是哲学研究的重要课题。这套著作集不仅是研究康德哲学的必备文献，也是理解现代哲学发展的关键文本。\", \"rank\": 48.8, \"chapterCount\": 81, \"declared_chapter_count\": 81, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 81, \"readable\": true, \"chapters\": [{\"index\": 40, \"title\": \"关于目的论的一般解说\"}, {\"index\": 41, \"title\": \"译后记\"}, {\"index\": 42, \"title\": \"汉译世界学术名著丛书出版说明\"}, {\"index\": 43, \"title\": \"小引\"}, {\"index\": 44, \"title\": \"译者附言\"}, {\"index\": 45, \"title\": \"绪论\"}, {\"index\": 46, \"title\": \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\"}, {\"index\": 47, \"title\": \"第二章 由通俗的道德哲学转到道德形而上学\"}, {\"index\": 48, \"title\": \"第三章 由道德形而上学转到对于纯粹实践理性的批判\"}, {\"index\": 49, \"title\": \"结论\"}, {\"index\": 50, \"title\": \"本书重要名词英德汉文对照表\"}, {\"index\": 51, \"title\": \"汉译世界学术名著丛书（分科本）出版说明\"}, {\"index\": 52, \"title\": \"导言\"}, {\"index\": 53, \"title\": \"前言 论一切形而上学知识的特点\"}, {\"index\": 54, \"title\": \"《导论》的总问题\"}, {\"index\": 55, \"title\": \"先验的主要问题\"}, {\"index\": 56, \"title\": \"总问题的解决 作为科学的形而上学怎样才可能?\"}, {\"index\": 57, \"title\": \"附录\"}, {\"index\": 58, \"title\": \"译后记\"}, {\"index\": 59, \"title\": \"术语对照\"}, {\"index\": 60, \"title\": \"主题索引\"}, {\"index\": 61, \"title\": \"汉译世界学术名著丛书\"}, {\"index\": 62, \"title\": \"再版译序\"}, {\"index\": 63, \"title\": \"译序\"}, {\"index\": 64, \"title\": \"世界公民观点之下的普遍历史观念\"}, {\"index\": 65, \"title\": \"答复这个问题：“什么是启蒙运动？”\"}, {\"index\": 66, \"title\": \"评赫德尔《人类历史哲学的观念》\"}, {\"index\": 67, \"title\": \"人类历史起源臆测\"}, {\"index\": 68, \"title\": \"万物的终结\"}, {\"index\": 69, \"title\": \"永久和平论\"}, {\"index\": 70, \"title\": \"重提这个问题：人类是在不断朝着改善前进吗？\"}, {\"index\": 71, \"title\": \"论通常的说法：这在理论上可能是正确的，但在实践上是行不通的\"}, {\"index\": 72, \"title\": \"译名对照表\"}, {\"index\": 73, \"title\": \"代译序\"}, {\"index\": 74, \"title\": \"敬献给\"}, {\"index\": 75, \"title\": \"编者前言\"}, {\"index\": 76, \"title\": \"导言\"}, {\"index\": 77, \"title\": \"第一编　一般要素论\"}, {\"index\": 78, \"title\": \"第二编　一般方法论\"}, {\"index\": 79, \"title\": \"索引\"}], \"matched_chapters\": 81, \"has_more\": true, \"next_offset\": 80, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "390398aff8d0",
+      "focus": "奠基",
+      "limit": 30
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"id\": \"390398aff8d0\", \"title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"康德文集涵盖其三大批判及重要论文，构建了先验唯心论体系。《纯粹理性批判》考察人类认识能力，提出先天综合判断如何可能，区分现象与物自体，限制知识以给信仰留地盘。《实践理性批判》确立道德律的至上性，强调自由意志与绝对命令。《判断力批判》连接自然与自由，探讨审美与目的论。康德还提出“人为自然立法”与“人是目的”的启蒙口号，其哲学成为现代性的基石，深刻影响后世哲学、伦理学与美学。\", \"rank\": 47.2, \"chapterCount\": 91, \"declared_chapter_count\": 91, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 91, \"readable\": true, \"chapters\": [{\"index\": 26, \"title\": \"道德形而上学的奠基\"}], \"matched_chapters\": 1, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "309de54e4392",
+      "chapter_idx": 46,
+      "focus": "善意",
+      "max_chars": 4000
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 46, \"title\": \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】\", \"text\": \"福利相合；但眼前的问题是：这个原则究竟对不对？所以，我就把这个自私的提议变做普遍律，把问题这样表示：假如我的格准是个普遍律，会怎么样？这样，我就立刻见到这个格准绝不能作为普遍的自然律，否则一定会自相矛盾。因为人人在困难的时候都可以随便许诺，同时存心将来不实践，假如这种行为是普遍律，那末，许诺以及许诺所含的目的都是不可能。为的是：这样一来，没有人能相信会有人许诺他什么事情，人人都要嘲笑一切这种许诺，认为都是空话。\\n(三) 又假如有个人，知道自己有材力，倘若经过相当的培养，可以使他成为在很多方面都有用的人，他境况很舒服，宁愿纵情享乐，不愿意苦心努力去发展他的幸有的天赋能力。可是，他还知道问自己说：我这样暴弃自己天才的格准，除了合乎我任情作乐的性癖以外，是否也与所谓义务相合呢？他也见到：就是人(都像南洋群岛上的土人一样)让他的才力荒废不用，专门游手好闲，寻开心，生男育女——简言之，专门行乐，人也可以设想有一个自然界，流行这么一个普遍律的。但是他绝对不能够 立志 要这个真成为普遍的自然律，或是立下志愿要我们有个暴弃天才的本能。他既然是个有理性的人，他必定立志要他自己的材力发展，因为这些材力会帮他达到各种各样的可能目的，并且自然赋予他这些材力，也是要使他能做各种各样的事业。\\n(四) 又假如有个人，很得法，看见别人忍受穷苦，而他能够帮他们的忙，他就想：这干我什么事？让各人各自随他的天幸，或随他的本领尽量享福；我不抢他什么东西，也不羨慕他，我只是不愿意出什么力气去增进他的福利或是救助他脱离苦难！无疑，假如这种想法是个普遍律，人类也尽可以生存；并且，无疑，人类还可以比在这个世界(人人说同情，说善意，乃至想法子实行这些好意，一两回，可是同时能骗人就骗人，不忠于人权，或出别的花样侵犯人权的世界)过着更好的日子。但是，虽然可能有个合乎那个格准的普遍自然律存在，但要 立志 要这么一个原则像自然律那样普遍有效是不可能的。这样发愿的意志一定要自相矛盾，因为人会遇到很多事情，使他不得不需要别人的爱惜和同情；在这些时候，要是有这么一个出于他自己意志的自然律，他一点也不能希望得到他要得的什么帮助。\\n这些都是许多实在义务，至少是我们所认为实在义务的，其中的几件；这许多义务，由我们已经定下的那一个原则引申出来，这是极明显的。这个原则就是，我们一定要 能够立志要 我们行为的格准成为普遍律。这是对一般行为的道德评价的标准。有些行为因为它的特性，弄得人要 设想 它的格准是普遍的自然律而不陷于自相矛盾都不能够，不用说我们要 立志要 这个格准 应该 成普遍律离可能更远。在其他行为，并没有这个根于本性的不可能；但要 立志要 这些行为的格准升为普遍的自然律也还是不可能，因为这么一个意志一定会自相矛盾的。前一类行为是违反了严格的或不可稍变的义务；后一类不过违反了比较不严格的或是格外的(meritorious译者按：意指可以褒奖的)义务。这些示例完全指明一切义务，就它强制执行的责务的性质上论(不是就行为的对象上论)，所以都是根据那一原则的情由。\\n假如在一切违反义务的时期，我们内省心里的作用，那末，我们会见到实际上我们并不立志要我们的格准成为普遍律。要我们这样立志是不可能的；反之，我们实在立志要那与我们格准恰恰相反的应该仍旧做普遍律，不过我们妄自以为在我们自己身上可以自由地替我们的爱好开个 例外 ，或是以为单单在眼前这个特别时期可以这样。所以，假如我们把一切事例从同一的观点看，就是从理性的观点看，那末，我们就见到我们意志内有个矛盾。这个矛盾就是：我们承认有个原则，在客观方面说，是必要的，或是说，是个普遍律，然而我们又以为在主观方面说，不是普遍的而是有例外的。我们的办法是：在这个时期把我们行为从完全合乎理性的意志的眼光去看，在另一个时期又把它从受私人的自然爱好所操纵的意志的眼光去看。所以，这儿并没有真正的矛盾，只是我们的爱好与理性的命令对抗罢了。原则的“普遍如此”变成只是“大概如此”，使得理性的实践原则可以对那行为的格准让步一半。这种对普遍律加以限制，不特假如我们平心而论，是没有道理的；并且这种自欺的办法反而证明我们实实在在还是承认无待令式的效力，不过替我们自己开几个例外罢了——这些例外，我们想法子把它看做无关紧要，或是以为是事势所迫，不得不如此。\\n假如义务这个概念会有意义，会定下我们的行为律，那末，这个观念一定要由无待令式表示，不是由有待令式表示：至少这一点，我们已经看到了。假如必定包含一切义务的原则的无待令式是会有的，这一个令式对一切实际应用的义蕴是什么，我们也已经得个明白清楚的概念了(这是一件很要紧的事情)。可是，我们还不能够不待经验直接证明实际上有这么一个令式，实际上有个绝不依赖任何一个动机，只凭自身的权威就可以发绝对的命令的实践规律，并且遵行这个规律就是义务。\\n要想得到这个论点，最关紧要的是：我们要知道我们绝不能够由 人性的特点 证明这个原则是实有的。因为义务是指行为在实践上无条件的必要性；我们 只有 证明义务是适用于一切有理性者（只有对于这一切有理性者，令式才可以适用)， 才能够 证明义务是适用于一切人的意志的规律。反之，凡是由人类的特别天性，由某些情感和性癖，乃至由人的理性的任何特别倾向演绎出来而不必定适用于个个有理性者的原则，只能充做格准，不能做规律；只能给我们一个主观原则，我们也许有照它行为的倾向的原则，不能给我们一个客观原则，能够 指令 我们就是遇着一切我们的性癖、爱好和自然倾向都与这原则相反的时候也照样行为的原则。其实，越少的主观冲动遵从义务的命令，越多的反对它，却总不能够把这个规律的强制力或这个规律的效力削弱分毫，这样，义务的命令的宏伟和固有的尊严就也越看得明白。\\n所以，在这里，我们看到哲学确然到了紧急关头了，因为虽然上至天、下至地，都没有能够支持它的东西，然而它却非弄得巩固不可。在这个地方，哲学一定要证明它是纯粹的，是它自己的规律的裁定者，并不是只把—个天赋官能或任何其他监护人类的天性所嘱咐的原则布告给人。虽则有这些原则比完全没有总好些，可是一切这些绝不能够产生理性裁定的原则。出于理性的原则，一定要完全不由经验来的；所以它的无上权威完全在于规律的高于一切的性质，以及人对规律应有的尊重，一点不在乎个人的爱好；否则本人一定要自己菲薄自己，要自己痛恨自己了。\\n因此，无论什么经验的成分，不特不能够帮助道德的原则，而且反而极不利于道德的纯洁性，因为绝对好的意志的真正的无量的价值就在于行为的原则完全不受偶然理由(经验只能供给这种理由)的影响。这种松懈的，甚至于卑鄙的，要从经验的动机和律例找它的原则的思想习惯是应当严戒的。关于这个，我们的警告，绝不会太厉害，或太常说；因为人的理性，在困倦时期，很喜欢靠着这个软垫，在乐意的梦想之中(“它不抱天仙而抱幻象”)把道德变成个杂种的坏东西——这坏东西，人要想看见它什么样子，它就成什么样子，不过从瞻仰过美德的真相的人看来，它总不像美德。 [11]\\n这样，当前的问题就是：“有理性者要评定他们的行为，一定要问他们能不能立志要他们行为的格准充做普遍律，”这个是不是适 用于一切有理性者 的必然律？假如有这么一个必然律，那末，就可以完全不待经验而证明这个定律与有理性者的意志这个概念连在一起。要证明有这一种连结，无论我们多么不情愿，我们一定要进一步到形而上学里头去；可是，不是到理论的哲学内去，乃是到道德的形而上学内去。实践的哲学不是要找出 实际发生 的事情的理由，乃是要找出 理应发生 的事情的规律（尽管这件事情始终没有发生），就是要找到客观的实践规律。在实践哲学里，我们不必考究：为什么有些东西会快意或逆意？仅仅感觉的快乐与鉴赏怎样不同？鉴赏与理性的整个满足是否又有分别？快乐或痛苦的感情由于什么？欲望和爱好怎样由苦乐之情登生？又怎样由欲望爱好与理性合作的结果得到行为的格准？因为这些问题通通属于经验的心理学；假如我们认自然学为根据 经验的规律的自然哲学 ，那末，经验的心理学就是自然学的第二部分。但是，我们在这里是要讨论客观的实践规律，因此我们要讲的是那在意志全由理性决定这个范围内意志与它自身的关系。在这个范围内，任何涉及经验的事物当然要排除掉，因为假如纯 由理性自身 决定这个关系（这样决定的可能正是我们现在要考究的），那末，理性一定是不待经验而这样决定的。\\n意志是被认为决定自己 依照某些规律的概念 去行动的一种能力。这一种能力，只是有理性者才有的。充做意志自决所根据的客观理由的根据就是 目的 ；假如这个目的是纯然出于理性，它一定是适用于一切有理性者的。反之，只是达到这个目的之行为所以可能的条件的事物，叫做 工具 。欲望的主观根据是冲动，意志的客观根据是动机；所以根于冲动的主观目的与根于一切有理性者所共遵的动机的客观目的有个分别。假如实践原则撇开一切主观目的，那末，它就是 形式的 ；假如它依据于主观目的，即依据于冲动，那末，它就是 实质的 。凡是有理性者任意取为他行为要达到的结果(实质目的)完全只是相对的；因为只是由于这些目的与行为者的欲望的关系，这些目的才有价值。因此，这些目的不能够产生普遍的必然的原则，就是，不能够产生适用于一切有理性者并使一切意志不得不遵守的实践规律。所以，一切这些相对的目的只能产生有待令式。\\n但是，假定有个只是 其存在就 有绝对价值的东西，因为 自己就是目的 所以能够做正要规定的规律的根据的东西，那末，在这里，只在这里，才会有个无待令式或实践规律的根据。\\n那末，我说，人，实则一切有理性者，所以 存在 ，是由于自身是个目的， 并不是只供 这个或那个意志 任意利用的工具 ；因此，无论人的行为是对自己的或是对其他有理性者的，在他的一切行为上，总要把人认为目的\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 19674, \"excerpt_end\": 23674, \"chapter_text_length\": 31774, \"has_more\": true, \"next_offset\": 23674, \"has_previous\": true, \"previous_offset\": 15674, \"focus_found\": true, \"focus_terms_matched\": [\"善意\"], \"focus_terms_found_in_chapter\": [\"善意\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"善意\", \"offset\": 20374, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 46, \"offset\": 20174, \"focus\": \"善意\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4c91c9408959f664176c8a213e44258ef2318138edb8e58a099980d11a8ae86e\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/309de54e4392?ch=46\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[19674, 23674]], \"covered_characters\": 4000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 26,
+      "focus": "善良意志",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 26, \"title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"text\": \"道德形而上学的奠基\\n科学院版编者导言\\n保罗·门采尔（Paul Menzer）\\n关于促使康德撰写《道德形而上学的奠基》的理由，他自己在这部作品的前言中是以如下的话来表达的：\\n我决意日后提供一部《道德形而上学》，如今我让这本《奠基》先发表。尽管除了一种纯粹实践理性的批判之外，道德形而上学真正说来没有别的基础，就像对于形而上学来说，已经提供的纯粹思辨理性的批判是基础一样。然而一方面，前一种批判并不像后一种批判那样极为重要，因为在道德领域里，人类理性甚至在最普通的知性那里也能够轻而易举地达到重大的正确性和详尽性，与此相反，它在理论的、但却纯粹的应用中却完全是辩证的；另一方面，为了一种纯粹实践理性的批判，我要求：如果它要被完成，就必须能够同时显示它与思辨理性在一个共同的原则之中的统一，因为毕竟归根结底只能有同一种理性，它惟有在应用中才必须被区别开来。但是，如果不引入完全不同种类的考察并把读者弄糊涂，我在这里就还不能达到这样一种完备性。为此缘故，我不使用纯粹实践理性批判的称谓，而是用道德形而上学的奠基这个称谓。\\n但第三点，既然一部《道德形而上学》虽然有吓人的标题，但仍能有很大程度的通俗性，且能够适应普通的知性，所以我认为，把对基础的这种预先探讨与道德形而上学分开，以便将来可以不把这里无法避免的细微之处附加给较易理解的学说，是有好处的。\\n指出康德思维的导致这几句话的内在发展，不是如下阐述的任务，对于它们来说，只是应当补充这部著作的外在历史。当然，在这一场合，可以列举一些在上面几句话中未触及的事实，它们对康德的决定不无影响。\\n对于这部作品来说明摆着的事实材料证实，它原初并不在康德的计划之内。因此，他自己或者他人关于伦理学作品的工作的通报不能直接地与《道德形而上学的奠基》联系起来，但毕竟属于其广义上的前史，应在这里有一个位置。这个位置还可以这样来限制，即B.埃德曼在本卷《纯粹理性批判》的导言中指出了大量应予考虑的地方 [1] 。因此，我一开始就满足于一种简单枚举。\\n1764年2月1日，哈曼写信告诉J.G.林德奈：“他（康德）脑子里有一大堆工作：道德性。” [2]\\n在其于1765年12月31日致兰贝特的信中，康德在一些较小的作品中间提到《世俗实践智慧的形而上学初始根据》。 [3]\\n在1767年2月16日，哈曼向赫尔德报告：“康德硕士先生在写一部《道德形而上学》，与迄今的道德形而上学对照，它将更多地研究人是什么，而非人应当是什么……” [4]\\n这个消息通过康德于1767年 [5] 5月9日致赫尔德的信得到证实。在说明他的“注意力主要针对认识人的能力和偏好的真正规定和局限”之后，他接着说：“我相信，在涉及道德的事情上，我终于取得了相当的成功。目前，我正在研究道德形而上学。在这里，我自诩能够提出显明的、蕴意丰富的原理以及方法。据此，那些尽管非常流行、但在大多数情况下却毫无成效的努力，如果它们应当提供什么用处的话，就必须以这种认识方式建立起来。我希望，如果我那总是变化不定的健康状况不阻碍我，就在今年完成这项工作……” [6]\\n不过，这个希望并未实现。在1770年9月2日，康德写信告诉兰贝特：“我打算到今年冬天再把我关于纯粹的道德世俗智慧的研究列入日程，并且加以完成。在这里，找不到任何经验性的原则，仿佛就是道德形而上学。” [7] 然而，就连这一次也没有出版所预告的作品。然后，多次提到的《道德形而上学》作为计划中的作品《感性和理性的界限》的一个部分出现在1771年6月7日和1772年2月21日致马库斯·赫茨的信中。 [8] 在后一封信中我们得知，康德想在完成“包括形而上学的本源、方法及其界限的第一部分”（《纯粹理性批判》）之后，“再写道德性的纯粹原则” [9] 。这部作品对于整个体系的地位改变了，而其内容的规定则依然未变。\\n我们在康德于1773年年底写给赫茨的信中发现了同样的真实状况：“如果我的先验哲学得以完成，我将非常高兴。它真正说来就是对纯粹理性的一个批判。在这之后，我将转向形而上学。形而上学只有两个部分，即自然的形而上学和道德的形而上学。其中，我将首先发表道德的形而上学。现在，我已经在为它的即将面市而高兴不已了。” [10]\\n从现在开始，直到1781年，我们没有任何消息。1776年11月24日致马库斯·赫茨的信以我们所拥有的规模提供了《纯粹理性批判》的计划，但没有提及伦理学问题。 [11] 只是在代表做出版之后，伦理学问题才又被考虑。在“纯粹理性的建筑术”中，我们发现在自然形而上学之外提到道德形而上学，它以纯粹理性的实践应用为对象。哈曼在他于5月7日给哈特克诺赫写信时联系到了这些规定：“谨请您留意，道德形而上学和自然形而上学很快就跟上，特别是后者，其中将出现他的理论，即他其余的作品如何被织入他的批判，部分地更完善，部分地更新颖。” [12] 哈特克诺赫在其于1781年11月19日致康德的信中遵从了这一建议。其中说道：“我希望阁下您还把道德和自然学说的形而上学交给我出版，因为这为您的计划的完成所需，并构成一个整体。” [13]\\n根据其原初的计划，康德大概首先开始写道德形而上学，或者正确地说，是一本为它做准备的书。关于已开始的工作，同时关于他在《导论》之外从事这项工作的第一个消息，我们是从哈曼于1782年1月11日致哈特克诺赫的信中获得的：“康德在写道德形而上学，——我不知道是给谁出版。他也想在临近复活节时完成他的短篇［《导论》］。” [14] 在这些情况下，也许是由于因《格廷根书评》而增多和加快完成的《导论》的写作，上述作品只是很慢地进行。\\n只是在1783年8月16日——值康德按照哈曼的通报完成《导论》的时间 [15] ——我们才从致门德尔松的信中得知如下情况：“今年冬天，我将完成我的道德学的第一部分，即使不能全部写完，至少也要写出绝大部分。这部作品将会更加通俗，但却远远不能像规定人类整个理性的界限和全部内容的展望那样，给予我扩展情趣的魅力，这主要是因为，道德若想在完成自身时，跳越到宗教方面去，那么，没有前一种准备工作以及准确无误的规定，它就会卷入异议和怀疑，或者陷入幻想和狂热之中。” [16]\\n这段信大概不允许我们裁定，我们能够把“我的道德学的第一部分”是理解为一本完整阐述体系的书的一个部分，还是理解为一部自身独立的、但却构成体系的一个部分的著作。如果说的是后者，那么可能进一步的问题就是，这部著作是否可以被理解为一部《纯粹实践理性批判》或者一部《道德形而上学的奠基》。所有这些问题都必须考虑到康德哲学的内在历史来回答，在这里必须不予讨论。\\n因此，我们继续来确定眼前的材料的日期，并根据哈曼于1783年10月26日给赫尔德的无关紧要的通报而发现：“他［康德］看起来在忙于出版他的其余著作。” [17] 在哈曼于1784年2月8日致赫尔德的信中令人感到意外的记录是：“康德应当在写关于伽尔韦的《西塞罗》的一个反批判，不过他还不知道书名自身。” [18]\\n哈曼在1784年2月18日致舍弗纳的一封信中让这部著作的书名同样不确定：“据说，我们敬爱的康德教授……在写一本反批判——不过书名尚不清楚——来反驳伽尔韦的《西塞罗》，作为对其在《德意志图书总汇》上的书评的回答。” [19] 更为确定的是在哈曼于1784年3月14日致哈特克诺\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 3000, \"chapter_text_length\": 62981, \"has_more\": true, \"next_offset\": 3000, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": false, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"a84f3dabbb484467441065c9690f9584f546bd35a06c433a36cebd1e86e24a0f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/390398aff8d0?ch=26\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 3000]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "309de54e4392",
+      "chapter_idx": 46,
+      "max_chars": 4500,
+      "offset": 0
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 46, \"title\": \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】\", \"text\": \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\\n在这世界内，或是就是在这世界以外，除了 好的意志 之外，没有什么东西有可以无限制地被认为好的可能。智力、机警、判断力以及其他理智上的 材力 （无论它叫做什么），或是勇气、果断、坚忍，属于气质上的，无疑地从许多方面看是好的，是人喜欢有的；可是，假如运用这些优点的意志，就是所谓 品格 不是好的，那末，这些天赋材性也会变成极恶毒极害人的东西。命运的赐予也是这样：权势、财富、荣誉，就是健康，以及完全康宁和对自己境况的满意，即所谓 幸福 的，假如没有个好意志改正这些对于人心的影响，进而校正整个行为原理，使它适宜于达到它的目的，那末，这些幸运就会使人自负，并且往往使人骄横。一个没有一点纯洁并美好的意志的任何特色的人永远得法，总不会使有思想而无偏心的旁观者高兴看见他这种人。这样说，似乎就是要配得到幸福，好意志也是不可缺少的条件。\\n就是那些品性，有益于这个好意志，而可以利便它的动作的，也没有固有的无待于外的价值，总是要有一个好意志作为先决条件，这就把我们对这些品性应有的尊重加以限制，不容许我们认它是绝对好的。对激情与情欲有节制，能自克，并能平心静气地谋虑，不特从很多方面看是好的，并且似乎是一个人的 固有 价值的一部分；但是，虽则古人曾经无条件地赞美这些品性，其实这些并不配得人漫无限制地称它好。因为假如没有个好意志的准则,这些品性可以变成极坏；一个流氓的头脑冷静不特使他更加危险得那么多，并且在我们眼中，使他比不能冷静更加可恶。\\n好意志所以好，并不是因为它的工作或成就，不是因为它易于达到某个预期的目的，乃是只因为立志作用，那就是说，好意志本身就是好的，只讲它本身，就比一切它可以为任何爱好，其实，就是为尽所有的爱好而取得的东西，都要更应被看重得多。纵然因为运命特别不利，或是因为晚娘似的自然界的供给过于吝啬，这个好意志完全缺乏达到它愿望的能力，纵然本人虽则极端努力，还是毫无成就，还只有这个好意志（当然不单是一个发愿，而是尽心力而为之的企图),这个好意志也还是像宝珠似的，会自己放光，还是个自身具有全部价值的东西。它的有用或是无结果，对于这个价值既不能增加分毫，也不能减少分毫。好意志的有无结果，比方说，只是一种布景，使我们能够在通常与人交接的时期更方便地运用这个意志，或是能够引起那些还不能赏鉴它的人对它注意，但不是使我们能够把它献与真赏家鉴赏，或是能够估定它的价值。\\n然而，以为意志自身有绝对价值，完全不讲它的功用，这种观念好像有什么奇怪的地方——奇怪到虽然就是普通人也彻底赞成这个观念，但又一定会猜疑，以为这种观念也许实际只是恣意幻想的产物，并且也许我们这样看法对于大自然赋予人理性以统制意志的用意不免误会。因此，我们还要从这个观点考究这种观念。\\n在一个有组织的生类，那就是说一个与生活的目的恰相适应的生物，关于它的形体的结构，我们假定个基本原理，就是，除了最恰好最适应于特种目的之器官以外，不会有为任何种目的而生之器官。说到具有理性和意志的生类，假如大自然的本来目的是要它 保存 ，要它 安好 ，简言之，要它 享幸福 ，那末，大自然竟然选择了它的理性担任这件事，那就是采取了一个很坏的办法了。因为这个生物为求幸福而必须做的一切动作以及它的行为的全部规划，假如由本能规定，一定会更加靠得住得多；由本能去求幸福，比由理性去求，成功也更加有望得多。如果这个特受宠眷的生物所禀得的理性额外之多，一定也不过要使它能够赏识它自己本性构成得恰好，能够赞美这个本性，庆贺自己有这样本性，为这件事而觉得感激恩赐的来源，并不是要这个生物把它的欲望听那个脆弱的执迷的向导作主，因而用笨拙的法子干涉大自然的用心。总而言之，大自然一定早已设法使理性不挺身出来 实地作用 ，也不用它脆弱的澈悟力擅自为自己定出求幸福的计划，以及取得求幸福的工具的方法。大自然一定不特要自己选定目的，一定也选定手段，并且因其有先见之明，一定要将这两重责任完全付托与本能去履行了。\\n其实，我们见到理性有教养的人越是存心地把理性用于追求生活的享乐和幸福，这个人就也越得不到真正的满意。因为这种情形，许多人（假如他们够坦白，肯供认)都感到某程度的 对理性 的厌恶 ，尤其是那些对于运用理性最谙练的人；因为计算了所有他们得到的好处（我不是说由于关乎一切对于日常奢侈品的发明这方面的好处，就是由于在他们看来只是人类智力的奢侈品的那些学问的好处）之后，他们就知道他们实在与其说是得到更多的幸福，宁可说是掮了更多的困难。结果，这一帮人对于那一帮比较庸俗的人，更顺从本能的指使而不让理性对他们行为有多大影响的人，实在是羡慕，而不是轻视。并且，那些人要把理性对于幸福和生活的满意上给予我们的利益打个大折扣，甚至要把它算做低于零的，他们的判断绝不是对于世界宰理的良好这一层不理会或是不感激。这种判断的根源是在于他们以为人类的生存有个不同的更高尚的目的，理性应该是用于追求这个日的，不是为幸福起见，因此这个目的一定要算做最高条件——比起它，人的私有目的大部分一定要算做次要的：这是我们必须承认的。\\n为什么呢？理性对于意志的对象以及对于我们一切需要的满足上并不能够把意志指导得正确；其实理性在某程度内反而增多我们的需要；在满足需要上，理性远不及天赋本能靠得住。同时，理性赋予我们，是作为实践的能力，就是要左右 意志 的能力。所以，假如承认大自然分配能力，大都使工具适应目的，那么，理性的真正目的一定是要产生一种意志——不特因其为取得别的什么东西的 工具 而算做好的，而且它 自身就是好的意志 ；要产生这种意志，理性是绝对必需的。这样说，这个意志，虽然不是惟一的完全的福利，一定是最高的福利,是一切其他好处（就是幸福的欲望也在内）的条件。理性的修养既然是这个第一并无条件的用途所需要的，它就不免在很多方面与追求那个第二并总是有条件的（即幸福）不相容，至少在人的这一生是这样：好意志既然是至高的福利，那末，这种不相容并不使我们怀疑以为大自然赋予人类能力有什么不得当。其实，理性尽可以把幸福弄得完全没有，而还不致使大自然的计划失败。因为理性承认建立个好意志是它的最高的实践上的目的；达到这个目的了，理性只得到特种满意，——就是，虽然爱好的目的多数落空，而单由理性决定的目的居然达到这件事实所引起的满意。\\n所以，一种本身值得极端尊重，不用再讲到别的而自身是好的意志，这个概念，我们得要把它发挥；这一个概念，就是具有稳健的而未经训练的智力的人的心中也早已有了，只须把它弄清楚，不须重新教诲。我们要估计我们行为的全部价值，这个概念是首要的，是一切其余的条件。要发挥这个概念，我们要先讨论 义务 (duty)这个观念——义务观念包含着好意志这个概念，不过还有某些主观的限制和障碍罢了。可是，这些限制与障碍不特不会遮蔽好意志，使它认不得，而且因为对衬，反而使它涌现出来，照耀得更加明亮。\\n有好些行为，虽是可以用来达到这个或那个目的，但已经公认为与义务不相容——这些行为，我这里完全不提，因为它会与义务冲突，当然不会发生它是否 出于义务心 这个问题。还有些行为，实际上合乎义务，但人对它 没有直接爱好 ，只是为别个爱好所驱使而实行它——这些行为，我也撇开；因为在这些地方，我们很容易看出来合乎义务的行为是 出于义务心 ，还是因为利己的目的而履行。但是，假如一件行为既然合乎义务，而行为者又有 直接 爱好要实现它，那末，这种分别就难得多了。例如，卖东西的人不应该对无经验的主顾抬高价钱，这永远是个义务；并且在生意很盛的地方，有远虑的商人是不会抬价的，他对人人总是卖一定价钱，使得小孩子也可以去买，和别人一样。这样，他的交易是 诚实 无欺的；但这还不够使我们相信这个商人这样做是因为义务心，并因为诚实起见：其实，他私人的利益就要他这样。在这个事例，我们绝不能设想他另外还有直接爱好要给买主便宜，显示他给一切买主平等的利益是出于诚心的爱好的样子。所以，商人这种行为不是出于义务心，也不是出于直接爱好，只是出于利己心。\\n再举另外一个例子，保存生命是一件义务；并且人人也都有直接爱好要这样做。但是，因为这样，大多数人的小心保养生命，这种行为，并没有根本的价值，他们的行为格准没有道德上的意义。固然；他们保全他们的生命是 合乎义务 的，但不是 出于义务心 。反之，假如灾祸和绝望弄得这个人全无生趣；假如这个不幸的人，意志坚强，并不丧气，对于他的运命十分愤激，想要自杀，但他虽是已经无心留恋生命而仍旧保存它——不是由于爱好或恐怕，而是出于义务心——那末，他的格准就有个道德价值了。\\n在我们能够仁慈的时候实行仁慈，这是一件义务；并且不少人那么富于同情，使得他们并不是因为要自夸或自利，而自然觉得使旁人快乐是种快意的事情——假如别人的满意是由于他们的力量，他们就觉得高兴。然而，我以为在这种事例，这样的行为，无论是多么正当，多么可爱，总没有真正的道德价值，只不过与其他爱好居于同等地位——这类爱好，例如好荣誉，假如恰巧目的在于有益公众并合乎义务因而是荣誉的事情，是值得赞美并鼓励，但不值得敬重。因为道德的意义就在于这种行为应该 出于义务心 ，不是出于爱好，所以这样行为的人的格准没有道德价值。假如那个慈善家自己给他自己的忧患包围，弄到他对别人境况的同情心完全消灭，虽然还能够拯救别人出患难，但因为自顾不暇，别人的困苦并不动他的心；再假定他由这种麻木不仁的状态中自己摆脱出来，虽然没有施惠的爱好而单因为是义务就实行慈善的行为，这样，他的行为才有真正的道德价值。再进一步说，假如一个人本来很缺乏同情心，假如他在其他方面是个正直的人，但是性情冷淡，对于别人的困苦不关心，也许因为他对自己的困苦，生性能够忍耐并镇定，而且设想别人也能够这样，甚至要别人也能够这样（这种人当然不是顶卑鄙的人物）;这种人假如生来不适宜于做慈善家，难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑，是可以的。正是在这种地方，才表现出高于一切的那种品格的道德价值，就是，他所以仁慈，不是由于爱好，而是由于义务心。\\n求得自己的幸福是一个义务，至少间接地是这样；因为一个人不满意于自己的环境，受多种忧虑的压迫，有许多不满足的需要，这样的心境容易变成很大的 诱惑， 使他背弃义务 。在这种地方，又见到与上文说的一样的例：一切人，不必靠着义务，就已经对于幸福有极强烈极深切的爱好，因为幸福这个观念正是把一切爱好合成一个总体的观念。然而关于幸福的训诫的性质往往使这些训诫与有些爱好大大冲突；而且一个人对于一切爱好的满足的总量，（即所谓幸福的）也不能够得什么一定的确实的概念。因此，单单一个爱好，假如它所许给的东西和可以满足的期限都是确定的，往往能够战胜那种游移的对于幸福的观念；例如，一个患关节痛的人可以随他高兴享乐，不顾将来怎样受苦，因为据他的盘算，至少这一次，他没有因为不可必的，说是将来健康可以赐予的幸福而牺牲目前的享乐——这种事情用不着奇怪。可\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 4500, \"chapter_text_length\": 31774, \"has_more\": true, \"next_offset\": 4500, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": null, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4c91c9408959f664176c8a213e44258ef2318138edb8e58a099980d11a8ae86e\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/309de54e4392?ch=46\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 4500], [19674, 23674]], \"covered_characters\": 8500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 1, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "亚里士多德",
+      "limit": 6,
+      "query": "行为 必须 出于 某种状态 选择 公正 勇敢"
+     },
+     "status": "success",
+     "duration_seconds": 0.071,
+     "result_full": "{\"query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 5, \"chapter_title\": \"第五卷 公正论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第五卷 公正论】\", \"snippet\": \"、7；同时参照1145b2—7等。品质也是通过其对【196】严群先生把这句语译作：“见于行，立面，或者认识两存乎心，莫不出于正”，“存乎心而正，是谓意种行为方式也是通善，见于行而正，是谓举止端庄，行为公正”，过它们的基础。如参见其《亚里士多德之伦理思想》，商务印书馆果我们知道了良好2003年版，第130页。的健康状况是怎样【197】这里不能翻译成“品质的情况同科的，那么也就知道1129a20学和能力是不同的”或“在科学上，潜能和品了不佳的健康状况质是各不相同的方式”，因为这些翻译都没有与是怎样的了，反之“公正”问题挂钩。亚里士多德在这里是规定公亦然。这就是说，正的本性，他的出发点是“所有人都称为的”如果良好的健康状那种从“品质”来说\", \"score\": 378, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 5, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 3, \"chapter_title\": \"第三卷 德行特征与具体德性\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第三卷 德行特征与具体德性】\", \"snippet\": \"加不了任何影响。1110a5但对于因惧怕更大的恶或因某高尚理由所做之事（例如一个僧主以某人的父母或子女为人质，强追他去做某种可耻之事，如果做了，就释放他的父母或子女，如果不做，则处死他们）人们可能就拿不准，这样的行为究竞是自愿的还是不自愿的。在轮船遭遇海上风暴时抛弃财物，也属于这类情形，因为通常情况下没有人自愿抛弃个人财1110a10物，相反，为了拯救自己和他人，每个有理智的人，【在追不得已的情况下］都会这样做。诸如此类的行为具有混合性，但我们同样倾向于说是自愿的。因为在实施行动的时刻，人们是自愿选择做此事的，况且一个行为的目标确实是由处境规定的。所以，行为究竞是出于自愿还是不自1110a15愿，必须考虑到实施行为的时机。仅在它发生\", \"score\": 355, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 3, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"chapter_idx\": 7, \"chapter_title\": \"论题篇第一卷\", \"citation_label\": \"【《工具论》·论题篇第一卷】\", \"snippet\": \"似的其他方法来考察；相关东西之间的相互差别则在同一个种中进行考察。例如公正与勇敢、智慧和节制的区别是什么（因为它们全都源出于同一个种）；也可以用这种方法考察一类同另一类的区别，只要它们相差不是太远，例如感觉与知识的差别是什么。因为如若相差太远，它们之间的区别就相当明显了。 【17】也要考察不同种的事物之间的类似情况。假设甲与乙相关，那么丙与丁相关。例如，假定知识与知识的对象相关，那么感觉就与感觉的对象相关。并且，假设甲在乙中，则丙在丁中，例如，假定视觉在眼睛中，那么理智在灵魂中；假定浪静在海中，则风平在空中。尤其应该注意的是那些相距很远的东西；因为在剩下的其他场合中，我们能更容易地看到那些相似之处。也应考察处于同一种中的东西，看它们\", \"score\": 354, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b471f41a78de\", \"chapter_idx\": 7, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 10, \"chapter_title\": \"第十卷 论快乐、幸福和立法\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】\", \"snippet\": \"不可能保持中庸。【428】[428】Meiner 版1172a35但这种看法几乎是不对的。凡是在情绪对此注释说，与前一和行为转弯抹角的地方，话语就不如行动有种确信快乐是恶的看信服力，如果话语与人们感觉到的东西不一法相反，后面的观点1172b致，就会遭受误解，哪怕说的是真理本身，只是代表了出于教育也会被击破。意图的看法。 第十卷论快乐、幸福和立法如果人们看到，一个遣责快乐的人又在某种具体情况下欲求快乐，人们就容易认【429】本章是本为，他是倾心于追求任何情况下的快乐的，卷第一部分（论快似乎这两种快乐追求没什么两样。因为多数乐）的导论，涉及三事情上没有这种区别。所以，我们觉得，对1172b5个问题：（1）肯定快于快乐有正确的观念不仅对理\", \"score\": 354, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 10, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 11, \"chapter_title\": \"附录\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·附录】\", \"snippet\": \"138a9.152a15；自愿同选择的关系111b7；界定109b35：不自愿或者是通过强迫（110a1—b17）或者是出于无知（110b18一 111a21）面发生的，但不是出于欲望或愤怒（111a22一b3）；情愿和不情愿的交往活动之为法律共同体的领域131a2f.参阅130b30。Freund朋友；Liebhaber von etwas喜爱某物的人；jmd.der eine Vorliebe fur etwas hat某人对某物有偏爱：为每个人带来享乐的，是他所喜爱的东西（pototoutog）99a9：马为爱马者带来享乐，公正为喜爱公正的人带来享乐a10，德性为喜爱德性的人，戏剧为喜爱戏剧的人带来享乐al1，德性高贵a13（\", \"score\": 353, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 11, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 2, \"chapter_title\": \"第二卷 伦理德性与中庸\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\", \"snippet\": \"此外，在专门的技艺和德性之间也没有类同性。因为通过技艺产生的作品，它的质地就在其自身之中。只要它被这样制作出来，就具有了某种特定的质地，[这种质地就是它的好]。而在德性的领域内，某种事情的发生并非已经就是以公正或节制的方式发生的，尽管行为自身具有了某种特定的属性，而是只有当行为者在行动时1105a30满足了相应的条件才是德行。首先，他知道他所做的事，其次，他是基于一种明确的意愿执择并且这种执择是全然为了这件事情本身 而故意行动的，第三，他是坚定地和毫不动摇地行动1105b的【95】。这三个条件对技艺【95】亚里士多德在这里规定了道并不适用，因为只有明晰的德行为的主客观条件。客观条件即行知识对它才是必不可少的，为本身的属性和客体，而行\", \"score\": 352, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 2, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}], \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "moral worth motive acting from duty Kant",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.445,
+     "result_full": "{\"query\": \"moral worth motive acting from duty Kant\", \"results\": [{\"source_record_id\": \"doi:10.4324/9780203989357\", \"title\": \"Kant, Duty and Moral Worth\", \"authors\": [\"Philip Stratton-Lake\"], \"year\": 2005, \"publication_type\": \"BOOK\", \"venue\": null, \"doi\": \"10.4324/9780203989357\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-11\", \"title\": \"On the value of acting from duty\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-11\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-9\", \"title\": \"An alternative account of acting from duty\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-9\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-8\", \"title\": \"Acting from respect for the moral law\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-7\", \"title\": \"Respect and moral motivation\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-7\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1515/9783110210347.3.303\", \"title\": \"Acting from the Motive of Duty and the Incorruptible Ideal Moral Agent\", \"authors\": [\"Cinara Nahra\"], \"year\": 2008, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Law and Peace in Kant’s Philosophy\", \"doi\": \"10.1515/9783110210347.3.303\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"moral worth motive acting from duty Kant\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"moral worth motive acting from duty Kant\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"moral worth motive acting from duty Kant\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 2,
+      "focus": "1105a30",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.002,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 2, \"title\": \"第二卷 伦理德性与中庸\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\", \"text\": \"为的尺度，所以这两种情感必然是我们整个理论的中枢。因为以正\\n第二卷伦理德性与中庸正文当的还是错误的方式感受苦乐，对于行动至关重要。最后，如赫拉克利特所说，虽然制怒很难，但战胜快乐更难。而任何时候技艺和德性却总是同更难的事情联系在一起，并因此使好的东西变得更好。所以说，出于这个原因，德性与治国术的整个1105a10活动都是围绕苦乐转的，在这里谁处理得好，谁就优秀，谁处理得坏，谁就恶劣。所以我们的结论是：德性同苦乐相关；这既是德性形成和发育的原因，也是它毁败的原因：最终德性也自我实现在这个它从中获得1105a15根源的范围内。3.如何能够在德性之前有合乎德性的行为？德性与技艺之别有人可能会提出这样的问题：当我们说，人们必定是通过公正的行为变成公正的人，通过有节制的行为变成有节制的人，何以能够这样认为呢？因为人们做事公正和节制，然后就已经是公正和有1105a20节制的人了，这就如同能熟练地使用语法和演奏音乐的人，必定已经是一个有语法知识和音乐知识的人一样。但是，这种前提在技艺上是根本不正确的。因为一个人完全可能是因为偶然，或者事先得到了另一个人的指点，才说出符合语法规定的东西。所以，只有当一个人不仅如同语法所规定的那样说话，而且也能够根据自己的语法知识1105a25来说话时，他才是一个有语言知识的人。此外，在专门的技艺和德性之间也没有类同性。因为通过技艺产生的作品，它的质地就在其自身之中。只要它被这样制作出来，就具有了某种特定的质地，[这种质地就是它的好]。而在德性的领域内，某种事情的发生并非已经就是以公正或节制的方式发生的，尽管行为自身具有了某种特定的属性，而是只有当行为者在行动时1105a30满足了相应的条件才是德行。首先，他知道他所做的事，其次，他是基于一种明确的意愿执择并且这种执择是全然为了这件事情本身\\n而故意行动的，第三，他是坚定地和毫不动摇地行动1105b的【95】。这三个条件对技艺【95】亚里士多德在这里规定了道并不适用，因为只有明晰的德行为的主客观条件。客观条件即行知识对它才是必不可少的，为本身的属性和客体，而行为者主体但对于德性而言，知识的意要考察这三方面的条件。关于第一方义不大或者全然没有意义。面知识性（知道他做的事），参阅III，相反，其余两个，只有通过1—3，与自愿相关；关于第二方面意对正义和节制的不断训练才愿执择，参阅III，4—5；关于第三方1105b5获得的东西，则意义不小，面坚定不移性，参阅I1，4—6。而且就是一切。所以，这些行为，只有当它们是如同有公正和节制品德的人所施行的，才被称之为公正的和有节制的行为。但说一个人是公正的和有节制的，却不是因为他施行了这样的行为，而在于这样行动的人，如同有公正和节制品德的人那样做事。所以这个说法是正确的：通过公正的行为变成公1105b10正的人，通过节制的行为变成节制的人。但是，不这样行动，诚然就没有人可以变成有德性的人，哪怕这种指望也没有。尽管如此，大多数人还是不这样做，而是满足于空谈，以为这样就能成为哲1105b15学家，成为有德性的人。这就像病人，虽然专心听医生的诊断，但医生的处方他一项都不去执行。就像这样治病\\n第二卷伦理德性与中庸不可能使身体好起来一样，那些满足于空谈的所谓哲学家也不能使灵魂达到健康。德性的一般规定：它是与性情及其能力相关的稳定品格接下来探讨的问题是，德性是什么。【96】这里的灵魂（Seele）现象指既然灵魂【96】现象有的就是一般的“心理现象”（Phychische三种：性情、能力【97】和Phlinomene )。被称作品质的稳定品格，那1105b20【97】这里的能力（Verm0gen，Kon-么，德性必属其中之一。我nen）是指“自然票赋”（Anlagen），如们称作性情的是欲望、愤视觉、听觉等一样。怒、恐惧、自信、嫉妒（Neid，envy）、愉悦、友爱、增恨，渴慕、忌妒（Eifer-sucht, Mi β gunst, emula-tion）、同情，总而言之是所有那些伴随着苦乐的性情；能力我是指那种我们因之能够感受这些性情的东西，例如那种使我们能够感1105b25受愤怒、悲伤或怜阀的东西；称作品质的是，我们借助于它在面对非理性的情感冲动时使我们能正当或不正当地对待的东西，例如，面对一种怒气的爆发，如果我\\n正文们的情感对它太激烈或者太软弱，我们的举止就不当，而如果我们适度地对待它，那就是正当的。类似的东西也适用于其余的性情。1 105b30性情既非德也非恶，首先，因为我们不是由于性情被称作好人或坏人，而是由于德性的优劣被称作好人或坏人。而且我们也不是由于性情被称赞或被遣责一因为一个人不是由于他感到恐惧或者发1106a怒而不被称赞，不是由于他容易发怒，而是由于他以特定的方式发怒而被遣责一而是由于我们德性的优劣被赞美或遣责。其次，我们发怒和陷于恐惧不是出于自己事先的决断，反之道德行为却是自我决断的行为，或者至少是与这种行为不可分的；此外，我们说，在1106a5，性情冲动时我们是被激动的，但在德行与恶行上，我们却不能说我们是被激动的，而是说源自一种稳固持久的状态。出于这些理由，德性也不是能力，因为我们不是由于具有单纯的感受性情的能力而被称作好人或恶人，也不是由于具有这种能力1106a10而受称赞或遣责。此外，能力是自然票赋，但善的或恶的不是源自自然，正如我们在上面已经阐述的那样。既然德性既非性情也非能力，那么就只剩下是品质了。这样我们就从种类上说明德性是什么了。5.德性的进一步规定：它是我们因之而契合中庸的品质但德性是品质这一规定并不充分，我们还必须说明，它是何种品质。1106a15在这里可以说，每种德性既使承载德性的实体本身达到优秀和卓越的状态，也使其功能达到完善。例如，眼晴的德性既要使眼睛本身保持好的观看能力，也要使其功能完善，因为眼晴的品质影响到我1106a20们有好视力。同样，马的德性一方面使马自身优秀，另一方面要使它跑得好，让骑手坐得好并勇敢冲向敌人。如果所有事物的德性都是如此，那么人的德性也必定就是这样的品质了，通过它一个人变成一个\\n第二卷伦理德性与中庸优秀能干的人，又能把人所固有的功能实现到完善。如何达到完善，我们已【98】究竞是在哪里说过的，评论经说过了【98】；但如果我们1106a25家存在争论\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 5343, \"excerpt_end\": 7943, \"chapter_text_length\": 16447, \"has_more\": true, \"next_offset\": 7943, \"has_previous\": true, \"previous_offset\": 2743, \"focus_found\": true, \"focus_terms_matched\": [\"1105a30\"], \"focus_terms_found_in_chapter\": [\"1105a30\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"1105a30\", \"offset\": 6043, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 2, \"offset\": 5843, \"focus\": \"1105a30\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"8e0462da9e554e8997755a28ee282becef2bef4b2f7f71df8cd603e00d5b8d07\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[5343, 7943]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 5.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_HLxFTvqevsZH8k8vEO5O0670"
+    },
+    {
+     "t": 5.6,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_DDjs4CUzaUUO3wt3TPOu0101",
+     "status": "success",
+     "duration_seconds": 0.193
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "动机 行为的道德性 行为者 价值",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.806,
+     "result_full": "{\"query\": \"动机 行为的道德性 行为者 价值\", \"results\": [{\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 9, \"chapter_title\": \"第二编先验辩证论\", \"citation_label\": \"【《纯粹理性批判》·第二编先验辩证论】\", \"snippet\": \"性的品格，这种品格无非他的理性的某种原因性，只要这种原因性在其现象中的结果上显示出一条规则，根据这条规则我们可以将理性的动机及其行动 按照其种类和程度来接受，并能对他的任意的那些主观原则进行评判。由于这种经验性的品格本身必须从作为结果的现象申、以及从这些现象的提供出经验来的那个规则中引！出来：所以人在现象中的一切出自经验性的品格和其他共同起作用的原因的行动都是按照自然秩序而被规定的，并且如果我们有可能把A550人的任意之一切现象一直探索到底，那就决不会有任何单独的B578人的行动是我们不能肯定地预言并从其先行的诸条件中作为必然的来认识的。所以在这种经验性的品格方面没有任何自由，但惟有按照这种品格我们才能考察人，如果我们只是想观察人，\", \"score\": 176, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"8c0c6955c793\", \"chapter_idx\": 9, \"focus\": \"动机 行为的道德性 行为者 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"某些行动成为义务的原理是一种实践法则。行动者出自主观的根据使之成为自己的原则的规则，叫做他的准则；因此，即便法则相同，但行为者的准则却可能大相径庭。 一般而言，仅仅表示什么是责任的定言命令式就是：按照一个同时能够被视为一条普遍法则的准则行动！——因此，你必须首先按照其主观的原理来看待你的行动，但是，这条原理是否也是客观有效的，你只能根据下面一点来认识：由于你的理性使它经受这样的检验，即通过它同时把你自己看做普遍立法的，所以它就取得了这种普遍立法的资格。 这一法则与可能由此得出的重大且众多的结论相比较，它的简单性，此外显然不带有一个动机就提出要求的威望，当然一开始就必定使人惊奇。但是，如果人们在对我们理性通过一个准则取得一条实践法则的\", \"score\": 170, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"动机 行为的道德性 行为者 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 45, \"chapter_title\": \"法权论的形而上学初始根据\", \"citation_label\": \"【《康德文集》·法权论的形而上学初始根据】\", \"snippet\": \"某些行动成为义务的原理是一种实践法则。行动者出自主观的根据使之成为自己的原则的规则，叫做他的准则；因此，即便法则相同，但行为者的准则却可能大相径庭。 一般而言，仅仅表示什么是责任的定言命令式就是：按照一个同时能够被视为一条普遍法则的准则行动！——因此，你必须首先按照其主观的原理来看待你的行动，但是，这条原理是否也是客观有效的，你只能根据下面一点来认识：由于你的理性使它经受这样的检验，即通过它同时把你自己看做普遍立法的，所以它就取得了这种普遍立法的资格。 这一法则与可能由此得出的重大且众多的结论相比较，它的简单性，此外显然不带有一个动机就提出要求的威望，当然一开始就必定使人惊奇。但是，如果人们在对我们理性通过一个准则取得一条实践法则的\", \"score\": 166, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 45, \"focus\": \"动机 行为的道德性 行为者 价值\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 10.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_RITZlbLvIS4O13fE3Cqm6724"
+    },
+    {
+     "t": 10.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_2bEfIQDAvFLzJDXULvgB7453"
+    },
+    {
+     "t": 11.0,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_02_jDRFRNUdj1XdLDhbMC5f8659",
+     "status": "success",
+     "duration_seconds": 0.027
+    },
+    {
+     "t": 11.3,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "行为的价值 在于动机 仁爱的动机 义务感",
+      "author": "休谟",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.028,
+     "result_full": "{\"query\": \"行为的价值 在于动机 仁爱的动机 义务感\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 12.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "在世界之内 甚至在世界之外 善良意志 无限制地 善",
+      "limit": 5
+     },
+     "status": "empty",
+     "duration_seconds": 1.652,
+     "result_full": "{\"query\": \"在世界之内 甚至在世界之外 善良意志 无限制地 善\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 14.2,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_00_qR67GiFzPjvchwZwQeag8064"
+    },
+    {
+     "t": 14.3,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_M2g4xRUwzr8zP7FPwYgr9733"
+    },
+    {
+     "t": 14.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_4E7Vx2RBT2FldbuqCX8p7121"
+    },
+    {
+     "t": 14.8,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e23d6fac862d",
+      "chapter_idx": 2,
+      "focus": "动机",
+      "max_chars": 3500
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"chapter_idx\": 2, \"title\": \"第二章 什么是功利主义\", \"citation_label\": \"【《功利主义》·第二章 什么是功利主义】\", \"text\": \"在多久，也不担忧它们会有什么样的必然结局。\\n与此同时，功利主义者可以永远声称他们有权拥有自我奉献的品德，就像斯多葛学派或先验论者(Transcendentalist)一样。功利主义道德的确承认，人类拥有为了别人的利益而牺牲自身最大利益的能力。它只不过是拒绝承认牺牲本身是一种善行罢了。这种道德认为，一种牺牲若是不会增进幸福，或没有增进幸福的倾向，那就是一种浪费。功利主义道德唯一颂扬的一种自我舍弃，就是为了他人的幸福或为了他人获得幸福的某些手段而做出牺牲；所谓的他人既可以是全人类，也可以是人类集体利益限定范围之内的个人。\\n我还须重申一下：抨击功利主义的人很少公正地承认，构成功利主义作为评价正确行为之标准的幸福，并不是行为人自身的幸福，而是所有相关者的幸福。功利主义要求，一个人在自身的幸福和他人的幸福之间应该像一个公正而仁慈的旁观者，严格地做到不偏不倚。在拿撒勒人耶稣的金科玉律中，我们就可以看到功利伦理学的全部精髓。“己所欲，施于人”和“爱邻如己”，正是功利主义道德理想而完美的形式。功利主义思想是最接近于实现这种理想的手段，它首先要求，法律和社会制度应当让每一个人的幸福或者（实际上可称的）利益尽可能地与全人类的利益保持一致；其次，教育和舆论会对人的品性产生巨大的影响，因此应当充分利用那种力量，让每一个人的内心都在自身的幸福与全人类的利益之间确立一种不可分割的联系，尤其是要把自身的幸福与为了追求普遍的幸福而采取的各种积极和消极的行为模式牢固地联系起来。这样的话，不但一个人可以想见，自己与公众利益相悖的行为不可能给他带来幸福，而且一种促进公众利益的直接冲动还有可能变成每一个人的习惯性行为动机，与之相关的情感也有可能在每一个人的情感生活中占据一个重要而突出的位置。如果说，质疑功利主义道德的人是根据功利主义道德的这种真实性质去理解它的，那么我就不知道，他们还能断言有什么样的可取之处，是其他任何一种道德都拥有、功利主义道德却不具备的；我也不知道，除此之外他们还能认为有其他任何一种道德体系能够促进那些更加美好、更加高尚的人性发展，还能说明这些道德体系是依赖哪些行为动力去实施它们的强制要求，而功利主义者却无法获得这些行为动力的。\\n我们不能总是指责反对者，说他们是在贬损功利主义。恰恰相反，他们当中那些对功利主义的无私性质多少持有一种公正看法的人有时还会挑剔地说，功利主义的标准对人性而言太过高尚。他们声称，要人们总是根据促进公众利益的动机去行事，这种要求太过苛刻了。但是，这种看法其实是误解了一种道德标准的确切含义，并且把行为准则与行为动机混淆了。伦理学的任务，就是指出我们的义务是什么，或我们可以凭借什么样的检验准则去了解这些义务；但是，没有哪种伦理体系要求我们一切行为的唯一动机都必须是一种责任感。相反，我们有百分之九十九的行为都是出于其他动机，并且只要义务准则不会谴责，这些行为就属于正当之举。其实对功利主义更不公平的是，有些人竟然把这种特定的误解当成反对功利主义的理由，因为功利主义伦理学家已经肯定地指出，动机跟“行为是否合乎道德”没有关系，而是与行为人的品格有很大关系，这一点几乎胜过了其他所有伦理学家的观点。拯救溺水同胞的人做的是道德正确的事情，不管此人的动机是责任感还是希望他的付出能够得到回报；背叛一个信任自己的朋友不啻为犯罪，哪怕这样做的目的是有益于另一位更应去帮助的朋友。不过，单就出于义务动机并且直接遵从原则的行为而言，若是以为功利主义的思维模式是指人们应当一心去关注像全世界或全社会这样宽泛的普遍性对象，那就是一种误解。绝大多数善行，其实并不是为了维护整个世界的利益，而是为了维护构成世界利益的个人利益；在这种场合下，就算是最高尚的人也不需要去考虑特定相关者以外的人，除非是有必要确保他在维护相关人员的利益时，没有侵犯其他任何一个人的权利——也就是没有侵犯别人合法且获得了认可的期望。根据功利主义伦理学来看，增进幸福就是美德的目标。但是，任何一个人（只有极少数人除外）都只是在例外情况下，才有能力极大程度地增进幸福感，也就是成为一个施惠于公众的人；也只有在这种情况下，此人才应当去考虑公众的功利，而在其他所有情况下，此人只需要注意个人的功利和少数人的利益或幸福就行了。只有其行为会影响到整个社会的那些人，才需要习惯性地去关心范围如此宽泛的目标。实际上，在节制的问题上——即人们出于道德考量而克制自身不去做某些事情，尽管在特定的场合下，这些事情导致的结果可能有益——一个理智的行为人不自觉地认识到此类行为若是普遍践行就会有害于公众，而这一点也是必须克制此类行为的原因之后，他就会觉得不该那样去做了。这种认识中蕴含的对公众利益的尊重程度，并未逾越每一种道德体系的要求，因为它们全都要求世人戒除明显有害于整个社会的行为。\\n这些相同的考量因素，还可以解决另一种反对功利学说的观点；这种指责的根源，是反对者更加严重地误解了一种道德标准的目的以及“是”“非”二字的确切含义。常常有人断言，说功利主义会让人们变得冷酷无情，说功利主义会让人减少他们对个人怀有的道德情感，说功利主义会让人们只是毫无感情、铁石心肠地去考虑行为的后果，而不对那些行为呈现出来的本质进行道德评价。这种论断若是指他们不允许自己对一种行为的对错所做的判断受到他人对行为人品质所形成的看法的影响，那么它就不是在反对功利主义，而是在反对存在的任何一种道德标准了；因为毫无疑问，没有哪种已知的道德标准会根据行为实施者的善恶来判断这种行为的好坏，更别说会根据行为实施者和蔼可亲、勇敢、仁慈或与之相反的诸多秉性来判定了。这些考量因素评价的并不是行为，而是人；但是，除了人们行为的对错，还有其他方面让我们对他们感兴趣，这个事实与功利主义理论之间没有任何矛盾。的确，斯多葛学派喜欢说“拥有美德者就拥有了一切，也只有拥有美德的人才富有、美丽，才是人中之龙”；这是因为，自相矛盾地滥用语言属于他们理论体系中的一部分，他们还力图通过这种滥用来让自己超然于外，做到不关注美德之外的一切。但是，功利主义理论不会这样来描述有德之人。功利主义者非常清楚，除了美德，世界上还有其他值得追求的财富与品质，并且完全乐意让它们全都充分发挥出各自的价值。他们也明白，一种正确的行为并不一定说明行为人具有高尚的品格，而有些应该受到谴责的行为，却经常源自行为人那些值得颂扬的品质。当这一点在特定的情况下表现得非常明显时，它就会改变功利主义者的评价——当然，改变的不是他们对行为的评价，而是他们对行为人的评价。我承认，尽管如此，功利主义者还是认为，从长远来看，一种良好品质的最佳证据就是善良的行为；但是，他们绝对不会把任何一种主要倾向于作恶的秉性视为良好的品质。这一点，使得功利主义者不受很多人的待见，但每一个严肃对待是非之别的人，必定都会像他们一样不受人待见；这种指责，一个严肃尽责的功利主义者也不需要急着反驳。\\n假如反对功利主义的观点仅仅是说，许多功利主义者都是根据功利主义的标准，用一种太过狭隘的态度去衡量行为的道德性，因此没有充分重视一种使人变得可爱或可敬的性格中的其他美好之处，那么，这种反对意见还是可以接受的。那些陶冶出了道德情操，却既没有培养出同理之心、也没有培养出艺术审美能力的功利主义者，确实会犯这样的错误；而在同样的情况下，其他所有的伦理学家也是如此。能够替其他伦理学家开脱的辩解之辞，同样可以替功利主义者开脱：也就是说，如果一定要犯错的话，在那个方面犯错要好于在其他方面犯错。事实上，我们还可以肯定地说，功利主义者应用他们的标准时，在宽严的尺度方面具有各种可以想见的差异，而信奉其他伦理体系的人也是如此。有些人会像清教徒一样严苛，还有一些人却会尽量宽容，就像罪人或感伤主义者所渴望的那样。但总的来说，一种学说若是突出强调了人类在压制和避免那些在违背道德准则的行为过程中获得的利益，那么它引起舆论对这些违背道德准则的行为进行惩处的能力，就很可能并不逊色于其他任何一种学说。确实，对于“什么行为违背了道德准则？”这个问题，奉行不同道德标准的人可能会时不时地产生分歧。不过，道德问题方面的意见分歧并不是功利主义率先带到世界上来的；但无论怎么说，功利主义学说也确实提供了一种解决这些分歧的方法，就算它并非易行，也是一种切实和可以理解的方法。/書 分 享 公 眾 號 晚 霞 书 房\\n我们不妨再来看一看人们对功利主义伦理学持有的一些常见误解，其中有些误解还极其明显和肤浅，任何一个坦率而聪明的人似乎都是不可能陷入其中的。这种探究不算是多余之\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8921, \"excerpt_end\": 12421, \"chapter_text_length\": 16389, \"has_more\": true, \"next_offset\": 12421, \"has_previous\": true, \"previous_offset\": 5421, \"focus_found\": true, \"focus_terms_matched\": [\"动机\"], \"focus_terms_found_in_chapter\": [\"动机\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"动机\", \"offset\": 9621, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"offset\": 9421, \"focus\": \"动机\"}}, {\"term\": \"动机\", \"offset\": 9944, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"offset\": 9744, \"focus\": \"动机\"}}, {\"term\": \"动机\", \"offset\": 9995, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 2, \"offset\": 9795, \"focus\": \"动机\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"a002967b78aa6679ff818db2705fd9b53d5985ec2e9213a084f197e6a9aa0f5e\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e23d6fac862d?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"功利主义\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8921, 12421]], \"covered_characters\": 3500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 14.8,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "309de54e4392",
+      "focus": "奠基",
+      "limit": 30
+     },
+     "status": "success",
+     "duration_seconds": 0.03,
+     "result_full": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作集涵盖了其批判哲学体系的全部核心内容，包括《纯粹理性批判》、《实践理性批判》和《判断力批判》三大批判。康德在《纯粹理性批判》中探讨了人类知识的界限，提出了先验感性论和先验逻辑，试图调和理性主义与经验主义。在《实践理性批判》中，他阐述了道德律令和自由意志，强调道德行为的自律性。在《判断力批判》中，他分析了审美判断和目的论，将自然与自由联系起来。此外，该著作集还收录了康德的其他重要作品，如《道德形而上学基础》、《未来形而上学导论》等。康德的哲学思想深刻影响了后来的德国唯心主义、现象学、存在主义等流派，其关于理性、自由、道德和美的思考至今仍是哲学研究的重要课题。这套著作集不仅是研究康德哲学的必备文献，也是理解现代哲学发展的关键文本。\", \"rank\": 48.8, \"chapterCount\": 81, \"declared_chapter_count\": 81, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 81, \"readable\": true, \"chapters\": [], \"matched_chapters\": 0, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 14.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "book_id": "178e7d06d42d",
+      "limit": 5,
+      "query": "动机 德的 merit 善良"
+     },
+     "status": "success",
+     "duration_seconds": 0.036,
+     "result_full": "{\"query\": \"动机 德的 merit 善良\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 6}, \"search_scope\": {\"author\": null, \"book_id\": \"178e7d06d42d\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 16.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_w1b9LwYrHJltDF7AYCRR7803"
+    },
+    {
+     "t": 17.0,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_15rySdNnBxMwNO0nGV1O9333"
+    },
+    {
+     "t": 17.3,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_02_ArHDsrSVplnpdU3xdM5x4946",
+     "status": "success",
+     "duration_seconds": 0.075
+    },
+    {
+     "t": 17.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "善良意志 道德形而上学奠基 义务 爱好",
+      "book_id": "390398aff8d0"
+     },
+     "status": "success",
+     "duration_seconds": 0.099,
+     "result_full": "{\"query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"意志与终极目的的协调一致的智慧，在人这里首先需要清除内在的障碍（一个在人心中丛生的恶的意志），然后需要发展在他心中的一个善良意志的那种永远不会失去的源始的禀赋（只有自我认识的地狱之行才开辟出一条神化之路 [8] ）。 第15节 这种道德的自我认识将首先排除对作为（其整个族类的）一般人的自己的狂热蔑视；因为这种蔑视是自相矛盾的。——甚至惟有通过存在于我们心中的美好的、使人配得上敬重的向善禀赋，才能使他认为违背这种禀赋而行动的人（自己，但不是其心中的人性）是应当受到轻视的。——但这样一来，它也就与如下自爱的自我评价相悖，即认为纯然的愿望如果是以还如此强烈的渴望发生的，在它们就自身而言毕竟没有付诸行动的时候，就是一个善良心灵的证明（祈祷也\", \"score\": 366, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 70, \"chapter_title\": \"纯粹理性批判\", \"citation_label\": \"【《康德文集》·纯粹理性批判】\", \"snippet\": \"时是为《纯粹理性批判》计划的。 [3] 1764年初，哈曼（Hamann）就已经在康德“脑子里所拥有的”工作中，除了对“道德性”的研究之外，思念着“一种新形而上学的尝试”了。 [4] 康德自己在一年半之后，希望不久就能够完备地阐明能有助于他为自己的陈述奠基的东西，而且建议自己的读者再次想到一部形而上学教程。 [5] 在这里，大概像1764年初一样，涉及的是关于形而上学的独特方法的著作，康德在1765年底就已经决定把它再放一放，因为他在其进程中察觉到，非常缺乏他能够具体地指出［形而上学的］独特方法的例证。 [6] 这种猜测是否有道理，什么理念是当时所计划的著作的基础，这部著作看样子应当包含什么样的思想序列，在多大程度上它就一切迹象来看\", \"score\": 309, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 70, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 27, \"chapter_title\": \"实践理性批判\", \"citation_label\": \"【《康德文集》·实践理性批判】\", \"snippet\": \"辛劳是多还是少，我必须留待这一类工作的行家去评判。它虽然以《道德形而上学的奠基》为前提条件，但只是就这部著作使人预先熟悉义务的原则、陈述和辩白义务的一个确定公式而言的 [4] ；除此之外它是独立自存的。至于没有像思辨理性的批判所提供的那样为了完备性而附加上一切实践科学的划分，在这种实践理性能力的性状中也可找到这方面的有效根据。因为把义务特别规定为人类义务，以便对它们进行划分，这惟有当这一规定的主体（人）按照他成为现实所凭借的性状事先被认识到，虽然只是就一般义务而言在必要的范围被认识到时，才是可能的；但这种规定不属于一般实践理性批判，后者只应当完备地说明实践理性的可能性、其范围和界限的原则，并不与人的本性有特别的关系。因此，该划分在这\", \"score\": 308, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 27, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 73, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"书”出版。——译者据科学院版编者注 [3] 达里斯（Joachim Georg Daries，1714—1791），耶拿道德和法学教授，后到奥得河畔的法兰克福。著有《形而上学基础》。——科学院版编者注 第二章 论规定的、普遍充足的理由律 定义 命题四 规定就是以排除对立面来设定一个谓词。就其谓词而言来规定主词的东西，被称做理由。理由被分为在先规定的理由和在后规定的理由。在先规定的理由，其概念先行于被规定者，也就是说，不假定它，被规定者就不可理解。 [1] 在后规定的理由，如果被它规定的概念不是事先已经从某处得到设定，就不会设定它。前一种理由也可以称做为什么的理由或者存在或者产生的理由，后一种理由也可以称做是什么的理由或者认识的理由。\", \"score\": 305, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 73, \"focus\": \"善良 意志 道德 形而上学 奠基 义务 爱好\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"query_terms\": [\"善良\", \"意志\", \"道德\", \"形而上学\", \"奠基\", \"义务\", \"爱好\"]}], \"catalogue_matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 91}, \"search_scope\": {\"author\": null, \"book_id\": \"390398aff8d0\"}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 17.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "仁爱 的 价值 义务感 行为的功过",
+      "author": "休谟"
+     },
+     "status": "success",
+     "duration_seconds": 0.102,
+     "result_full": "{\"query\": \"仁爱 的 价值 义务感 行为的功过\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 19.5,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_00_fX2DVveU6UgQsmdUhwr16366"
+    },
+    {
+     "t": 19.7,
+     "phase": "result",
+     "name": "get_book_detail",
+     "call_id": "call_01_I2i6tZJdWyIIiDAZoYuo4059",
+     "status": "success",
+     "duration_seconds": 0.005
+    },
+    {
+     "t": 19.8,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "178e7d06d42d",
+      "limit": 20
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"id\": \"178e7d06d42d\", \"title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和因果关系的基础之上。休谟提出了著名的“印象与观念”区分，认为所有复杂观念都可以还原为简单的感觉印象，从而彻底贯彻了经验主义原则。在知识论方面，休谟对因果关系进行了深刻剖析，指出我们所谓的“因果必然性”实际上只是心理习惯的产物，而非客观实在。这一观点动摇了传统形而上学的根基。在道德哲学方面，休谟认为道德判断源于情感而非理性，提出了“同情”作为道德的基础。该书虽然出版后反响平平，但后来被公认为经验主义哲学的巅峰之作，深刻影响了康德、实证主义以及现代科学方法。休谟的怀疑论虽然激进，却为哲学开辟了新的思考方向，成为后世哲学家无法绕过的思想资源。\", \"rank\": 45.1, \"chapterCount\": 6, \"bibliographic_metadata\": {\"work\": {\"author\": \"大卫·休谟\", \"canonical_title\": \"人性论（全4册）\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 6, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 6, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"出版说明\"}, {\"index\": 1, \"title\": \"一、二卷的公告\"}, {\"index\": 2, \"title\": \"导论\"}, {\"index\": 3, \"title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\"}, {\"index\": 4, \"title\": \"第一卷 第二章 论空间和时间观念\"}, {\"index\": 5, \"title\": \"第一卷 第三章 论知识和或然性\"}], \"matched_chapters\": 6, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 21.1,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_00_IqYTOrdwkYACkrsUjFNI8871"
+    },
+    {
+     "t": 21.3,
+     "phase": "result",
+     "name": "get_book_detail",
+     "call_id": "call_01_e1kJZCwOP1DtWfow9Lkd9762",
+     "status": "success",
+     "duration_seconds": 0.006
+    },
+    {
+     "t": 21.5,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "390398aff8d0",
+      "focus": "奠基",
+      "limit": 30
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"id\": \"390398aff8d0\", \"title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"康德文集涵盖其三大批判及重要论文，构建了先验唯心论体系。《纯粹理性批判》考察人类认识能力，提出先天综合判断如何可能，区分现象与物自体，限制知识以给信仰留地盘。《实践理性批判》确立道德律的至上性，强调自由意志与绝对命令。《判断力批判》连接自然与自由，探讨审美与目的论。康德还提出“人为自然立法”与“人是目的”的启蒙口号，其哲学成为现代性的基石，深刻影响后世哲学、伦理学与美学。\", \"rank\": 47.2, \"chapterCount\": 91, \"declared_chapter_count\": 91, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 91, \"readable\": true, \"chapters\": [{\"index\": 26, \"title\": \"道德形而上学的奠基\"}], \"matched_chapters\": 1, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 23.4,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_LtYbRgeqouWcwVHPS7JY6686"
+    },
+    {
+     "t": 23.6,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_Kl2077y5Dc5u873brS8w6654",
+     "status": "success",
+     "duration_seconds": 0.007
+    },
+    {
+     "t": 23.8,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 26,
+      "focus": "善良意志",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 26, \"title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"text\": \"道德形而上学的奠基\\n科学院版编者导言\\n保罗·门采尔（Paul Menzer）\\n关于促使康德撰写《道德形而上学的奠基》的理由，他自己在这部作品的前言中是以如下的话来表达的：\\n我决意日后提供一部《道德形而上学》，如今我让这本《奠基》先发表。尽管除了一种纯粹实践理性的批判之外，道德形而上学真正说来没有别的基础，就像对于形而上学来说，已经提供的纯粹思辨理性的批判是基础一样。然而一方面，前一种批判并不像后一种批判那样极为重要，因为在道德领域里，人类理性甚至在最普通的知性那里也能够轻而易举地达到重大的正确性和详尽性，与此相反，它在理论的、但却纯粹的应用中却完全是辩证的；另一方面，为了一种纯粹实践理性的批判，我要求：如果它要被完成，就必须能够同时显示它与思辨理性在一个共同的原则之中的统一，因为毕竟归根结底只能有同一种理性，它惟有在应用中才必须被区别开来。但是，如果不引入完全不同种类的考察并把读者弄糊涂，我在这里就还不能达到这样一种完备性。为此缘故，我不使用纯粹实践理性批判的称谓，而是用道德形而上学的奠基这个称谓。\\n但第三点，既然一部《道德形而上学》虽然有吓人的标题，但仍能有很大程度的通俗性，且能够适应普通的知性，所以我认为，把对基础的这种预先探讨与道德形而上学分开，以便将来可以不把这里无法避免的细微之处附加给较易理解的学说，是有好处的。\\n指出康德思维的导致这几句话的内在发展，不是如下阐述的任务，对于它们来说，只是应当补充这部著作的外在历史。当然，在这一场合，可以列举一些在上面几句话中未触及的事实，它们对康德的决定不无影响。\\n对于这部作品来说明摆着的事实材料证实，它原初并不在康德的计划之内。因此，他自己或者他人关于伦理学作品的工作的通报不能直接地与《道德形而上学的奠基》联系起来，但毕竟属于其广义上的前史，应在这里有一个位置。这个位置还可以这样来限制，即B.埃德曼在本卷《纯粹理性批判》的导言中指出了大量应予考虑的地方 [1] 。因此，我一开始就满足于一种简单枚举。\\n1764年2月1日，哈曼写信告诉J.G.林德奈：“他（康德）脑子里有一大堆工作：道德性。” [2]\\n在其于1765年12月31日致兰贝特的信中，康德在一些较小的作品中间提到《世俗实践智慧的形而上学初始根据》。 [3]\\n在1767年2月16日，哈曼向赫尔德报告：“康德硕士先生在写一部《道德形而上学》，与迄今的道德形而上学对照，它将更多地研究人是什么，而非人应当是什么……” [4]\\n这个消息通过康德于1767年 [5] 5月9日致赫尔德的信得到证实。在说明他的“注意力主要针对认识人的能力和偏好的真正规定和局限”之后，他接着说：“我相信，在涉及道德的事情上，我终于取得了相当的成功。目前，我正在研究道德形而上学。在这里，我自诩能够提出显明的、蕴意丰富的原理以及方法。据此，那些尽管非常流行、但在大多数情况下却毫无成效的努力，如果它们应当提供什么用处的话，就必须以这种认识方式建立起来。我希望，如果我那总是变化不定的健康状况不阻碍我，就在今年完成这项工作……” [6]\\n不过，这个希望并未实现。在1770年9月2日，康德写信告诉兰贝特：“我打算到今年冬天再把我关于纯粹的道德世俗智慧的研究列入日程，并且加以完成。在这里，找不到任何经验性的原则，仿佛就是道德形而上学。” [7] 然而，就连这一次也没有出版所预告的作品。然后，多次提到的《道德形而上学》作为计划中的作品《感性和理性的界限》的一个部分出现在1771年6月7日和1772年2月21日致马库斯·赫茨的信中。 [8] 在后一封信中我们得知，康德想在完成“包括形而上学的本源、方法及其界限的第一部分”（《纯粹理性批判》）之后，“再写道德性的纯粹原则” [9] 。这部作品对于整个体系的地位改变了，而其内容的规定则依然未变。\\n我们在康德于1773年年底写给赫茨的信中发现了同样的真实状况：“如果我的先验哲学得以完成，我将非常高兴。它真正说来就是对纯粹理性的一个批判。在这之后，我将转向形而上学。形而上学只有两个部分，即自然的形而上学和道德的形而上学。其中，我将首先发表道德的形而上学。现在，我已经在为它的即将面市而高兴不已了。” [10]\\n从现在开始，直到1781年，我们没有任何消息。1776年11月24日致马库斯·赫茨的信以我们所拥有的规模提供了《纯粹理性批判》的计划，但没有提及伦理学问题。 [11] 只是在代表做出版之后，伦理学问题才又被考虑。在“纯粹理性的建筑术”中，我们发现在自然形而上学之外提到道德形而上学，它以纯粹理性的实践应用为对象。哈曼在他于5月7日给哈特克诺赫写信时联系到了这些规定：“谨请您留意，道德形而上学和自然形而上学很快就跟上，特别是后者，其中将出现他的理论，即他其余的作品如何被织入他的批判，部分地更完善，部分地更新颖。” [12] 哈特克诺赫在其于1781年11月19日致康德的信中遵从了这一建议。其中说道：“我希望阁下您还把道德和自然学说的形而上学交给我出版，因为这为您的计划的完成所需，并构成一个整体。” [13]\\n根据其原初的计划，康德大概首先开始写道德形而上学，或者正确地说，是一本为它做准备的书。关于已开始的工作，同时关于他在《导论》之外从事这项工作的第一个消息，我们是从哈曼于1782年1月11日致哈特克诺赫的信中获得的：“康德在写道德形而上学，——我不知道是给谁出版。他也想在临近复活节时完成他的短篇［《导论》］。” [14] 在这些情况下，也许是由于因《格廷根书评》而增多和加快完成的《导论》的写作，上述作品只是很慢地进行。\\n只是在1783年8月16日——值康德按照哈曼的通报完成《导论》的时间 [15] ——我们才从致门德尔松的信中得知如下情况：“今年冬天，我将完成我的道德学的第一部分，即使不能全部写完，至少也要写出绝大部分。这部作品将会更加通俗，但却远远不能像规定人类整个理性的界限和全部内容的展望那样，给予我扩展情趣的魅力，这主要是因为，道德若想在完成自身时，跳越到宗教方面去，那么，没有前一种准备工作以及准确无误的规定，它就会卷入异议和怀疑，或者陷入幻想和狂热之中。” [16]\\n这段信大概不允许我们裁定，我们能够把“我的道德学的第一部分”是理解为一本完整阐述体系的书的一个部分，还是理解为一部自身独立的、但却构成体系的一个部分的著作。如果说的是后者，那么可能进一步的问题就是，这部著作是否可以被理解为一部《纯粹实践理性批判》或者一部《道德形而上学的奠基》。所有这些问题都必须考虑到康德哲学的内在历史来回答，在这里必须不予讨论。\\n因此，我们继续来确定眼前的材料的日期，并根据哈曼于1783年10月26日给赫尔德的无关紧要的通报而发现：“他［康德］看起来在忙于出版他的其余著作。” [17] 在哈曼于1784年2月8日致赫尔德的信中令人感到意外的记录是：“康德应当在写关于伽尔韦的《西塞罗》的一个反批判，不过他还不知道书名自身。” [18]\\n哈曼在1784年2月18日致舍弗纳的一封信中让这部著作的书名同样不确定：“据说，我们敬爱的康德教授……在写一本反批判——不过书名尚不清楚——来反驳伽尔韦的《西塞罗》，作为对其在《德意志图书总汇》上的书评的回答。” [19] 更为确定的是在哈曼于1784年3月14日致哈特克诺\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 3000, \"chapter_text_length\": 62981, \"has_more\": true, \"next_offset\": 3000, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": false, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"a84f3dabbb484467441065c9690f9584f546bd35a06c433a36cebd1e86e24a0f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/390398aff8d0?ch=26\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 3000]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 26.3,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_KZGcu01LMPRNqfrBmIKy2058",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 39.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_UGAhtDCFwbOGPXd5Nnmb6239"
+    },
+    {
+     "t": 39.6,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_01_W3QrKGC5bMDKGGf7DoAk3951"
+    },
+    {
+     "t": 39.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "author": "亚里士多德",
+      "limit": 6,
+      "query": "行为 必须 出于 某种状态 选择 公正 勇敢"
+     },
+     "status": "success",
+     "duration_seconds": 0.071,
+     "result_full": "{\"query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 5, \"chapter_title\": \"第五卷 公正论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第五卷 公正论】\", \"snippet\": \"、7；同时参照1145b2—7等。品质也是通过其对【196】严群先生把这句语译作：“见于行，立面，或者认识两存乎心，莫不出于正”，“存乎心而正，是谓意种行为方式也是通善，见于行而正，是谓举止端庄，行为公正”，过它们的基础。如参见其《亚里士多德之伦理思想》，商务印书馆果我们知道了良好2003年版，第130页。的健康状况是怎样【197】这里不能翻译成“品质的情况同科的，那么也就知道1129a20学和能力是不同的”或“在科学上，潜能和品了不佳的健康状况质是各不相同的方式”，因为这些翻译都没有与是怎样的了，反之“公正”问题挂钩。亚里士多德在这里是规定公亦然。这就是说，正的本性，他的出发点是“所有人都称为的”如果良好的健康状那种从“品质”来说\", \"score\": 378, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 5, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 3, \"chapter_title\": \"第三卷 德行特征与具体德性\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第三卷 德行特征与具体德性】\", \"snippet\": \"加不了任何影响。1110a5但对于因惧怕更大的恶或因某高尚理由所做之事（例如一个僧主以某人的父母或子女为人质，强追他去做某种可耻之事，如果做了，就释放他的父母或子女，如果不做，则处死他们）人们可能就拿不准，这样的行为究竞是自愿的还是不自愿的。在轮船遭遇海上风暴时抛弃财物，也属于这类情形，因为通常情况下没有人自愿抛弃个人财1110a10物，相反，为了拯救自己和他人，每个有理智的人，【在追不得已的情况下］都会这样做。诸如此类的行为具有混合性，但我们同样倾向于说是自愿的。因为在实施行动的时刻，人们是自愿选择做此事的，况且一个行为的目标确实是由处境规定的。所以，行为究竞是出于自愿还是不自1110a15愿，必须考虑到实施行为的时机。仅在它发生\", \"score\": 355, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 3, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"chapter_idx\": 7, \"chapter_title\": \"论题篇第一卷\", \"citation_label\": \"【《工具论》·论题篇第一卷】\", \"snippet\": \"似的其他方法来考察；相关东西之间的相互差别则在同一个种中进行考察。例如公正与勇敢、智慧和节制的区别是什么（因为它们全都源出于同一个种）；也可以用这种方法考察一类同另一类的区别，只要它们相差不是太远，例如感觉与知识的差别是什么。因为如若相差太远，它们之间的区别就相当明显了。 【17】也要考察不同种的事物之间的类似情况。假设甲与乙相关，那么丙与丁相关。例如，假定知识与知识的对象相关，那么感觉就与感觉的对象相关。并且，假设甲在乙中，则丙在丁中，例如，假定视觉在眼睛中，那么理智在灵魂中；假定浪静在海中，则风平在空中。尤其应该注意的是那些相距很远的东西；因为在剩下的其他场合中，我们能更容易地看到那些相似之处。也应考察处于同一种中的东西，看它们\", \"score\": 354, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b471f41a78de\", \"chapter_idx\": 7, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 10, \"chapter_title\": \"第十卷 论快乐、幸福和立法\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】\", \"snippet\": \"不可能保持中庸。【428】[428】Meiner 版1172a35但这种看法几乎是不对的。凡是在情绪对此注释说，与前一和行为转弯抹角的地方，话语就不如行动有种确信快乐是恶的看信服力，如果话语与人们感觉到的东西不一法相反，后面的观点1172b致，就会遭受误解，哪怕说的是真理本身，只是代表了出于教育也会被击破。意图的看法。 第十卷论快乐、幸福和立法如果人们看到，一个遣责快乐的人又在某种具体情况下欲求快乐，人们就容易认【429】本章是本为，他是倾心于追求任何情况下的快乐的，卷第一部分（论快似乎这两种快乐追求没什么两样。因为多数乐）的导论，涉及三事情上没有这种区别。所以，我们觉得，对1172b5个问题：（1）肯定快于快乐有正确的观念不仅对理\", \"score\": 354, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 10, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 11, \"chapter_title\": \"附录\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·附录】\", \"snippet\": \"138a9.152a15；自愿同选择的关系111b7；界定109b35：不自愿或者是通过强迫（110a1—b17）或者是出于无知（110b18一 111a21）面发生的，但不是出于欲望或愤怒（111a22一b3）；情愿和不情愿的交往活动之为法律共同体的领域131a2f.参阅130b30。Freund朋友；Liebhaber von etwas喜爱某物的人；jmd.der eine Vorliebe fur etwas hat某人对某物有偏爱：为每个人带来享乐的，是他所喜爱的东西（pototoutog）99a9：马为爱马者带来享乐，公正为喜爱公正的人带来享乐a10，德性为喜爱德性的人，戏剧为喜爱戏剧的人带来享乐al1，德性高贵a13（\", \"score\": 353, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 11, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 2, \"chapter_title\": \"第二卷 伦理德性与中庸\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\", \"snippet\": \"此外，在专门的技艺和德性之间也没有类同性。因为通过技艺产生的作品，它的质地就在其自身之中。只要它被这样制作出来，就具有了某种特定的质地，[这种质地就是它的好]。而在德性的领域内，某种事情的发生并非已经就是以公正或节制的方式发生的，尽管行为自身具有了某种特定的属性，而是只有当行为者在行动时1105a30满足了相应的条件才是德行。首先，他知道他所做的事，其次，他是基于一种明确的意愿执择并且这种执择是全然为了这件事情本身 而故意行动的，第三，他是坚定地和毫不动摇地行动1105b的【95】。这三个条件对技艺【95】亚里士多德在这里规定了道并不适用，因为只有明晰的德行为的主客观条件。客观条件即行知识对它才是必不可少的，为本身的属性和客体，而行\", \"score\": 352, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 2, \"focus\": \"行为 必须 出于 某种 状态 选择 公正 勇敢\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"query_terms\": [\"行为\", \"必须\", \"出于\", \"某种\", \"状态\", \"选择\", \"公正\", \"勇敢\"]}], \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 41.3,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "moral worth motive acting from duty Kant",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.445,
+     "result_full": "{\"query\": \"moral worth motive acting from duty Kant\", \"results\": [{\"source_record_id\": \"doi:10.4324/9780203989357\", \"title\": \"Kant, Duty and Moral Worth\", \"authors\": [\"Philip Stratton-Lake\"], \"year\": 2005, \"publication_type\": \"BOOK\", \"venue\": null, \"doi\": \"10.4324/9780203989357\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-11\", \"title\": \"On the value of acting from duty\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-11\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-9\", \"title\": \"An alternative account of acting from duty\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-9\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-8\", \"title\": \"Acting from respect for the moral law\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203989357-7\", \"title\": \"Respect and moral motivation\", \"authors\": [], \"year\": 2005, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Kant, Duty and Moral Worth\", \"doi\": \"10.4324/9780203989357-7\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1515/9783110210347.3.303\", \"title\": \"Acting from the Motive of Duty and the Incorruptible Ideal Moral Agent\", \"authors\": [\"Cinara Nahra\"], \"year\": 2008, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Law and Peace in Kant’s Philosophy\", \"doi\": \"10.1515/9783110210347.3.303\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"moral worth motive acting from duty Kant\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"moral worth motive acting from duty Kant\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"moral worth motive acting from duty Kant\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 44.3,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_AoIiBu4hfAXgpSFnjP4g6719",
+     "status": "success",
+     "duration_seconds": 0.002
+    }
+   ],
+   "answer": "**不一定。**而且把\"更好\"拆成三个不同的问题后,答案不只不同,有一个会直接反转。\n\n## 一、\"学生永远不知道\"这个条件其实什么也没解决\n\n它排除的是效果——感激、信任、模仿、动力传递。但这些如果算\"影响\",题干已经用\"全部影响完全一样\"一并抹平了。所以这句话是冗余的强调,它真正想说的是:动机完全不可见。\n\n而**不可见不等于不存在**。把\"没人能分辨\"当作\"没有差别\",是这道题最容易翻车的地方。\n\n## 二、问\"行为正当不正当\":并列,没有更好的一方\n\n密尔在《功利主义》第二章里说得非常直接:\"动机跟'行为是否合乎道德'没有关系,而是与行为人的品格有很大关系\"；\"拯救溺水同胞的人做的是道德正确的事情,不管此人的动机是责任感还是希望他的付出能够得到回报\"【《功利主义》·第二章 什么是功利主义】。\n\n在效果的账本上,两人按前提已经并列；在行为的对错上,密尔也让它并列,并把差别挪到第三个问题上。\n\n## 三、问\"人\":这才是有争议处,而康德的答案与直觉相反\n\n密尔在同章说,一种正确的行为并不一定说明行为人具有高尚的品格；\"这些考量因素评价的并不是行为,而是人\"。\n\n康德则把全部价值押在动机上,同时宣布**这个价值与效果无关**:好意志\"所以好,并不是因为它的工作或成就……只讲它本身,就比一切它可以为任何爱好……取得的东西,都要更应被看重得多\"；纵然命运不利,它\"完全缺乏达到它愿望的能力\",\"也还是像宝珠似的,会自己放光\",\"它的有用或是无结果,对于这个价值既不能增加分毫,也不能减少分毫\"【《康德著作集(套装10册)(汉译世界学术名著丛书)》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】。\n\n因此他也不需要\"学生知道\"这个条件——知道与否只关乎旁观者,价值在意志那里。\n\n但接下来他把题干的二分拆了:出于同情心去行善,\"这样的行为,无论是多么正当,多么可爱,总没有真正的道德价值\",因为\"道德的意义就在于这种行为应该出于义务心,不是出于爱好\"。他随即给了个正好对着题干的例子:一个人\"生来不适宜于做慈善家\",本性冷淡,却摆脱麻木、单因为义务而施惠——\"难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑,是可以的。\"\n\n也就是说:如果把\"只为履职\"读成**出于义务、敬重法则**,那么在康德的账上,只按职责做的那位才是道德价值所在的一方;出于关心的那位,行为可嘉、人心可亲,却不因此更高。这不是外人给的反驳,是康德自己的文本。\n\n还有一种读法:\"只为履职\"若指仅为保住饭碗、避免麻烦,那是**自利**动机。康德会说两人都不合格——一个出于爱好,一个出于利己,都没有道德价值。这时\"前者更好\"的理由也不能是\"他关心\"。\n\n## 四、亚里士多德:动机属于行为本身,但他要的不是\"关心\"\n\n《尼各马可伦理学》第二卷区分技艺与德性:技艺作品的品质在作品自身,德性则不然,只有\"行为者在行动时满足了相应的条件才是德行\"——知道自己在做什么、基于抉择并且是为这件事本身、坚定不动摇；\"这些行为,只有当它们是如同有公正和节制品德的人所施行的,才被称之为公正的和有节制的行为\"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸,1105a30–b6】。\n\n所以他也不接受\"只看效果\"。但他要的是行为者的**抉择状态**,不是\"关心\"这种感情——同情之类被他列为既非德也非恶的\"性情\",被称赞或谴责的不是性情本身,而是德性的优劣。\n\n## 五、结论\n\n- 若\"更好\"指老师的**功用**:前提已规定并列——一样好。\n- 若指**行为的正当性**:并列。\n- 若指**人**:差别只可能在这里,而这要选一种价值论。选后果论,差别在品格而非行为;选康德,答案可能反过来;选亚里士多德,该问的是两人各自的抉择状态,而不是\"关心\"这个标签。\n- 唯一确定的是:**\"学生不知道\"替你做不了这个判断**;\"一定更好\"这个强断言在任何一种立场上都得不到\"一定\",它至多是某个价值标准内部的\"更好\"。\n\n最后一个技术提醒。题干说\"全部影响完全一样\"。如果这只指**实际发生过**的效果,那两个人在别的可能情形下是否相同,仍未规定——人们支持\"关心更好\"的通常理由(更可靠、更能持续、压力下更不易崩塌)走的正是这条路。要把这条路也关掉,就得连反事实一并规定相同;那样一来,\"动机不同\"就只剩下一个对世界毫无差别的内在状态,问题也不再是关于老师或学生,而是纯价值论的:无差别的内在状态,值不值得算进\"更好\"。\n\n(以上引文取自本地版本抽取文本,康德一种为中译本用词\"好的意志\",未与德文原版校勘。)",
+   "answer_chars": 1918,
+   "done_content": "**不一定。**而且把\"更好\"拆成三个不同的问题后,答案不只不同,有一个会直接反转。\n\n## 一、\"学生永远不知道\"这个条件其实什么也没解决\n\n它排除的是效果——感激、信任、模仿、动力传递。但这些如果算\"影响\",题干已经用\"全部影响完全一样\"一并抹平了。所以这句话是冗余的强调,它真正想说的是:动机完全不可见。\n\n而**不可见不等于不存在**。把\"没人能分辨\"当作\"没有差别\",是这道题最容易翻车的地方。\n\n## 二、问\"行为正当不正当\":并列,没有更好的一方\n\n密尔在《功利主义》第二章里说得非常直接:\"动机跟'行为是否合乎道德'没有关系,而是与行为人的品格有很大关系\"；\"拯救溺水同胞的人做的是道德正确的事情,不管此人的动机是责任感还是希望他的付出能够得到回报\"【《功利主义》·第二章 什么是功利主义】。\n\n在效果的账本上,两人按前提已经并列；在行为的对错上,密尔也让它并列,并把差别挪到第三个问题上。\n\n## 三、问\"人\":这才是有争议处,而康德的答案与直觉相反\n\n密尔在同章说,一种正确的行为并不一定说明行为人具有高尚的品格；\"这些考量因素评价的并不是行为,而是人\"。\n\n康德则把全部价值押在动机上,同时宣布**这个价值与效果无关**:好意志\"所以好,并不是因为它的工作或成就……只讲它本身,就比一切它可以为任何爱好……取得的东西,都要更应被看重得多\"；纵然命运不利,它\"完全缺乏达到它愿望的能力\",\"也还是像宝珠似的,会自己放光\",\"它的有用或是无结果,对于这个价值既不能增加分毫,也不能减少分毫\"【《康德著作集(套装10册)(汉译世界学术名著丛书)》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】。\n\n因此他也不需要\"学生知道\"这个条件——知道与否只关乎旁观者,价值在意志那里。\n\n但接下来他把题干的二分拆了:出于同情心去行善,\"这样的行为,无论是多么正当,多么可爱,总没有真正的道德价值\",因为\"道德的意义就在于这种行为应该出于义务心,不是出于爱好\"。他随即给了个正好对着题干的例子:一个人\"生来不适宜于做慈善家\",本性冷淡,却摆脱麻木、单因为义务而施惠——\"难道不还可以使他本身具有比那生来慈善的人所能有的高得多多的道德的人品吗?无疑,是可以的。\"\n\n也就是说:如果把\"只为履职\"读成**出于义务、敬重法则**,那么在康德的账上,只按职责做的那位才是道德价值所在的一方;出于关心的那位,行为可嘉、人心可亲,却不因此更高。这不是外人给的反驳,是康德自己的文本。\n\n还有一种读法:\"只为履职\"若指仅为保住饭碗、避免麻烦,那是**自利**动机。康德会说两人都不合格——一个出于爱好,一个出于利己,都没有道德价值。这时\"前者更好\"的理由也不能是\"他关心\"。\n\n## 四、亚里士多德:动机属于行为本身,但他要的不是\"关心\"\n\n《尼各马可伦理学》第二卷区分技艺与德性:技艺作品的品质在作品自身,德性则不然,只有\"行为者在行动时满足了相应的条件才是德行\"——知道自己在做什么、基于抉择并且是为这件事本身、坚定不动摇；\"这些行为,只有当它们是如同有公正和节制品德的人所施行的,才被称之为公正的和有节制的行为\"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸,1105a30–b6】。\n\n所以他也不接受\"只看效果\"。但他要的是行为者的**抉择状态**,不是\"关心\"这种感情——同情之类被他列为既非德也非恶的\"性情\",被称赞或谴责的不是性情本身,而是德性的优劣。\n\n## 五、结论\n\n- 若\"更好\"指老师的**功用**:前提已规定并列——一样好。\n- 若指**行为的正当性**:并列。\n- 若指**人**:差别只可能在这里,而这要选一种价值论。选后果论,差别在品格而非行为;选康德,答案可能反过来;选亚里士多德,该问的是两人各自的抉择状态,而不是\"关心\"这个标签。\n- 唯一确定的是:**\"学生不知道\"替你做不了这个判断**;\"一定更好\"这个强断言在任何一种立场上都得不到\"一定\",它至多是某个价值标准内部的\"更好\"。\n\n最后一个技术提醒。题干说\"全部影响完全一样\"。如果这只指**实际发生过**的效果,那两个人在别的可能情形下是否相同,仍未规定——人们支持\"关心更好\"的通常理由(更可靠、更能持续、压力下更不易崩塌)走的正是这条路。要把这条路也关掉,就得连反事实一并规定相同;那样一来,\"动机不同\"就只剩下一个对世界毫无差别的内在状态,问题也不再是关于老师或学生,而是纯价值论的:无差别的内在状态,值不值得算进\"更好\"。\n\n(以上引文取自本地版本抽取文本,康德一种为中译本用词\"好的意志\",未与德文原版校勘。)",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_9",
+     "book": "功利主义",
+     "chapter": "第二章 什么是功利主义",
+     "book_id": "e23d6fac862d",
+     "chapter_idx": 2,
+     "author": "约翰·斯图尔特·密尔",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_10"
+     ],
+     "excerpt": "在多久，也不担忧它们会有什么样的必然结局。\n与此同时，功利主义者可以永远声称他们有权拥有自我奉献的品德，就像斯多葛学派或先验论者(Transcendentalist)一样。功利主义道德的确承认，人类拥有为了别人的利益而牺牲自身最大利益的能力。它只不过是拒绝承认牺牲本身是一种善行罢了。这种道德认为，一种牺牲若是不会增进幸福，或没有增进幸福的倾向，那就是一种浪费。功利主义道德唯一颂扬的一种自我舍弃，就是为了他人的幸福或为了他人获得幸福的某些手段而做出牺牲；所谓的他人既可以是全人类，也可以是人类集体利益限定范围之内的个人。\n我还须重申一下：抨击功利主义的人很少公正地承认，构成功利主义作为评价正确行为之标准的幸福，并不是行为人自身的幸福，而是所有相关者的幸福。功利主义要求，一个人在自身的幸福和他人的幸福之间应该像一个公正而仁慈的旁观者，严格地做到不偏不倚。在拿撒勒人耶稣的金科玉律中，我们就可以看到功利伦理学的全部精髓。“己所欲，施于人”和“爱邻如己”，正是功利主义道德理想而完美的形式。功利主义思想是最接近于实现这种理想的手段，它首先要求，法律和社会制度应当让每一个人的幸福或者（实际上可称的）利益尽可能地与全人类的利益保持一致；其次，教育和舆论会对人的品性产生巨大的影响，因此应当充分利用那种力量，让每一个人的内心都在自身的幸福与全人类的利益之间确立一种不可分割的联系，尤其是要把自身的幸福与为",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 16389,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_21",
+     "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+     "chapter": "第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识",
+     "book_id": "309de54e4392",
+     "chapter_idx": 46,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_17"
+     ],
+     "excerpt": "本身，就比一切它可以为任何爱好，其实，就是为尽所有的爱好而取得的东西，都要更应被看重得多。纵然因为运命特别不利，或是因为晚娘似的自然界的供给过于吝啬，这个好意志完全缺乏达到它愿望的能力，纵然本人虽则极端努力，还是毫无成就，还只有这个好意志（当然不单是一个发愿，而是尽心力而为之的企图),这个好意志也还是像宝珠似的，会自己放光，还是个自身具有全部价值的东西。它的有用或是无结果，对于这个价值既不能增加分毫，也不能减少分毫。好意志的有无结果，比方说，只是一种布景，使我们能够在通常与人交接的时期更方便地运用这个意志，或是能够引起那些还不能赏鉴它的人对它注意，但不是使我们能够把它献与真赏家鉴赏，或是能够估定它的价值。\n然而，以为意志自身有绝对价值，完全不讲它的功用，这种观念好像有什么奇怪的地方——奇怪到虽然就是普通人也彻底赞成这个观念，但又一定会猜疑，以为这种观念也许实际只是恣意幻想的产物，并且也许我们这样看法对于大自然赋予人理性以统制意志的用意不免误会。因此，我们还要从这个观点考究这种观念。\n在一个有组织的生类，那就是说一个与生活的目的恰相适应的生物，关于它的形体的结构，我们假定个基本原理，就是，除了最恰好最适应于特种目的之器官以外，不会有为任何种目的而生之器官。说到具有理性和意志的生类，假如大自然的本来目的是要它 保存 ，要它 安好 ，简言之，要它 享幸福 ，那末，大自然竟然选择了它的理性",
+     "quoted_passages": [
+      "完全缺乏达到它愿望的能力",
+      "生来不适宜于做慈善家"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 31774,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_29",
+     "book": "尼各马可伦理学[注释导读本]",
+     "chapter": "第二卷 伦理德性与中庸",
+     "book_id": "e574c8e7f515",
+     "chapter_idx": 2,
+     "author": "亚里士多德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_28",
+      "claim_29"
+     ],
+     "excerpt": "为的尺度，所以这两种情感必然是我们整个理论的中枢。因为以正\n第二卷伦理德性与中庸正文当的还是错误的方式感受苦乐，对于行动至关重要。最后，如赫拉克利特所说，虽然制怒很难，但战胜快乐更难。而任何时候技艺和德性却总是同更难的事情联系在一起，并因此使好的东西变得更好。所以说，出于这个原因，德性与治国术的整个1105a10活动都是围绕苦乐转的，在这里谁处理得好，谁就优秀，谁处理得坏，谁就恶劣。所以我们的结论是：德性同苦乐相关；这既是德性形成和发育的原因，也是它毁败的原因：最终德性也自我实现在这个它从中获得1105a15根源的范围内。3.如何能够在德性之前有合乎德性的行为？德性与技艺之别有人可能会提出这样的问题：当我们说，人们必定是通过公正的行为变成公正的人，通过有节制的行为变成有节制的人，何以能够这样认为呢？因为人们做事公正和节制，然后就已经是公正和有1105a20节制的人了，这就如同能熟练地使用语法和演奏音乐的人，必定已经是一个有语法知识和音乐知识的人一样。但是，这种前提在技艺上是根本不正确的。因为一个人完全可能是因为偶然，或者事先得到了另一个人的指点，才说出符合语法规定的东西。所以，只有当一个人不仅如同语法所规定的那样说话，而且也能够根据自己的语法知识1105a25来说话时，他才是一个有语言知识的人。此外，在专门的技艺和德性之间也没有类同性。因为通过技艺产生的作品，它的质地就在其自身之中",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 16447,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 22,
+    "display_citations": 3,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "功利主义",
+       "chapter": "第二章 什么是功利主义",
+       "book_id": "e23d6fac862d",
+       "chapter_idx": 2,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "在多久，也不担忧它们会有什么样的必然结局。\n与此同时，功利主义者可以永远声称他们有权拥有自我奉献的品德，就像斯多葛学派或先验论者(Transcendentalist)一样。功利主义道德的确承认，人类拥有为了别人的利益而牺牲自身最大利益的能力。它只不过是拒绝承认牺牲本身是一种善行罢了。这种道德认为，一种牺牲若是不会增进幸福，或没有增进幸福的倾向，那就是一种浪费。功利主义道德唯一颂扬的一种自我舍弃，就是为了他人的幸福或为了他人获得幸福的某些手段而做出牺牲；所谓的他人既可以是全人类，也可以是人类集体利益限定范围之内的个人。\n我还须重申一下：抨击功利主义的人很少公正地承认，构成功利主义作为评价正确行为之标准的幸福，并不是行为人自身的幸福，而是所有相关者的幸福。功利主义要求，一个人在自身的幸福和他人的幸福之间应该像一个公正而仁慈的旁观者，严格地做到不偏不倚。在拿撒勒人耶稣的金科玉律中，我们就可以看到功利伦理学的全部精髓。“己所欲，施于人”和“爱邻如己”，正是功利主义道德理想而完美的形式。功利主义思想是最接近于实现这种理想的手段，它首先要求，法律和社会制度应当让每一个人的幸福或者（实际上可称的）利益尽可能地与全人类的利益保持一致；其次，教育和舆论会对人的品性产生巨大的影响，因此应当充分利用那种力量，让每一个人的内心都在自身的幸福与全人类的利益之间确立一种不可分割的联系，尤其是要把自身的幸福与为",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 16389,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识",
+       "book_id": "309de54e4392",
+       "chapter_idx": 46,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "本身，就比一切它可以为任何爱好，其实，就是为尽所有的爱好而取得的东西，都要更应被看重得多。纵然因为运命特别不利，或是因为晚娘似的自然界的供给过于吝啬，这个好意志完全缺乏达到它愿望的能力，纵然本人虽则极端努力，还是毫无成就，还只有这个好意志（当然不单是一个发愿，而是尽心力而为之的企图),这个好意志也还是像宝珠似的，会自己放光，还是个自身具有全部价值的东西。它的有用或是无结果，对于这个价值既不能增加分毫，也不能减少分毫。好意志的有无结果，比方说，只是一种布景，使我们能够在通常与人交接的时期更方便地运用这个意志，或是能够引起那些还不能赏鉴它的人对它注意，但不是使我们能够把它献与真赏家鉴赏，或是能够估定它的价值。\n然而，以为意志自身有绝对价值，完全不讲它的功用，这种观念好像有什么奇怪的地方——奇怪到虽然就是普通人也彻底赞成这个观念，但又一定会猜疑，以为这种观念也许实际只是恣意幻想的产物，并且也许我们这样看法对于大自然赋予人理性以统制意志的用意不免误会。因此，我们还要从这个观点考究这种观念。\n在一个有组织的生类，那就是说一个与生活的目的恰相适应的生物，关于它的形体的结构，我们假定个基本原理，就是，除了最恰好最适应于特种目的之器官以外，不会有为任何种目的而生之器官。说到具有理性和意志的生类，假如大自然的本来目的是要它 保存 ，要它 安好 ，简言之，要它 享幸福 ，那末，大自然竟然选择了它的理性",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 31774,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第二卷 伦理德性与中庸",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 2,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "为的尺度，所以这两种情感必然是我们整个理论的中枢。因为以正\n第二卷伦理德性与中庸正文当的还是错误的方式感受苦乐，对于行动至关重要。最后，如赫拉克利特所说，虽然制怒很难，但战胜快乐更难。而任何时候技艺和德性却总是同更难的事情联系在一起，并因此使好的东西变得更好。所以说，出于这个原因，德性与治国术的整个1105a10活动都是围绕苦乐转的，在这里谁处理得好，谁就优秀，谁处理得坏，谁就恶劣。所以我们的结论是：德性同苦乐相关；这既是德性形成和发育的原因，也是它毁败的原因：最终德性也自我实现在这个它从中获得1105a15根源的范围内。3.如何能够在德性之前有合乎德性的行为？德性与技艺之别有人可能会提出这样的问题：当我们说，人们必定是通过公正的行为变成公正的人，通过有节制的行为变成有节制的人，何以能够这样认为呢？因为人们做事公正和节制，然后就已经是公正和有1105a20节制的人了，这就如同能熟练地使用语法和演奏音乐的人，必定已经是一个有语法知识和音乐知识的人一样。但是，这种前提在技艺上是根本不正确的。因为一个人完全可能是因为偶然，或者事先得到了另一个人的指点，才说出符合语法规定的东西。所以，只有当一个人不仅如同语法所规定的那样说话，而且也能够根据自己的语法知识1105a25来说话时，他才是一个有语言知识的人。此外，在专门的技艺和德性之间也没有类同性。因为通过技艺产生的作品，它的质地就在其自身之中",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 16447,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学的奠基",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 26,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "道德形而上学的奠基\n科学院版编者导言\n保罗·门采尔（Paul Menzer）\n关于促使康德撰写《道德形而上学的奠基》的理由，他自己在这部作品的前言中是以如下的话来表达的：\n我决意日后提供一部《道德形而上学》，如今我让这本《奠基》先发表。尽管除了一种纯粹实践理性的批判之外，道德形而上学真正说来没有别的基础，就像对于形而上学来说，已经提供的纯粹思辨理性的批判是基础一样。然而一方面，前一种批判并不像后一种批判那样极为重要，因为在道德领域里，人类理性甚至在最普通的知性那里也能够轻而易举地达到重大的正确性和详尽性，与此相反，它在理论的、但却纯粹的应用中却完全是辩证的；另一方面，为了一种纯粹实践理性的批判，我要求：如果它要被完成，就必须能够同时显示它与思辨理性在一个共同的原则之中的统一，因为毕竟归根结底只能有同一种理性，它惟有在应用中才必须被区别开来。但是，如果不引入完全不同种类的考察并把读者弄糊涂，我在这里就还不能达到这样一种完备性。为此缘故，我不使用纯粹实践理性批判的称谓，而是用道德形而上学的奠基这个称谓。\n但第三点，既然一部《道德形而上学》虽然有吓人的标题，但仍能有很大程度的通俗性，且能够适应普通的知性，所以我认为，把对基础的这种预先探讨与道德形而上学分开，以便将来可以不把这里无法避免的细微之处附加给较易理解的学说，是有好处的。\n指出康德思维的导致这几句话的内在发展，不是如下阐述的任务，",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 62981,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "判断力批判",
+       "chapter": "附录 目的论判断力的方法论",
+       "book_id": "f08c1ead3164",
+       "chapter_idx": 7,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "值，并且是在他所做的事中，在他不是作为自然的成员、而是以自己的欲求能力的自由怎样及根据什么原则来行动中的那种价值，也就是善良意志，才是人的存有唯一能借以具有某种绝对价值、而世界的存有能据以拥有某种终极目的的欲求能力。 哪怕人的健全理性的最平凡的判断都与之完全一致的就是：人只有作为道德的存在者才可能是创造的一个终极目的，如果我们把这个评判只引向这一问题并引起对此问题的尝试的话。当我们说，这个人具有如此多的才能，以至于他甚至因此而极有作为，借此他把某种有利的影响施加在公共事务上，因而既在自己的幸运方面又在对别人的好处上都有某种巨大的价值时，如果他314丝毫不具有善良意志，那又有什么用呢？当我们从他的内心来看他时，他就是一个可部的客体；而",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "第一部　纯粹实践理性要素论",
+       "book_id": "309de54e4392",
+       "chapter_idx": 12,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "具备理性的存在者之外的存在者，并且在动力是 由理性表象 出来的范围之内，关切意谓着意志的一个 动力 。因为法则本身在一个善良意志里面必定是动力，所以 道德的关切 是单纯实践理性的一个纯粹非感觉的关切。在关切的概念之上还建立有 准则 的概念。因此只有当这个准则依赖于人们对于遵守法则的单纯关切时，它才在道德上是真的。但是，所有这三个概念， 动力 概念， 关切 概念和 准则 概念，只能运用于有限的存在者。因为它们一概以存在者本性的局限性为先决条件，盖缘存在者意愿的主观性质并非自发地符合实践理性的客观法则；它们设定存在者有一种以任何方式被推动而至活动的需要，因为一种内在的障碍遏止这个活动。这些概念因此不能运用于上帝的意志。 实践理性呈现给我",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "判断力批判",
+       "chapter": "第一卷 审美判断力的分析论",
+       "book_id": "f08c1ead3164",
+       "chapter_idx": 3,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "他才能赋予他的存有作为一个人格的生存以某种绝对的价值；而幸福则连同其快意的全部丰 第一部分审美判断力批判富性都还远远不是无条件的善。①但无论快适和善之间的差异有多大，二者毕竞在一点上是一致的：它们任46何时候都是与其对象上的某种利害结合着的，不仅是快适，以及作为达到某个快意的手段而令人喜欢的间接的善（有利的东西），而且就是那绝对的、在一切意图中的善，也就是带有最高利益的道德的善，也都是这样。因为善就是意志（即某种通过理性规定的欲求能力）的客体，但意愿某物和对它的存有具有某种愉悦感，即对之感到某种兴趣，这两者是同一的。 5.三种不同特性的愉悦之比较 学上的东西（通过刺激，stimulos）为条件的愉悦，后者带有纯粹实践性的愉悦，这不只",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "论通常的说法：这在理论上可能是正确的，但在实践上是行不通的",
+       "book_id": "309de54e4392",
+       "chapter_idx": 71,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "自身的力量，而且还要仇视自己的人民了。 一族人民所据以 消极地 、也就是单纯地判断什么可以认为是最高立法 并未 以自己最善良的意志加以 制定 的东西，其普遍原则可以归结为如下的命题： 凡是人民所不会加之于其自身的东西，立法者也不得加之于人民。 例如，当问题是：宣布某种曾经一度奠定的教会体制永世长存的那种法律，是不是可以看作出自立法者自身的意志（他本人的观点）？那么我们就得首先问：一族人民是不是可以自身制定法律，使某些曾一度采用过的信仰命题和外表的宗教形式垂之永久；因此还有，是不是它本身就可以防止它的后代在宗教理解上继续进步，或纠正古来的某些错误？显然的是，一项人民的原始契约而把这些都定为法律，则其本身就会是空洞无效的，因为它违反了人",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "纯粹实践理性的要素论",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 28,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "（通过想象力）把感性也召来一并发挥作用。赫拉克勒斯只是在制伏了各种怪物之后才成为缪斯九女神的首领，在这样的工作面前，那班善良的姐妹们将栗然而退。维纳斯·乌拉尼亚的这些女伴们一旦想插手规定义务的事务，并为此提供动机，就会成为追随维纳斯·狄俄涅的情姐妹。（注：在古希腊神话中，乌拉尼亚既是缪斯九女神之一，又是作为高尚纯粹爱情之体现的阿佛洛狄忒（即古罗马神话中的维纳斯）的别名。关于阿佛洛狄忒，一说她是由天神乌拉诺斯的肉体落入海中激起的浪花所生，故别名乌拉尼亚；一说她是宙斯和大洋神女狄俄涅的女儿，但有时又把她与狄俄涅混为一谈。于是，在流传的过程中就有了阿佛洛狄忒·乌拉尼亚［即上文的维纳斯·乌拉尼亚］和阿佛洛狄忒·狄俄涅［即上文的维纳斯·狄俄涅",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "纯粹理性批判",
+       "chapter": "第二编先验辩证论",
+       "book_id": "8c0c6955c793",
+       "chapter_idx": 9,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "性的品格，这种品格无非他的理性的某种原因性，只要这种原因性在其现象中的结果上显示出一条规则，根据这条规则我们可以将理性的动机及其行动 按照其种类和程度来接受，并能对他的任意的那些主观原则进行评判。由于这种经验性的品格本身必须从作为结果的现象申、以及从这些现象的提供出经验来的那个规则中引！出来：所以人在现象中的一切出自经验性的品格和其他共同起作用的原因的行动都是按照自然秩序而被规定的，并且如果我们有可能把A550人的任意之一切现象一直探索到底，那就决不会有任何单独的B578人的行动是我们不能肯定地预言并从其先行的诸条件中作为必然的来认识的。所以在这种经验性的品格方面没有任何自由，但惟有按照这种品格我们才能考察人，如果我们只是想观察人，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 29,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "意志与终极目的的协调一致的智慧，在人这里首先需要清除内在的障碍（一个在人心中丛生的恶的意志），然后需要发展在他心中的一个善良意志的那种永远不会失去的源始的禀赋（只有自我认识的地狱之行才开辟出一条神化之路 [8] ）。 第15节 这种道德的自我认识将首先排除对作为（其整个族类的）一般人的自己的狂热蔑视；因为这种蔑视是自相矛盾的。——甚至惟有通过存在于我们心中的美好的、使人配得上敬重的向善禀赋，才能使他认为违背这种禀赋而行动的人（自己，但不是其心中的人性）是应当受到轻视的。——但这样一来，它也就与如下自爱的自我评价相悖，即认为纯然的愿望如果是以还如此强烈的渴望发生的，在它们就自身而言毕竟没有付诸行动的时候，就是一个善良心灵的证明（祈祷也",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "法权论的形而上学初始根据",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 45,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "某些行动成为义务的原理是一种实践法则。行动者出自主观的根据使之成为自己的原则的规则，叫做他的准则；因此，即便法则相同，但行为者的准则却可能大相径庭。 一般而言，仅仅表示什么是责任的定言命令式就是：按照一个同时能够被视为一条普遍法则的准则行动！——因此，你必须首先按照其主观的原理来看待你的行动，但是，这条原理是否也是客观有效的，你只能根据下面一点来认识：由于你的理性使它经受这样的检验，即通过它同时把你自己看做普遍立法的，所以它就取得了这种普遍立法的资格。 这一法则与可能由此得出的重大且众多的结论相比较，它的简单性，此外显然不带有一个动机就提出要求的威望，当然一开始就必定使人惊奇。但是，如果人们在对我们理性通过一个准则取得一条实践法则的",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "人性论（全4册）",
+       "chapter": "",
+       "book_id": "178e7d06d42d",
+       "chapter_idx": -1,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "自然宗教对话录",
+       "chapter": "",
+       "book_id": "9c9e77918c07",
+       "chapter_idx": -1,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "纯粹理性批判",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 70,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "时是为《纯粹理性批判》计划的。 [3] 1764年初，哈曼（Hamann）就已经在康德“脑子里所拥有的”工作中，除了对“道德性”的研究之外，思念着“一种新形而上学的尝试”了。 [4] 康德自己在一年半之后，希望不久就能够完备地阐明能有助于他为自己的陈述奠基的东西，而且建议自己的读者再次想到一部形而上学教程。 [5] 在这里，大概像1764年初一样，涉及的是关于形而上学的独特方法的著作，康德在1765年底就已经决定把它再放一放，因为他在其进程中察觉到，非常缺乏他能够具体地指出［形而上学的］独特方法的例证。 [6] 这种猜测是否有道理，什么理念是当时所计划的著作的基础，这部著作看样子应当包含什么样的思想序列，在多大程度上它就一切迹象来看",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "实践理性批判",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 27,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "辛劳是多还是少，我必须留待这一类工作的行家去评判。它虽然以《道德形而上学的奠基》为前提条件，但只是就这部著作使人预先熟悉义务的原则、陈述和辩白义务的一个确定公式而言的 [4] ；除此之外它是独立自存的。至于没有像思辨理性的批判所提供的那样为了完备性而附加上一切实践科学的划分，在这种实践理性能力的性状中也可找到这方面的有效根据。因为把义务特别规定为人类义务，以便对它们进行划分，这惟有当这一规定的主体（人）按照他成为现实所凭借的性状事先被认识到，虽然只是就一般义务而言在必要的范围被认识到时，才是可能的；但这种规定不属于一般实践理性批判，后者只应当完备地说明实践理性的可能性、其范围和界限的原则，并不与人的本性有特别的关系。因此，该划分在这",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "相关论述",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 73,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "书”出版。——译者据科学院版编者注 [3] 达里斯（Joachim Georg Daries，1714—1791），耶拿道德和法学教授，后到奥得河畔的法兰克福。著有《形而上学基础》。——科学院版编者注 第二章 论规定的、普遍充足的理由律 定义 命题四 规定就是以排除对立面来设定一个谓词。就其谓词而言来规定主词的东西，被称做理由。理由被分为在先规定的理由和在后规定的理由。在先规定的理由，其概念先行于被规定者，也就是说，不假定它，被规定者就不可理解。 [1] 在后规定的理由，如果被它规定的概念不是事先已经从某处得到设定，就不会设定它。前一种理由也可以称做为什么的理由或者存在或者产生的理由，后一种理由也可以称做是什么的理由或者认识的理由。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第五卷 公正论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 5,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "、7；同时参照1145b2—7等。品质也是通过其对【196】严群先生把这句语译作：“见于行，立面，或者认识两存乎心，莫不出于正”，“存乎心而正，是谓意种行为方式也是通善，见于行而正，是谓举止端庄，行为公正”，过它们的基础。如参见其《亚里士多德之伦理思想》，商务印书馆果我们知道了良好2003年版，第130页。的健康状况是怎样【197】这里不能翻译成“品质的情况同科的，那么也就知道1129a20学和能力是不同的”或“在科学上，潜能和品了不佳的健康状况质是各不相同的方式”，因为这些翻译都没有与是怎样的了，反之“公正”问题挂钩。亚里士多德在这里是规定公亦然。这就是说，正的本性，他的出发点是“所有人都称为的”如果良好的健康状那种从“品质”来说",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第三卷 德行特征与具体德性",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 3,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "加不了任何影响。1110a5但对于因惧怕更大的恶或因某高尚理由所做之事（例如一个僧主以某人的父母或子女为人质，强追他去做某种可耻之事，如果做了，就释放他的父母或子女，如果不做，则处死他们）人们可能就拿不准，这样的行为究竞是自愿的还是不自愿的。在轮船遭遇海上风暴时抛弃财物，也属于这类情形，因为通常情况下没有人自愿抛弃个人财1110a10物，相反，为了拯救自己和他人，每个有理智的人，【在追不得已的情况下］都会这样做。诸如此类的行为具有混合性，但我们同样倾向于说是自愿的。因为在实施行动的时刻，人们是自愿选择做此事的，况且一个行为的目标确实是由处境规定的。所以，行为究竞是出于自愿还是不自1110a15愿，必须考虑到实施行为的时机。仅在它发生",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "工具论",
+       "chapter": "论题篇第一卷",
+       "book_id": "b471f41a78de",
+       "chapter_idx": 7,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "似的其他方法来考察；相关东西之间的相互差别则在同一个种中进行考察。例如公正与勇敢、智慧和节制的区别是什么（因为它们全都源出于同一个种）；也可以用这种方法考察一类同另一类的区别，只要它们相差不是太远，例如感觉与知识的差别是什么。因为如若相差太远，它们之间的区别就相当明显了。 【17】也要考察不同种的事物之间的类似情况。假设甲与乙相关，那么丙与丁相关。例如，假定知识与知识的对象相关，那么感觉就与感觉的对象相关。并且，假设甲在乙中，则丙在丁中，例如，假定视觉在眼睛中，那么理智在灵魂中；假定浪静在海中，则风平在空中。尤其应该注意的是那些相距很远的东西；因为在剩下的其他场合中，我们能更容易地看到那些相似之处。也应考察处于同一种中的东西，看它们",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 22,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 77.28,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 5.4,
+     "ev": "assistant_commentary",
+     "chars": 36
+    },
+    {
+     "t": 5.4,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 5.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_HLxFTvqevsZH8k8vEO5O0670"
+    },
+    {
+     "t": 5.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_DDjs4CUzaUUO3wt3TPOu0101"
+    },
+    {
+     "t": 6.1,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.193,
+     "result_chars": 5829,
+     "result_head": "{\"query\": \"善良意志 在世界之内 无条件\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 7, \"chapter_title\": \"附录 目的论判断力的方法"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.806,
+     "result_chars": 2665,
+     "result_head": "{\"query\": \"动机 行为的道德性 行为者 价值\", \"results\": [{\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 9, \"chapter_title\": \"第二编先验辩证论\""
+    },
+    {
+     "t": 10.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_RITZlbLvIS4O13fE3Cqm6724"
+    },
+    {
+     "t": 10.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_2bEfIQDAvFLzJDXULvgB7453"
+    },
+    {
+     "t": 11.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_jDRFRNUdj1XdLDhbMC5f8659"
+    },
+    {
+     "t": 11.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.027,
+     "result_chars": 1805,
+     "result_head": "{\"query\": \"动机 与行为的道德性无关 行为者的品格 价值\", \"results\": [{\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二"
+    },
+    {
+     "t": 11.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.028,
+     "result_chars": 1136,
+     "result_head": "{\"query\": \"行为的价值 在于动机 仁爱的动机 义务感\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_"
+    },
+    {
+     "t": 12.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.652,
+     "result_chars": 348,
+     "result_head": "{\"query\": \"在世界之内 甚至在世界之外 善良意志 无限制地 善\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435"
+    },
+    {
+     "t": 14.2,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_qR67GiFzPjvchwZwQeag8064"
+    },
+    {
+     "t": 14.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_M2g4xRUwzr8zP7FPwYgr9733"
+    },
+    {
+     "t": 14.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_4E7Vx2RBT2FldbuqCX8p7121"
+    },
+    {
+     "t": 14.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 5684,
+     "result_head": "{\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"chapter_idx\": 2, \"title\": \"第二章 什么是功利主义\", \"citation_label\": \"【《功利主义》·第二章 什么是功利主义】\", \"text\": \"在多久，也不担忧它们会有什么样的必"
+    },
+    {
+     "t": 14.8,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.03,
+     "result_chars": 774,
+     "result_head": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作"
+    },
+    {
+     "t": 14.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.036,
+     "result_chars": 733,
+     "result_head": "{\"query\": \"动机 德的 merit 善良\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\":"
+    },
+    {
+     "t": 16.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_w1b9LwYrHJltDF7AYCRR7803"
+    },
+    {
+     "t": 17.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_15rySdNnBxMwNO0nGV1O9333"
+    },
+    {
+     "t": 17.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_ArHDsrSVplnpdU3xdM5x4946"
+    },
+    {
+     "t": 17.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.075,
+     "result_chars": 1386,
+     "result_head": "{\"query\": \"善良意志\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一"
+    },
+    {
+     "t": 17.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.099,
+     "result_chars": 4037,
+     "result_head": "{\"query\": \"善良意志 道德形而上学奠基 义务 爱好\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\""
+    },
+    {
+     "t": 17.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.102,
+     "result_chars": 1133,
+     "result_head": "{\"query\": \"仁爱 的 价值 义务感 行为的功过\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_typ"
+    },
+    {
+     "t": 19.5,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_fX2DVveU6UgQsmdUhwr16366"
+    },
+    {
+     "t": 19.7,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_01_I2i6tZJdWyIIiDAZoYuo4059"
+    },
+    {
+     "t": 19.8,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.005,
+     "result_chars": 2294,
+     "result_head": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作"
+    },
+    {
+     "t": 19.8,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 1518,
+     "result_head": "{\"id\": \"178e7d06d42d\", \"title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。"
+    },
+    {
+     "t": 21.1,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_IqYTOrdwkYACkrsUjFNI8871"
+    },
+    {
+     "t": 21.3,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_01_e1kJZCwOP1DtWfow9Lkd9762"
+    },
+    {
+     "t": 21.5,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 2268,
+     "result_head": "{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作"
+    },
+    {
+     "t": 21.5,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.009,
+     "result_chars": 629,
+     "result_head": "{\"id\": \"390398aff8d0\", \"title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"康德文集涵盖其三大批判及重要论文，构建了先验唯心论体系。《纯粹理性批判》考察人类认识能力，提出先天综"
+    },
+    {
+     "t": 23.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_LtYbRgeqouWcwVHPS7JY6686"
+    },
+    {
+     "t": 23.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_Kl2077y5Dc5u873brS8w6654"
+    },
+    {
+     "t": 23.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.007,
+     "result_chars": 5507,
+     "result_head": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 46, \"title\": \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\", \"citation_label\": \"【《康德著作集（套"
+    },
+    {
+     "t": 23.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.007,
+     "result_chars": 4267,
+     "result_head": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 26, \"title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"text\": \"道德形而上学的奠基\\n科学院版编者导言\\"
+    },
+    {
+     "t": 26.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_KZGcu01LMPRNqfrBmIKy2058"
+    },
+    {
+     "t": 26.5,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5825,
+     "result_head": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 46, \"title\": \"第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识\", \"citation_label\": \"【《康德著作集（套"
+    },
+    {
+     "t": 39.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_UGAhtDCFwbOGPXd5Nnmb6239"
+    },
+    {
+     "t": 39.6,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_01_W3QrKGC5bMDKGGf7DoAk3951"
+    },
+    {
+     "t": 39.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.071,
+     "result_chars": 6563,
+     "result_head": "{\"query\": \"行为 必须 出于 某种状态 选择 公正 勇敢\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 5, \"chapter_title\""
+    },
+    {
+     "t": 41.3,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.445,
+     "result_chars": 4418,
+     "result_head": "{\"query\": \"moral worth motive acting from duty Kant\", \"results\": [{\"source_record_id\": \"doi:10.4324/9780203989357\", \"title\": \"Kant, Duty and Moral Worth\", \"auth"
+    },
+    {
+     "t": 44.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_AoIiBu4hfAXgpSFnjP4g6719"
+    },
+    {
+     "t": 44.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.002,
+     "result_chars": 4599,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 2, \"title\": \"第二卷 伦理德性与中庸\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\", \"text\""
+    },
+    {
+     "t": 77.4,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1155
+  }
+ ],
+ "total_wall_s": 78.9,
+ "status": "COMPLETED"
+}

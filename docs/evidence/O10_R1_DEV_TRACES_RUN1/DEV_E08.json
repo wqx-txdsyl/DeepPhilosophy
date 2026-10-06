@@ -1,0 +1,196 @@
+{
+ "case_id": "DEV_E08",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "「明天就开始」——起点被一天天推迟。拖延只是一个时间管理问题吗？还是说它是我们跟自己的一种特殊关系出了问题？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_zmwKGXzPg8L2d3lH9Z1z5314"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_xB487otI4S4iXezvFwbO4324"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_ljIkaEWzgWAF1HqbcHYY9749"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_FZ0NnarfxUW86ejEIGuQ7952",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 102, 'chapter_title': '48 反对规律', 'citation_label': '【《尼采"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_c1D90GYWQarZddlXlIXe8270"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_Z2N3xqDDGjMSF7Q9POIH4127"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_QIjoz1uOjEx7u42TIEqB0424",
+   "result_head": "{'book_id': '0ed8c0c49e2f', 'chapter_idx': 57, 'title': '非直接的动物', 'book_title': '在绝望之巅', 'citation_label': '【《在绝望之巅》·非直接的动物】', 'text': '所有人都有同样的缺点：他们等待着生活，因为他们没"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_mD51BMaIuUDMNmHt49r82910",
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '爱比"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "奥古斯丁《忏悔录》中\"我所愿意的善我不做\"式意愿与无能分裂的原文措辞与章节；亚里士多德论意志薄弱（不能自制）的原文位置",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "爱比克泰德《哲学谈话录·论注意力》与齐奥朗《在绝望之巅·非直接的动物》中论拖延/推迟当下的完整原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "已定位两处极贴题的候选章节（斯多葛对拖延的注意力处理、齐奥朗论\"等待生活\"），但仅有检索片段，尚未取得完整原文，无法据以作引用或解读。",
+    "unresolved_evidence_gap": "上述两章的完整原文段落，用于核验措辞与上下文"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "爱比克泰德与齐奥朗论拖延/推迟当下的原文措辞",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2329,
+ "final_answer": "不是时间管理问题——或者说，把它当时间管理问题，恰恰是拖延最舒服的一种自我理解方式。时间管理的前提是\"我\"是一个统一的、清醒的执行者，只是工具不趁手；而\"明天就开始\"这句话里真正可疑的，不是任务排序，是那个说这话的\"我\"和那个要去做事的\"我\"之间，似乎不是同一个人。我想沿着两条原文线索把这件事说透，最后再回到你这个问题本身。\n\n## 一、时间管理解释的边界：它解释了症状，解释不了病症\n\n把拖延归为排序失误、即时偏好、注意力涣散，是有行为科学支持的——它描述的是\"打算\"与\"执行\"之间的落差。但注意一个现象：拖延者常常不缺计划、不缺方法、也不缺对后果的清醒认识。他知道该做、想做、也做得到，却在做的那一刻\"做不到\"。当\"利己的判断\"与\"利己的行动\"在同一主体内相互背离时，这已经不是调度问题，而是**意志内部的分裂**。\n\n西方哲学传统把这类现象称为\"不能自制\"（意志薄弱）——即明知何为善、何为当为，却仍然不为之。这里我必须诚实交代一句：这条传统线索（亚里士多德《尼各马可伦理学》对不能自制的分析、奥古斯丁在《忏悔录》里对\"我愿意却做不到\"的忏悔）极切本题，但我在手头的原典库里**没有检索到可直接定位的原文段落**，因此下面不给出对它们的正式引用，只作为背景提及。真正被我在库中读到、可据以立论的，是另外两段文字。\n\n## 二、爱比克泰德：拖延不是\"没做事\"，而是此刻正在做的一件坏事\n\n斯多葛派的爱比克泰德有一个反常识的洞见。我们以为拖延是\"对某事不做\"，是时间的空白；他却说，拖延是**一件被实际执行了的事**，而且它败坏的是当下的自己：\n\n首先, 而且是最糟糕的, 是养成不注意的习惯。其次, 是养成延误注意力的习惯, 于是你便经常习惯于推迟和拖延过宁静与正当的生活、与自然一致的生活, 以及对那种生活的坚持。\n\n这里的关键是\"习惯\"二字。拖延的机制不是一次决策失败，而是一条自我强化的链条：先是\"不注意\"，再是\"延误注意力\"，最后变成一种**对自己当下的处置习惯**。更锋利的是他戳穿\"明天\"这个托词的那一句：\n\n现在你说:“我明天会注意的。” 你要知道你这话等于是说: “我今天要不顾廉耻, 要不机智, 要卑躬屈膝。\n\n也就是说，\"明天再开始\"从来不是一句无害的延后，它其实是一次**关于今天的实际选择**——选择今天不做那个专注、正直、与自己一致的人。所谓推迟，并没有把行动推迟到未来，而是此刻就完成了另一种行动：放纵。所以他紧接着说：\n\n 看一下, 你做了多少坏事! 但是如果明天集中注意力对你有好处, 那么今天集中注意力对你更有好处呀! 如果明天对你有利, 今天更有利; 这样, 你明天就可以做同样的事, 而不至于要推迟到后天了。\n\n在爱比克泰德这里，拖延是一个**可矫正的自我关系**问题：它源于我允许自己不必现在就与自身一致。\n\n## 三、齐奥朗：拖延是一个人逃避\"当下\"的存在方式\n\n如果说爱比克泰德谈的是意志与注意力，齐奥朗则把它推到存在论的层面。他描述人的方式几乎就是为拖延画像：\n\n他笔下的人并不真正活在当下，而是把真正的生命寄托在一个模糊而遥远的未来；在齐奥朗看来，当下之外没有救赎，而人恰恰是一种不懂得当下、不直接面对自身当下的存在。\n\n齐奥朗的意思是：我们总是\"等待着生活\"，把真正的自己抵押给一个\"模糊而遥远的未来\"，仿佛生命尚未开始、真正的日子还在后头。\"明天就开始\"正是这种存在姿态的日常版本——它预设了一个比现在更值得活的时刻，从而让此刻永远只算彩排。与爱比克泰德\"这是可矫正的习惯\"的乐观不同，齐奥朗更悲观：这不是某个人的纪律松弛，而是**人这种存在者与时间的关系本身出了问题**——他是\"非直接的动物\"，天然不活在当下。\n\n## 四、综合：那么拖延究竟是一种什么样的自我关系？\n\n把两条线索叠起来，我认为它至少包含三重结构（这是我的综合判断，不是任何单一原文的直述）：\n\n1. **一种自我的抵押与分裂。** \"明天就开始\"把今天的我工具化：今天的懒惰由明天的我来偿还。这默认了\"我\"可以被拆分——今天欠账的我和明天还账的我不是同一个责任人。拖延的秘密就在于这个契约永不到期，因为签字的两个人从不同时在场。\n2. **一种对自己失信的重复练习。** 它不是对别人违约，而是对自身同一性的违约。每一次\"明天开始\"都在悄悄侵蚀一件比任务重要得多的东西——\"我这个人说的话算数、我可以依赖自己\"。爱比克泰德说的\"养成习惯\"，养的正是这种不信任自己的习惯。\n3. **一种对当下的逃避。** 需要指出：逃避的对象往往不是任务，而是\"此刻就必须成为的那个人\"。任务成了替罪羊——真正难以面对的，是开始做事的那个瞬间里，我必须承认自己此刻只能成为一个正在努力、尚未完成的人。\n\n不同解释的**认识论地位**并不相同：行为科学的时间管理解释，处理的是症状层的规律；爱比克泰德的斯多葛解释，是一种可操作的自我矫正方案；齐奥朗的存在论解释，是对人之时间性的诊断，更接近\"病症\"本身而非药方。它们并不互相否定，但层级不同——把第三层的问题拿到第一层的工具里去修，是很多人反复失败的原因。\n\n## 最后留一个问题给你\n\n如果\"明天\"并非任务真正的截止日期，而只是你私下授权给自己的一句话——\"你不必现在就面对自己\"——那么，你推迟的到底是一项工作，还是那个必须在此刻成形、无法再借未来缓冲的你？\n\n（补充说明：本回答中作正式引用的仅爱比克泰德《哲学谈话录·论注意力》与齐奥朗《在绝望之巅·非直接的动物》两处，均经原典库检索并读取原文核验；谈及亚里士多德、奥古斯丁的\"不能自制\"传统时，未给出引用，因其原文未在本库中直接定位到。）",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "爱比克泰德《哲学谈话录·论注意力》与齐奥朗《在绝望之巅·非直接的动物》中论拖延/推迟当下的完整原文措辞",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:11:04",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "奥古斯丁《忏悔录》中\"我所愿意的善我不做\"式意愿与无能分裂的原文措辞与章节；亚里士多德论意志薄弱（不能自制）的原文位置"
+   },
+   {
+    "ts": "2026-09-13 11:11:11",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "爱比克泰德《哲学谈话录·论注意力》与齐奥朗《在绝望之巅·非直接的动物》中论拖延/推迟当下的完整原文措辞",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:11:22",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:11:11",
+    "reason": "已定位两处极贴题的候选章节（斯多葛对拖延的注意力处理、齐奥朗论\"等待生活\"），但仅有检索片段，尚未取得完整原文，无法据以作引用或解读。",
+    "unresolved_gap": "上述两章的完整原文段落，用于核验措辞与上下文"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 83085,
+   "output_tokens": 8485,
+   "total_tokens": 91570
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 14380,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11615,
+     "output_tokens": 1217,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 19535,
+     "output_tokens": 1283,
+     "tool_chars_added": 13140
+    },
+    {
+     "round": 3,
+     "input_tokens": 16672,
+     "output_tokens": 1794,
+     "tool_chars_added": 3684
+    },
+    {
+     "round": 4,
+     "input_tokens": 18022,
+     "output_tokens": 1528,
+     "tool_chars_added": 1721
+    },
+    {
+     "round": 5,
+     "input_tokens": 17241,
+     "output_tokens": 2663,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 83085,
+  "output_tokens": 8485,
+  "total_tokens": 91570
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 55.6
+}

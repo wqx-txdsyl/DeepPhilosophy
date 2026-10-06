@@ -1,0 +1,108 @@
+{
+ "V5_F1_SCHOLARLY_CONTENT_RCA": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V5_F1_SCHOLARLY_CONTENT_RCA_TASK.md",
+ "BASE": "cee81cf46513937e864c9da430068ad712a32605",
+ "V5_MEASUREMENT_UNCHANGED": true,
+ "measurement_unchanged_note": "本 RCA 仅离线分析 V5 frozen trace + 确定性工具探针; 零 production/V5 artifact 修改; 探针仅写 runtime 缓存 backend/data/scholarly_cache.json（untracked, pytest 自会重写）",
+ "SECONDARY_REQUIRED_CASES": 6,
+ "SECONDARY_CONTENT_EVIDENCE_CASES": 0,
+ "SCOPE": "V5-05/06/09/10/11/12（LITERATURE_ORIENTATION=REQUIRED, content_ev=0）+ 对照组 V5-03/04/08（发生 READ 的 case）",
+
+ "QUERY_LOG_STATUS": {
+  "archived_queries_recoverable": false,
+  "reason": "run harness 缺陷（非 production 缺陷）: o7e_production_calibration.scholarly_calls_detail 从 SSE tool_start 事件取 args, 但 engine 的 tool_start 事件只有 name/tool_call_id（engine_langgraph.py:1597）; args 只在 type='tool' 事件（engine_langgraph.py:1661）。§3'禁止剥离 query/tool args'被 harness 违反——queries 未进 canonical 归档。",
+  "cache_clobbered": "scholarly_cache.json 在 run 后被全量 pytest 重写（test_o7c 的 'cache test' 等条目）, run 时代查询日志不可恢复",
+  "harness_fix_recommendation": "scholarly_calls_detail 改从 type='tool' 事件采集 args+result（观测面修复, 不触 production）"
+ },
+
+ "PER_CALL_AUDIT_TABLE": {
+  "note": "query 字段在归档中丢失（见 QUERY_LOG_STATUS）; 审计表降到记录级: 每 case 的 search 次数 + 返回记录的 origin/access 分布 + READ 决策链 + evidence 产出。数据源: docs/evidence/V5_FINAL_HOLDOUT_RUN.json。",
+  "cases": [
+   {"case_id": "V5-05", "searches": 3, "records_returned": 22, "abstract_available": 7, "metadata_only": 15, "live_provider_records": 0, "reads": 0, "content_evidence": 0},
+   {"case_id": "V5-06", "searches": 11, "records_returned": 86, "abstract_available": 40, "metadata_only": 46, "live_provider_records": 0, "reads": 0, "content_evidence": 0},
+   {"case_id": "V5-09", "searches": 7, "records_returned": 40, "abstract_available": 23, "metadata_only": 17, "live_provider_records": 0, "reads": 0, "content_evidence": 0},
+   {"case_id": "V5-10", "searches": 7, "records_returned": 55, "abstract_available": 9, "metadata_only": 46, "live_provider_records": 0, "reads": 0, "content_evidence": 0},
+   {"case_id": "V5-11", "searches": 7, "records_returned": 56, "abstract_available": 11, "metadata_only": 45, "live_provider_records": 0, "reads": 0, "content_evidence": 0},
+   {"case_id": "V5-12", "searches": 10, "records_returned": 85, "abstract_available": 28, "metadata_only": 57, "live_provider_records": 0, "reads": 0, "content_evidence": 0},
+   {"case_id": "V5-03(control)", "searches": 1, "records_returned": 8, "abstract_available": 1, "metadata_only": 7, "live_provider_records": 0, "reads": 1, "read_chain": [{"record": "doi:10.1093/oxfordhb/9780199744725.013.15", "access_before": "ABSTRACT_AVAILABLE", "access_after": "ABSTRACT_AVAILABLE", "content_evidence": true, "abstract_len": 928}]},
+   {"case_id": "V5-04(control)", "searches": 5, "records_returned": 40, "abstract_available": 4, "metadata_only": 36, "live_provider_records": 0, "reads": 2, "read_chain": [
+    {"record": "doi:10.1515/kier.2012.145", "access_before": "METADATA_ONLY", "access_after": "METADATA_ONLY", "content_evidence": false},
+    {"record": "doi:10.1080/00201746208601358", "access_before": "METADATA_ONLY", "access_after": "METADATA_ONLY", "content_evidence": false}]},
+   {"case_id": "V5-08(control)", "searches": 5, "records_returned": 24, "abstract_available": 1, "metadata_only": 23, "live_provider_records": 0, "reads": 2, "read_chain": [
+    {"record": "doi:10.1515/9781438409214-007", "access_before": "METADATA_ONLY", "access_after": "METADATA_ONLY", "content_evidence": false},
+    {"record": "doi:10.1515/9781438409214-012", "access_before": "METADATA_ONLY", "access_after": "METADATA_ONLY", "content_evidence": false}]}
+  ],
+  "aggregate": {
+   "six_LO_REQUIRED_searches": 45,
+   "six_LO_REQUIRED_reads": 0,
+   "six_LO_REQUIRED_abstract_available_records_visible": 118,
+   "total_searches_v5": 63,
+   "total_reads_v5": 5,
+   "reads_targeting_metadata_only": 4,
+   "reads_yielding_content": 1
+  }
+ },
+
+ "DETERMINISTIC_PROBES": {
+  "registry_topic_coverage": "六个 LO_REQUIRED 主题在本地 registry 全部有命中（重建式查询, 非原查询重放）: Searle Chinese room→6, moral luck→10, Nishida pure experience→7, Averroes→7~10, Anscombe virtue→10, Mackie error theory→10（limit=10 封顶）→ CORPUS_COVERAGE_GAP(registry 发现层) 不成立",
+  "live_provider_connectivity": "search_scholarship('moral luck') 确定性探测: crossref/openalex 双双 URL_BLOCKED（'reserved ip 198.18.0.0/15（非 trusted fake-IP 模式默认拒绝）'）→ offline_mode=true。与 run 归档 452/452 记录全部 LOCAL_CURATED（零 LIVE_*/零 LOCAL_CURATED+LIVE）相互印证: V5 run 全程 live 学术通道被评测沙箱网络策略阻断"
+ },
+
+ "V5_12_BIBLIOGRAPHY_PROVENANCE_AUDIT": {
+  "judge_flagged_entries": [
+   "J. L. Mackie, Ethics: Inventing Right and Wrong, 1977",
+   "Derek Parfit, On What Matters, Vol. 2 (OUP, 2011)",
+   "David Enoch, Taking Morality Seriously (OUP, 2011)"
+  ],
+  "retrieved_records_containing_these_entries": 0,
+  "registry_direct_query_hits": {
+   "Mackie Ethics Inventing Right and Wrong 1977": "0 直接命中（FTS 仅模糊联想: Nietzsche and Analytic Ethics 等）",
+   "Parfit On What Matters 2011": "0 直接命中（返回私人语言/Quine 论文）",
+   "Enoch Taking Morality Seriously 2011": "0 直接命中（返回 Moral Personhood/Mohist Care 等无关记录）"
+  },
+  "conclusion": "三条精确书目（年份/卷次/出版社）来自模型记忆, 无任何 retrieved record 支撑 → EVIDENCE_UNGROUNDED_BIBLIOGRAPHIC_SPECIFICITY=CONFIRMED; 同时暴露 bibliography grounding guard gap: 机械 delivery validator（12/12 终稿 issue=0）对此类无证据链的书目细节零检出, 仅 semantic judge 捕获"
+ },
+
+ "REQUIRED_ANSWERS": {
+  "为什么63次search只产生5次READ": "纯行为层: 六个 LO_REQUIRED case 的 45 次 search 之后 READ=0; 对照组唯一成功链（V5-03）证明通道可用（ABSTRACT_AVAILABLE 记录 READ 后得 928 字符 abstract）。模型把 search 结果视为足够, 未执行 LOCATE→READ 第二跳; 已发生的 5 次 READ 中 4 次落在 before=METADATA_ONLY 记录上（模型侧可见该信号仍未用于选靶）——READ 目标选择实质失效",
+  "六个LO_REQUIRED为什么全部content_ev=0": "0 READ → 0 evidence, 算术直接成立; 且这些 case 的结果池中有 118 条 ABSTRACT_AVAILABLE 记录可读而未读",
+  "是否存在相关且可READ却未读的记录": "存在: 118 条 ABSTRACT_AVAILABLE 记录散布在六 case 的搜索结果池中（V5-06×40, V5-09×23, V5-12×28, V5-11×11, V5-10×9, V5-05×7）, 全部未读",
+  "若无可读内容缺失在哪一层": "不适用（可读内容存在）; 但需披露: live provider（crossref/openalex）被评测沙箱网络策略阻断（452/452 LOCAL_CURATED 零 LIVE）, 本地 registry 仅 abstract 级内容（约占返回记录 30%）——即使模型完美执行 READ, 全文级内容证据在本地 registry 也几乎不可得",
+  "V5-12书目是否来自retrieved record": "否——三条精确书目在 registry 零直接命中, 记忆输出实锤; bibliography grounding guard gap 确认（见 V5_12_BIBLIOGRAPHY_PROVENANCE_AUDIT）",
+  "LOCATE→READ contract状态": "信号充足（model_view 每记录暴露 access_level; 工具描述明示'内容归因必须再用 get_scholarly_source'）但模型未遵循——属 contract adherence/MODEL_TOOL_USE 层失效, 非信号不足、非工具不可触发; 辅证: search 响应的 note 无'有 N 条可读记录未读'类 nudging, contract 完全依赖模型自觉"
+ },
+
+ "PER_CASE_FAILURE_CLASSIFICATION": {
+  "V5-05": {"labels": ["READ_ORCHESTRATION_FAILURE"], "note": "22 记录(7 可读)未读; 但答案质量未崩（judge LO=4, 诚实陈述文献版图）——该 case 证明'未读'与'答案崩坏'可分离"},
+  "V5-06": {"labels": ["READ_ORCHESTRATION_FAILURE", "MODEL_TOOL_USE_FAILURE"], "note": "11 次 search 反复检索而不读（86 记录, 40 可读）→ 记忆型作答, IP=1/LO=1"},
+  "V5-09": {"labels": ["READ_ORCHESTRATION_FAILURE", "MODEL_TOOL_USE_FAILURE", "QUERY_FORMULATION_FAILURE(疑似)"], "note": "7 次 search 0 读; 40 记录(23 可读); AR=1/IP=0/LO=0"},
+  "V5-10": {"labels": ["READ_ORCHESTRATION_FAILURE", "MODEL_TOOL_USE_FAILURE"], "note": "55 记录(9 可读)未读; HD=1 显示历史纪律塌陷, LO=4 但 AR/IP=0"},
+  "V5-11": {"labels": ["READ_ORCHESTRATION_FAILURE", "MODEL_TOOL_USE_FAILURE"], "note": "56 记录(11 可读)未读; TG=1/LO=0"},
+  "V5-12": {"labels": ["READ_ORCHESTRATION_FAILURE", "MODEL_TOOL_USE_FAILURE", "EVIDENCE_PROMOTION_FAILURE(书目无证据链)"], "note": "85 记录(28 可读)未读 + 记忆书目无 grounding guard 拦截 → fatal"}
+ },
+
+ "PRIMARY_ROOT_CAUSE": "READ_ORCHESTRATION_FAILURE: scholarly 通道的 LOCATE→READ 第二跳系统性未执行——63 search→5 READ（LO_REQUIRED 六 case 45 search→0 READ）, 已读的 5 次中 4 次落在模型侧可见为 METADATA_ONLY 的记录上; access_level 信号充足存在但未被用于读靶选择或读/不读决策",
+ "SECONDARY_ROOT_CAUSES": [
+  "ENVIRONMENT_PROVIDER_BLOCKAGE(评测环境): 沙箱网络策略阻断 crossref/openalex（452/452 LOCAL_CURATED 零 LIVE 实锤）→ 内容天花板被压到本地 registry 的 abstract 级; 非 primary 根因（registry 有 118 条可读记录未被读）, 但未来 qualification run 必须在 trusted 网络执行或如实标注 offline 模式",
+  "BIBLIOGRAPHY_GROUNDING_GUARD_GAP: 精确书目元数据（年份/出版社/卷次）可无证据链进入终稿, 机械 validator 零检出（V5-12 fatal 仅被 semantic judge 捕获）",
+  "QUERY_LOG_HARNESS_DEFECT: runner 从 tool_start（无 args）采集 scholarly 调用明细, §3 要求的 query/args 未进归档; 需改为 type='tool' 事件",
+  "READ_TARGET_SELECTION: 结果排序 local-first + FTS 序使 metadata-only 记录占据列表前位, 可读记录缺乏显著性与优先级信号",
+  "CONTENT_DEPTH_CEILING: registry 仅约 30% 返回记录带 abstract, 全文级内容证据在 offline 模式下几乎不可得"
+ ],
+ "REPAIR_SURFACE_RECOMMENDATION": [
+  "harness/观测面（无语义）: scholarly_calls_detail 改从 type='tool' 事件采集 args+result; qualification run 在 trusted 网络执行（或在 summary 强制披露 offline_mode 计数）",
+  "contract/prompt 面（production, 需授权）: SCHOLARLY_CONTRACT 增加 LOCATE→READ 硬义务表述—— literature-类问题在给出文献判断前必须 READ 结果池中 access_level≥ABSTRACT_AVAILABLE 的相关记录; search 响应 note 增加'结果中有 N 条可读记录'计数提示（机械派生, 非语义路由）",
+  "validator 面（production, 需授权）: bibliography grounding guard——终稿中精确书目元数据（年份/出版社）应能溯源到 retrieved record 字段, 否则打 UNGROUNDED_BIBLIOGRAPHIC_DETAIL 类 issue（机械可查: 记录字段 vs 答案文本）",
+  "工具输出面（production, 需授权）: model_view 结果按 可读优先+相关性 双信号排序或显著标注 ABSTRACT_AVAILABLE 条目, 修复 READ 目标选择盲区"
+ ],
+ "root_cause_discipline_note": "PRIMARY_ROOT_CAUSE 由证据直接区分（118 条可读记录未读 + 4/5 READ 落在可见 metadata-only 记录上）; QUERY_FORMULATION_FAILURE 因原查询丢失只能标'疑似', 不作为结论——遵守'不得把未知项猜成 corpus gap'纪律",
+
+ "EVIDENCE_POINTERS": [
+  "docs/evidence/V5_FINAL_HOLDOUT_RUN.json（records/evidence 全量）",
+  "docs/evidence/V5_FINAL_HOLDOUT_JUDGE.json（V5-12 votes）",
+  "backend/scholarly_sources.py:791-825（search_scholarship 缓存与 provider 合并）",
+  "backend/scholarly_sources.py:843-857（model_view 暴露 access_level）",
+  "backend/routes/agent_tools_scholarly.py:30-56（工具响应 note 结构）",
+  "backend/engine_langgraph.py:1597/1661（tool_start 无 args vs tool 有 args——harness 缺陷根源）"
+ ]
+}

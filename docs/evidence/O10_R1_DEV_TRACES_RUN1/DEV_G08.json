@@ -1,0 +1,216 @@
+{
+ "case_id": "DEV_G08",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请综述女性主义科学哲学对「价值无涉理想」（value-free ideal）的批评研究：代表学者、论文与当前争论焦点。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_utMROOIlEpFLsac5qSK13000"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_yK2UeCaDhZGPQ0l620G56615"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_Fjzdj4Ao9HNqmQC6lgHE6544",
+   "result_head": "{'query': 'Heather Douglas values in science inductive risk Heather Douglas', 'results': [], 'READABLE_RESULT_COUNT': 0, 'READABLE_SOURCE_IDS': [], 'providers_q"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_JL353BmyVPyMTii9Utp20398"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_xtr7BLjCf1XuRkxA2OeG9386"
+  },
+  {
+   "name": "websearch",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_hjRXn8WdcZWkXZBjriPw1047"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_4j14lihw6Olm1pcMyBEu7423",
+   "result_head": "{'results': [], 'query': 'feminist philosophy of science value-free ideal Longino Douglas Harding critique', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_KFkUKiiBHSUt8ug2Hlky1275"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_0tCwZYkoG8p7ispgT6EF1767"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_ocHD4GvhxYSvH5iorRT70148"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_03_2Wo5g8wCZaHaU6YEbrre1463",
+   "result_head": "{'results': [{'book_id': '1fbb4b1099e1', 'book_title': 'The Ethics of Psychoanalysis 1959-1960', 'author': '雅克·拉康', 'chapter_idx': 16, 'chapter_title': 'XVI The"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "女性主义科学哲学批评\"价值无涉理想\"的代表学者、关键论文与当前争论焦点，需要真实文献记录与可读内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "学术 provider（crossref/openalex）网络不可达，需改用网络搜索交叉验证女性主义科学哲学批评价值无涉理想的代表学者与争论焦点",
+    "gap_filled": false,
+    "budget_extension_reason": "原 SCHOLARLY 通道的 external provider 全部 URL_BLOCKED，无任何可读记录；改用 WEB 通道补充事实，属通道级修正而非同义词重复",
+    "unresolved_evidence_gap": "女性主义科学哲学批评价值无涉理想的代表学者、关键论文与当前争论焦点"
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "外部学术与网络通道全线不可达，最后尝试本地原典库是否为不同数据源且可能有相关文本",
+    "evidence_gap": "本地 403 本原典库中是否有女性主义科学哲学（哈丁/朗吉诺等）著作或价值无涉相关文本",
+    "gap_filled": false,
+    "research_need": "MIXED",
+    "unresolved_evidence_gap": "女性主义科学哲学批评价值无涉理想的代表学者、关键论文与争论焦点"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 230,
+ "final_answer": "先说清楚这份回答的证据边界——这一点不能含糊。\n\n你问的是一个必须靠真实学术文献支撑的综述题。我这一轮尝试了三条通道，结果如下：\n\n- **学术文献通道**（Crossref / OpenAlex）：两个外部 provider 都返回了网络封锁错误（reserved ip block），零条可读记录；\n- **网络搜索通道**（Bing / 维基百科）：同样不可达；\n- **本地 403 本原典库**：命中的是波伏娃《第二性》、所罗门《世界哲学简史》《哲学",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "本地 403 本原典库中是否有女性主义科学哲学（哈丁/朗吉诺等）著作或价值无涉相关文本",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:19:18",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "女性主义科学哲学批评\"价值无涉理想\"的代表学者、关键论文与当前争论焦点，需要真实文献记录与可读内容证据"
+   },
+   {
+    "ts": "2026-09-13 11:19:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "学术 provider（crossref/openalex）网络不可达，需改用网络搜索交叉验证女性主义科学哲学批评价值无涉理想的代表学者与争论焦点",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:19:30",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "MIXED",
+    "evidence_gap": "本地 403 本原典库中是否有女性主义科学哲学（哈丁/朗吉诺等）著作或价值无涉相关文本",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:19:24",
+    "reason": "原 SCHOLARLY 通道的 external provider 全部 URL_BLOCKED，无任何可读记录；改用 WEB 通道补充事实，属通道级修正而非同义词重复",
+    "unresolved_gap": "女性主义科学哲学批评价值无涉理想的代表学者、关键论文与当前争论焦点"
+   },
+   {
+    "ts": "2026-09-13 11:19:30",
+    "reason": "外部学术与网络通道全线不可达，最后尝试本地原典库是否为不同数据源且可能有相关文本",
+    "unresolved_gap": "女性主义科学哲学批评价值无涉理想的代表学者、关键论文与争论焦点"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 10,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 60930,
+   "output_tokens": 6567,
+   "total_tokens": 67497
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 3254,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11617,
+     "output_tokens": 602,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13263,
+     "output_tokens": 1020,
+     "tool_chars_added": 2620
+    },
+    {
+     "round": 3,
+     "input_tokens": 14657,
+     "output_tokens": 945,
+     "tool_chars_added": 2453
+    },
+    {
+     "round": 4,
+     "input_tokens": 21393,
+     "output_tokens": 4000,
+     "tool_chars_added": 14078
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 60930,
+  "output_tokens": 6567,
+  "total_tokens": 67497
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 41.3
+}

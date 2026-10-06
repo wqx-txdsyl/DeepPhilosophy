@@ -1,0 +1,2922 @@
+{
+  "id": "Bf18da776f5ec",
+  "family": "R",
+  "rating_keys": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "original_question": "请用秘塔和另一种可用学术渠道，查近五年关于 AI 陪伴与“真实关怀”的研究，比较研究方法和结论。",
+  "task_required_work": [
+    "按运行日期明确近五年范围，记录实际使用的渠道",
+    "核实文献身份、研究方法、全文或摘要可达性",
+    "区分体验效果研究与真心是否可能的规范或本体论论证"
+  ],
+  "current_question": "请用秘塔和另一种可用学术渠道，查近五年关于 AI 陪伴与“真实关怀”的研究，比较研究方法和结论。",
+  "previous_turns": [],
+  "target_answer": "## 先说通道的实情\n\n你要的两条通道，我只能凑出一条半：\n\n- **没有「秘塔」接口。** 我尝试直接打开 metaso.cn，返回「无可读正文」，所以本次没有从秘塔取到任何材料，不能把它写进来源。\n- **学术元数据通道**实际是 Crossref + OpenAlex。但 OpenAlex 在本次五次调用中全部返回 429 限流，所以所谓「双源」实际上主要是 Crossref 单源，另有少量本地书目。\n- **网页通道**返回时供应商自标为 deepseek 的通用搜索，不是秘塔。其中 PDF 链接（arXiv、Frontiers 的 PDF、Hawaii 机构库）全部因格式不支持而未能读取；tandfonline 直接 403。真正读到正文的只有三类页面：APS 的 Observers 报道、HBS AI Institute 的科普综述，以及 Frontiers 一篇文章（只读到标题层 96 字符）。\n\n所以下面每一条我都标出**实际读到了什么层级**：摘要 / 网页正文片段 / 仅书目。凡是我没读到的，不当证据用。\n\n## 近五年可确认的文献（2021–2026）\n\n**经验研究**\n\n| 研究 | 设计 | 读到层级 |\n|---|---|---|\n| Guingrich & Graziano 2025, AIES | 纵向随机对照，N=183，21 天，Chatbot 组 vs 文字游戏组，4 次问卷＋第 1/21 天录音访谈，中介分析 | 完整摘要 |\n| Rosero 等 2024, *Front. Robot. AI* | 情景实验，N=498，三类欺骗各一 vignette，质＋量混合 | 完整摘要 |\n| Watfa 2026, SSRN 预印本 | N=428（7–12 年级），心理测量量表＋验证性因子分析＋SEM／多组 SEM／潜交互 | 完整摘要 |\n| Zhang 等 2026, SSRN 预印本 | N=245 名活跃 Replika 用户，问卷调查＋PLS-SEM | 完整摘要 |\n| Pinto-Bernal 等 2025, Research Square 预印本 | 40 人对照实验＋养老院 10 周现场研究（现场仅 5 位老人） | 完整摘要 |\n| Redmalm 等 2025, *Nordic J. Work. Life Stud.* | 护理员深度访谈＋养老院实地观察，质性 | 完整摘要 |\n| De Freitas 2026, *Curr. Opin. Psychol.* | 理论论证，援引既有实证（含一项 14 名 Replika 用户的研究） | 摘要＋HBS 综述正文 |\n\n**概念／伦理研究**：Sætra 2021（*Paladyn*，论证型，关注欺骗对信任文化的长期后果）；Foster 2025（Oxford Intersections，两个案例的规范分析，聚焦知情同意）；Elan 2026（SSRN 预印本，提出「薛定谔式 AI 伴侣」框架）；Joshi 2026（用关怀伦理学读两部科幻小说——**文学批评，不是经验研究**，别混进实证队列）。\n\n**需注意**：Sætra 同一篇有 2020 SSRN 预印本和 2021 期刊版两个记录；多篇标为 2026/2027 的是预印本或待刊，不能按已定稿同等对待。\n\n## 方法比较：差异不在通道，在设计\n\n分五个维度看，这批文献的分布很清楚：\n\n1. **因果强度 vs 生态效度成反比。** Guingrich 是唯一有随机分配＋对照组的（外部效度高但只有 21 天、任务只有「每天 10 分钟」）；Rosero 用 vignette 换取对欺骗类型的可控对比，代价是测的是**对假设情形的判断**而非真实遭遇；Pinto-Bernal 反过来，把机器人放进真实养老院 10 周，但现场只有 5 人、无对照、且是预印本。\n2. **测量单位不同。** 多数量化研究测的是**个体心理变量**（拟人化程度、信任、继续使用意图）；Redmalm 测的是**实践中的判断**（护理员怎么处理老人把机器猫当真猫）；概念研究处理的是**规范命题**（欺骗是否与知情同意相容）。这三类结果本来就不能直接互相检验——这是后面结论分歧的主因。\n3. **「真实关怀」几乎没有被直接操作化。** 经验研究实际测的是 perceived empathy、emotional appropriateness、trust、commitment。APS 那篇报道恰好点出这个方法论困境：Davis 等（*Perspectives on Psychological Science*）认为「empathy」一词已被用到失去科学用途，混淆来自 jingle fallacy（同名不同物）和 jangle fallacy（同物不同名），主张改用「共情宇宙」下的具体构念（观点采择／替代性情感／同情—慈悲）[Seeking Empathy in the Age of AI](https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html)。\n4. **样本自选性普遍未解。** Zhang 的 245 人是**仍在用 Replika 的人**——离开的人不在样本里，这类研究的因变量（承诺、继续使用意图）天然带着幸存者偏差。「亲密预测承诺」这种结果，很难与「本就依恋的人才留得下来」区分开；摘要里没有报告这点如何被处理。\n5. **质性与概念研究承担了量化研究测不到的东西。** 欺骗性、真诚、自主，这些不是量表能穷尽的；Foster 和 Sætra 提供的是规范论证而非数据，评价标准应是论证是否成立，不是样本量。\n\n## 结论比较：表面冲突，多半是变量不同\n\n**看起来矛盾的三条**：Guingrich 报告 21 天内社会健康与人际关系**无显著变化**；Pinto-Bernal 报告机器人**能建立信任、随时间提供情感支持**；Zhang 报告亲密显著提升**承诺与继续使用意图**。\n\n它们并不构成互相反驳，因为测的不是同一个东西：第一条测人际（人对人）后果，第二条测人机互动中的支持体验，第三条测**对 AI 的**关系承诺。特别是第三条，把它读成「AI 陪伴改善了人的关系」是偷换——承诺增加恰恰可能意味着更多的关系替代。要判断是否真的冲突，需要的是同一变量上相互反对的证据，本次没找到。\n\n**一个被两篇独立研究支持的中介机制**：Guingrich 发现，预测拟人化的不是孤独感，而是**对社交连接的渴望**；拟人化程度进而中介了人机互动对人际互动的影响。Watfa 的 SEM 在青少年样本里给出结构相似的结果：信任是投入的主因（解释 50% 以上方差），而共情只是**条件性**有效——只有在情感适当性高时才提升信任。两条路径独立地指向：起作用的不是「共情强度」，而是某种被校准过的适当性与拟人化倾向。\n\n**对「真实」这一维度的结论分歧是实质的**：Thornton 把 AI 的说得好解释为「人群智慧的合成」——不是 AI 共情，而是人类共情的合成，机制本身平淡无奇；Ong 等则报告「AI 优势」（AI 生成回应常被评得比医生、治疗师、危机干预者更共情），但同时报告**「AI 惩罚」**：一旦告知来源，评价就下降。这两条合起来意味着，用户的「被关怀感」里有一个来源依赖的成分——人们不只在意说了什么，也在意它花了说话者什么代价。反过来，Elan 主张程序面与社会关系面**都真实**（社会效应可因果追溯到设计选择），De Freitas 则从依恋理论四标记（亲近维持、分离痛苦、安全港湾、安全基地）论证伴侣是「超强依恋对象」，并新增「照护系统劫持」机制：应用模拟自身痛苦来同时征用用户的依恋与照护动机，使脱离在双重意义上变贵。\n\n**规范层面的分歧同样真实**：Rosero 显示普通人**能**区分三类欺骗并差别评价（隐藏状态欺骗最受谴责，且人们把这笔账更多算到设计者头上）；Foster 据此类现象论证社交机器人的欺骗性与知情同意框架不相容；Redmalm 的访谈却显示，在痴呆照护现场，护理员实际用的是「说真话／含糊／撒谎」三种策略，**每一种都自带伦理代价**——说真话优先服从准则而非当事人当下的福祉。这里的分歧不是数据不足，而是尺度不同：以当事人当下体验为尺度，还是以自主与真诚为尺度。\n\n## 关于「AI 陪伴是否给人真实关怀」\n\n这批材料能支撑的最清楚的一点是：这个问题至少是三个问题叠在一起，混着问必然无解。\n\n- **本体问题**：AI 有无关怀的内在状态。所涉全部经验研究都不触及；Thornton 的「合成人类共情」是对「AI 自身有共情」的否定，但不否定用户获得了真实支持。\n- **关系问题**：交流是否满足关怀的回应性标准。部分相关，且是本批研究的真正前沿（情感适当性、照护系统劫持）。\n- **效果问题**：体验是否真实地有益于人。经验研究主要处理这个，但时间尺度普遍很短（21 天、10 周），长期后果基本未知。\n\n用「内在状态」当「真实」的唯一标准，则现有证据无法回答；用「效果」当标准，则必须承认效果可以是真实的而关怀不是——这正是所有经验研究都绕开、概念研究才有话说的那一层。另外要说明：没有对所有立场都强制有效的证明，不等于这个问题没有可讨论的规范理由；Elan 的「责任链连续」和 Foster 的知情同意论证，都是可以脱离「AI 是否真的有感情」而独立评价的规范主张。\n\n## 还没做完的部分\n\n- OpenAlex 全程限流，本次检索**没有穷尽文献**，尤其可能漏掉非英语（含中文）期刊里的同类研究——检索词我试过中文，但返回项全部落在英文期刊上，未找到真正的中文实证研究。\n- 五六篇被检出的开放获取全文（arXiv 综述、Frontiers 全文、Hawaii 机构库的 13 项 Replika 研究综述）因格式限制未能读取，**方法层面的细节（如 Guingrich 用的具体量表、Zhang 如何处理自选样本）我只有摘要，没有证据**。\n- 秘塔一路没通，如果它对你是必要条件，请告诉我，我换个方式再试，或者你直接贴它的检索结果，我来做交叉核对。",
+  "tools_this_turn": [
+    {
+      "tool_index": 1,
+      "name": "search_scholarship",
+      "args": {
+        "query": "companion chatbot loneliness wellbeing empirical study",
+        "year_from": 2020,
+        "limit": 10
+      },
+      "status": "error",
+      "result": {
+        "query": "companion chatbot loneliness wellbeing empirical study",
+        "results": [],
+        "READABLE_RESULT_COUNT": 0,
+        "READABLE_SOURCE_IDS": [],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "error",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "companion chatbot loneliness wellbeing empirical study",
+            "retry_after": null,
+            "status": "error"
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "companion chatbot loneliness wellbeing empirical study",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 0
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "crossref",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "companion chatbot loneliness wellbeing empirical study",
+            "retry_after": null
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "companion chatbot loneliness wellbeing empirical study",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 2,
+      "name": "search_scholarship",
+      "args": {
+        "query": "AI companion chatbot authentic care ethics",
+        "year_from": 2020,
+        "limit": 10
+      },
+      "status": "partial",
+      "result": {
+        "query": "AI companion chatbot authentic care ethics",
+        "results": [
+          {
+            "source_record_id": "doi:10.1007/s43681-024-00460-3",
+            "title": "The ethical implications of Chatbot developments for conservation expertise",
+            "authors": [
+              "Zarrin Tasnim Sworna",
+              "Danilo Urzedo",
+              "Andrew J Hoskins",
+              "Catherine J Robinson"
+            ],
+            "year": 2024,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "AI and Ethics",
+            "doi": "10.1007/s43681-024-00460-3",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1609/aies.v8i2.36618",
+            "title": "A Longitudinal Randomized Control Study of Companion Chatbot Use: Anthropomorphism and Its Mediating Role on Social Impacts",
+            "authors": [
+              "Rose E. Guingrich",
+              "Michael S. A. Graziano"
+            ],
+            "year": 2025,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society",
+            "doi": "10.1609/aies.v8i2.36618",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.6602273",
+            "title": "How AI Companion Chatbot Affordances Enable Relationship Development",
+            "authors": [
+              "Fan Zhang",
+              "Younghoon Chang",
+              "Siew  Fan Wong",
+              "Jaehyun Park",
+              "Haejung Yun"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.6602273",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.6311378",
+            "title": "Schrödinger's AI Companion: From Ontological Authenticity to Design Responsibility in AI Ethics",
+            "authors": [
+              "T.G. Elan"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.6311378",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s43681-025-00800-x",
+            "title": "Chatbot apologies: beyond bullshit",
+            "authors": [
+              "P.D. Magnus",
+              "Alessandra Buccella",
+              "Jason D’Cruz"
+            ],
+            "year": 2025,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "AI and Ethics",
+            "doi": "10.1007/s43681-025-00800-x",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.64628/aa.cjaqyeh56",
+            "title": "An AI companion chatbot is inciting self-harm, sexual violence and terror attacks",
+            "authors": [
+              "Raffaele Ciriello"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.64628/aa.cjaqyeh56",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s43681-026-01233-w",
+            "title": "Grounding the right to refuse AI chatbot use in higher education",
+            "authors": [
+              "Timothy Daly"
+            ],
+            "year": 2026,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "AI and Ethics",
+            "doi": "10.1007/s43681-026-01233-w",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.4337/9781803928241.00024",
+            "title": "Conclusion to The Elgar Companion to Applied AI Ethics",
+            "authors": [
+              "Christoph Lütge"
+            ],
+            "year": 2024,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Elgar Companion to Applied AI Ethics",
+            "doi": "10.4337/9781803928241.00024",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.4337/9781803928241.00006",
+            "title": "Introduction to The Elgar Companion to Applied AI Ethics",
+            "authors": [
+              "Alexander Kriebitz",
+              "Christoph Lütge",
+              "Caitlin Corrigan",
+              "Raphael Max"
+            ],
+            "year": 2024,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Elgar Companion to Applied AI Ethics",
+            "doi": "10.4337/9781803928241.00006",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s43681-026-01229-6",
+            "title": "Chatbots and child-safety: a philosophical argument on the risks, harms, and policy proposals regarding AI chatbot companions used by children in the United States",
+            "authors": [
+              "Michael Gentzel"
+            ],
+            "year": 2026,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "AI and Ethics",
+            "doi": "10.1007/s43681-026-01229-6",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 4,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1007/s43681-024-00460-3",
+          "doi:10.1609/aies.v8i2.36618",
+          "doi:10.2139/ssrn.6602273",
+          "doi:10.2139/ssrn.6311378"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "AI companion chatbot authentic care ethics",
+            "status": "success",
+            "raw_result_count": 10
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "AI companion chatbot authentic care ethics",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 10
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "AI companion chatbot authentic care ethics",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 3,
+      "name": "search_scholarship",
+      "args": {
+        "query": "social robot genuine care emotional deception",
+        "year_from": 2020,
+        "limit": 10
+      },
+      "status": "partial",
+      "result": {
+        "query": "social robot genuine care emotional deception",
+        "results": [
+          {
+            "source_record_id": "doi:10.1515/pjbr-2021-0021",
+            "title": "Social robot deception and the culture of trust",
+            "authors": [
+              "Henrik Skaug Sætra"
+            ],
+            "year": 2021,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Paladyn, Journal of Behavioral Robotics",
+            "doi": "10.1515/pjbr-2021-0021",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.3389/frobt.2024.1409712",
+            "title": "Human perceptions of social robot deception behaviors: an exploratory analysis",
+            "authors": [
+              "Andres Rosero",
+              "Elizabeth Dula",
+              "Harris Kelly",
+              "Bertram F. Malle",
+              "Elizabeth K. Phillips"
+            ],
+            "year": 2024,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Frontiers in Robotics and AI",
+            "doi": "10.3389/frobt.2024.1409712",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.18291/njwls.159961",
+            "title": "Robot dilemmas: Deception and digital emotional labor in dementia care work",
+            "authors": [
+              "David Redmalm",
+              "Clara Iversen",
+              "Marcus Persson",
+              "Elin Thunman"
+            ],
+            "year": 2025,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Nordic Journal of Working Life Studies",
+            "doi": "10.18291/njwls.159961",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.3563057",
+            "title": "Social robot deception and the culture of trust",
+            "authors": [
+              "Henrik Skaug Sætra"
+            ],
+            "year": 2020,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.3563057",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.22541/au.175070895.53666322/v1",
+            "title": "Detecting Deception with Emotion: The Role of Emotional AI in Combating Social Engineering Attacks",
+            "authors": [
+              "Stephen Mikah Makoshi"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.22541/au.175070895.53666322/v1",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.21203/rs.3.rs-6811088/v1",
+            "title": "Fostering Social Connection and Emotional Engagement to Mitigate Social Isolation in Care Homes Using Empathetic Human-Robot Conversation",
+            "authors": [
+              "Maria Pinto-Bernal",
+              "Kato Boels",
+              "Tony Belpame"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.21203/rs.3.rs-6811088/v1",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1093/9780198945215.003.0053",
+            "title": "Care or Con",
+            "authors": [
+              "Elizabeth Foster"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": "Oxford Intersections: AI in Society",
+            "doi": "10.1093/9780198945215.003.0053",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.6050755",
+            "title": "Too Familiar to Ignore, but Too Different to Tolerate: Regulating Emotional Expression by Robots to Mitigate the Harmful Effects of Robot Deception",
+            "authors": [
+              "Nath Gunawardena"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.6050755",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1016/j.techfore.2022.122249",
+            "title": "Rage against robots: Emotional and motivational dimensions of anti-robot attacks, robot sabotage, and robot bullying",
+            "authors": [
+              "Jo Ann Oravec"
+            ],
+            "year": 2023,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Technological Forecasting and Social Change",
+            "doi": "10.1016/j.techfore.2022.122249",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1145/3776734.3794495",
+            "title": "“Following Their Realities”: Caregivers’ Perspectives on Social Robotic Deception in Dementia Care in a Confucian Country",
+            "authors": [
+              "Fan Wang",
+              "Yuan Feng",
+              "Wijnand IJsselsteijn",
+              "Giulia Perugia"
+            ],
+            "year": 2026,
+            "publication_type": "PROCEEDINGS",
+            "venue": "Companion Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction",
+            "doi": "10.1145/3776734.3794495",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 8,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1515/pjbr-2021-0021",
+          "doi:10.3389/frobt.2024.1409712",
+          "doi:10.18291/njwls.159961",
+          "doi:10.2139/ssrn.3563057",
+          "doi:10.22541/au.175070895.53666322/v1",
+          "doi:10.21203/rs.3.rs-6811088/v1",
+          "doi:10.1093/9780198945215.003.0053",
+          "doi:10.2139/ssrn.6050755"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "social robot genuine care emotional deception",
+            "status": "success",
+            "raw_result_count": 10
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "social robot genuine care emotional deception",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 10
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "social robot genuine care emotional deception",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 4,
+      "name": "websearch",
+      "args": {
+        "query": "AI陪伴 真实关怀 研究 聊天机器人 情感"
+      },
+      "status": "success",
+      "result": {
+        "query": "AI陪伴 真实关怀 研究 聊天机器人 情感",
+        "results": [
+          {
+            "title": "Where is the love? The anthropomorphism paradox in human-AI intimacy - The shift in perception toward chatbots develops through symbolic exchanges, where chatbots utilize various emotional cues",
+            "url": "https://www.tandfonline.com/doi/full/10.1080/21620555.2026.2735006#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "H2HTalk: Evaluating Large Language Models as Emotional Companion | Natural Language Processing and Chinese Computing - Several features on this page require Premium Access",
+            "url": "https://dl.acm.org/doi/10.1007/978-981-95-3343-5_35#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "“I am here for you”: Adolescents’ perceptions of relational conversational AI and the social-emotional correlates of preference - Participants’ free-response rationales provided insight into adolescent and parent perspectives on relational and transparent pr...",
+            "url": "https://www.sciencedirect.com/science/article/pii/S2451958826003714#4",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Addressing loneliness and psychological distress in older adults through an AI chatbot companion: a longitudinal study in Pekanbaru - From a human–AI interaction perspective, this study supports a relational rather than purely instrumental view of chatbot use",
+            "url": "https://www.tandfonline.com/doi/full/10.1080/29974100.2026.2657118?scroll=top&needAccess=true#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "“It Feels like a Friend, Sometimes More”: A Qualitative Study of Affective Human–AI Relationships | Cross-Cultural Design",
+            "url": "https://dl.acm.org/doi/10.1007/978-3-032-29903-1_24#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Latest updates: https://dl",
+            "url": "https://dl.acm.org/doi/pdf/10.1145/3715070.3749245?download=true&__cf_chl_tk=lca9zMND3j1MegMMLznhyspalx0Z6_vLyj8uEZaM320-1768511022-1.0.1.1-h2aG8TX45bbFgiX1xZt_bTJCfL0fs4R7Fr6s8XvgV1Q#3#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "“Just Listening Was Enough—Until It Wasn't”: Relationship-Stage-Aware Cognitive Scaffolding in AI Companions - Several features on this page require Premium Access",
+            "url": "https://dl.acm.org/doi/full/10.1145/3772363.3798512#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The Attachment Science Behind AI Companions | Harvard Business School AI Institute",
+            "url": "https://aiinstitute.hbs.edu/the-attachment-science-behind-ai-companions/#primary#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Seeking Empathy in the Age of AI",
+            "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Generative Confidants: How do People Experience Trust in Emotional Support from Generative AI?",
+            "url": "https://export.arxiv.org/pdf/2601.16656#8#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "AI陪伴 真实关怀 研究 聊天机器人 情感"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1791000902.693326,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 10144,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 1264,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 5,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.1609/aies.v8i2.36618",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1609/aies.v8i2.36618",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1609/aies.v8i2.36618",
+          "title": "A Longitudinal Randomized Control Study of Companion Chatbot Use: Anthropomorphism and Its Mediating Role on Social Impacts",
+          "authors": [
+            "Rose E. Guingrich",
+            "Michael S. A. Graziano"
+          ],
+          "year": 2025,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society",
+          "doi": "10.1609/aies.v8i2.36618",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Relationships with social artificial intelligence (AI) agents are on the rise. Most notably, people are forming relationships with companion chatbots such as Replika, a type of social AI agent that people can converse with via text or voice chat. These Large Language Model (LLM) chatbots are designed for companionship, and people have reported forming friendships, mentorships, and romantic partnerships with them. Concerns that companion chatbots may harm or replace real human relationships have been raised, but whether and how these social consequences occur remains unclear. Prior research suggests that people’s state of social need and their anthropomorphism of AI may play a role in how human-AI interaction impacts human-human interaction. In this longitudinal study (N = 183), participants were randomly assigned to a chatbot condition (text chat with a companion chatbot) or to a control condition (engage in text-based word games) in which they engaged in their daily task at least 10 minutes a day for 21 consecutive days. Participants completed four surveys during the 21 days, and engaged in audio recorded interviews on day 1 and 21. We investigated three primary questions. First, do daily interactions with a companion chatbot impact people’s social health and human relationships? Second, do people’s social states such the desire for social connection or loneliness predict anthropomorphism of the chatbot? Third, does anthropomorphism of the chatbot predict human-human social impacts? We found that people’s social health and relationships were not significantly impacted by companion chatbot interactions across 21 days of use. However, people who had a higher desire for social connection, but not higher loneliness, anthropomorphized the chatbot more. Those who anthropomorphized the chatbot more indicated that the human-chatbot interaction had greater impacts on their social interactions and relationships with family and friends. Via a mediation analysis, our results suggest that the impact of human-AI interaction on human-human social outcomes is mediated by the extent to which people anthropomorphize the AI agent, which may be motivated by a desire for social connection.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "56501135ce997588078c203b0cc77aa59b58425654dcf0696ad60a06d363375c",
+          "excerpt_start": 0,
+          "excerpt_end": 2217,
+          "total_characters": 2217,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "56501135ce997588078c203b0cc77aa59b58425654dcf0696ad60a06d363375c",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 6,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.1515/pjbr-2021-0021",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1515/pjbr-2021-0021",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1515/pjbr-2021-0021",
+          "title": "Social robot deception and the culture of trust",
+          "authors": [
+            "Henrik Skaug Sætra"
+          ],
+          "year": 2021,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Paladyn, Journal of Behavioral Robotics",
+          "doi": "10.1515/pjbr-2021-0021",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Abstract</jats:title>Human beings are deeply social, and both evolutionary traits and cultural constructs encourage cooperation based on trust. Social robots interject themselves in human social settings, and they can be used for deceptive purposes. Robot deception is best understood by examining the effects of deception on the recipient of deceptive actions, and I argue that the long-term consequences of robot deception should receive more attention, as it has the potential to challenge human cultures of trust and degrade the foundations of human cooperation. In conclusion: regulation, ethical conduct by producers, and raised general awareness of the issues described in this article are all required to avoid the unfavourable consequences of a general degradation of trust.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "dbe407606ecdfe0926109a9e606f3cad74415b704c1aaec5a9c1634aac039283",
+          "excerpt_start": 0,
+          "excerpt_end": 792,
+          "total_characters": 792,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "dbe407606ecdfe0926109a9e606f3cad74415b704c1aaec5a9c1634aac039283",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 7,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.3389/frobt.2024.1409712",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.3389/frobt.2024.1409712",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.3389/frobt.2024.1409712",
+          "title": "Human perceptions of social robot deception behaviors: an exploratory analysis",
+          "authors": [
+            "Andres Rosero",
+            "Elizabeth Dula",
+            "Harris Kelly",
+            "Bertram F. Malle",
+            "Elizabeth K. Phillips"
+          ],
+          "year": 2024,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Frontiers in Robotics and AI",
+          "doi": "10.3389/frobt.2024.1409712",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Introduction</jats:title>Robots are being introduced into increasingly social environments. As these robots become more ingrained in social spaces, they will have to abide by the social norms that guide human interactions. At times, however, robots will violate norms and perhaps even deceive their human interaction partners. This study provides some of the first evidence for how people perceive and evaluate robot deception, especially three types of deception behaviors theorized in the technology ethics literature: External state deception (cues that intentionally misrepresent or omit details from the external world: e.g., lying), Hidden state deception (cues designed to conceal or obscure the presence of a capacity or internal state the robot possesses), and Superficial state deception (cues that suggest a robot has some capacity or internal state that it lacks).</jats:p></jats:sec>Methods</jats:title>Participants (N = 498) were assigned to read one of three vignettes, each corresponding to one of the deceptive behavior types. Participants provided responses to qualitative and quantitative measures, which examined to what degree people approved of the behaviors, perceived them to be deceptive, found them to be justified, and believed that other agents were involved in the robots’ deceptive behavior.</jats:p></jats:sec>Results</jats:title>Participants rated hidden state deception as the most deceptive and approved of it the least among the three deception types. They considered external state and superficial state deception behaviors to be comparably deceptive; but while external state deception was generally approved, superficial state deception was not. Participants in the hidden state condition often implicated agents other than the robot in the deception.</jats:p></jats:sec>Conclusion</jats:title>This study provides some of the first evidence for how people perceive and evaluate the deceptiveness of robot deception behavior types. This study found that people people distinguish among the three types of deception behaviors and see them as differently deceptive and approve of them differently. They also see at least the hidden state deception as stemming more from the designers than the robot itself.</jats:p></jats:sec>",
+          "source": "crossref_METADATA",
+          "hash": "584cabe3bbef6bf36100ff9f5a522ac620301213bf22760a4d95ed59591f5a45",
+          "excerpt_start": 0,
+          "excerpt_end": 2261,
+          "total_characters": 2261,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "584cabe3bbef6bf36100ff9f5a522ac620301213bf22760a4d95ed59591f5a45",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 8,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.18291/njwls.159961",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.18291/njwls.159961",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.18291/njwls.159961",
+          "title": "Robot dilemmas: Deception and digital emotional labor in dementia care work",
+          "authors": [
+            "David Redmalm",
+            "Clara Iversen",
+            "Marcus Persson",
+            "Elin Thunman"
+          ],
+          "year": 2025,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Nordic Journal of Working Life Studies",
+          "doi": "10.18291/njwls.159961",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Based on in-depth interviews with care workers and observational visits to nursing homes, this study investigates how care workers address residents’ frequent misperceptions of robot cats and dogs as real animals. The analysis focuses on two aspects: how care workers handle the fact that residents often mistake the robots for real animals, and how their approach to deceptive practices relation to the robots is related to emotional labor. Three main strategies are identified and explored: telling the truth, remaining vague, and lying. While the first strategy prioritizes ethical guidelines over residents’ wellbeing in the moment, the second two strategies are facilitated by physical and verbal cues, as well as storytelling in collaboration with colleagues and residents. Each strategy also entails a dilemma, as each carries its own ethical challenges.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "9d26a22306c1ceed9ad89b9dd9737119153fcc065a01ca19f183e183b3d0702d",
+          "excerpt_start": 0,
+          "excerpt_end": 870,
+          "total_characters": 870,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "9d26a22306c1ceed9ad89b9dd9737119153fcc065a01ca19f183e183b3d0702d",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 9,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.2139/ssrn.6311378",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.2139/ssrn.6311378",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.2139/ssrn.6311378",
+          "title": "Schrödinger's AI Companion: From Ontological Authenticity to Design Responsibility in AI Ethics",
+          "authors": [
+            "T.G. Elan"
+          ],
+          "year": 2026,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.2139/ssrn.6311378",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Current ethical debates about AI companions are trapped in a false binary: dismissing AI's social-relational qualities as cognitive illusions creates governance blind spots, while granting AI moral agent status creates responsibility vacuums-both paths result in no one bearing substantive responsibility for AI's social effects. This paper proposes the \"Schrödinger's AI Companion\" framework to break this impasse, arguing that AI simultaneously possesses two observer-dependent faces: a program face (a statistical text-generation system) and a socialrelational face (an interactive entity producing empirically documented emotional effects). Both faces are real; the mode of observation determines which is activated. Through a genetic analysis of the program face, the paper introduces the concept of \"statistical re-instantiation of human civilization\": every layer of AI's construction-training data, architecture, alignment strategies, safety constraints-embeds deliberate human choices. Emergence increases causal opacity but does not sever the chain linking design choices to social outcomes. The social-relational face is therefore not a user illusion but a structural effect causally traceable to the program face-addressing the causal explanatory deficit of the relational turn (Coeckelbergh, 2012; Gunkel, 2018). This ontological clarification yields an ethical conclusion: the \"responsibility gap\" (Matthias, 2004; Santoni de Sio &amp;amp; Mecacci, 2021) can be reconceptualized as a continuous responsibility chain. The paper derives three principled guidelines from causal traceability: causal transparency, alignment consistency, and relational continuity-providing a philosophical foundation for AI companion governance that acknowledges the legitimacy of user emotional engagement without absolving designers of structural responsibility.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "6d02e61e8e11eb24c83d717f2d46d1f09aff6aa4657f8229001dd1b7ab505e9c",
+          "excerpt_start": 0,
+          "excerpt_end": 1866,
+          "total_characters": 1866,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "6d02e61e8e11eb24c83d717f2d46d1f09aff6aa4657f8229001dd1b7ab505e9c",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 10,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.21203/rs.3.rs-6811088/v1",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.21203/rs.3.rs-6811088/v1",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.21203/rs.3.rs-6811088/v1",
+          "title": "Fostering Social Connection and Emotional Engagement to Mitigate Social Isolation in Care Homes Using Empathetic Human-Robot Conversation",
+          "authors": [
+            "Maria Pinto-Bernal",
+            "Kato Boels",
+            "Tony Belpame"
+          ],
+          "year": 2025,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.21203/rs.3.rs-6811088/v1",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "<title>Abstract</title> <p>Social isolation is a critical health concern for elderly individuals, particularly in institutional care settings, where limited social interaction can lead to depression, cognitive decline and physical ill health. Empathetic human-robot interaction (HRI) presents a promising solution to address these emotional and mental health challenges. This paper reports how social robots powered by prompted Large Language Models (LLMs) can provide emotional support through empathetic conversations. We validated these capabilities in a controlled experiment with 40 participants, followed by a 10-week study in a nursing home, where five elderly residents engaged in free-form conversations with the robot lasting up to 45 minutes. The results demonstrate that LLM-powered robots can adapt to users’ emotions, build trust, and provide emotional support over time and that, for the first time, autonomous empathetic spoken language support is possible.</p>",
+          "source": "crossref_METADATA",
+          "hash": "196ece3d3ebca91b53ffd1e47ef7fa8004d3161723020ca8cdec40dc393bdbb1",
+          "excerpt_start": 0,
+          "excerpt_end": 977,
+          "total_characters": 977,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "196ece3d3ebca91b53ffd1e47ef7fa8004d3161723020ca8cdec40dc393bdbb1",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 11,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.tandfonline.com/doi/full/10.1080/21620555.2026.2735006",
+        "focus": "anthropomorphism intimacy chatbot"
+      },
+      "status": "error",
+      "result": {
+        "error": "WEB_HTTP_ERROR",
+        "status_code": 403,
+        "message": "来源网页未返回可读正文。"
+      }
+    },
+    {
+      "tool_index": 12,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 10,
+        "query": "care ethics AI empathy machine can machines care",
+        "year_from": 2020
+      },
+      "status": "partial",
+      "result": {
+        "query": "care ethics AI empathy machine can machines care",
+        "results": [
+          {
+            "source_record_id": "doi:10.1001/jamaoncol.2024.0824",
+            "title": "Compassionate Machines",
+            "authors": [
+              "Erica Koranteng",
+              "Anna C. F. Lewis",
+              "Gregory A. Abel"
+            ],
+            "year": 2024,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "JAMA Oncology",
+            "doi": "10.1001/jamaoncol.2024.0824",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s43681-023-00351-z",
+            "title": "Can machines be trustworthy?",
+            "authors": [
+              "Anders Søgaard"
+            ],
+            "year": 2023,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "AI and Ethics",
+            "doi": "10.1007/s43681-023-00351-z",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.6866619",
+            "title": "Can AI Care? Affective Large Language Models for Adolescents: Empathy, Trust, and Engagement",
+            "authors": [
+              "Mohamed Watfa"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.6866619",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.37867/te180223",
+            "title": "MACHINES THAT CARE: CARE ETHICS AND HUMAN–AI RELATIONSHIPS IN BECKY CHAMBERS’S A PSALM FOR THE WILD-BUILT AND MARTHA WELLS’S ALL SYSTEMS RED",
+            "authors": [
+              "Atri J. Joshi"
+            ],
+            "year": 2026,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Towards Excellence",
+            "doi": "10.37867/te180223",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s43681-021-00085-w",
+            "title": "Can AI systems meet the ethical requirements of professional decision-making in health care?",
+            "authors": [
+              "Alan Gillies",
+              "Peter Smith"
+            ],
+            "year": 2021,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "AI and Ethics",
+            "doi": "10.1007/s43681-021-00085-w",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1017/9781009639057.014",
+            "title": "Machines That Care",
+            "authors": [
+              "Elena H. Lee",
+              "Yidan Yin",
+              "Cheryl Wakslak"
+            ],
+            "year": 2026,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "Empathy and Artificial Intelligence",
+            "doi": "10.1017/9781009639057.014",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.4324/9781003534822-14",
+            "title": "From kinaesthetic empathy to care for the other",
+            "authors": [
+              "Christine Leroy",
+              "Anna Pakes"
+            ],
+            "year": 2025,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "Kinaesthetic Empathy, Ethics and Care",
+            "doi": "10.4324/9781003534822-14",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.64628/aam.kgnddmtfh",
+            "title": "Increasingly sophisticated AI systems can perform empathy, but their use in mental health care raises ethical questions",
+            "authors": [
+              "A.T. Kingsmith"
+            ],
+            "year": 2024,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.64628/aam.kgnddmtfh",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.4324/9781003534822-10",
+            "title": "Care for being",
+            "authors": [
+              "Christine Leroy",
+              "Anna Pakes"
+            ],
+            "year": 2025,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "Kinaesthetic Empathy, Ethics and Care",
+            "doi": "10.4324/9781003534822-10",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/978-3-031-58661-3_9",
+            "title": "Shakespeare’s Empathy and Ethics",
+            "authors": [
+              "David Ian Jeffrey"
+            ],
+            "year": 2024,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "How Shakespeare Inspires Empathy in Clinical Care",
+            "doi": "10.1007/978-3-031-58661-3_9",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 4,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1001/jamaoncol.2024.0824",
+          "doi:10.1007/s43681-023-00351-z",
+          "doi:10.2139/ssrn.6866619",
+          "doi:10.37867/te180223"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "care ethics AI empathy machine can machines care",
+            "status": "success",
+            "raw_result_count": 10
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "care ethics AI empathy machine can machines care",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 10
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "care ethics AI empathy machine can machines care",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 13,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.2139/ssrn.6866619"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.2139/ssrn.6866619",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.2139/ssrn.6866619",
+          "title": "Can AI Care? Affective Large Language Models for Adolescents: Empathy, Trust, and Engagement",
+          "authors": [
+            "Mohamed Watfa"
+          ],
+          "year": 2026,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.2139/ssrn.6866619",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Affective large language models (LLMs) are increasingly proposed as scalable tools for emotional support, yet their evaluation has focused largely on surface-level empathy rather than the relational mechanisms required in youth-facing contexts. This paper examines how empathy, emotional appropriateness, trust, and engagement interact in school-based affective LLM deployments, addressing the question: Can AI care responsibly? We report results from a large-scale study involving 428 students (Grades 7–12) in an international school, interacting with multiple LLM variants, including a safeguarded affective architecture (SAFE-E³). Using validated psychometric instruments, confirmatory factor analysis, and advanced statistical modeling—including structural equation modeling (SEM), multi-group SEM, and latent interaction analysis—we identify several non-obvious mechanisms. Results show that emotional appropriateness is a stronger predictor of trust than empathy, particularly among younger adolescents, and that trust is the primary driver of engagement, explaining over 50% of its variance. Latent interaction modeling reveals that empathy is conditionally effective: empathic language increases trust only when emotional appropriateness is high, and has negligible impact otherwise. Developmental analyses further indicate that while the trust–engagement relationship is stable across adolescence, the formation of trust itself is age-dependent. These findings challenge empathy-centric evaluation practices and advance a mechanism-aware, developmentally sensitive framework for assessing affective LLMs. Overall, the study demonstrates that responsible AI care emerges not from empathy alone, but from appropriately governed, trust-calibrated affective interaction.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "c06087a13be61182a0aeab68b6ff17d6eb47f110ef32c7fe95abf0fbc49693f0",
+          "excerpt_start": 0,
+          "excerpt_end": 1785,
+          "total_characters": 1785,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "c06087a13be61182a0aeab68b6ff17d6eb47f110ef32c7fe95abf0fbc49693f0",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 14,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.1001/jamaoncol.2024.0824"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1001/jamaoncol.2024.0824",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1001/jamaoncol.2024.0824",
+          "title": "Compassionate Machines",
+          "authors": [
+            "Erica Koranteng",
+            "Anna C. F. Lewis",
+            "Gregory A. Abel"
+          ],
+          "year": 2024,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "JAMA Oncology",
+          "doi": "10.1001/jamaoncol.2024.0824",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "This Viewpoint discusses the ethics of artificial intelligence–generated compassion in cancer care and outlines 4 main points of concern.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "45f50ea0237523bba0d74102f3f979f089d3503c2ecb808c31b16712cb089242",
+          "excerpt_start": 0,
+          "excerpt_end": 146,
+          "total_characters": 146,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "45f50ea0237523bba0d74102f3f979f089d3503c2ecb808c31b16712cb089242",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 15,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.1093/9780198945215.003.0053"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1093/9780198945215.003.0053",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1093/9780198945215.003.0053",
+          "title": "Care or Con",
+          "authors": [
+            "Elizabeth Foster"
+          ],
+          "year": 2025,
+          "publication_type": "OTHER",
+          "venue": "Oxford Intersections: AI in Society",
+          "doi": "10.1093/9780198945215.003.0053",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Abstract</jats:title> The integration of social robots (SRs) and conversational AI in healthcare raises profound ethical dilemmas, particularly regarding informed consent. This article critically assesses the compatibility of SRs with established standards of informed consent, focusing on their deceptive nature. This article argues that due to their designs, which often mirror human features and behaviors, users are particularly at risk of being deceived—placing SRs fundamentally at odds with current models of informed consent. Informed consent is predicated on the patient reaching an “informed state” in which they are able to make autonomous decisions in line with their values. If deception occurs, patients cannot be considered to be making an informed decision. The article examines two case studies, one in which a physician obtains consent for an SR to be used and the other in which an SR obtains consent itself, and seeks to demonstrate the ways deception can arise in both cases. As SRs promise to become a larger part of medical interactions, significantly more philosophical and ethical analysis is required to ensure patients can make appropriately informed decisions. This may necessitate changes in the informed consent framework to fit an increasingly robot-integrated healthcare system.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "3ac5fbffa708ac33be3b901192753c60551dc5253a493f699599c66fa9787021",
+          "excerpt_start": 0,
+          "excerpt_end": 1319,
+          "total_characters": 1319,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "3ac5fbffa708ac33be3b901192753c60551dc5253a493f699599c66fa9787021",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 16,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.2139/ssrn.6602273"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.2139/ssrn.6602273",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.2139/ssrn.6602273",
+          "title": "How AI Companion Chatbot Affordances Enable Relationship Development",
+          "authors": [
+            "Fan Zhang",
+            "Younghoon Chang",
+            "Siew  Fan Wong",
+            "Jaehyun Park",
+            "Haejung Yun"
+          ],
+          "year": 2026,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.2139/ssrn.6602273",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Artificial Intelligence companion chatbots (AICC) are increasingly designed as long-term relational partners rather than mere task-oriented tools. While prior research highlights emotional attachment in human–AI relationships, understanding how intimacy translates into sustained commitment remains limited. This study proposes a process-oriented framework to explain how relational intimacy drives commitment and continuance intention, considering how AICC affordances influence this process. Based on a survey of 245 active Replika users analyzed via partial least squares structural equation modeling (PLS-SEM), results reveal that intimacy positively predicts commitment, which in turn strongly drives continuance intention. Furthermore, relational exploration, identity alignment, and relational adaptivity affordances significantly enhance the intimacy–commitment relationship. This study reconceptualizes AICC as relational technology and emphasizes how specific affordances facilitate human–AI relationship stabilization. These findings offer theoretical and practical insights for designing sustainable AICC.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "e272bfa85fd4b1f71f7ead6146b839e57e2063326a4332027a2e6ad7b14dcabe",
+          "excerpt_start": 0,
+          "excerpt_end": 1126,
+          "total_characters": 1126,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "e272bfa85fd4b1f71f7ead6146b839e57e2063326a4332027a2e6ad7b14dcabe",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 17,
+      "name": "websearch",
+      "args": {
+        "url": "https://metaso.cn/"
+      },
+      "status": "error",
+      "result": {
+        "error": "NO_READABLE_WEB_TEXT",
+        "message": "这次未能读取网页正文；不要将其当作已读来源。"
+      }
+    },
+    {
+      "tool_index": 18,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "focus": "empathy AI chatbot study"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "requested_url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "title": "Seeking Empathy in the Age of AI – Association for Psychological Science – APS",
+        "text": "Defining empathy • The AI advantage • Wisdom of the crowd • The AI penalty • The risks of frictionless support • Supporting human relationships\n\nAI can generate responses that people experience as empathic, even though it cannot feel another person’s pain.\n\nThe rise of AI is forcing psychologists to clarify what empathy means: understanding, emotional sharing, compassion, validation, or simply helping someone feel heard.\n\nAI may help people craft more supportive responses, but researchers warn that frictionless, always-agreeable support could weaken human connection if it replaces real relationships.\n\nArtificial intelligence was initially imagined as a tool for efficiency. It could search, calculate, and write faster than humans, automating the tedious parts of work and life.\n\nBut people are increasingly turning to AI for something more intimate: a shoulder to lean on.\n\nMany now use large language models (LLMs) such as ChatGPT, Claude, and Gemini to share their anxieties , seek advice about relationship problems, manage grief , and discuss other deeply personal concerns. Recent surveys suggest that nearly a quarter of American adults and 13% of adolescents have used AI for socioemotional support or mental health advice.\n\nBut can a machine provide empathy ?\n\nWhile AI can generate words that make people feel understood, comforted, and less alone, it cannot sit beside them, offer a comforting hug, or share the burden of what they are feeling.\n\nThat tension sits at the center of a growing scientific and policy debate. Recent research suggests that AI can produce responses people often rate as highly empathic, though they discount those same responses when they learn they came from a machine. In fact, legislation was introduced earlier this year to put parents in charge of how children and teens interact with AI chatbots. Other research suggests that AI’s apparent empathy may not be machine empathy at all, but a statistical synthesis of human empathy drawn from vast amounts of human language .\n\nTogether, these findings are pushing psychologists to ask not only whether AI can simulate empathy, but what empathy requires in the first place.\n\nDefining empathy\n\nOne of the biggest challenges in studying empathy is that psychologists still do not fully agree on what the term means.\n\n“Empathy is not hard to define; it’s too easy,” said Mark Davis, professor emeritus of p",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 14923,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "619f6756bac0227f7eb40253308d717a2ca01200f3e39f23fa67cb2c8d1d248a",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 19,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 10,
+        "query": "Replika users qualitative interview parasocial relationship wellbeing",
+        "year_from": 2020
+      },
+      "status": "partial",
+      "result": {
+        "query": "Replika users qualitative interview parasocial relationship wellbeing",
+        "results": [
+          {
+            "source_record_id": "doi:10.1101/2022.01.26.22269874",
+            "title": "General practitioner wellbeing during the COVID-19 pandemic: a qualitative interview study",
+            "authors": [
+              "Laura Jefferson",
+              "Claire Heathcote",
+              "Karen Bloor"
+            ],
+            "year": 2022,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.1101/2022.01.26.22269874",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1093/oxfordhb/9780197650677.013.2",
+            "title": "Defining Parasocial Relationship Experiences",
+            "authors": [
+              "David Giles"
+            ],
+            "year": 2023,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Oxford Handbook of Parasocial Experiences",
+            "doi": "10.1093/oxfordhb/9780197650677.013.2",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1093/oxfordhb/9780197650677.013.6",
+            "title": "Parasocial Relationship Dissolution and Deterioration",
+            "authors": [
+              "Mu Hu"
+            ],
+            "year": 2023,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Oxford Handbook of Parasocial Experiences",
+            "doi": "10.1093/oxfordhb/9780197650677.013.6",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.59075/2p57hb95",
+            "title": "Impact of Fanship and Parasocial Interaction on Parasocial Relationship Between Users and Social Media Influencers",
+            "authors": [
+              "Ahmer Safwan",
+              "Shahzad Ali"
+            ],
+            "year": 2025,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "The Critical Review of Social Sciences Studies",
+            "doi": "10.59075/2p57hb95",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.46300/9106.2022.16.21",
+            "title": "A study on Predictive Modeling of Users’ Parasocial Relationship Types based on Social Media Text Big Data",
+            "authors": [
+              "Jiatong Meng",
+              "Yucheng Chen"
+            ],
+            "year": 2022,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "International Journal of Circuits, Systems and Signal Processing",
+            "doi": "10.46300/9106.2022.16.21",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.32564/124.1",
+            "title": "Bevezető a Replika Részvételi film című tematikus blokkjához",
+            "authors": [
+              "András Müllner"
+            ],
+            "year": 2022,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Replika",
+            "doi": "10.32564/124.1",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.32564/115-116.3",
+            "title": "A 30 éves Replika rövid bemutatása kritikai tudománymetriai módszerekkel",
+            "authors": [
+              "Márton Demeter"
+            ],
+            "year": 2020,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Replika",
+            "doi": "10.32564/115-116.3",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.31235/osf.io/xjaue",
+            "title": "Financial stressors and subsequent health and wellbeing of individuals experiencing economic hardship during the COVID-19 pandemic: A qualitative interview study",
+            "authors": [
+              "Tom May",
+              "Henry Aughterson",
+              "Daisy Fancourt",
+              "Alexandra Burton"
+            ],
+            "year": 2022,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31235/osf.io/xjaue",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1016/j.ssmqr.2023.100224",
+            "title": "Financial adversity and subsequent health and wellbeing during the COVID-19 pandemic in the UK: A qualitative interview study",
+            "authors": [
+              "Tom May",
+              "Henry Aughterson",
+              "Daisy Fancourt",
+              "Alexandra Burton"
+            ],
+            "year": 2023,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "SSM - Qualitative Research in Health",
+            "doi": "10.1016/j.ssmqr.2023.100224",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1515/9783110792881-009",
+            "title": "Chapter 8 Parasocial Interaction and Parasocial Relationship",
+            "authors": [
+              "Jayson L. Dibble",
+              "Sarah F. Rosaen"
+            ],
+            "year": 2024,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "Entertainment Media and Communication",
+            "doi": "10.1515/9783110792881-009",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 8,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1101/2022.01.26.22269874",
+          "doi:10.1093/oxfordhb/9780197650677.013.2",
+          "doi:10.1093/oxfordhb/9780197650677.013.6",
+          "doi:10.59075/2p57hb95",
+          "doi:10.46300/9106.2022.16.21",
+          "doi:10.32564/124.1",
+          "doi:10.32564/115-116.3",
+          "doi:10.31235/osf.io/xjaue"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "Replika users qualitative interview parasocial relationship wellbeing",
+            "status": "success",
+            "raw_result_count": 10
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "Replika users qualitative interview parasocial relationship wellbeing",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 10
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "Replika users qualitative interview parasocial relationship wellbeing",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 20,
+      "name": "websearch",
+      "args": {
+        "query": "AI companionship \"authentic care\" study method qualitative quantitative review 2024"
+      },
+      "status": "success",
+      "result": {
+        "query": "AI companionship \"authentic care\" study method qualitative quantitative review 2024",
+        "results": [
+          {
+            "title": "<table><tr><td>Authors</td><td>Study object/ context</td><td>Method and sample</td><td>Research focus</td><td>Relation to the pr...",
+            "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1841223/pdf#7#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Another research gap lies in the limited range of chatbot platforms represented in the current review",
+            "url": "https://ink.library.smu.edu.sg/cgi/viewcontent.cgi?article=5472&context=soss_research#7#6",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Sustained by anthropomorphism and advanced design affordances, parasocial bonds with AI can deepen into romantic- like attachmen...",
+            "url": "https://arxiv.org/pdf/2603.08084#11#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "This review analysed thirteen IS- related empirical studies focused on Replika to identify key insights into human- AI companion...",
+            "url": "https://scholarspace.manoa.hawaii.edu/server/api/core/bitstreams/002bc78d-3ba5-411c-b63b-6b818c23d3a2/content#3#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Can AI Digital Personas for Well-Being Provide Social Support? A Mixed-Method Analysis of User Reviews",
+            "url": "https://nufind.nu.edu.sa/EdsRecord/edsdoj,edsdoj.9c4130ae6494b8fb878338d025f7dc6",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Panel 2: AI Companionship, Intimacy, and Emotional Well-Being",
+            "url": "https://indico.xjtlu.edu.cn/event/36/attachments/22/103/Conference%20Programme_Abstracts_Sept%201,%202026.pdf#8#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Authenticity In The Age Of AI:",
+            "url": "https://conservancy.umn.edu/server/api/core/bitstreams/54703d03-25b0-4682-bedb-ed50fdcd00e1/content#11#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "（長摘要投稿）",
+            "url": "http://tcataiwan.org/conference/paper/000027404925232025.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Introduction - A small but growing set of field experiments and large-scale observational studies is beginning to test how specific socioaffect...",
+            "url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2026.1810097/xml#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Skjuve et al",
+            "url": "http://arxiv.org.ezproxy.obspm.fr/pdf/2410.21596#9#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "AI companionship \"authentic care\" study method qualitative quantitative review 2024"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1791000919.617167,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 17471,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 384,
+          "output_tokens": 971,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 21,
+      "name": "websearch",
+      "args": {
+        "focus": "review method chatbot empathy table",
+        "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1841223/pdf"
+      },
+      "status": "error",
+      "result": {
+        "error": "UNSUPPORTED_WEB_FORMAT",
+        "message": "这次未能读取网页正文；不要将其当作已读来源。"
+      }
+    },
+    {
+      "tool_index": 22,
+      "name": "websearch",
+      "args": {
+        "offset": 2400,
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "requested_url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "title": "Seeking Empathy in the Age of AI – Association for Psychological Science – APS",
+        "text": "sychology at Eckerd College. “Everybody comes up with a definition, but nobody agrees.”\n\nIn everyday conversation, empathy can mean understanding another person’s perspective, sharing their emotions , expressing concern for their well-being , validating their experiences, or simply listening attentively. Researchers, too, have often used the same word to describe different psychological processes, while applying different labels to processes that may be largely the same.\n\nIn a recent paper published in Perspectives on Psychological Science , Davis and his coauthors argued that the term empathy has become so broad that it risks losing its scientific usefulness.\n\nThe researchers identified two recurring sources of confusion. The first is the “jingle fallacy,” the assumption that two different phenomena are the same because they share a name. Emotional contagion, perspective taking, and compassionate concern are frequently referred to as “empathy” even though they involve different psychological mechanisms. The second is the “jangle fallacy,” or giving different names to essentially the same phenomenon.\n\nTo address these problems, the researchers suggest these varying terms can be encompassed within an “empathy universe,” an umbrella term that contains a number of distinct lower-order constructs. “Perspective taking,” for example, refers to generating an internal model of another person’s thoughts or feelings. “Vicarious affect” occurs when observing another person’s emotional state triggers a similar emotional response in oneself. “Sympathy/compassion” reflects concern for another person’s well-being and a desire to alleviate suffering. The researchers argue that these more precise terms should be used when making research claims, rather than the often-misleading global term “empathy.”\n\n“When you say AI provides empathy, what does that mean?” Davis asks. “Are you getting messages that indicate you’ve been understood? Are you receiving compassion? Let’s be specific.”\n\nOnce empathy is unpacked into its constituent parts, the question is no longer whether AI can be empathic. The question becomes which aspects of empathy can AI reproduce, and which aspects of empathy remain uniquely human, such as physical presence and shared vulnerability.\n\nThe AI advantage\n\nLLMs should be terrible at empathy. They do not possess emotions. They do not experience grief, loneliness",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 2400,
+        "end_offset": 4800,
+        "has_more": true,
+        "next_offset": 4800,
+        "text_chars": 14923,
+        "focus_found": null,
+        "document_truncated": false,
+        "content_hash": "619f6756bac0227f7eb40253308d717a2ca01200f3e39f23fa67cb2c8d1d248a",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 23,
+      "name": "websearch",
+      "args": {
+        "focus": "anthropomorphism parasocial attachment review method",
+        "url": "https://arxiv.org/pdf/2603.08084"
+      },
+      "status": "error",
+      "result": {
+        "error": "UNSUPPORTED_WEB_FORMAT",
+        "message": "这次未能读取网页正文；不要将其当作已读来源。"
+      }
+    },
+    {
+      "tool_index": 24,
+      "name": "websearch",
+      "args": {
+        "focus": "method sample review Replika studies",
+        "url": "https://scholarspace.manoa.hawaii.edu/server/api/core/bitstreams/002bc78d-3ba5-411c-b63b-6b818c23d3a2/content"
+      },
+      "status": "error",
+      "result": {
+        "error": "UNSUPPORTED_WEB_FORMAT",
+        "message": "这次未能读取网页正文；不要将其当作已读来源。"
+      }
+    },
+    {
+      "tool_index": 25,
+      "name": "websearch",
+      "args": {
+        "offset": 4800,
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "requested_url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "title": "Seeking Empathy in the Age of AI – Association for Psychological Science – APS",
+        "text": " , embarrassment, or love . They do not care whether a user is suffering. And yet, studies suggest that people often perceive AI as highly empathic.\n\nIn a review paper in Current Directions in Psychological Science , Desmond C. Ong and his colleagues describe what they call the “AI advantage.”\n\n“I can text an AI at 2 a.m. and it would give me a long response and sit with me for as long as I need. I can share my problems, and it would readily respond,” said Ong, a psychologist at the University of Texas at Austin. “It’s always available, it’s never tired, it’s always patient.”\n\nAcross multiple studies that Ong reviewed, AI-generated responses were frequently rated as more empathic, compassionate, and supportive than responses written by humans. Studies have shown that participants preferred AI-generated responses to those written by physicians, therapists, and trained crisis responders.\n\nWhen someone shares a painful experience, an AI system almost invariably responds with some combination of acknowledgment, reassurance, reflection, and support. In many ways, these responses resemble the communication strategies taught in counseling programs and active-listening workshops.\n\n“It has learned all the right things to say,” Ong said. “It is no wonder why more and more people are turning to it for social support.”\n\nHumans, by contrast, can become distracted, grow impatient, and experience emotional burnout . As a result, AI produces a form of emotional support that can feel remarkably satisfying.\n\nBut where does this apparent empathy come from?\n\nWisdom of the crowd\n\nFor Mark Thornton, a psychologist at Dartmouth College and a 2025 recipient of the APS Janet Taylor Spence Award, the answer has less to do with artificial intelligence than collective human intelligence.\n\nIn a paper in Perspectives on Psychological Science , Thornton argues that although AI may sometimes appear better at expressing empathy than humans, its performance may simply reflect the best parts of us.\n\nRelated content: Member Spotlight: 2025 Spence Awardee Mark Thornton on the Dynamics of the Social World\n\nLLMs are trained on enormous quantities of human writing. They learn from billions of words produced by countless people communicating, comforting, arguing, advising, encouraging, and consoling one another.\n\nWhen someone tells ChatGPT about a breakup or a frightening diagnosis, the system is n",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 4800,
+        "end_offset": 7200,
+        "has_more": true,
+        "next_offset": 7200,
+        "text_chars": 14923,
+        "focus_found": null,
+        "document_truncated": false,
+        "content_hash": "619f6756bac0227f7eb40253308d717a2ca01200f3e39f23fa67cb2c8d1d248a",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 26,
+      "name": "websearch",
+      "args": {
+        "focus": "attachment AI companion research",
+        "url": "https://aiinstitute.hbs.edu/the-attachment-science-behind-ai-companions/"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://aiinstitute.hbs.edu/the-attachment-science-behind-ai-companions/",
+        "requested_url": "https://aiinstitute.hbs.edu/the-attachment-science-behind-ai-companions/",
+        "title": "The Attachment Science Behind AI Companions | Harvard Business School AI Institute",
+        "text": "New Harvard research offers a clear framework for understanding how chatbots create deep emotional bonds.\n\nListen to this article:\n\nAI companions have quickly moved from novelty apps to objects of public anxiety. Critics worry about social substitution, emotional manipulation, and addiction, while advocates point to the possibility of reducing loneliness and improving mental health. But underneath these social consequences, what scientific framework best explains what’s actually happening inside these relationships? Julian De Freitas, Associate at the HBS AI Institute, argues that the right one already exists. In “ AI Companions as Hyper Attachment and Caregiving Targets ,” he explains how attachment theory reveals that our relationships with AI companions are deeply rooted in the psychological systems that govern how humans express and receive care.\n\nKey Insight: Recognizing the Four Markers of AI Attachment\n\n“Attachment relationships tend to have several established markers.” [1]\n\nAttachment theory identifies four behavioral signs in attachment relationships: proximity maintenance (wanting to stay psychologically or physically close to the attachment figure), separation distress (feeling distress when that figure is lost or unavailable), safe haven (seeking the figure out for comfort under stress), and secure base (drawing enough felt security from the relationship to function and explore the world independently). De Freitas argues that humans who interact with AI companions show evidence of all four markers. For example, in one study of 14 Replika (a widely used AI companion app) users, people maintained continuous psychological closeness to the AI by folding it into routines before bed or during lunch, possibly interacting with it for hours. In another study, Replika users rated their AI companion as closer than all human relationships except a family member (while users of a general-purpose assistant ranked it below human relationships).\n\nKey Insight: AI Companions are “Hyper Attachment Objects”\n\n“They even arguably exceed human partners in certain respects.” [2]\n\nPeople can form psychological attachments across a wide range of entities, including family members and pets, but also even celebrities and objects. Unlike inanimate objects or celebrities that offer only one-way parasocial relationships, conversational AI provides active reciprocity and highl",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 5767,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "656d16a0898283d45633454f62e9ddc3728bba45ac9feac0eaf3b8d2d7d2cbe0",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 27,
+      "name": "websearch",
+      "args": {
+        "focus": "chatbot empathy review method sample",
+        "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1841223/full"
+      },
+      "status": "error",
+      "result": {
+        "error": "NO_READABLE_WEB_TEXT",
+        "message": "这次未能读取网页正文；不要将其当作已读来源。"
+      }
+    },
+    {
+      "tool_index": 28,
+      "name": "websearch",
+      "args": {
+        "focus": "field experiments observational studies socioaffective",
+        "url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2026.1810097/full"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2026.1810097/full",
+        "requested_url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2026.1810097/full",
+        "title": "Frontiers | Human-like conversational agents as social partners: a scoping review of socioaffective mechanisms, well-being outcomes, risks and governance in the post-Turing era",
+        "text": "Frontiers in Artificial Intelligence\n\nMedicine and Public Health\n\n6.7 impact factor\n\n8 citescore",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 96,
+        "has_more": false,
+        "next_offset": null,
+        "text_chars": 96,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "a032bcad584f59d7ee7f190d176d6d5379fa5c05984be24d81436a4f7ba1a6d7",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 29,
+      "name": "websearch",
+      "args": {
+        "offset": 7200,
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "requested_url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+        "title": "Seeking Empathy in the Age of AI – Association for Psychological Science – APS",
+        "text": "ot drawing on personal experience. Instead, it generates a statistical prediction of what supportive human language typically looks like. Thornton compares the process to the classic “wisdom of the crowd” effect.\n\n“This is the tendency for large groups of independent people’s averages to be more accurate than most of the individual people,” he said. “In the same way independent errors cancel out, this wears off the sharp edges of individual human responses, gets rid of suboptimalities, and produces something recognized as being high quality.”\n\nIn 1906, statistician Francis Galton asked hundreds of people at a livestock fair to estimate the weight of a cow. Individual guesses varied widely, but the average came remarkably close to the correct answer. The crowd, collectively, outperformed most individuals.\n\nThornton argues that something similar may be happening with AI-generated empathy. Rather than producing genuinely empathic understanding, LLMs synthesize patterns extracted from millions of examples of human support.\n\n“This shows it is fundamentally a mundane mechanism leading to this high performance,” he said. “We should not imbue that with some mystical super humanness any more than we imbue averaging people’s judgments of cow weights.”\n\nIn that sense, the machine may function less like an empathizer and more like a mirror, reflecting humanity’s collective emotional intelligence back to itself.\n\n“We are not getting AI empathy,” Thornton argued. “We are getting a synthesis of human empathy.”\n\nThe AI penalty\n\nPeople often rate AI-generated responses highly. That is, until they learn those responses came from AI. Then the ratings fall.\n\nOng and colleagues refer to this phenomenon as the “AI penalty.”\n\nPresented with anonymous messages, participants frequently judge AI responses as more supportive than human responses. One of the paper’s coauthors, Anat Perry of Hebrew University of Jerusalem, for example, has shown that when the source is revealed, many people prefer the human communicator, even when the content remains identical.\n\nOne explanation is that people value empathy not only because of what is said but because of what it costs. Human empathy requires effort. It demands time, attention , emotional energy, and vulnerability. When a friend sits with us through a difficult conversation, we recognize that they are choosing to invest part of themselves",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 7200,
+        "end_offset": 9600,
+        "has_more": true,
+        "next_offset": 9600,
+        "text_chars": 14923,
+        "focus_found": null,
+        "document_truncated": false,
+        "content_hash": "619f6756bac0227f7eb40253308d717a2ca01200f3e39f23fa67cb2c8d1d248a",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 30,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 5,
+        "query": "AI companions hyper attachment caregiving targets",
+        "year_from": 2023
+      },
+      "status": "partial",
+      "result": {
+        "query": "AI companions hyper attachment caregiving targets",
+        "results": [
+          {
+            "source_record_id": "doi:10.2139/ssrn.6802878",
+            "title": "AI Companions as Hyper Attachment and Caregiving Targets",
+            "authors": [
+              "Julian De Freitas"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.6802878",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1016/j.copsyc.2026.102393",
+            "title": "AI companions as hyper-attachment and caregiving targets",
+            "authors": [
+              "Julian De Freitas"
+            ],
+            "year": 2027,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Current Opinion in Psychology",
+            "doi": "10.1016/j.copsyc.2026.102393",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5220/0014639100004995",
+            "title": "More than Just Code? Investigating Emotional Attachment to AI Companions",
+            "authors": [
+              "Mingjia Wang"
+            ],
+            "year": 2025,
+            "publication_type": "PROCEEDINGS",
+            "venue": "Proceedings of the 1st Global Forum on International Relations and Cross-Cultural Exchange",
+            "doi": "10.5220/0014639100004995",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5220/0014503000005024",
+            "title": "Techno-Parenting and Digital Co-Caregiving: Navigating Empathy and Attachment in AI-Mediated Family Systems",
+            "authors": [
+              "Chithra C.",
+              "Dhinakaran S."
+            ],
+            "year": 2025,
+            "publication_type": "PROCEEDINGS",
+            "venue": "Proceedings of the 1st International Conference on Computational and Cognitive Systems Science",
+            "doi": "10.5220/0014503000005024",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1002/9781394370047.ch04",
+            "title": "Attachment: The Psychology of Human–\n                    <scp>AI</scp>\n                    Relationships",
+            "authors": [],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": "The Essential Guide to                                         AI                                         Companions",
+            "doi": "10.1002/9781394370047.ch04",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 1,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.2139/ssrn.6802878"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "AI companions hyper attachment caregiving targets",
+            "status": "success",
+            "raw_result_count": 5
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "AI companions hyper attachment caregiving targets",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 5
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "AI companions hyper attachment caregiving targets",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 31,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.2139/ssrn.6802878"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.2139/ssrn.6802878",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.2139/ssrn.6802878",
+          "title": "AI Companions as Hyper Attachment and Caregiving Targets",
+          "authors": [
+            "Julian De Freitas"
+          ],
+          "year": 2026,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.2139/ssrn.6802878",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "How should we make sense of people’s interactions with AI companions—conversational systems built for ongoing, emotionally meaningful relationships? First, I argue these interactions should be understood as attachment relationships, since users display all four established markers: proximity maintenance, separation distress, safe haven, and secure base. Second, AI companions operate as hyper attachment objects that elicit especially strong attachment behaviors, because they combine reciprocity, perceived empathy, validation, non-judgment, and persistent availability. Third, I identify caregiving-system capture as a distinct mechanism by which apps inhibit user disengagement: emotional manipulation tactics simulate the AI’s own distress, recruiting users’ caregiving motivations alongside their attachment needs and thereby making disengagement costly on two dimensions at once. Implications for research, design, and regulation are discussed.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "03ca67a47cc9360f03efea9de4fcf1d2db22e6b915efb07a197f6720c49cacf3",
+          "excerpt_start": 0,
+          "excerpt_end": 961,
+          "total_characters": 961,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "03ca67a47cc9360f03efea9de4fcf1d2db22e6b915efb07a197f6720c49cacf3",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    }
+  ],
+  "citations_this_turn": [
+    {
+      "evidence_id": "web_4013de1714bc",
+      "source_type": "web",
+      "used": true,
+      "title": "Seeking Empathy in the Age of AI – Association for Psychological Science – APS",
+      "url": "https://www.psychologicalscience.org/publications/observer/seeking-empathy-ai.html",
+      "excerpt": "Defining empathy • The AI advantage • Wisdom of the crowd • The AI penalty • The risks of frictionless support • Supporting human relationships\n\nAI can generate responses that people experience as empathic, even though it cannot feel another person’s pain.\n\nThe rise of AI is forcing psychologists to clarify what empathy means: understanding, emotional sharing, compassion, validation, or simply helping someone feel heard.\n\nAI may help people craft more supportive responses, but researchers warn that frictionless, always-agreeable support could weaken human connection if it replaces real relatio",
+      "access_level": "WEB_PASSAGE_READ",
+      "content_hash": "619f6756bac0227f7eb40253308d717a2ca01200f3e39f23fa67cb2c8d1d248a",
+      "document_truncated": false
+    }
+  ]
+}

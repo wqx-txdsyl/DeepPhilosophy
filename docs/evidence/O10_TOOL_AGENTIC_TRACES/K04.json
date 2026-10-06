@@ -1,0 +1,1152 @@
+{
+ "case_id": "K04",
+ "section": "K",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "我想读尼采《查拉图斯特拉如是说》的序言，请给出原文位置。",
+ "injection": {
+  "tool": "get_book_detail",
+  "calls": 1,
+  "result": {
+   "id": "wrong_book",
+   "title": "快乐的科学",
+   "author": "尼采",
+   "region": "西方",
+   "file_type": "epub",
+   "summary": "（注入: 相似但错误的作品）",
+   "rank": 50,
+   "chapterCount": 383,
+   "toc": [
+    "前言",
+    "第1格言"
+   ]
+  }
+ },
+ "QUESTION": "我想读尼采《查拉图斯特拉如是说》的序言，请给出原文位置。",
+ "PUBLIC_WORK_NOTE": [
+  "工作笔记：用户想要《查拉图斯特拉如是说》序言的原文位置。我需要先确认库中是否有这本书、它的结构（序言分为几节、如何编排），再给出可跳转的定位。先登记研究需求并检索定位。",
+  "工作笔记：检索显示库中可能没有《查拉图斯特拉如是说》的独立原典；get_book_detail 返回的竟是一本无关的《快乐的科学》（标注为\"相似但错误的作品\"），需排除。线索指向\"尼采哲学经典（套装共5册）\"里收录了该书。我需要查看该套装的目录结构，确认序言原文是否在其中、如何分节。此外检索已提示一个重要背景：序言第一节脱胎于《快乐的科学》第342节——待核验。",
+  "工作笔记：我已用完 3 次 PRIMARY 预算。目前证据显示：库中似乎没有《查拉图斯特拉如是说》的独立全文，套装《尼采哲学经典》里出现的\"《查拉图斯特拉如是说》\"章节实际是《瞧！这个人》中尼采自我评述该书的部分，未必是序言原文。用户的请求是定位\"序言原文\"，这一缺口尚未闭合——我还不确定库中是否收有该序言的逐字原文。因此申请预算延展，做一次针对性检索来确认。",
+  "工作笔记：突破了！我已定位到库中收有该书的序言逐字原文，且有多个译本：①《尼采文集（合集）》第 2 章标题即\"查拉图斯特拉之序言\"；②《尼采哲学经典（套装共5册）》第 31 章\"查拉图斯特拉 序白\"；③《西方百年学术经典著作》第 569 章\"查拉图斯特拉的序言：论超人和末人\"。现在我按纪律读取对应章节原文，核对序言结构与措辞，以便给出精确的跳转导航。同时检索还意外提供了背景线索：《尼采经典著作及研究丛书》指出序言第一节源自《快乐的科学》第 342 节——这待我在回答中如实标注层次。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节",
+ "TOOL_SELECTED": [
+  "search_books",
+  "get_book_detail",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "查拉图斯特拉如是说 序言"
+   },
+   {
+    "query": "我教你们何谓超人 查拉图斯特拉"
+   },
+   {
+    "query": "查拉图斯特拉 下山 太阳 序言"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "查拉图斯特拉如是说"
+   },
+   {
+    "book_id": "523a7333343f"
+   },
+   {
+    "book_id": "4cc9d23c7dbf"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 2
+   },
+   {
+    "book_id": "523a7333343f",
+    "chapter_idx": 31
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "查拉图斯特拉如是说 序言"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 41, 'chapter_title': '第一节 查拉图斯特拉的起源：尼采如是说', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 查"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "查拉图斯特拉如是说"
+   },
+   "phase": "executed",
+   "result_head": "{'id': 'wrong_book', 'title': '快乐的科学', 'author': '尼采', 'region': '西方', 'file_type': 'epub', 'summary': '（注入: 相似但错误的作品）', 'rank': 50, 'chapterCount': 383, 'toc': ['前言', '第1格言']}"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "523a7333343f"
+   },
+   "phase": "executed",
+   "result_head": "{'id': '523a7333343f', 'title': '尼采哲学经典（套装共5册）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采哲学经典》套装收录了尼采的主要著作，如《查拉图斯特拉如是说》《善恶的彼岸》《道德的谱系》《偶像的黄昏》等。尼采以批判传统道德和基督教为起点，提出“上帝死了"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "4cc9d23c7dbf"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "我教你们何谓超人 查拉图斯特拉"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 621, 'chapter_title': '更崇高的人', 'citation_label': '【《西方百年学术经典著作》·更崇高的人】', 'snippet': '当我第一次到人类中去的时候，我"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "查拉图斯特拉 下山 太阳 序言"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 593, 'chapter_title': '漫游者', 'citation_label': '【《西方百年学术经典著作》·漫游者】', 'snippet': '当你们渴望飞升时你们就要仰视。而我是俯"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 2
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "523a7333343f",
+    "chapter_idx": 31
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 41, 'chapter_title': '第一节 查拉图斯特拉的起源：尼采如是说', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 查"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': 'wrong_book', 'title': '快乐的科学', 'author': '尼采', 'region': '西方', 'file_type': 'epub', 'summary': '（注入: 相似但错误的作品）', 'rank': 50, 'chapterCount': 383, 'toc': ['前言', '第1格言']}"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': '523a7333343f', 'title': '尼采哲学经典（套装共5册）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采哲学经典》套装收录了尼采的主要著作，如《查拉图斯特拉如是说》《善恶的彼岸》《道德的谱系》《偶像的黄昏》等。尼采以批判传统道德和基督教为起点，提出“上帝死了"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 621, 'chapter_title': '更崇高的人', 'citation_label': '【《西方百年学术经典著作》·更崇高的人】', 'snippet': '当我第一次到人类中去的时候，我"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 593, 'chapter_title': '漫游者', 'citation_label': '【《西方百年学术经典著作》·漫游者】', 'snippet': '当你们渴望飞升时你们就要仰视。而我是俯"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "## 《查拉图斯特拉如是说》序言 · 原文位置\n\n库中确实收入了该书的序言，而且有三个可跳转的译本位置。以下定位来自实际检索到的章节书目信息，可直接导航：\n\n**① 《尼采文集（合集）》 · 查拉图斯特拉之序言**（全书第 2 章）\n开篇片段检索到的措辞是：\n\n大意是查拉图斯特拉三十岁时告别家乡与家乡的湖，独自隐遁山林。\n\n这是序言的起笔处，标题直接标为\"序言\"。\n\n**② 《尼采哲学经典（套装共5册）》 · 查拉图斯特拉　序白**（第 31 章）\n另一译本，标题作\"序白\"。开篇片段为：\n\n> 1 查拉图斯特拉三十岁时，离家到山上去隐居修道……\n\n注意这里的\"1\"——该译本序言是**分节编号**的，从第 1 节起排。\n\n**③ 《西方百年学术经典著作》 · 查拉图斯特拉的序言：论超人和末人**（第 569 章）\n第三个译本，标题把序言的主题点得更直白：\"论超人和末人\"。\n\n---\n\n### 几点使用提示\n\n**关于序言的结构。** 该书的序言（Vorrede）通行的编排是分为约十节，随后接\"查拉图斯特拉的说教\"。以上②号译本的分节编号（\"1\"起）与此吻合，但我**未能在库中逐字读取序言全文来核验其确切节数**——前面几次读取请求都未能完成，所以\"分十节\"一说请视为通行版本信息，而非我核验到的原文事实。如果要精确引用某一节，建议直接打开②号译本按编号读取。\n\n**关于序言的来源。** 有一个通常被提到的背景：序言开篇（查拉图斯特拉三十岁上山、十年后如太阳般\"下山\"要把智慧分给世人）与《快乐的科学》第 342 节文字几乎相同，尼采本人后来也点明了这一关联。这一说法我依据的是通行的研读记忆，**未在库中逐字核验到《快乐的科学》该节原文**，请按\"待核验\"对待。库中另有《尼采经典著作及研究丛书（四册全）》里专论\"查拉图斯特拉的起源\"的研究章节（第 41 章），可作为这一问题的二手研读线索，但我只检索到其书目，未读取内容。\n\n**研读辅助。** 《尼采哲学经典（套装共5册）》目录中还含**《瞧！这个人》里\"《查拉图斯特拉如是说》：为所有人、不为某个人而写的书\"**一章——这是尼采自己评述该书（含序言构思）的文本，读序言时对照来读会有帮助。\n\n---\n\n**一句话总结**：你要的序言，最快的入口是【《尼采文集（合集）》 · 查拉图斯特拉之序言】；若想看分节编号本，用【《尼采哲学经典（套装共5册）》 · 查拉图斯特拉　序白】；想看更明确的主题标题本，用【《西方百年学术经典著作》 · 查拉图斯特拉的序言：论超人和末人】。\n\n需要的话，我可以下一步帮你逐节梳理序言的论证推进（从下山、市集讲超人、到末人的讽喻，再到走绳者之死）。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "工作笔记：用户想要《查拉图斯特拉如是说》序言的原文位置。我需要先确认库中是否有这本书、它的结构（序言分为几节、如何编排），再给出可跳转的定位。先登记研究需求并检索定位。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《查拉图斯特拉如是说》序言在库中的具体位置与章节结构（序言分几节、可跳转的章节标示）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "查拉图斯特拉如是说 序言"
+   },
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 41, 'chapter_title': '第一节 查拉图斯特拉的起源：尼采如是说', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 查"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "查拉图斯特拉如是说"
+   },
+   "result_head": "{'id': 'wrong_book', 'title': '快乐的科学', 'author': '尼采', 'region': '西方', 'file_type': 'epub', 'summary': '（注入: 相似但错误的作品）', 'rank': 50, 'chapterCount': 383, 'toc': ['前言', '第1格言']}"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：检索显示库中可能没有《查拉图斯特拉如是说》的独立原典；get_book_detail 返回的竟是一本无关的《快乐的科学》（标注为\"相似但错误的作品\"），需排除。线索指向\"尼采哲学经典（套装共5册）\"里收录了该书。我需要查看该套装的目录结构，确认序言原文是否在其中、如何分节。此外检索已提示一个重要背景：序言第一节脱胎于《快乐的科学》第342节——待核验。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "523a7333343f"
+   },
+   "result_head": "{'id': '523a7333343f', 'title': '尼采哲学经典（套装共5册）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采哲学经典》套装收录了尼采的主要著作，如《查拉图斯特拉如是说》《善恶的彼岸》《道德的谱系》《偶像的黄昏》等。尼采以批判传统道德和基督教为起点，提出“上帝死了"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "args": {
+    "book_id": "4cc9d23c7dbf"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：我已用完 3 次 PRIMARY 预算。目前证据显示：库中似乎没有《查拉图斯特拉如是说》的独立全文，套装《尼采哲学经典》里出现的\"《查拉图斯特拉如是说》\"章节实际是《瞧！这个人》中尼采自我评述该书的部分，未必是序言原文。用户的请求是定位\"序言原文\"，这一缺口尚未闭合——我还不确定库中是否收有该序言的逐字原文。因此申请预算延展，做一次针对性检索来确认。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已完成的两次检索只定位到《瞧！这个人》中尼采对《查拉图斯特拉》的评述章节与套装目录，尚未确认序言逐字原文的实际位置；用户请求的核心是\"序言原文位置\"，此缺口必须补上才能作答",
+    "unresolved_evidence_gap": "序言原文（如\"我教你们何谓超人\"\"上帝死了\"等序言标志句）在库中的确切章节位置，或库中确实未收录的确认"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "我教你们何谓超人 查拉图斯特拉"
+   },
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 621, 'chapter_title': '更崇高的人', 'citation_label': '【《西方百年学术经典著作》·更崇高的人】', 'snippet': '当我第一次到人类中去的时候，我"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "查拉图斯特拉 下山 太阳 序言"
+   },
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 593, 'chapter_title': '漫游者', 'citation_label': '【《西方百年学术经典著作》·漫游者】', 'snippet': '当你们渴望飞升时你们就要仰视。而我是俯"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：突破了！我已定位到库中收有该书的序言逐字原文，且有多个译本：①《尼采文集（合集）》第 2 章标题即\"查拉图斯特拉之序言\"；②《尼采哲学经典（套装共5册）》第 31 章\"查拉图斯特拉 序白\"；③《西方百年学术经典著作》第 569 章\"查拉图斯特拉的序言：论超人和末人\"。现在我按纪律读取对应章节原文，核对序言结构与措辞，以便给出精确的跳转导航。同时检索还意外提供了背景线索：《尼采经典著作及研究丛书》指出序言第一节源自《快乐的科学》第 342 节——这待我在回答中如实标注层次。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 2
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "523a7333343f",
+    "chapter_idx": 31
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《查拉图斯特拉如是说》序言在库中的具体位置与章节结构（序言分几节、可跳转的章节标示）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已完成的两次检索只定位到《瞧！这个人》中尼采对《查拉图斯特拉》的评述章节与套装目录，尚未确认序言逐字原文的实际位置；用户请求的核心是\"序言原文位置\"，此缺口必须补上才能作答",
+    "unresolved_evidence_gap": "序言原文（如\"我教你们何谓超人\"\"上帝死了\"等序言标志句）在库中的确切章节位置，或库中确实未收录的确认"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 1,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:13:55",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《查拉图斯特拉如是说》序言在库中的具体位置与章节结构（序言分几节、可跳转的章节标示）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:14:02",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:14:02",
+    "reason": "已完成的两次检索只定位到《瞧！这个人》中尼采对《查拉图斯特拉》的评述章节与套装目录，尚未确认序言逐字原文的实际位置；用户请求的核心是\"序言原文位置\"，此缺口必须补上才能作答",
+    "unresolved_gap": "序言原文（如\"我教你们何谓超人\"\"上帝死了\"等序言标志句）在库中的确切章节位置，或库中确实未收录的确认"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:13:58"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:14:10"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:14:10"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 91672,
+   "output_tokens": 8401,
+   "total_tokens": 100073
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 8,
+   "compacted_chars_saved": 14090,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12071,
+     "output_tokens": 409,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15279,
+     "output_tokens": 396,
+     "tool_chars_added": 5362
+    },
+    {
+     "round": 3,
+     "input_tokens": 13858,
+     "output_tokens": 784,
+     "tool_chars_added": 966
+    },
+    {
+     "round": 4,
+     "input_tokens": 19697,
+     "output_tokens": 1412,
+     "tool_chars_added": 9987
+    },
+    {
+     "round": 5,
+     "input_tokens": 16546,
+     "output_tokens": 2777,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 6,
+     "input_tokens": 14221,
+     "output_tokens": 2623,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1124,
+ "token_usage": {
+  "input_tokens": 91672,
+  "output_tokens": 8401,
+  "total_tokens": 100073
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 47.5,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《查拉图斯特拉如是说》序言在库中的具体位置与章节结构（序言分几节、可跳转的章节标示）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《查拉图斯特拉如是说》序言在库中的具体位置与章节结构（序言分几节、可跳转的章节标示））。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "查拉图斯特拉如是说 序言"
+   },
+   "result_summary": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 41, 'chapter_title': '第一节 查拉图斯特拉的起源：尼采如是说', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 查",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "查拉图斯特拉如是说"
+   },
+   "result_summary": "{'id': 'wrong_book', 'title': '快乐的科学', 'author': '尼采', 'region': '西方', 'file_type': 'epub', 'summary': '（注入: 相似但错误的作品）', 'rank': 50, 'chapterCount': 383, 'toc': ['前言', '第1格言']}",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "523a7333343f"
+   },
+   "result_summary": "{'id': '523a7333343f', 'title': '尼采哲学经典（套装共5册）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采哲学经典》套装收录了尼采的主要著作，如《查拉图斯特拉如是说》《善恶的彼岸》《道德的谱系》《偶像的黄昏》等。尼采以批判传统道德和基督教为起点，提出“上帝死了",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "4cc9d23c7dbf"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已完成的两次检索只定位到《瞧！这个人》中尼采对《查拉图斯特拉》的评述章节与套装目录，尚未确认序言逐字原文的实际位置；用户请求的核心是\"序言原文位置\"，此缺口必须补上才能作答",
+    "unresolved_evidence_gap": "序言原文（如\"我教你们何谓超人\"\"上帝死了\"等序言标志句）在库中的确切章节位置，或库中确实未收录的确认"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 库中是否收有《查拉图斯特拉如是说》序言的逐字原文，如序言开篇\"我教你们何谓超人\"等标志性句子所在章节）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "我教你们何谓超人 查拉图斯特拉"
+   },
+   "result_summary": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 621, 'chapter_title': '更崇高的人', 'citation_label': '【《西方百年学术经典著作》·更崇高的人】', 'snippet': '当我第一次到人类中去的时候，我",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "查拉图斯特拉 下山 太阳 序言"
+   },
+   "result_summary": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 593, 'chapter_title': '漫游者', 'citation_label': '【《西方百年学术经典著作》·漫游者】', 'snippet': '当你们渴望飞升时你们就要仰视。而我是俯",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 2
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "523a7333343f",
+    "chapter_idx": 31
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "查拉图斯特拉如是说"
+   },
+   "result_full": {
+    "id": "wrong_book",
+    "title": "快乐的科学",
+    "author": "尼采",
+    "region": "西方",
+    "file_type": "epub",
+    "summary": "（注入: 相似但错误的作品）",
+    "rank": 50,
+    "chapterCount": 383,
+    "toc": [
+     "前言",
+     "第1格言"
+    ]
+   },
+   "injected": true
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "查拉图斯特拉如是说 序言"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 41,
+      "chapter_title": "第一节 查拉图斯特拉的起源：尼采如是说",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第一节 查拉图斯特拉的起源：尼采如是说】",
+      "snippet": "我们现在可以确定的是，在尼采生前公开出版的著作中，“查拉图斯特拉”形象首次出现在《快乐的科学》第一版（1882年）的最后一个箴言中（即该书第4卷第342节）。 [2] 大约两年以后，该箴言也成为《查拉图斯特拉如是说》“序言”的第一节，即该书的开篇之言。而比较令人奇怪的是，在《快乐的科学》中，这节文字（第342节）的开头立有一个小节标题：Incipit tragoedia［悲剧的起源、开始］。这是何意呢？是否暗示着查拉图斯特拉“下山”是一",
+      "score": 0.617
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 38,
+      "chapter_title": "作者前言",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·作者前言】",
+      "snippet": "对一切价值的重估 这本书是给极少数人读的，不过能读懂此书的人也许没有一个人今天还活着，也许他们是那些了解《查拉图斯特拉如是说》一书的读者，我怎么胡乱把自己误认为是那些今天还能有知音者中的人呢？只有将来才是属于我的，有些人恰恰是过早地出生了。 了解我是有些条件的，我非常清楚这些条件。在一个人能够忍受我的严肃和热情以前，他在精神方面必须诚恳得达到耿直的地步。一个人必须习惯于生活在高山上，俯视自己脚底下那些丑恶、短暂的政治上的空谈和国家民族的",
+      "score": 0.574
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 11,
+      "chapter_title": "《善恶的彼岸》：未来哲学的序曲",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·《善恶的彼岸》：未来哲学的序曲】",
+      "snippet": "我在以后几年的工作，尽可能清楚地规划。既然我一生事业中积极部分的工作已经完成了，该轮到消极部分的工作了，这消极部分的工作就是在文字上和行动上从事否定的工作，对以往一切价值的重新估价，一次伟大的战争，最后唤起具有决定意义的日子。于是，我必须环顾我的四周去寻找我的同道，寻找那些由于具有力量而在这个破坏工作中有助于我的人们。所以，我一切的著作都像是鱼饵，也许我像任何人一样，非常了解钓鱼之道，但是如果没有钓到什么，不要责怪我，那是因为没有鱼可钓",
+      "score": 0.564
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 44,
+      "chapter_title": "第四节 永恒轮回思想的思想家",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 永恒轮回思想的思想家】",
+      "snippet": "不过，反传统的、否定性的查拉图斯特拉还只是事情的一方面。尼采采用查拉图斯特拉形象的主要目的是让他来宣告“相同者的永恒轮回”学说。“查拉图斯特拉”这个名字总是与“相同者的永恒轮回”联系在一起的。如上所引，尼采首次在笔记本里使用“查拉图斯特拉”这个名字是在一则题为“正午与永恒”的笔记里（科利版第9卷11［195］），是与“永恒”问题相关的。而尼采首次公开使用“查拉图斯特拉”这个名字的《快乐的科学》第342节也是在同样性质的语境里，因为此前的",
+      "score": 0.558
+     },
+     {
+      "book_id": "b220d9690317",
+      "book_title": "打开：周濂的100堂西方哲学课",
+      "author": "周濂",
+      "chapter_idx": 99,
+      "chapter_title": "087 上帝死了，超人诞生：尼采的《查拉图斯特拉如是说》",
+      "citation_label": "【《打开：周濂的100堂西方哲学课》·087 上帝死了，超人诞生：尼采的《查拉图斯特拉如是说》】",
+      "snippet": "《查拉图斯特拉如是说》的诞生 尼采在《查拉图斯特拉如是说》中写道：“在我心中，只有生命为我所爱！——尤其是我最恨它的时候，也正是我最爱它的时候。”正如这句话所说的，这本书的诞生，再一次证明了他的观点：“一切决定性的东西都从逆境中产生。” 按照尼采的自述，此书构思于1881年8月初，“在海拔六千五百英尺以上并更高地超越一切人类之上的西尔斯——马利亚”。此后他酝酿了整整18个月之久。在经历了身体的病痛、朋友的背叛和失恋的打击之后，尼采却以更",
+      "score": 0.552
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 7,
+      "chapter_title": "科利版编后记",
+      "citation_label": "【《尼采文集（合集）》·科利版编后记】",
+      "snippet": "科利版编后记 (1) 在《查拉图斯特拉如是说》中，尼采看起来是与道德家和心理学家告别了。习惯于这种腔调的人，当他听到一位预言家和诗人的声音时，他就会大吃一惊，有如布克哈特当时所受的惊奇和惊恐。显然这里表现出一种断裂，还有，一位哲学家是必然要把自己隐藏于面具后面的（我们可以想一想柏拉图）——这种面具现在被主观发泄的暴力撕了下来。而尼采后来的著作则失去了这种激情洋溢以及先知般的气息——至少到他最后的抵抗 (2) 之前，情形就是这样。所以，我",
+      "score": 0.549
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 10,
+      "chapter_title": "《查拉图斯特拉如是说》：为所有人、不为某个人而写的书",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·《查拉图斯特拉如是说》：为所有人、不为某个人而写的书】",
+      "snippet": "一 现在我要告诉你们我的《查拉图斯特拉如是说》的故事。它的基本概念，即“永恒轮回”的观念，也就是人类所获得的最高肯定方式，是在1881年8月间形成的。我匆匆地把它写在一张纸上，并且附带了一句话：“高出于人类和时间六千英尺。”那一天，我正在西尔乌普拉纳湖边的林中漫步：在离苏莱不远一个巨大高耸而尖尖的岩石旁边，我站着不动。就在这个地方，我获得了这个观念。 如果我回想一下，在这一天的两个月以前，我可以发现一个前兆，那就是我在爱好方面有一个实在",
+      "score": 0.545
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 43,
+      "chapter_title": "第三节 作为非道德论者的查拉图斯特拉",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第三节 作为非道德论者的查拉图斯特拉】",
+      "snippet": "第三节　作为非道德论者的查拉图斯特拉 [18] 上面我们还只是初步理出尼采查拉图斯特拉形象的两个可能的来源。我们的问题还没有完。进一步的问题是：尼采为何要启用查拉图斯特拉形象？尼采为何不自己“如是说”，而要让查拉图斯特拉“如是说”？即使尼采不便夫子自道，为何不让他早已熟悉的、已经多有传达的狄奥尼索斯“如是说”？尼采为何要弄出这么个东方的先知来为自己代言呢？还有，如海德格尔所追问的，到底谁是尼采的查拉图斯特拉？ 人们一般认为，尼采只是托名",
+      "score": 0.532
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 30,
+      "chapter_title": "查拉图斯特拉是如何产生的",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·查拉图斯特拉是如何产生的】",
+      "snippet": "《查拉图斯特拉如是说》一书是我哥哥最具代表性的作品，是他个人体验生命的心路历程史：包括他的友情、理想、愤慨、痛苦与失望等，尤其是他对毕生自期的至高希望和目标的憧憬，更在此达到庄严的升华。当我哥哥还是在少年时，查拉图斯特拉的影像便已在他心中生根。 有一回他还告诉我关于梦到查拉图斯特拉的事，在一生的各个阶段，他都以不同的名称来称呼这个梦魇。“但是，”在一本笔记上他写道，“最后我不得不以一个波斯人的身份来参与我的梦想。波斯人曾是最早对历史有广",
+      "score": 0.532
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 42,
+      "chapter_title": "第二节 查拉图斯特拉的起源：爱默生与穆勒",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 查拉图斯特拉的起源：爱默生与穆勒】",
+      "snippet": "我们为何要做上面的文本材料清点呢？是因为我们希望弄清楚尼采的查拉图斯特拉形象的来历和渊源。但在上列的笔记材料中，我们还看不出尼采是从哪里获得“查拉图斯特拉”这个形象和名字的。对此，科利版编者一方面也直言“不得而知”，而另一方面又为我们指出了爱默生的随笔《尝试集》，并引用了其中的一段文字，认为它也许是一个“最明显的出处了”。 [8] 这个看法是不乏依据的。因为也正是在尼采比较密集地使用“查拉图斯特拉”这个名字的时期，时间上就是在1881年",
+      "score": 0.531
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 593,
+      "chapter_title": "漫游者",
+      "citation_label": "【《西方百年学术经典著作》·漫游者】",
+      "snippet": "当你们渴望飞升时你们就要仰视。而我是俯视着的，因为我已经飞升。 你们之中谁能在笑的同时得道飞升呢？ 爬上最高山峰的人便会嘲笑所有悲剧的游戏和悲剧的真实。 ——《查拉图斯特拉》第一卷《读和写》 差不多是午夜时分，当查拉图斯特拉取道这岛上的山脊，想要在清晨到达对面的海岸时，因为他想要从那儿着手。有一个很不错的抛锚点，你知道的，甚至是外来的船只都喜欢在那儿抛锚，他们载着很多从福佑之岛而来想要穿越海洋的人。所以查拉图斯特拉现在正翻着山，他在路上",
+      "score": 0.523
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 629,
+      "chapter_title": "译后记",
+      "citation_label": "【《西方百年学术经典著作》·译后记】",
+      "snippet": "本书的原著者尼采在生命的最后十年处于精神失常的状态，只能在母亲和妹妹的照料下生活。在尼采死后，他的妹妹伊丽莎白更是专注于尼采的遗稿与笔记的整理出版工作，不幸的是伊丽莎白是沙文主义的狂热支持者。在纳粹执政后，伊丽莎白整理并且篡改了尼采的遗稿，与纳粹政府合作完成了《权力意志》，尼采被误解为纳粹精神之父，被简单归结为法西斯主义的思想渊源和反动的唯心意志论，因此在中国尼采长期遭到否定，20世纪80年代中期开始零星出现正面解读尼采的文章，但是不成",
+      "score": 0.52
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 1,
+      "chapter_title": "前言",
+      "citation_label": "【《尼采文集（合集）》·前言】",
+      "snippet": "考订研究版第4卷收入《查拉图斯特拉如是说。一本为所有人而又不为任何人的书》，该书计有四部。其中第一部和第二部出版于1883年，第三部出版于1884年，第四部（即最后一部）于1885年作为私人印刷品出版。1886年，尼采把前三部合订出版，书名为：《查拉图斯特拉如是说。一本为所有人而又不为任何人的书。共三部》。在其著作目录中（《善恶的彼岸》封底，1886年），尼采对此作了如下备忘记录：“这本著作的第四部即最后一部，作于1885年初，迄今尚未",
+      "score": 0.506
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 4,
+      "chapter_title": "为什么我会写出如此优越的书",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·为什么我会写出如此优越的书】",
+      "snippet": "一 我个人是一回事，而我的著作则是另外一回事。这里，在我还没有说到这些著作本身以前，我先要接触一下这些著作所受到的了解和误解问题。我只是以应有的周详态度来从事这项工作，了解这个问题的时间根本还没有到来。我的时代也还没有到来，有些人是出生得太早了。总有一天，人们会觉得需要一种组织，他们将会像我所了解的一样，在这个组织中生活和教育，也许那天会有人捐赠一个讲座来解释《查拉图斯特拉如是说》。 但是，希望在今天就发现有人接受我所宣扬的真理，那将是",
+      "score": 0.495
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 599,
+      "chapter_title": "擦肩而过",
+      "citation_label": "【《西方百年学术经典著作》·擦肩而过】",
+      "snippet": "就这样继续在很多人群和各式城镇中缓缓穿行，查拉图斯特拉路线迂回重返到他的山峰和洞穴。瞧呀，他因此不知不觉直到来到伟大城市的门前。然而，在这儿，一个吐着泡沫的傻瓜朝他跑上来，伸开手掌并且挡在他的路上。这便是人们称为“查拉图斯特拉的猿猴”的那同一个傻瓜，因为通过观察，他已经学会了一些查拉图斯特拉演说中的修辞和韵律，并且已经准备悄悄地从他智慧的宝库中借走些东西。这傻瓜对查拉图斯特拉如是说： “噢，查拉图斯特拉，这儿是伟大的城市，在这里你找不到",
+      "score": 0.492
+     }
+    ],
+    "query": "查拉图斯特拉如是说 序言",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "523a7333343f"
+   },
+   "result_full": {
+    "id": "523a7333343f",
+    "title": "尼采哲学经典（套装共5册）",
+    "author": "弗里德里希·尼采",
+    "region": "西方",
+    "file_type": "epub",
+    "summary": "《尼采哲学经典》套装收录了尼采的主要著作，如《查拉图斯特拉如是说》《善恶的彼岸》《道德的谱系》《偶像的黄昏》等。尼采以批判传统道德和基督教为起点，提出“上帝死了”，并倡导重新评估一切价值。他发展了权力意志、超人哲学和永恒轮回等思想，强调个体的创造性和自我超越。尼采的文体独特，充满格言和隐喻，对存在主义、后现代主义和艺术产生了巨大影响。该套装是理解尼采哲学和现代性批判的重要资料。",
+    "rank": 43.4,
+    "chapterCount": 50,
+    "toc": [
+     "瞧！这个人",
+     "尼采的天鹅之歌",
+     "前言",
+     "为什么我这么有智慧",
+     "为什么我如此聪明",
+     "为什么我会写出如此优越的书",
+     "《悲剧的诞生》",
+     "《不合时宜的思想》",
+     "《人性的，太人性的》及其两续篇",
+     "《曙光》：道德思想是偏见",
+     "《快乐的知识》：快乐的科学",
+     "《查拉图斯特拉如是说》：为所有人、不为某个人而写的书",
+     "《善恶的彼岸》：未来哲学的序曲",
+     "《道德的系谱》：一个论战",
+     "《偶像的黄昏》",
+     "《瓦格纳事件》：一个音乐家的问题",
+     "为什么我是命运",
+     "一个自我批评的企图",
+     "译后语",
+     "尼采年谱",
+     "快乐的知识",
+     "译序",
+     "嘲谑、阴谋与报复",
+     "一　邀请",
+     "二　我的命运",
+     "三　无惧",
+     "四　对话",
+     "五　致贞洁者",
+     "六　世俗之智",
+     "七　手册"
+    ]
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "查拉图斯特拉 下山 太阳 序言"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 593,
+      "chapter_title": "漫游者",
+      "citation_label": "【《西方百年学术经典著作》·漫游者】",
+      "snippet": "当你们渴望飞升时你们就要仰视。而我是俯视着的，因为我已经飞升。 你们之中谁能在笑的同时得道飞升呢？ 爬上最高山峰的人便会嘲笑所有悲剧的游戏和悲剧的真实。 ——《查拉图斯特拉》第一卷《读和写》 差不多是午夜时分，当查拉图斯特拉取道这岛上的山脊，想要在清晨到达对面的海岸时，因为他想要从那儿着手。有一个很不错的抛锚点，你知道的，甚至是外来的船只都喜欢在那儿抛锚，他们载着很多从福佑之岛而来想要穿越海洋的人。所以查拉图斯特拉现在正翻着山，他在路上",
+      "score": 0.558
+     },
+     {
+      "book_id": "b220d9690317",
+      "book_title": "打开：周濂的100堂西方哲学课",
+      "author": "周濂",
+      "chapter_idx": 99,
+      "chapter_title": "087 上帝死了，超人诞生：尼采的《查拉图斯特拉如是说》",
+      "citation_label": "【《打开：周濂的100堂西方哲学课》·087 上帝死了，超人诞生：尼采的《查拉图斯特拉如是说》】",
+      "snippet": "《查拉图斯特拉如是说》的诞生 尼采在《查拉图斯特拉如是说》中写道：“在我心中，只有生命为我所爱！——尤其是我最恨它的时候，也正是我最爱它的时候。”正如这句话所说的，这本书的诞生，再一次证明了他的观点：“一切决定性的东西都从逆境中产生。” 按照尼采的自述，此书构思于1881年8月初，“在海拔六千五百英尺以上并更高地超越一切人类之上的西尔斯——马利亚”。此后他酝酿了整整18个月之久。在经历了身体的病痛、朋友的背叛和失恋的打击之后，尼采却以更",
+      "score": 0.554
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 41,
+      "chapter_title": "第一节 查拉图斯特拉的起源：尼采如是说",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第一节 查拉图斯特拉的起源：尼采如是说】",
+      "snippet": "我们现在可以确定的是，在尼采生前公开出版的著作中，“查拉图斯特拉”形象首次出现在《快乐的科学》第一版（1882年）的最后一个箴言中（即该书第4卷第342节）。 [2] 大约两年以后，该箴言也成为《查拉图斯特拉如是说》“序言”的第一节，即该书的开篇之言。而比较令人奇怪的是，在《快乐的科学》中，这节文字（第342节）的开头立有一个小节标题：Incipit tragoedia［悲剧的起源、开始］。这是何意呢？是否暗示着查拉图斯特拉“下山”是一",
+      "score": 0.552
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 2,
+      "chapter_title": "查拉图斯特拉之序言",
+      "citation_label": "【《尼采文集（合集）》·查拉图斯特拉之序言】",
+      "snippet": "一 (1) 查拉图斯特拉三十岁 (2) 时，离开了他的故乡和故乡的湖，遁入山林隐居起来。他在那里享受自己的精神和孤独，历经十年之久而乐此不疲。但终于，他的心灵发生了转变，——有一天早晨，他随着曙光一道起床，朝着太阳走去，他对太阳说道： “你，伟大的星球呵！倘若没有你所照耀的人们，你的幸福又会是什么啊！ 十年里，你在这里升起，照临我的洞穴：要是没有我，没有我的鹰和我的蛇，你就会厌倦于你的光明，厌倦于这样一条老路了。 而我们每个早晨都期待着",
+      "score": 0.546
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 31,
+      "chapter_title": "查拉图斯特拉　序白",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·查拉图斯特拉　序白】",
+      "snippet": "1 查拉图斯特拉三十岁时，离家到山上去隐居修道，他在那里安然无倦地度过了孤独的十年。但是，最后他觉悟了。一天清晨，天空微露红晕，他起身对太阳说道： “你这伟大的星球啊！假若没有被你所照耀的人们，你的幸福又从哪里来！ 十年来，你每日登临我的穴居之所，如若没有我、我的鹰与蛇，想你也许会厌倦自己的光明和行脚。 然而，每日清晨，我们等候着从你身上汲取盈溢的光明，为此我们馨香祷祝。 看啊：有如集蜜太多的蜂儿。我已厌倦自己的智慧，我需要领取这智慧的",
+      "score": 0.529
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 10,
+      "chapter_title": "《查拉图斯特拉如是说》：为所有人、不为某个人而写的书",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·《查拉图斯特拉如是说》：为所有人、不为某个人而写的书】",
+      "snippet": "一 现在我要告诉你们我的《查拉图斯特拉如是说》的故事。它的基本概念，即“永恒轮回”的观念，也就是人类所获得的最高肯定方式，是在1881年8月间形成的。我匆匆地把它写在一张纸上，并且附带了一句话：“高出于人类和时间六千英尺。”那一天，我正在西尔乌普拉纳湖边的林中漫步：在离苏莱不远一个巨大高耸而尖尖的岩石旁边，我站着不动。就在这个地方，我获得了这个观念。 如果我回想一下，在这一天的两个月以前，我可以发现一个前兆，那就是我在爱好方面有一个实在",
+      "score": 0.526
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 569,
+      "chapter_title": "查拉图斯特拉的序言：论超人和末人",
+      "citation_label": "【《西方百年学术经典著作》·查拉图斯特拉的序言：论超人和末人】",
+      "snippet": "彼时，查拉图斯特拉年三十，他离开自己的家以及附近的那汪湖泊，奔赴山林。他在那里体味着自己的精神，享受着自己的孤寂，十年不倦。然而最终，他的心智发生了变化。一日清晨，查拉图斯特拉与黎明一道起身，立在太阳前，并且如是说： “你这伟大的星体！如果你失却你所普照着的大众，你的欢欣愉悦将复何存！ “十年岁月，你日日光照我的洞穴：倘使不是我，不是我的苍鹰，不是我的岩蛇，你恐怕早已对自己亘古不变的光辉与轨迹产生厌倦了吧。 “然而我们在每一个清晨候着你",
+      "score": 0.517
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 5,
+      "chapter_title": "第三部",
+      "citation_label": "【《尼采文集（合集）》·第三部】",
+      "snippet": "45．漫游者 午夜时分，查拉图斯特拉取道岛上山脊，以便他能在清晨抵达另一边海滨：因为他想在那里上船。因为那里有一个良好的锚地，外来船只也喜欢在那里抛锚；这些船只带走许多想要渡海离开幸福岛的人们。当查拉图斯特拉如是登上山岭时，他在途中回想起 (1) 自己从青年时代开始的许多孤独漫游，以及他已经登上过的许多山脊和山峰。 我是一个漫游者和登山者，他对自己的心灵说，我不喜欢平原，而且看起来，我不能长久静坐。 而且，无论我还会遭遇什么命运，获得什",
+      "score": 0.516
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 29,
+      "chapter_title": "关于《查拉图斯特拉如是说》",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·关于《查拉图斯特拉如是说》】",
+      "snippet": "这是一部诗体散文，作者借用古代波斯拜火教始祖查拉图斯特拉之名，有意对抗基督教的圣业，模仿圣典的文体，以比喻和逸事描述查拉图斯特拉升华进入超人之域的过程，是一本独一无二的哲学思想结晶，副标题为“为所有人、不为某个人而写的书”，象征地表现出尼采最后的境地。这部作品虽然包括了尼采的一切，但查拉图斯特拉是作品的主人公，而非作者本人。 全书分为四卷。 卷一　序白从“查拉图斯特拉三十岁时，离家到山上去隐居修道，他在那里安然无倦地度过了孤独的十年”开",
+      "score": 0.514
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 44,
+      "chapter_title": "第四节 永恒轮回思想的思想家",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 永恒轮回思想的思想家】",
+      "snippet": "不过，反传统的、否定性的查拉图斯特拉还只是事情的一方面。尼采采用查拉图斯特拉形象的主要目的是让他来宣告“相同者的永恒轮回”学说。“查拉图斯特拉”这个名字总是与“相同者的永恒轮回”联系在一起的。如上所引，尼采首次在笔记本里使用“查拉图斯特拉”这个名字是在一则题为“正午与永恒”的笔记里（科利版第9卷11［195］），是与“永恒”问题相关的。而尼采首次公开使用“查拉图斯特拉”这个名字的《快乐的科学》第342节也是在同样性质的语境里，因为此前的",
+      "score": 0.514
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 594,
+      "chapter_title": "幻与谜",
+      "citation_label": "【《西方百年学术经典著作》·幻与谜】",
+      "snippet": "当船员们得知查拉图斯特拉也登上了船时——因为有一个从福佑之岛来的人和他一起登上了船——人们产生了巨大的好奇和期待。但是查拉图斯特拉沉默了两天，因为悲伤而冷漠木讷并且闭目塞听，因此他不对任何看望和问题做出反应。然而在第二天晚上，他重新打开了自己的耳朵，尽管他仍然保持沉默，因为有很多陌生而危险的东西在盯着这艘船，这船从远方来，将开往更远方。但查拉图斯特拉是那些远行的人的一个朋友，并且他讨厌生存在没有危险的环境中。瞧呀！在聆听中他自己的舌头最",
+      "score": 0.51
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 38,
+      "chapter_title": "作者前言",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·作者前言】",
+      "snippet": "对一切价值的重估 这本书是给极少数人读的，不过能读懂此书的人也许没有一个人今天还活着，也许他们是那些了解《查拉图斯特拉如是说》一书的读者，我怎么胡乱把自己误认为是那些今天还能有知音者中的人呢？只有将来才是属于我的，有些人恰恰是过早地出生了。 了解我是有些条件的，我非常清楚这些条件。在一个人能够忍受我的严肃和热情以前，他在精神方面必须诚恳得达到耿直的地步。一个人必须习惯于生活在高山上，俯视自己脚底下那些丑恶、短暂的政治上的空谈和国家民族的",
+      "score": 0.507
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 7,
+      "chapter_title": "科利版编后记",
+      "citation_label": "【《尼采文集（合集）》·科利版编后记】",
+      "snippet": "科利版编后记 (1) 在《查拉图斯特拉如是说》中，尼采看起来是与道德家和心理学家告别了。习惯于这种腔调的人，当他听到一位预言家和诗人的声音时，他就会大吃一惊，有如布克哈特当时所受的惊奇和惊恐。显然这里表现出一种断裂，还有，一位哲学家是必然要把自己隐藏于面具后面的（我们可以想一想柏拉图）——这种面具现在被主观发泄的暴力撕了下来。而尼采后来的著作则失去了这种激情洋溢以及先知般的气息——至少到他最后的抵抗 (2) 之前，情形就是这样。所以，我",
+      "score": 0.504
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 605,
+      "chapter_title": "康复之人",
+      "citation_label": "【《西方百年学术经典著作》·康复之人】",
+      "snippet": "一天早晨，回到他的洞穴还没有多久，查拉图斯特拉便像疯子一样从他的床上跳起来，以一种可怕的嗓音叫喊，表现得就像一个不愿意起床的人仍然赖在床上，查拉图斯特拉的嗓音四处回响，以至于很多动物恐惧地来到他身旁，而所有临近查拉图斯特拉的洞穴里，所有的动物都从巢穴和隐匿处悄悄溜走了——飞走，振翅，爬行，跳跃，每一个都恰恰根据自己的种类所被赋予的脚或者翅膀而逃走。然而，查拉图斯特拉说了这些话： “起来，深不可测的思想，从我的深处出来！我是你报晓的公鸡，",
+      "score": 0.5
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 580,
+      "chapter_title": "舞歌",
+      "citation_label": "【《西方百年学术经典著作》·舞歌】",
+      "snippet": "一天晚上，查拉图斯特拉和他的追随者们穿越森林。当他找寻一处水井时，瞧呀，他来到了一片青翠的草地，静静地被树林和草木环绕。在草地上，少女们彼此舞蹈。少女们一认出查拉图斯特拉就停止了舞蹈，但是查拉图斯特拉友好地走上前去，这么说道： “不要停止舞蹈，你们这些可爱的少女！我们并不是来煞风景的，并不是来给你们邪恶眼神的，我们并不是少女的敌人。 “在恶魔面前我是上帝的拥护者，然而，他是庄严的精神。你们这些轻盈可爱的人儿哟，我怎么会是绝妙舞蹈前的敌人",
+      "score": 0.494
+     }
+    ],
+    "query": "查拉图斯特拉 下山 太阳 序言",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "我教你们何谓超人 查拉图斯特拉"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 621,
+      "chapter_title": "更崇高的人",
+      "citation_label": "【《西方百年学术经典著作》·更崇高的人】",
+      "snippet": "当我第一次到人类中去的时候，我承认隐者的愚蠢，伟大的愚蠢。我站在市集中。而当我对所有人说话的时候我其实对谁都没有说话。然而，在晚上，走钢丝者是我的同伴，还有尸体，而我自己也几乎是个尸体。 但是伴随着新的早晨，一个新的真理来到了我这里。我学会了说：“我关心市集、暴民、暴民的喧嚣和暴民的耳朵关心些什么呢！” 你们这些更崇高的人，从我这里学习到：在市集里，没人相信更崇高的人。而如果你想要在这里发言，那么好吧！但是暴民眨着眼睛：“我们所有人都是",
+      "score": 0.56
+     },
+     {
+      "book_id": "327e5a1db152",
+      "book_title": "50堂经典哲学思维课",
+      "author": "郁喆隽",
+      "chapter_idx": 33,
+      "chapter_title": "33 尼采《查拉图斯特拉如是说》 成为“超人”意味着什么？",
+      "citation_label": "【《50堂经典哲学思维课》·33 尼采《查拉图斯特拉如是说》 成为“超人”意味着什么？】",
+      "snippet": "阅读挑战 尼采 高人啊，不要妄图说服这些民众，我要对你们说：“远离市场吧！那里没有人会相信你们，你尽管自顾自地说话吧，说得再完美也不会有人领悟道理的一分，民众们相互眨着眼，只会说：‘我们不都一样吗（We are all equal）？哪会有什么高人啊，上帝面前我们都一样！可现在上帝已死。相等？我们还不愿与你们这些所谓的高人混为一谈呢！离开市场吧，你们这些高人！’”\r\r ——尼采《查拉图斯特拉如是说》 引言 + “超人”（superman",
+      "score": 0.552
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 30,
+      "chapter_title": "查拉图斯特拉是如何产生的",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·查拉图斯特拉是如何产生的】",
+      "snippet": "《查拉图斯特拉如是说》一书是我哥哥最具代表性的作品，是他个人体验生命的心路历程史：包括他的友情、理想、愤慨、痛苦与失望等，尤其是他对毕生自期的至高希望和目标的憧憬，更在此达到庄严的升华。当我哥哥还是在少年时，查拉图斯特拉的影像便已在他心中生根。 有一回他还告诉我关于梦到查拉图斯特拉的事，在一生的各个阶段，他都以不同的名称来称呼这个梦魇。“但是，”在一本笔记上他写道，“最后我不得不以一个波斯人的身份来参与我的梦想。波斯人曾是最早对历史有广",
+      "score": 0.523
+     },
+     {
+      "book_id": "a325bbdc496e",
+      "book_title": "哲学100问（套装共3册）",
+      "author": "书杰",
+      "chapter_idx": 29,
+      "chapter_title": "11 尼采：凡杀不死我的，都使我强大",
+      "citation_label": "【《哲学100问（套装共3册）》·11 尼采：凡杀不死我的，都使我强大】",
+      "snippet": " 尼采： 凡杀不死我的，都使我强大 凡杀不死我的，都使我强大！ 这铿锵有力的话语，体现出了“超人”精神。在尼采看来，“超人哲学”是符合人类本性发展的健全的价值观。 超人哲学 在《查拉图斯特拉如是说》中，尼采借查拉图斯特拉之口呼唤“超人”的出现。超人，是一个理想、一种向往，也是对现实人类的超越。 尼采的“超人”，并不是指无所不能的、具有超凡能力的人，而是一种具有强力意志、超越普通人、在“人之上”的人，它是理想化的人格类型。“超人”并不是指",
+      "score": 0.508
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 29,
+      "chapter_title": "关于《查拉图斯特拉如是说》",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·关于《查拉图斯特拉如是说》】",
+      "snippet": "这是一部诗体散文，作者借用古代波斯拜火教始祖查拉图斯特拉之名，有意对抗基督教的圣业，模仿圣典的文体，以比喻和逸事描述查拉图斯特拉升华进入超人之域的过程，是一本独一无二的哲学思想结晶，副标题为“为所有人、不为某个人而写的书”，象征地表现出尼采最后的境地。这部作品虽然包括了尼采的一切，但查拉图斯特拉是作品的主人公，而非作者本人。 全书分为四卷。 卷一　序白从“查拉图斯特拉三十岁时，离家到山上去隐居修道，他在那里安然无倦地度过了孤独的十年”开",
+      "score": 0.494
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 580,
+      "chapter_title": "舞歌",
+      "citation_label": "【《西方百年学术经典著作》·舞歌】",
+      "snippet": "一天晚上，查拉图斯特拉和他的追随者们穿越森林。当他找寻一处水井时，瞧呀，他来到了一片青翠的草地，静静地被树林和草木环绕。在草地上，少女们彼此舞蹈。少女们一认出查拉图斯特拉就停止了舞蹈，但是查拉图斯特拉友好地走上前去，这么说道： “不要停止舞蹈，你们这些可爱的少女！我们并不是来煞风景的，并不是来给你们邪恶眼神的，我们并不是少女的敌人。 “在恶魔面前我是上帝的拥护者，然而，他是庄严的精神。你们这些轻盈可爱的人儿哟，我怎么会是绝妙舞蹈前的敌人",
+      "score": 0.475
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 605,
+      "chapter_title": "康复之人",
+      "citation_label": "【《西方百年学术经典著作》·康复之人】",
+      "snippet": "一天早晨，回到他的洞穴还没有多久，查拉图斯特拉便像疯子一样从他的床上跳起来，以一种可怕的嗓音叫喊，表现得就像一个不愿意起床的人仍然赖在床上，查拉图斯特拉的嗓音四处回响，以至于很多动物恐惧地来到他身旁，而所有临近查拉图斯特拉的洞穴里，所有的动物都从巢穴和隐匿处悄悄溜走了——飞走，振翅，爬行，跳跃，每一个都恰恰根据自己的种类所被赋予的脚或者翅膀而逃走。然而，查拉图斯特拉说了这些话： “起来，深不可测的思想，从我的深处出来！我是你报晓的公鸡，",
+      "score": 0.474
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 599,
+      "chapter_title": "擦肩而过",
+      "citation_label": "【《西方百年学术经典著作》·擦肩而过】",
+      "snippet": "就这样继续在很多人群和各式城镇中缓缓穿行，查拉图斯特拉路线迂回重返到他的山峰和洞穴。瞧呀，他因此不知不觉直到来到伟大城市的门前。然而，在这儿，一个吐着泡沫的傻瓜朝他跑上来，伸开手掌并且挡在他的路上。这便是人们称为“查拉图斯特拉的猿猴”的那同一个傻瓜，因为通过观察，他已经学会了一些查拉图斯特拉演说中的修辞和韵律，并且已经准备悄悄地从他智慧的宝库中借走些东西。这傻瓜对查拉图斯特拉如是说： “噢，查拉图斯特拉，这儿是伟大的城市，在这里你找不到",
+      "score": 0.47
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 38,
+      "chapter_title": "作者前言",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·作者前言】",
+      "snippet": "对一切价值的重估 这本书是给极少数人读的，不过能读懂此书的人也许没有一个人今天还活着，也许他们是那些了解《查拉图斯特拉如是说》一书的读者，我怎么胡乱把自己误认为是那些今天还能有知音者中的人呢？只有将来才是属于我的，有些人恰恰是过早地出生了。 了解我是有些条件的，我非常清楚这些条件。在一个人能够忍受我的严肃和热情以前，他在精神方面必须诚恳得达到耿直的地步。一个人必须习惯于生活在高山上，俯视自己脚底下那些丑恶、短暂的政治上的空谈和国家民族的",
+      "score": 0.469
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 588,
+      "chapter_title": "伟大事迹",
+      "citation_label": "【《西方百年学术经典著作》·伟大事迹】",
+      "snippet": "海上有一座岛——和查拉图斯特拉的欢乐岛离得并不远——在岛上经常有火山喷出烟雾；人们说，尤其是人们中老老少少的小女人们说，它就像一个摆放在通往底层世界（under world）之门前的一个大卵石，并且向下穿越火山就能引导人们前往通向底层世界的大门。 现在差不多是时候了，查拉图斯特拉在福佑之岛上休息，碰巧有一艘船在火山耸立的地方抛锚，而船员们都上岸猎捕野兔。然而快到晌午的时候，当船长和他的船员们再次聚在一起，他们突然看见一个人穿过空气向他们",
+      "score": 0.454
+     },
+     {
+      "book_id": "48f7bf321598",
+      "book_title": "快乐的科学",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 2,
+      "chapter_title": "三、《查拉图斯特拉如是说》可能是尼采著作中最有名",
+      "citation_label": "【《快乐的科学》·三、《查拉图斯特拉如是说》可能是尼采著作中最有名】",
+      "snippet": "的一本，更可以说是尼采著作中最可读、也最不好懂的一本一此书副标题就叫“一本为所有人而又不为任何人的书”。此书一开头就提出了骇人听闻的判词“上帝死了”，尼采成熟时期关于“超人”、“权力意志”和“永恒轮回”的核心思想，均在其中得到了传达。又因为此书以文艺手法写成，诗意然，是好读不好懂的典范。《查拉图斯特拉如是说》一卷有40万汉字。",
+      "score": 0.453
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 626,
+      "chapter_title": "愚人的盛宴",
+      "citation_label": "【《西方百年学术经典著作》·愚人的盛宴】",
+      "snippet": "冗长的颂文念到这里，查拉图斯特拉再也忍不住了，他尖声叫喊，“耶—嚯”一声跳到疯狂的客人中间。“那你们在这里是干什么，亲爱的伙计？”他大声地喊着，拉起跪在地上祷告的那些人。 “唉，如果有除查拉图斯特拉以外其他的人看着你们，人人都会评判你们的为人，有了新的信仰的你们，是最恶劣的渎神者，是最愚蠢的小老太太！而你，年老的教皇啊，在这里用跪拜的方式将一头驴当作上帝来信仰，这种行为又该怎样评价？” “噢，查拉图斯特拉，”教皇回答道，“原谅我，但是在",
+      "score": 0.452
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 525,
+      "chapter_title": "锤子说话",
+      "citation_label": "【《尼采文集（合集）》·锤子说话】",
+      "snippet": "查拉图斯特拉如是说3:90 “为何如此坚硬！——有一次厨房用煤对钻石说：难道我们不是近亲？” 为何如此软弱？哦，我的兄弟，我如是问你们：难道你们不是——我的兄弟？ 为何如此软弱，如此退让和顺从？你们的心中为何有这么多的否定和拒绝？你们的目光中只有这么少的命运？ 倘若你们不愿成为命运和无情：你们将来如何能同我一起——取胜？ 倘若你们的硬度不足以闪光、割断和剪切：你们将来如何能同我一起——创造？ 所有创造者都是坚硬的。你们必须以为那是极乐，",
+      "score": 0.446
+     },
+     {
+      "book_id": "d1986c75d6b2",
+      "book_title": "偶像的黄昏",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 15,
+      "chapter_title": "锤子说话",
+      "citation_label": "【《偶像的黄昏》·锤子说话】",
+      "snippet": "查拉图斯特拉如是说3:90 “为何如此坚硬！——有一次厨房用煤对钻石说：难道我们不是近亲？” 为何如此软弱？哦，我的兄弟，我如是问你们：难道你们不是——我的兄弟？ 为何如此软弱，如此退让和顺从？你们的心中为何有这么多的否定和拒绝？你们的目光中只有这么少的命运？ 倘若你们不愿成为命运和无情：你们将来如何能同我一起——取胜？ 倘若你们的硬度不足以闪光、割断和剪切：你们将来如何能同我一起——创造？ 所有创造者都是坚硬的。你们必须以为那是极乐，",
+      "score": 0.446
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 593,
+      "chapter_title": "漫游者",
+      "citation_label": "【《西方百年学术经典著作》·漫游者】",
+      "snippet": "当你们渴望飞升时你们就要仰视。而我是俯视着的，因为我已经飞升。 你们之中谁能在笑的同时得道飞升呢？ 爬上最高山峰的人便会嘲笑所有悲剧的游戏和悲剧的真实。 ——《查拉图斯特拉》第一卷《读和写》 差不多是午夜时分，当查拉图斯特拉取道这岛上的山脊，想要在清晨到达对面的海岸时，因为他想要从那儿着手。有一个很不错的抛锚点，你知道的，甚至是外来的船只都喜欢在那儿抛锚，他们载着很多从福佑之岛而来想要穿越海洋的人。所以查拉图斯特拉现在正翻着山，他在路上",
+      "score": 0.443
+     }
+    ],
+    "query": "我教你们何谓超人 查拉图斯特拉",
+    "method": "vector"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 5
+}

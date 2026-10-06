@@ -1,0 +1,826 @@
+{
+ "case_id": "G03",
+ "category": "G",
+ "prompt": "一条规定是多数人投票同意的，所以它必然公正吗？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "dc44bd9ff7b41717660216c65b78673e4dc4b80b",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T12:03:28+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.4",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "一条规定是多数人投票同意的，所以它必然公正吗？",
+   "wall_s": 37.1,
+   "ttft_s": 10.5,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "753bb9ca133f49a08189379af7ef0579:1:note:0",
+     "content": "这是一个值得拆开来看的问题。让我先确认几处原典表述，再回答。"
+    }
+   ],
+   "provider_reasoning": "The user asks a philosophy question: \"一条规定是多数人投票同意的，所以它必然公正吗？\" (A rule is agreed by majority vote, so is it necessarily just?)\n\nThis is a conceptual question. I should answer directly with philosophical depth. The question contains \"必然\" (necessarily) — I should note that \"必然\" is too strong; the answer is no, majority consent doesn't guarantee justice. But I should be careful and nuanced.\n\nLet me think about whether to use tools. The user didn't forbid tools. This is a classic question about majority rule vs justice — Rousseau's general will, social contract, Mill's tyranny of the majority, Tocqueville, Rawls, etc. I could search the local library for original texts to support.\n\nLet me think about the structure of the answer. The key distinction: procedural legitimacy vs substantive justice. Majority voting is a decision procedure; justice is a substantive property. There's no entailment.\n\nKey points:\n1. Clarify the terms. \"多数人投票同意\" — the premise. \"必然公正\" — a necessity claim. The answer: no, not necessarily. Two separate concepts: legitimacy/authority vs justice.\n\n2. Why not necessarily:\n- Majority could vote for something that violates the rights of the minority (tyranny of the majority — Mill, Tocqueville).\n- The voting procedure itself might be flawed: who counts as \"the majority\"? Who is included/excluded from the franchise? The boundary problem (who is the demos?). If the majority excludes slaves, women, non-citizens, the vote can be \"majority agreed\" yet unjust.\n- Majority preference is not the same as truth or right — matters of fact/justice aren't determined by counting heads.\n- Even unanimous consent may not make something just (a mob unanimously agreeing to kill someone).\n\n3. But there's another side: In what sense does majority consent contribute to legitimacy? Rousseau's general will — the social contract gives authority. Consent confers legitimacy (right to be enforced) which is distinct from justice. Also, democratic procedures have epistemic value (Condorcet jury theorem — under certain conditions, majority is more likely to be right). Also procedural fairness: being able to participate is itself a matter of respect/justice.\n\n4. The relationship: consent can be a necessary condition for legitimacy in some views but not sufficient for justice. Or consent is one relevant consideration but not decisive.\n\nI should distinguish:\n- 正当性/合法性 (legitimacy/authority) vs 公正/正义 (justice).\n- 程序正义 vs 实质正义.\n\nLet me think about whether to use tools. The instructions say to use materials to test contentions. The user asks a philosophical question without asking to search. But I could ground with original texts. Given the task guidance, I think it's good to search the local library for relevant texts to support — e.g., Mill's On Liberty (tyranny of the majority), Rousseau's Social Contract (general will), maybe Tocqueville. Also Mill's \"On Liberty\" and \"Representative Government\" where he discusses tyranny of the majority.\n\nActually, per the system prompt, I'm encouraged to use tools but not to show off. Let me do a focused search for primary texts to cite properly, since the answer benefits from grounding. Let me search for \"多数人的暴政\" or \"tyranny of the majority\" and Rousseau's general will.\n\nLet me do parallel searches.\n\nActually, let me think about whether this is worth it. The question is conceptual and I can answer well without tools. But citing original texts adds value. Let me search the local library for Mill and Rousseau.\n\nLet me do a few searches in parallel:\n- search_books query \"多数人的暴政\" \n- search_books query \"公意\" (general will) author 卢梭\n- search_books query \"多数\" author 密尔\n\nLet me try. Actually the library is Chinese translations likely.\n\nLet me make the calls.\n\nI'll do this. Let me be careful about the answer quality.\n\nLet me search.\n\nI'll issue parallel tool calls.\n\nThen compose the answer.\n\nLet me think about what the best answer looks like. The user asks a yes/no-ish question with \"必然\". The answer: No, majority consent does not necessarily entail justice. But I should give the strongest reasoning on both sides and explain the relationship.\n\nKey conceptual work:\n1. The question conflates two different things: what makes a rule have authority (合法性/正当性), and what makes a rule just (公正). Consent → legitimacy (at most), not justice.\n\n2. Reasons majority consent ≠ justice:\n   a. The domain/franchise problem: \"多数人\" is itself defined by rules. Who is included? Majorities formed by excluding those affected can be unjust.\n   b. Tyranny of the majority: settled preferences can violate rights/entrenched interests of minorities.\n   c. Voting aggregates preferences, not truth. For questions of justice (which have a normative \"correct\" answer independent of preference, or at least independent of head-counting), the number of voters is irrelevant to whether the answer is correct — unless you hold a proceduralist/pure-procedural theory of justice (Rawls distinguishes pure procedural justice from perfect/imperfect).\n   d. Even unanimity doesn't create justice (a community unanimously agreeing to enslave a captured outsider).\n   e. The vote could be on a loaded question / with manipulated information.\n\n3. Reasons to grant consent some weight:\n   a. Consent confers legitimacy: Rousseau — legitimate authority rests on convention/consent; the general will.\n   b. Democracy has instrumental/epistemic value (Condorcet) — under conditions (competence, independence, sincerity), majority more likely correct.\n   c. Participation itself is a demand of justice/respect (Habermas's discourse principle — norms valid if they could meet with the assent of all affected in rational discourse). Note the shift: not actual majority, but hypothetical reasoned agreement of all affected.\n   d. Procedural justice: fair procedures can make outcomes just in the \"pure procedural\" sense (Rawls on pure procedural justice — like fair gambling).\n\n4. The resolution: The affirmative claim (\"必然公正\") fails because there's no entailment. But the negation (\"多数同意与公正无关\") also overcorrects. The right view: consent is neither sufficient nor irrelevant. Its weight depends on background conditions: whether the franchise includes all affected, whether the deliberation is informed and free, whether the outcome respects rights.\n\n5. A sharper formulation: \"多数同意\" can give prudential reason to comply (legitimacy/pragmatic), and can be evidence of justice (epistemic), and can be partly constitutive of justice (procedural/participatory), but none of these amounts to \"必然公正.\"\n\nI want to add the logical point about \"必然\": To establish \"必然公正\" you'd need the entailment \"majority consent → just.\" A single counterexample (a majority voting to strip a minority's basic rights) refutes the necessity. So the burden. But be careful: a proceduralist could deny the counterexample counts because they define justice procedurally. So the disagreement is partly about what \"公正\" means. If \"公正\" = \"produced by the agreed procedure,\" then it's trivially \"just\" — but that empties \"just\" of independent content and can't answer the question \"is this procedure itself just?\" This is a key move: define justice procedurally and the claim becomes trivial/vacuous; define it substantively and the claim is false. Either way, the interesting thesis (\"majority vote guarantees genuine justice\") fails.\n\nThis is a strong analytical structure. Let me capture it: the question is ambiguous between procedural and substantive justice.\n- Substantive: majority consent doesn't guarantee it → false.\n- Pure procedural: it's true but trivial, and can't ground criticism of the procedure itself.\n\nLet me search for supporting texts.\n\nLet me now actually call the tools.\n\nI'll search for Mill on tyranny of the majority, Rousseau general will, and maybe Rawls procedural justice.\n\nLet me do it.I have good material. Let me look at the Rousseau passages on general will vs will of all, and the Mill \"On Liberty\" introduction on tyranny of the majority. Let me also read the Rawls section on quasi-pure procedural justice which is directly relevant (majority decisions authoritative but not decisive).\n\nLet me read:\n1. Rousseau's Social Contract — the distinction between 公意 (general will) and 众意 (will of all), and voting. Let me find the chapter. Book on the general will — Book 2 Chapter 3 \"论公意是否可能错误\" and Book 4 Chapter 2 \"论投票\".\n2. Mill On Liberty Chapter 1 introduction on tyranny of majority.\n3. Rawls Chapter 6 on quasi-pure procedural justice.\n\nLet me get details.\n\nActually, let me be efficient. Let me read the Rousseau relevant chapter on voting, Mill's chapter 1, and Rawls chapter 6.\n\nLet me look at the Social Contract table of contents to find \"论投票\".\n\nLet me call get_book_detail for Social Contract with focus 投票, and read Mill chapter 1, and Rawls chapter 6.Now let me read Rousseau's chapter on voting (chapter index 41) and the general will vs will of all (Book 2). Let me get the Social Contract chapter 41 \"论投票\".\n\nAlso I want the passage in Book 2 where Rousseau says voting doesn't prove the general will, and \"公意\" vs \"众意\". Let me look at the table more. Let me just read chapter 41.\n\nAlso let me find the Rousseau passage about \"公意\" being in each citizen. Actually the key Rousseau point: the general will is not just the sum of particular wills (众意); and majority vote is a way to discover the general will, but the general will can err. Let me read chapter 41.\n\nAlso Book 4 Chapter 1 \"论公意是不可摧毁的\". And Book 2 Chapter 3 \"论公意是否会出错\". Let me get the table of contents.\n\nLet me call get_book_detail with a broader limit.I have Rousseau's voting chapter. Now let me read chapter 12 \"公意是否可能错误\" (Book 2 Chapter 3) which is directly on point — the general will can err, and the distinction between 公意 and 众意.\n\nLet me read chapter 12.I now have excellent material. Let me compose the answer.\n\nKey sources:\n1. Rousseau, 《社会契约论》第二卷第三章「公意是否可能错误」: 公意永远是公正的... 但是并不能由此推论说，人民的考虑也永远有着同样的正确性。人们总是愿意自己幸福，但人们并不总是能看清楚幸福... 众意与公意之间经常总是有很大的差别... 公意只着眼于公共的利益，而众意则着眼于私人的利益，众意只是个别意志的总和。\n2. Rousseau, 《社会契约论》第四卷第二章「论投票」: 与我相反的意见若是占了上风，那并不证明别的，只是证明我错了... 然而这要假定公意的一切特征仍然存在于多数之中；假如它在这里面也不存在的话，那末无论你赞成哪一边，总归是不再有自由可言的。\n3. Mill, 《论自由》第一章: 「多数的暴虐」... 所谓人民意志，实际上只是最多的或者最活跃的一部分人民的意志... 人民会要压迫其自己数目中的一部分。\n4. Rawls, 《正义论》: 多数裁决规则... 大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。\n\nNow compose the answer. The answer should be a thoughtful philosophical response.\n\nStructure:\n- Direct answer: No — \"多数投票同意\" does not necessarily (必然) entail \"公正\". But the interesting part is sorting out why, and how much weight consent does have.\n- First separate two things the question fuses: legitimacy/authority (正当性/合法性) and justice (公正). \n- Then give the \"necessary\" claim's status: it needs entailment; a single counterexample under realistic conditions kills it. But actually the deeper issue is the ambiguity of \"公正\".\n\nLet me lay out:\n\n1. 先把两个概念分开：合法（有权威/正当性）vs 公正（正义）。\n   - Consent gives at most legitimacy/authority — a reason to comply / that the rule is authoritative.\n   - Justice is a substantive property of the content.\n   - Rawls's 准纯粹程序正义: majority decision is authoritative but not decisive. This precisely captures: authority ≠ justice.\n\n2. Even Rousseau, the great theorist of the general will, insists: 公意永远是公正的，但这不意味着人民的考虑总是正确的。The general will (公意) is not the sum of particular wills (众意). A majority vote can produce 众意 rather than 公意. So the vote is a fallible procedure for discovering the general will, not guaranteed to be it.\n   - Also Rousseau: \"与我相反的意见若是占了上风... 只是证明我错了\" — but he adds the crucial conditional: this only holds if the general will's characteristics still exist in the majority. If not, \"总归是不再有自由可言的\" — no freedom. So Rousseau himself denies that bare majority = right.\n\n3. Why the entailment fails:\n   (a) 谁来投票（franchise/边界问题）: \"多数\" itself is defined by rules that decide who is included. Majorities formed by excluding those affected (slaves, women, non-citizens) — the oldest counterexample. The rule \"slaves are property\" won by majority vote in many societies. This isn't a fringe case; historically the norm.\n   (b) 多数人的暴政 (Mill): even with a broad franchise, the majority can oppress a minority; \"人民意志\" is really the will of the most numerous or most active part. Consent of the many doesn't make the oppression of the few just.\n   (c) 表决的是偏好，不是真理: counting heads doesn't determine correctness of a normative answer. But careful — this assumes a \"correct answer\" picture. Some theories are purely procedural. Address this.\n   (d) 一致同意也不足: unanimous consent of a community to enslave a captured outsider — plausibly unjust despite (in-group) unanimity. Shows consent ≠ justice.\n   (e) 程序本身可能被操纵: loaded questions, manipulated information, coercion.\n\n4. The other horn — the proceduralist move. If you DEFINE 公正 as \"whatever the agreed procedure produces\" (pure procedural justice), then trivially yes: by definition it's just. But then:\n   - it's a tautology, carrying no independent content;\n   - and it can't answer the question \"是这个程序本身公正吗？\" — you've defined away the very question. \n   - Rawls's own theory distinguishes pure procedural justice (fair betting) from cases where outcomes need independent assessment. \n   So: define justice procedurally → claim is trivially true but vacuous; define it substantively → claim is false. Either way the interesting thesis (majority vote guarantees genuine justice) fails.\n\n5. What is true / the balanced position: consent is not irrelevant. Three roles it can play:\n   - Legitimacy: confers authority / reason to comply (even Rawls: authoritative though not decisive).\n   - Epistemic: under good conditions (Condorcet, free and informed discussion — Rousseau's own \"充分了解情况并进行讨论\"), majority is evidence of correctness. Not proof, evidence.\n   - Constitutive/participatory: being able to participate is itself a demand of justice/respect; procedures can partly constitute justice.\n   - But all three fall short of \"必然公正.\"\n\n6. Sharper formulation: the sense in which a majority rule can be \"necessarily\" just is only relative to a prior, agreed, and itself just constitution/procedure — i.e., conditional. Rousseau: 多数表决的规则本身是一种约定，且假定至少有过一次全体一致的同意 (Book 1 Ch 5). So the majority's authority is derived from a prior unanimity about the rule. That unanimity (the social contract) is where legitimacy is anchored, not in the head-count itself. Even then, that gives authority/library, not justice of every content.\n\nLet me quote Rousseau from Book 1 Ch 5 note: \"多数表决的规则，其本身就是一种约定的确立，并且假定至少是有过一次全体一致的同意。\" This is from the footnote in the voting chapter. Good.\n\n7. So the final answer: \n   - 逻辑上：不必然。前提不蕴含结论。\n   - 但也不是\"无关\"——同意提供正当性、证据与程序价值，只是这些都不等于内容的公正。\n   - 关键区分：把\"公正\"理解为程序产物 → 命题琐屑地真；理解为独立于程序的内容性质 → 命题假。真正要问的不是\"多数同意是否必然公正\"，而是\"多数决定在什么条件下值得服从，以及多数本身是否包含了所有受影响者、讨论是否自由充分\"。\n\nLet me also add: 逻辑要点 — \"必然\"需要一个蕴含关系，而一个反例就够。But since 公正 is ambiguous, I address it via the two-horn structure rather than a single counterexample, which is more careful. I can mention both: substantive reading — a single plausible counterexample suffices; procedural reading — trivially true/vacuous.\n\nI should also be careful not to overclaim what Mill/Rousseau \"really meant\" — I have their texts. Good.\n\nOne more nuance: the question says \"多数人投票同意的\". Note the difference between \"consent\" broadly and \"majority vote\". Majority vote is a specific decision rule; it's possible for something to be unanimously consented yet unjust (the in-group enslaving outsiders example), and possible for a majority vote to be just. So consent and majority rule are different things; the question bundles them.\n\nLet me write a clean, structured but not bureaucratic answer. Moderate length, well-organized. Chinese.\n\nI'll include citations with chapter labels. Use the verified quotes.\n\nLet me draft.\n\n---\n\n开头：直接回答：不必然。而且这个问题里藏着两个需要分开的东西。\n\n然后分几块。\n\nLet me write it.\n\nI want to make sure quotes are accurate:\n- Rousseau 卷二第三章: \"公意永远是公正的，而且永远以公共利益为依归；但是并不能由此推论说，人民的考虑也永远有着同样的正确性。\" ✓ (translation reads \"由以上所述，可见公意永远是公正的...\") ✓\n- \"众意与公意之间经常总是有很大的差别；公意只着眼于公共的利益，而众意则着眼于私人的利益，众意只是个别意志的总和。\" ✓\n- Rousseau 卷四第二章: \"与我相反的意见若是占了上风，那并不证明别的，只是证明我错了，只是证明我所估计是公意的并不是公意。\" ✓ and \"这要假定公意的一切特征仍然存在于多数之中；假如它在这里面也不存在的话，那末无论你赞成哪一边，总归是不再有自由可言的。\" ✓\n- Rousseau 卷四第二章 also about 全体一致 under tyranny: \"当公民全都沦于奴役状态... 恐怖和欺骗把投票变成了一片喧嚣\" — actually \"恐怖和阿谀把投票变成了一片喧嚣；人们不再讨论了\". Maybe cite the point that unanimity can accompany servitude. Good to note: 全体一致本身也可能出现在奴役状态下，所以一致/多数本身证明不了什么。\n- Mill 《论自由》第一章: \"所谓人民意志，实际上只是最多的或者最活跃的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的人们的意志\" ✓ and \"人民会要压迫其自己数目中的一部分\" ✓ ; \"多数的暴虐\" ✓\n- Rawls: \"大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。\" ✓\n\nGood. Now write.\n\nI'll keep it focused, maybe 700-1000 字. Let me write with clear structure.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "公意 众意 主权者",
+      "author": "卢梭",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.022,
+     "result_full": "{\"query\": \"公意 众意 主权者\", \"results\": [{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 7, \"chapter_title\": \"第七章 论主权者\", \"citation_label\": \"【《社会契约论》·第七章 论主权者】\", \"snippet\": \"四种意志，即个别意志（volonteparticuliere）、团体（共同体）意志（volonte de corps）、众意（volonte de tous）和公意（volonté genérale)，可参看本书，第1卷，第6章；第2卷，第1、章；第3卷，第15章。一一译注②“绝对”指自然状态中的自由。一一译注③《日内瓦手稿》此处作：“因而，为了使社会公约不至于成为一纸空文，就必须使主权者在每个人的同意而外，还得具有他们对公共事业效忠的某些保证。这些保证的第一步，通常就是宣暂。然而由于它是从全然不同的另一种秩序中得出来的，并且每个人又可以按照自己内心的准则随心所欲地修改自己所负担的义务；所以人们在政治体制中就很少依赖于这一点，面是更\", \"score\": 210, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"fa175af7701a\", \"chapter_idx\": 7, \"focus\": \"公意 众意 主权者\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"citation_label\": \"【《社会契约论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"citation_label\": \"【《爱弥儿》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9e4f98733f0b\", \"book_title\": \"论人类不平等的起源和基础\", \"author\": \"让-雅克·卢梭\", \"citation_label\": \"【《论人类不平等的起源和基础》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"3d5eb5b4b6d3\", \"book_title\": \"忏悔录\", \"author\": \"让-雅克·卢梭\", \"citation_label\": \"【《忏悔录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 88}, \"search_scope\": {\"author\": \"卢梭\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "投票 多数 决定 公正",
+      "author": "密尔",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.028,
+     "result_full": "{\"query\": \"投票 多数 决定 公正\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 论思想自由和讨论自由\", \"citation_label\": \"【《论自由》·第二章 论思想自由和讨论自由】\", \"snippet\": \"除对所有者本人而外便别无价值的个人所有物，如果在对它的享用上有所阻碍仅仅是一种对私人的损害，那么若问这损害所及是少数还是多数，就还有些区别。但是迫使一个意见不能发表的特殊罪恶乃在它是对整个人类的掠夺，对后代和对现存的一代都是一样，对不同意于那个意见的人比对抱持那个意见的人甚至更甚。假如那意见是对的，那么他们是被剥夺了以错误换真理的机会；假如那意见是错的，那么他们是失掉了一个差不多同样大的利益，那就是从真理与错误冲突中产生出来的对于真理的更加清楚的认识和更加生动的印象。 有必要对上述两条假设分别作一番考虑，每条在与之相应的论据上自有其各别的一枝。这里的论点有两个：我们永远不能确信我们所力图窒闭的意见是一个谬误的意见；假如我们确信，要窒\", \"score\": 136, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 2, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 3, \"chapter_title\": \"第三章 论个性为人类福祉的因素之一\", \"citation_label\": \"【《论自由》·第三章 论个性为人类福祉的因素之一】\", \"snippet\": \"呈现特别的困难，但是为患之处就在，一般的想法却很少见到个人自动性这个东西具有什么内在价值，值得为其自身之故而予以注意。大多数的人既满足于人类现有的那些办法（因为正是这大多数人把它们做成现在那样），便不能领会为什么那些办法对每人说来还不够好；更甚的是，在多数道德改革家和社会改革家的心目中，自动性并不成为他们理想的一部分，反倒在嫉恨的眼光之下被看作一种麻烦的或者还是叛逆性的障碍物，妨碍着对于他们自己所断为对人类最好的办法的普通接受。甚至对于象罕波尔特（Wilhelm Von Humboldt）这样一位杰出的学者兼政治家作为一篇论文主题来讲的一个教义，也只有很少数出自德国的人领会到它的意义——那大旨是说：“人的目的，或说由永恒不易的理性诏\", \"score\": 134, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 3, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 5, \"chapter_title\": \"第五章 论正义与功利的联系\", \"citation_label\": \"【《功利主义》·第五章 论正义与功利的联系】\", \"snippet\": \"大障碍之一，向来都是“正义”这一观念。“正义”一词会像一种本能那样，快速而确定地激发出强烈的情感和明显清晰的感知，而在大多数思想家看来，这种情感和感知都指向了事物的一种固有性质，表明正义必定是作为一种在属类上不同于各种利益的绝对之物而存在于大自然中；尽管（人们普遍公认）从长远来看，正义事实上从来没有脱离过利益，但在观念上却是与利益相对立的。 在这种情况下，正义就像我们面对的其他道德情感一样，它的起源和约束力之间并没有什么必然的联系。大自然赋予我们一种情感，并不一定说明这种情感激发出来的所有冲动都是正当合理的。正义感可能属于一种独特的本能，但它或许就像我们的其他本能一样，终归需要一种高级理性来加以约束和指导才行。假如我们既拥有思维本能\", \"score\": 134, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 5, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 4, \"chapter_title\": \"第四章 论社会驾于个人的权威的限度\", \"citation_label\": \"【《论自由》·第四章 论社会驾于个人的权威的限度】\", \"snippet\": \"得愈益增多的运用，使其情感和志趣愈益指向聪明的而非愚蠢的、升高的而非堕落的目标和计划。但是，不论是一个人也好，或者是任何多数人也好，都无权对另一个成年人说，为了他自己的益处他不可用其一生去做某件他所选定要用其一生去做的事。对于一个人的福祉，本人是关切最深的人；除在一些私人联系很强的情事上外，任何他人对于他的福祉所怀有的关切，和他自己所怀有的关切比较起来，都是微薄而肤浅的。社会对于作为个人的他所怀有的关切（除开对于他对他人的行为而外）总是部分的，并且完全是间接的；而本人关于自己的情感和情况，则虽最普通的男人或妇女也自有其认识方法，比任何他人所能有的不知胜过多少倍。 社会在个人只关己身的事情上要强使他一反其自己的判断和目的，这种干涉只能\", \"score\": 133, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 4, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 5, \"chapter_title\": \"第五章 本文教义的应用\", \"citation_label\": \"【《论自由》·第五章 本文教义的应用】\", \"snippet\": \"，若说有错，只是因为它们并没有真正产生有待它们产生的结果。既然个人自由的原则并无涉于自由贸易的教义，所以这原则也无涉于大多数有关那个教义的限制的问题：例如要防止借掺杂办法进行欺诈的行为可以允许公众有多少控制，又如工厂中的卫生预防措施或危险作业工人的保护办法可以强使厂主实行到什么程度等问题。这类问题若说是涉及自由问题，那也只能说到，在其他条件相等的情况下，听凭人们自己去总比对他们加以控制好一些。至于为着那些目的而要对人们有所控制，这在原则上谁也不能否认其为合法。另一方面，也有一些干涉贸易的问题在本质上就是自由问题，象上文刚刚提到的梅恩省禁酒法，象禁止对中国输入鸦片，象禁止出售毒药，总之，凡目标在于使人们不可能得到或难于得到某一货物的干\", \"score\": 131, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 5, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}], \"catalogue_matches\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"bece6ea379fa\", \"book_title\": \"妇女的屈从地位\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《妇女的屈从地位》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《功利主义》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": \"密尔\", \"book_id\": null}, \"method\": \"partial_keyword_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "纯粹程序正义",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 1.295,
+     "result_full": "{\"query\": \"纯粹程序正义\", \"results\": [{\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 2, \"chapter_title\": \"第二章　正义的原则\", \"citation_label\": \"【《正义论》·第二章　正义的原则】\", \"snippet\": \"别是，在第17节我将试图展示：这一原则并不象反对者所认为的引向一个货才统治的社会。在此我希望考虑一些别的问题，特别是它与纯粹程序正义观念的联系。 然而，首先我应当指出：要求地位开放的理由不仅仅是、甚至主要不是效率的理由。我并不是认为如果实际上所有人都能从 ①这一点可见斯恩的《集体选择与社会福利》第138页注 一种安排中得利职位就必须开放。因为，以下情况也许是可能的：通过赋子某些不完全开放的职位以权力和利益，可使每一个人的状况得到改善。虽然这些职位并不完全开放，但这或许更能吸引较高的人才和鼓舞较好的表现。可是，地位开放的原则是不允许有任何限制的。它表达了这样的信念：如果某些地位不按照一种对所有人都公平的基础开放，那些被排除在外的人们觉\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 2, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 5, \"chapter_title\": \"第五章　分配的份额\", \"citation_label\": \"【《正义论》·第五章　分配的份额】\", \"snippet\": \"认识和纠正。而且，市场在公共利益的场合完全失去了作用。但是在这里我们不需要考虑这些问题。我们提出这些理想安排是为了阐明与纯粹程序正义有联系的观念。所以，这个理想观念可以用来评价现存的安排，并作为一种结构用来鉴别应该进行的变革。 场体系还有另一个更有意义的优点，即在必要的背景制度下，它是和平等的自由及机会的公正平等相协调的。公民对前途和工作具有自由选择权。劳动的强制和集中是完全没有道理的。的确，在缺少某些例如来自一种竞争体系的收人方面的差别的情况下，要明白怎样才能避免与自由不相容的强制社会的某些方面，至少在通常环境里是很困难的。此外，一个市场休系分散了经济权力。不管公司的内部性质是什么，是私存的还是公有的，是由企业家还是由工人选举的经\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 5, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 3, \"chapter_title\": \"第三章　原始状态\", \"citation_label\": \"【《正义论》·第三章　原始状态】\", \"snippet\": \"中都是作为道德人的平等代表、选择的结果不受偶然因素或社会力量的相对平衡所决定的状态。这样，作为公平的正义从一开始就能使用纯粹程序正义的观念。 那么，很清楚，原初状态纯粹是一假设的状态，它并不需要类似予它的状态曾经出现，虽然我们能通过仔细地追寻它表示的限制条件来模拟各方的思考。原初状态的观念除了试图解释我们的道德判断和帮助说明我们拥有的正义感之外，并不打算解释我们的行为。作为公平的正义是一种通过我们在反思的平衡中所考虑的判断显示的、有关我们的道德情感的理论。这些情感大概在某种程度上影响着我们的思想和行为。所以，原初状态的观念虽是行为理论的一部分，它却并不能使人因此推论说有类似于它的现实状态。我们必须说的只是：这些将被接受的原则在我们的\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 3, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 6, \"chapter_title\": \"第六章　义务和职责\", \"citation_label\": \"【《正义论》·第六章　义务和职责】\", \"snippet\": \"诚地想遵循两个正义原则的理性立法者的资成的法律，那么大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。在立法阶段中，我们必须依赖立法阶段的实际讨论过程而在允许的范围内选择一个政策。这些情况并不是纯粹程序正义的例证，因为所达到的结果并没有完全确定正当的决定。它们仅仅表明，那些不同意已作出的决定的人，不可能在公共正义观的框架内令人信服地确立他们的观点。这是一个不可能明确规定的问题。实际上，各政党毫无疑义在这些问题上将采取不同的立场。只要可能的话，立宪设计的自标就是确保社会各阶级的自我利益不致把政治解决方案扭曲得超出某一允许的范围。 55.非暴力反抗的定义现在我希望通过概述一种非暴力反抗（ci：i！diso\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 6, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 4, \"chapter_title\": \"第四章　平等的自由\", \"citation_label\": \"【《正义论》·第四章　平等的自由】\", \"snippet\": \"义的，即各种制度都能被选择，并和正义论的所有约束相协调。这样，为了解决社会、经济政策 的各种问题，我们必须转面回溯一种准纯粹程序正义的观念：即只要各种法律和政策处在允许的范围内，并且一种正义宪法所授权的立法机构事实上制定了这些法律和政策的话，这些法律和政策就是正义的。正义论中的这种不确定性自身不是一个缺点，而正是我们所期望的东西。如果作为公平的正义对正义范围的规定比现存各种理论的规定更符合我们所考虑的判断，而且能十分敏锐地指出一个社会应该避免的严重错误的话，它就将证明自己是一种有价值的理论。 32.自由的概念在讨论第一个正义原则的运用时，我将试图绕开关子自由含义的争论，这种争论常常给第一个原则的运用这个题目带来许多麻烦。我先把关于否\", \"score\": 44, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 4, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 7, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "多数人的暴政",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 1.295,
+     "result_full": "{\"query\": \"多数人的暴政\", \"results\": [{\"book_id\": \"2c1a4c7d17a4\", \"book_title\": \"单向度的人\", \"author\": \"赫伯特·马尔库塞\", \"chapter_idx\": 13, \"chapter_title\": \"第九章　解放的大变动\", \"citation_label\": \"【《单向度的人》·第九章　解放的大变动】\", \"snippet\": \"利国家中，一种和平生存所具有的人性特征看来是无社会性、无爱国心的——那些人性特征如：对一切坚固性、共处性和兽性的拒斥；对多数人的暴政的反抗；对恐惧和软弱的供认不讳（这是对该社会最合理的反应！）；被正在犯下的罪孽所损害的敏锐智慧；以及对微弱的、遭人嘲笑的抗议行为和拒绝行为的信念。人性的这些表现，也将由于必要的妥协而遭到损害——被掩盖他们自己、能够欺骗欺骗者、并把欺骗者排除在生活和思考范围之外的需要所损害。在极权主义社会中，人的态度势必变成遁世主义态度，势必遵奉塞缪尔·贝克特的劝告：“不要等到别人来追捕你的时候才去躲藏……” 即便把个人的思维和物质能量这样地从社会需要的活动和态度中撤出来，那也只是对少数人才有可能；它只是必须先于和平而进\", \"score\": 44, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2c1a4c7d17a4\", \"chapter_idx\": 13, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 19, \"chapter_title\": \"第十二章 社会、政治与金钱\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第十二章 社会、政治与金钱】\", \"snippet\": \"标。 ●所用的手段（即武力）应当与需要相配。 ●某些武器是非法的（扩张型弹头、各种毒气）。 ●对待俘虏存在一定的规则。 多数人的暴政？ 民主——源自希腊词汇demos（人民）和kratos（力量）：由代表人民利益的民选代表来做决定的政府体系。 理论上说，民主让人民发出“声音”。然而有人争论说，这会导致诸如这样的问题：人民不知道对他们来说最好的是什么，并且多数人总是以牺牲其他［少数］人利益的方式来取其所需。阿登翰（Aldenham）的首席男爵阿克顿（Lord Acton）将民主称为“多数人的暴政”，声称多数（或执政党）常常以暴力或欺骗的手段胜出。 如果人民是上帝，那他们的政府就会是民主的。如此完美的政府不是为人准备的。 ——卢梭 民主\", \"score\": 42, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 19, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2733906ea3f6\", \"book_title\": \"哲学家们都干了些什么\", \"author\": \"林欣浩\", \"chapter_idx\": 32, \"chapter_title\": \"三十二、查拉图斯特拉如是说\", \"citation_label\": \"【《哲学家们都干了些什么》·三十二、查拉图斯特拉如是说】\", \"snippet\": \"平等思想的反对和法国大革命有关。在法国大革命中，以民主为名的雅各宾派进行了恐怖统治和血腥屠杀，这让很多欧洲思想家看到了“多数人的暴政”的危险。就像柏拉图因为看到雅典的民主制处死了苏格拉底，因而在《理想国》中推崇精英政治一样，可能尼采也因为法国大革命而推崇贵族道德。 因为对强者的推崇，尼采便提出了“超人”这个概念。“超人”这个词在尼采的理论里，不是指拥有强大能力的人，不是说这人一定要当总统、当将军，而是说这人能实现贵族道德，超越奴隶道德。 尼采和叔本华一样，认为这世界是悲观的。但他的解决方法和叔本华不同。他认为叔本华的禁欲是胆小者的逃避。他觉得人不应该像叔本华宣扬的那样避免痛苦，而是应该承认痛苦，迎战痛苦。 简而言之，尼采推崇的是一种\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2733906ea3f6\", \"chapter_idx\": 32, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f15e7fd89491\", \"book_title\": \"从《理想国》到《正义论》\", \"author\": \"奈杰尔·沃伯顿\", \"chapter_idx\": 15, \"chapter_title\": \"密尔：《论自由》\", \"citation_label\": \"【《从《理想国》到《正义论》》·密尔：《论自由》】\", \"snippet\": \"私人行为（结果，本书在最近几年里为一些法律的出台提供了支持，这些法律涉及电影审查、同性恋等）。但是它也是针对密尔所说的“多数人的暴政”，也就是大多数人的观点造成了一种社会压力，这种压力可以阻止某些人进行生活试验，虽然没有什么法律法规禁止他们这么做。如果我选择的古怪生活方式使得我的邻居受到侵犯，虽然我做的事情没有直接伤害他们，但他们也可以使我的生活出现麻烦，因此可以有效地阻止我们去实施法律所赋予我们的自由。密尔相信，“要求个人去服从”的这种社会压力可以破坏自由，并把每个人都降格为没有思维能力的平庸之辈，这些结果最后都会使得整个社会走下坡路。这很明显造成了这样一种观点：想使用密尔的伤害原则的某些人， 会发现忽视这种原则对自己更有利。也就\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f15e7fd89491\", \"chapter_idx\": 15, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"327e5a1db152\", \"book_title\": \"50堂经典哲学思维课\", \"author\": \"郁喆隽\", \"chapter_idx\": 19, \"chapter_title\": \"19 柏拉图《理想国》 你想生活在什么样的城邦中？\", \"citation_label\": \"【《50堂经典哲学思维课》·19 柏拉图《理想国》 你想生活在什么样的城邦中？】\", \"snippet\": \"政制或庶民政治，同我们今日理解的民主不同，雅典式的民主只是“成年男性公民轮流当家做主”的直接民主制度，其可能的恶果便是“多数人的暴政”，苏格拉底之死就是最直接的体现；最后一种是苏格拉底认为最差的政治制度——僭主制。“僭主”是不具备合法性的政权篡夺者。希腊的僭主都用一些谦逊的称号，如“终身执政官”“全权将军”等，实际上却施行专制统治。这五种政制之间存在着承上启下的联系，每一种政治制度之下皆有其“善”的依据，但对这一依据过分追求的结果便是制度与城邦的崩溃，进而蜕变为下一阶段的制度。 那么在理想国中，谁应当来行使统治权呢？在柏拉图看来无疑是“哲人王”（philosopher-king）。柏拉图在《理想国》第473节中写道：“除非哲学家作为\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"327e5a1db152\", \"chapter_idx\": 19, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 9, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "929771a017d6",
+      "chapter_idx": 6,
+      "focus": "准纯粹程序正义",
+      "max_chars": 2500
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"chapter_idx\": 6, \"title\": \"第六章　义务和职责\", \"citation_label\": \"【《正义论》·第六章　义务和职责】\", \"text\": \"在采纳这种投票规则的理由。甚至在理性的和公正的人中间，那些对他们自己的意见抱有较大确信的人着来也并不更有可能是正确的。有些人可能比其他人对清况的复杂性更敏感。在制定正义立法的标准中，我们需要强调深思熟虑的集体判断的重要性，这种判断是在理想条件下每个人出色地运用正确原则所得出的判断。当正义问题产生时，欲望的强度和信念的力量是不相干的。\\n我们关于理想立法过程和理想市场过程之间的区别谈了很多。现在我要强调作为政治解决的一种手段的多数裁决规则程序的用处。正如我们已注意到的，采纳多数裁决规则是因为它是实现由正义原期预定的某些目的的最可行方法。不过，有时这些原财的要求是不清楚的或不明确的。这并非总是因为论据是复杂的、模糊的，或者是难于概括和评价的。这些原则本身的性质可能使多种选择成为可能，而不是仅仅允许某种特别的选择。例期，储存率只在某些限制中被确定；正义的储存原则的主要观点要排除某些极端情况。最后，在运用差别原则时，我们希望在最少获利者的期望中包括自尊的基本善：我且，存在着各种写羞别原则相容的考虑这种自尊价值的不同方法。特定社会的一般特征\\n和从立法阶段来看这一社会的获利最少者合理地想要的东西，决定着这种善及其它与此有关的善应当在指标中占多大比重的问题。于是，在象这样的一些情况中，两个正义原则确立了储存举或对自尊的强调所应有的范围。但它们并没有说在这个范围中再无选择可言。\\n因此，政治解决的原则适用于这样一些境况：在我们能确定的范围内，如果实际地被表决的法律是那些合理地得到真诚地想遵循两个正义原则的理性立法者的资成的法律，那么大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。在立法阶段中，我们必须依赖立法阶段的实际讨论过程而在允许的范围内选择一个政策。这些情况并不是纯粹程序正义的例证，因为所达到的结果并没有完全确定正当的决定。它们仅仅表明，那些不同意已作出的决定的人，不可能在公共正义观的框架内令人信服地确立他们的观点。这是一个不可能明确规定的问题。实际上，各政党毫无疑义在这些问题上将采取不同的立场。只要可能的话，立宪设计的自标就是确保社会各阶级的自我利益不致把政治解决方案扭曲得超出某一允许的范围。\\n55.非暴力反抗的定义现在我希望通过概述一种非暴力反抗（ci：i！disobedience）理论，来阐明自然义务和职责的原则的内容。正如我已经指明的那样，这个理论只是为了一个接近正义的社会，即一个就大多数情况来看是组织良好的、不过其间确发生了对正义的严重侵犯的社会而设计的。既然我假设一种近于正义的状态需要一种民主制度，那么，这-理论就涉及到非暴力反抗对于合法建立的民主权力的作用和恰当性。这一理论不适用于其它形式的政府，并且除了偶然之外，也不适用于其它持异议和抵抗的情况。我将不讨论\\n这样一种抗议形式，它伴随着军事行动及抵抗，是一种改造甚至推翻一种不正义的腐朽制度的手段。从这方面来讨论非暴力反抗行动是没有什么困难的。如果达到这-一自的的任何手段都被证明是正当的话，那么非暴力反抗显然也就是正当的。正如我将解释的那样，非暴力反抗的问题只产生于多少是正义的民主国家中；是对那些承认并接受这一宪法的合法性的公民而言的。困难之处在于义务之问的冲突。考虑到捍卫我们自由的权利和抵制不正义的义务，在哪一点上我们司以不再履行服从由一个合法多数制定的法律（或者由这一多数支持的行政法案）的义务呢？这是一个涉及到多数裁决规则的性质和范围的问题。因此，非暴力反抗的同题是对任何关于民主制的道德基础的理论的一种关键性的测试。\\n一种关于非暴力反抗的宪法理论有三个部分：首先，这种宪法理论定义这种反抗，把这一反抗和对民主权威的其它抵制形式区分开来。这些抵制形式包括从合法抗议、旨在向法庭提出试验案件（1)的违法行为，一直到好斗行为和有组织的抵抗。这种究法理论要确定非暴力反抗在这些抵制形式的范围中的地位。其次，这种宪法理论提出非暴力反抗的根据并阁明在一个或多或少是正义的民主制度中，这种非暴力反抗在哪些条件下是正当的。最后，这种宪法理论应当解释非暴力反抗在一个合乎宪法的制度中的作用，并且说明这种反抗形式在一个自由社会中的恰当性。\\n在着手讨论这些问题之前，我先提请人们注意：我们不应该过高地期望于一种非暴为反抗理论.即使是一个旨在说明特殊情况的理论。直接决定现实事件的精确原财显然是不可能有的。相反，一种有用的理论在-于确定一种处理非暴力反抗问题的观察点；它统一相关的考虑，并帮助我们在较重要的情况中恰当地衡\\n[1]指一个组织章一个可能发他纠纷的事情作为案件向法院起诉，以便试验法院如何处理，为将来实际发生纠纷时提供处理标准。一一译者注\\n量它们。如果通过我们的反复思考，一个关于这些问题的理论澄清了我们的见地，并使我们所考虑的判断更加连贯一致，那么这个理论就是有价值的，它就已经做了目前我们能够合理地期望它做的事情，即缩小了那些接受民主社会基本原则的人们的真诚信念之间的差异。\\n我首先把非暴力反抗定义为一种公开的、非暴力的、既是按照良心的又是政治性的对抗法律的行为，其目的通常是为了使政府的法律或政策发生一种改变。①通过这种方式的行动，我们诉诸共同体的多数人的正义感，宣称按照我们所考虑的观点，自由和平等的人们之间的社会合作原则没有受到尊重。对这个定义的一个初步解释是：它不要求非暴力反抗行为违反那个正遭到抗议的同一法律。②它包含着一些人所说的间接的和直接的非暴力反抗。这个定义确实应该如此，因为有时存在着不去侵犯被认为是不正义的法律或政策的充分理出。相反，-个人却可能以不服从交通规或各种防止侵犯的法规来表示自已的抗议。因此，如果政府制定了一个反对叛国罪的含糊而又严厉的法规的话，那么以叛国求作为反对这一法规的一种方式就不合适了，而且无论如何，反对者因此受到的惩罚可能大大超过他将合理地准备承受的程度。其它的例子是，当某种政策涉及到对外事务，或影响到这\\n①这里我邀循的是H，A，贝多对非暴力反抗的定义，见他的《论非馨力反抗》，载于《哲学杂志》第58卷（1961年），第65\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 21459, \"excerpt_end\": 23959, \"chapter_text_length\": 44174, \"has_more\": true, \"next_offset\": 23959, \"has_previous\": true, \"previous_offset\": 18959, \"focus_found\": true, \"focus_terms_matched\": [\"准纯粹程序正义\"], \"focus_terms_found_in_chapter\": [\"准纯粹程序正义\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"准纯粹程序正义\", \"offset\": 22159, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 6, \"offset\": 21959, \"focus\": \"准纯粹程序正义\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"1dab1b37cb8ffeba24a8aeb4e72f75a6e90d0889151183df9a6203bd72031c32\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/929771a017d6?ch=6\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·罗尔斯\", \"canonical_title\": \"正义论\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[21459, 23959]], \"covered_characters\": 2500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "chapter_idx": 1,
+      "focus": "多数人的暴政",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"这篇论文的主题不是所谓意志自由，不是这个与那被误称为哲学必然性的教义不幸相反的东西。这里所要讨论的乃是公民自由或称社会自由，也就是要探讨社会所能合法施用于个人的权力的性质和限度。这个问题，很少有人用一般性的说法予以提出，更从未没有人用一般性的说法加以讨论，但是它却在暗中深刻地影响着当代一些实践方面的争论，并且看来不久就会被公认为将来的重大问题。它远非什么新的问题，从某种意义说，它几乎从最远的年代以未就在划分着人类；不过到了人类中比较文明的一部分现在已经进入的进步阶段，它又在新的情况下呈现出来，要求人们给以一种与前不同而且较为根本的处理。\\n自由与权威之间的斗争，远在我们所最早熟知的部分历史中，特别在希腊、罗马和英国的历史中，就是最为显著的特色。但是在旧日，这个斗争乃是臣民或者某些阶级的臣民与政府之间的斗争。那时所谓自由，是指对于政治统治者的暴虐的防御。在人们意想中（除开在希腊时代一些平民政府中而外），统治者必然处于与其所统治的人民相敌对的地位。所请统治者，包括实行管治的“一夫”，或者实行管治的一族或一个世袭阶级，其权威系得自继承或征服；无论如何，他们之握持权威绝不视被管治者高兴与否；人们对其至尊无上的地位从不敢有所争议，或许竟不想有所争议，不论会采取什么方策未预防其压迫性的运用，他们的权力被看作是必要的，但也是高度危险的；被看作是一种武器，统治者会试图用以对付其臣民，正不亚于用以对付外来的敌人。在一个群体当中，为着保障较弱成员免遭无数鸷鹰的戕贼，就需要一个比余员都强的贼禽受任去压服它们。但这个鹰王之喜戕其群并不亚于那些较次的贪物，于是这个群体又不免经常处于须要防御鹰王爪牙的状态。因此，爱国者的目标就在于，对于统治者所施用于群体的权力要划定一些他所应当受到的限制；而这个限制就是他们所谓自由。谋取这种限制之道有二。第一条途径是要取得对于某些特权即某些所谓政治自由或政治权利的承认，这些自由或权利，统治者方面若加侵犯，便算背弃义务，而当他果真有所侵犯时，那么个别的抗拒或者一般的造反就可以称为正当。第二条途径，一般说来系一个比较晚出的方策，是要在宪法上建立一些制约，借使管治权力方面某些比较重要的措施须以下列一点为必要条件：即必须得到群体或某种团体的想来是代表其利益的同意。上述两种限制方式之中，第一种曾在多数欧洲国度里迫使统治权力或多或少有所屈服；第二种却未能这样，于是要求做到这种限制，或者在已经达到某种程度之后还要求更加完全，就到处都成为爱好自由的人们的主要目标。从历史上看，只要人类一天还满足于以另一个敌人去攻斗一个敌人，还满足于在多少有些有效保证足以对付主人的暴虐的条件之下便由一个主人来统治自己，他们就还没有使自己的渴望超越这点之外。\\n但是，在人类事务前进过程中来到了这样一个时代：人们对于管治者之成为一种独立的权力而在利害上与他们自己相反对，已不复认为是一种自然的必要，他们看到，国家的各种官府若成为他们的租户或代表，可以随他们的高兴来撒消，那就要好得多。他们看到，只有那样，他们才能享有完全的保证使政府权力永不致被妄用到对他们不利。这个想使统治者出于选举并且仅任短期的新要求，逐漱变成了平民政党——只要哪里有过这种政党——所致力的显明目标，在相当不小的程度上代替了以前仅要限制统治者的权力的努力。随着这种要使统治权力出自被统治者的定期选择的斗争的前进，有些人开始想到，从前对于限制权力本身这一点倒是看得过重了。那（看来可能）原是用以抵制在利害上惯于和人民反对的统治者的一种办法。而现在所要的则是，统治者应当与人民合一起来，统治者的利害和意志应当就是国族的利害和意志。国族无须对自己的意志有所防御。不必害怕它会肆虐于其自身。只要有效地做到使统治者对国族负责，可以及时地被国族撒换，那么国族就不怕把自己能够支配其用途的权力托给他们，统治者的权力实即国族自己的权力，不过是集中了，寓于一种便于运用的形式罢了。这种思想形态，或许毋宁说是感想形态，在前上代欧洲的自由主义当中曾很普遍，而在大陆的一支当中削至今还明显地占着优势。现时在欧洲大陆上，若还有人认为对政府所可做的事情可以有所限制——对于他们认为根本不应存在的那种政府是另一说——他就要算是政治思想家当中光辉的例外了。拿我们自己的国度来看，同样的情调也许到今天还会得势，假如那种在一个时期曾经鼓励这种情调的情势始终未变的话。\\n但是，在政治理论和皙学理论当中，正和在人当中一样，成功倒会把失败所会掩住的错误和弱点暴露出来。那个认为人民无须限制自己施用于自己的权力的观念，当平民政府还只是一个梦想的东西的时候，或者还只是一个见诸载籍存于远古的东西的时候，听来颇成一条自明的公理。一些暂时性的反常情况，就象法国革命那样，也并不必然会摇动那个观念，因为那种情况最坏也不过是篡窃者少数的运用，无论如何也不属于平民政制的恒常运用，而只算是反对君主专制和贵族专制的一个突然的、骚动性的爆发。可是，时间过去，终于出现了一个民主共和国，占据着地球上面很大的一块，表现为国族群体中最有力量的成员之一；既有这巨大的现存事实足供窥察，于是这种选举制和责任制政府就成为观察和批评的对象。这时人们就觉察出来，原来所谓“自治政府”和所谓“人民施用于自身的权力”等类词句，并不表述事情的真实状况。运用权力的“人民”与权力所加的人民并不永是同一的；而所说的“自治政府”亦非每人管治自己的政府，而是每人都被所有其余的人管治的政府。至于所谓人民意志，实际上只是最多的或者最活跃的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的人们的意志。于是结果是，人民会要压迫其自己数目中的一部分；而此种妄用权力之需加防止正不亚于任何他种。这样看来，要限制政府施用于个人的权力这一点，即在能使掌权者对于群体，也就是对于群体中最有力的党派正常负责的时候，也仍然丝毫不失其重要性。这个看法，因其既投合思想家们的智虑，又同样投合欧洲社会中那些在其真实的或假想的利害上与民主适相反对的重要阶级的意向，自然不难树立起来；在今天的政治思想中，一般已把“多数的暴虐”这一点列入社会所须警防的诸种灾祸之内了。\\n和他种暴虐一样，这个多数的暴虐之可怕，人们起初只看到，现在一般俗见仍认为，主要在于它会通过公共权威的措施而起作用。但是深思的人们则已看出，当社会本身是暴君时，就是说，当社会作为集体而凌焉于构成它的各别个人时，它的肆虐手段并不限于通过其政治机构而做出的措施。社会能够并且确在执行它自己的诏令。而假如它所颁的诏令是错的而不是对的，或者其内容是它所不应干预的事，那么它就是实行一种社会暴虐；而这种社会暴虐比许多种类的政治压迫还可怕，因为它虽不常以极端性的刑罚为后盾，却使人们有更少的逃避办法，这是由于它透入生活细节更深得多，由于它奴役到灵魂本身。因此，仅只防御官府的暴虐还不够；对于得势舆论和得势威想的暴虐，对于社会要借行政处罚以外的办法来把它自己的观念和行事当作行为准则来强加于所见不同的人，以束缚任何与它的方式不相协稠的个性的发展，甚至，假如可能的话，阻止这种个性的形成，从而迫使一切人物都按照它自己的模型来剪裁他们自己的这种趋势——对于这些，也都需要加以防御。关于集体意见对个人独立的合法干涉，是有一个限度的；要找出这个限度并维持它不遭侵蚀，这对于获致人类事务的良好情况\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 3000, \"chapter_text_length\": 10642, \"has_more\": true, \"next_offset\": 3000, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": false, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"03af608ef94ceac5fa3fdcccf3c6de45a230c8b0fefa8acf41bd576517db260a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/6a65e3ef874f?ch=1\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 3000]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "fa175af7701a",
+      "focus": "投票"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"id\": \"fa175af7701a\", \"title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取公民自由与集体主权。卢梭批判君权神授，主张主权在民，强调法律须体现公意，政府只是执行者。其哲学贡献在于重新定义自由与服从的关系，为现代民主、共和制及人民主权理论奠定基础，深刻影响了法国大革命及后世政治思想。卢梭开篇即言“人生而自由，却无往不在枷锁中”，由此引出社会契约的根本问题：如何在形成政治共同体的同时保留个体的自由？他的答案是“公意”——不是众多个别意志的简单相加，而是全体公民共同利益的理性表达。在公意指导下，每个人服从法律实际上就是服从自己制定的规则，从而实现道德自由。书中还区分了主权者、政府与臣民三者关系，强调主权不可分割、不可转让。尽管卢梭的理论在实践中面临“如何确保公意不被扭曲”的难题，但它为现代民主制度提供了核心理念，并直接影响了罗伯斯庇尔、康德和黑格尔的政治哲学。\", \"rank\": 45.5, \"chapterCount\": 50, \"declared_chapter_count\": 50, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 50, \"readable\": true, \"chapters\": [{\"index\": 41, \"title\": \"第二章 论投票\"}], \"matched_chapters\": 1, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "fa175af7701a",
+      "chapter_idx": 41,
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"chapter_idx\": 41, \"title\": \"第二章 论投票\", \"citation_label\": \"【《社会契约论》·第二章 论投票】\", \"text\": \"从上一章可以看出，处理一般事物的方式就足以确切地表明道德风尚的实际情况以及政治体的健康状态。在大会里人们越是能和衷共济，也就是说人们的意见越是趋于全体一致，则公意也就越占统治地位；反之，冗长的争论、意见分歧和吵闹不休，也就宣告个别利益之占了上风和国家的衰微。当国家的体制之中包括有两个或更多的等级的时候一一例如罗马的贵族与平民，他们的争执即使是在共和国最美好的时代也经常在扰乱着人民大会一一-则上述这一点似乎不太显著。然而这种例外多半只是外表的而不是真正的；因为这时候由于政治共同体内在的缺陷，可以说是一国之内有了两个国家。上述这一点对于这两者合起来说虽然不是真确的，但对于它们每一个分别来说却是真确的。而且实际上，即使是在最动荡的时代，但只要元老院不加干涉，人民的投票总是进行的很平静的，并且总是按多数票来表决的；公民们既然只有一种利益，人民便只有一种意志。但循环到了另一个极端，也会出现全体一致。那就是当公民①“另写一篇论文”即后来的《山中书简》第7书。一译注全都沦于奴役状态，既不再有自由也不再有意志的时候。这时候，恐怖和阿课把投票变成了一片喧嚣；人们不再讨论了，人们不是在赞颂就是在咒骂。罗马皇蒂治下的元老院，其表示意见的可耻方式就是如此。有时候它那做法又是谨慎得荒诞出奇。塔西佗曾指出，①在奥东②的治下，元老们在争相置骂维梯留斯③的时候，竞至同时成一片可怕的喧哗，为的是万一维梯留斯作了主子的话，他也无从知道他们每个人都说了些什么话。从这些不同的考虑里，使产生了一些准则；我们应该依据这些准则，按辨认公意的难易程度以及国家盛衰的情况，来规定计算票数和排比不同意见的方式。唯有一种法律，就其本性而言，必须要有全体一致的同意；④\\n那就是社会公约。因为政治的结合乃是全世界上最自愿的行为；每一个人既然生来是自由的，并且是自己的主人，所以任何别人在任何可能的借口之下，都不能不得他本人的认可就役使他。断言奴隶的儿子生来就是奴隶，那就等于断言他生来就不是人。可是，如果在订立社会公约的时候出现了反对者的话，这些人的反对也并不能使契约无效，那只不过是不许把这些人包括在契约之内罢了；他们是公民中间的外邦人。但是在国家成立以①见塔西佗《历史》第1卷，第85章。-译注②奥东（Othon，即Otho)，罗马皇帝，公元69年在位；维梯留斯与奥东争夺皇位，奥东战败自杀。—译注③维梯留斯（Vitellius），罗马皇帝，公元69年在位，即位后不久被卫斯巴襄(Vespasianus）推翻。—译注④本书第1卷，第5章：“多数表决的规则，其本身就是一种约定的确立，并且假定至少是有过一次全体一致的同意。”—译注可参看本书第1卷，第4章。—译注后，则居留就构成为同意；而居住在领土之内也就是服从主权。①除去这一原始的契约而外，投票的大多数是永远可以药束其他一切人的；这是契约本身的结果。②但是人们会问：一个人怎么能够是自由的，而又被迫要遵守并不是属于他自已的那些意志呢？反对者怎么能够既是自由的，而又要服从为他们所不曾同意的那些法律呢？我要回答说，这个问题的提法是错误的。公民是同意了一切法律的，即使是那些违反他们的意愿而通过的法律，即使是那些他们若胆敢违犯其中的任何一条都要受到惩罚的法律。国家全体成员的经常意志就是公意；正因为如此，他们才是公民并且是自由的。当人们在人民大会上提议制定一项法律时，他们向人民所提问的，精确地说，并不是人民究竞是赞成这个提议还是反对这个提议，而是它是不是符合公意；而这个公意也就是他们自己的意志。每个人在投票时都说出了自己对这个问题的意见，于是从票数的计算里就可以得出公意的宣告。因此，与我相反的意见若是占了上风，那并不证明别的，只是证明我错了，只是证明我所估计是公意的并不是公意。假如我的个别意见居然胜过了公意，那末我就是做了另一桩并非我原来所想要做的事；而在这时①这当然应该始终理解为只是在一个自由的国家里；否则的话，家庭、财产、无处容身、生活的需要以及暴力等等，都可以不顾一个居民的意愿如何而把他留滞在国内；这时候单凭他的居住，就不再能断定他是同意契约的还是破坏契约的了。②可参看本书第2卷，第3章。一—译注③在热那亚监狱的大门上和船奴的锁链上，都可以看到Libertas（自由）这个词。这样的办法，真是又漂亮又恰当。事实上，唯有各国为非作列的人才会妨碍公民得到自由。在一个把所有这样的人都送去做船奴的国家里，人们便会享有最完美的自由了。候，我就不是自由的了。当然，这要假定公意的一切特征仍然存在于多数之中；假如它在这里面也不存在的话，那末无论你赞成哪一边，总归是不再有自由可言的。前面①在说明人们在公共讨论中是怎样以个别的意志代替公意的时候，我已经充分指出了预防这种流的实际方法；后面我还要再加以论述。至于可以宣告这种意志的投票比例数，我也已经给出了测定它所应根据的各种原则。③一票之差可以破坏双方相等，一票反对也可以破坏全体一致。然而介乎全体-致与双方相等之间的，却还有许多种数字不等的分配，而对于其中的每一种，我们都可以按照政治体的情况与需要来确定这个数字。有两条普遍的准则可供我们规定这一比率：一条是，讨论愈是重大，则通过的意见也就愈应当接近于全体一致；另一条是，所涉及的事情愈是需要迅速解决，则所规定的双方票额之差也就愈应该缩小，在必须马上做出决定的讨论中，只要有一票的多数就够了。这两条准则中的前一条似乎更切合于法律，而后一条则似乎更切合于时务。但无论如何，都必须依靠两者的结合才能确定我们可以宣布其为多数的最好的比率。①见本书第2卷，第3章；第3卷，第18章。-—译注②见本书第4卷，第3、章。—译注③见本书第1卷，第5章。—译注\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2334, \"chapter_text_length\": 2334, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": null, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"2c0dd22d815ffe0981a34eb79cacb7b519a1fcb81a05609c0ed81725b0aabc77\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/fa175af7701a?ch=41\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2334]], \"covered_characters\": 2334, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "fa175af7701a",
+      "limit": 40
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"id\": \"fa175af7701a\", \"title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取公民自由与集体主权。卢梭批判君权神授，主张主权在民，强调法律须体现公意，政府只是执行者。其哲学贡献在于重新定义自由与服从的关系，为现代民主、共和制及人民主权理论奠定基础，深刻影响了法国大革命及后世政治思想。卢梭开篇即言“人生而自由，却无往不在枷锁中”，由此引出社会契约的根本问题：如何在形成政治共同体的同时保留个体的自由？他的答案是“公意”——不是众多个别意志的简单相加，而是全体公民共同利益的理性表达。在公意指导下，每个人服从法律实际上就是服从自己制定的规则，从而实现道德自由。书中还区分了主权者、政府与臣民三者关系，强调主权不可分割、不可转让。尽管卢梭的理论在实践中面临“如何确保公意不被扭曲”的难题，但它为现代民主制度提供了核心理念，并直接影响了罗伯斯庇尔、康德和黑格尔的政治哲学。\", \"rank\": 45.5, \"chapterCount\": 50, \"declared_chapter_count\": 50, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 50, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"前言\"}, {\"index\": 1, \"title\": \"第一章 第一卷的题旨\"}, {\"index\": 2, \"title\": \"第二章 论原始社会\"}, {\"index\": 3, \"title\": \"第三章 论最强者的权利\"}, {\"index\": 4, \"title\": \"第四章 论奴隶制\"}, {\"index\": 5, \"title\": \"第五章 论总需追溯到一个最初的约定\"}, {\"index\": 6, \"title\": \"第六章 论社会公约\"}, {\"index\": 7, \"title\": \"第七章 论主权者\"}, {\"index\": 8, \"title\": \"第八章 论社会状态\"}, {\"index\": 9, \"title\": \"第九章 论财产权\"}, {\"index\": 10, \"title\": \"第一章 论主权是不可转让的\"}, {\"index\": 11, \"title\": \"第二章 论主权是不可分割的\"}, {\"index\": 12, \"title\": \"第三章 公意是否可能错误\"}, {\"index\": 13, \"title\": \"第四章 论主权权力的界限\"}, {\"index\": 14, \"title\": \"第五章 论生死权\"}, {\"index\": 15, \"title\": \"第六章 论法律\"}, {\"index\": 16, \"title\": \"第七章 论立法者\"}, {\"index\": 17, \"title\": \"第八章 论人民\"}, {\"index\": 18, \"title\": \"第九章 论人民（续）\"}, {\"index\": 19, \"title\": \"第十章 论人民（续）\"}, {\"index\": 20, \"title\": \"第十一章 论各种不同的立法体系\"}, {\"index\": 21, \"title\": \"第十二章 法律的分类\"}, {\"index\": 22, \"title\": \"第一章 政府总论\"}, {\"index\": 23, \"title\": \"第二章 论各种不同政府形式的建制原则\"}, {\"index\": 24, \"title\": \"第三章 政府的分类\"}, {\"index\": 25, \"title\": \"第四章 论民主制\"}, {\"index\": 26, \"title\": \"第五章 论贵族制\"}, {\"index\": 27, \"title\": \"第六章 论国君制\"}, {\"index\": 28, \"title\": \"第七章 论混合政府\"}, {\"index\": 29, \"title\": \"第八章 论没有一种政府形式适宜于一切国家\"}, {\"index\": 30, \"title\": \"第九章 论一个好政府的标志\"}, {\"index\": 31, \"title\": \"第十章 论政府的滥用职权及其蜕化的倾向\"}, {\"index\": 32, \"title\": \"第十一章 论政治体的死亡\"}, {\"index\": 33, \"title\": \"第十二章 怎样维持主权权威\"}, {\"index\": 34, \"title\": \"第十三章 怎样维持主权权威（续）\"}, {\"index\": 35, \"title\": \"第十四章 怎样维持主权权威（续）\"}, {\"index\": 36, \"title\": \"第十五章 论议员或代表\"}, {\"index\": 37, \"title\": \"第十六章 论政府的创制绝不是一项契约\"}, {\"index\": 38, \"title\": \"第十七章 论政府的创制\"}, {\"index\": 39, \"title\": \"第十八章 防止政府篡权的方法\"}], \"matched_chapters\": 50, \"has_more\": true, \"next_offset\": 40, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "fa175af7701a",
+      "chapter_idx": 12,
+      "max_chars": 2200
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"chapter_idx\": 12, \"title\": \"第三章 公意是否可能错误\", \"citation_label\": \"【《社会契约论》·第三章 公意是否可能错误】\", \"text\": \"由以上所述，可见公意永远是公正的，而且永远以公共利益为依归；但是并不能由此推论说，人民的考虑也永远有着同样的正确性。人们总是愿意自已幸福，但人们并不总是能看清楚幸福。人民是决不会被腐蚀的，但人民却往往会受欺骗，而且唯有在这时候，人民才好像会愿意要不好的东西。众意与公意之间经常总是有很大的差别；①公意只着眼于公共的利益，而众意则着眼于私人的利益，众意只是个别意志的总和。但是，除掉这些个别意志间正负相抵消的部分而外，则剩下的总和仍然是公意。①乔治第一（1714一1727在位），英国国王。一-译注②即詹姆斯第二（1685一1688在位），英国国王。1688年“光荣革命”，国会拥奥兰治·威廉取代詹姆斯第二为英国国王。---译注③即威廉第三（16881702在位），英国国王。—译注④这句话作者最初写作：“公意也就是众意，这是极其罕见的事。”一一译注阿冉松候爵说：“每种利益都具有不同的原则。两种个别利益的一致是由于与第三种利益相对立而形成的。”他还可以补充说，全体的利益一致是由于与每个人如果当人民能够充分了解情况并进行讨论时，公民彼此之间又没有任何勾结；那末从大量的小分歧中总可以产生公意，而且讨论的结果总会是好的。但是当形成了派别的时候，形成了以牺牲大集体为代价的小集团的时候，每一个这种集团的意志对它的成员来说就成为公意，而对国家来说则成为个别意志；这时候我们可以说，投票者的数目已经不再与人数相等，而只与集团的数目相等了。分歧在数量上是减少了，而所得的结果却更缺乏公意。最后，当这些集团中有一个是如此之大，以至于超过了其他一切集团的时候，那么结果你就不再有许多小的分歧的总和，而只有一个唯-一的分歧；这时，就不再有公意，而占优势的意见便只不过是一种个别的意见。因此，为了很好地表达公意，最重要的就是国家之内不能有派系存在，并且每个公民只能是表示自己的意见。①伟大的莱格古士②的独特而高明的制度便是如此。但如果有了派系存在的话，的利益相对立而形成的。如果完全没有不同的利益，那末，那种永远都碰不到障碍的共同利益，也就很难被人感觉到；一切都将自行运转，政治也就不成其为一种艺术了。此处引文见阿冉松《法国古代与近代政府论》第2章；引文中的“相对立”原文作“相反的理由”。一译注①马基雅维里说:“Vera cosa é che alcuni divisioni nuocono alle republiche e al\\ncune giovano: quelle nuocono che sono dalle sette e da partigiani accompagnate: quellegiovano che senza sette, senza partigiani si mantengono. Non potendo adunque prove-dere un fondatore d’una repubbl ca che non siano nimizicie in quella, ha da proveder almeno chenonvi siano sette.”[“事实上，有些划分是有害于一个共和国的，有些则是有益的；那些会激起宗派与党争的是有害的，而那些不会引起宗派与党争的则是有益的。既然一个国家的创业者无法禁止敌对者的存在，至少他也应该防止他们成为宗派。”（《佛罗伦萨史》第7卷。）②莱格古士（Lycurgue，即Iycurgus），为传说中纪元前8世纪斯巴达的国王，著名的立法者。他采取均分土地的方法以消除等级与党派的对立。事见普鲁塔克《英雄传》第1卷。译注那末就必须增殖它们的数目并防止它们之间的不平等，就像梭伦①、努玛②和塞尔维乌斯所做的那样。这种防范方法是使公意可以永远发扬光大而且人民也决不会犯错误的唯一好方法。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1577, \"chapter_text_length\": 1577, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": null, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"5781c9490f1a11dad9b3d9c362b1a941ec831a7def6f638bae1301193531f50a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/fa175af7701a?ch=12\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 1577]], \"covered_characters\": 1577, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 10.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_1g2hfloxeCaYOwWkwG0w9736"
+    },
+    {
+     "t": 10.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_G2TYvTy4aO091wpX5KPj8908"
+    },
+    {
+     "t": 10.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_oUacHZlTJFTaWN8SBUn16284"
+    },
+    {
+     "t": 11.1,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_03_NfnfwDHvM8TiNIhJZZOF2148",
+     "status": "success",
+     "duration_seconds": 0.022
+    },
+    {
+     "t": 11.3,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "投票 多数 决定 公正",
+      "author": "密尔",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.028,
+     "result_full": "{\"query\": \"投票 多数 决定 公正\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 论思想自由和讨论自由\", \"citation_label\": \"【《论自由》·第二章 论思想自由和讨论自由】\", \"snippet\": \"除对所有者本人而外便别无价值的个人所有物，如果在对它的享用上有所阻碍仅仅是一种对私人的损害，那么若问这损害所及是少数还是多数，就还有些区别。但是迫使一个意见不能发表的特殊罪恶乃在它是对整个人类的掠夺，对后代和对现存的一代都是一样，对不同意于那个意见的人比对抱持那个意见的人甚至更甚。假如那意见是对的，那么他们是被剥夺了以错误换真理的机会；假如那意见是错的，那么他们是失掉了一个差不多同样大的利益，那就是从真理与错误冲突中产生出来的对于真理的更加清楚的认识和更加生动的印象。 有必要对上述两条假设分别作一番考虑，每条在与之相应的论据上自有其各别的一枝。这里的论点有两个：我们永远不能确信我们所力图窒闭的意见是一个谬误的意见；假如我们确信，要窒\", \"score\": 136, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 2, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 3, \"chapter_title\": \"第三章 论个性为人类福祉的因素之一\", \"citation_label\": \"【《论自由》·第三章 论个性为人类福祉的因素之一】\", \"snippet\": \"呈现特别的困难，但是为患之处就在，一般的想法却很少见到个人自动性这个东西具有什么内在价值，值得为其自身之故而予以注意。大多数的人既满足于人类现有的那些办法（因为正是这大多数人把它们做成现在那样），便不能领会为什么那些办法对每人说来还不够好；更甚的是，在多数道德改革家和社会改革家的心目中，自动性并不成为他们理想的一部分，反倒在嫉恨的眼光之下被看作一种麻烦的或者还是叛逆性的障碍物，妨碍着对于他们自己所断为对人类最好的办法的普通接受。甚至对于象罕波尔特（Wilhelm Von Humboldt）这样一位杰出的学者兼政治家作为一篇论文主题来讲的一个教义，也只有很少数出自德国的人领会到它的意义——那大旨是说：“人的目的，或说由永恒不易的理性诏\", \"score\": 134, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 3, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 5, \"chapter_title\": \"第五章 论正义与功利的联系\", \"citation_label\": \"【《功利主义》·第五章 论正义与功利的联系】\", \"snippet\": \"大障碍之一，向来都是“正义”这一观念。“正义”一词会像一种本能那样，快速而确定地激发出强烈的情感和明显清晰的感知，而在大多数思想家看来，这种情感和感知都指向了事物的一种固有性质，表明正义必定是作为一种在属类上不同于各种利益的绝对之物而存在于大自然中；尽管（人们普遍公认）从长远来看，正义事实上从来没有脱离过利益，但在观念上却是与利益相对立的。 在这种情况下，正义就像我们面对的其他道德情感一样，它的起源和约束力之间并没有什么必然的联系。大自然赋予我们一种情感，并不一定说明这种情感激发出来的所有冲动都是正当合理的。正义感可能属于一种独特的本能，但它或许就像我们的其他本能一样，终归需要一种高级理性来加以约束和指导才行。假如我们既拥有思维本能\", \"score\": 134, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e23d6fac862d\", \"chapter_idx\": 5, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 4, \"chapter_title\": \"第四章 论社会驾于个人的权威的限度\", \"citation_label\": \"【《论自由》·第四章 论社会驾于个人的权威的限度】\", \"snippet\": \"得愈益增多的运用，使其情感和志趣愈益指向聪明的而非愚蠢的、升高的而非堕落的目标和计划。但是，不论是一个人也好，或者是任何多数人也好，都无权对另一个成年人说，为了他自己的益处他不可用其一生去做某件他所选定要用其一生去做的事。对于一个人的福祉，本人是关切最深的人；除在一些私人联系很强的情事上外，任何他人对于他的福祉所怀有的关切，和他自己所怀有的关切比较起来，都是微薄而肤浅的。社会对于作为个人的他所怀有的关切（除开对于他对他人的行为而外）总是部分的，并且完全是间接的；而本人关于自己的情感和情况，则虽最普通的男人或妇女也自有其认识方法，比任何他人所能有的不知胜过多少倍。 社会在个人只关己身的事情上要强使他一反其自己的判断和目的，这种干涉只能\", \"score\": 133, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 4, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 5, \"chapter_title\": \"第五章 本文教义的应用\", \"citation_label\": \"【《论自由》·第五章 本文教义的应用】\", \"snippet\": \"，若说有错，只是因为它们并没有真正产生有待它们产生的结果。既然个人自由的原则并无涉于自由贸易的教义，所以这原则也无涉于大多数有关那个教义的限制的问题：例如要防止借掺杂办法进行欺诈的行为可以允许公众有多少控制，又如工厂中的卫生预防措施或危险作业工人的保护办法可以强使厂主实行到什么程度等问题。这类问题若说是涉及自由问题，那也只能说到，在其他条件相等的情况下，听凭人们自己去总比对他们加以控制好一些。至于为着那些目的而要对人们有所控制，这在原则上谁也不能否认其为合法。另一方面，也有一些干涉贸易的问题在本质上就是自由问题，象上文刚刚提到的梅恩省禁酒法，象禁止对中国输入鸦片，象禁止出售毒药，总之，凡目标在于使人们不可能得到或难于得到某一货物的干\", \"score\": 131, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 5, \"focus\": \"投票 多数 决定 公正\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"投票 多数 决定 公正\", \"query_terms\": [\"投票\", \"多数\", \"决定\", \"公正\"]}], \"catalogue_matches\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"bece6ea379fa\", \"book_title\": \"妇女的屈从地位\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《妇女的屈从地位》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《功利主义》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": \"密尔\", \"book_id\": null}, \"method\": \"partial_keyword_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 12.5,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "纯粹程序正义",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 1.295,
+     "result_full": "{\"query\": \"纯粹程序正义\", \"results\": [{\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 2, \"chapter_title\": \"第二章　正义的原则\", \"citation_label\": \"【《正义论》·第二章　正义的原则】\", \"snippet\": \"别是，在第17节我将试图展示：这一原则并不象反对者所认为的引向一个货才统治的社会。在此我希望考虑一些别的问题，特别是它与纯粹程序正义观念的联系。 然而，首先我应当指出：要求地位开放的理由不仅仅是、甚至主要不是效率的理由。我并不是认为如果实际上所有人都能从 ①这一点可见斯恩的《集体选择与社会福利》第138页注 一种安排中得利职位就必须开放。因为，以下情况也许是可能的：通过赋子某些不完全开放的职位以权力和利益，可使每一个人的状况得到改善。虽然这些职位并不完全开放，但这或许更能吸引较高的人才和鼓舞较好的表现。可是，地位开放的原则是不允许有任何限制的。它表达了这样的信念：如果某些地位不按照一种对所有人都公平的基础开放，那些被排除在外的人们觉\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 2, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 5, \"chapter_title\": \"第五章　分配的份额\", \"citation_label\": \"【《正义论》·第五章　分配的份额】\", \"snippet\": \"认识和纠正。而且，市场在公共利益的场合完全失去了作用。但是在这里我们不需要考虑这些问题。我们提出这些理想安排是为了阐明与纯粹程序正义有联系的观念。所以，这个理想观念可以用来评价现存的安排，并作为一种结构用来鉴别应该进行的变革。 场体系还有另一个更有意义的优点，即在必要的背景制度下，它是和平等的自由及机会的公正平等相协调的。公民对前途和工作具有自由选择权。劳动的强制和集中是完全没有道理的。的确，在缺少某些例如来自一种竞争体系的收人方面的差别的情况下，要明白怎样才能避免与自由不相容的强制社会的某些方面，至少在通常环境里是很困难的。此外，一个市场休系分散了经济权力。不管公司的内部性质是什么，是私存的还是公有的，是由企业家还是由工人选举的经\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 5, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 3, \"chapter_title\": \"第三章　原始状态\", \"citation_label\": \"【《正义论》·第三章　原始状态】\", \"snippet\": \"中都是作为道德人的平等代表、选择的结果不受偶然因素或社会力量的相对平衡所决定的状态。这样，作为公平的正义从一开始就能使用纯粹程序正义的观念。 那么，很清楚，原初状态纯粹是一假设的状态，它并不需要类似予它的状态曾经出现，虽然我们能通过仔细地追寻它表示的限制条件来模拟各方的思考。原初状态的观念除了试图解释我们的道德判断和帮助说明我们拥有的正义感之外，并不打算解释我们的行为。作为公平的正义是一种通过我们在反思的平衡中所考虑的判断显示的、有关我们的道德情感的理论。这些情感大概在某种程度上影响着我们的思想和行为。所以，原初状态的观念虽是行为理论的一部分，它却并不能使人因此推论说有类似于它的现实状态。我们必须说的只是：这些将被接受的原则在我们的\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 3, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 6, \"chapter_title\": \"第六章　义务和职责\", \"citation_label\": \"【《正义论》·第六章　义务和职责】\", \"snippet\": \"诚地想遵循两个正义原则的理性立法者的资成的法律，那么大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。在立法阶段中，我们必须依赖立法阶段的实际讨论过程而在允许的范围内选择一个政策。这些情况并不是纯粹程序正义的例证，因为所达到的结果并没有完全确定正当的决定。它们仅仅表明，那些不同意已作出的决定的人，不可能在公共正义观的框架内令人信服地确立他们的观点。这是一个不可能明确规定的问题。实际上，各政党毫无疑义在这些问题上将采取不同的立场。只要可能的话，立宪设计的自标就是确保社会各阶级的自我利益不致把政治解决方案扭曲得超出某一允许的范围。 55.非暴力反抗的定义现在我希望通过概述一种非暴力反抗（ci：i！diso\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 6, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 4, \"chapter_title\": \"第四章　平等的自由\", \"citation_label\": \"【《正义论》·第四章　平等的自由】\", \"snippet\": \"义的，即各种制度都能被选择，并和正义论的所有约束相协调。这样，为了解决社会、经济政策 的各种问题，我们必须转面回溯一种准纯粹程序正义的观念：即只要各种法律和政策处在允许的范围内，并且一种正义宪法所授权的立法机构事实上制定了这些法律和政策的话，这些法律和政策就是正义的。正义论中的这种不确定性自身不是一个缺点，而正是我们所期望的东西。如果作为公平的正义对正义范围的规定比现存各种理论的规定更符合我们所考虑的判断，而且能十分敏锐地指出一个社会应该避免的严重错误的话，它就将证明自己是一种有价值的理论。 32.自由的概念在讨论第一个正义原则的运用时，我将试图绕开关子自由含义的争论，这种争论常常给第一个原则的运用这个题目带来许多麻烦。我先把关于否\", \"score\": 44, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"929771a017d6\", \"chapter_idx\": 4, \"focus\": \"纯粹程序正义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 7, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 12.5,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "多数人的暴政",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 1.295,
+     "result_full": "{\"query\": \"多数人的暴政\", \"results\": [{\"book_id\": \"2c1a4c7d17a4\", \"book_title\": \"单向度的人\", \"author\": \"赫伯特·马尔库塞\", \"chapter_idx\": 13, \"chapter_title\": \"第九章　解放的大变动\", \"citation_label\": \"【《单向度的人》·第九章　解放的大变动】\", \"snippet\": \"利国家中，一种和平生存所具有的人性特征看来是无社会性、无爱国心的——那些人性特征如：对一切坚固性、共处性和兽性的拒斥；对多数人的暴政的反抗；对恐惧和软弱的供认不讳（这是对该社会最合理的反应！）；被正在犯下的罪孽所损害的敏锐智慧；以及对微弱的、遭人嘲笑的抗议行为和拒绝行为的信念。人性的这些表现，也将由于必要的妥协而遭到损害——被掩盖他们自己、能够欺骗欺骗者、并把欺骗者排除在生活和思考范围之外的需要所损害。在极权主义社会中，人的态度势必变成遁世主义态度，势必遵奉塞缪尔·贝克特的劝告：“不要等到别人来追捕你的时候才去躲藏……” 即便把个人的思维和物质能量这样地从社会需要的活动和态度中撤出来，那也只是对少数人才有可能；它只是必须先于和平而进\", \"score\": 44, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2c1a4c7d17a4\", \"chapter_idx\": 13, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 19, \"chapter_title\": \"第十二章 社会、政治与金钱\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第十二章 社会、政治与金钱】\", \"snippet\": \"标。 ●所用的手段（即武力）应当与需要相配。 ●某些武器是非法的（扩张型弹头、各种毒气）。 ●对待俘虏存在一定的规则。 多数人的暴政？ 民主——源自希腊词汇demos（人民）和kratos（力量）：由代表人民利益的民选代表来做决定的政府体系。 理论上说，民主让人民发出“声音”。然而有人争论说，这会导致诸如这样的问题：人民不知道对他们来说最好的是什么，并且多数人总是以牺牲其他［少数］人利益的方式来取其所需。阿登翰（Aldenham）的首席男爵阿克顿（Lord Acton）将民主称为“多数人的暴政”，声称多数（或执政党）常常以暴力或欺骗的手段胜出。 如果人民是上帝，那他们的政府就会是民主的。如此完美的政府不是为人准备的。 ——卢梭 民主\", \"score\": 42, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 19, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2733906ea3f6\", \"book_title\": \"哲学家们都干了些什么\", \"author\": \"林欣浩\", \"chapter_idx\": 32, \"chapter_title\": \"三十二、查拉图斯特拉如是说\", \"citation_label\": \"【《哲学家们都干了些什么》·三十二、查拉图斯特拉如是说】\", \"snippet\": \"平等思想的反对和法国大革命有关。在法国大革命中，以民主为名的雅各宾派进行了恐怖统治和血腥屠杀，这让很多欧洲思想家看到了“多数人的暴政”的危险。就像柏拉图因为看到雅典的民主制处死了苏格拉底，因而在《理想国》中推崇精英政治一样，可能尼采也因为法国大革命而推崇贵族道德。 因为对强者的推崇，尼采便提出了“超人”这个概念。“超人”这个词在尼采的理论里，不是指拥有强大能力的人，不是说这人一定要当总统、当将军，而是说这人能实现贵族道德，超越奴隶道德。 尼采和叔本华一样，认为这世界是悲观的。但他的解决方法和叔本华不同。他认为叔本华的禁欲是胆小者的逃避。他觉得人不应该像叔本华宣扬的那样避免痛苦，而是应该承认痛苦，迎战痛苦。 简而言之，尼采推崇的是一种\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2733906ea3f6\", \"chapter_idx\": 32, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f15e7fd89491\", \"book_title\": \"从《理想国》到《正义论》\", \"author\": \"奈杰尔·沃伯顿\", \"chapter_idx\": 15, \"chapter_title\": \"密尔：《论自由》\", \"citation_label\": \"【《从《理想国》到《正义论》》·密尔：《论自由》】\", \"snippet\": \"私人行为（结果，本书在最近几年里为一些法律的出台提供了支持，这些法律涉及电影审查、同性恋等）。但是它也是针对密尔所说的“多数人的暴政”，也就是大多数人的观点造成了一种社会压力，这种压力可以阻止某些人进行生活试验，虽然没有什么法律法规禁止他们这么做。如果我选择的古怪生活方式使得我的邻居受到侵犯，虽然我做的事情没有直接伤害他们，但他们也可以使我的生活出现麻烦，因此可以有效地阻止我们去实施法律所赋予我们的自由。密尔相信，“要求个人去服从”的这种社会压力可以破坏自由，并把每个人都降格为没有思维能力的平庸之辈，这些结果最后都会使得整个社会走下坡路。这很明显造成了这样一种观点：想使用密尔的伤害原则的某些人， 会发现忽视这种原则对自己更有利。也就\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f15e7fd89491\", \"chapter_idx\": 15, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"327e5a1db152\", \"book_title\": \"50堂经典哲学思维课\", \"author\": \"郁喆隽\", \"chapter_idx\": 19, \"chapter_title\": \"19 柏拉图《理想国》 你想生活在什么样的城邦中？\", \"citation_label\": \"【《50堂经典哲学思维课》·19 柏拉图《理想国》 你想生活在什么样的城邦中？】\", \"snippet\": \"政制或庶民政治，同我们今日理解的民主不同，雅典式的民主只是“成年男性公民轮流当家做主”的直接民主制度，其可能的恶果便是“多数人的暴政”，苏格拉底之死就是最直接的体现；最后一种是苏格拉底认为最差的政治制度——僭主制。“僭主”是不具备合法性的政权篡夺者。希腊的僭主都用一些谦逊的称号，如“终身执政官”“全权将军”等，实际上却施行专制统治。这五种政制之间存在着承上启下的联系，每一种政治制度之下皆有其“善”的依据，但对这一依据过分追求的结果便是制度与城邦的崩溃，进而蜕变为下一阶段的制度。 那么在理想国中，谁应当来行使统治权呢？在柏拉图看来无疑是“哲人王”（philosopher-king）。柏拉图在《理想国》第473节中写道：“除非哲学家作为\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"327e5a1db152\", \"chapter_idx\": 19, \"focus\": \"多数人的暴政\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 9, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 14.4,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_00_Tit1gMVzbTkVE7r4acHu8532"
+    },
+    {
+     "t": 14.5,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_ojKDBQ35VsUHCkA2xR1x6566"
+    },
+    {
+     "t": 14.7,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_02_BLMlH6g5w7rzPQ7mGDSO4432",
+     "status": "success",
+     "duration_seconds": 0.006
+    },
+    {
+     "t": 14.9,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "chapter_idx": 1,
+      "focus": "多数人的暴政",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"这篇论文的主题不是所谓意志自由，不是这个与那被误称为哲学必然性的教义不幸相反的东西。这里所要讨论的乃是公民自由或称社会自由，也就是要探讨社会所能合法施用于个人的权力的性质和限度。这个问题，很少有人用一般性的说法予以提出，更从未没有人用一般性的说法加以讨论，但是它却在暗中深刻地影响着当代一些实践方面的争论，并且看来不久就会被公认为将来的重大问题。它远非什么新的问题，从某种意义说，它几乎从最远的年代以未就在划分着人类；不过到了人类中比较文明的一部分现在已经进入的进步阶段，它又在新的情况下呈现出来，要求人们给以一种与前不同而且较为根本的处理。\\n自由与权威之间的斗争，远在我们所最早熟知的部分历史中，特别在希腊、罗马和英国的历史中，就是最为显著的特色。但是在旧日，这个斗争乃是臣民或者某些阶级的臣民与政府之间的斗争。那时所谓自由，是指对于政治统治者的暴虐的防御。在人们意想中（除开在希腊时代一些平民政府中而外），统治者必然处于与其所统治的人民相敌对的地位。所请统治者，包括实行管治的“一夫”，或者实行管治的一族或一个世袭阶级，其权威系得自继承或征服；无论如何，他们之握持权威绝不视被管治者高兴与否；人们对其至尊无上的地位从不敢有所争议，或许竟不想有所争议，不论会采取什么方策未预防其压迫性的运用，他们的权力被看作是必要的，但也是高度危险的；被看作是一种武器，统治者会试图用以对付其臣民，正不亚于用以对付外来的敌人。在一个群体当中，为着保障较弱成员免遭无数鸷鹰的戕贼，就需要一个比余员都强的贼禽受任去压服它们。但这个鹰王之喜戕其群并不亚于那些较次的贪物，于是这个群体又不免经常处于须要防御鹰王爪牙的状态。因此，爱国者的目标就在于，对于统治者所施用于群体的权力要划定一些他所应当受到的限制；而这个限制就是他们所谓自由。谋取这种限制之道有二。第一条途径是要取得对于某些特权即某些所谓政治自由或政治权利的承认，这些自由或权利，统治者方面若加侵犯，便算背弃义务，而当他果真有所侵犯时，那么个别的抗拒或者一般的造反就可以称为正当。第二条途径，一般说来系一个比较晚出的方策，是要在宪法上建立一些制约，借使管治权力方面某些比较重要的措施须以下列一点为必要条件：即必须得到群体或某种团体的想来是代表其利益的同意。上述两种限制方式之中，第一种曾在多数欧洲国度里迫使统治权力或多或少有所屈服；第二种却未能这样，于是要求做到这种限制，或者在已经达到某种程度之后还要求更加完全，就到处都成为爱好自由的人们的主要目标。从历史上看，只要人类一天还满足于以另一个敌人去攻斗一个敌人，还满足于在多少有些有效保证足以对付主人的暴虐的条件之下便由一个主人来统治自己，他们就还没有使自己的渴望超越这点之外。\\n但是，在人类事务前进过程中来到了这样一个时代：人们对于管治者之成为一种独立的权力而在利害上与他们自己相反对，已不复认为是一种自然的必要，他们看到，国家的各种官府若成为他们的租户或代表，可以随他们的高兴来撒消，那就要好得多。他们看到，只有那样，他们才能享有完全的保证使政府权力永不致被妄用到对他们不利。这个想使统治者出于选举并且仅任短期的新要求，逐漱变成了平民政党——只要哪里有过这种政党——所致力的显明目标，在相当不小的程度上代替了以前仅要限制统治者的权力的努力。随着这种要使统治权力出自被统治者的定期选择的斗争的前进，有些人开始想到，从前对于限制权力本身这一点倒是看得过重了。那（看来可能）原是用以抵制在利害上惯于和人民反对的统治者的一种办法。而现在所要的则是，统治者应当与人民合一起来，统治者的利害和意志应当就是国族的利害和意志。国族无须对自己的意志有所防御。不必害怕它会肆虐于其自身。只要有效地做到使统治者对国族负责，可以及时地被国族撒换，那么国族就不怕把自己能够支配其用途的权力托给他们，统治者的权力实即国族自己的权力，不过是集中了，寓于一种便于运用的形式罢了。这种思想形态，或许毋宁说是感想形态，在前上代欧洲的自由主义当中曾很普遍，而在大陆的一支当中削至今还明显地占着优势。现时在欧洲大陆上，若还有人认为对政府所可做的事情可以有所限制——对于他们认为根本不应存在的那种政府是另一说——他就要算是政治思想家当中光辉的例外了。拿我们自己的国度来看，同样的情调也许到今天还会得势，假如那种在一个时期曾经鼓励这种情调的情势始终未变的话。\\n但是，在政治理论和皙学理论当中，正和在人当中一样，成功倒会把失败所会掩住的错误和弱点暴露出来。那个认为人民无须限制自己施用于自己的权力的观念，当平民政府还只是一个梦想的东西的时候，或者还只是一个见诸载籍存于远古的东西的时候，听来颇成一条自明的公理。一些暂时性的反常情况，就象法国革命那样，也并不必然会摇动那个观念，因为那种情况最坏也不过是篡窃者少数的运用，无论如何也不属于平民政制的恒常运用，而只算是反对君主专制和贵族专制的一个突然的、骚动性的爆发。可是，时间过去，终于出现了一个民主共和国，占据着地球上面很大的一块，表现为国族群体中最有力量的成员之一；既有这巨大的现存事实足供窥察，于是这种选举制和责任制政府就成为观察和批评的对象。这时人们就觉察出来，原来所谓“自治政府”和所谓“人民施用于自身的权力”等类词句，并不表述事情的真实状况。运用权力的“人民”与权力所加的人民并不永是同一的；而所说的“自治政府”亦非每人管治自己的政府，而是每人都被所有其余的人管治的政府。至于所谓人民意志，实际上只是最多的或者最活跃的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的人们的意志。于是结果是，人民会要压迫其自己数目中的一部分；而此种妄用权力之需加防止正不亚于任何他种。这样看来，要限制政府施用于个人的权力这一点，即在能使掌权者对于群体，也就是对于群体中最有力的党派正常负责的时候，也仍然丝毫不失其重要性。这个看法，因其既投合思想家们的智虑，又同样投合欧洲社会中那些在其真实的或假想的利害上与民主适相反对的重要阶级的意向，自然不难树立起来；在今天的政治思想中，一般已把“多数的暴虐”这一点列入社会所须警防的诸种灾祸之内了。\\n和他种暴虐一样，这个多数的暴虐之可怕，人们起初只看到，现在一般俗见仍认为，主要在于它会通过公共权威的措施而起作用。但是深思的人们则已看出，当社会本身是暴君时，就是说，当社会作为集体而凌焉于构成它的各别个人时，它的肆虐手段并不限于通过其政治机构而做出的措施。社会能够并且确在执行它自己的诏令。而假如它所颁的诏令是错的而不是对的，或者其内容是它所不应干预的事，那么它就是实行一种社会暴虐；而这种社会暴虐比许多种类的政治压迫还可怕，因为它虽不常以极端性的刑罚为后盾，却使人们有更少的逃避办法，这是由于它透入生活细节更深得多，由于它奴役到灵魂本身。因此，仅只防御官府的暴虐还不够；对于得势舆论和得势威想的暴虐，对于社会要借行政处罚以外的办法来把它自己的观念和行事当作行为准则来强加于所见不同的人，以束缚任何与它的方式不相协稠的个性的发展，甚至，假如可能的话，阻止这种个性的形成，从而迫使一切人物都按照它自己的模型来剪裁他们自己的这种趋势——对于这些，也都需要加以防御。关于集体意见对个人独立的合法干涉，是有一个限度的；要找出这个限度并维持它不遭侵蚀，这对于获致人类事务的良好情况\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 3000, \"chapter_text_length\": 10642, \"has_more\": true, \"next_offset\": 3000, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": false, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"03af608ef94ceac5fa3fdcccf3c6de45a230c8b0fefa8acf41bd576517db260a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/6a65e3ef874f?ch=1\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 3000]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 14.9,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "fa175af7701a",
+      "focus": "投票"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"id\": \"fa175af7701a\", \"title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取公民自由与集体主权。卢梭批判君权神授，主张主权在民，强调法律须体现公意，政府只是执行者。其哲学贡献在于重新定义自由与服从的关系，为现代民主、共和制及人民主权理论奠定基础，深刻影响了法国大革命及后世政治思想。卢梭开篇即言“人生而自由，却无往不在枷锁中”，由此引出社会契约的根本问题：如何在形成政治共同体的同时保留个体的自由？他的答案是“公意”——不是众多个别意志的简单相加，而是全体公民共同利益的理性表达。在公意指导下，每个人服从法律实际上就是服从自己制定的规则，从而实现道德自由。书中还区分了主权者、政府与臣民三者关系，强调主权不可分割、不可转让。尽管卢梭的理论在实践中面临“如何确保公意不被扭曲”的难题，但它为现代民主制度提供了核心理念，并直接影响了罗伯斯庇尔、康德和黑格尔的政治哲学。\", \"rank\": 45.5, \"chapterCount\": 50, \"declared_chapter_count\": 50, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 50, \"readable\": true, \"chapters\": [{\"index\": 41, \"title\": \"第二章 论投票\"}], \"matched_chapters\": 1, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 16.6,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_yHuFDgonnuLeWRZr6P8W1807"
+    },
+    {
+     "t": 16.8,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_01_XfSeSx7l1YMD6P4lt5b88712"
+    },
+    {
+     "t": 16.9,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "fa175af7701a",
+      "chapter_idx": 41,
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"chapter_idx\": 41, \"title\": \"第二章 论投票\", \"citation_label\": \"【《社会契约论》·第二章 论投票】\", \"text\": \"从上一章可以看出，处理一般事物的方式就足以确切地表明道德风尚的实际情况以及政治体的健康状态。在大会里人们越是能和衷共济，也就是说人们的意见越是趋于全体一致，则公意也就越占统治地位；反之，冗长的争论、意见分歧和吵闹不休，也就宣告个别利益之占了上风和国家的衰微。当国家的体制之中包括有两个或更多的等级的时候一一例如罗马的贵族与平民，他们的争执即使是在共和国最美好的时代也经常在扰乱着人民大会一一-则上述这一点似乎不太显著。然而这种例外多半只是外表的而不是真正的；因为这时候由于政治共同体内在的缺陷，可以说是一国之内有了两个国家。上述这一点对于这两者合起来说虽然不是真确的，但对于它们每一个分别来说却是真确的。而且实际上，即使是在最动荡的时代，但只要元老院不加干涉，人民的投票总是进行的很平静的，并且总是按多数票来表决的；公民们既然只有一种利益，人民便只有一种意志。但循环到了另一个极端，也会出现全体一致。那就是当公民①“另写一篇论文”即后来的《山中书简》第7书。一译注全都沦于奴役状态，既不再有自由也不再有意志的时候。这时候，恐怖和阿课把投票变成了一片喧嚣；人们不再讨论了，人们不是在赞颂就是在咒骂。罗马皇蒂治下的元老院，其表示意见的可耻方式就是如此。有时候它那做法又是谨慎得荒诞出奇。塔西佗曾指出，①在奥东②的治下，元老们在争相置骂维梯留斯③的时候，竞至同时成一片可怕的喧哗，为的是万一维梯留斯作了主子的话，他也无从知道他们每个人都说了些什么话。从这些不同的考虑里，使产生了一些准则；我们应该依据这些准则，按辨认公意的难易程度以及国家盛衰的情况，来规定计算票数和排比不同意见的方式。唯有一种法律，就其本性而言，必须要有全体一致的同意；④\\n那就是社会公约。因为政治的结合乃是全世界上最自愿的行为；每一个人既然生来是自由的，并且是自己的主人，所以任何别人在任何可能的借口之下，都不能不得他本人的认可就役使他。断言奴隶的儿子生来就是奴隶，那就等于断言他生来就不是人。可是，如果在订立社会公约的时候出现了反对者的话，这些人的反对也并不能使契约无效，那只不过是不许把这些人包括在契约之内罢了；他们是公民中间的外邦人。但是在国家成立以①见塔西佗《历史》第1卷，第85章。-译注②奥东（Othon，即Otho)，罗马皇帝，公元69年在位；维梯留斯与奥东争夺皇位，奥东战败自杀。—译注③维梯留斯（Vitellius），罗马皇帝，公元69年在位，即位后不久被卫斯巴襄(Vespasianus）推翻。—译注④本书第1卷，第5章：“多数表决的规则，其本身就是一种约定的确立，并且假定至少是有过一次全体一致的同意。”—译注可参看本书第1卷，第4章。—译注后，则居留就构成为同意；而居住在领土之内也就是服从主权。①除去这一原始的契约而外，投票的大多数是永远可以药束其他一切人的；这是契约本身的结果。②但是人们会问：一个人怎么能够是自由的，而又被迫要遵守并不是属于他自已的那些意志呢？反对者怎么能够既是自由的，而又要服从为他们所不曾同意的那些法律呢？我要回答说，这个问题的提法是错误的。公民是同意了一切法律的，即使是那些违反他们的意愿而通过的法律，即使是那些他们若胆敢违犯其中的任何一条都要受到惩罚的法律。国家全体成员的经常意志就是公意；正因为如此，他们才是公民并且是自由的。当人们在人民大会上提议制定一项法律时，他们向人民所提问的，精确地说，并不是人民究竞是赞成这个提议还是反对这个提议，而是它是不是符合公意；而这个公意也就是他们自己的意志。每个人在投票时都说出了自己对这个问题的意见，于是从票数的计算里就可以得出公意的宣告。因此，与我相反的意见若是占了上风，那并不证明别的，只是证明我错了，只是证明我所估计是公意的并不是公意。假如我的个别意见居然胜过了公意，那末我就是做了另一桩并非我原来所想要做的事；而在这时①这当然应该始终理解为只是在一个自由的国家里；否则的话，家庭、财产、无处容身、生活的需要以及暴力等等，都可以不顾一个居民的意愿如何而把他留滞在国内；这时候单凭他的居住，就不再能断定他是同意契约的还是破坏契约的了。②可参看本书第2卷，第3章。一—译注③在热那亚监狱的大门上和船奴的锁链上，都可以看到Libertas（自由）这个词。这样的办法，真是又漂亮又恰当。事实上，唯有各国为非作列的人才会妨碍公民得到自由。在一个把所有这样的人都送去做船奴的国家里，人们便会享有最完美的自由了。候，我就不是自由的了。当然，这要假定公意的一切特征仍然存在于多数之中；假如它在这里面也不存在的话，那末无论你赞成哪一边，总归是不再有自由可言的。前面①在说明人们在公共讨论中是怎样以个别的意志代替公意的时候，我已经充分指出了预防这种流的实际方法；后面我还要再加以论述。至于可以宣告这种意志的投票比例数，我也已经给出了测定它所应根据的各种原则。③一票之差可以破坏双方相等，一票反对也可以破坏全体一致。然而介乎全体-致与双方相等之间的，却还有许多种数字不等的分配，而对于其中的每一种，我们都可以按照政治体的情况与需要来确定这个数字。有两条普遍的准则可供我们规定这一比率：一条是，讨论愈是重大，则通过的意见也就愈应当接近于全体一致；另一条是，所涉及的事情愈是需要迅速解决，则所规定的双方票额之差也就愈应该缩小，在必须马上做出决定的讨论中，只要有一票的多数就够了。这两条准则中的前一条似乎更切合于法律，而后一条则似乎更切合于时务。但无论如何，都必须依靠两者的结合才能确定我们可以宣布其为多数的最好的比率。①见本书第2卷，第3章；第3卷，第18章。-—译注②见本书第4卷，第3、章。—译注③见本书第1卷，第5章。—译注\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2334, \"chapter_text_length\": 2334, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": null, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"2c0dd22d815ffe0981a34eb79cacb7b519a1fcb81a05609c0ed81725b0aabc77\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/fa175af7701a?ch=41\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2334]], \"covered_characters\": 2334, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 16.9,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "fa175af7701a",
+      "limit": 40
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"id\": \"fa175af7701a\", \"title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取公民自由与集体主权。卢梭批判君权神授，主张主权在民，强调法律须体现公意，政府只是执行者。其哲学贡献在于重新定义自由与服从的关系，为现代民主、共和制及人民主权理论奠定基础，深刻影响了法国大革命及后世政治思想。卢梭开篇即言“人生而自由，却无往不在枷锁中”，由此引出社会契约的根本问题：如何在形成政治共同体的同时保留个体的自由？他的答案是“公意”——不是众多个别意志的简单相加，而是全体公民共同利益的理性表达。在公意指导下，每个人服从法律实际上就是服从自己制定的规则，从而实现道德自由。书中还区分了主权者、政府与臣民三者关系，强调主权不可分割、不可转让。尽管卢梭的理论在实践中面临“如何确保公意不被扭曲”的难题，但它为现代民主制度提供了核心理念，并直接影响了罗伯斯庇尔、康德和黑格尔的政治哲学。\", \"rank\": 45.5, \"chapterCount\": 50, \"declared_chapter_count\": 50, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 50, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"前言\"}, {\"index\": 1, \"title\": \"第一章 第一卷的题旨\"}, {\"index\": 2, \"title\": \"第二章 论原始社会\"}, {\"index\": 3, \"title\": \"第三章 论最强者的权利\"}, {\"index\": 4, \"title\": \"第四章 论奴隶制\"}, {\"index\": 5, \"title\": \"第五章 论总需追溯到一个最初的约定\"}, {\"index\": 6, \"title\": \"第六章 论社会公约\"}, {\"index\": 7, \"title\": \"第七章 论主权者\"}, {\"index\": 8, \"title\": \"第八章 论社会状态\"}, {\"index\": 9, \"title\": \"第九章 论财产权\"}, {\"index\": 10, \"title\": \"第一章 论主权是不可转让的\"}, {\"index\": 11, \"title\": \"第二章 论主权是不可分割的\"}, {\"index\": 12, \"title\": \"第三章 公意是否可能错误\"}, {\"index\": 13, \"title\": \"第四章 论主权权力的界限\"}, {\"index\": 14, \"title\": \"第五章 论生死权\"}, {\"index\": 15, \"title\": \"第六章 论法律\"}, {\"index\": 16, \"title\": \"第七章 论立法者\"}, {\"index\": 17, \"title\": \"第八章 论人民\"}, {\"index\": 18, \"title\": \"第九章 论人民（续）\"}, {\"index\": 19, \"title\": \"第十章 论人民（续）\"}, {\"index\": 20, \"title\": \"第十一章 论各种不同的立法体系\"}, {\"index\": 21, \"title\": \"第十二章 法律的分类\"}, {\"index\": 22, \"title\": \"第一章 政府总论\"}, {\"index\": 23, \"title\": \"第二章 论各种不同政府形式的建制原则\"}, {\"index\": 24, \"title\": \"第三章 政府的分类\"}, {\"index\": 25, \"title\": \"第四章 论民主制\"}, {\"index\": 26, \"title\": \"第五章 论贵族制\"}, {\"index\": 27, \"title\": \"第六章 论国君制\"}, {\"index\": 28, \"title\": \"第七章 论混合政府\"}, {\"index\": 29, \"title\": \"第八章 论没有一种政府形式适宜于一切国家\"}, {\"index\": 30, \"title\": \"第九章 论一个好政府的标志\"}, {\"index\": 31, \"title\": \"第十章 论政府的滥用职权及其蜕化的倾向\"}, {\"index\": 32, \"title\": \"第十一章 论政治体的死亡\"}, {\"index\": 33, \"title\": \"第十二章 怎样维持主权权威\"}, {\"index\": 34, \"title\": \"第十三章 怎样维持主权权威（续）\"}, {\"index\": 35, \"title\": \"第十四章 怎样维持主权权威（续）\"}, {\"index\": 36, \"title\": \"第十五章 论议员或代表\"}, {\"index\": 37, \"title\": \"第十六章 论政府的创制绝不是一项契约\"}, {\"index\": 38, \"title\": \"第十七章 论政府的创制\"}, {\"index\": 39, \"title\": \"第十八章 防止政府篡权的方法\"}], \"matched_chapters\": 50, \"has_more\": true, \"next_offset\": 40, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 18.2,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_PDlIh8NnkzSk20aU7YZD6415",
+     "status": "success",
+     "duration_seconds": 0.003
+    }
+   ],
+   "answer": "不必然。而且这里其实压着两个需要分开的东西——**\"同意\"给的是正当性（权威），\"公正\"说的是内容对不对**。多数投票可以决定一条规则有没有资格被服从，但决定不了它的内容对不对。\n\n**一、\"多数同意\"至多证明的是正当性，不是公正**\n\n罗尔斯在讨论多数裁决时有一句很干脆的定位：在理想的立法条件下，\"大多数人的决定在实践中就是有权威的，虽然不是决定性的\"，他把这种情况叫**准纯粹程序正义**（《正义论》第六章）。\"有权威但不是决定性的\"——这六个字恰好点出：成算多数票能赋予规则效力，却不足以担保规则的内容就公正。正当性和公正不是一回事，前者是\"该不该服从\"，后者是\"对不对\"。\n\n**二、连卢梭都不认为多数票等于公正**\n\n有意思的是，公意理论最著名的代言人反而最反对把两者等同。他在《社会契约论》第二卷第三章说得很清楚：公意永远公正，但\"并不能由此推论说，人民的考虑也永远有着同样的正确性\"；人民\"总是愿意自己幸福，但并不总是能看清楚幸福\"，会受欺骗。他还区分了**公意**与**众意**——\"众意只是个别意志的总和\"，着眼于私人利益。所以投票是一套**会出错**的、用来发现公意的程序，不是公意本身。\n\n到了第四卷论投票，他给多数票的效力加了一个关键限定：与我相反的意见占了上风，\"只是证明我错了\"——**但要假定公意的一切特征仍然存在于多数之中**；若不存在，\"无论你赞成哪一边，总归是不再有自由可言的\"。也就是说，赤裸的多数本身证明不了什么。\n\n**三、为什么\"必然\"这个说法站不住**\n\n\"必然公正\"需要一个蕴含关系：多数同意 ⇒ 公正。这条蕴含有三处常见断裂：\n\n- **谁来投票。** \"多数\"本身就是规则划出来的：谁算数、谁被排除。历史上大量不义的规则（比如把某些人当财产）正是靠当时\"多数\"投票成立的，因为被损害者根本不在投票之列。投票的边界问题不是边角料，它决定结果的分量。\n- **多数也会压迫少数。** 密尔在《论自由》里点破：所谓\"人民意志\"，\"实际上只是最多的或者最活跃的一部分人民的意志\"，其结果是\"人民会要压迫其自己数目中的一部分\"（第一章\"引论\"）。他还提醒，卢梭笔下\"全体一致\"有时恰恰出现在公民\"全都沦于奴役状态\"之时，那是\"恐怖和谄媚\"造成的喧嚣，不是共识。\n- **票数不决定规范真理。** 就算投票者全知情、无胁迫，数字多少也管不着一个规范判断本身对不对。何况现实中提问方式、信息、胁迫都可能被操纵。\n\n顺带说，光有**一致同意**也不够：一个小群体全体赞成把抓来的外人当奴隶，被赞成的是不义。可见\"同意\"和\"公正\"之间本来就没有蕴含。\n\n**四、一个决定性分歧：你把\"公正\"定义成什么**\n\n上面的结论要成立，得看你说的\"公正\"是哪种：\n\n- 若把公正**定义为\"由约定的程序产生的结果\"**（纯粹程序正义的读法），那命题就成了同义反复——按定义它就是\"公正\"的。但这等于把问题问没了：它就回答不了\"这个程序本身公不公正\"。\n- 若把公正理解为**独立于程序的内容性质**，那命题就是**假的**。\n\n两种读法下，\"多数投票因此必然公正\"这个有意思的主张都立不住：要么琐屑地真而空洞，要么直接为假。\n\n**五、那么同意到底给了什么**\n\n不是\"无关\"，而是给了三类都**够不上\"必然公正\"**的东西：\n\n1. **正当性**——给出一条服从的理由，哪怕你不赞成该决定（罗尔斯说的\"有权威\"）；\n2. **证据**——在充分知情、自由讨论、无派系操纵的条件下（这正是卢梭反复要求的），多数判断是**趋于正确**的证据，不是正确的证明；\n3. **参与本身的价值**——能否参与、是否所有受影响者都在场，这本身就是公正的要求。\n\n**最后一句。** 多数表决规则的效力本身来自一个在先的约定。卢梭在脚注里补了这一点：\"多数表决的规则，其本身就是一种约定的确立，并且假定至少是有过一次全体一致的同意。\"所有权威最终锚定在那个在先的、关于规则的共识上，而不在数人头本身；而即便如此，它给出的也只是权威，不是每一条内容的公正。\n\n所以真正该问的，不是\"多数同意是否必然公正\"，而是：**这多数是否包含了所有受影响的人？讨论是否充分而自由？这个决定在什么条件下值得服从？**——这三个问题，比\"必然公正\"这句结论有用得多。",
+   "answer_chars": 1781,
+   "done_content": "不必然。而且这里其实压着两个需要分开的东西——**\"同意\"给的是正当性（权威），\"公正\"说的是内容对不对**。多数投票可以决定一条规则有没有资格被服从，但决定不了它的内容对不对。\n\n**一、\"多数同意\"至多证明的是正当性，不是公正**\n\n罗尔斯在讨论多数裁决时有一句很干脆的定位：在理想的立法条件下，\"大多数人的决定在实践中就是有权威的，虽然不是决定性的\"，他把这种情况叫**准纯粹程序正义**（《正义论》第六章）。\"有权威但不是决定性的\"——这六个字恰好点出：成算多数票能赋予规则效力，却不足以担保规则的内容就公正。正当性和公正不是一回事，前者是\"该不该服从\"，后者是\"对不对\"。\n\n**二、连卢梭都不认为多数票等于公正**\n\n有意思的是，公意理论最著名的代言人反而最反对把两者等同。他在《社会契约论》第二卷第三章说得很清楚：公意永远公正，但\"并不能由此推论说，人民的考虑也永远有着同样的正确性\"；人民\"总是愿意自己幸福，但并不总是能看清楚幸福\"，会受欺骗。他还区分了**公意**与**众意**——\"众意只是个别意志的总和\"，着眼于私人利益。所以投票是一套**会出错**的、用来发现公意的程序，不是公意本身。\n\n到了第四卷论投票，他给多数票的效力加了一个关键限定：与我相反的意见占了上风，\"只是证明我错了\"——**但要假定公意的一切特征仍然存在于多数之中**；若不存在，\"无论你赞成哪一边，总归是不再有自由可言的\"。也就是说，赤裸的多数本身证明不了什么。\n\n**三、为什么\"必然\"这个说法站不住**\n\n\"必然公正\"需要一个蕴含关系：多数同意 ⇒ 公正。这条蕴含有三处常见断裂：\n\n- **谁来投票。** \"多数\"本身就是规则划出来的：谁算数、谁被排除。历史上大量不义的规则（比如把某些人当财产）正是靠当时\"多数\"投票成立的，因为被损害者根本不在投票之列。投票的边界问题不是边角料，它决定结果的分量。\n- **多数也会压迫少数。** 密尔在《论自由》里点破：所谓\"人民意志\"，\"实际上只是最多的或者最活跃的一部分人民的意志\"，其结果是\"人民会要压迫其自己数目中的一部分\"（第一章\"引论\"）。他还提醒，卢梭笔下\"全体一致\"有时恰恰出现在公民\"全都沦于奴役状态\"之时，那是\"恐怖和谄媚\"造成的喧嚣，不是共识。\n- **票数不决定规范真理。** 就算投票者全知情、无胁迫，数字多少也管不着一个规范判断本身对不对。何况现实中提问方式、信息、胁迫都可能被操纵。\n\n顺带说，光有**一致同意**也不够：一个小群体全体赞成把抓来的外人当奴隶，被赞成的是不义。可见\"同意\"和\"公正\"之间本来就没有蕴含。\n\n**四、一个决定性分歧：你把\"公正\"定义成什么**\n\n上面的结论要成立，得看你说的\"公正\"是哪种：\n\n- 若把公正**定义为\"由约定的程序产生的结果\"**（纯粹程序正义的读法），那命题就成了同义反复——按定义它就是\"公正\"的。但这等于把问题问没了：它就回答不了\"这个程序本身公不公正\"。\n- 若把公正理解为**独立于程序的内容性质**，那命题就是**假的**。\n\n两种读法下，\"多数投票因此必然公正\"这个有意思的主张都立不住：要么琐屑地真而空洞，要么直接为假。\n\n**五、那么同意到底给了什么**\n\n不是\"无关\"，而是给了三类都**够不上\"必然公正\"**的东西：\n\n1. **正当性**——给出一条服从的理由，哪怕你不赞成该决定（罗尔斯说的\"有权威\"）；\n2. **证据**——在充分知情、自由讨论、无派系操纵的条件下（这正是卢梭反复要求的），多数判断是**趋于正确**的证据，不是正确的证明；\n3. **参与本身的价值**——能否参与、是否所有受影响者都在场，这本身就是公正的要求。\n\n**最后一句。** 多数表决规则的效力本身来自一个在先的约定。卢梭在脚注里补了这一点：\"多数表决的规则，其本身就是一种约定的确立，并且假定至少是有过一次全体一致的同意。\"所有权威最终锚定在那个在先的、关于规则的共识上，而不在数人头本身；而即便如此，它给出的也只是权威，不是每一条内容的公正。\n\n所以真正该问的，不是\"多数同意是否必然公正\"，而是：**这多数是否包含了所有受影响的人？讨论是否充分而自由？这个决定在什么条件下值得服从？**——这三个问题，比\"必然公正\"这句结论有用得多。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "book": "正义论",
+     "chapter": "第六章　义务和职责",
+     "book_id": "929771a017d6",
+     "chapter_idx": 6,
+     "author": "约翰·罗尔斯",
+     "evidence_id": "read_14e7cf318ce0",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "言。\n因此，政治解决的原则适用于这样一些境况：在我们能确定的范围内，如果实际地被表决的法律是那些合理地得到真诚地想遵循两个正义原则的理性立法者的资成的法律，那么大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。在立法阶段中，我们必须依赖立法阶段的实际讨论过程而在允许的范围内选择一个政策。这些情况并不是纯粹程序正义的例证，因为所达到的结果并没有完全确定正当的决定。它们仅仅表明，那些不同意已作出的决定的人，不可能在公共正义观的框架内令人信服地确立他们的观点。这是一个不可能明确规定的问题。实际上，各政党毫无疑义在这些问题上将采取不同的立场。只要可能的话，立宪设计的自标就是确保社会各阶级的自我利益不致把政治解决方案扭曲得超出某一允许的范围。\n55.非暴力反抗的定义现在我希望通过概述一种非暴力反抗（ci：i！disobedience）理论，来阐明自然义务和职责的原则的内容。正如我已经指明的那样，这个理论只是为了一个接近正义的社会，即一个就大多数情况来看是组织良好的、不过其间确发生了对正义的严重侵犯的社会而设计的。既然我假设一种近于正义的状态需要一种民主制度，那么，这-理论就涉及到非暴力反抗对于合法建立的民主权力的作用和恰当性。这一理论不适用于其它形式的政府，并且除了偶然之外，也不适用于其它持异议和抵抗的情况。我将不讨论\n这样一种抗议形式，它伴随着军事行动及抵抗",
+     "quoted_passages": [
+      "大多数人的决定在实践中就是有权威的，虽然不是决定性的"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 44174,
+     "reader_coordinate_valid": true
+    },
+    {
+     "book": "论自由",
+     "chapter": "第一章 引论",
+     "book_id": "6a65e3ef874f",
+     "chapter_idx": 1,
+     "author": "约翰·斯图尔特·密尔",
+     "evidence_id": "read_d7d56732a636",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "的真实状况。运用权力的“人民”与权力所加的人民并不永是同一的；而所说的“自治政府”亦非每人管治自己的政府，而是每人都被所有其余的人管治的政府。至于所谓人民意志，实际上只是最多的或者最活跃的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的人们的意志。于是结果是，人民会要压迫其自己数目中的一部分；而此种妄用权力之需加防止正不亚于任何他种。这样看来，要限制政府施用于个人的权力这一点，即在能使掌权者对于群体，也就是对于群体中最有力的党派正常负责的时候，也仍然丝毫不失其重要性。这个看法，因其既投合思想家们的智虑，又同样投合欧洲社会中那些在其真实的或假想的利害上与民主适相反对的重要阶级的意向，自然不难树立起来；在今天的政治思想中，一般已把“多数的暴虐”这一点列入社会所须警防的诸种灾祸之内了。\n和他种暴虐一样，这个多数的暴虐之可怕，人们起初只看到，现在一般俗见仍认为，主要在于它会通过公共权威的措施而起作用。但是深思的人们则已看出，当社会本身是暴君时，就是说，当社会作为集体而凌焉于构成它的各别个人时，它的肆虐手段并不限于通过其政治机构而做出的措施。社会能够并且确在执行它自己的诏令。而假如它所颁的诏令是错的而不是对的，或者其内容是它所不应干预的事，那么它就是实行一种社会暴虐；而这种社会暴虐比许多种类的政治压迫还可怕，因为它虽不常以极端性的刑罚为后盾，却使人们有更少的逃避办法，这是由于它透入生",
+     "quoted_passages": [
+      "实际上只是最多的或者最活跃的一部分人民的意志",
+      "人民会要压迫其自己数目中的一部分"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 10642,
+     "reader_coordinate_valid": true
+    },
+    {
+     "book": "社会契约论",
+     "chapter": "第二章 论投票",
+     "book_id": "fa175af7701a",
+     "chapter_idx": 41,
+     "author": "让-雅克·卢梭",
+     "evidence_id": "read_1d0440750d48",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "公意也就是他们自己的意志。每个人在投票时都说出了自己对这个问题的意见，于是从票数的计算里就可以得出公意的宣告。因此，与我相反的意见若是占了上风，那并不证明别的，只是证明我错了，只是证明我所估计是公意的并不是公意。假如我的个别意见居然胜过了公意，那末我就是做了另一桩并非我原来所想要做的事；而在这时①这当然应该始终理解为只是在一个自由的国家里；否则的话，家庭、财产、无处容身、生活的需要以及暴力等等，都可以不顾一个居民的意愿如何而把他留滞在国内；这时候单凭他的居住，就不再能断定他是同意契约的还是破坏契约的了。②可参看本书第2卷，第3章。一—译注③在热那亚监狱的大门上和船奴的锁链上，都可以看到Libertas（自由）这个词。这样的办法，真是又漂亮又恰当。事实上，唯有各国为非作列的人才会妨碍公民得到自由。在一个把所有这样的人都送去做船奴的国家里，人们便会享有最完美的自由了。候，我就不是自由的了。当然，这要假定公意的一切特征仍然存在于多数之中；假如它在这里面也不存在的话，那末无论你赞成哪一边，总归是不再有自由可言的。前面①在说明人们在公共讨论中是怎样以个别的意志代替公意的时候，我已经充分指出了预防这种流的实际方法；后面我还要再加以论述。至于可以宣告这种意志的投票比例数，我也已经给出了测定它所应根据的各种原则。③一票之差可以破坏双方相等，一票反对也可以破坏全体一致。然而介乎全体-致与双方相等之间",
+     "quoted_passages": [
+      "只是证明我错了",
+      "无论你赞成哪一边，总归是不再有自由可言的",
+      "多数表决的规则，其本身就是一种约定的确立，并且假定至少是有过一次全体一致的同意。"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 2334,
+     "reader_coordinate_valid": true
+    },
+    {
+     "book": "社会契约论",
+     "chapter": "第三章 公意是否可能错误",
+     "book_id": "fa175af7701a",
+     "chapter_idx": 12,
+     "author": "让-雅克·卢梭",
+     "evidence_id": "read_b2104cfd70bb",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "由以上所述，可见公意永远是公正的，而且永远以公共利益为依归；但是并不能由此推论说，人民的考虑也永远有着同样的正确性。人们总是愿意自已幸福，但人们并不总是能看清楚幸福。人民是决不会被腐蚀的，但人民却往往会受欺骗，而且唯有在这时候，人民才好像会愿意要不好的东西。众意与公意之间经常总是有很大的差别；①公意只着眼于公共的利益，而众意则着眼于私人的利益，众意只是个别意志的总和。但是，除掉这些个别意志间正负相抵消的部分而外，则剩下的总和仍然是公意。①乔治第一（1714一1727在位），英国国王。一-译注②即詹姆斯第二（1685一1688在位），英国国王。1688年“光荣革命”，国会拥奥兰治·威廉取代詹姆斯第二为英国国王。---译注③即威廉第三（16881702在位），英国国王。—译注④这句话作者最初写作：“公意也就是众意，这是极其罕见的事。”一一译注阿冉松候爵说：“每种利益都具有不同的原则。两种个别利益的一致是由于与第三种利益相对立而形成的。”他还可以补充说，全体的利益一致是由于与每个人如果当人民能够充分了解情况并进行讨论时，公民彼此之间又没有任何勾结；那末从大量的小分歧中总可以产生公意，而且讨论的结果总会是好的。但是当形成了派别的时候，形成了以牺牲大集体为代价的小集团的时候，每一个这种集团的意志对它的成员来说就成为公意，而对国家来说则成为个别意志；这时候我们可以说，投票者的数目已经不再与人数",
+     "quoted_passages": [
+      "并不能由此推论说，人民的考虑也永远有着同样的正确性",
+      "众意只是个别意志的总和"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 1577,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 19,
+    "display_citations": 4,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "正义论",
+       "chapter": "第六章　义务和职责",
+       "book_id": "929771a017d6",
+       "chapter_idx": 6,
+       "author": "约翰·罗尔斯",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "言。\n因此，政治解决的原则适用于这样一些境况：在我们能确定的范围内，如果实际地被表决的法律是那些合理地得到真诚地想遵循两个正义原则的理性立法者的资成的法律，那么大多数人的决定在实践中就是有权威的，虽然不是决定性的。这种情况属于准纯粹程序正义。在立法阶段中，我们必须依赖立法阶段的实际讨论过程而在允许的范围内选择一个政策。这些情况并不是纯粹程序正义的例证，因为所达到的结果并没有完全确定正当的决定。它们仅仅表明，那些不同意已作出的决定的人，不可能在公共正义观的框架内令人信服地确立他们的观点。这是一个不可能明确规定的问题。实际上，各政党毫无疑义在这些问题上将采取不同的立场。只要可能的话，立宪设计的自标就是确保社会各阶级的自我利益不致把政治解决方案扭曲得超出某一允许的范围。\n55.非暴力反抗的定义现在我希望通过概述一种非暴力反抗（ci：i！disobedience）理论，来阐明自然义务和职责的原则的内容。正如我已经指明的那样，这个理论只是为了一个接近正义的社会，即一个就大多数情况来看是组织良好的、不过其间确发生了对正义的严重侵犯的社会而设计的。既然我假设一种近于正义的状态需要一种民主制度，那么，这-理论就涉及到非暴力反抗对于合法建立的民主权力的作用和恰当性。这一理论不适用于其它形式的政府，并且除了偶然之外，也不适用于其它持异议和抵抗的情况。我将不讨论\n这样一种抗议形式，它伴随着军事行动及抵抗",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 44174,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "论自由",
+       "chapter": "第一章 引论",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 1,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "的真实状况。运用权力的“人民”与权力所加的人民并不永是同一的；而所说的“自治政府”亦非每人管治自己的政府，而是每人都被所有其余的人管治的政府。至于所谓人民意志，实际上只是最多的或者最活跃的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的人们的意志。于是结果是，人民会要压迫其自己数目中的一部分；而此种妄用权力之需加防止正不亚于任何他种。这样看来，要限制政府施用于个人的权力这一点，即在能使掌权者对于群体，也就是对于群体中最有力的党派正常负责的时候，也仍然丝毫不失其重要性。这个看法，因其既投合思想家们的智虑，又同样投合欧洲社会中那些在其真实的或假想的利害上与民主适相反对的重要阶级的意向，自然不难树立起来；在今天的政治思想中，一般已把“多数的暴虐”这一点列入社会所须警防的诸种灾祸之内了。\n和他种暴虐一样，这个多数的暴虐之可怕，人们起初只看到，现在一般俗见仍认为，主要在于它会通过公共权威的措施而起作用。但是深思的人们则已看出，当社会本身是暴君时，就是说，当社会作为集体而凌焉于构成它的各别个人时，它的肆虐手段并不限于通过其政治机构而做出的措施。社会能够并且确在执行它自己的诏令。而假如它所颁的诏令是错的而不是对的，或者其内容是它所不应干预的事，那么它就是实行一种社会暴虐；而这种社会暴虐比许多种类的政治压迫还可怕，因为它虽不常以极端性的刑罚为后盾，却使人们有更少的逃避办法，这是由于它透入生",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 10642,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "社会契约论",
+       "chapter": "第二章 论投票",
+       "book_id": "fa175af7701a",
+       "chapter_idx": 41,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "公意也就是他们自己的意志。每个人在投票时都说出了自己对这个问题的意见，于是从票数的计算里就可以得出公意的宣告。因此，与我相反的意见若是占了上风，那并不证明别的，只是证明我错了，只是证明我所估计是公意的并不是公意。假如我的个别意见居然胜过了公意，那末我就是做了另一桩并非我原来所想要做的事；而在这时①这当然应该始终理解为只是在一个自由的国家里；否则的话，家庭、财产、无处容身、生活的需要以及暴力等等，都可以不顾一个居民的意愿如何而把他留滞在国内；这时候单凭他的居住，就不再能断定他是同意契约的还是破坏契约的了。②可参看本书第2卷，第3章。一—译注③在热那亚监狱的大门上和船奴的锁链上，都可以看到Libertas（自由）这个词。这样的办法，真是又漂亮又恰当。事实上，唯有各国为非作列的人才会妨碍公民得到自由。在一个把所有这样的人都送去做船奴的国家里，人们便会享有最完美的自由了。候，我就不是自由的了。当然，这要假定公意的一切特征仍然存在于多数之中；假如它在这里面也不存在的话，那末无论你赞成哪一边，总归是不再有自由可言的。前面①在说明人们在公共讨论中是怎样以个别的意志代替公意的时候，我已经充分指出了预防这种流的实际方法；后面我还要再加以论述。至于可以宣告这种意志的投票比例数，我也已经给出了测定它所应根据的各种原则。③一票之差可以破坏双方相等，一票反对也可以破坏全体一致。然而介乎全体-致与双方相等之间",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 2334,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "社会契约论",
+       "chapter": "第三章 公意是否可能错误",
+       "book_id": "fa175af7701a",
+       "chapter_idx": 12,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "由以上所述，可见公意永远是公正的，而且永远以公共利益为依归；但是并不能由此推论说，人民的考虑也永远有着同样的正确性。人们总是愿意自已幸福，但人们并不总是能看清楚幸福。人民是决不会被腐蚀的，但人民却往往会受欺骗，而且唯有在这时候，人民才好像会愿意要不好的东西。众意与公意之间经常总是有很大的差别；①公意只着眼于公共的利益，而众意则着眼于私人的利益，众意只是个别意志的总和。但是，除掉这些个别意志间正负相抵消的部分而外，则剩下的总和仍然是公意。①乔治第一（1714一1727在位），英国国王。一-译注②即詹姆斯第二（1685一1688在位），英国国王。1688年“光荣革命”，国会拥奥兰治·威廉取代詹姆斯第二为英国国王。---译注③即威廉第三（16881702在位），英国国王。—译注④这句话作者最初写作：“公意也就是众意，这是极其罕见的事。”一一译注阿冉松候爵说：“每种利益都具有不同的原则。两种个别利益的一致是由于与第三种利益相对立而形成的。”他还可以补充说，全体的利益一致是由于与每个人如果当人民能够充分了解情况并进行讨论时，公民彼此之间又没有任何勾结；那末从大量的小分歧中总可以产生公意，而且讨论的结果总会是好的。但是当形成了派别的时候，形成了以牺牲大集体为代价的小集团的时候，每一个这种集团的意志对它的成员来说就成为公意，而对国家来说则成为个别意志；这时候我们可以说，投票者的数目已经不再与人数",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 1577,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "社会契约论",
+       "chapter": "第七章 论主权者",
+       "book_id": "fa175af7701a",
+       "chapter_idx": 7,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "四种意志，即个别意志（volonteparticuliere）、团体（共同体）意志（volonte de corps）、众意（volonte de tous）和公意（volonté genérale)，可参看本书，第1卷，第6章；第2卷，第1、章；第3卷，第15章。一一译注②“绝对”指自然状态中的自由。一一译注③《日内瓦手稿》此处作：“因而，为了使社会公约不至于成为一纸空文，就必须使主权者在每个人的同意而外，还得具有他们对公共事业效忠的某些保证。这些保证的第一步，通常就是宣暂。然而由于它是从全然不同的另一种秩序中得出来的，并且每个人又可以按照自己内心的准则随心所欲地修改自己所负担的义务；所以人们在政治体制中就很少依赖于这一点，面是更",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论自由",
+       "chapter": "第二章 论思想自由和讨论自由",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 2,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "除对所有者本人而外便别无价值的个人所有物，如果在对它的享用上有所阻碍仅仅是一种对私人的损害，那么若问这损害所及是少数还是多数，就还有些区别。但是迫使一个意见不能发表的特殊罪恶乃在它是对整个人类的掠夺，对后代和对现存的一代都是一样，对不同意于那个意见的人比对抱持那个意见的人甚至更甚。假如那意见是对的，那么他们是被剥夺了以错误换真理的机会；假如那意见是错的，那么他们是失掉了一个差不多同样大的利益，那就是从真理与错误冲突中产生出来的对于真理的更加清楚的认识和更加生动的印象。 有必要对上述两条假设分别作一番考虑，每条在与之相应的论据上自有其各别的一枝。这里的论点有两个：我们永远不能确信我们所力图窒闭的意见是一个谬误的意见；假如我们确信，要窒",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论自由",
+       "chapter": "第三章 论个性为人类福祉的因素之一",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 3,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "呈现特别的困难，但是为患之处就在，一般的想法却很少见到个人自动性这个东西具有什么内在价值，值得为其自身之故而予以注意。大多数的人既满足于人类现有的那些办法（因为正是这大多数人把它们做成现在那样），便不能领会为什么那些办法对每人说来还不够好；更甚的是，在多数道德改革家和社会改革家的心目中，自动性并不成为他们理想的一部分，反倒在嫉恨的眼光之下被看作一种麻烦的或者还是叛逆性的障碍物，妨碍着对于他们自己所断为对人类最好的办法的普通接受。甚至对于象罕波尔特（Wilhelm Von Humboldt）这样一位杰出的学者兼政治家作为一篇论文主题来讲的一个教义，也只有很少数出自德国的人领会到它的意义——那大旨是说：“人的目的，或说由永恒不易的理性诏",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "功利主义",
+       "chapter": "第五章 论正义与功利的联系",
+       "book_id": "e23d6fac862d",
+       "chapter_idx": 5,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "大障碍之一，向来都是“正义”这一观念。“正义”一词会像一种本能那样，快速而确定地激发出强烈的情感和明显清晰的感知，而在大多数思想家看来，这种情感和感知都指向了事物的一种固有性质，表明正义必定是作为一种在属类上不同于各种利益的绝对之物而存在于大自然中；尽管（人们普遍公认）从长远来看，正义事实上从来没有脱离过利益，但在观念上却是与利益相对立的。 在这种情况下，正义就像我们面对的其他道德情感一样，它的起源和约束力之间并没有什么必然的联系。大自然赋予我们一种情感，并不一定说明这种情感激发出来的所有冲动都是正当合理的。正义感可能属于一种独特的本能，但它或许就像我们的其他本能一样，终归需要一种高级理性来加以约束和指导才行。假如我们既拥有思维本能",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论自由",
+       "chapter": "第四章 论社会驾于个人的权威的限度",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 4,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "得愈益增多的运用，使其情感和志趣愈益指向聪明的而非愚蠢的、升高的而非堕落的目标和计划。但是，不论是一个人也好，或者是任何多数人也好，都无权对另一个成年人说，为了他自己的益处他不可用其一生去做某件他所选定要用其一生去做的事。对于一个人的福祉，本人是关切最深的人；除在一些私人联系很强的情事上外，任何他人对于他的福祉所怀有的关切，和他自己所怀有的关切比较起来，都是微薄而肤浅的。社会对于作为个人的他所怀有的关切（除开对于他对他人的行为而外）总是部分的，并且完全是间接的；而本人关于自己的情感和情况，则虽最普通的男人或妇女也自有其认识方法，比任何他人所能有的不知胜过多少倍。 社会在个人只关己身的事情上要强使他一反其自己的判断和目的，这种干涉只能",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论自由",
+       "chapter": "第五章 本文教义的应用",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 5,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，若说有错，只是因为它们并没有真正产生有待它们产生的结果。既然个人自由的原则并无涉于自由贸易的教义，所以这原则也无涉于大多数有关那个教义的限制的问题：例如要防止借掺杂办法进行欺诈的行为可以允许公众有多少控制，又如工厂中的卫生预防措施或危险作业工人的保护办法可以强使厂主实行到什么程度等问题。这类问题若说是涉及自由问题，那也只能说到，在其他条件相等的情况下，听凭人们自己去总比对他们加以控制好一些。至于为着那些目的而要对人们有所控制，这在原则上谁也不能否认其为合法。另一方面，也有一些干涉贸易的问题在本质上就是自由问题，象上文刚刚提到的梅恩省禁酒法，象禁止对中国输入鸦片，象禁止出售毒药，总之，凡目标在于使人们不可能得到或难于得到某一货物的干",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "正义论",
+       "chapter": "第二章　正义的原则",
+       "book_id": "929771a017d6",
+       "chapter_idx": 2,
+       "author": "约翰·罗尔斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "别是，在第17节我将试图展示：这一原则并不象反对者所认为的引向一个货才统治的社会。在此我希望考虑一些别的问题，特别是它与纯粹程序正义观念的联系。 然而，首先我应当指出：要求地位开放的理由不仅仅是、甚至主要不是效率的理由。我并不是认为如果实际上所有人都能从 ①这一点可见斯恩的《集体选择与社会福利》第138页注 一种安排中得利职位就必须开放。因为，以下情况也许是可能的：通过赋子某些不完全开放的职位以权力和利益，可使每一个人的状况得到改善。虽然这些职位并不完全开放，但这或许更能吸引较高的人才和鼓舞较好的表现。可是，地位开放的原则是不允许有任何限制的。它表达了这样的信念：如果某些地位不按照一种对所有人都公平的基础开放，那些被排除在外的人们觉",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "正义论",
+       "chapter": "第五章　分配的份额",
+       "book_id": "929771a017d6",
+       "chapter_idx": 5,
+       "author": "约翰·罗尔斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "认识和纠正。而且，市场在公共利益的场合完全失去了作用。但是在这里我们不需要考虑这些问题。我们提出这些理想安排是为了阐明与纯粹程序正义有联系的观念。所以，这个理想观念可以用来评价现存的安排，并作为一种结构用来鉴别应该进行的变革。 场体系还有另一个更有意义的优点，即在必要的背景制度下，它是和平等的自由及机会的公正平等相协调的。公民对前途和工作具有自由选择权。劳动的强制和集中是完全没有道理的。的确，在缺少某些例如来自一种竞争体系的收人方面的差别的情况下，要明白怎样才能避免与自由不相容的强制社会的某些方面，至少在通常环境里是很困难的。此外，一个市场休系分散了经济权力。不管公司的内部性质是什么，是私存的还是公有的，是由企业家还是由工人选举的经",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "正义论",
+       "chapter": "第三章　原始状态",
+       "book_id": "929771a017d6",
+       "chapter_idx": 3,
+       "author": "约翰·罗尔斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "中都是作为道德人的平等代表、选择的结果不受偶然因素或社会力量的相对平衡所决定的状态。这样，作为公平的正义从一开始就能使用纯粹程序正义的观念。 那么，很清楚，原初状态纯粹是一假设的状态，它并不需要类似予它的状态曾经出现，虽然我们能通过仔细地追寻它表示的限制条件来模拟各方的思考。原初状态的观念除了试图解释我们的道德判断和帮助说明我们拥有的正义感之外，并不打算解释我们的行为。作为公平的正义是一种通过我们在反思的平衡中所考虑的判断显示的、有关我们的道德情感的理论。这些情感大概在某种程度上影响着我们的思想和行为。所以，原初状态的观念虽是行为理论的一部分，它却并不能使人因此推论说有类似于它的现实状态。我们必须说的只是：这些将被接受的原则在我们的",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "正义论",
+       "chapter": "第四章　平等的自由",
+       "book_id": "929771a017d6",
+       "chapter_idx": 4,
+       "author": "约翰·罗尔斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "义的，即各种制度都能被选择，并和正义论的所有约束相协调。这样，为了解决社会、经济政策 的各种问题，我们必须转面回溯一种准纯粹程序正义的观念：即只要各种法律和政策处在允许的范围内，并且一种正义宪法所授权的立法机构事实上制定了这些法律和政策的话，这些法律和政策就是正义的。正义论中的这种不确定性自身不是一个缺点，而正是我们所期望的东西。如果作为公平的正义对正义范围的规定比现存各种理论的规定更符合我们所考虑的判断，而且能十分敏锐地指出一个社会应该避免的严重错误的话，它就将证明自己是一种有价值的理论。 32.自由的概念在讨论第一个正义原则的运用时，我将试图绕开关子自由含义的争论，这种争论常常给第一个原则的运用这个题目带来许多麻烦。我先把关于否",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "单向度的人",
+       "chapter": "第九章　解放的大变动",
+       "book_id": "2c1a4c7d17a4",
+       "chapter_idx": 13,
+       "author": "赫伯特·马尔库塞",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "利国家中，一种和平生存所具有的人性特征看来是无社会性、无爱国心的——那些人性特征如：对一切坚固性、共处性和兽性的拒斥；对多数人的暴政的反抗；对恐惧和软弱的供认不讳（这是对该社会最合理的反应！）；被正在犯下的罪孽所损害的敏锐智慧；以及对微弱的、遭人嘲笑的抗议行为和拒绝行为的信念。人性的这些表现，也将由于必要的妥协而遭到损害——被掩盖他们自己、能够欺骗欺骗者、并把欺骗者排除在生活和思考范围之外的需要所损害。在极权主义社会中，人的态度势必变成遁世主义态度，势必遵奉塞缪尔·贝克特的劝告：“不要等到别人来追捕你的时候才去躲藏……” 即便把个人的思维和物质能量这样地从社会需要的活动和态度中撤出来，那也只是对少数人才有可能；它只是必须先于和平而进",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "织梦人——一个男孩穿越现实的哲学之旅",
+       "chapter": "第十二章 社会、政治与金钱",
+       "book_id": "0f00c3a90243",
+       "chapter_idx": 19,
+       "author": "杰克·鲍温",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "标。 ●所用的手段（即武力）应当与需要相配。 ●某些武器是非法的（扩张型弹头、各种毒气）。 ●对待俘虏存在一定的规则。 多数人的暴政？ 民主——源自希腊词汇demos（人民）和kratos（力量）：由代表人民利益的民选代表来做决定的政府体系。 理论上说，民主让人民发出“声音”。然而有人争论说，这会导致诸如这样的问题：人民不知道对他们来说最好的是什么，并且多数人总是以牺牲其他［少数］人利益的方式来取其所需。阿登翰（Aldenham）的首席男爵阿克顿（Lord Acton）将民主称为“多数人的暴政”，声称多数（或执政党）常常以暴力或欺骗的手段胜出。 如果人民是上帝，那他们的政府就会是民主的。如此完美的政府不是为人准备的。 ——卢梭 民主",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学家们都干了些什么",
+       "chapter": "三十二、查拉图斯特拉如是说",
+       "book_id": "2733906ea3f6",
+       "chapter_idx": 32,
+       "author": "林欣浩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "平等思想的反对和法国大革命有关。在法国大革命中，以民主为名的雅各宾派进行了恐怖统治和血腥屠杀，这让很多欧洲思想家看到了“多数人的暴政”的危险。就像柏拉图因为看到雅典的民主制处死了苏格拉底，因而在《理想国》中推崇精英政治一样，可能尼采也因为法国大革命而推崇贵族道德。 因为对强者的推崇，尼采便提出了“超人”这个概念。“超人”这个词在尼采的理论里，不是指拥有强大能力的人，不是说这人一定要当总统、当将军，而是说这人能实现贵族道德，超越奴隶道德。 尼采和叔本华一样，认为这世界是悲观的。但他的解决方法和叔本华不同。他认为叔本华的禁欲是胆小者的逃避。他觉得人不应该像叔本华宣扬的那样避免痛苦，而是应该承认痛苦，迎战痛苦。 简而言之，尼采推崇的是一种",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "从《理想国》到《正义论》",
+       "chapter": "密尔：《论自由》",
+       "book_id": "f15e7fd89491",
+       "chapter_idx": 15,
+       "author": "奈杰尔·沃伯顿",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "私人行为（结果，本书在最近几年里为一些法律的出台提供了支持，这些法律涉及电影审查、同性恋等）。但是它也是针对密尔所说的“多数人的暴政”，也就是大多数人的观点造成了一种社会压力，这种压力可以阻止某些人进行生活试验，虽然没有什么法律法规禁止他们这么做。如果我选择的古怪生活方式使得我的邻居受到侵犯，虽然我做的事情没有直接伤害他们，但他们也可以使我的生活出现麻烦，因此可以有效地阻止我们去实施法律所赋予我们的自由。密尔相信，“要求个人去服从”的这种社会压力可以破坏自由，并把每个人都降格为没有思维能力的平庸之辈，这些结果最后都会使得整个社会走下坡路。这很明显造成了这样一种观点：想使用密尔的伤害原则的某些人， 会发现忽视这种原则对自己更有利。也就",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "50堂经典哲学思维课",
+       "chapter": "19 柏拉图《理想国》 你想生活在什么样的城邦中？",
+       "book_id": "327e5a1db152",
+       "chapter_idx": 19,
+       "author": "郁喆隽",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "政制或庶民政治，同我们今日理解的民主不同，雅典式的民主只是“成年男性公民轮流当家做主”的直接民主制度，其可能的恶果便是“多数人的暴政”，苏格拉底之死就是最直接的体现；最后一种是苏格拉底认为最差的政治制度——僭主制。“僭主”是不具备合法性的政权篡夺者。希腊的僭主都用一些谦逊的称号，如“终身执政官”“全权将军”等，实际上却施行专制统治。这五种政制之间存在着承上启下的联系，每一种政治制度之下皆有其“善”的依据，但对这一依据过分追求的结果便是制度与城邦的崩溃，进而蜕变为下一阶段的制度。 那么在理想国中，谁应当来行使统治权呢？在柏拉图看来无疑是“哲人王”（philosopher-king）。柏拉图在《理想国》第473节中写道：“除非哲学家作为",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 19,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 35.586,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 10.6,
+     "ev": "assistant_commentary",
+     "chars": 30
+    },
+    {
+     "t": 10.6,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 10.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_1g2hfloxeCaYOwWkwG0w9736"
+    },
+    {
+     "t": 10.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_G2TYvTy4aO091wpX5KPj8908"
+    },
+    {
+     "t": 10.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_oUacHZlTJFTaWN8SBUn16284"
+    },
+    {
+     "t": 11.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_NfnfwDHvM8TiNIhJZZOF2148"
+    },
+    {
+     "t": 11.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.022,
+     "result_chars": 1908,
+     "result_head": "{\"query\": \"公意 众意 主权者\", \"results\": [{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 7, \"chapter_title\": \"第七章 论主权者\", \"citat"
+    },
+    {
+     "t": 11.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.028,
+     "result_chars": 5237,
+     "result_head": "{\"query\": \"投票 多数 决定 公正\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 论思想自由和讨论自由"
+    },
+    {
+     "t": 12.5,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.295,
+     "result_chars": 4119,
+     "result_head": "{\"query\": \"纯粹程序正义\", \"results\": [{\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"author\": \"约翰·罗尔斯\", \"chapter_idx\": 2, \"chapter_title\": \"第二章　正义的原则\", \"citation_l"
+    },
+    {
+     "t": 12.5,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.295,
+     "result_chars": 4255,
+     "result_head": "{\"query\": \"多数人的暴政\", \"results\": [{\"book_id\": \"2c1a4c7d17a4\", \"book_title\": \"单向度的人\", \"author\": \"赫伯特·马尔库塞\", \"chapter_idx\": 13, \"chapter_title\": \"第九章　解放的大变动\", \"cita"
+    },
+    {
+     "t": 14.4,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_Tit1gMVzbTkVE7r4acHu8532"
+    },
+    {
+     "t": 14.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_ojKDBQ35VsUHCkA2xR1x6566"
+    },
+    {
+     "t": 14.7,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_BLMlH6g5w7rzPQ7mGDSO4432"
+    },
+    {
+     "t": 14.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 4457,
+     "result_head": "{\"book_id\": \"929771a017d6\", \"book_title\": \"正义论\", \"chapter_idx\": 6, \"title\": \"第六章　义务和职责\", \"citation_label\": \"【《正义论》·第六章　义务和职责】\", \"text\": \"在采纳这种投票规则的理由。甚至在理性的和公正的"
+    },
+    {
+     "t": 14.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 4764,
+     "result_head": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"这篇论文的主题不是所谓意志自由，不是这个与那被误称为哲学必"
+    },
+    {
+     "t": 14.9,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.01,
+     "result_chars": 834,
+     "result_head": "{\"id\": \"fa175af7701a\", \"title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取"
+    },
+    {
+     "t": 16.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_yHuFDgonnuLeWRZr6P8W1807"
+    },
+    {
+     "t": 16.8,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_01_XfSeSx7l1YMD6P4lt5b88712"
+    },
+    {
+     "t": 16.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 3547,
+     "result_head": "{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"chapter_idx\": 41, \"title\": \"第二章 论投票\", \"citation_label\": \"【《社会契约论》·第二章 论投票】\", \"text\": \"从上一章可以看出，处理一般事物的方式就足以确"
+    },
+    {
+     "t": 16.9,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.005,
+     "result_chars": 2354,
+     "result_head": "{\"id\": \"fa175af7701a\", \"title\": \"社会契约论\", \"author\": \"让-雅克·卢梭\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取"
+    },
+    {
+     "t": 18.2,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_PDlIh8NnkzSk20aU7YZD6415"
+    },
+    {
+     "t": 18.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 2800,
+     "result_head": "{\"book_id\": \"fa175af7701a\", \"book_title\": \"社会契约论\", \"chapter_idx\": 12, \"title\": \"第三章 公意是否可能错误\", \"citation_label\": \"【《社会契约论》·第三章 公意是否可能错误】\", \"text\": \"由以上所述，可见公意永远"
+    },
+    {
+     "t": 35.7,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1051
+  }
+ ],
+ "total_wall_s": 37.1,
+ "status": "COMPLETED"
+}

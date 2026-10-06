@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-02",
+  "product_version": "0.1.2",
+  "active_answer_prompt": "0.1.1",
+  "main_system_prompt_changed": false,
+  "answer_tool_budget": null,
+  "chatgpt_reference": "Read-only inspection of memory summary topic controls and correction input; no private summary persisted",
+  "tests": {
+    "backend": 27,
+    "frontend": "npm test passed",
+    "build": "passed",
+    "browser": [
+      "narrative summary",
+      "manual edits saved",
+      "draft retained across categories",
+      "two-window revision conflict keeps draft",
+      "disable preserves saved content",
+      "independent sign-out changes mock account to guest"
+    ],
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "document_scroll_width": 390,
+      "dialog_width": 370
+    }
+  },
+  "real_model_probe": {
+    "status": "ok",
+    "text": "## 阅读与研究\n用户正在阅读康德的《纯粹理性批判》。\n\n## 长期关注\n曾讨论/关注康德与休谟对因果性理解的差异。\n\n## 交流偏好\n用户喜欢简洁的中文解释。",
+    "evidence": [
+      {
+        "topic": "reading",
+        "source_id": "synthetic:1",
+        "quote": "我正在阅读康德的《纯粹理性批判》",
+        "conversation_id": "synthetic"
+      },
+      {
+        "topic": "interests",
+        "source_id": "synthetic:2",
+        "quote": "康德与休谟对因果性的理解有什么区别？",
+        "conversation_id": "synthetic"
+      },
+      {
+        "topic": "preferences",
+        "source_id": "synthetic:1",
+        "quote": "我喜欢简洁的中文解释。",
+        "conversation_id": "synthetic"
+      }
+    ],
+    "synthetic_only": true,
+    "seconds": 6.44
+  },
+  "production_account_mutations_for_tests": false,
+  "screenshots": {
+    "desktop": "outputs/memory-settings-20261002/desktop.png",
+    "mobile": "outputs/memory-settings-20261002/mobile.png",
+    "sidebar": "outputs/memory-settings-20261002/sidebar.png"
+  },
+  "deployment": {
+    "published_at": "2026-10-02T14:01:33.964293+00:00",
+    "url": "https://agent.deepphilosophy.top/",
+    "assets": [
+      {
+        "path": "/assets/phiagent-icon-DCv4ti-X.png",
+        "status": 200,
+        "sha256": "643692794510b01ba9198360e70fc78bc13cd50a30a69f304e1ae0e5b6242e7e"
+      },
+      {
+        "path": "/assets/phiagent-icon-180-Bc5fQg99.png",
+        "status": 200,
+        "sha256": "94352d56a90a93101e8da073f77158d9e1bbea452044c030db00f5c70d270493"
+      },
+      {
+        "path": "/assets/index-BF6KzVMP.js",
+        "status": 200,
+        "sha256": "e2dd5a3e7b61258e020332977cba72a16c8549fc5f85f0dc30bf243b8b2b9964"
+      },
+      {
+        "path": "/assets/index-C94cZA4V.css",
+        "status": 200,
+        "sha256": "df4512a24727caded6c6090832def113815b1948d3a451641258594f6fb84acf"
+      }
+    ],
+    "health": {
+      "status": "healthy",
+      "version": "0.1.2",
+      "timestamp": "2026-10-02T22:01:33.538326"
+    },
+    "release_version": "0.1.2",
+    "prompt_version": "0.1.1",
+    "tool_budget": null,
+    "git_commit": "214057a380d9de63830172f7d6a37b5f332e3e06",
+    "sqlite_backup_taken": true,
+    "old_hashed_assets_preserved": true,
+    "production_model_request_made_for_deployment": false,
+    "memory_endpoint_auth": [
+      {
+        "method": "GET",
+        "status": 401,
+        "anonymous_access_denied": true
+      },
+      {
+        "method": "PUT",
+        "status": 401,
+        "anonymous_access_denied": true
+      }
+    ]
+  }
+}

@@ -22,9 +22,9 @@
   position: absolute; inset: 0;
   background: linear-gradient(
     to top,
-    rgba(244,240,235,0.92) 0%,
-    rgba(244,240,235,0.55) 40%,
-    rgba(244,240,235,0.15) 100%
+    rgba(var(--scrim-rgb), 0.92) 0%,
+    rgba(var(--scrim-rgb), 0.55) 40%,
+    rgba(var(--scrim-rgb), 0.15) 100%
   );
 }
 .home-hero-content {
@@ -40,7 +40,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-label, 11px);
   font-weight: 600;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--ochre);
   margin: 0 0 28px;
@@ -51,8 +51,10 @@
   font-size: clamp(3.5rem, 10vw, 8rem);
   font-weight: 400; font-style: italic;
   color: var(--ink);
-  letter-spacing: 0.04em; line-height: 1.08;
+  letter-spacing: 0.02em; line-height: 1.12;
   margin: 0 0 24px;
+  /* italic 下延字母（y/g/j）预留，避免被 line-height 裁切 */
+  padding-bottom: 0.08em;
   animation: fade-in-up 0.8s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .home-hero-divider {
@@ -65,9 +67,9 @@
   font-family: var(--font-sans);
   font-size: clamp(1rem, 1.6vw, 1.25rem);
   font-weight: 500; color: var(--ink);
-  line-height: 1.9; max-width: 540px;
+  line-height: 1.85; max-width: 540px;
   margin: 0 auto 44px;
-  text-shadow: 0 0 40px rgba(244,240,235,0.8);
+  text-shadow: 0 0 40px rgba(var(--scrim-rgb), 0.8);
   animation: fade-in-up 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes fade-in-up {
@@ -93,7 +95,9 @@
   transform: translateX(-100%);
 }
 .home-hero-cta:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
-.home-hero-cta:hover { background: var(--ochre); transform: translateY(-2px); }
+.home-hero-cta:hover { background: var(--ochre); transform: translateY(-2px); box-shadow: var(--shadow-gold); }
+.home-hero-cta:active { transform: translateY(0) scale(0.98); }
+.home-hero-cta:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
 html.dark-mode .home-hero-cta { background: var(--ochre); color: #fff; }
 html.dark-mode .home-hero-cta:hover { background: var(--ink); }
 
@@ -133,9 +137,9 @@ html.dark-mode .home-hero-cta:hover { background: var(--ink); }
   font-family: var(--font-sans);
   font-size: 13px; color: var(--ochre); font-weight: 500;
 }
-/* 金句背景装饰 */
+/* 金句背景装饰 —— 位置下移，避免与正文第一行挤压 */
 .home-quote::before {
-  content: '"'; position: absolute; top: 20px; left: 50%;
+  content: '"'; position: absolute; top: 26px; left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-serif);
   font-size: 180px; color: var(--border); opacity: 0.15;
@@ -179,15 +183,13 @@ html.dark-mode .home-hero-cta:hover { background: var(--ink); }
   border-bottom: 2px solid var(--border);
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   border-radius: 4px;
+  background: transparent;
 }
 .home-showcase-card:hover {
   border-bottom-color: var(--ochre);
   background: var(--card-bg);
   transform: translateY(-3px);
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.03),
-    0 4px 8px rgba(0,0,0,0.04),
-    0 8px 16px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-md);
 }
 .home-showcase-card.card-philosophers:hover {
   border-bottom-color: var(--prussian);

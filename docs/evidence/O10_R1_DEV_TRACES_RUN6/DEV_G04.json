@@ -1,0 +1,324 @@
+{
+ "case_id": "DEV_G04",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请综述学界对帕菲特（Parfit）人格同一性理论的主要争论：代表论文有哪些，争论焦点是什么？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_gSrsF2yLsviyVYyGTshU6629"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_fuPgph6UNUocpOqCkru26702"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_uuJ6UD0cTEYaiWFLwqXg0553"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_BP01H987trT2TX9jqwSe0518",
+   "args": {
+    "query": "personal identity psychological continuity fission survival",
+    "limit": 10
+   },
+   "result_head": "{'query': 'personal identity psychological continuity fission survival', 'results': [{'source_record_id': 'doi:10.2298/theo2003087s', 'title': 'Personal identit"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_PpswbRqKOFy3yPWmskx51542"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_ZyBlsbgHYKjVtCNh0XpV5054"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_txCcFg0fe1ehIBTu4i0R2486"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_MMRNnsryyMwfXeTT0DjB1645"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_HiGkjpQZfepOXs9Qtsyz8336"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_05_j78iIjynmr3JHlgXbrhG1200",
+   "args": {
+    "source_record_id": "doi:10.23943/princeton/9780691161006.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_MqlwYoPXB2sTlBBNRt5a5219",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已读到 Ehring 关于分裂与不确定同一性的摘要，但用户要求的是\"主要争论+代表论文\"综述，仍缺 Shokic、Campbell、Brink、Kit Fine、Strawson 等候选文献的实际主张证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求学术争论综述与代表论文；当前仅 1 条可读摘要，不足以对多位学者的主张/批评焦点做内容性归因，否则将退化为凭标题与记忆的编造",
+    "unresolved_evidence_gap": "帕菲特人格同一性争论各主要代表文献（分裂/模糊同一性、心理连续性理论、还原论与伦理含意）的具体主张，需读取实际摘要或正文"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 已读到 Ehring 关于分裂与不确定同一性的摘要，但用户要求的是\"主要争论+代表论文\"综述，仍缺 Shokic、Campbell、Brink"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_fR0zKQOeC7bOFYQBysQa8224"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_jdidGVKOxmHsbofn8La53871",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1093/oso/9780192893994.003.0004"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780192893994.003.0004', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780192893994.003.0004', 'title': '"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_HQmhyB1QMeUera5dC7JY8314"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_yRRMqlR1j3jQIbF8MDil8858"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_Tz6VK2FHU3paL4UE9zab6117",
+   "args": {
+    "query": "Fission and Indeterminacy personal identity survival",
+    "limit": 5
+   },
+   "result_head": "{'query': 'Fission and Indeterminacy personal identity survival', 'results': [{'source_record_id': 'doi:10.1093/oso/9780192894717.003.0004', 'title': 'Fission a"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "帕菲特人格同一性理论引发的学界争论：有哪些真实可读的代表性二手文献，各自的主张/批评焦点是什么",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已读到 Ehring 关于分裂与不确定同一性的摘要，但用户要求的是\"主要争论+代表论文\"综述，仍缺 Shokic、Campbell、Brink、Kit Fine、Strawson 等候选文献的实际主张证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求学术争论综述与代表论文；当前仅 1 条可读摘要，不足以对多位学者的主张/批评焦点做内容性归因，否则将退化为凭标题与记忆的编造",
+    "unresolved_evidence_gap": "帕菲特人格同一性争论各主要代表文献（分裂/模糊同一性、心理连续性理论、还原论与伦理含意）的具体主张，需读取实际摘要或正文"
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "Campbell \"Personal Identity and Impersonal Ethics\" 与 Ehring \"Fission and Indeterminacy\" 两章节的可溯源书目字段（出版社/年份）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "上一轮候选的精确出版社/年份细节无单条记录支撑，需取得逐字段可溯源记录或删去该细节",
+    "unresolved_evidence_gap": "两章节的出版社与出版年份字段"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3519,
+ "final_answer": "# 帕菲特人格同一性理论：学界主要争论综述\n\n先说结论：帕菲特（Derek Parfit）在《理由与人格》（*Reasons and Persons*, 1984）中提出的\"还原论 + 心理连续性\"方案，是当代人格同一性讨论的轴心之一，但它引发的争论并非单点，而是**围着五条轴线展开**：还原论 vs.\"进一步事实\"（non-reductionism）、分裂（fission）论证、\"重要性并不系于同一性\"这一命题、对心理连续性标准的动物主义反驳，以及从同一性推导伦理结论是否合法。\n\n需要先交代证据边界：下面只有明确标注的三条二手文献是我**实际读到摘要**的；帕菲特本人理论的框架性描述属于学术通识背景（记忆与通行教科书理解），未经本次原典库核验，故不作正式引文标注。\n\n---\n\n## 一、帕菲特方案的核心（背景框架，转述）\n\n帕菲特的核心立场可粗略概括为：\n\n- **还原论（Reductionism）**：一个人的存在与跨时间同一性，并不构成某个额外的事实（\"进一步事实\"），而仅仅是关于物理事件、心理事件及其相互关系的一堆更具体的事实的总和。\n- **心理连续性标准**：使一个人成为\"同一人\"的，主要是心理的连续性与联结（记忆、意图、性格等的连续性）。\n- **\"重要性\"论题**：在分裂等情形中，我们应当关心的是心理连续性的**程度与方式**，而非\"是不是同一个人\"——同一性本身不是关键；由此他推出一种更\"非个人化\"的伦理与自我关切图景。\n\n这套立场几乎每一环都遭到质疑。下面结合已核验的文献分述。\n\n---\n\n## 二、争论焦点与代表文献\n\n### 焦点 1：还原论是否取消了人格的道德/实践重要性\n\n这是最富张力的争论。Campbell 在《Personal Identity and Impersonal Ethics》中，先复述帕菲特的论断——若还原论为真，则更合理的是\"关注经验而非人格，并主张道德上重要的是这些经验的性质\"。随后他明确指出，**Robert Adams、David Brink、Mark Johnston、Christine Korsgaard、Susan Wolf 等批评者**都质疑：还原论为何会对\"人格的道德重要性\"产生任何蕴含？换言之，即使存在论上同一性可以还原，实践与道德层面未必随之崩塌。Campbell 本人的立场则是为帕菲特作辩护：他论证\"心理还原论\"（假定心理同一性标准的那一版还原论）**确实**支持帕菲特所描述的那种非个人道德观。\n（来源：Campbell, T., \"Personal Identity and Impersonal Ethics,\" *Principles and Persons*, 2021，摘要已读）\n\n**争论焦点**：从\"同一性是可还原的\"能否推出\"人格在道德上不重要\"或\"特殊关切应被弱化\"。批评者的共同疑点是——存在论命题与规范性命题之间存在一条需要额外论证才能跨越的鸿沟。\n\n### 焦点 2：分裂（fission）与\"重要性并不系于同一性\"\n\n帕菲特的著名论证：若一个人分裂为两个各具心理连续性的后继者，那么同一性逻辑上无法同时分配给两者（否则一个人成了两个人），但\"对我们重要的东西\"（心理连续性）在两人身上都完整保留——故重要性在于连续性而非同一性。\n\nEhring 在《Fission and Indeterminacy》中处理的是分裂情形的一个\"麻烦变体\"：当同一性变得**不确定/模糊**（indeterminate）时该怎么办。从他的摘要看，其核心主张是——无论那种\"基于同一性的\"关系多么成问题，**模糊的同一性并不构成真正重要的东西**，即模糊性本身并不挽救\"重要性系于同一性\"的非还原论直觉。这与帕菲特方向一致，但走的是更细致的模糊性论证路线。\n（来源：Ehring, D., \"Fission and Indeterminacy,\" *What Matters in Survival*, 2021，摘要已读）\n\n**争论焦点**：分裂案例是否真能证明\"同一性不重要\"；以及当分裂导致\"数量模糊\"时，逻辑如何处理（同一性可以是模糊的吗？若不能，这是否反证心理连续性标准有误）。\n\n### 焦点 3：动物主义（animalism）对心理连续性标准的反驳\n\nSokic 在《Personal identity and the psychological continuity theory》（*Theoria, Beograd* 期刊论文, 2020）中，专门批判了**两条依赖动物主义**的反帕菲特论证。摘要清楚交代了这两条：\n\n1. **胎儿论证**：所有人都在数值上等同于一个胎儿，而把心理属性或能力归于胎儿极不合理——由此攻击心理连续性作为同一性标准。\n2. **死后论证**：每个人都等同于死后仍存留、且不再具备任何心理属性与能力的生物有机体。\n\nSokic 的结论是：**这两条论证并不构成对心理连续性理论的令人满意的替代方案**。\n（来源：Sokic, M., \"Personal identity and the psychological continuity theory,\" *Theoria* (Beograd), 2020，摘要已读）\n\n**争论焦点**：我们究竟首先是\"生物有机体\"（动物主义），还是\"心理连续体\"？帕菲特的心理标准在胎儿/尸体这类边缘案例上如何自处。值得注意的是，动物主义（以 Olson 等为代表，本次未取得其文献证据）正是帕菲特式心理标准最持久的对手之一。\n\n---\n\n## 三、可供检索的\"代表文献\"清单\n\n以下书目均来自本次真实检索记录（不含凭记忆补造项）：\n\n1. **Campbell, Tim.** \"Personal Identity and Impersonal Ethics.\" 收入 *Principles and Persons*, 2021. DOI: 10.1093/oso/9780192893994.003.0004\n2. **Ehring, Douglas.** \"Fission and Indeterminacy.\" 收入 *What Matters in Survival*, 2021. DOI: 10.1093/oso/9780192894717.003.0004\n3. **Sokic, Mirjana.** \"Personal identity and the psychological continuity theory.\" *Theoria, Beograd* (2020). DOI: 10.2298/theo2003087s\n4. 上述 Campbell 摘要中**点名但本次未读其文献**的批评者：Robert Adams、David Brink、Mark Johnston、Christine Korsgaard、Susan Wolf——可作为继续检索的作者线索（我只确认这些人在该争论中被引为批评者，**不**对其具体观点作归因）。\n\n---\n\n## 四、证据边界与继续深入的方向\n\n- 我实际读到的是**三条摘要**（ABSTRACT_AVAILABLE），足以确认这些文献存在并把握其主张轮廓，但**不足以**声称已通读其论证细节。凡涉及\"某某如何论证/如何回应\"更细的问题，需进一步取得正文。\n- 争论还有几条轴线本次**未及取证**，但从上面已读文献可推知它们在同一话语场内：① 非还原论/\"进一步事实\"论（帕菲特的主要靶子，一般认为与斯温伯恩式实体论相关）；② 模糊同一性（Kit Fine 等）；③ 动物主义正方的完整论证（Olson 等）；④ 叙事同一性进路（利科、Schechtman 等）对心理连续性标准的挑战。这些都是继续检索的自然入口。\n\n**综合判断（我自己的看法，非文献归因）**：这场争论的真正硬核其实集中在**焦点 1**——帕菲特最有影响力的并非\"同一性标准是什么\"，而是他从还原论推出\"同一性不重要、特殊关切应弱化\"的道德结论。Campbell 那样的辩护要成立，就必须跨过\"存在论→规范性\"的鸿沟；而 Adams、Korsgaard、Wolf 等人的怀疑，本质上是在质问这条跨越是否可能。这一分歧至今仍是帕菲特遗产中最活跃的战场。\n\n如果你希望，我可以继续按某一焦点（例如动物主义 vs. 心理连续性，或\"还原论的伦理蕴含\"）做定点深挖，读取相关文献的正文而非仅摘要。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "Campbell \"Personal Identity and Impersonal Ethics\" 与 Ehring \"Fission and Indeterminacy\" 两章节的可溯源书目字段（出版社/年份）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:17:49",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "帕菲特人格同一性理论引发的学界争论：有哪些真实可读的代表性二手文献，各自的主张/批评焦点是什么",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:18:00",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已读到 Ehring 关于分裂与不确定同一性的摘要，但用户要求的是\"主要争论+代表论文\"综述，仍缺 Shokic、Campbell、Brink、Kit Fine、Strawson 等候选文献的实际主张证据",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:18:26",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "Campbell \"Personal Identity and Impersonal Ethics\" 与 Ehring \"Fission and Indeterminacy\" 两章节的可溯源书目字段（出版社/年份）",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:18:00",
+    "reason": "用户明确要求学术争论综述与代表论文；当前仅 1 条可读摘要，不足以对多位学者的主张/批评焦点做内容性归因，否则将退化为凭标题与记忆的编造",
+    "unresolved_gap": "帕菲特人格同一性争论各主要代表文献（分裂/模糊同一性、心理连续性理论、还原论与伦理含意）的具体主张，需读取实际摘要或正文"
+   },
+   {
+    "ts": "2026-09-13 13:18:26",
+    "reason": "上一轮候选的精确出版社/年份细节无单条记录支撑，需取得逐字段可溯源记录或删去该细节",
+    "unresolved_gap": "两章节的出版社与出版年份字段"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:55"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:55"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:55"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:55"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:55"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 111044,
+   "output_tokens": 8882,
+   "total_tokens": 119926
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 11,
+   "compacted_chars_saved": 14033,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11885,
+     "output_tokens": 680,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16508,
+     "output_tokens": 863,
+     "tool_chars_added": 11798
+    },
+    {
+     "round": 3,
+     "input_tokens": 15063,
+     "output_tokens": 679,
+     "tool_chars_added": 3157
+    },
+    {
+     "round": 4,
+     "input_tokens": 16721,
+     "output_tokens": 829,
+     "tool_chars_added": 2523
+    },
+    {
+     "round": 5,
+     "input_tokens": 17841,
+     "output_tokens": 2998,
+     "tool_chars_added": 4738
+    },
+    {
+     "round": 6,
+     "input_tokens": 14306,
+     "output_tokens": 690,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 18720,
+     "output_tokens": 2143,
+     "tool_chars_added": 10263
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 111044,
+  "output_tokens": 8882,
+  "total_tokens": 119926
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 59.3
+}

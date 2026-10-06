@@ -1,0 +1,386 @@
+{
+ "case_id": "DEV_P07",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "亚里士多德在《尼各马可伦理学》中如何用「中道」定义勇敢？请定位相关章节，引用关键表述，并说明「过度」与「不及」各指什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_JORaYDzEOYdZzFCNlTfA5148"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_H8aXjXJXHhDlH9eG9cul5304"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_WYzPXdQLzzdaDnkj2omY4638",
+   "args": {
+    "query": "尼各马可伦理学 勇敢 恐惧 鲁莽 怯懦",
+    "limit": 8
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 286, 'chapter_title': '169', 'citation_label': '【《尼采文集（合"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_kXQiHWwHs78OWUDt5eYO6957",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "result_head": "{'id': 'e574c8e7f515', 'title': '尼各马可伦理学[注释导读本]', 'author': '亚里士多德', 'region': '西方', 'file_type': 'pdf', 'summary': '《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_PjUF7cdTpXFhaFgVz15K8743"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_qhNYujNPDdNu3X43dAFG7472",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 3
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_5uCJtq3jWmgEbqclqhNM9347",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第二卷\"中道\"定义原文、第三卷勇敢章节原文措辞(过度=鲁莽/不及=怯懦的具体表述)",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "前三次检索中,一次为目录详情,两次全文检索被压缩且命中离题(命中尼采文集而非目标文本),尚未读取到第二卷、第三卷正文;用户明确要求\"定位相关章节、引用关键表述\",逐字原文是回答的核心,现有证据无法支撑任何精确引用。",
+    "unresolved_evidence_gap": "第二卷中道定义的原文与第三卷勇敢章(过度/不及对应何种品行)的原文措辞"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《尼各马可伦理学》第二卷\"中道\"定义原文、第三卷勇敢章节原文措辞(过度=鲁莽/不及=怯懦的具体表述)）。soft 检索预算=3 次。（PRIMAR"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_TpDgHR7F4vNXtykEe8nz7173"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_h12ZOdorEeyo7MhPGkT89276",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 3
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 3, 'title': '第三卷 德行特征与具体德性', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第三卷 德行特征与具体德性】', 't"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_fefcMARO8EfarYpe5biB1171"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_zws5WgxhlAsYpvuS2jrK4023"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_eKu43nluUrxWIiOn3wQt0235",
+   "args": {
+    "query": "德性是中道 过度 不及 选择 品质",
+    "limit": 6
+   },
+   "result_head": "{'results': [{'book_id': 'b220d9690317', 'book_title': '打开：周濂的100堂西方哲学课', 'author': '周濂', 'chapter_idx': 41, 'chapter_title': '038 射箭与中道：亚里士多德的《尼各马可伦理学》（下）', 'c"
+  },
+  {
+   "name": "concept_trace",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_38oV3wXjYrMi1Ya9DJG92049"
+  },
+  {
+   "name": "concept_trace",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_1yBWp57p4bdd0m1ndWEf4739",
+   "args": {
+    "concept": "勇敢"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_mJqGunODNhTJsjXGoyOe2565"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_rV5gzTER77doCnM8Mp0R0763"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_02_8o2IVjxVoZPDzszergeT0190",
+   "args": {
+    "query": "怖惧 勇毅 刚毅 胆量 中道 德性",
+    "limit": 6
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》中\"中道\"定义勇敢的原文措辞与所在章节(第几卷/章),以及过度与不及对应的具体德性名称",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第二卷\"中道\"定义原文、第三卷勇敢章节原文措辞(过度=鲁莽/不及=怯懦的具体表述)",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "前三次检索中,一次为目录详情,两次全文检索被压缩且命中离题(命中尼采文集而非目标文本),尚未读取到第二卷、第三卷正文;用户明确要求\"定位相关章节、引用关键表述\",逐字原文是回答的核心,现有证据无法支撑任何精确引用。",
+    "unresolved_evidence_gap": "第二卷中道定义的原文与第三卷勇敢章(过度/不及对应何种品行)的原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第二卷\"德性是中道\"定义原文、第三卷勇敢章(过度=鲁莽/不及=怯懦)的原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已读第二卷、第三卷卷首原文,但两卷返回内容均止于中道定义(约1106a)与勇敢章(约1115a)之前,用户明确要求的中道定义原文与勇敢过度/不及的措辞仍未取得,无法支撑任何精准引用。",
+    "unresolved_evidence_gap": "第二卷中道定义的原文句子与第三卷勇敢章中鲁莽(过度)/怯懦(不及)的原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第三卷勇敢章(过度=鲁莽/不及=怯懦)与第二卷中道定义的逐字原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"引用关键表述\",而勇敢章与中道定义原文均落在 get_chapter 返回窗口之外、多轮全文检索又被尼采大合集抢占;换用更贴近该译本的中文措辞做最后一次定点检索,若命中即可闭合核心证据缺口。",
+    "unresolved_evidence_gap": "第三卷勇敢章与第二卷中道定义的原句(过度/不及对应的品行名称)"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1916,
+ "final_answer": "本轮预算已用满、延展亦已到上限,我据已取得的证据综合作答,并如实交代哪些措辞核验过、哪些没有。\n\n---\n\n## 先说清楚证据边界\n\n本次我实际在库中读到的是《尼各马可伦理学[注释导读本]》**第二卷与第三卷的卷首正文**,并确认了目录结构(第二卷\"伦理德性与中庸\"、第三卷\"德行特征与具体德性\")。但**勇敢章(第三卷中后部,通行编号约卷三第6–9章 / 1115a 起)与中道总定义章(第二卷,通行编号约第6章 / 1106b–1107a)的逐字原文,落在工具返回的正文窗口之外,我这几次检索都没能直接定位到该译本这两处的文字**。所以下文凡涉及这两处措辞,我会明确标注为\"通行理解/我的概述\",**不冒充逐字引用**。\n\n---\n\n## 二、章节定位\n\n按学界通行的贝克(Bekker)编号与分章:\n\n- **中道的一般定义**在**第二卷**(伦理德性总论),通行编号第 6 章(约 1106b–1107a);\n- **勇敢的具体讨论**在**第三卷**,通行编号第 6–9 章(约 1115a–1117b)。\n\n我核验到该译本确实按卷组织,第二、三卷内部各有连续小节编号(如第二卷卷首标\"1.伦理德性源自习惯……\";第三卷标\"7.自愿为德行之要,不自愿与被迫 1109b30\")——这说明勇敢属于第三卷靠后的某一节,但**该节的节号与正文我未能读到**。以上\"卷第6章\"\"卷三第6–9章\"属通行标准编号,不是本次从该书正文核验所得的标注。\n\n---\n\n## 三、中道的一般机制(这段有已核验的原文)\n\n第二卷卷首给出了中道学说的**引子**,这段是我实际读到的:\n\n按照该书第二卷开篇的论述,伦理德性来自习惯,因此它既不是自然生成的,也不违背自然。\n\n紧接着亚里士多德点出中道说的核心问题框架:\n\n他提出要考察那些按其本性会被过度与不及所毁败的事物,并主张借助体力、健康这类看得见的例子,来说明不易看见的东西。\n\n也就是说,中道说的**论证起点是\"过度与不及都会毁掉德性\"**——正如过量的运动和过少的运动都会毁掉体力,只有适度的训练才保持和增进它。勇敢正是这一图式在\"恐惧与危险\"这一领域的应用。引文出处【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】。\n\n---\n\n## 四、勇敢作为\"恐惧—自信\"的中道:过度与不及各指什么\n\n下面是这个问题的**标准答案**,但我必须声明:**其逐字原文——该译本卷三勇敢章的具体表述——本次未核验**。以下按学界通行译法概述:\n\n亚里士多德把**勇敢(ἀνδρεία / andreia)界定为在\"恐惧与自信(胆量)\"这一情感领域、面对可怕事物时的中道**:\n\n- **过度一端 = 鲁莽 / 莽撞**(希腊文 θράσος,thrasos)——该怕的不怕、敢于冒不该冒的险,是\"过分地无惧\";\n- **不及一端 = 怯懦**(希腊文 δειλία,deilia)——该敢的不敢、在不该怕处也怕、遇险即退,是\"过分地恐惧\"。\n\n勇敢则处在两者之间:**在应当的场合、对应当的对象、出于应当的理由、以应当的方式**去恐惧和去敢于。\n\n需要提示的是,这种中道**不是\"无惧\"**。亚里士多德明确承认勇敢者也会恐惧——他怕的是那些真正可怕、且其怕得\"得体\"的东西;勇敢的\"中\"不在于消灭恐惧,而在于恐惧与自信被理性调到恰当的比例。\n\n---\n\n## 五、三点关键辨析\n\n1. **中道不是算术中点。** 无论第二卷的总定义还是勇敢的个案,中道都是**\"相对于我们\"**的适度——同一行为,对不同处境的人未必都\"过头\"或都\"不及\"。这一点是该学说最容易被误读处(常被批评为\"庸俗的中庸之道\")。\n\n2. **勇敢的中道对象是特定的。** 勇敢严格说来面对的是**最可怕的危险,而战场上面对死亡尤为典型**;因此亚里士多德在勇敢章里花了不少篇幅去区分\"貌似勇敢\"的几种情形——如出于**怒气**、出于**乐观/无知**、或因**怕更大的恶**而冒险。这些人做对了动作,却不算具备勇敢这一德性,因为不是出于正确的选择与品格。(此段为我对卷三内容的**概述**,未核验逐字。)\n\n3. **德性是\"选择\"的品质。** 通行表述把德性界定为\"一种选择的品质,存在于相对于我们的中道之中,由理性(logos)规定,并如实践智慧者所规定的那样\"(第二卷第6章的经典句)。**这句是该章最常被引用的定义,但我本次未核验到该译本的确切措辞**,请以上述概述视之。\n\n---\n\n## 六、未能核验的部分,与可继续的路径\n\n坦白说,你要求的两处**逐字关键表述**——中道定义的经典句,以及勇敢章",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《尼各马可伦理学》第三卷勇敢章(过度=鲁莽/不及=怯懦)与第二卷中道定义的逐字原文措辞",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:15:04",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《尼各马可伦理学》中\"中道\"定义勇敢的原文措辞与所在章节(第几卷/章),以及过度与不及对应的具体德性名称",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:15:10",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第二卷\"中道\"定义原文、第三卷勇敢章节原文措辞(过度=鲁莽/不及=怯懦的具体表述)",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:15:27",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第二卷\"德性是中道\"定义原文、第三卷勇敢章(过度=鲁莽/不及=怯懦)的原文措辞",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:16:07",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第三卷勇敢章(过度=鲁莽/不及=怯懦)与第二卷中道定义的逐字原文措辞",
+    "source_dependent": true,
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:15:10",
+    "reason": "前三次检索中,一次为目录详情,两次全文检索被压缩且命中离题(命中尼采文集而非目标文本),尚未读取到第二卷、第三卷正文;用户明确要求\"定位相关章节、引用关键表述\",逐字原文是回答的核心,现有证据无法支撑任何精确引用。",
+    "unresolved_gap": "第二卷中道定义的原文与第三卷勇敢章(过度/不及对应何种品行)的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 13:15:27",
+    "reason": "已读第二卷、第三卷卷首原文,但两卷返回内容均止于中道定义(约1106a)与勇敢章(约1115a)之前,用户明确要求的中道定义原文与勇敢过度/不及的措辞仍未取得,无法支撑任何精准引用。",
+    "unresolved_gap": "第二卷中道定义的原文句子与第三卷勇敢章中鲁莽(过度)/怯懦(不及)的原文措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:08"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:08"
+   },
+   {
+    "tool": "concept_trace",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:52"
+   },
+   {
+    "tool": "concept_trace",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:15:52"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:16:07"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:16:07"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 178469,
+   "output_tokens": 15783,
+   "total_tokens": 194252
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 14,
+   "compacted_chars_saved": 27841,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11902,
+     "output_tokens": 400,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16877,
+     "output_tokens": 184,
+     "tool_chars_added": 9222
+    },
+    {
+     "round": 3,
+     "input_tokens": 13591,
+     "output_tokens": 248,
+     "tool_chars_added": 1347
+    },
+    {
+     "round": 4,
+     "input_tokens": 13609,
+     "output_tokens": 414,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 5,
+     "input_tokens": 15066,
+     "output_tokens": 388,
+     "tool_chars_added": 2166
+    },
+    {
+     "round": 6,
+     "input_tokens": 19382,
+     "output_tokens": 2411,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 7,
+     "input_tokens": 23057,
+     "output_tokens": 3948,
+     "tool_chars_added": 10770
+    },
+    {
+     "round": 8,
+     "input_tokens": 22457,
+     "output_tokens": 2588,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 9,
+     "input_tokens": 26861,
+     "output_tokens": 4000,
+     "tool_chars_added": 3834
+    },
+    {
+     "round": 10,
+     "input_tokens": 15667,
+     "output_tokens": 1202,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 178469,
+  "output_tokens": 15783,
+  "total_tokens": 194252
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 100.6
+}

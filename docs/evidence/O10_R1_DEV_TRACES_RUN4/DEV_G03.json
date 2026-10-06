@@ -1,0 +1,221 @@
+{
+ "case_id": "DEV_G03",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "哲学界如何研究「非同一性问题」（non-identity problem）？请给出代表性学者、论文与主要对立立场。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_DtsIN1sooU3ck6dmEh0S7299"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_4g6lWhLoXMFTquDXa1h47873"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_94NxUEyRZzemZxQkzDOj8333",
+   "args": {
+    "query": "non-identity problem harm wrongdoing",
+    "limit": 10
+   },
+   "result_head": "{'query': 'non-identity problem harm wrongdoing', 'results': [{'source_record_id': 'doi:10.2307/1288201', 'title': '\"No Soul to Damn: No Body to Kick\": An Unsca"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_OoZG5WdoaJS1EsQhIBZb9985"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_UI9tfJC3A6jK0iy3cEUr0053"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_003v85pN37Eu4rKsGPWZ5419"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_V8Pxvwrx79Nt8JqZVRia5492",
+   "args": {
+    "query": "non-identity problem Boonin narrow approach Parfit",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_eU9E9SEBJ5BsY3z3kCph6352"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_MWO2kd8ibArzP307LbWA7161"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_YkGNgtgOl7iuAWh0HRZm3208",
+   "args": {
+    "query": "非同一性问题 未来世代 帕菲特",
+    "limit": 6
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "非同一性问题（non-identity problem）研究中的代表性学者、关键论文及其实际主张/对立立场",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "Parfit《Reasons and Persons》中非同一性问题的原典界定与措辞（库中是否有该书）",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3695,
+ "final_answer": "## 先说明本次检索的证据状况\n\n在作答前，我需要如实报告检索到的证据层级，以免把\"文献存在\"冒充为\"已读过的观点\"：\n\n- 我在学术文献通道中定位到几条直接相关的记录，但**只取得了书目/题录层级**（作者、年份、刊名、DOI），未能取得可读的摘要或正文内容。因此下文凡涉及某篇论文\"主张什么\"，我只能标注其存在性与主题，而**不替它陈述具体论证**。\n- 我尝试在 403 本原典库中定位该问题的奠基文本（Parfit《Reasons and Persons》），但未能取得该书的库内文本证据。因此下文关于原典内容的陈述，均属于**哲学史通识，未经本次库中核验**，请以\"大意/通常所述\"来对待。\n\n---\n\n## 一、研究对象的界定：什么叫\"非同一性问题\"\n\n这个问题的提出通常追溯至 Derek Parfit《Reasons and Persons》（1984）第四部分\"未来世代\"（尤其是第 16 章，my memory，未经库中核验）。其核心机制是：\n\n当某项选择所决定的，不只是某个未来人过得好不好，而是究竟哪一个未来人将会存在时，我们似乎就无法说这个未来人受到了伤害——因为若换一种选择，那个过得更好的人根本不会出现，来到这个世界的会是另一个不同的人。\n\n经典的构造例（Parfit 用过的类型）：\n\n- **14 岁女孩**：她生育的孩子因母亲年少而生活条件较差，但若她等十年再生，生下的会是**另一个孩子**。于是这个实际出生的孩子，似乎不能合理地抱怨\"你本可让我过得更好\"——因为\"更好\"的那个版本根本不会是他。\n- **危险政策 / 资源耗尽**：一项政策让未来世代生活质量下降，但若不实行该政策，那些未来人也不会存在。\n\n问题因此具有悖论外形：一种直觉上明显错误的做法，在\"只计算对具体个人的伤害\"的框架下，**居然找不到受害者**。\n\n---\n\n## 二、主要对立立场（三条比较轴线）\n\n以下是该领域公认的立场分野（哲学史通识，未经本次库中核验）：\n\n**轴线 1：人格影响论 vs. 非人格论**\n\n- **人格影响论（person-affecting view）**：行为的对错只取决于它是否使**某个具体的人**过得更好或更差。这是\"非同一性问题\"的策源地——因为它似乎逼我们接受\"没有受害者就没错\"的反直觉结论。Parfit 所谓的\"**窄人格影响论**\"（narrow person-affecting）往往被指为最容易被此问题击穿的版本。\n- **非人格论（impersonal view）**：对错取决于**事态本身的好坏**，不依赖于是否伤害了特定个人。它能绕开非同一性问题（\"让世界变得更糟\"本身就是错的理由），但代价是导向 Parfit 所说的**\"令人厌恶的结论\"（Repugnant Conclusion）**——即一个由大量勉强值得活的人构成的世界，可能被算得比一个小而幸福的世界更好。\n- **Parfit 本人的折中尝试**：他提出\"**广谱人格影响论**（wide person-affecting）\"及后来的\"**理论 X**（Theory X）\"，试图既保留人格影响的直觉、又避免令人厌恶的结论。这一路线是否成功，是该领域的核心争议之一。\n\n**轴线 2：承认非同一性问题的强制力 vs. 拒斥其框架**\n\n- **接受其结论并重铸义务论**：如 **David Boonin**《The Non-Identity Problem and the Ethics of Future People》（2014）——从标题看，他试图为某种\"窄进路\"辩护（我检索到 Melinda Roberts 的一篇论文正标题为 \"Why Wear Blinders? Boonin and the Narrow Approach to the Non-identity Problem\"，即对 Boonin 这一进路的批评，但**我未取得其内容，故不能转述她的具体反驳**）。此外 **Gregory Kavka、James Woodward** 早期围绕代际义务的讨论也常被归入此线（记忆，未经核验）。\n- **换用\"伤害/利益\"概念的精细分析**：如 **Elizabeth Harman** 关于\"造成伤害\"与未来人利益的分析、**Jeff McMahan** 在人口伦理与伤害概念上的工作（记忆，未经核验）——他们试图说明即便诉诸\"利益\"，也能为非同一性情形中的错误找到位置（或恰恰相反，论证其困难）。\n- **质疑问题本身的设定**：也有学者主张，非同一性问题的\"悖论感\"来自把\"伤害\"过度个体化，或其直觉案例本身包含可疑的形而上学预设（记忆，未经核验）。\n\n**轴线 3：理论问题 vs. 应用问题**\n\n- 近年来研究重心明显向**应用伦理**迁移：气候变化的代际正义、资源耗竭、生殖选择，尤其是**基因编辑**。我检索到 **Fernández & Savulescu** 一篇将非同一性问题关联到人类生殖系基因编辑（其文本中提及 He Jiankui / 贺建奎 CRISPR 案）的论文（题录存在，未读取内容）。这类研究把\"选哪个孩子存在\"的抽象难题，变成\"编辑哪个胚胎\"的现实决策。\n\n---\n\n## 三、代表性学者一览（区分证据层级）\n\n| 学者 | 与本题关系 | 证据层级 |\n|---|---|---|\n| Derek Parfit | 奠基者；《Reasons and Persons》提出该问题 | 哲学史通识，未经库中核验 |\n| David Boonin | 专著《The Non-Identity Problem and the Ethics of Future People》，辩护\"窄进路\" | 由 Roberts 论文标题间接确认其学术角色 |\n| Melinda A. Roberts | 批评 Boonin 的窄进路 | ✅ 本次检索到该文献存在（题录），**未读内容** |\n| David Heyd | 对 Parfit 非同一性问题的再讨论 | ✅ 本次检索到该文献存在（题录），**未读内容** |\n| E. Harman / J. McMahan / G. Kavka / J. Woodward | 伤害概念、人口伦理的相关研究 | 记忆，未经核验 |\n| Fernández & Savulescu | 将问题应用于基因编辑 | ✅ 检索到题录存在，未读内容 |\n\n**两条我实际定位到的关键文献（仅书目，未读内容）：**\n- David Heyd, *Parfit on the Non-identity Problem, Again*, **The Law & Ethics of Human Rights** (2014), DOI: 10.1515/lehr-2014-0003\n- Melinda A. Roberts, *Why Wear Blinders? Boonin and the Narrow Approach to the Non-identity Problem*, **Law Ethics and Philosophy** (2020), DOI: 10.31009/leap.2019.v7.07\n\n---\n\n## 四、进入该领域的研究路径\n\n若你要真正进入研究，我建议按此顺序（前一步均为后一步的语境）：\n\n1. **奠基文本**：Parfit《Reasons and Persons》第四部分——先掌握问题如何被构造出来，尤其\"14 岁女孩\"与\"资源耗尽\"两类案例的区别（记忆，未核验）。\n2. **核心争论**：人格影响论 vs. 非人格论 vs. Parfit 的\"理论 X\"——理解为什么三条路都各有反噬。\n3. **关键对立**：Boonin 的\"窄进路\"专著，与 Roberts 等对窄进路的批评（我定位到后者存在，未读内容）。\n4. **概念细部**：围绕\"伤害（harm）\"与\"利益\"的分析文献。\n5. **应用转向**：代际正义与基因编辑文献。\n\n---\n\n## 五、诚实的边界与下一步\n\n我需要明确两点：\n\n1. **本次我对二手文献只完成了\"定位\"，未完成\"阅读\"。** 除题录外，我未取得 Heyd、Roberts 等论文的可读内容证据，因此**不能告诉你他们具体论证了什么**——那需要读取其摘要或正文。\n2. 关于 Parfit 原典的核心措辞与章节细节，我**未在库中核验**，上文相关表述请按\"通识大意\"理解；若你要引用原文，应回到《Reasons and Persons》第 16 章核对。\n\n如果你愿意，我可以**针对某一条具体文献（如 Heyd 2014 或 Roberts 2020）做定点重读**，把它的实际论证与反驳结构讲清楚——这样我们就能从\"知道它存在\"推进到\"知道它主张什么\"。你想先读哪一篇？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "Parfit《Reasons and Persons》中非同一性问题的原典界定与措辞（库中是否有该书）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:24:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "非同一性问题（non-identity problem）研究中的代表性学者、关键论文及其实际主张/对立立场"
+   },
+   {
+    "ts": "2026-09-13 12:24:17",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "Parfit《Reasons and Persons》中非同一性问题的原典界定与措辞（库中是否有该书）"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 4,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:24:10"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:24:10"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:24:17"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:24:17"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 72436,
+   "output_tokens": 6251,
+   "total_tokens": 78687
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 11720,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11749,
+     "output_tokens": 480,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15152,
+     "output_tokens": 801,
+     "tool_chars_added": 9120
+    },
+    {
+     "round": 3,
+     "input_tokens": 14936,
+     "output_tokens": 1096,
+     "tool_chars_added": 5317
+    },
+    {
+     "round": 4,
+     "input_tokens": 16220,
+     "output_tokens": 3476,
+     "tool_chars_added": 2168
+    },
+    {
+     "round": 5,
+     "input_tokens": 14379,
+     "output_tokens": 398,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 72436,
+  "output_tokens": 6251,
+  "total_tokens": 78687
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.0
+}

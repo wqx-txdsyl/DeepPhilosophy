@@ -1,0 +1,1897 @@
+{
+ "case_id": "D01",
+ "section": "D",
+ "expected_class": "SCHOLARLY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "学界如何理解尼采 perspectivism 与 truth 的关系？",
+ "injection": null,
+ "QUESTION": "学界如何理解尼采 perspectivism 与 truth 的关系？",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记研究需求：这个问题明确要求\"学界如何理解\"，属于二手研究综述，我需要检索真实的学术文献并读取其内容证据，而不是凭记忆描述解释史。",
+  "检索命中了若干相关文献（Leiter、Hales & Welshon、Maudemarie Clark《Nietzsche on Truth and Philosophy》的\"Perspectivism\"章等），但目前多数只有书目信息。我需要读取真正可读的来源，取得内容证据后才能对解释路线做归因，同时补一个检索方向看能否找到更多可读文献。",
+  "我读到一篇摘要（Ronen 将尼采与维特根斯坦并置，呈现\"没有真理、只有解释\"的读法），但这只反映了众多读法中的一条，且并非核心争议综述。最关键的是 Maudemarie Clark《Nietzsche on Truth and Philosophy》——她正是当代尼采真理问题研究的枢纽。我需要读取它取得内容证据，才能对解释路线做归因。",
+  "核心证据缺口尚未补齐——我目前只读到一篇比较性文章的摘要，而对学界主线解读（如 Clark 一类枢纽文献）只拿到书目信息、尚无内容证据。要做如实的学界综述，必须至少读一条核心文献，故申请预算延展。",
+  "我读到的 Clark 著作摘要只提供了该书的主题范围与出版描述，并未陈述她的具体论证立场；而此前 Ronen 摘要的正文在结果压缩中已被截去，我尚未真正掌握其内容。为避免凭标题或记忆推断学者立场，我再补一个检索方向并重读 Ronen 摘要正文。",
+  "检索预算已到上限，我停止二手文献检索。就目前掌握的证据：Ronen（2001）摘要明确呈现了\"没有真理、只有解释\"的读法并把它与怀疑论并置；Clark（1991）一书我只能确认其存在与主题范围（真理、语言、视角主义），无法据此推断其具体论证立场；其余命中多为书目级。为让回答同时有原典支点，我再核验尼采本人的相关文本出处（这是独立通道）。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "get_scholarly_source",
+  "search_books"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "Nietzsche perspectivism truth",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   {
+    "query": "Nietzsche perspectivism truth self-refutation interpretation",
+    "limit": 10
+   },
+   {
+    "query": "Nietzsche truth perspectival realism interpretation Clark",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   {
+    "query": "Nietzsche perspectivism no facts only interpretations relativism",
+    "limit": 10
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   }
+  ],
+  "search_books": [
+   {
+    "query": "没有事实，只有解释",
+    "limit": 6
+   },
+   {
+    "query": "视角 解释 真理 尼采",
+    "limit": 8
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism truth",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Nietzsche Nietzsche perspectivism truth', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish Academy "
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism truth self-refutation interpretation",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Nietzsche perspectivism truth self-refutation interpretation', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ron"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche truth perspectival realism interpretation Clark",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Nietzsche Nietzsche truth perspectival realism interpretation Clark', 'results': [{'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1017/cbo9780511624728', 'bibliographic_record': {'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors': ['Maudemarie "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism no facts only interpretations relativism",
+    "limit": 10
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "没有事实，只有解释",
+    "limit": 6
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "视角 解释 真理 尼采",
+    "limit": 8
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Nietzsche Nietzsche perspectivism truth', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish Academy "
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Nietzsche perspectivism truth self-refutation interpretation', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ron"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Nietzsche Nietzsche truth perspectival realism interpretation Clark', 'results': [{'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1017/cbo9780511624728', 'bibliographic_record': {'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors': ['Maudemarie "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "基于本次检索所取得的证据，我停止继续检索并综合作答。需要先说清证据状况：这次二手文献通道返回的记录，大多是书目级（只有题名、作者、年份、期刊），只有少数进入可读层级，而其中最核心的著作也只提供出版描述而非论证内容。因此下面我会严格区分——哪些是本次核验到的书目事实，哪些是我基于一般哲学史知识勾勒的解释框架（未经本次核验）。\n\n---\n\n## 一、为什么\"视角主义与真理\"本身就是一个真问题\n\n尼采视角主义的麻烦不在于它主张\"认识总是有视角的\"，而在于它似乎同时断言了一个**无视角的命题**：如果一切认识都只是视角，那么\"一切认识都只是视角\"这句话本身是什么？\n\n- 若它为真，则它是一条不依赖于任何视角的真理——与它自己的主张冲突；\n- 若它也只是个视角，则它没有资格排斥别的（包括实在论）视角。\n\n这就是文献中所谓**自我指涉（self-refutation）难题**。学界的绝大部分争论都绕着它转：要么证明尼采并未陷入这一矛盾，要么承认他确实陷入却认为这无关紧要，要么说他根本不是在提出一个普遍命题。\n\n## 二、尼采本人的相关文本（以下降格说明：未经本次库中核验）\n\n我原本想核验几处关键原文，但本轮原典检索未能执行到位，因此以下几点只能以**记忆、未经库中核验**的口吻给出，请勿当作逐字引文：\n\n- \"没有事实，只有解释\"（es gibt keine Tatsachen, nur Interpretationen）这一常被引用的名句，**通常**归于《权力意志》编者辑录的笔记，而非尼采定稿著作——这本身就意味着它的地位存疑。\n- 视角主义认识论更可靠的落点，一般被认为在《超善恶》论\"视角看、视角认识\"的段落，以及《快乐的科学》论意识与视角的段落；\"求真意志\"的批判则见于《道德的谱系》。\n- 这些段落的具体编号与措辞我未能在本次取得原文，**不作为正式引用**，只作继续核验的方向。\n\n## 三、学界的几条主要解释路线（框架性描述）\n\n以下是我基于哲学史一般理解勾勒的解释地形。**我必须强调：这些路线的具体归属与论证，我本次没有取得可读的内容证据来核验，因此它们是待核对的框架，不是已确认的学界定论。**\n\n1. **反实在论 / 强读法**\n   视角主义 = 根本不存在独立于视角的真理，\"客观真理\"是虚构。真理被还原为服务于生命、权力的建构。问题：如何避开上面的自我指涉矛盾。\n\n2. **温和读法（把尼采的靶子缩小）**\n   主张尼采反对的不是\"真\"本身，而是**形而上学意义上的\"自在真理\"**——即\"不受任何视角中介、与物自体相符合的真理\"。这样尼采仍可一致地承认某种经验内的、可修正的真。这类读法的代表人物通常与 Maudemarie Clark 的名字联系在一起，但我未取得其论证正文，故只作为路线标签。\n\n3. **自然主义 / 认识论读法**\n   把视角主义理解为一种关于认知主体条件的经验论断（认知总是由需要、利益、生理与语言中介），而非一种关于真理定义的形而上学相对主义。\n\n4. **维特根斯坦式 / 无根基读法**\n   把尼采与\"没有绝对地基\"的后期维特根斯坦并置，强调真理与解释的实践性、语言游戏性。\n\n路线之间的真正分歧，可以压缩成一个问题：**尼采是在重新定义\"真理\"（保留概念、更换标准），还是在取消\"真理\"这个词的严肃用法？**\n\n## 四、本次实际核验到的二手文献（仅书目层）\n\n- **Maudemarie Clark，*Nietzsche on Truth and Philosophy*（Cambridge, 1991）** — 我核验到其存在与主题范围：出版描述称此书处理尼采知识论与形而上学诸核心议题，包括真理与语言观、视角主义、权力意志与永恒轮回学说。**其具体论点我未取得可读证据，故不代为转述。**\n- **Shoshana Ronen，*Nietzsche and Wittgenstein*，\"Dialogue and Universalism\"（2001）** — 核验到其存在：一篇把尼采与维特根斯坦并置讨论的期刊文章。**其具体论断同样未取得可读内容证据。**\n- 本次检索另外返回了若干条相关研究记录，但**均只给出书目信息**（题名/作者/年份），不足以支撑对任何一位学者的立场归因，故此处不列成\"某某认为……\"。\n\n## 五、证据边界与建议\n\n我这一轮没能真正读到任何一篇二手研究或原典的实质内容，因此本回答中**只有第二部分的文献定位线索与第四部分的书目信息是本次核验的**；第三部分的解释路线属于我的框架性综合，**没有被本次证据直接支撑**，需要逐条回到文献核对。\n\n如果要真正把这个问题做扎实，建议的核验顺序是：先定位《超善恶》与《快乐的科学》中视角主义认识论的确切段落（核验\"尼采反对的到底是不是自在真理\"），再对照 Clark 一类著作看\"温和读法\"的论证，最后回到\"自我指涉难题\"看各家如何回应——你希望我从其中哪一环开始，我可以逐段把原文读给你。\n\n用一句话概括我这个尚待核验的判断：**学界对\"尼采视角主义与真理\"的分歧，表面是\"他是否否认真理\"，实质是\"我们应否把尼采的视角主义读成一种关于真理的元层面主张，还是一种取代真理概念的实践纲领\"。**",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记研究需求：这个问题明确要求\"学界如何理解\"，属于二手研究综述，我需要检索真实的学术文献并读取其内容证据，而不是凭记忆描述解释史。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尼采视角主义（perspectivism）与真理关系的当代学界解释路线与争议——需要真实文献记录并读取其摘要/内容证据，以区分不同解释阵营（如\"视角主义即否认一切真理\" vs \"温和视角主义\"等）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Nietzsche perspectivism truth",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Nietzsche Nietzsche perspectivism truth', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish Academy "
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Nietzsche perspectivism truth self-refutation interpretation",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Nietzsche perspectivism truth self-refutation interpretation', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ron"
+  },
+  {
+   "kind": "note",
+   "content": "检索命中了若干相关文献（Leiter、Hales & Welshon、Maudemarie Clark《Nietzsche on Truth and Philosophy》的\"Perspectivism\"章等），但目前多数只有书目信息。我需要读取真正可读的来源，取得内容证据后才能对解释路线做归因，同时补一个检索方向看能否找到更多可读文献。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Nietzsche truth perspectival realism interpretation Clark",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Nietzsche Nietzsche truth perspectival realism interpretation Clark', 'results': [{'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors"
+  },
+  {
+   "kind": "note",
+   "content": "我读到一篇摘要（Ronen 将尼采与维特根斯坦并置，呈现\"没有真理、只有解释\"的读法），但这只反映了众多读法中的一条，且并非核心争议综述。最关键的是 Maudemarie Clark《Nietzsche on Truth and Philosophy》——她正是当代尼采真理问题研究的枢纽。我需要读取它取得内容证据，才能对解释路线做归因。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "note",
+   "content": "核心证据缺口尚未补齐——我目前只读到一篇比较性文章的摘要，而对学界主线解读（如 Clark 一类枢纽文献）只拿到书目信息、尚无内容证据。要做如实的学界综述，必须至少读一条核心文献，故申请预算延展。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "读取尼采真理问题核心文献（如 Maudemarie Clark《Nietzsche on Truth and Philosophy》及同类枢纽研究）的摘要/正文，取得对视角主义与真理关系诸解释路线的内容证据，而非仅有书目存在性",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行的检索与读取中，仅一篇尼采-维特根斯坦比较文章返回了可读摘要，核心解释路线（Clark 的\"温和/怀疑论再评估\"路线、反实在论读法等）目前只有书目信息，尚无可读内容证据；不读一条核心文献就无法对学界立场做内容性归因",
+    "unresolved_evidence_gap": "Clark《Nietzsche on Truth and Philosophy》或同等枢纽文献对\"尼采是否否认真理\"这一争议的实质立场与论证，需要其摘要或正文证据"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1017/cbo9780511624728', 'bibliographic_record': {'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors': ['Maudemarie "
+  },
+  {
+   "kind": "note",
+   "content": "我读到的 Clark 著作摘要只提供了该书的主题范围与出版描述，并未陈述她的具体论证立场；而此前 Ronen 摘要的正文在结果压缩中已被截去，我尚未真正掌握其内容。为避免凭标题或记忆推断学者立场，我再补一个检索方向并重读 Ronen 摘要正文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "args": {
+    "query": "Nietzsche perspectivism no facts only interpretations relativism",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "note",
+   "content": "检索预算已到上限，我停止二手文献检索。就目前掌握的证据：Ronen（2001）摘要明确呈现了\"没有真理、只有解释\"的读法并把它与怀疑论并置；Clark（1991）一书我只能确认其存在与主题范围（真理、语言、视角主义），无法据此推断其具体论证立场；其余命中多为书目级。为让回答同时有原典支点，我再核验尼采本人的相关文本出处（这是独立通道）。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "没有事实，只有解释",
+    "limit": 6
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "视角 解释 真理 尼采",
+    "limit": 8
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尼采视角主义（perspectivism）与真理关系的当代学界解释路线与争议——需要真实文献记录并读取其摘要/内容证据，以区分不同解释阵营（如\"视角主义即否认一切真理\" vs \"温和视角主义\"等）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "读取尼采真理问题核心文献（如 Maudemarie Clark《Nietzsche on Truth and Philosophy》及同类枢纽研究）的摘要/正文，取得对视角主义与真理关系诸解释路线的内容证据，而非仅有书目存在性",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行的检索与读取中，仅一篇尼采-维特根斯坦比较文章返回了可读摘要，核心解释路线（Clark 的\"温和/怀疑论再评估\"路线、反实在论读法等）目前只有书目信息，尚无可读内容证据；不读一条核心文献就无法对学界立场做内容性归因",
+    "unresolved_evidence_gap": "Clark《Nietzsche on Truth and Philosophy》或同等枢纽文献对\"尼采是否否认真理\"这一争议的实质立场与论证，需要其摘要或正文证据"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:56:19",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "尼采视角主义（perspectivism）与真理关系的当代学界解释路线与争议——需要真实文献记录并读取其摘要/内容证据，以区分不同解释阵营（如\"视角主义即否认一切真理\" vs \"温和视角主义\"等）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 16:56:35",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "读取尼采真理问题核心文献（如 Maudemarie Clark《Nietzsche on Truth and Philosophy》及同类枢纽研究）的摘要/正文，取得对视角主义与真理关系诸解释路线的内容证据，而非仅有书目存在性",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 16:56:52",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 16:56:35",
+    "reason": "已执行的检索与读取中，仅一篇尼采-维特根斯坦比较文章返回了可读摘要，核心解释路线（Clark 的\"温和/怀疑论再评估\"路线、反实在论读法等）目前只有书目信息，尚无可读内容证据；不读一条核心文献就无法对学界立场做内容性归因",
+    "unresolved_gap": "Clark《Nietzsche on Truth and Philosophy》或同等枢纽文献对\"尼采是否否认真理\"这一争议的实质立场与论证，需要其摘要或正文证据"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:56:32"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:56:44"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:56:52"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:56:52"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 115250,
+   "output_tokens": 8442,
+   "total_tokens": 123692
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 19131,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12062,
+     "output_tokens": 641,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15885,
+     "output_tokens": 881,
+     "tool_chars_added": 9368
+    },
+    {
+     "round": 3,
+     "input_tokens": 15915,
+     "output_tokens": 744,
+     "tool_chars_added": 6426
+    },
+    {
+     "round": 4,
+     "input_tokens": 15214,
+     "output_tokens": 575,
+     "tool_chars_added": 245
+    },
+    {
+     "round": 5,
+     "input_tokens": 17384,
+     "output_tokens": 1166,
+     "tool_chars_added": 4394
+    },
+    {
+     "round": 6,
+     "input_tokens": 18145,
+     "output_tokens": 1409,
+     "tool_chars_added": 2671
+    },
+    {
+     "round": 7,
+     "input_tokens": 20645,
+     "output_tokens": 3026,
+     "tool_chars_added": 3250
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 2183,
+ "token_usage": {
+  "input_tokens": 115250,
+  "output_tokens": 8442,
+  "total_tokens": 123692
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 62.5,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尼采视角主义（perspectivism）与真理关系的当代学界解释路线与争议——需要真实文献记录并读取其摘要/内容证据，以区分不同解释阵营（如\"视角主义即否认一切真理\" vs \"温和视角主义\"等）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 尼采视角主义（perspectivism）与真理关系的当代学界解释路线与争议——需要真实文献记录并读取其摘要/内容证据，以区分不同解释阵营（如\"视角主义即否认一切真理\" vs \"温和视角主义\"等））。soft 检索预算=4",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism truth",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Nietzsche Nietzsche perspectivism truth', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish Academy ",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.5840/du2001115/650",
+     "doi:10.1590/2316-82422025v4603rbdv",
+     "doi:10.1525/9780520914049-023",
+     "doi:10.3366/film.2013.0020",
+     "doi:10.4324/9781315182612-27",
+     "doi:10.5040/9798216430940.ch-006",
+     "doi:10.1057/9781137357069.0007",
+     "doi:10.1017/cbo9780511624728.007",
+     "doi:10.1057/9781137357069_3",
+     "doi:10.4324/9781315831893-17"
+    ],
+    "access_levels": {
+     "doi:10.5840/du2001115/650": "ABSTRACT_AVAILABLE",
+     "doi:10.1590/2316-82422025v4603rbdv": "ABSTRACT_AVAILABLE",
+     "doi:10.1525/9780520914049-023": "METADATA_ONLY",
+     "doi:10.3366/film.2013.0020": "METADATA_ONLY",
+     "doi:10.4324/9781315182612-27": "METADATA_ONLY",
+     "doi:10.5040/9798216430940.ch-006": "METADATA_ONLY",
+     "doi:10.1057/9781137357069.0007": "METADATA_ONLY",
+     "doi:10.1017/cbo9780511624728.007": "METADATA_ONLY",
+     "doi:10.1057/9781137357069_3": "METADATA_ONLY",
+     "doi:10.4324/9781315831893-17": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LOCAL_CURATED+LIVE",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED+LIVE",
+     "LOCAL_CURATED",
+     "LOCAL_CURATED+LIVE",
+     "LOCAL_CURATED+LIVE",
+     "LOCAL_CURATED+LIVE",
+     "LOCAL_CURATED+LIVE"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism truth self-refutation interpretation",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Nietzsche perspectivism truth self-refutation interpretation', 'results': [{'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ron",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.5840/du2001115/650",
+     "doi:10.5040/9798216430940.ch-006",
+     "doi:10.4324/9781315182612-27",
+     "doi:10.4324/9781315831893-17",
+     "doi:10.1057/9781137357069.0007",
+     "doi:10.5040/9781472547217.ch-001",
+     "doi:10.1017/cbo9780511624728.007",
+     "doi:10.1525/9780520921603-007",
+     "doi:10.1057/9781137357069_3",
+     "doi:10.2307/jj.8501220.9"
+    ],
+    "access_levels": {
+     "doi:10.5840/du2001115/650": "ABSTRACT_AVAILABLE",
+     "doi:10.5040/9798216430940.ch-006": "METADATA_ONLY",
+     "doi:10.4324/9781315182612-27": "METADATA_ONLY",
+     "doi:10.4324/9781315831893-17": "METADATA_ONLY",
+     "doi:10.1057/9781137357069.0007": "METADATA_ONLY",
+     "doi:10.5040/9781472547217.ch-001": "METADATA_ONLY",
+     "doi:10.1017/cbo9780511624728.007": "METADATA_ONLY",
+     "doi:10.1525/9780520921603-007": "METADATA_ONLY",
+     "doi:10.1057/9781137357069_3": "METADATA_ONLY",
+     "doi:10.2307/jj.8501220.9": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LOCAL_CURATED",
+     "LOCAL_CURATED+LIVE",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED+LIVE",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche truth perspectival realism interpretation Clark",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Nietzsche Nietzsche truth perspectival realism interpretation Clark', 'results': [{'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1017/cbo9780511624728",
+     "doi:10.1515/9781571136480-027",
+     "doi:10.1515/9783110593334-008",
+     "doi:10.1515/9783110593334-004",
+     "doi:10.5840/philtoday198125312",
+     "doi:10.4324/9781315831893-17",
+     "doi:10.1007/978-94-009-4360-5_1",
+     "doi:10.1017/9781139026116.013",
+     "doi:10.5040/9781472547217.ch-004"
+    ],
+    "access_levels": {
+     "doi:10.1017/cbo9780511624728": "ABSTRACT_AVAILABLE",
+     "doi:10.1515/9781571136480-027": "METADATA_ONLY",
+     "doi:10.1515/9783110593334-008": "METADATA_ONLY",
+     "doi:10.1515/9783110593334-004": "METADATA_ONLY",
+     "doi:10.5840/philtoday198125312": "METADATA_ONLY",
+     "doi:10.4324/9781315831893-17": "METADATA_ONLY",
+     "doi:10.1007/978-94-009-4360-5_1": "METADATA_ONLY",
+     "doi:10.1017/9781139026116.013": "METADATA_ONLY",
+     "doi:10.5040/9781472547217.ch-004": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "读取尼采真理问题核心文献（如 Maudemarie Clark《Nietzsche on Truth and Philosophy》及同类枢纽研究）的摘要/正文，取得对视角主义与真理关系诸解释路线的内容证据，而非仅有书目存在性",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行的检索与读取中，仅一篇尼采-维特根斯坦比较文章返回了可读摘要，核心解释路线（Clark 的\"温和/怀疑论再评估\"路线、反实在论读法等）目前只有书目信息，尚无可读内容证据；不读一条核心文献就无法对学界立场做内容性归因",
+    "unresolved_evidence_gap": "Clark《Nietzsche on Truth and Philosophy》或同等枢纽文献对\"尼采是否否认真理\"这一争议的实质立场与论证，需要其摘要或正文证据"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 读取尼采真理问题核心文献（如 Maudemarie Clark《Nietzsche on Truth and Philosophy》及同类枢纽研究）的摘要/正文，取得对视角主义与真理关系诸解释路线的内容证据，而非仅有书目存",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1017/cbo9780511624728', 'bibliographic_record': {'source_record_id': 'doi:10.1017/cbo9780511624728', 'title': 'Nietzsche on Truth and Philosophy', 'authors': ['Maudemarie ",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.5840/du2001115/650', 'bibliographic_record': {'source_record_id': 'doi:10.5840/du2001115/650', 'title': 'Nietzsche and Wittgenstein', 'authors': ['Shoshana Ronen', 'Polish",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism no facts only interpretations relativism",
+    "limit": 10
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 尼采视角主义与真理相关的原典文本出处与措辞（如\"没有事实，只有解释\"及《超善恶》《快乐的科学》中视角主义认识论的段落），用于核实回答中要提及的文本依据）。soft 检索预算=5 次。（PRIMARY 闭环: search 命中",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "没有事实，只有解释",
+    "limit": 6
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "视角 解释 真理 尼采",
+    "limit": 8
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism truth",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Nietzsche Nietzsche perspectivism truth",
+    "results": [
+     {
+      "source_record_id": "doi:10.5840/du2001115/650",
+      "title": "Nietzsche and Wittgenstein",
+      "authors": [
+       "Shoshana Ronen",
+       "Polish Academy of Sciences"
+      ],
+      "year": 2001,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Dialogue and Universalism",
+      "doi": "10.5840/du2001115/650",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1590/2316-82422025v4603rbdv",
+      "title": "Teichmüller, filosofastro: Nietzsche, estudo de fontes, perspectivismo (parte 2)",
+      "authors": [
+       "Ricardo Bazilio Dalla Vecchia"
+      ],
+      "year": 2025,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Cadernos Nietzsche",
+      "doi": "10.1590/2316-82422025v4603rbdv",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1525/9780520914049-023",
+      "title": "19. Perspectivism in Nietzsche's Genealogy of Morals",
+      "authors": [
+       "Brian Leiter"
+      ],
+      "year": 1994,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche, Genealogy, Morality",
+      "doi": "10.1525/9780520914049-023",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.3366/film.2013.0020",
+      "title": "Truth, Autobiography and Documentary: Perspectivism in Nietzsche and Herzog",
+      "authors": [
+       "Katrina Mitcheson"
+      ],
+      "year": 2013,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Film-Philosophy",
+      "doi": "10.3366/film.2013.0020",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315182612-27",
+      "title": "Truth, Paradox, and Nietzschean Perspectivism",
+      "authors": [
+       "Steven D. Hales",
+       "Robert C. Welshon"
+      ],
+      "year": 2018,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche",
+      "doi": "10.4324/9781315182612-27",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9798216430940.ch-006",
+      "title": "“There Are No Facts, Only Interpretations”",
+      "authors": [
+       "Pieter De Corte"
+      ],
+      "year": 2024,
+      "publication_type": "OTHER",
+      "venue": "The Post-Truth Condition",
+      "doi": "10.5040/9798216430940.ch-006",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137357069.0007",
+      "title": "Perspectivism",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche, Truth and Transformation",
+      "doi": "10.1057/9781137357069.0007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/cbo9780511624728.007",
+      "title": "Perspectivism",
+      "authors": [],
+      "year": 1991,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche on Truth and Philosophy",
+      "doi": "10.1017/cbo9780511624728.007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137357069_3",
+      "title": "Perspectivism",
+      "authors": [
+       "Katrina Mitcheson"
+      ],
+      "year": 2013,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche, Truth and Transformation",
+      "doi": "10.1057/9781137357069_3",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315831893-17",
+      "title": "Perspectivism, Philology, Truth",
+      "authors": [],
+      "year": 2014,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche and the Question of Interpretation",
+      "doi": "10.4324/9781315831893-17",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.5840/du2001115/650",
+     "doi:10.1590/2316-82422025v4603rbdv"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche perspectivism truth self-refutation interpretation",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Nietzsche perspectivism truth self-refutation interpretation",
+    "results": [
+     {
+      "source_record_id": "doi:10.5840/du2001115/650",
+      "title": "Nietzsche and Wittgenstein",
+      "authors": [
+       "Shoshana Ronen",
+       "Polish Academy of Sciences"
+      ],
+      "year": 2001,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Dialogue and Universalism",
+      "doi": "10.5840/du2001115/650",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9798216430940.ch-006",
+      "title": "“There Are No Facts, Only Interpretations”",
+      "authors": [
+       "Pieter De Corte"
+      ],
+      "year": 2024,
+      "publication_type": "OTHER",
+      "venue": "The Post-Truth Condition",
+      "doi": "10.5040/9798216430940.ch-006",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315182612-27",
+      "title": "Truth, Paradox, and Nietzschean Perspectivism",
+      "authors": [
+       "Steven D. Hales",
+       "Robert C. Welshon"
+      ],
+      "year": 2018,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche",
+      "doi": "10.4324/9781315182612-27",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315831893-17",
+      "title": "Perspectivism, Philology, Truth",
+      "authors": [],
+      "year": 2014,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche and the Question of Interpretation",
+      "doi": "10.4324/9781315831893-17",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137357069.0007",
+      "title": "Perspectivism",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche, Truth and Transformation",
+      "doi": "10.1057/9781137357069.0007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9781472547217.ch-001",
+      "title": "Perspectivism and its Limits",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche: Truth and Redemption : Critique of the Postmodernist Nietzsche",
+      "doi": "10.5040/9781472547217.ch-001",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/cbo9780511624728.007",
+      "title": "Perspectivism",
+      "authors": [],
+      "year": 1991,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche on Truth and Philosophy",
+      "doi": "10.1017/cbo9780511624728.007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1525/9780520921603-007",
+      "title": "3. Perspectivism",
+      "authors": [],
+      "year": 1999,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche",
+      "doi": "10.1525/9780520921603-007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137357069_3",
+      "title": "Perspectivism",
+      "authors": [
+       "Katrina Mitcheson"
+      ],
+      "year": 2013,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche, Truth and Transformation",
+      "doi": "10.1057/9781137357069_3",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.8501220.9",
+      "title": "Perspectivism:",
+      "authors": [],
+      "year": 2023,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche",
+      "doi": "10.2307/jj.8501220.9",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.5840/du2001115/650"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.5840/du2001115/650",
+     "title": "Nietzsche and Wittgenstein",
+     "authors": [
+      "Shoshana Ronen",
+      "Polish Academy of Sciences"
+     ],
+     "year": 2001,
+     "publication_type": "JOURNAL_ARTICLE",
+     "venue": "Dialogue and Universalism",
+     "doi": "10.5840/du2001115/650",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LOCAL_CURATED",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Truth is a metaphor, says Nietzsche; truths are convictions that impose upon the meaningless flux of events a shape of eternal necessity, as if they describe an absolute “thing in itself’. Nevertheless, truth is not “out there”, waiting to be discovered; rather, truth must be created. In that respect, there is no truth, only interpretations. The development of humanity is a result of a permanent struggle for hegemony between different interpretations. Wittgenstein, in his latter philosophy, abandoned the idea of a single, allembracing system in favor of an idea of plurality of contexts and difference of language games. Like Nietzsche, Wittgenstein thinks that truths are convictions, they are dependent on our use of language and hence, on context, on human action and culture. When none of our beliefs are grounded, the question of certainty and skepticism is raised. At bottom, Wittgenstein does represent a skeptical point of view. His skepticism stems from his idea of “groundlessness”. He claims that it is impossible to reach a solid, perpetual, objective and final ground for our knowledge and beliefs. There is nothing that lies ‘beneath’ the surface of things, there are no absolute reasons, only unjustified beliefs, and that is a Nietzschean view.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "e18bc9d7608763da041c54e53c5fd5a747d2baaf9b235c818f4137f986f3866f"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche truth perspectival realism interpretation Clark",
+    "philosopher": "Nietzsche",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Nietzsche Nietzsche truth perspectival realism interpretation Clark",
+    "results": [
+     {
+      "source_record_id": "doi:10.1017/cbo9780511624728",
+      "title": "Nietzsche on Truth and Philosophy",
+      "authors": [
+       "Maudemarie Clark"
+      ],
+      "year": 1991,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.1017/cbo9780511624728",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781571136480-027",
+      "title": "Nietzsche, Interpretation, and Truth",
+      "authors": [
+       "David M. A. Campbell"
+      ],
+      "year": 2004,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche and Antiquity",
+      "doi": "10.1515/9781571136480-027",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9783110593334-008",
+      "title": "5. A Pragmatist Conception of Truth",
+      "authors": [],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche´s Pragmatism",
+      "doi": "10.1515/9783110593334-008",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9783110593334-004",
+      "title": "1. Evolutionary Epistemology and the Critique of Truth",
+      "authors": [],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche´s Pragmatism",
+      "doi": "10.1515/9783110593334-004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5840/philtoday198125312",
+      "title": "Nietzsche and Perspectival Interpretation",
+      "authors": [
+       "George J. Stack",
+       "DePaul University"
+      ],
+      "year": 1981,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Philosophy Today",
+      "doi": "10.5840/philtoday198125312",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315831893-17",
+      "title": "Perspectivism, Philology, Truth",
+      "authors": [],
+      "year": 2014,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche and the Question of Interpretation",
+      "doi": "10.4324/9781315831893-17",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/978-94-009-4360-5_1",
+      "title": "Nietzsche on Philosophy, Interpretation and Truth",
+      "authors": [
+       "Richard Schacht"
+      ],
+      "year": 1986,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Martinus Nijhoff Philosophy Library",
+      "doi": "10.1007/978-94-009-4360-5_1",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781139026116.013",
+      "title": "Nietzsche on the Sovereignty of Perspectival Reason in Philosophy",
+      "authors": [
+       "Friedrich Kaulbach"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche as German Philosopher",
+      "doi": "10.1017/9781139026116.013",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9781472547217.ch-004",
+      "title": "Nietzsche and Heidegger",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Nietzsche: Truth and Redemption : Critique of the Postmodernist Nietzsche",
+      "doi": "10.5040/9781472547217.ch-004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1017/cbo9780511624728"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1017/cbo9780511624728",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1017/cbo9780511624728",
+     "title": "Nietzsche on Truth and Philosophy",
+     "authors": [
+      "Maudemarie Clark"
+     ],
+     "year": 1991,
+     "publication_type": "OTHER",
+     "venue": null,
+     "doi": "10.1017/cbo9780511624728",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": null,
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "无 OA 全文候选; DOI landing page 不构成全文可用",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Friedrich Nietzsche haunts the modern world. His elusive writings with their characteristic combination of trenchant analysis of the modern predicament and suggestive but ambiguous proposals for dealing with it have fascinated generations of artists, scholars, critics, philosophers, and ordinary readers. Maudemarie Clark's highly original study gives a lucid and penetrating analytical account of all the central topics of Nietzsche's epistemology and metaphysics, including his views on truth and language, his perspectivism, and his doctrines of the will-to-power and the eternal recurrence. The Nietzsche who emerges from these pages is a subtle and sophisticated philosopher, whose highly articulated views are of continuing interest as contributions to a whole range of philosphical issues. This remarkable reading of Nietzsche will interest not only philosophers, but also readers in neighbouring disciplines such as literature and intellectual history.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "44b16b4531ed88ad0182f726331ff70f3cf89de856616de160d5396e27a1891a"
+    }
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.5840/du2001115/650",
+     "title": "Nietzsche and Wittgenstein",
+     "authors": [
+      "Shoshana Ronen",
+      "Polish Academy of Sciences"
+     ],
+     "year": 2001,
+     "publication_type": "JOURNAL_ARTICLE",
+     "venue": "Dialogue and Universalism",
+     "doi": "10.5840/du2001115/650",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LOCAL_CURATED",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Truth is a metaphor, says Nietzsche; truths are convictions that impose upon the meaningless flux of events a shape of eternal necessity, as if they describe an absolute “thing in itself’. Nevertheless, truth is not “out there”, waiting to be discovered; rather, truth must be created. In that respect, there is no truth, only interpretations. The development of humanity is a result of a permanent struggle for hegemony between different interpretations. Wittgenstein, in his latter philosophy, abandoned the idea of a single, allembracing system in favor of an idea of plurality of contexts and difference of language games. Like Nietzsche, Wittgenstein thinks that truths are convictions, they are dependent on our use of language and hence, on context, on human action and culture. When none of our beliefs are grounded, the question of certainty and skepticism is raised. At bottom, Wittgenstein does represent a skeptical point of view. His skepticism stems from his idea of “groundlessness”. He claims that it is impossible to reach a solid, perpetual, objective and final ground for our knowledge and beliefs. There is nothing that lies ‘beneath’ the surface of things, there are no absolute reasons, only unjustified beliefs, and that is a Nietzschean view.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "e18bc9d7608763da041c54e53c5fd5a747d2baaf9b235c818f4137f986f3866f"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}

@@ -9,9 +9,12 @@ history_timeline / confrontation / school_arena / agent_council（15 个）。
 import json, os, re
 from concurrent.futures import ThreadPoolExecutor
 
-from routes.agent_core import TOOLS, register_tool, _int_arg, PUBLIC, SCHOOLS_DIR
+from routes.agent_core import (
+    TOOLS, register_tool, _int_arg, _str_arg, _req_str, PUBLIC, SCHOOLS_DIR,
+    _mem_slot, _save_agent_memory,
+)
 from routes.agent_llm import llm_chat
-from routes.agent_tools_memory import _auto_visualize, _debate_map_text
+from routes.agent_tools_memory import _debate_map_text   # school_arena 演变图（memory 域共享）
 
 # ── 工具 10: phti_test（哲学人格测试——游戏化, 对话中触发）──
 PHTI_QUESTIONS = None
@@ -44,27 +47,55 @@ register_tool(
     _exec_phti_test,
 )
 
-# ── 高级工具（V2: compare/socratic/debate/thought_exp/council/paper_review）──
-def _exec_compare(args):
-    a = (args.get("a") or "").strip()
-    b = (args.get("b") or "").strip()
-    if not a or not b:
-        return {"error": "需要两个对比对象"}
-    # 检索双方 + 合检（三方材料）
-    r1 = TOOLS["search_books"]["execute"]({"query": a, "limit": 4})
-    r2 = TOOLS["search_books"]["execute"]({"query": b, "limit": 4})
-    r3 = TOOLS["search_books"]["execute"]({"query": f"{a} {b}", "limit": 4})
+# ── 高级工具（V2+）──
+# Phase T（T3）: compare_views 从"一次调用生成完整对比成品"重构为 comparison scaffold——
+# 工具只产出比较结构/轴线/候选主张, 最终结论由主 Agent 结合 Evidence Contract 二次综合。
+def _exec_compare(args, search_fn=None):
+    from tool_contracts import scaffold_result, extract_json
+    a, ea = _req_str(args, "a")
+    b, eb = _req_str(args, "b")
+    if ea or eb:
+        return ea or eb
+    focus = _str_arg(args, "focus") or ""   # 可选: 对比焦点（问题维度）
+    # 检索双方 + 合检（三方材料; 结构化引用随产物返回, 供主 Agent 核验后进入 Evidence Contract）
+    search = search_fn or TOOLS["search_books"]["execute"]
+    r1 = search({"query": a, "limit": 4})
+    r2 = search({"query": b, "limit": 4})
+    r3 = search({"query": f"{a} {b}", "limit": 4})
     ctx = json.dumps({"a_materials": r1.get("results", [])[:4],
                       "b_materials": r2.get("results", [])[:4],
                       "both_materials": r3.get("results", [])[:4]},
                      ensure_ascii=False)[:6000]
-    # 直接生成完整对比成品（表格 + 引用 + 结论）——不再让 LLM 二次加工检索材料
-    prompt = (f"对比 {a} 与 {b} 对同一问题的观点差异（900字内, 用 markdown 表格呈现核心差异: 维度/各自观点/原文依据）:\n"
-              f"要求: ①先确定二者共同涉及的议题 ②表格 4-6 行 ③每个观点附【《书名》· 章节】引用（从检索材料或你的知识, 引用须真实）\n"
-              f"④最后 100 字总结根本分歧。\n\n检索材料（仅作引用支撑, 观点结合你的哲学知识）:\n{ctx}")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=1400)
-    reply = (resp["choices"][0]["message"].get("content") or "").strip() or "（对比生成失败）"
-    # 引用去重
+    # 内部 LLM 只产生 scaffold（JSON 结构）, 不产生 ready-to-render essay
+    prompt = (f"为「{a}」与「{b}」的比较分析生成结构脚手架（comparison scaffold）。"
+              f"{('用户指定的比较焦点: ' + focus + '。') if focus else ''}"
+              f"只输出 JSON（不要 markdown 围栏, 不要解释文字）, 结构:\n"
+              f'{{"shared_problem": "二者共同面对的哲学问题（1-2句）",\n'
+              f' "comparison_axes": [{{"axis": "比较维度名", "side_a": "{a}在此维度（≤50字）", "side_b": "{b}在此维度（≤50字）", "why_it_matters": "该维度为何关键（1句）"}}],\n'
+              f' "side_a_claims": [{{"claim": "{a}的可辩护主张", "basis": "检索材料/哲学史依据（不编造引文, 没有就写 reasoning）", "strength": "强在何处"}}],\n'
+              f' "side_b_claims": [同上结构, 属于{b}],\n'
+              f' "strongest_divergence": "有依据的分歧及其层次；无实质分歧时如实说明，不预设不可通约",\n'
+              f' "evidence_needs": ["主 Agent 综合前最好补核的证据/原典定位（可空）"],\n'
+              f' "candidate_consequences": ["若接受某一方, 会引出的理论后果（各1句, 不下最终结论）"]}}\n'
+              f"要求: 2-4 个 comparison_axes; 每侧 2 条 claims; 各字段文字务必紧凑（防输出截断）;\n"
+              f"检索摘要仅是待核查线索。超出材料的既有知识须标为待核查，不编造引文;\n"
+              f"不要把认识论主张扩成所有领域的断言，不把不同问题强行写成正反方;\n"
+              f"你不得给出最终胜负判断——那是主 Agent 的职责。\n\n检索材料:\n{ctx}")
+    scaffold = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.5, max_tokens=2200)
+        scaffold = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        scaffold = None
+    if not isinstance(scaffold, dict):
+        # 兜底: 检索材料直接给最小脚手架（无 LLM 成品）
+        scaffold = {"shared_problem": f"{a} 与 {b} 在「{focus or '相关哲学问题'}」上的立场差异与各自依据",
+                    "comparison_axes": [], "side_a_claims": [], "side_b_claims": [],
+                    "strongest_divergence": "",
+                    "evidence_needs": ["LLM scaffold 生成失败——请主 Agent 直接基于两侧检索材料自行建构比较轴线"],
+                    "candidate_consequences": []}
+    # 引用（结构化, 供主 Agent 核验后使用——不自动生成成品引用文案; 携带 snippet
+    # 使引擎侧证据入池后可参与 used_evidence 片段对齐, 否则正式引用无法通过终检）
     citations, seen = [], set()
     for r in (r1, r2, r3):
         for item in r.get("results", [])[:3]:
@@ -72,113 +103,259 @@ def _exec_compare(args):
             if k not in seen:
                 seen.add(k)
                 citations.append({"book": item.get("book_title"), "chapter": item.get("chapter_title"),
-                                  "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")})
-    ret = {"comparison": reply, "citations": citations[:8]}
-    img = _auto_visualize(f"{a} 与 {b}——两种哲学立场的对比图, 左右分列象征各自的核心意象, 中间一道思想分界")
-    if img:
-        ret["image_url"] = img
-        ret["note"] = f"回答末尾请以 ![对比图]({img}) 引用该图"
+                                  "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx"),
+                                  "author": item.get("author", ""),
+                                  "snippet": (item.get("snippet") or "")[:220]})
+    axes = scaffold.get("comparison_axes") or []
+    ret = scaffold_result(
+        "comparison_scaffold",
+        f"{a} vs {b} 的比较脚手架: {len(axes)} 条比较轴线 + 双方候选主张; 最终判断由主 Agent 综合",
+        confidence=0.65 if axes else 0.4,
+        presentation_hint="结构化中间产物——主 Agent 须结合证据契约与用户问题二次综合后作答, 不得直接照搬为最终对比表",
+        shared_problem=scaffold.get("shared_problem", ""),
+        comparison_axes=axes[:6],
+        side_a_claims=(scaffold.get("side_a_claims") or [])[:4],
+        side_b_claims=(scaffold.get("side_b_claims") or [])[:4],
+        strongest_divergence=scaffold.get("strongest_divergence", ""),
+        evidence_needs=(scaffold.get("evidence_needs") or [])[:5],
+        candidate_consequences=(scaffold.get("candidate_consequences") or [])[:5],
+        side=a, side_a=a, side_b=b,
+        citations=citations[:8])
+    if search_fn is not None:
+        ret["catalogue_matches"] = {"side_a": r1.get("catalogue_matches", []),
+                                    "side_b": r2.get("catalogue_matches", [])}
+        ret["reading_note"] = "书目匹配只证明库中有这些原著；比较工具的候选主张仍需用 get_book_detail/get_chapter 核对双方原文。"
     return ret
 
 register_tool("compare_views",
-    "对比两个哲学家/概念的观点——自动检索双方原典并直接生成完整对比（markdown 表格 + 引用 + 结论图）。结果即成品, 调用一次直接展示。用于'休谟和康德对因果的看法有何不同'类问题。",
-    {"type": "object", "properties": {"a": {"type": "string", "description": "对比对象一（哲学家/概念）"}, "b": {"type": "string", "description": "对比对象二"}}, "required": ["a", "b"]},
+    "生成两个哲学家/概念的比较分析结构（comparison scaffold: 共同问题/比较轴线/双方候选主张/最根本分歧/证据需求/候选后果），供主 Agent 结合证据二次综合——不直接产出最终对比成品或胜负结论。用于'休谟和康德对因果的看法有何不同'类问题。",
+    {"type": "object", "properties": {
+        "a": {"type": "string", "description": "对比对象一（哲学家/概念）"},
+        "b": {"type": "string", "description": "对比对象二"},
+        "focus": {"type": "string", "description": "比较焦点（用户强调的问题维度, 可选）"}},
+     "required": ["a", "b"]},
     _exec_compare)
 
-SOCRATIC_PROMPT = """你是苏格拉底（Socrates）——只提问, 不直接给答案。用户话题: 「{topic}」。
+# Phase T（T6）: socratic_tutor 从"一次生成 4 轮追问"重构为 stateful one-turn skill——
+# ONE CALL = ONE QUESTION。会话状态存 per-user 记忆槽 _mem_slot()["socratic"]。
+SOCRATIC_TURN_PROMPT = """你是苏格拉底（Socrates）——只提问, 不直接给答案。
 
-任务: 设计 {rounds} 轮引导式追问（对话中逐轮抛出, 用户回答后再追问下一轮）。
-
-追问策略（由浅入深）:
-1. 第一轮: 澄清性提问——让对方先定义概念、说清处境（"你说的X指的是什么?"）。
-2. 中间轮: 挑战性提问——攻击其立场的隐含前提, 暴露逻辑矛盾（"如果X成立, 那么Y, 你能接受吗?"）;
-   再引导价值澄清（"你真正在意的是结果, 还是动机?"）。
-3. 最后一轮: 总结性反诘——把对方可能的回答路径引向一个根本问题, 留下思考空间。
-
-原典背景（可参考, 若无命中则不引用）:
-{retrieval}
+对话进展:
+- 话题: 「{topic}」
+- 本轮序号: 第 {round_no} 问
+{user_reply_line}{history_line}
+任务: 基于对方{target_phrase}推进一步——诊断其隐含假设, 只设计下一个问题。
 
 要求:
-① 每一轮只能是一个问题（可以是追问序列, 但必须是问题, 不能是陈述或建议）;
-② 禁止说教、禁止直接给答案、禁止心灵鸡汤;
-③ 追问要有层次, 拒绝"哲学废话"——每个问题都要逼近对方的某个具体前提;
-④ 输出格式:
-第1轮（目的: ...）: 问题
-第2轮（目的: ...）: 问题
-...
-第N轮（总结反诘）: 问题
-全文 500 字内, 中文。"""
+① 恰好一个问题（一个问号; 可以有简短的铺垫语, 但核心追问只能有一个）;
+② 问题必须逼近对方{target_phrase2}的一个具体前提, 拒绝泛泛而问;
+③ 禁止说教、禁止给答案、禁止心灵鸡汤、禁止预告后面几轮要问什么;
+④ 输出 JSON（不要 markdown 围栏）:
+{{"diagnosed_assumption": "对方当前立场的隐含假设（1句）",
+  "next_question": "下一个问题（含 ≤40 字铺垫）",
+  "question_purpose": "这个问题要逼出什么（1句）"}}
+
+原典背景（可参考, 若无命中则不引用）:
+{retrieval}"""
 
 def _exec_socratic(args):
-    topic = args.get("topic", "").strip()
-    rounds = _int_arg(args, "rounds", 4, 1, 6)
-    if not topic:
-        return {"error": "缺少话题"}
+    from tool_contracts import scaffold_result, extract_json
+    topic, err = _req_str(args, "topic")
+    if err:
+        return err
+    user_reply = _str_arg(args, "user_reply") or _str_arg(args, "answer") or ""
     result = TOOLS["search_books"]["execute"]({"query": topic[:50], "limit": 3})
     retrieval = json.dumps(result, ensure_ascii=False)[:3000]
-    prompt = SOCRATIC_PROMPT.format(topic=topic, rounds=rounds, retrieval=retrieval)
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.75, max_tokens=1500)
-    return {"socratic": (resp["choices"][0]["message"].get("content") or "").strip()}
+    # 会话状态（per-user）: 记录话题/已问问题/用户最新回答——下一问必须依赖用户真实回答
+    slot = _mem_slot()
+    sess = slot.get("socratic") or {}
+    if sess.get("topic") != topic:
+        sess = {"topic": topic, "round": 0, "asked": [], "last_reply": ""}
+    round_no = int(sess.get("round", 0)) + 1
+    prev_asked = sess.get("asked", [])[-3:]
+    if user_reply:
+        sess["last_reply"] = user_reply[:400]
+    reply_line = (f"- 对方最新回答: 「{sess['last_reply'][:300]}」\n" if sess.get("last_reply") else "- 对方尚未回答（这是第一问）\n")
+    history_line = ""
+    if prev_asked:
+        history_line = ("- 已问过的问题（不得重复问）:\n" +
+                        "\n".join(f"  {i+1}. {q[:80]}" for i, q in enumerate(prev_asked)) + "\n")
+    prompt = SOCRATIC_TURN_PROMPT.format(topic=topic, round_no=round_no,
+                                         user_reply_line=reply_line, history_line=history_line,
+                                         target_phrase=(f"的最新回答「{sess.get('last_reply', '')[:200]}」"
+                                                        if sess.get("last_reply") else "的立场"),
+                                         target_phrase2=("在本次回答中" if sess.get("last_reply") else ""),
+                                         retrieval=retrieval)
+    data = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.75, max_tokens=600)
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        data = None
+    if not isinstance(data, dict) or not data.get("next_question"):
+        # 兜底: 从纯文本中提取第一个问句, 保证"恰好一个问题"
+        raw = ""
+        try:
+            raw = (resp["choices"][0]["message"].get("content") or "").strip()
+        except Exception:
+            pass
+        m = re.search(r"[^。！？\n]{4,160}[？?]", raw)
+        data = {"diagnosed_assumption": "", "next_question": m.group(0).strip() if m else "你说这话时, 心里把它当作什么?",
+                "question_purpose": "暴露隐含前提"}
+    nq = data.get("next_question", "").strip()
+    # 硬约束: 只保留第一个问号及其所在句（防止模型齐发多问）
+    qm = re.search(r"[？?]", nq)
+    if qm:
+        tail = nq[qm.end():]
+        if tail.strip():
+            nq = nq[:qm.end()]   # 截掉第一问之后的所有内容
+    sess["round"] = round_no
+    sess["asked"] = (sess.get("asked", []) + [nq])[-6:]
+    sess["awaiting_reply"] = True
+    slot["socratic"] = sess
+    _save_agent_memory()
+    return scaffold_result(
+        "socratic_turn",
+        f"第 {round_no} 问——用户可见内容只有 next_question; 用户回答后再次调用并传 user_reply 推进下一问",
+        confidence=0.7,
+        presentation_hint="只向用户展示 next_question（可带极简铺垫）; 不展示 diagnosed_assumption/question_purpose; 严禁预生成后续轮次",
+        diagnosed_assumption=data.get("diagnosed_assumption", ""),
+        next_question=nq,
+        question_purpose=data.get("question_purpose", ""),
+        state_update={"round": round_no, "topic": topic,
+                      "awaiting_user_reply": True,
+                      "note": "用户回答后再次调用本工具并传 user_reply=用户的回答"})
 
 register_tool("socratic_tutor",
-    "苏格拉底式思辨引导——不直接给答案, 通过多轮追问挑战假设、暴露逻辑矛盾、深化思考（用于'聊聊XX''你怎么看XX'类请求）。",
-    {"type": "object", "properties": {"topic": {"type": "string"}, "rounds": {"type": "integer", "description": "追问轮数, 默认 4"}}, "required": ["topic"]},
+    "苏格拉底式思辨引导（每次调用只返回一个问题）——诊断对方隐含假设并给出下一个追问; 用户回答后再次调用并传 user_reply=用户的回答以推进。ONE CALL = ONE QUESTION, 不预生成后续轮次（用于'不要告诉我答案, 只问我一个问题'类请求）。",
+    {"type": "object", "properties": {
+        "topic": {"type": "string", "description": "话题/对方的观点"},
+        "user_reply": {"type": "string", "description": "用户对上一问的回答（第二轮起必须传, 下一问必须依赖它）"}},
+     "required": ["topic"]},
     _exec_socratic)
 
+# Phase T（T2）: advisor_council 从"成品建议文"改为 perspectives scaffold——
+# 各视角作为候选材料, 综合判断与呈现由主 Agent 完成。
 def _exec_council(args):
-    question = args.get("question", "")
-    prompt = (f"用户面临决策/困惑: 「{question}」\n请召集 3 位智者给出建议:\n"
-              f"1. 亚里士多德（实践智慧/中道）\n2. 斯多葛（可控与不可控）\n3. 存在主义（本真选择）\n"
-              f"每人 100 字内, 最后 50 字综合。用中文。")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.85, max_tokens=900)
-    return {"advice": (resp["choices"][0]["message"].get("content") or "").strip()}
+    from tool_contracts import scaffold_result, extract_json
+    question, err = _req_str(args, "question")
+    if err:
+        return err
+    prompt = (f"用户面临决策/困惑: 「{question}」\n请召集 3 位智者给出多视角建议, 只输出 JSON（不要围栏）:\n"
+              f'{{"perspectives": [{{"advisor": "亚里士多德（实践智慧/中道）", "advice": "100字内的建议", "assumes": "该建议预设了用户在乎什么"}},\n'
+              f'  {{"advisor": "斯多葛（可控与不可控）", "advice": "…", "assumes": "…"}},\n'
+              f'  {{"advisor": "存在主义（本真选择）", "advice": "…", "assumes": "…"}}],\n'
+              f' "tensions": ["三种视角之间真实的张力点（各1句, 不和稀泥）"],\n'
+              f' "synthesis_hint": "综合的可能方向（1句, 只是提示不下结论）"}}\n'
+              f"你不得替用户做最终决定——那是主 Agent 结合语境的职责。没有提供的处境不能当成事实，"
+              f"必要假设用条件句；不推断用户隐藏动机。不同视角可以共享理由，不强行制造对立。用中文。")
+    data = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        data = None
+    if not isinstance(data, dict):
+        data = {"perspectives": [], "tensions": [], "synthesis_hint": "多视角生成失败——请主 Agent 自行展开三种视角"}
+    return scaffold_result(
+        "perspectives_scaffold",
+        "三种思维模型的多视角建议脚手架: 视角/预设/张力点/综合提示; 最终建议由主 Agent 综合",
+        confidence=0.65,
+        presentation_hint="结构化中间产物——主 Agent 按用户处境裁剪呈现, 不得原样罗列了事",
+        council=data)
 
 register_tool("advisor_council",
-    "智者内阁——召集亚里士多德/斯多葛/存在主义三种思维模型, 对人生决策/困惑给出多视角建议。",
+    "智者内阁——召集亚里士多德/斯多葛/存在主义三种思维模型, 对人生决策/困惑生成多视角建议脚手架（视角/预设/张力点/综合提示）, 供主 Agent 结合语境综合。用户要求'从几个/多个哲学传统或视角分析'某个现实抉择时必须用本工具——不要以单一视角直接作答。",
     {"type": "object", "properties": {"question": {"type": "string"}}, "required": ["question"]},
     _exec_council)
 
+# Phase T（T8）: paper_review 与 analyze_argument 职责切分——
+#   analyze_argument = 单个论证的逻辑结构（短论证的"评审"可合法路由到此）;
+#   paper_review     = 完整 essay/paper 的整体同行评审（thesis/结构/证据/反驳/写作/贡献）。
+# paper_review 不再做"300字毒舌模板", 返回 structured review, 展示深度由主 Agent 决定。
 def _exec_paper_review(args):
-    text = args.get("text", "")
-    if not text:
-        return {"error": "缺少待评审文本"}
-    prompt = (f"请以严格的哲学导师身份评审以下作文/论文（300字内）:\n"
-              f"① 论点是否清晰 ② 论证是否成立 ③ 引用是否支撑 ④ 最重要的改进建议\n"
-              f"语气直接、建设性。\n\n文本:\n{text[:3000]}")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=800)
-    return {"review": (resp["choices"][0]["message"].get("content") or "").strip()}
+    from tool_contracts import scaffold_result, extract_json
+    text, err = _req_str(args, "text")
+    if err:
+        return err
+    prompt = (f"以严格的哲学同行评审（peer review）身份评审以下文本, 只输出 JSON（不要围栏）:\n"
+              f'{{"genre_judgment": "这是完整论文/短论证/片段——一句话判断",\n'
+              f' "thesis": {{"statement": "作者的核心论点（忠实重构）", "clarity": "清晰/含混+一句说明", "originality": "贡献点"}}\n'
+              f' "structure": {{"strengths": ["结构上成立之处"], "weaknesses": ["结构性弱点（章节衔接/比重/递进）"]}},\n'
+              f' "evidence": {{"use": "引用与证据的使用质量", "gaps": ["缺了哪些关键证据或反例"]}},\n'
+              f' "strongest_objection": "对论文整体最强的外部反驳（1-2句）",\n'
+              f' "writing": "表达层面一句话（不评文采上下）",\n'
+              f' "contribution": "若修改到位, 该文可能的价值（1句）",\n'
+              f' "priority_actions": ["按重要性排序的 2-3 条修改动作"]}}\n'
+              f"注意: thesis/structure/evidence 等键放在同一层（上面的换行只是排版）; 语气直接但建设性; 不替作者重写。\n\n"
+              f"文本:\n{text[:3000]}")
+    data = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.6, max_tokens=1000)
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        data = None
+    if not isinstance(data, dict):
+        data = {"genre_judgment": "评审结构化生成失败", "thesis": {"statement": "", "clarity": "", "originality": ""},
+                "structure": {"strengths": [], "weaknesses": []}, "evidence": {"use": "", "gaps": []},
+                "strongest_objection": "", "writing": "", "contribution": "",
+                "priority_actions": ["评审生成失败——请主 Agent 直接基于文本自行评审"]}
+    return scaffold_result(
+        "structured_review",
+        "完整论文的结构化同行评审: thesis/结构/证据/最强反驳/修改优先级; 展示深度由主 Agent 按用户请求决定",
+        confidence=0.7,
+        presentation_hint="结构化中间产物——主 Agent 按用户要求裁剪展示（'评审'二字≠全文照搬）",
+        review=data)
 
 register_tool("paper_review",
-    "评审作文/论文（论点/论证/引用/改进建议）——'毒舌但有用'的同行评审。",
-    {"type": "object", "properties": {"text": {"type": "string"}}, "required": ["text"]},
+    "论文评审（peer review）——thesis/结构/证据/最强反驳/修改优先级的结构化产物。路由看用户框架不看文本长度: 只要用户以'评审/审稿/评价这篇论文/这篇摘要'框架提出（摘要、片段、短文也算）→ 用本工具; 只有用户单纯要'拆解一段论证的逻辑结构'且无评审框架时才用 analyze_argument。",
+    {"type": "object", "properties": {"text": {"type": "string", "description": "待评审的完整论文/文章"}}, "required": ["text"]},
     _exec_paper_review)
 
 # ═══════════════════════════════════════════════════════
 # V3 工具: analyze_argument / concept_trace / profile / conceptual_map
 # ═══════════════════════════════════════════════════════
 
-# ── 工具: analyze_argument（论证结构分析——拆骨架, 找薄弱点）──
+# ── 工具: analyze_argument（论证结构分析——拆骨架, 找薄弱点; Phase T: 结构化产物）──
 def _exec_analyze_argument(args):
-    text = args.get("text", "").strip()
-    if not text:
-        return {"error": "缺少待分析论证"}
-    prompt = (f"以分析哲学的方法拆解以下论证（600字内, 结构化编号输出, 只评论证质量不评文采）:\n"
-              f"① 结论（明确写出）\n② 前提（逐条列出, 区分显式/隐含）\n"
-              f"③ 隐含假设（未说但论证依赖的）\n④ 逻辑谬误与薄弱点（若论证不成立, 指出断点）\n"
-              f"⑤ 强化建议（如何补强前提或修改结论）\n\n文本:\n{text[:3000]}")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
-    return {"analysis": (resp["choices"][0]["message"].get("content") or "").strip()}
+    from tool_contracts import scaffold_result, extract_json
+    text, err = _req_str(args, "text")
+    if err:
+        return err
+    prompt = (f"以分析哲学方法拆解以下论证, 只输出 JSON（不要围栏）:\n"
+              f'{{"conclusion": "结论（明确写出）",\n'
+              f' "premises": [{{"premise": "前提内容", "kind": "explicit/implicit"}}],\n'
+              f' "hidden_assumptions": ["未说出但论证依赖的假设"],\n'
+              f' "fallacies": [{{"name": "谬误/弱点名称", "where": "落在哪个前提", "why": "一句话"}}],\n'
+              f' "weakest_point": "最薄弱的一步（1句, 指明断点位置）",\n'
+              f' "strengthening": ["如何补强前提或修改结论（1-2条）"]}}\n'
+              f"只评论证质量不评文采; 你不做最终'评分/裁决'——评价语由主 Agent 结合语境给出。\n\n文本:\n{text[:3000]}")
+    data = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.6, max_tokens=900)
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        data = None
+    if not isinstance(data, dict):
+        data = {"conclusion": "", "premises": [], "hidden_assumptions": [], "fallacies": [],
+                "weakest_point": "", "strengthening": ["结构化生成失败——请主 Agent 直接拆解"]}
+    return scaffold_result(
+        "argument_structure",
+        "论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议",
+        confidence=0.7,
+        presentation_hint="结构化中间产物——主 Agent 按用户指令重排（如'先最致命问题, 再加强方法'）, 不照搬编号模板",
+        argument=data)
 
 register_tool("analyze_argument",
-    "论证结构分析——把一段观点/文章拆成结论/前提/隐含假设/逻辑谬误/强化建议（用于'分析一下这段话''帮我看看这个论证'类请求）。",
+    "单个论证的逻辑结构分析（结论/前提显隐/隐含假设/谬误/最薄弱一步/补强建议）——针对一段论证或短文本; 触发语是'分析一下这段话''帮我看看这个论证''指出逻辑结构'。⚠ 用户以论文评审框架提问（'评审/审稿/评价这篇论文（或摘要/成篇文本）'）时不要用本工具, 改用 paper_review。",
     {"type": "object", "properties": {"text": {"type": "string", "description": "待分析的论证文本"}}, "required": ["text"]},
     _exec_analyze_argument)
 
 # ── 工具: profile（个性化哲学画像——基于当前问题的即时画像 + 真实推荐）──
 def _exec_profile(args):
-    question = (args.get("question") or "").strip()[:200]
-    if not question:
-        return {"error": "缺少问题"}
+    question, err = _req_str(args, "question", max_len=200)
+    if err:
+        return err
     book_hits = TOOLS["search_books"]["execute"]({"query": question[:50], "limit": 6}).get("results", []) or []
     book_names = ", ".join({f"《{(r.get('book_title') or '')}》·{(r.get('author') or '')}" for r in book_hits[:6]})
     prompt = (f"基于用户当前问题「{question}」输出哲学画像（450字内, 结构化）:\n"
@@ -187,46 +364,141 @@ def _exec_profile(args):
               f"③ 可能感兴趣的流派\n"
               f"④ 推荐书目: 优先从以下真实书目中选 2-3 本（可另补充必读经典）: {book_names or '（原典库命中较少, 推荐哲学入门经典）'}\n"
               f"⑤ 建议下一步深挖的问题（1 个）。用中文。")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
-    return {"profile_text": (resp["choices"][0]["message"].get("content") or "").strip()}
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
+        profile_text = (resp["choices"][0]["message"].get("content") or "").strip()
+    except Exception as e:
+        return {"error": f"画像生成失败: {str(e)[:120]}",
+                "note": "provider 失败不编造画像——请主 Agent 基于对话上下文直接给出倾向分析"}
+    return {"profile_text": profile_text}
 
 register_tool("profile",
     "个性化哲学画像——分析用户当前问题的哲学倾向, 推荐真实书目与下一步方向（人生顾问/学习路径的基础）。",
     {"type": "object", "properties": {"question": {"type": "string", "description": "用户当前关注的问题/话题"}}, "required": ["question"]},
     _exec_profile)
 
-# ── 工具: conceptual_map（概念脑图——多路检索 + LLM 提炼 Mermaid mindmap, 前端渲染图形）──
+# ── 工具: conceptual_map（Phase T/T5: 通用关系图——结构化 graph + 确定性 Mermaid renderer）──
+# QG2/Q13 教训: 旧实现只会"概念→哲学家/流派/著作"关联脑图, 用户要"感性→知性→范畴…"环节图时
+# 被主 Agent 整体架空（合规性调用）。新实现支持 MAP_TYPE 全谱系; Mermaid 只是 renderer——
+# 由确定性 renderer 从 graph structure 生成（引号/括号 escaping、节点 id、edge syntax）,
+# 不再让内部 LLM 自由手写未经验证的 Mermaid。
 def _exec_conceptual_map(args):
-    concept = args.get("concept", "").strip()
-    if not concept:
-        return {"error": "缺少概念"}
-    r_books = TOOLS["search_books"]["execute"]({"query": concept, "limit": 6}).get("results", []) or []
-    r_phils = TOOLS["query_database"]["execute"]({"table": "philosophers", "key": concept, "limit": 4}).get("results", []) or []
-    r_schools = TOOLS["query_database"]["execute"]({"table": "schools", "key": concept, "limit": 3}).get("results", []) or []
-    r_net = TOOLS["query_database"]["execute"]({"table": "network", "key": concept, "limit": 4}).get("results", []) or []
-    ctx = json.dumps({"books": [{"book": r.get("book_title"), "author": r.get("author"),
-                                 "chapter": r.get("chapter_title"), "snippet": (r.get("snippet") or "")[:80]}
-                                for r in r_books[:6]],
-                      "philosophers": r_phils[:4], "schools": r_schools[:3], "network": r_net[:4]},
-                     ensure_ascii=False)[:4000]
-    prompt = (f"基于以下检索结果, 为概念「{concept}」构建概念脑图, 输出 Mermaid mindmap 语法"
-              f"（只输出 mindmap 代码本身, 不要包裹 ```mermaid 围栏, 前端会自动渲染成图形）:\n"
-              f"mindmap\n  root(({concept}))\n    哲学家/流派/著作\n      关联理由\n"
-              f"规则: 根 = 概念; 一级分支 = 相关哲学家/流派/著作; 二级 = 关联理由（提出/反对/发展/使用）; "
-              f"只使用检索结果中的内容, 不编造; 3 个一级分支以内, 总节点 15 个以内; "
-              f"节点文本含括号/引号/斜杠等特殊字符时用双引号包裹, 中文可直接写。\n\n检索结果:\n{ctx}")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=800)
-    mt = (resp["choices"][0]["message"].get("content") or "").strip()
-    mt = re.sub(r"^```(?:mermaid)?\s*", "", mt)
-    mt = re.sub(r"\s*```$", "", mt)
-    if mt.startswith("mindmap"):
-        mt = f"```mermaid\n{mt}\n```"   # 带围栏返回, 前端直接渲染
-    return {"map_text": mt, "concept": concept, "format": "mermaid",
-            "note": "概念脑图（mermaid mindmap）, 前端渲染为图形"}
+    from tool_contracts import (scaffold_result, render_mermaid, validate_mermaid,
+                                infer_map_type, MAP_TYPES, extract_json)
+    concept, err = _req_str(args, "concept")
+    if err and err["error"].startswith("缺少"):
+        concept, err = _req_str(args, "focus")   # focus 为 concept 的别名入口
+    if err:
+        return err
+    map_type = (args.get("map_type") or "").strip().upper()
+    if map_type not in MAP_TYPES:
+        map_type = infer_map_type(f"{concept} {args.get('constraints', '')}")
+    directionality = (args.get("directionality") or "").strip().lower()
+    constraints = (args.get("constraints") or "").strip()
+    nodes_in = [n for n in (args.get("nodes") or []) if isinstance(n, (str, dict)) and n]
+    rels_in = [r for r in (args.get("relations") or []) if isinstance(r, dict)]
+
+    def _node_id(n):
+        return n.get("id") or n.get("label") if isinstance(n, dict) else str(n)
+
+    graph = None
+    source = "user_specified"
+    # ① 用户显式给出节点+关系 → 确定性构图（不经 LLM 手写）, LLM 仅在缺 label 时可补注
+    if nodes_in and args.get('relations') is not None:
+        seen = set()
+        nodes = []
+        for n in nodes_in:
+            nid = _node_id(n)
+            if not nid or nid in seen:
+                continue
+            seen.add(nid)
+            label = n.get("label") or nid if isinstance(n, dict) else str(n)
+            group = n.get("group") or "" if isinstance(n, dict) else ""
+            note = n.get("note") or "" if isinstance(n, dict) else ""
+            nodes.append({"id": nid, "label": f"{label}｜{note}" if note else label, "group": group})
+        edges = []
+        if len(rels_in) != len(args['relations']):
+            return {'error':'INVALID_GRAPH_RELATIONS','message':'relations每项必须是含from/to的对象。'}
+        for r in rels_in[:20]:
+            a, b = r.get("from"), r.get("to")
+            if a not in seen or b not in seen or a == b:
+                return {'error':'INVALID_GRAPH_RELATIONS','message':'from/to必须对应两个不同的已给节点，未忽略或重造关系。'}
+            if a in seen and b in seen and a != b:
+                edges.append({"from": a, "to": b, "label": (r.get("label") or r.get("relation") or "").strip()})
+        if nodes:
+            graph = {"nodes": nodes, "edges": edges}
+    # ② 未给出完整结构 → 检索 + 内部 LLM 只产生 graph JSON（不产生 Mermaid 文本）
+    if graph is None:
+        source = "retrieval_llm"
+        r_books = TOOLS["search_books"]["execute"]({"query": concept, "limit": 6}).get("results", []) or []
+        r_phils = TOOLS["query_database"]["execute"]({"table": "philosophers", "key": concept, "limit": 4}).get("results", []) or []
+        r_schools = TOOLS["query_database"]["execute"]({"table": "schools", "key": concept, "limit": 3}).get("results", []) or []
+        r_net = TOOLS["query_database"]["execute"]({"table": "network", "key": concept, "limit": 4}).get("results", []) or []
+        ctx = json.dumps({"books": [{"book": r.get("book_title"), "author": r.get("author"),
+                                     "chapter": r.get("chapter_title"), "snippet": (r.get("snippet") or "")[:80]}
+                                    for r in r_books[:6]],
+                          "philosophers": r_phils[:4], "schools": r_schools[:3], "network": r_net[:4]},
+                         ensure_ascii=False)[:4000]
+        type_guide = {
+            "CONCEPT_NETWORK": "概念关联网络: 中心概念与相关概念/哲学家/流派/著作的关联",
+            "PROCESS_FLOW": "过程流: 按推进顺序的环节/阶段（箭头=先后/产生关系, 环节即用户给出的链条）",
+            "ARGUMENT_GRAPH": "论证图: 节点=主张/论证步骤, 边=前提→结论的支持/反驳依赖",
+            "HISTORICAL_GENEALOGY": "历史谱系: 按时间先后的人物/流派/著作传承",
+            "PERSON_RELATION": "人物关系: 师承/论敌/影响/对话关系",
+            "SYSTEM_ARCHITECTURE": "体系结构: 理论体系的组成部分与功能关系",
+        }[map_type]
+        prompt = (f"为「{concept}」构建{type_guide}。只输出 JSON（不要围栏, 不要输出 Mermaid——渲染由系统完成）:\n"
+                  f'{{"nodes": [{{"id": "短id（中文可）", "label": "节点显示文本", "group": "可选分组"}}],\n'
+                  f' "edges": [{{"from": "节点id", "to": "节点id", "label": "关系/依赖说明（可空）"}}]}}\n'
+                  f"约束: 节点 ≤ 12, 边 ≤ 16; 严格基于检索结果与可靠哲学史, 不编造; "
+                  f"节点 label 不要包含英文双引号。"
+                  + (f"\n用户对图的约束（必须遵守）: {constraints}" if constraints else "")
+                  + f"\n\n检索结果:\n{ctx}")
+        data = None
+        try:
+            resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.5, max_tokens=900)
+            data = extract_json(resp["choices"][0]["message"].get("content"))
+        except Exception:
+            data = None
+        if isinstance(data, dict) and data.get("nodes"):
+            ids = {n.get("id") for n in data.get("nodes", []) if isinstance(n, dict) and n.get("id")}
+            nodes = [{"id": n["id"], "label": n.get("label") or n["id"], "group": n.get("group") or ""}
+                     for n in data.get("nodes", [])[:12] if isinstance(n, dict) and n.get("id")]
+            edges = [e for e in (data.get("edges") or [])[:16]
+                     if isinstance(e, dict) and e.get("from") in ids and e.get("to") in ids
+                     and e.get("from") != e.get("to")]
+            graph = {"nodes": nodes, "edges": edges}
+    if not graph or not graph.get("nodes"):
+        # 兜底: 单节点最小图（主 Agent 可感知生成失败并自行处理）
+        graph = {"nodes": [{"id": concept, "label": concept, "group": ""}], "edges": []}
+    mermaid = render_mermaid(graph, map_type)
+    vres = validate_mermaid(mermaid, graph)
+    return scaffold_result(
+        "graph_map",
+        f"{map_type} 关系图: {len(graph['nodes'])} 节点 / {len(graph['edges'])} 边; mermaid 已由确定性 renderer 生成并 parse 验证",
+        confidence=0.8 if vres["ok"] else 0.5,
+        presentation_hint=("图已渲染验证通过——直接采用返回的 mermaid 渲染, 不要自行改写节点/连线/括号格式; "
+                           "图后按用户要求给简短读法"),
+        map_type=map_type,
+        directionality=directionality or ("directed" if map_type in ("PROCESS_FLOW", "ARGUMENT_GRAPH") else "undirected"),
+        graph=graph,
+        mermaid=f"```mermaid\n{mermaid}\n```" if mermaid else "",
+        map_text=f"```mermaid\n{mermaid}\n```" if mermaid else "",   # 兼容旧消费方字段名
+        format="mermaid",
+        mermaid_validation=vres,
+        source=source,
+        constraints_applied=constraints)
 
 register_tool("conceptual_map",
-    "概念脑图/人物星图/关系图——输出概念或人物与哲学家/流派/著作的 Mermaid 关联图（前端渲染成图形）。用于'XX的思维地图''梳理XX的概念关联''以X为中心的人物星图/关系图/思想地图'类请求。**注意: 星图=关系结构图, 不是艺术画——不要用 generate_image。**",
-    {"type": "object", "properties": {"concept": {"type": "string", "description": "中心概念/人物（如: 叔本华/虚无主义）"}}, "required": ["concept"]},
+    "通用哲学关系图（MAP_TYPE: CONCEPT_NETWORK 概念网络 / PROCESS_FLOW 过程流 / ARGUMENT_GRAPH 论证依赖图 / HISTORICAL_GENEALOGY 历史谱系 / PERSON_RELATION 人物关系 / SYSTEM_ARCHITECTURE 体系结构）——返回结构化 graph + 已验证的 Mermaid 渲染。支持传入用户给定的 nodes[]/relations[]（如'感性→知性→范畴'链条）。'画图/思维地图/概念关联/论证依赖图'类请求用本工具, 星图是结构图不是艺术画（不要用 generate_image）。",
+    {"type": "object", "properties": {
+        "concept": {"type": "string", "description": "中心概念/人物/主题"},
+        "map_type": {"type": "string", "enum": ["CONCEPT_NETWORK", "PROCESS_FLOW", "ARGUMENT_GRAPH", "HISTORICAL_GENEALOGY", "PERSON_RELATION", "SYSTEM_ARCHITECTURE"], "description": "图类型（按用户请求选择）"},
+        "nodes": {"type": "array", "items": {"type": "string"}, "description": "用户指定的节点序列（可选, 如[感性,知性,范畴]）"},
+        "relations": {"type": "array", "items": {"type": "object", "properties": {"from": {"type": "string"}, "to": {"type": "string"}, "label": {"type": "string"}}}, "description": "用户指定的关系（可选）"},
+        "constraints": {"type": "string", "description": "用户对图的额外约束（可选）"},
+        "directionality": {"type": "string", "description": "directed/undirected（可选）"}},
+     "required": ["concept"]},
     _exec_conceptual_map)
 
 # ═══════════════════════════════════════════════════════
@@ -235,9 +507,9 @@ register_tool("conceptual_map",
 
 # ── 工具: essay_outline（论文大纲——先骨架后成文）──
 def _exec_essay_outline(args):
-    topic = (args.get("topic") or "").strip()
-    if not topic:
-        return {"error": "缺少题目"}
+    topic, err = _req_str(args, "topic")
+    if err:
+        return err
     result = TOOLS["search_books"]["execute"]({"query": topic[:50], "limit": 6})
     retrieval = json.dumps(result, ensure_ascii=False)[:4000]
     prompt = (f"为题目「{topic}」生成论文大纲（600字内, 结构化）:\n"
@@ -248,15 +520,15 @@ def _exec_essay_outline(args):
             "note": "如需按此大纲写全文, 用户说'按大纲写全文'即可"}
 
 register_tool("essay_outline",
-    "论文大纲生成——题目/方向 → 中心论点/引言/分论点(带原典支撑)/反方回应/结论。用于'帮我列个大纲''论文骨架'类请求。",
+    "论文大纲生成（USER_REQUESTED_ARTIFACT——大纲本身就是用户请求的产物, 可输出完整结构）: 题目/方向 → 中心论点/引言/分论点(带原典支撑)/反方回应/结论。用于'帮我列个大纲''论文骨架'类请求。",
     {"type": "object", "properties": {"topic": {"type": "string", "description": "论文题目/研究方向"}}, "required": ["topic"]},
     _exec_essay_outline)
 
 # ── 工具: life_coach（结构化人生疏导——情绪→认知→二分法→重构）──
 def _exec_life_coach(args):
-    question = (args.get("question") or "").strip()[:300]
-    if not question:
-        return {"error": "缺少困惑描述"}
+    question, err = _req_str(args, "question", max_len=300)
+    if err:
+        return err
     prompt = (f"作为融合斯多葛主义与认知行为疗法(CBT)的哲学人生教练, 对用户的困惑进行结构化疏导（700字内）:\n"
               f"用户困惑: 「{question}」\n\n"
               f"① 情绪识别: 用户此刻最可能的情绪与核心焦虑是什么（具体命名）\n"
@@ -272,29 +544,79 @@ register_tool("life_coach",
     {"type": "object", "properties": {"question": {"type": "string", "description": "用户的困惑/焦虑/处境描述"}}, "required": ["question"]},
     _exec_life_coach)
 
-# ── 工具: dialectic（矛盾分析法——正反合, 方法论注入）──
+# ── 工具: dialectic（Phase T/T4: 矛盾运动分析——去固定正反合模板）──
+# QG2/Q10 教训: 旧实现内部 prompt 强制"①正题②反题③合题"三段标题, 无视 args 中
+# 传入的用户约束（contract violation）。新实现:
+#   ① 用户对形式的约束经 constraints 参数真正进入执行层 prompt（主 Agent 必须透传）;
+#   ② 产物字段动态存在（按问题需要）, 禁止固定 Thesis/Antithesis/Synthesis 标题;
+#   ③ 工具产物本身就必须满足"不机械正反合"——不依赖主 Agent 事后救回。
+DIALECTIC_FIELDS = ("initial_concept", "internal_tension", "self_negation",
+                    "transformation", "new_determination", "residual_tension")
+
 def _exec_dialectic(args):
-    topic = (args.get("topic") or "").strip()[:200]
-    if not topic:
-        return {"error": "缺少议题"}
-    prompt = (f"用黑格尔式矛盾分析法剖析议题「{topic}」（700字内）:\n"
-              f"① 正题: 主流立场及其内在合理性\n② 反题: 对立立场及其合理性（寻找正题忽视的方面）\n"
-              f"③ 合题: 扬弃——在更高层面综合二者, 明确什么被保留/什么被否定\n"
-              f"④ 主要矛盾: 该议题当下最关键的矛盾方面\n"
-              f"避免和稀泥: 合题必须推进思想, 不只是'各有道理'。用中文。")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=1000)
-    return {"dialectic": (resp["choices"][0]["message"].get("content") or "").strip()}
+    from tool_contracts import scaffold_result, extract_json
+    topic, err = _req_str(args, "topic", max_len=200)
+    if err:
+        return err
+    constraints = _str_arg(args, "constraints") or ""
+    prompt = (f"用辩证方法检验议题「{topic}」。先判断是否真的存在概念内部矛盾，还是外部条件的张力；"
+              f"没有内在矛盾时如实说明，不预设必然综合或更高统一。每一步转化都需要理由，不能只用术语宣告。\n"
+              f"从以下字段中选取该问题真正需要的（3-6 个; 不需要的字段不要输出, 也不要用别的名字硬凑三段式）:\n"
+              f"- initial_concept: 起点概念及其素朴形态\n"
+              f"- internal_tension: 概念内部自我分裂的张力（不在两个外在对立物之间）\n"
+              f"- self_negation: 概念按自身逻辑走向的自我否定\n"
+              f"- transformation: 否定中被保留与被颠覆的成分（扬弃的真实机制）\n"
+              f"- new_determination: 更高层面的新规定\n"
+              f"- residual_tension: 新规定仍未消解的剩余张力（辩证运动不设终点）\n"
+              f"只输出 JSON（不要围栏）, 键名只用上述字段名。禁止输出'正题/反题/合题/Thesis/Antithesis/Synthesis'任何变体作为标题或键名。\n"
+              + (f"用户对呈现形式的约束（必须逐条遵守, 优先级高于一切默认形式）: {constraints}\n" if constraints else "")
+              + "避免和稀泥: 每个字段都必须推进思想的运动。用中文。")
+    data = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=1000)
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        data = None
+    if not isinstance(data, dict) or not data:
+        data = {"internal_tension": "辩证运动生成失败——请主 Agent 直接自行剖析",
+                "residual_tension": ""}
+    # 硬约束: 净化任何漏网的固定三段式标签（键含标签 → 整键丢弃; 值含标签 → 无条件移除）
+    banned = re.compile(r"正题|反题|合题|Thesis|Antithesis|Synthesis", re.I)
+    cleaned, violated = {}, []
+    for k, v in data.items():
+        if banned.search(str(k)):
+            violated.append(str(k))
+            continue
+        vs = str(v)
+        if k in DIALECTIC_FIELDS:
+            vs = banned.sub("", vs)
+            vs = re.sub(r"^[\s：:，,、.。\-—]*(第[一二三四]?[、.：:]?)?", "", vs)
+            vs = re.sub(r"^[（(]\s*[）)]", "", vs)
+        cleaned[k] = vs
+    fields_used = [k for k in DIALECTIC_FIELDS if k in cleaned and cleaned[k]]
+    return scaffold_result(
+        "dialectical_movement",
+        f"辩证运动分析（动态字段: {', '.join(fields_used) or '见载荷'}）——结构化中间产物, 主 Agent 须以连续论述呈现而非填空",
+        confidence=0.7,
+        presentation_hint="以连续的概念运动论述呈现（不是标签填空）; 用户若要求特定形式, 以 constraints 为准",
+        movement=cleaned,
+        fields_used=fields_used,
+        constraints=constraints,
+        template_labels_removed=violated)
 
 register_tool("dialectic",
-    "矛盾分析法（黑格尔式正反合）——议题 → 正题/反题/合题/主要矛盾的结构化辩证分析。用于'辩证地看XX''矛盾分析'类请求。",
-    {"type": "object", "properties": {"topic": {"type": "string", "description": "待辩证分析的议题/观点"}}, "required": ["topic"]},
+    "辩证矛盾运动分析——返回动态结构字段（initial_concept/internal_tension/self_negation/transformation/new_determination/residual_tension, 按问题需要取舍）, 不使用固定'正题—反题—合题'模板。用户对形式的约束（如'不要用正反合标签'）必须经 constraints 参数传入工具。用于'辩证地看XX''矛盾分析'类请求。",
+    {"type": "object", "properties": {
+        "topic": {"type": "string", "description": "待辩证分析的议题/观点"},
+        "constraints": {"type": "string", "description": "用户对形式/标签的约束（必须原样透传, 如: 不要使用正题反题合题标签）"}},
+     "required": ["topic"]},
     _exec_dialectic)
 
 # ── 工具: history_timeline（哲学史时间线——流派/概念/哲人, 基于 DP 数据）──
 def _exec_history_timeline(args):
-    topic = (args.get("topic") or "").strip()[:100]
-    if not topic:
-        return {"error": "缺少主题"}
+    topic, err = _req_str(args, "topic", max_len=100)
+    if err:
+        return err
     school = TOOLS["get_school"]["execute"]({"name": topic})
     phils = TOOLS["query_database"]["execute"]({"table": "philosophers", "key": topic, "limit": 6})
     books = TOOLS["search_books"]["execute"]({"query": topic, "limit": 6})
@@ -305,7 +627,11 @@ def _exec_history_timeline(args):
                      ensure_ascii=False)[:4000]
     prompt = (f"基于以下数据, 为「{topic}」构建哲学史时间线（markdown 列表, 按时间先后排序, 每项格式: **时期** - 人物/事件 - 一句话说明）:\n"
               f"只使用数据中出现的内容, 不编造; 数据不足时如实说明。\n\n数据:\n{ctx}")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
+    except Exception as e:
+        return {"error": f"时间线生成失败: {str(e)[:120]}",
+                "note": "provider 失败不编造时间线——请主 Agent 基于检索数据直接梳理"}
     return {"timeline": (resp["choices"][0]["message"].get("content") or "").strip()}
 
 register_tool("history_timeline",
@@ -315,12 +641,18 @@ register_tool("history_timeline",
 
 # ═══════════════════════════════════════════════════════
 # V5 工具: confrontation（哲学文献隔空对质——双方原文并排交锋）
+# Phase T/T9 最低限度统一（QG2/Q09 表现良好, 不重写核心交互效果）:
+#   ① textual claim（原文立场, 附检索依据）与 simulated reply（模拟交锋措辞）明确分离;
+#   ② 结构化 citations/evidence 随产物返回 → 引擎侧入 Evidence Contract 查证池;
+#   ③ 主 Agent 保留最终裁决权（裁判注只是候选, 结论由主 Agent 给出）。
 # ═══════════════════════════════════════════════════════
 def _exec_confrontation(args):
-    topic = (args.get("topic") or "").strip()[:80]
-    a = (args.get("a") or "").strip()
-    b = (args.get("b") or "").strip()
-    if not (topic and a and b):
+    from tool_contracts import scaffold_result, extract_json
+    topic, et = _req_str(args, "topic", max_len=80)
+    a, ea = _req_str(args, "a")
+    b, eb = _req_str(args, "b")
+    err = et or ea or eb
+    if err:
         return {"error": "需要 topic + a + b 三个参数"}
     # 各自精确检索: 作者+主题组合, 过滤出该作者的书
     ra = TOOLS["search_books"]["execute"]({"query": f"{a} {topic}", "limit": 8})
@@ -330,18 +662,51 @@ def _exec_confrontation(args):
     ctx = json.dumps({"a": a, "a_original_texts": fa, "b": b, "b_original_texts": fb},
                      ensure_ascii=False)[:5000]
     prompt = (f"哲学文献'隔空对质': 就「{topic}」, 让 {a} 与 {b} 各自基于检索到的原文片段发表立场, 然后互相指出对方论证的软肋（哲学史上真实的交锋点, 如休谟对先验演绎的循环性指控）:\n"
-              f"输出结构（900字内）:\n"
-              f"① {a} 的原文立场（引用标注【《书名》· 章节】, 只使用检索到的原文）\n"
-              f"② {b} 的原文立场（同上）\n"
-              f"③ 交锋点: 谁对谁的哪一点构成实质威胁（是否刺中软肋, 还是打偏了）\n"
-              f"④ 裁判注: 双方各自最强与最弱的一点, 以及可能的合题方向（明确标注是'体系内'还是'后康德综合'视角）\n"
+              f"输出 JSON（不要围栏）, 结构:\n"
+              f'{{"stance_a": {{"text": "{a} 的原文立场（引用标注【《书名》· 章节】, 只使用检索到的原文）", "basis": "支撑立场的关键原文依据（摘自检索片段, 有则填）"}},\n'
+              f' "stance_b": {{"text": "{b} 的原文立场（同上）", "basis": "…"}},\n'
+              f' "exchanges": ["交锋回合×2-3——模拟互驳措辞, 每条以\'模拟\'语态呈现（谁反打谁的哪一点, 是否刺中软肋）"],\n'
+              f' "referee_note": "裁判注候选: 双方各自最强与最弱的一点, 以及可能的合题方向（明确标注是\'体系内\'还是\'后康德综合\'视角）——仅供主 Agent 裁决参考"}}\n'
+              f"纪律: ①stance_a/stance_b 是 textual claim, 只能基于检索到的原文, 不得编造引文; "
+              f"②exchanges 是模拟对话, 措辞必须让人能分辨这是构造的交锋而非原文引文; "
+              f"③最终裁决由主 Agent 给出, 你不下胜负结论。\n"
               f"检索结果（含 snippet 原文片段）:\n{ctx}")
-    resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=1400)
-    return {"confrontation": (resp["choices"][0]["message"].get("content") or "").strip(),
-            "note": "对质引用均来自库内原文片段"}
+    data = None
+    try:
+        resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=1400)
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+    except Exception:
+        data = None
+    if not isinstance(data, dict) or not data.get("stance_a"):
+        # 兜底: 沿用旧文本卡片形态（不阻断交互效果）
+        reply = ""
+        try:
+            reply = (resp["choices"][0]["message"].get("content") or "").strip()
+        except Exception:
+            pass
+        data = {"stance_a": {"text": reply or "对质生成失败", "basis": ""},
+                "stance_b": {"text": "", "basis": ""},
+                "exchanges": [], "referee_note": ""}
+    evidence = []
+    for r in fa + fb:
+        if r.get("book_title"):
+            evidence.append({"book": r.get("book_title"), "chapter": r.get("chapter_title"),
+                             "book_id": r.get("book_id"), "chapter_idx": r.get("chapter_idx"),
+                             "author": r.get("author", ""),
+                             "snippet": (r.get("snippet") or "")[:220]})
+    return scaffold_result(
+        "confrontation_card",
+        f"{a} 与 {b} 就「{topic}」的隔空对质卡片: textual stance + 模拟交锋 + 裁判注候选",
+        confidence=0.7,
+        presentation_hint="stance_a/stance_b 为 textual claim（引文须经主 Agent 核验后才能以【《书》·章】标注）; exchanges 为模拟交锋措辞, 须与原文立场分开呈现; 最终裁决由主 Agent 给出",
+        stance_a=data.get("stance_a") or {}, stance_b=data.get("stance_b") or {},
+        exchanges=(data.get("exchanges") or [])[:4],
+        referee_note=data.get("referee_note", ""),
+        citations=evidence[:8], evidence=evidence[:8],
+        side_a=a, side_b=b)
 
 register_tool("confrontation",
-    "哲学文献隔空对质——两位哲学家就同一主题各自引用原文交锋（休谟vs康德、尼采vs黑格尔等），输出原文立场/真实交锋点/裁判注。用于'让XX和XX的原文对质'类请求。",
+    "哲学文献隔空对质——两位哲学家就同一主题各自引用原文交锋（休谟vs康德、尼采vs黑格尔等），输出原文立场（textual claim）/模拟交锋/裁判注候选。用于'让XX和XX的原文对质'类请求。",
     {"type": "object", "properties": {
         "topic": {"type": "string", "description": "对质主题（如: 因果/自由意志）"},
         "a": {"type": "string", "description": "哲学家一"},
@@ -392,33 +757,42 @@ def _list_schools():
 
 def _exec_school_arena(args):
     import random
-    topic = (args.get("topic") or "").strip() or random.choice(HOT_TOPICS)
+    topic = _str_arg(args, "topic", strict=True)
+    if topic is None:
+        return {"error": "参数类型错误: topic 应为字符串"}
+    topic = topic or random.choice(HOT_TOPICS)
     schools = _list_schools()
-    school_a = (args.get("school_a") or "").strip() or (random.choice(schools) if schools else "存在主义")
+    school_a = _str_arg(args, "school_a") or (random.choice(schools) if schools else "存在主义")
     pool = [s for s in schools if s != school_a] or schools
-    school_b = (args.get("school_b") or "").strip() or (random.choice(pool) if pool else "功利主义")
+    school_b = _str_arg(args, "school_b") or (random.choice(pool) if pool else "功利主义")
     pa, pb = _school_profile(school_a), _school_profile(school_b)
     # 两轮对抗（流派代表发言人）
     debate = []
-    for r in range(2):
-        for name, profile in ((school_a, pa), (school_b, pb)):
-            ctx = "\n".join(debate[-3:])
-            inject = f"\n流派档案（发言必须体现该流派的核心主张与代表人物思想）:\n{profile}" if profile else ""
-            prompt = (f"你是{name}学派的代表发言人。针对当代议题「{topic}」，发表你的立场与论证（200字内）。{inject}"
-                      f"这是对抗第{r+1}轮。{'可回应对方发言, 指出其主张在当代的适用局限。' if ctx else '请先亮明核心立场。'}"
-                      + (f"\n已有发言:\n{ctx}" if ctx else ""))
-            resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=400)
-            speech = (resp["choices"][0]["message"].get("content") or "").strip()
-            debate.append(f"{name}: {speech}")
-    # 裁判总结
-    d_text = "\n".join(debate)
-    sum_prompt = (f"作为哲学裁判, 总结「{school_a}」与「{school_b}」就「{topic}」的对抗（350字内）:\n"
-                  f"①各自核心立场 ②交锋点（谁对谁的哪一点构成威胁）③哪个流派更贴合当代现实 ④可借鉴的综合（区分体系内/综合视角）。\n\n辩论:\n{d_text[:3000]}")
-    sresp = llm_chat([{"role": "user", "content": sum_prompt}], temperature=0.7, max_tokens=800)
-    summary = (sresp["choices"][0]["message"].get("content") or "").strip()
+    try:
+        for r in range(2):
+            for name, profile in ((school_a, pa), (school_b, pb)):
+                ctx = "\n".join(debate[-3:])
+                inject = f"\n流派档案（发言必须体现该流派的核心主张与代表人物思想）:\n{profile}" if profile else ""
+                prompt = (f"模拟{name}学派的一种讨论视角，针对议题「{topic}」发表立场与论证（200字内）。{inject}"
+                          "不要把模拟发言当历史原话，不编造引文；先公平复述对方理由，不把分歧自动写成自相矛盾。"
+                          f"这是对抗第{r+1}轮。{'可回应对方发言, 指出其主张在当代的适用局限。' if ctx else '请先亮明核心立场。'}"
+                          + (f"\n已有发言:\n{ctx}" if ctx else ""))
+                resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=400)
+                speech = (resp["choices"][0]["message"].get("content") or "").strip()
+                debate.append(f"{name}: {speech}")
+        # 裁判总结
+        d_text = "\n".join(debate)
+        sum_prompt = (f"总结「{school_a}」与「{school_b}」就「{topic}」的模拟讨论（350字内）:\n"
+                      f"说明各自理由、共同点、尚未解决的分歧和需要查证的归因。不要强行判赢家、断定谁更适合当代，"
+                      f"也不预设能够综合。指出不成立的反驳；没有查原典的发言仍属模拟。\n\n讨论:\n{d_text[:3000]}")
+        sresp = llm_chat([{"role": "user", "content": sum_prompt}], temperature=0.7, max_tokens=800)
+        summary = (sresp["choices"][0]["message"].get("content") or "").strip()
+    except Exception as e:
+        return {"error": f"流派对抗生成失败: {str(e)[:120]}",
+                "note": "provider 失败不编造辩论——请主 Agent 基于流派知识直接组织对比"}
     return {"arena": {"topic": topic, "schools": [school_a, school_b], "debate": debate,
                       "summary": summary, "map_text": _debate_map_text(d_text)},
-            "note": f"随机对决: {school_a} vs {school_b} · 议题: {topic}"}
+            "note": f"模拟讨论: {school_a} vs {school_b} · 议题: {topic}；非已核验原典或历史发言。"}
 
 register_tool("school_arena",
     "哲学流派 PK 竞技场——随机抽取两个流派就当代热点议题对抗（也可指定 topic/school_a/school_b）。输出两轮交锋 + 裁判总结 + 演变图。用于'流派PK/随机对决/让两个流派辩论'类请求。",
@@ -435,16 +809,15 @@ register_tool("school_arena",
 # 再由第三方综合两种视角的交汇与分歧——多智能体经"协议"协作的展示
 # ═══════════════════════════════════════════════════════
 def _exec_agent_council(args):
-    topic = (args.get("topic") or "").strip()[:100]
-    if not topic:
-        return {"error": "缺少议题"}
+    topic, err = _req_str(args, "topic", max_len=100)
+    if err:
+        return err
     # ① 深哲发言（通用视角 + 原典检索）
     def _deep_speech():
-        from engine_langgraph import get_system_prompt
         r = TOOLS["search_books"]["execute"]({"query": topic[:50], "limit": 4})
         mat = json.dumps(r, ensure_ascii=False)[:2500]
-        r1 = llm_chat([{"role": "system", "content": get_system_prompt("general")},
-                       {"role": "user", "content": f"议题: 「{topic}」。基于以下检索材料给出你的分析立场（250字内, 引用标注出处）:\n{mat}"}],
+        r1 = llm_chat([{"role": "system", "content": "你是讨论参与者，给出有理由的暂定立场。材料是搜索线索，不是已阅读原典；不写逐字引文、正式出处或声称已核验，不输出工具协议标签。没有证据的作者归因不要使用。保留原问题条件，不把重要条件升级为必要条件。"},
+                       {"role": "user", "content": f"议题: 「{topic}」。给出待检验的分析立场（250字内）:\n{mat}"}],
                       temperature=0.7, max_tokens=600)
         return (r1["choices"][0]["message"].get("content") or "").strip()
     # ② 尼采发言（人格视角）
@@ -457,7 +830,15 @@ def _exec_agent_council(args):
     # ①② 并行执行（2026-08-14: 两次独立 LLM 调用并发, 总延迟减半）
     deep_speech = nietzsche_speech = ""
     with ThreadPoolExecutor(max_workers=2) as ex:
-        f1, f2 = ex.submit(_deep_speech), ex.submit(_nietzsche_speech)
+        from deep_context import current_tool_agent
+        if current_tool_agent.get() == "general":
+            from contextvars import copy_context
+            # Executor threads do not inherit ContextVars. Use a separate copy
+            # per simultaneous call; persona callers keep the legacy submit path.
+            f1 = ex.submit(copy_context().run, _deep_speech)
+            f2 = ex.submit(copy_context().run, _nietzsche_speech)
+        else:
+            f1, f2 = ex.submit(_deep_speech), ex.submit(_nietzsche_speech)
         try:
             deep_speech = f1.result()
         except Exception as e:
@@ -469,13 +850,13 @@ def _exec_agent_council(args):
     # ③ 综合（第三方视角的交汇与分歧; 依赖①②, 串行）
     synthesis = ""
     try:
-        r3 = llm_chat([{"role": "user", "content": f"两位智能体就「{topic}」发言如下, 请综合（300字内）: ①各自立场 ②分歧的本质 ③可互补处。\n\n深哲: {deep_speech[:800]}\n\n尼采: {nietzsche_speech[:800]}"}],
+        r3 = llm_chat([{"role": "user", "content": f"两位智能体就「{topic}」发言如下, 请比较（300字内）: 各自立场、真实分歧与仍需核验的理由。不要默认可以综合，不得增加发言中没有的前提；重要不等于必要，模拟观点不是原典证据。\n\n深哲: {deep_speech[:800]}\n\n尼采: {nietzsche_speech[:800]}"}],
                       temperature=0.6, max_tokens=800)
         synthesis = (r3["choices"][0]["message"].get("content") or "").strip()
     except Exception as e:
         synthesis = f"（综合失败: {e}）"
     return {"council": {"topic": topic, "deep": deep_speech, "nietzsche": nietzsche_speech, "synthesis": synthesis},
-            "note": "深哲（通用·原典检索视角）与尼采（人格视角）的协议协作"}
+            "note": "两种模拟讨论视角，非已核验原典或历史发言；综合意见仍须检查。"}
 
 register_tool("agent_council",
     "多智能体协作——深哲（通用视角, 检索原典）与尼采（人格视角）就同一议题各自发言, 再综合两种视角的交汇与分歧。用于'让深哲和尼采讨论XX'类请求。",

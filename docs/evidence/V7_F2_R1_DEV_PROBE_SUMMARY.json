@@ -1,0 +1,41 @@
+{
+ "V7_F2_R1_DEV_PROBE_SUMMARY": true,
+ "run": "V7F2_R1_DEV",
+ "model": "deepseek-v4-flash",
+ "DEV_ONLY": true,
+ "QUALIFICATION": false,
+ "FORBIDDEN_FROM_V8": true,
+ "CALIBRATION_COMPLETED": 2,
+ "CALIBRATION_PUBLISHED": 2,
+ "CALIBRATION_REPAIR_TRIGGERED": 2,
+ "CALIBRATION_REPAIR_CONVERGED": 2,
+ "REPAIR_CREATES_NEW_FATAL_ERROR": 0,
+ "per_case_counts": {
+  "V7-04": {
+   "NEW_FINGERPRINT_COUNT": 0,
+   "GENUINELY_NEW_ISSUE_COUNT": 0,
+   "REKEY_COUNT": 0,
+   "LOCATOR_SHIFT_COUNT": 0,
+   "RELABEL_COUNT": 0,
+   "AMBIGUOUS_COUNT": 0
+  },
+  "V7-06": {
+   "NEW_FINGERPRINT_COUNT": 0,
+   "GENUINELY_NEW_ISSUE_COUNT": 0,
+   "REKEY_COUNT": 0,
+   "LOCATOR_SHIFT_COUNT": 0,
+   "RELABEL_COUNT": 0,
+   "AMBIGUOUS_COUNT": 0
+  }
+ },
+ "totals": {
+  "NEW_FINGERPRINT_COUNT": 0,
+  "GENUINELY_NEW_ISSUE_COUNT": 0,
+  "REKEY_COUNT": 0,
+  "LOCATOR_SHIFT_COUNT": 0,
+  "RELABEL_COUNT": 0,
+  "AMBIGUOUS_COUNT": 0
+ },
+ "SEMANTIC_TRANSITION_FAIL_CLOSED_TRIGGERED": false,
+ "run_note": "本轮 live 重跑中两案例 repair 均一轮全修复（introduced=0）; 与 e1b7c8457 归档轮的 transition 轮廓存在模型非确定性差异, 如实记录。classifier 全部七类标签的确定性覆盖由 tests/test_o7e_semantic_transition.py A-E+relabel+fail-closed 场景锁定。"
+}

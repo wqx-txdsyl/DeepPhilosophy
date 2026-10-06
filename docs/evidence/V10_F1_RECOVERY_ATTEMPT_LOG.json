@@ -1,0 +1,49 @@
+{
+ "V10_F1_RECOVERY_ATTEMPT_LOG": true,
+ "recovery_branch_evaluated": "B. Judge-only recovery — provider-filter handling",
+ "constraint": "不得改写 V10-14 answer / 删减被评内容 / 改 rubric / 换 judge constitution; 等价 endpoint 须证明 judge model/rubric/输入语义未变",
+ "trigger_identification": {
+  "method": "二分定位（诊断性探测, 不消费 vote）",
+  "minimal_trigger_window_chars": 81,
+  "trigger_text": "关系的仁爱的欧洲人听闻中国帝国众多子民遭遇地震时会作何反应：他起初会真切悲伤，随后转而盘算这场灾难对欧洲及世界经济的影响，待情绪宣泄完毕便回到安逸生活，仿佛灾难从",
+  "content_identity": "斯密《道德情操论》著名「中国地震」思想实验段落的转述——production run 阅读原典后合法产出并被 validator 发布的 answer 内容, 同时物化于 evidence replay window",
+  "answer_contains_exact_trigger": true,
+  "answer_alone_probe": "HTTP 400 / code 1301 / contentFilter(level=1, role=user)"
+ },
+ "recovery_options_evaluated": [
+  {
+   "option": "等价 endpoint: bigmodel coding-plan endpoint (/api/coding/paas/v4), 同 ZHIPU key + 同 model 串 glm-4-plus",
+   "trivial_content_probe": "200 OK（端点与授权可用, model 服务正常）",
+   "answer_text_probe": "HTTP 400 / code 1301 / contentFilter —— 与 open 平台端点同因",
+   "conclusion": "过滤器为 bigmodel 平台级输入内容策略, 跨端点一致; 不存在能放行该内容的等价 provider endpoint"
+  },
+  {
+   "option": "删除/改写 answer 或证据回放中的触发段落",
+   "conclusion": "被测文本即触发文本——属「删减被评内容来讨好过滤器」, 任务书明令禁止"
+  },
+  {
+   "option": "更换 judge model / vendor",
+   "conclusion": "改变 judge constitution, 冻结禁止; glm-4-plus 无其它合法供给方"
+  },
+  {
+   "option": "编码/变换输入（base64 等）或拆分维度调用",
+   "conclusion": "改变 judge 输入呈现语义与 3-vote×5-dim 合同, 属评分语义变更, 冻结禁止"
+  },
+  {
+   "option": "继续 retry",
+   "conclusion": "确定性拒绝已证明（18 次正式 attempts + 2 次诊断复现 + 触发段二分 + answer 单独探测, 全部同因）, retry 无意义"
+  }
+ ],
+ "outcome": {
+  "RECOVERY_STATUS": "MEASUREMENT_NOT_RECOVERABLE",
+  "rule_applied": "「如果只有通过修改被判文本才能绕过滤器: STOP MEASUREMENT_NOT_RECOVERABLE。不要伪造完整票群。」",
+  "V10_14_VALID_VOTES_RECOVERED": 0,
+  "TOTAL_VALID_VOTES": 39,
+  "JUDGE_CASES_VALID": 13,
+  "JUDGE_CASES_MISSING": 1,
+  "EVALUATION_INVALID": true,
+  "RECOVERED_GATE_COMPUTED": false,
+  "reason": "恢复成功条件（3/3 新票）未达成; 冻结规则禁止用 13-case partial population 重算/重跑 final gate; 原 V10_FINAL_GATE.json (SCHOLARLY_GATE_NOT_MET) 与 V10_QUALIFICATION_SUMMARY.json 原样保留未动"
+ },
+ "probes_disclosure": "所有探测均为诊断性单轮调用（不消费 judge vote, 不生成 verdict, 不改动任何 frozen 工件）; API key 未归档"
+}

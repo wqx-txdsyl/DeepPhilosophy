@@ -1,0 +1,1084 @@
+{
+ "case_id": "I03",
+ "section": "I",
+ "expected_class": "SCHOLARLY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "查庄子 skepticism 研究。",
+ "injection": null,
+ "QUESTION": "查庄子 skepticism 研究。",
+ "PUBLIC_WORK_NOTE": [
+  "我先明确这次研究的方向与边界。\n\n**工作笔记**：用户要的是\"庄子 skepticism 研究\"，这是明确的学术文献/学界争议检索请求，不是概念解释——所以我不该凭记忆罗列\"学界一般认为庄子是怀疑论者\"这类论断，而要先定位真实文献记录，再读取其摘要/正文证据。目前暂不确定的是：英语学界通常把这个问题分成哪几条研究路线（比如\"庄子是怀疑论者 vs 神秘主义者 vs 相对主义者\"的争论），以及哪些具体文献确实可读。下一步我按多语言/多关键词（Zhuangzi skepticism / 庄子 怀疑论 / skeptical relativism）去检索文献层",
+  "**工作笔记**：第一轮检索已定位到这个问题在英语学界的主战场——1996 年文集 *Essays on Skepticism, Relativism, and Ethics in the Zhuangzi*（Raphals、Kjellberg、Ivanhoe、Loy、Schwitzgebel 都在其中），以及 Chad Hansen 的\"Guru or Skeptic?\"一章。但目前这些记录几乎全是 METADATA_ONLY，也就是说我只能确认它们\"存在\"，还不知道它们各自的具体主张——**绝不能凭标题猜观点**。所以下一步是对其中最相关的几条尝试取"
+ ],
+ "RESEARCH_NEED": "SCHOLARLY",
+ "EVIDENCE_GAP": "庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "get_scholarly_source"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "Zhuangzi skepticism",
+    "philosopher": "Zhuangzi",
+    "limit": 10
+   },
+   {
+    "query": "Zhuangzi skeptical relativism interpretation",
+    "limit": 10
+   },
+   {
+    "query": "庄子 怀疑论 齐物论",
+    "limit": 10
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.1515/9780791486184-008",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.2307/jj.18253879.14",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.1515/9781438409214-007",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Zhuangzi skepticism",
+    "philosopher": "Zhuangzi",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Zhuangzi Zhuangzi skepticism', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lisa Raphals'], 'ye"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Zhuangzi skeptical relativism interpretation",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Zhuangzi skeptical relativism interpretation', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lis"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "庄子 怀疑论 齐物论",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': '庄子 怀疑论 齐物论', 'results': [{'source_record_id': 'doi:10.66106/ylaba6.20250104', 'title': '论庄子自然美学观与孔子诗教文学观之差异（On the Differences Between Zhuangzi’s Aesthetic View of Nature and Confucius’s Li"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.2307/jj.18253879.7', 'bibliographic_record': {'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ["
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1515/9780791486184-008",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.14",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1515/9781438409214-007",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Zhuangzi Zhuangzi skepticism', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lisa Raphals'], 'ye"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Zhuangzi skeptical relativism interpretation', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lis"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': '庄子 怀疑论 齐物论', 'results': [{'source_record_id': 'doi:10.66106/ylaba6.20250104', 'title': '论庄子自然美学观与孔子诗教文学观之差异（On the Differences Between Zhuangzi’s Aesthetic View of Nature and Confucius’s Li"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.2307/jj.18253879.7', 'bibliographic_record': {'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ["
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "我先说明这一轮实际取得了什么、没取得什么，再给出可用的部分——这一点对学术检索很关键。\n\n## 一、检索结果的性质：只有书目层证据，没有内容层证据\n\n这一轮针对「庄子 skepticism」的检索，命中的记录**几乎全部停留在 METADATA_ONLY（仅书目元数据）层级**。我实际能确认的是\"某文献存在、题名/作者/年份/出处为何\"，而不能确认\"它具体主张什么\"。原因有二：这些记录没有开放获取全文，且我尝试取摘要/全文时，系统只返回了书目信息（明确提示\"无 OA 全文候选\"）。\n\n按证据纪律，**我不能凭标题去推断这些文献的立场**——比如我不能对你说\"某篇论文证明了庄子是/不是怀疑论者\"。所以我下面只做我确实做得到的事：列出经检索确认存在的文献，并给出这个议题的问题地图（后者标注为领域背景框架，不是本次核验的文献内容归因）。\n\n## 二、经检索确认存在的关键文献（书目证据）\n\n- **Lisa Raphals, \"Skeptical Strategies in the Zhuangzi and Theaetetus\"（1996）**，收录于文集 *Essays on Skepticism, Relativism, and Ethics in the Zhuangzi*，DOI: 10.2307/jj.18253879.7。这是本次检索里与你的问题最直接相关的一条——从题名可确认它做的是**庄子与古希腊怀疑论（《泰阿泰德篇》）的怀疑策略比较**（此为对题目的转述，非对其论证内容的描述）。\n- **该文集本身**：*Essays on Skepticism, Relativism, and Ethics in the Zhuangzi*（1996）。它是英语学界讨论这一议题的核心论文集，反复出现在本次检索结果中——这本身是一条可靠信息：**\"庄子的怀疑论\"作为一个研究题目，其学术建制化很大程度上以这本文集为节点**。\n- 一条中文检索命中（DOI: 10.66106/ylaba6.20250104，论庄子自然美学观与孔子诗教之差异）与主题**离题**，列出仅为如实说明检索覆盖。\n\n## 三、未能取得的部分（请问我，或换个入口）\n\n- 我**没有读到任何一篇的摘要或正文**，因此无法向你复述任何学者的具体论证、立场归属（谁属\"怀疑论解读派\"、谁属\"神秘主义解读派\"）。\n- 因此我也**不能替你把学界画成\"两派/三派争论\"**——那种分类如果不由可读证据支撑，就是虚构的学术景观。\n\n## 四、这个问题地图（我的领域背景判断，待你核验）\n\n以下是英语/汉语学界讨论\"庄子与怀疑论\"时通常出现的问题轴，供你组织后续阅读——**这些是问题结构，不是对上述具体文献内容的归因**：\n\n1. **庄子是不是怀疑论者？** 反方常援引《齐物论》《养生主》中对是非、成毁的言说，正方则区分\"怀疑论\"与\"相对主义\"\"神秘主义\"或\"非断言式智慧\"。\n2. **与西方怀疑论的比较**：与皮罗主义、塞克斯都·恩披里柯、学院派（《泰阿泰德篇》）的异同——Raphals 那篇正在这条线上。\n3. **《齐物论》的认识论地位**：\"莫若以明\"\"以道观之\"等究竟是怀疑论的结论、还是超越怀疑的立场。\n4. **怀疑论母题文本**：庄周梦蝶、濠梁观鱼之辩。\n\n## 五、给你更实用的下一步\n\n由于本库这次只回传了书目，没有可读内容，如果你想让我**切实读出观点**，建议之一是把检索指向有开放获取全文的来源（换用能返回 ABSTRACT_AVAILABLE / FULL_TEXT 的通道），或具体告诉我你想聚焦的文本/作者（例如只做《齐物论》的怀疑论解读），我再定向取证。\n\n需要我据此换一条路径重新检索，还是先聚焦《齐物论》原文本身？",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先明确这次研究的方向与边界。\n\n**工作笔记**：用户要的是\"庄子 skepticism 研究\"，这是明确的学术文献/学界争议检索请求，不是概念解释——所以我不该凭记忆罗列\"学界一般认为庄子是怀疑论者\"这类论断，而要先定位真实文献记录，再读取其摘要/正文证据。目前暂不确定的是：英语学界通常把这个问题分成哪几条研究路线（比如\"庄子是怀疑论者 vs 神秘主义者 vs 相对主义者\"的争论），以及哪些具体文献确实可读。下一步我按多语言/多关键词（Zhuangzi skepticism / 庄子 怀疑论 / skeptical relativism）去检索文献层",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Zhuangzi skepticism",
+    "philosopher": "Zhuangzi",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Zhuangzi Zhuangzi skepticism', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lisa Raphals'], 'ye"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Zhuangzi skeptical relativism interpretation",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Zhuangzi skeptical relativism interpretation', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lis"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "庄子 怀疑论 齐物论",
+    "limit": 10
+   },
+   "result_head": "{'query': '庄子 怀疑论 齐物论', 'results': [{'source_record_id': 'doi:10.66106/ylaba6.20250104', 'title': '论庄子自然美学观与孔子诗教文学观之差异（On the Differences Between Zhuangzi’s Aesthetic View of Nature and Confucius’s Li"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：第一轮检索已定位到这个问题在英语学界的主战场——1996 年文集 *Essays on Skepticism, Relativism, and Ethics in the Zhuangzi*（Raphals、Kjellberg、Ivanhoe、Loy、Schwitzgebel 都在其中），以及 Chad Hansen 的\"Guru or Skeptic?\"一章。但目前这些记录几乎全是 METADATA_ONLY，也就是说我只能确认它们\"存在\"，还不知道它们各自的具体主张——**绝不能凭标题猜观点**。所以下一步是对其中最相关的几条尝试取",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'source_record_id': 'doi:10.2307/jj.18253879.7', 'bibliographic_record': {'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ["
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1515/9780791486184-008",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.14",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1515/9781438409214-007",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:08:30",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 4,
+  "soft_limit": 4,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:36"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:36"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:36"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 42689,
+   "output_tokens": 4134,
+   "total_tokens": 46823
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 4,
+   "compacted_chars_saved": 7277,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12055,
+     "output_tokens": 668,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15727,
+     "output_tokens": 935,
+     "tool_chars_added": 8538
+    },
+    {
+     "round": 3,
+     "input_tokens": 14907,
+     "output_tokens": 2531,
+     "tool_chars_added": 1726
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1573,
+ "token_usage": {
+  "input_tokens": 42689,
+  "output_tokens": 4134,
+  "total_tokens": 46823
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 30.0,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 庄子怀疑论（skepticism）相关的真实学术文献记录：哪些研究存在、其可读的摘要/内容证据为何，用以呈现学界解释争议而非凭记忆归纳）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内容性归因前必",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Zhuangzi skepticism",
+    "philosopher": "Zhuangzi",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Zhuangzi Zhuangzi skepticism', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lisa Raphals'], 'ye",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.2307/jj.18253879.7",
+     "doi:10.1515/9780791486184-008",
+     "doi:10.2307/jj.18253879.6",
+     "doi:10.1163/9789004391840_003",
+     "doi:10.2307/jj.18253879.14",
+     "doi:10.2307/jj.18253879.8",
+     "doi:10.1515/9781438409214-007",
+     "doi:10.1515/9781438409214-004",
+     "doi:10.1515/9781438409214-012",
+     "doi:10.1515/9781438409214-005"
+    ],
+    "access_levels": {
+     "doi:10.2307/jj.18253879.7": "METADATA_ONLY",
+     "doi:10.1515/9780791486184-008": "METADATA_ONLY",
+     "doi:10.2307/jj.18253879.6": "METADATA_ONLY",
+     "doi:10.1163/9789004391840_003": "METADATA_ONLY",
+     "doi:10.2307/jj.18253879.14": "METADATA_ONLY",
+     "doi:10.2307/jj.18253879.8": "METADATA_ONLY",
+     "doi:10.1515/9781438409214-007": "METADATA_ONLY",
+     "doi:10.1515/9781438409214-004": "METADATA_ONLY",
+     "doi:10.1515/9781438409214-012": "METADATA_ONLY",
+     "doi:10.1515/9781438409214-005": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LOCAL_CURATED+LIVE",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED",
+     "LOCAL_CURATED+LIVE",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED+LIVE",
+     "LOCAL_CURATED+LIVE"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Zhuangzi skeptical relativism interpretation",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Zhuangzi skeptical relativism interpretation', 'results': [{'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': ['Lis",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.2307/jj.18253879.7",
+     "doi:10.1515/9781438409214-005"
+    ],
+    "access_levels": {
+     "doi:10.2307/jj.18253879.7": "METADATA_ONLY",
+     "doi:10.1515/9781438409214-005": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LOCAL_CURATED",
+     "LOCAL_CURATED"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "庄子 怀疑论 齐物论",
+    "limit": 10
+   },
+   "result_summary": "{'query': '庄子 怀疑论 齐物论', 'results': [{'source_record_id': 'doi:10.66106/ylaba6.20250104', 'title': '论庄子自然美学观与孔子诗教文学观之差异（On the Differences Between Zhuangzi’s Aesthetic View of Nature and Confucius’s Li",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.66106/ylaba6.20250104",
+     "doi:10.1289/ehp.1192c18"
+    ],
+    "access_levels": {
+     "doi:10.66106/ylaba6.20250104": "ABSTRACT_AVAILABLE",
+     "doi:10.1289/ehp.1192c18": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.2307/jj.18253879.7', 'bibliographic_record': {'source_record_id': 'doi:10.2307/jj.18253879.7', 'title': 'Skeptical Strategies in the Zhuangzi and Theaetetus', 'authors': [",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "access_before": "METADATA_ONLY",
+    "access_after": "METADATA_ONLY",
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1515/9780791486184-008",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.14",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1515/9781438409214-007",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Zhuangzi skeptical relativism interpretation",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Zhuangzi skeptical relativism interpretation",
+    "results": [
+     {
+      "source_record_id": "doi:10.2307/jj.18253879.7",
+      "title": "Skeptical Strategies in the Zhuangzi and Theaetetus",
+      "authors": [
+       "Lisa Raphals"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.2307/jj.18253879.7",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781438409214-005",
+      "title": "TWO Skeptical Strategies in the Zhuangzi and Theaetetus",
+      "authors": [
+       "Lisa Raphals"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.1515/9781438409214-005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "crossref",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     },
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Zhuangzi skepticism",
+    "philosopher": "Zhuangzi",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Zhuangzi Zhuangzi skepticism",
+    "results": [
+     {
+      "source_record_id": "doi:10.2307/jj.18253879.7",
+      "title": "Skeptical Strategies in the Zhuangzi and Theaetetus",
+      "authors": [
+       "Lisa Raphals"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.2307/jj.18253879.7",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9780791486184-008",
+      "title": "5 Guru or Skeptic? Relativistic Skepticism in the Zhuangzi",
+      "authors": [
+       "Chad Hansen"
+      ],
+      "year": 2003,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Hiding the World in the World",
+      "doi": "10.1515/9780791486184-008",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.18253879.6",
+      "title": "Sextus Empiricus, Zhuangzi, and Xunzi on “Why Be Skeptical?”",
+      "authors": [
+       "Paul Kjellberg"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.2307/jj.18253879.6",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/9789004391840_003",
+      "title": "The Zhuangzi and Its Impact",
+      "authors": [
+       "Victor Mair"
+      ],
+      "year": 2000,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Daoism Handbook",
+      "doi": "10.1163/9789004391840_003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.18253879.14",
+      "title": "Was Zhuangzi a Relativist?",
+      "authors": [
+       "Philip J. Ivanhoe"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.2307/jj.18253879.14",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.18253879.8",
+      "title": "Zhuangzi and Nāgārjuna on the Truth of No Truth",
+      "authors": [
+       "David Loy"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.2307/jj.18253879.8",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781438409214-007",
+      "title": "FOUR Zhuangzi's Attitude Toward Language and His Skepticism",
+      "authors": [
+       "Eric Schwitzgebel"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.1515/9781438409214-007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781438409214-004",
+      "title": "ONE Sextus Empiricus, Zhuangzi, and Xunzi on \"Why Be Skeptical?\"",
+      "authors": [
+       "Paul Kjellberg"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.1515/9781438409214-004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781438409214-012",
+      "title": "NINE Was Zhuangzi a Relativist?",
+      "authors": [
+       "Philip J. Ivanhoe"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.1515/9781438409214-012",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781438409214-005",
+      "title": "TWO Skeptical Strategies in the Zhuangzi and Theaetetus",
+      "authors": [
+       "Lisa Raphals"
+      ],
+      "year": 1996,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+      "doi": "10.1515/9781438409214-005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED+LIVE",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "庄子 怀疑论 齐物论",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "庄子 怀疑论 齐物论",
+    "results": [
+     {
+      "source_record_id": "doi:10.66106/ylaba6.20250104",
+      "title": "论庄子自然美学观与孔子诗教文学观之差异（On the Differences Between Zhuangzi’s Aesthetic View of Nature and Confucius’s Literary View of Poetry Education）",
+      "authors": [
+       "谭慧敏 Huimin Tan"
+      ],
+      "year": 2025,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "艺术理论（Art Theory）",
+      "doi": "10.66106/ylaba6.20250104",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1289/ehp.1192c18",
+      "title": "剖析气候变化怀疑论",
+      "authors": [
+       "Charles W. Schmidt"
+      ],
+      "year": 2011,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Environmental Health Perspectives",
+      "doi": "10.1289/ehp.1192c18",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.66106/ylaba6.20250104"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.2307/jj.18253879.7",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.2307/jj.18253879.7",
+     "title": "Skeptical Strategies in the Zhuangzi and Theaetetus",
+     "authors": [
+      "Lisa Raphals"
+     ],
+     "year": 1996,
+     "publication_type": "BOOK_CHAPTER",
+     "venue": "Essays on Skepticism, Relativism, and Ethics in the Zhuangzi",
+     "doi": "10.2307/jj.18253879.7",
+     "source_category": "UNKNOWN",
+     "access_level": "METADATA_ONLY",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LOCAL_CURATED+LIVE",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "METADATA_ONLY",
+    "access_level_after": "METADATA_ONLY",
+    "returned_evidence_level": null,
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "无 OA 全文候选; DOI landing page 不构成全文可用",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 4
+}

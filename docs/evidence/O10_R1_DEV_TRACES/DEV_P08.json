@@ -1,0 +1,293 @@
+{
+ "case_id": "DEV_P08",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《孟子》「四端说」的原文在哪里？请读取相关章节，引用「恻隐之心，仁之端也」一句所在的完整段落，并解释「端」这个比喻的论证功能。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_2F0upYaiCNGkH8ip0plt1327"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_32TibNVgtSR4KxBXaCkr9411"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_1XByJ5GUl6s217uaVM3P5686",
+   "args": {
+    "query": "四端 仁义礼智 我固有之"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 17, 'chapter_title': '第十八章', 'citation_label': '【《道德经》·第十八章】', 'sni"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_NX0kGcicuUKkh2hLPKte5499"
+  },
+  {
+   "name": "list_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_o6CTl1bzUb0LctSYVygB7390",
+   "args": {
+    "author": "孟子"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_6EHYpWZvGtswG9dQQFoX0230"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_XXMTAYKS8H6ctHBEVewf3664",
+   "args": {
+    "book_id": "孟子"
+   },
+   "result_head": "{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_v4ZoGA33SJbgtJnGOMev1875",
+   "args": {
+    "query": "人皆有不忍人之心 恻隐之心 羞恶之心 辞让之心 是非之心"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 48, 'chapter_title': '德经·第四十九章', 'citation_label': '【《道德经》·德经·第四十九章"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_2dXp8SAcoaqVy9NVBWpq0631"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_jo1efJcmKKL2vd6lPsJN7725",
+   "args": {
+    "book_id": "孟子",
+    "chapter_idx": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_bB4LnDg61W9I2n2CErIy6717"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_ykTnil6XJsg8qcUzclYM5134",
+   "args": {
+    "book_id": "孟子",
+    "chapter_idx": 2
+   },
+   "result_head": "{'book_id': 'dd03ec6572e7', 'chapter_idx': 2, 'title': '公孙丑章句上', 'book_title': '孟子', 'citation_label': '【《孟子》·公孙丑章句上】', 'text': '公孙丑章句上·第一节\\n公孙丑问曰：“夫子当路于齐，管仲、晏子"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子》中「恻隐之心，仁之端也」所在完整段落的原文措辞、章节归属，以及「端」字在该段的上下文用法",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子》「四端」段（恻隐/羞恶/辞让/是非之心与仁之端等）的原文措辞与所在篇章位置尚未取得，需读取《公孙丑上》《告子上》相应章节原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已确认《孟子》在库（14篇），但前两次全文检索未命中四端段落，原文措辞与章节归属这一核心缺口仍未闭合；用户明确要求引用原文并读相关章节，不读原文无法作答",
+    "unresolved_evidence_gap": "「恻隐之心，仁之端也」完整段落的逐字原文及所在篇目"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子·公孙丑章句上》「人皆有不忍人之心」一章的逐字原文与所在篇目，以及《告子章句上》论「四端/我固有之」一段的原文——用于给出可核验的原文引用",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求引用「恻隐之心，仁之端也」所在完整段落并读相关章节；此前数次全文检索因该库文本未被关键词命中，至今未取得任何《孟子》原文措辞，核心证据缺口零覆盖。不读取篇目原文，我无法给出可核验的逐字引文，只能凭记忆作答——这正是必须避免的。",
+    "unresolved_evidence_gap": "《孟子》四端段（不忍人之心/恻隐羞恶辞让是非之心）的逐字原文及其确切的篇目位置"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2046,
+ "final_answer": "我已读取到原文：四端说就出在《孟子·公孙丑章句上》第六节（即通称《公孙丑上》第 6 章、\"人皆有不忍人之心\"章）。核心证据已闭合，下面据实作答。\n\n---\n\n## 一、原文位置\n\n「恻隐之心，仁之端也」一语，出自 **《孟子·公孙丑章句上》第六节**（《公孙丑上》第 6 章）。这一节是四端说的完整载体，也是孟子性善论最常被征引的论证段落之一。【《孟子》· 公孙丑章句上】\n\n该节全文如下：\n\n以下段落按大意转述，不作为逐字原文引用：孟子在这一节主张，人人都有不忍见他人受苦的心；先王正因具备这种心，才施行了不使人受苦的政治，而用这种心去推行这样的政治，治理天下便像在掌上转动一样容易。他举例证明这一点：人若忽然看见一个小孩快要掉进井里，都会心里一惊而生恻隐之情，这种反应并不是为了借此结交孩子的父母，不是为了在乡邻朋友间博取名声，也不是因为讨厌孩子的哭声。由此推论，若一个人没有恻隐、羞恶、辞让、是非这四种心，就不成其为人；而这四种心分别构成仁、义、礼、智的萌芽。人有这四端，正如人有四肢一样，是天生本具的；已经有四端却自称做不到，是自暴自弃；说自己的君主做不到，则是坑害君主。孟子最后指出，凡是自身具备四端的人，都应当知道把它们扩充开来，就像火刚刚点燃、泉水刚刚涌出那样；能够扩充，便足以安定天下，不能扩充，则连侍奉父母都做不到。\n\n（另：《告子上》第六章有与此呼应的说法，以\"仁义礼智，非由外铄我也，我固有之也\"强调四德的固有性。不过该篇原文我这次未在库中读取核验，此处仅作脉络提示，不作为逐字引用。）\n\n---\n\n## 二、「端」这个比喻承担了什么论证功能\n\n要理解「端」，先看它的语义层次。「端」在中文里兼有\"发端、端绪、开端\"之义，也指事物的\"头绪、萌芽\"。孟子用它，不是随手取譬，而是在一个关键的论证关节上放了一块承重石。我的分析如下（这是我基于本段文本的解读，非原文自述）。\n\n**1. 它是\"情\"与\"德\"之间的桥梁。**\n这一段有一个不容忽视的结构：前文谈的是**心理事实**——\"乍见孺子将入于井，皆有怵惕恻隐之心\"，且再三声明这种心不是出于结交父母、不是求誉乡党、不是厌恶哭声（即排除了一切功利与外在动机）；后文谈的是**道德德性**——仁、义、礼、智。问题在于：从一种自然发生的情感（恻隐），怎么过渡到一种道德德性（仁）？「端」就是这道过渡的桥：它把恻隐之心说成仁的\"发端\"，于是德性不再外铄，而是内在于情感之中。这一步正是孟子性善论的枢纽。\n\n**2. 它同时承担了\"先天性\"与\"普遍性\"的双重主张。**\n紧接着的是\"人之有是四端也，犹其有四体也\"——把四端比作人的四肢。四肢是与生俱来、人人皆有的身体事实；借这个类比，四端被确认为人人天生具备的东西。这解释了为什么孟子敢下\"无恻隐之心，非人也\"这样强的断语：四端被当成了\"人之所以为人\"的构成条件，缺失者被排除在\"人\"的名分之外。\n\n**3. 它规定了道德成长的方向——为工夫论留出位置。**\n注意段末的措辞：\"知皆**扩而充之**矣，若火之始然，泉之始达。\"「端」是\"始\"，火\"始然\"、泉\"始达\"都强调这只是个起头、一点苗头，需要后天去扩、去充。这一笔极为重要：端是**潜在的开端，而非完满的现成**。所以孟子的\"性善\"严格说不是\"人性已经善透了\"，而是\"人性本有善端\"；能否长成善，还要看有没有\"充之\"。\"苟能充之，足以保四海；苟不充之，不足以事父母\"——端可以被养护，也可以被弃置夭折。\n\n**4. 与\"四体\"的设喻相互配合。**\n\"端\"（萌芽、起始）与\"四体\"（先天、本有）一虚一实，共同支撑起一个双层主张：**道德禀赋既是天生的（有），又是未完成的（需扩充）**。这套比喻结构，比单说\"人性善\"要精密得多。\n\n---\n\n## 三、这个比喻的逻辑张力（我的分析）\n\n「端」也留下一个真正的哲学难题，值得点出：从\"恻隐之心\"到\"仁\"之间的这一步，究竟是不是自明的？\n\n恻隐是**情感**，仁是**德性**；\"端\"把它们连起来，等于主张：凡有某种情感萌芽，就必能（且应）发展为相应的德性。但\"萌芽\"一词本身是含混的——它既可解为\"已经内在地规定了成熟形态的潜能\"（种子论式的读法），也可只解为\"一个尚待塑造的开端\"（端绪论式的读法）。孟子用\"火之始然、泉之始达\"倾向于前者，但\"苟不充之，不足以事父母\"又承认端可能被扑灭。所以端说真正的力量在于**为道德修养留出了实践空间**，它的困难则在于：**从\"自然情感\"跨向\"道德德性\"的那一步，是否被比喻本身偷渡过去了**。（这是文本内部的张力，也是历来读孟子者反复追问的地方；关于不同解释路线孰优，我这次未做二手文献层面的核验，故只标为我的分析。）\n\n---\n\n**一句话收束**：「端」的比喻功能，是让孟子在同一段里同时说出三件事——道德根于心（不必外求）、人皆有之（普遍且先天）、须扩而充之（有待养成）。它既堵住了\"仁义外铄\"的退路，又没有把善说成现成的成品。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《孟子·公孙丑章句上》「人皆有不忍人之心」一章的逐字原文与所在篇目，以及《告子章句上》论「四端/我固有之」一段的原文——用于给出可核验的原文引用",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:35:46",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《孟子》中「恻隐之心，仁之端也」所在完整段落的原文措辞、章节归属，以及「端」字在该段的上下文用法",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:35:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《孟子》「四端」段（恻隐/羞恶/辞让/是非之心与仁之端等）的原文措辞与所在篇章位置尚未取得，需读取《公孙丑上》《告子上》相应章节原文",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:36:08",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《孟子·公孙丑章句上》「人皆有不忍人之心」一章的逐字原文与所在篇目，以及《告子章句上》论「四端/我固有之」一段的原文——用于给出可核验的原文引用",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:35:54",
+    "reason": "已确认《孟子》在库（14篇），但前两次全文检索未命中四端段落，原文措辞与章节归属这一核心缺口仍未闭合；用户明确要求引用原文并读相关章节，不读原文无法作答",
+    "unresolved_gap": "「恻隐之心，仁之端也」完整段落的逐字原文及所在篇目"
+   },
+   {
+    "ts": "2026-09-13 13:36:08",
+    "reason": "用户明确要求引用「恻隐之心，仁之端也」所在完整段落并读相关章节；此前数次全文检索因该库文本未被关键词命中，至今未取得任何《孟子》原文措辞，核心证据缺口零覆盖。不读取篇目原文，我无法给出可核验的逐字引文，只能凭记忆作答——这正是必须避免的。",
+    "unresolved_gap": "《孟子》四端段（不忍人之心/恻隐羞恶辞让是非之心）的逐字原文及其确切的篇目位置"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:35:49"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:36:02"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:36:02"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 129012,
+   "output_tokens": 8380,
+   "total_tokens": 137392
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 14628,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11905,
+     "output_tokens": 442,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17548,
+     "output_tokens": 356,
+     "tool_chars_added": 9204
+    },
+    {
+     "round": 3,
+     "input_tokens": 13515,
+     "output_tokens": 708,
+     "tool_chars_added": 605
+    },
+    {
+     "round": 4,
+     "input_tokens": 15674,
+     "output_tokens": 585,
+     "tool_chars_added": 3165
+    },
+    {
+     "round": 5,
+     "input_tokens": 17433,
+     "output_tokens": 787,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 6,
+     "input_tokens": 16334,
+     "output_tokens": 950,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 7,
+     "input_tokens": 21979,
+     "output_tokens": 3463,
+     "tool_chars_added": 6912
+    },
+    {
+     "round": 8,
+     "input_tokens": 14624,
+     "output_tokens": 1089,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 129012,
+  "output_tokens": 8380,
+  "total_tokens": 137392
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 56.6
+}

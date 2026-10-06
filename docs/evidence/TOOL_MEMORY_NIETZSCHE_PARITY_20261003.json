@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-03",
+  "scope": [
+    "用户设置与自动记忆摘要区分来源和优先级",
+    "尼采复用深哲流式循环、账号上下文及回答UI",
+    "长期记忆、历史、人格检索、书目信息和通用工具结果可读展示"
+  ],
+  "validation": {
+    "backend_tests": 162,
+    "frontend_suite": "passed including new Nietzsche persistence and memory result cases",
+    "production_build": "passed",
+    "browser": {
+      "isolated_fixture": true,
+      "memory_markdown_headings": true,
+      "mobile_width": 390,
+      "mobile_scroll_width": 390,
+      "nietzsche_action_buttons": 4,
+      "interim_response_visible": true,
+      "dynamic_suggestion_visible": true
+    },
+    "live_model_probes": [
+      "PERSONALIZATION_PARITY_PROBE_20261003.json",
+      "NIETZSCHE_SHARED_PROBE_20261003.json"
+    ]
+  },
+  "limits": [
+    "工具展示核验不是逐一验证所有外部工具服务可用性",
+    "真实模型探针使用合成资料，没有修改用户账号或历史",
+    "当前版本未重新运行完整哲学质量测试集"
+  ],
+  "release": {
+    "version": "0.1.2",
+    "general_prompt_version": "0.1.1",
+    "general_and_nietzsche_tool_budget": null,
+    "nietzsche_persona_preserved": true
+  },
+  "deployment": {
+    "published_at": "2026-10-03T00:15:07.423262+00:00",
+    "url": "https://agent.deepphilosophy.top/",
+    "assets": [
+      {
+        "path": "/assets/phiagent-icon-DCv4ti-X.png",
+        "status": 200,
+        "sha256": "643692794510b01ba9198360e70fc78bc13cd50a30a69f304e1ae0e5b6242e7e"
+      },
+      {
+        "path": "/assets/phiagent-icon-180-Bc5fQg99.png",
+        "status": 200,
+        "sha256": "94352d56a90a93101e8da073f77158d9e1bbea452044c030db00f5c70d270493"
+      },
+      {
+        "path": "/assets/index-DSkr1kUx.js",
+        "status": 200,
+        "sha256": "198c6d40324247c14ba743a0f0bae85ddae73f2670587e1c4a8322a2393fc953"
+      },
+      {
+        "path": "/assets/index-CGPb67H6.css",
+        "status": 200,
+        "sha256": "e6045401cec7d63b4a3e42930ff6056c2ccb7780eca2a298c3ca85c042a10060"
+      }
+    ],
+    "health": {
+      "status": "healthy",
+      "version": "0.1.2",
+      "timestamp": "2026-10-03T08:15:07.027433"
+    },
+    "release_version": "0.1.2",
+    "prompt_version": "0.1.1",
+    "tool_budget": null,
+    "git_commit": "8076ab853f42bb422e452ab060070b9119f0fcb6",
+    "sqlite_backup_taken": true,
+    "old_hashed_assets_preserved": true,
+    "production_model_request_made_for_deployment": false,
+    "public_agent_count": 121,
+    "public_preview_count": 119,
+    "browser_page_loaded": true
+  }
+}

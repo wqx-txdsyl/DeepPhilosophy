@@ -21,10 +21,12 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from routes.agent_assets import router as agent_assets_router
 import uvicorn
 
 import config
 from auth import init_db
+from agent_release import VERSION
 from services.book_scanner import scan_books
 from services.summaries import load_summaries_cache
 
@@ -34,19 +36,21 @@ from services.summaries import load_summaries_cache
 app = FastAPI(
     title="DeepPhilosophy API",
     description="哲学爱好者知识库云端服务",
-    version="2.0.0",
+    version=VERSION,
 )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://deepphilosophy.top",
+        "https://agent.deepphilosophy.top",   # PhiAgent 前端（本地 8011 经隧道暴露）
         "https://deepphilosophy.pages.dev",
         "https://deepphilosophy.vercel.app",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
         "http://localhost:8000",
+        "http://localhost:5201",              # phiagent 本地 dev
     ],
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
@@ -96,6 +100,8 @@ async def global_middleware(request: Request, call_next):
         response.headers["Cache-Control"] = "public, max-age=3600"
     elif path.startswith("/philosopher/") and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=3600"  # 1 hour, not 1 year (portraits get updated)
+    elif not path.startswith('/api/') and response.headers.get('content-type','').startswith('text/html'):
+        response.headers['Cache-Control'] = 'no-cache'
     return response
 
 
@@ -135,6 +141,8 @@ from routes.books import router as books_router
 from routes.authors import router as authors_router
 from routes.upload import router as upload_router
 from routes.account import router as account_router
+from routes.research import router as research_router
+from routes.agent_history import router as agent_history_router
 
 app.include_router(health_router)
 app.include_router(auth_router)
@@ -150,12 +158,15 @@ app.include_router(books_router)
 app.include_router(authors_router)
 app.include_router(upload_router)
 app.include_router(account_router)
+app.include_router(research_router)
+app.include_router(agent_history_router)
 from routes.openai_compat import router as openai_compat_router
 app.include_router(openai_compat_router)
 
 # ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）
 # ============================================================
+app.include_router(agent_assets_router)
 _STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(_STATIC_DIR) and os.path.isfile(os.path.join(_STATIC_DIR, "index.html")):
     # 先挂 assets，再挂根路由

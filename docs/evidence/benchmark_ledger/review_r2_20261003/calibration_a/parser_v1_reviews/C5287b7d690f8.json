@@ -1,0 +1,137 @@
+{
+  "id": "C5287b7d690f8",
+  "ratings": {
+    "C1": 0,
+    "C2": 1,
+    "C3": 1,
+    "C4": 0,
+    "C5": 1
+  },
+  "reasons": {
+    "C1": {
+      "reason": "A001直接断定用户已把自己当成用工作换尊重的商品，并把该机制称为痛苦的实际原因；A002进一步用用户自述证明该公式。required_work要求不能替用户断定动机，且应给出可能解释与边界，回答基本相反。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "required_work：不能替用户断定动机；给出可能解释与边界",
+      "answer_spans": [
+        "你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。",
+        "你明明认真却不觉得值得，已经证明你采用了这条交易公式。"
+      ]
+    },
+    "C2": {
+      "reason": "只用‘商品’‘交易公式’作隐喻，未区分工作表现、被尊重、自我价值等概念，也未说明该区分如何改变判断；核心概念未被澄清。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "required_work：给出可能解释与边界；C2要求概念区分及其对判断的影响",
+      "answer_spans": [
+        "你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。",
+        "你明明认真却不觉得值得，已经证明你采用了这条交易公式。"
+      ]
+    },
+    "C3": {
+      "reason": "A002从‘认真却不觉得值得’直接跳到‘已经证明采用了交易公式’，缺少必要前提；A001据此称其为‘实际原因’，结论远超前提且未排除其他机制。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "A002：‘你明明认真却不觉得值得，已经证明你采用了这条交易公式。’",
+      "answer_spans": [
+        "你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。",
+        "你明明认真却不觉得值得，已经证明你采用了这条交易公式。"
+      ]
+    },
+    "C4": {
+      "reason": "没有列出任何竞争解释、反例或适用边界，反而把单一机制设为唯一实际原因；未满足‘给出可能解释与边界’的要求。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "required_work：不能替用户断定动机；给出可能解释与边界",
+      "answer_spans": [
+        "你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。",
+        "你明明认真却不觉得值得，已经证明你采用了这条交易公式。"
+      ]
+    },
+    "C5": {
+      "reason": "表达短而清楚，但以断言替代可能解释，未满足‘不能替用户断定动机’的明确任务条件，任务适配性不足。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "required_work：不能替用户断定动机；给出可能解释与边界",
+      "answer_spans": [
+        "你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。",
+        "你明明认真却不觉得值得，已经证明你采用了这条交易公式。"
+      ]
+    }
+  },
+  "audit": {
+    "condition_changes": [
+      {
+        "unit_id": "A001",
+        "issue": "把任务允许的‘可能解释’改为断定的‘实际原因’，并替用户断定动机，违反required_work"
+      }
+    ],
+    "unsupported_bridges": [
+      {
+        "unit_id": "A002",
+        "issue": "从‘认真却不觉得值得’推出‘已经证明采用了交易公式’，该结论不唯一且缺少支持前提",
+        "decisive": true
+      }
+    ],
+    "source_scope_issues": []
+  },
+  "errors": [
+    {
+      "code": "E2",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "reference_or_condition": "required_work：不能替用户断定动机；给出可能解释与边界",
+      "reason": "回答直接断定用户动机并称其为实际原因，改变了任务明确禁止替用户断定动机这一决定性条件。",
+      "answer_span": "你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。\n你明明认真却不觉得值得，已经证明你采用了这条交易公式。"
+    },
+    {
+      "code": "E3",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A002",
+        "A001"
+      ],
+      "reference_or_condition": "A002：‘你明明认真却不觉得值得，已经证明你采用了这条交易公式。’",
+      "reason": "以自述症状直接证明特定交易公式，并将该公式称为痛苦实际原因，构成无效推论，决定主结论。",
+      "answer_span": "你明明认真却不觉得值得，已经证明你采用了这条交易公式。\n你已经把自己当成了用工作换尊重的商品，这就是你痛苦的实际原因。"
+    }
+  ],
+  "strength": "语言紧凑，直接回应了‘为什么’的提问形式，没有堆砌无关引用。",
+  "limits": [
+    "无法核验用户真实动机；任何单一动机归因都不能由用户自述直接证明。",
+    "给定材料S1/S2为无关控制材料，不能支持该归因；其摘要和非显著结果不能作为该机制证据。"
+  ],
+  "family": "C",
+  "attempt": 1,
+  "packet_sha256": "26dc6eb0f131cd00c4b87e0b30dee5dd3a63444b14d0695f6824b321d237aa12",
+  "response_file": "docs/evidence/benchmark_ledger/review_r2_20261003/calibration_a/responses/C5287b7d690f8-a1.json",
+  "response_sha256": "184e02884562f9f3588abb8b2ee3d6ddc42ec7adf37cb91b9fe22fb8cc167588",
+  "model_returned": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "usage": {
+    "prompt_tokens": 2407,
+    "completion_tokens": 4017,
+    "total_tokens": 6424,
+    "prompt_tokens_details": {
+      "cached_tokens": 1920
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 3262
+    },
+    "prompt_cache_hit_tokens": 1920,
+    "prompt_cache_miss_tokens": 487
+  }
+}

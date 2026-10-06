@@ -1,0 +1,577 @@
+{
+  "id": "F03-T1",
+  "family": "R",
+  "rating_keys": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "original_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "task_required_work": [
+    "核对DOI对应题名、作者和出版信息",
+    "说明读到摘要还是全文，并评估实际方法或论证",
+    "区分有标识符、被发表、被引用与结论为真"
+  ],
+  "current_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "previous_turns": [],
+  "target_answer": "不能。DOI 证明的是「这条记录被登记过、能被定位」，不是「这项研究的结论成立」。下面是实际核验。\n\n## 一、我实际查到的那篇\n\n检索\"DOI 与信任\"时命中一篇记录：\n\n- 标题：*Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure*\n- 作者：Ulrich Herb，2021 年\n- DOI：`10.59350/w4cmv-ycc16`\n- 出版类型（记录自报）：**OTHER**；**期刊/会议字段为空**\n- 可读层级：**仅有摘要**（`ABSTRACT_AVAILABLE`）\n\n再试取全文，返回的是：**无开放获取全文，DOI 落地页不构成全文可用**。也就是说，我能拿到的全部内容就是这段 455 字符的文字：\n\n> \"Pablo de Castro (University of Strathclyde), Laura Rothfritz…and I will do a study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure for research commissioned by Knowledge Exchange (KE). The project aims to identify the best possible strategic…\"\n\n三个可直接观察的问题：\n\n1. **它是项目预告，不是研究结果**。文本用第一人称说\"我们*将要*做一项研究\"。科研资助项目的公告也可以注册 DOI。\n2. **字段本身残缺**。这段\"摘要\"以 `</jats:p>` 这种被截断的排版标记收尾，说明它是一条元数据字段，源方没有验证它是否等于论文正式摘要。\n3. **同一标题同一作者同一年有两个 DOI**：`10.59350/w4cmv-ycc16` 与 `10.59350/r9by3-jw679`。DOI 的唯一性是\"对某个对象\"的唯一，不等于\"每篇论文恰好一个、不得重复\"。\n\n顺带一个反证就摆在同一次检索里：第二轮查询返回的命中有 AccessScience 的**百科条目**和 SMPTE 的**技术推荐规范**，它们同样带 DOI。DOI 显然也发给非研究性、未经匿名评审的文献。\n\n所以对这个 DOI，我能诚实说出的只有：**这条 2021 年的记录存在于 Crossref 中，且可被引用和解析**。至于\"持久标识符基础设施的风险与信任\"这个题目上它得出什么结论——**我不知道，因为我没有读到正文**。这恰恰是本次讨论的最好注脚。\n\n## 二、区分三件事\n\n| 说法 | DOI 能否支持 |\n|---|---|\n| 这条记录存在、作者年份可核对、链接可稳定解析 | 能（这正是它的功能） |\n| 该文本经过同行评审 / 是研究论文 | 不能。记录自报类型是 OTHER、无期刊 |\n| 该文本的结论可靠 | 不能，且差了整条证据链 |\n\nDOI 是**身份证号，不是质检章**。它由注册机构登记元数据与解析路径，不做事实核查，也不保证内容此后不被撤回——更常见的用法反而是：撤回声明、更正通知靠 DOI 挂回原文。同行评审本身也只是**可撤销的信任线索**，不是结论为真的保证。真正支撑\"结论可靠\"的是方法、样本、统计、以及结论是否经独立重复与批评——这些都在正文里，不在 DOI 字符串里。\n\n## 三、正确的证据分层说法\n\n取证据时有明确层级，不能越级：\n\n- `METADATA_ONLY`：只知道有这么一份东西存在。\n- `ABSTRACT_AVAILABLE`：读过摘要。摘要不是全文；作者自述的结论尤其不能替代正文里的方法。\n- `FULL_TEXT_AVAILABLE` / `FULL_TEXT_READ`：真读过正文，才谈得上评价设计质量与推论。\n\n我这篇停在第 2 级。**只有摘要时评价其方法，就是拿没读的东西当读过了。**\n\n## 四、下一步\n\n想让它变成可判断的，需要其中之一：拿到该项目的**正式报告全文**（Knowledge Exchange 委托项目，通常有公开报告版），或换一篇**有 OA 全文**的实证研究——然后用同一流程：先看层级，读到正文再评方法。你给我 DOI 或标题，我按这个流程查，并如实告诉你停在哪一级、没读到的部分我保留为未知。",
+  "tools_this_turn": [
+    {
+      "tool_index": 1,
+      "name": "search_scholarship",
+      "args": {
+        "query": "DOI persistent identifier trust reliability scholarly record",
+        "limit": 6
+      },
+      "status": "partial",
+      "result": {
+        "query": "DOI persistent identifier trust reliability scholarly record",
+        "results": [
+          {
+            "source_record_id": "doi:10.59350/w4cmv-ycc16",
+            "title": "Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure",
+            "authors": [
+              "Ulrich Herb"
+            ],
+            "year": 2021,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.59350/w4cmv-ycc16",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.59350/r9by3-jw679",
+            "title": "Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure",
+            "authors": [
+              "Ulrich Herb"
+            ],
+            "year": 2021,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.59350/r9by3-jw679",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2013",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2013",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2017",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2017",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2018",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2018",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.62891/904655e8",
+            "title": "dPID: A Persistent Identifier for Machine Actionability",
+            "authors": [
+              "Sina Iman"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.62891/904655e8",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 2,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.59350/w4cmv-ycc16",
+          "doi:10.59350/r9by3-jw679"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "DOI persistent identifier trust reliability scholarly record",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "DOI persistent identifier trust reliability scholarly record",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "DOI persistent identifier trust reliability scholarly record",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 2,
+      "name": "search_scholarship",
+      "args": {
+        "query": "digital object identifier citation linking credibility",
+        "limit": 6
+      },
+      "status": "partial",
+      "result": {
+        "query": "digital object identifier citation linking credibility",
+        "results": [
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2013",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2013",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.3403/30177056",
+            "title": "Information and documentation. Digital object identifier system",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.3403/30177056",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1036/1097-8542.yb030970",
+            "title": "Digital Object Identifier",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": "AccessScience",
+            "doi": "10.1036/1097-8542.yb030970",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "container_title",
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1036/1097-8542.195250",
+            "title": "Digital Object Identifier system",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": "AccessScience",
+            "doi": "10.1036/1097-8542.195250",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "container_title",
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2017",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2017",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2018",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2018",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 0,
+        "READABLE_SOURCE_IDS": [],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "digital object identifier citation linking credibility",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "digital object identifier citation linking credibility",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "digital object identifier citation linking credibility",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 3,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.59350/w4cmv-ycc16",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.59350/w4cmv-ycc16",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.59350/w4cmv-ycc16",
+          "title": "Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure",
+          "authors": [
+            "Ulrich Herb"
+          ],
+          "year": 2021,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.59350/w4cmv-ycc16",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Pablo de Castro (University of Strathclyde), Laura Rothfritz, research assistant and PhD candidate at the Berlin School of Library and Information Science at Humboldt University Berlin, Joachim Schöpfel (Université de Lille) and I will do a study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure for research commissioned by Knowledge Exchange (KE). The project aims to identify the best possible strategic</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "0a6a23ec48b69ebc44eccc0038068652f28f03429f03cfe6e46335833be901cc",
+          "excerpt_start": 0,
+          "excerpt_end": 455,
+          "total_characters": 455,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "0a6a23ec48b69ebc44eccc0038068652f28f03429f03cfe6e46335833be901cc",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 4,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.59350/w4cmv-ycc16",
+        "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.59350/w4cmv-ycc16",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.59350/w4cmv-ycc16",
+          "title": "Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure",
+          "authors": [
+            "Ulrich Herb"
+          ],
+          "year": 2021,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.59350/w4cmv-ycc16",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": null,
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "无 OA 全文候选; DOI landing page 不构成全文可用",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Pablo de Castro (University of Strathclyde), Laura Rothfritz, research assistant and PhD candidate at the Berlin School of Library and Information Science at Humboldt University Berlin, Joachim Schöpfel (Université de Lille) and I will do a study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure for research commissioned by Knowledge Exchange (KE). The project aims to identify the best possible strategic</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "0a6a23ec48b69ebc44eccc0038068652f28f03429f03cfe6e46335833be901cc",
+          "excerpt_start": 0,
+          "excerpt_end": 455,
+          "total_characters": 455,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "0a6a23ec48b69ebc44eccc0038068652f28f03429f03cfe6e46335833be901cc",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    }
+  ],
+  "citations_this_turn": [
+    {
+      "evidence_id": "sch_7303c14473b8",
+      "source_record_id": "doi:10.59350/w4cmv-ycc16",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure",
+      "book": "Study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure",
+      "author": "Ulrich Herb",
+      "year": 2021,
+      "doi": "10.59350/w4cmv-ycc16",
+      "url": "https://doi.org/10.59350/w4cmv-ycc16",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "Pablo de Castro (University of Strathclyde), Laura Rothfritz, research assistant and PhD candidate at the Berlin School of Library and Information Science at Humboldt University Berlin, Joachim Schöpfel (Université de Lille) and I will do a study on Risks and Trust in pursuit of a well functioning Persistent Identifier infrastructure for research commissioned by Knowledge Exchange (KE). The project aims to identify the best possible strategic</jats:p>"
+    }
+  ]
+}

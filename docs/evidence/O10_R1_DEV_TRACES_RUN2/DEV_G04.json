@@ -1,0 +1,240 @@
+{
+ "case_id": "DEV_G04",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请综述学界对帕菲特（Parfit）人格同一性理论的主要争论：代表论文有哪些，争论焦点是什么？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_LjGrpP5yWa7EMNvTNS1x2341"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_9aQFYNMZ14wUAcINFAb60247"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_iUd5GAQ3b9qkMiOb63Tv8722",
+   "args": {
+    "query": "critique Parfit reasons and persons personal identity",
+    "limit": 10
+   },
+   "result_head": "{'query': 'critique Parfit reasons and persons personal identity', 'results': [{'source_record_id': 'doi:10.1017/cbo9781139174503.014', 'title': 'Personal ident"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_RNAonS8GsAPS9AeAbuwB9872"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_0uL5Xx8pmjBFPW3jFNPt2657"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_ypDPdEur8Q8LFN1CdaWH1866"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_gsFs7QVjsEXlDT3tHJdg9310",
+   "args": {
+    "limit": 8,
+    "query": "Parfit personal identity Williams critique bodily continuity"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_L1UscsIrKmX0a5UHFpUT9155"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_L8riMReRjRy2FJDeuM5w2045",
+   "args": {
+    "limit": 10,
+    "query": "personal identity Parfit debate psychological continuity animalism critique"
+   },
+   "result_head": "{'query': 'personal identity Parfit debate psychological continuity animalism critique', 'results': [{'source_record_id': 'doi:10.1093/mind/fzs080', 'title': 'M"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_scMtG79uOLXKzhQW6n0B5773"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_T68t52BMkjsh0uEg2QTo9255",
+   "args": {
+    "limit": 8,
+    "query": "Williams body-swap argument personal identity Parfit critique"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "用户明确要求综述学界对帕菲特人格同一性理论的主要争论及代表论文，需定位真实二手研究文献并读取其可读内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已读 Korsgaard、Johnston 两篇摘要，但缺少覆盖 Williams/Shoemaker/Lewis/Olson 等主要争论脉络的代表文献与可读内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述\"代表论文\"与\"争论焦点\"，仅两篇摘要无法覆盖争论的主要轴线，需定位并读取更多代表文献才能如实作答",
+    "unresolved_evidence_gap": "缺少关于身体连续性批评（Williams）、心理连续性功能主义（Shoemaker）、四维主义（Lewis）、动物主义（Olson）及\"what matters\"内部争论的可读文献证据"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3006,
+ "final_answer": "工作笔记收尾：检索预算已用尽，需综合作答。我实际完整读到的内容证据只有 Suikkanen（2025）的摘要；Korsgaard（1996）与 Johnston（1992）我只核验到书目信息（标题/作者/年份/刊物），未读到其摘要正文，因此对其具体论证不能作内容归因。下一次（也是最后一次）不再调用工具，直接给出综述，并严格区分\"本次核验的证据\"与\"我的哲学史背景知识（未核验）\"两层。\n\n---\n\n# 帕菲特人格同一性理论：学界争论综述\n\n先交代证据边界，再谈争论——这条边界直接影响你能对下面哪些判断给予多少信任。\n\n## 一、本次实际核验到的文献（含内容证据）\n\n我通过学术文献库（Crossref / OpenAlex）实际检索并读取到以下相关记录：\n\n| 文献 | 作者 | 年份 | 刊物 | 我读到的层级 |\n|---|---|---|---|---|\n| *Personal identity and the unity of agency: A Kantian response to Parfit* | Christine M. Korsgaard | 1996 | Cambridge University Press（书章） | 仅书目 |\n| *Reasons and Reductionism* | Mark Johnston | 1992 | *The Philosophical Review* | 仅书目 |\n| *Parfit on Personal Identity and Ethical Theories* | Jussi Suikkanen | 2025 | *Oxford Studies in Normative Ethics* | 摘要正文 |\n\n**只有第三篇我真正读到了摘要文本**，因此只有它能作内容性归因。Suikkanen 的摘要明确写道：帕菲特在**早期**著作中主张一种\"修正性还原论\"（revisionary reductionism）——人格同一性的事实**归结为**更特殊的心理事实，且这些事实\"可以完全以非人称的方式描述\"；他并主张在**某些情形下**，历时人格同一性的问题会变成\"没有有意义答案的空问题\"。摘要接着指出一个**解释性困惑**：帕菲特在**后期**著作中却辩护契约论、规则后果主义等看似依赖确定人格同一性概念的伦理理论，且从未在后期著作中探讨还原论对这类理论的后果。Suikkanen 这篇的目标就是论证：即便表面冲突，帕菲特的人格同一性观点与规则后果主义、斯坎伦式契约论、康德式契约论仍能构成一个融贯整体。\n\n此外还有若干记录虽被检索命中、但**主题偏离或未读取**（如 Shaun Gallagher 等关于记忆与人格感的研究、若干用帕菲特框架讨论 AI 与痴呆症身份的论文），我不把它们计入综述证据。\n\n**诚实声明**：对 Korsgaard 与 Johnston，我只核验到它们的书目信息，未读到其论证内容。下面若提到它们的具体立场，请视作**待核验**，而非已确认的学界归因。\n\n## 二、争论焦点的结构框架\n\n下面这部分是**我对该领域争论脉络的概述**。凡涉及具体学者立场的经典文献（Williams、Lewis、Shoemaker、Olson 等），为**我记忆中的学术史定位，本次未能在检索中核验其原文或摘要**，已逐条标注。请把它当作\"研究地图\"，而非已核验的文献综述。\n\n**焦点一：还原论命题本身能否成立**\n帕菲特的核心主张是：关于\"我是谁\"的事实不构成\"进一步的\"（further）事实，而完全由更基本的心理事实（经验、记忆、意图、性格的连续与连通）构成，且可非人称描述。这一命题的争论在于：是否存在一个**不可还原的、进一步的同一性事实**。常识（\"进一步事实观\"）与部分形而上学立场认为有，还原论者认为没有。这是本次唯一有内容证据支撑的焦点（Suikkanen 摘要中对早期帕菲特立场的表述）。\n\n**焦点二：\"空问题\"命题与分脑案例**\n帕菲特借分脑（split-brain）、复制、逐渐替换等案例主张：当心理连续性以\"分支\"方式出现时，\"哪一个后继者是我\"可能无确定答案，因而该问题\"空\"。争论在于：这是深刻的洞见，还是对同一性**逻辑（传递性）**的误用？（记忆，未核验：Lewis 1976 年 *Survival and Identity* 以四维主义试图保留\"同一性\"来回应这一挑战，主张分脑下\"生存\"仍可被同一性解释。）\n\n**焦点三：什么才是\"重要的\"——同一性还是心理连续性**\n帕菲特结论：真正重要的不是同一性本身，而是心理连续性与连通性（\"同一性不是关键所在\"）。这是争论最烈之处——若同一性不重要，则自利、承诺、责任、道德关系的根基是否需要重估？\n\n**焦点四：身体连续性 vs 心理连续性**\n（记忆，未核验：Williams 1970 年 *The Self and the Future*）以\"身体交换/折磨\"思想实验反击：若我们接受心理连续性主导，会得出反直觉结论；而直觉更偏护身体连续性。Williams 由此辩护一种与帕菲特对立的立场。这一轴线是帕菲特理论最经典的批评来源。\n\n**焦点五：规范性后果——还原论对伦理学的冲击**\n这正是本次核验到的 Suikkanen（2025）所处理的问题：帕菲特早期还原论是否与他后期的契约论、后果主义相容？摘要归纳出的\"解释性困惑\"本身，正是学界争论的一个活跃焦点——即还原论是否**侵蚀了**依赖确定人格同一性的伦理理论。\n\n**焦点六：动物主义与其他替代方案**\n（记忆，未核验：Eric Olson 的动物主义主张\"人=生物意义上的人类有机体\"，人格同一性应回到生物连续性，与心理连续性理论竞争；Shoemaker 则以功能主义方式重构心理连续性理论。）这是与帕菲特正面竞争的当代替代方案。\n\n## 三、若你要继续深入（证据提示）\n\n按证据可靠性，建议你这样推进：\n\n1. **先读原始争论文本**：帕菲特《理与人》（*Reasons and Persons*, 1984）第三部分是其理论的完整表述与论证源；后续还有他回应批评的论文集（如 *Comments*）与 *The Unimportance of Identity*。\n2. **再读本次核验到的三条二手线索**：Suikkanen（2025）可直接入手（其摘要处理\"还原论—伦理学\"的解释性困惑）；Korsgaard（1996）与 Johnston（1992）书目已核验，主题明确——后者标题即指向\"理由与还原论\"的关系，值得优先查阅。\n3. **经典批评轴线**（Williams、Lewis、Olson、Shoemaker）我本次**未能取得可读内容证据**，只能作定位提示，请以正式文献为准，不要以我上面的转述当作已核验的学者观点。\n\n一个苏格拉底式的问题留给你：帕菲特说\"同一性不是关键所在\"，但这句结论本身预设了一个**规范性的\"关键\"标准**——那么，判定\"什么重要\"的标准，究竟是由形而上学事实给定的，还是由我们关于价值的判断倒推回去的？这个反问，恰好也是 Johnston 那样从\"理由/价值\"一侧切入的批评者最可能追问的地方。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "已读 Korsgaard、Johnston 两篇摘要，但缺少覆盖 Williams/Shoemaker/Lewis/Olson 等主要争论脉络的代表文献与可读内容证据",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:44:39",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "用户明确要求综述学界对帕菲特人格同一性理论的主要争论及代表论文，需定位真实二手研究文献并读取其可读内容证据"
+   },
+   {
+    "ts": "2026-09-13 11:44:51",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已读 Korsgaard、Johnston 两篇摘要，但缺少覆盖 Williams/Shoemaker/Lewis/Olson 等主要争论脉络的代表文献与可读内容证据",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:44:51",
+    "reason": "用户明确要求综述\"代表论文\"与\"争论焦点\"，仅两篇摘要无法覆盖争论的主要轴线，需定位并读取更多代表文献才能如实作答",
+    "unresolved_gap": "缺少关于身体连续性批评（Williams）、心理连续性功能主义（Shoemaker）、四维主义（Lewis）、动物主义（Olson）及\"what matters\"内部争论的可读文献证据"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:44:46"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:44:46"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:44:59"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 88956,
+   "output_tokens": 5891,
+   "total_tokens": 94847
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 9,
+   "compacted_chars_saved": 17977,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11692,
+     "output_tokens": 421,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15142,
+     "output_tokens": 547,
+     "tool_chars_added": 9120
+    },
+    {
+     "round": 3,
+     "input_tokens": 14724,
+     "output_tokens": 869,
+     "tool_chars_added": 6120
+    },
+    {
+     "round": 4,
+     "input_tokens": 16873,
+     "output_tokens": 823,
+     "tool_chars_added": 6080
+    },
+    {
+     "round": 5,
+     "input_tokens": 16533,
+     "output_tokens": 2877,
+     "tool_chars_added": 2482
+    },
+    {
+     "round": 6,
+     "input_tokens": 13992,
+     "output_tokens": 354,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 88956,
+  "output_tokens": 5891,
+  "total_tokens": 94847
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.8
+}

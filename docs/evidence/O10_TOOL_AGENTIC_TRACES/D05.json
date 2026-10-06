@@ -1,0 +1,2102 @@
+{
+ "case_id": "D05",
+ "section": "D",
+ "expected_class": "SCHOLARLY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "extended mind thesis 的主要支持与批评是什么？",
+ "injection": null,
+ "QUESTION": "extended mind thesis 的主要支持与批评是什么？",
+ "PUBLIC_WORK_NOTE": [
+  "我先说明工作判断：这个问题涉及的\"延展心智论题\"（extended mind thesis）是 1998 年 Clark & Chalmers 提出的当代认知科学哲学议题，很可能超出我库中 403 本原典（柏拉图到德里达）的覆盖范围，因此原典检索大概不会命中，真正需要的是当代二手研究文献。用户问的正是\"支持与批评\"这一学界争论结构，这属于典型的需要二手文献证据的问题，所以我把它登记为 SCHOLARLY 类别，先定位 Clark & Chalmers 的原论文与主要批评文献，再读取可读来源。\n\n我先登记研究需求，并同时开检索。",
+  "我暂时知道：原始论文 Clark & Chalmers 1998 在库外只有 METADATA_ONLY（无法取得内容证据），另有几篇分析/评论文献可读。我还不确定批评阵营（Adams & Aizawa、Rupert）的真实文献是否可取得——这是我接下来要补的缺口。所以我先并行：读取已命中的可读分析文献摘要，同时换关键词检索批评方向的文献。",
+  "我暂时知道：Chakravarty 2021 摘要可读，支持方视角；Adams & Aizawa、Clark 的批评与回应文献在检索结果里都是 METADATA_ONLY——只有书目、没有内容。我还缺\"批评方实际论证内容\"的可读证据，所以下一步尝试对 Adams & Aizawa 2001 请求开放全文，看能否取得批评方内部论证，而不是仅凭标题推断。",
+  "我暂时知道：支持方有一篇可读的当代分析（Chakravarty 2021），批评方（Adams & Aizawa）已确证文献存在与书目，但无开放全文——我无法对批评方的具体论证做内容归因。这是一处尚未闭合的真实缺口：我缺\"批评方实际论证\"的可读证据。所以我不做同义词重搜，而是换一个明确不同的证据目标（一篇可读的、平衡综述性质的文献），并申请一次预算延展。",
+  "这轮检索方向偏了——命中的多是\"意义/知识论中的外部主义\"（internalism/externalism about content），不是延展心智本身，相关性有限。我暂时只知道支持方有一篇可读分析、批评方有书目存在性，还缺批评方或综述的可读内容。我换一个明确不同的证据目标：找一篇可读的、4E/延展认知的开放获取综述，而不是继续在\"外部主义\"这个偏题方向上重搜。",
+  "工作判断：新证据改变了缺口状况——这轮命中了两篇可读来源，其中 Scarinzi 2020《4E's Are Too Many: Why Enactive World-Making Does Not Need The Extended Mind Thesis》明确就是从批评方切入延展心智的文献，正好可能补上我此前缺的\"批评方实际论证\"；Lamb & Chemero 2018 则提供 4E 内部的对照视角。所以我下一步读取这两篇的可读内容（优先 Scarinzi，并尝试其开放全文），确认它们的实际论证，而不是停在标题。"
+ ],
+ "RESEARCH_NEED": "SCHOLARLY",
+ "EVIDENCE_GAP": "批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "get_scholarly_source"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "extended mind thesis Clark Chalmers support and criticism",
+    "limit": 10
+   },
+   {
+    "query": "extended mind hypothesis criticism Adams Aizawa bounds of cognition",
+    "limit": 10
+   },
+   {
+    "query": "extended mind debate review internalism externalism cognition",
+    "limit": 10
+   },
+   {
+    "query": "4E cognition extended mind embodied embedded review open access",
+    "limit": 10
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.30687/jolma/2723-9640/2020/02/005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198735410.013.8",
+    "requested_access": "ABSTRACT"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind thesis Clark Chalmers support and criticism",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'extended mind thesis Clark Chalmers support and criticism', 'results': [{'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Ext"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.2139/ssrn.3794727', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Extended Mind"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind hypothesis criticism Adams Aizawa bounds of cognition",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'extended mind hypothesis criticism Adams Aizawa bounds of cognition', 'results': [{'source_record_id': 'doi:10.3366/edinburgh/9781474442244.003.0003', 'title': 'The Victorian Extended Mind:"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1080/09515080120033571', 'bibliographic_record': {'source_record_id': 'doi:10.1080/09515080120033571', 'title': 'The bounds of cognition', 'authors': ['Fred Adams', 'Ken A"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind debate review internalism externalism cognition",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'extended mind debate review internalism externalism cognition', 'results': [{'source_record_id': 'doi:10.1093/oso/9780199275755.003.0002', 'title': 'Externalism in Mind and Epistemology', '"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "4E cognition extended mind embodied embedded review open access",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': '4E cognition extended mind embodied embedded review open access', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780198735410.013.8', 'title': 'Interacting in the Open', 'authors':"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.30687/jolma/2723-9640/2020/02/005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198735410.013.8",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'extended mind thesis Clark Chalmers support and criticism', 'results': [{'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Ext"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.2139/ssrn.3794727', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Extended Mind"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'extended mind hypothesis criticism Adams Aizawa bounds of cognition', 'results': [{'source_record_id': 'doi:10.3366/edinburgh/9781474442244.003.0003', 'title': 'The Victorian Extended Mind:"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1080/09515080120033571', 'bibliographic_record': {'source_record_id': 'doi:10.1080/09515080120033571', 'title': 'The bounds of cognition', 'authors': ['Fred Adams', 'Ken A"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'extended mind debate review internalism externalism cognition', 'results': [{'source_record_id': 'doi:10.1093/oso/9780199275755.003.0002', 'title': 'Externalism in Mind and Epistemology', '"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': '4E cognition extended mind embodied embedded review open access', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780198735410.013.8', 'title': 'Interacting in the Open', 'authors':"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "预算与访问边界都已到限：几篇关键的批评文献（Adams & Aizawa、Rupert、Scarinzi 等）要么是封闭访问、要么未能取得可读内容。这意味着我无法对\"某位学者具体论证了什么\"做内容性归因——但延展心智论题的**支持与批评的逻辑结构**本身是可以在哲学分析层面重建的。下面我明确区分证据层级来回答。\n\n---\n\n## 延展心智论题：支持与批评\n\n### 一、论题是什么（背景转述，未取得原文内容证据）\n\n延展心智论题（the Extended Mind Thesis, EM）通常追溯到 Clark 与 Chalmers 1998 年的论文《The Extended Mind》。其核心主张大意是：**认知过程不必被颅骨与皮肤所限定，可以延展到身体之外的环境对象**（笔记本、手机、地图等）。\n\n两个标志性的例子（以下为背景转述，我的检索未取得该文原文，故不作逐字引用）：\n- **Inga / Otto 案例**：Inga 凭生物记忆回想起现代艺术博物馆的位置；患阿尔茨海默症的 Otto 则把信息记在随身笔记本里，需要时翻看。Clark 与 Chalmers 论证：若两者在引导行动上功能等价，则 Otto 的笔记本与 Inga 的神经记忆在认知地位上应被同等对待。\n- **对等原则（parity principle）**：若世界中的某个部分所执行的功能过程，假使发生在头脑内我们便会毫不犹豫地承认它是认知过程的一部分，那么该部分就应当被视为认知过程的一部分。\n- **耦合系统（coupled system）**：有机体与环境要素耦合为一个整体系统，认知可归于该系统整体。\n\n我把以上归为\"背景转述\"是有意的：我在库内与学术检索中都**未能取得 Clark & Chalmers 1998 原文的可读内容证据**，因此不把它作为逐字引用或已核验文本呈现。\n\n### 二、主要支持（论证结构分析）\n\n1. **功能主义式的对等论证**：认知的构成取决于功能角色，而非承载它的材质或空间位置。既然笔记本在 Otto 那里承担了\"信念存储—调用\"的功能角色，排斥它就需要额外的理由。\n2. **耦合系统论证**：若一个系统只有把外部元素算进来才能完成解释，那么把认知边界画在皮肤处就是任意的。\n3. **4E / 延展认知传统**：延展认知与具身（embodied）、嵌入（embedded）、生成（enacted）认知常被并置为一个家族。我检索到 Lamb & Chemero《Interacting in the Open》（2018，牛津手册章节）这一文献**存在**，但它属于该传统的对话者，我未取得其内容，故不对其立场作归因。\n4. **当代延伸**：检索中确证存在 Farina & Lavazza（2022）一篇题名即为\"支持延展心智论题\"的跨人类主义/后人类主义反思的文献（书目存在，内容未读）。\n5. **现象学传统的遥相呼应**（我的比较性判断，非历史影响主张）：海德格尔的\"上手（Zuhandenheit）\"、梅洛-庞蒂的身体图式，都在说认知/行动借助工具与身体展开。**须注意**：这是今天用延展心智的语言回看现象学，属于后世比较，不能反过来说海德格尔\"预见了\"EM——那是时代错置。\n\n### 三、主要批评（论证结构分析）\n\n1. **耦合 ≠ 构成（coupling-constitution fallacy）**：Adams 与 Aizawa 的核心反驳大意是——即使外部对象与认知过程**因果耦合**，也不能推出它**构成**了认知的一部分。**书目证据**：我确证存在 Adams & Aizawa《The bounds of cognition》（*Philosophical Psychology*, 2001）这一文献；其题名指向\"认知有边界\"的立场。**但我未能取得该文全文内容**，因此其内部论证细节（如他们所提\"认知的标志 / the mark of the cognitive\"）我标为**基于哲学通识的转述，未经库中或摘要级核验**。\n2. **认知系统与整合性约束**：Rupert 一派主张认知系统有内部整合性要求，便携笔记本这类\"非整合\"资源不满足条件（《Cognitive Systems and the Extended Mind》一系文献）。此为通识转述，未核验。\n3. **认知膨胀（cognitive bloat）**：若笔记本算心智，那么图书馆、互联网、乃至任意随时可查的资源是否也算？边界失控的质疑（常与 Sprevak 等名字相连，未核验）。\n4. **同阵营内部的反驳**：我检索到 Scarinzi《4E's Are Too Many: Why Enactive World-Making Does Not Need The Extended Mind Thesis》（2020）这一文献**存在**，题名表明其主张——生成论的世界建构**不需要**延展心智论题。我**未能读取其内容**，故不对其论证作内容归因，仅陈述其存在与题名所示方向。\n5. **意识 vs. 认知**：批评者常区分\"认知（信息加工）可延展\"与\"现象意识/经验不可延展\"——外部笔记本可以存储信息，却似乎不\"体验\"。\n\n**回应方向**：Clark 有一篇题名为《Coupling, Constitution, and the Cognitive Kind: A Reply to Adams and Aizawa》的文献（MIT Press）在检索中确证存在，题名显示他直接回应了\"耦合/构成\"之争——同样，我未读其内容。\n\n### 四、我的综合判断（Agent 层）\n\n这场争论的真正分歧不在\"笔记本是否参与认知\"，而在**\"认知的构成标准\"是什么**：\n- 支持方把标准放在**功能角色**上，于是边界随耦合系统浮动；\n- 批评方要求一个**内在的、可辨识的认知标志**（整合性、表征性、现象性），以此守住边界。\n\n因此\"认知膨胀\"忧虑，本质是问：**对等原则若不配一个限制条件，会不会把一切因果相关物都纳入心智？** 这仍是该论题未决的枢纽。经验科学（如对工具使用、扩展记忆的实证研究）多能说明\"耦合确实发生\"，却较难裁定\"耦合是否等于构成\"——后者是概念/形而上学问题。\n\n### 五、证据边界（必须如实说明）\n\n- 我**未取得** Clark & Chalmers 1998 原文、Adams & Aizawa 2001、Rupert、Scarinzi 2020 等的可读内容证据；上述对它们**具体论证内容**的描述属**通识转述**，请按\"未经核验\"对待。\n- 我**确证存在**（书目层）并可用于进一步检索的文献包括：Adams & Aizawa《The bounds of cognition》(2001, *Philosophical Psychology*)；Clark《Coupling, Constitution, and the Cognitive Kind: A Reply to Adams and Aizawa》(MIT Press)；Scarinzi《4E's Are Too Many…》(2020)；Farina & Lavazza（2022，支持 EM）；Lamb & Chemero《Interacting in the Open》(2018)。\n- 我**未能**在本库（403 本原典，柏拉图至德里达）中定位该论题——它属于 1998 年之后的当代认知科学哲学，超出原典库范围。\n\n### 六、若要继续深入（建议检索方向）\n\n由于上述文献多为封闭访问，若你希望我给出**逐条核验的学者归因与逐字引用**，建议：①开放获取一篇综述（如 *Philosophy Compass*、*Synthese*、*Frontiers in Psychology* 上的 EM 综述）；②我按该综述的引文再定位 Adams & Aizawa、Rupert、Clark 的原始论证段落。告诉我你是否要我按这个方向继续，我可以据此申请更充分的检索。\n\n---\n\n**一句话收束**：延展心智的支持建立在\"功能角色决定认知构成\"，批评建立在\"耦合不等于构成、认知有内在标志\"；前者面临边界失控的追问，后者须解释为何功能等价的系统应被区别对待。这一张力至今未决。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先说明工作判断：这个问题涉及的\"延展心智论题\"（extended mind thesis）是 1998 年 Clark & Chalmers 提出的当代认知科学哲学议题，很可能超出我库中 403 本原典（柏拉图到德里达）的覆盖范围，因此原典检索大概不会命中，真正需要的是当代二手研究文献。用户问的正是\"支持与批评\"这一学界争论结构，这属于典型的需要二手文献证据的问题，所以我把它登记为 SCHOLARLY 类别，先定位 Clark & Chalmers 的原论文与主要批评文献，再读取可读来源。\n\n我先登记研究需求，并同时开检索。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "延展心智论题（Clark & Chalmers 1998）的主要支持论证与主要批评（Adams & Aizawa、Rupert 等）的真实文献证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "extended mind thesis Clark Chalmers support and criticism",
+    "limit": 10
+   },
+   "result_head": "{'query': 'extended mind thesis Clark Chalmers support and criticism', 'results': [{'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Ext"
+  },
+  {
+   "kind": "note",
+   "content": "我暂时知道：原始论文 Clark & Chalmers 1998 在库外只有 METADATA_ONLY（无法取得内容证据），另有几篇分析/评论文献可读。我还不确定批评阵营（Adams & Aizawa、Rupert）的真实文献是否可取得——这是我接下来要补的缺口。所以我先并行：读取已命中的可读分析文献摘要，同时换关键词检索批评方向的文献。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.2139/ssrn.3794727', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Extended Mind"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "extended mind hypothesis criticism Adams Aizawa bounds of cognition",
+    "limit": 10
+   },
+   "result_head": "{'query': 'extended mind hypothesis criticism Adams Aizawa bounds of cognition', 'results': [{'source_record_id': 'doi:10.3366/edinburgh/9781474442244.003.0003', 'title': 'The Victorian Extended Mind:"
+  },
+  {
+   "kind": "note",
+   "content": "我暂时知道：Chakravarty 2021 摘要可读，支持方视角；Adams & Aizawa、Clark 的批评与回应文献在检索结果里都是 METADATA_ONLY——只有书目、没有内容。我还缺\"批评方实际论证内容\"的可读证据，所以下一步尝试对 Adams & Aizawa 2001 请求开放全文，看能否取得批评方内部论证，而不是仅凭标题推断。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1080/09515080120033571', 'bibliographic_record': {'source_record_id': 'doi:10.1080/09515080120033571', 'title': 'The bounds of cognition', 'authors': ['Fred Adams', 'Ken A"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "note",
+   "content": "我暂时知道：支持方有一篇可读的当代分析（Chakravarty 2021），批评方（Adams & Aizawa）已确证文献存在与书目，但无开放全文——我无法对批评方的具体论证做内容归因。这是一处尚未闭合的真实缺口：我缺\"批评方实际论证\"的可读证据。所以我不做同义词重搜，而是换一个明确不同的证据目标（一篇可读的、平衡综述性质的文献），并申请一次预算延展。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已核实的批评方文献（Adams & Aizawa 2001 等）均为 METADATA_ONLY，无开放全文，无法对批评方内部论证做内容性归因；需一篇可读综述来补足支持/批评两侧的可读证据",
+    "unresolved_evidence_gap": "批评延展心智的核心论证（如认知标志/coupling-constitution 区分的反驳）的可读文本证据"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "extended mind debate review internalism externalism cognition",
+    "limit": 10
+   },
+   "result_head": "{'query': 'extended mind debate review internalism externalism cognition', 'results': [{'source_record_id': 'doi:10.1093/oso/9780199275755.003.0002', 'title': 'Externalism in Mind and Epistemology', '"
+  },
+  {
+   "kind": "note",
+   "content": "这轮检索方向偏了——命中的多是\"意义/知识论中的外部主义\"（internalism/externalism about content），不是延展心智本身，相关性有限。我暂时只知道支持方有一篇可读分析、批评方有书目存在性，还缺批评方或综述的可读内容。我换一个明确不同的证据目标：找一篇可读的、4E/延展认知的开放获取综述，而不是继续在\"外部主义\"这个偏题方向上重搜。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "4E cognition extended mind embodied embedded review open access",
+    "limit": 10
+   },
+   "result_head": "{'query': '4E cognition extended mind embodied embedded review open access', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780198735410.013.8', 'title': 'Interacting in the Open', 'authors':"
+  },
+  {
+   "kind": "note",
+   "content": "工作判断：新证据改变了缺口状况——这轮命中了两篇可读来源，其中 Scarinzi 2020《4E's Are Too Many: Why Enactive World-Making Does Not Need The Extended Mind Thesis》明确就是从批评方切入延展心智的文献，正好可能补上我此前缺的\"批评方实际论证\"；Lamb & Chemero 2018 则提供 4E 内部的对照视角。所以我下一步读取这两篇的可读内容（优先 Scarinzi，并尝试其开放全文），确认它们的实际论证，而不是停在标题。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.30687/jolma/2723-9640/2020/02/005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198735410.013.8",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "延展心智论题（Clark & Chalmers 1998）的主要支持论证与主要批评（Adams & Aizawa、Rupert 等）的真实文献证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已核实的批评方文献（Adams & Aizawa 2001 等）均为 METADATA_ONLY，无开放全文，无法对批评方内部论证做内容性归因；需一篇可读综述来补足支持/批评两侧的可读证据",
+    "unresolved_evidence_gap": "批评延展心智的核心论证（如认知标志/coupling-constitution 区分的反驳）的可读文本证据"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:58:50",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "延展心智论题（Clark & Chalmers 1998）的主要支持论证与主要批评（Adams & Aizawa、Rupert 等）的真实文献证据",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 16:59:04",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 16:59:04",
+    "reason": "已核实的批评方文献（Adams & Aizawa 2001 等）均为 METADATA_ONLY，无开放全文，无法对批评方内部论证做内容性归因；需一篇可读综述来补足支持/批评两侧的可读证据",
+    "unresolved_gap": "批评延展心智的核心论证（如认知标志/coupling-constitution 区分的反驳）的可读文本证据"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:58:59"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:59:18"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:59:18"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 110895,
+   "output_tokens": 7832,
+   "total_tokens": 118727
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 9,
+   "compacted_chars_saved": 18799,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12060,
+     "output_tokens": 598,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14493,
+     "output_tokens": 505,
+     "tool_chars_added": 5281
+    },
+    {
+     "round": 3,
+     "input_tokens": 15210,
+     "output_tokens": 788,
+     "tool_chars_added": 5604
+    },
+    {
+     "round": 4,
+     "input_tokens": 15025,
+     "output_tokens": 866,
+     "tool_chars_added": 1194
+    },
+    {
+     "round": 5,
+     "input_tokens": 18068,
+     "output_tokens": 722,
+     "tool_chars_added": 6152
+    },
+    {
+     "round": 6,
+     "input_tokens": 18124,
+     "output_tokens": 714,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 7,
+     "input_tokens": 17915,
+     "output_tokens": 3639,
+     "tool_chars_added": 490
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 3478,
+ "token_usage": {
+  "input_tokens": 110895,
+  "output_tokens": 7832,
+  "total_tokens": 118727
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 63.1,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "延展心智论题（Clark & Chalmers 1998）的主要支持论证与主要批评（Adams & Aizawa、Rupert 等）的真实文献证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 延展心智论题（Clark & Chalmers 1998）的主要支持论证与主要批评（Adams & Aizawa、Rupert 等）的真实文献证据）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind thesis Clark Chalmers support and criticism",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'extended mind thesis Clark Chalmers support and criticism', 'results': [{'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Ext",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.2139/ssrn.3794727",
+     "doi:10.1093/jopedu/qhaf081",
+     "doi:10.1093/analys/58.1.7",
+     "doi:10.7551/mitpress/9780262014038.003.0003",
+     "doi:10.7551/mitpress/9780262014038.003.0002",
+     "doi:10.7551/mitpress/8535.003.0002",
+     "doi:10.1007/s11229-022-03963-w",
+     "doi:10.1093/obo/9780195396577-0099",
+     "doi:10.7551/mitpress/8535.003.0003",
+     "doi:10.12795/themata.2023.i67.11"
+    ],
+    "access_levels": {
+     "doi:10.2139/ssrn.3794727": "ABSTRACT_AVAILABLE",
+     "doi:10.1093/jopedu/qhaf081": "ABSTRACT_AVAILABLE",
+     "doi:10.1093/analys/58.1.7": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9780262014038.003.0003": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9780262014038.003.0002": "METADATA_ONLY",
+     "doi:10.7551/mitpress/8535.003.0002": "METADATA_ONLY",
+     "doi:10.1007/s11229-022-03963-w": "METADATA_ONLY",
+     "doi:10.1093/obo/9780195396577-0099": "METADATA_ONLY",
+     "doi:10.7551/mitpress/8535.003.0003": "METADATA_ONLY",
+     "doi:10.12795/themata.2023.i67.11": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.2139/ssrn.3794727', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.3794727', 'title': 'The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Extended Mind",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind hypothesis criticism Adams Aizawa bounds of cognition",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'extended mind hypothesis criticism Adams Aizawa bounds of cognition', 'results': [{'source_record_id': 'doi:10.3366/edinburgh/9781474442244.003.0003', 'title': 'The Victorian Extended Mind:",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.3366/edinburgh/9781474442244.003.0003",
+     "doi:10.1080/09515080120033571",
+     "doi:10.7551/mitpress/9780262014038.003.0004",
+     "doi:10.1002/9781444391718",
+     "doi:10.7551/mitpress/9780262014038.003.0005",
+     "doi:10.7551/mitpress/8535.003.0004",
+     "doi:10.7551/mitpress/8535.003.0005",
+     "doi:10.1007/s11097-009-9120-z",
+     "doi:10.4324/9780429244629-13",
+     "doi:10.1093/analys/anp032"
+    ],
+    "access_levels": {
+     "doi:10.3366/edinburgh/9781474442244.003.0003": "ABSTRACT_AVAILABLE",
+     "doi:10.1080/09515080120033571": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9780262014038.003.0004": "METADATA_ONLY",
+     "doi:10.1002/9781444391718": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9780262014038.003.0005": "METADATA_ONLY",
+     "doi:10.7551/mitpress/8535.003.0004": "METADATA_ONLY",
+     "doi:10.7551/mitpress/8535.003.0005": "METADATA_ONLY",
+     "doi:10.1007/s11097-009-9120-z": "METADATA_ONLY",
+     "doi:10.4324/9780429244629-13": "METADATA_ONLY",
+     "doi:10.1093/analys/anp032": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1080/09515080120033571', 'bibliographic_record': {'source_record_id': 'doi:10.1080/09515080120033571', 'title': 'The bounds of cognition', 'authors': ['Fred Adams', 'Ken A",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "access_before": "METADATA_ONLY",
+    "access_after": "METADATA_ONLY",
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已核实的批评方文献（Adams & Aizawa 2001 等）均为 METADATA_ONLY，无开放全文，无法对批评方内部论证做内容性归因；需一篇可读综述来补足支持/批评两侧的可读证据",
+    "unresolved_evidence_gap": "批评延展心智的核心论证（如认知标志/coupling-constitution 区分的反驳）的可读文本证据"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 批评方（Adams & Aizawa / Rupert）实际论证内容的可读证据，或一篇可读的、综述延展心智支持与批评争论的文献）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内容性归因前必须 ge",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind debate review internalism externalism cognition",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'extended mind debate review internalism externalism cognition', 'results': [{'source_record_id': 'doi:10.1093/oso/9780199275755.003.0002', 'title': 'Externalism in Mind and Epistemology', '",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oso/9780199275755.003.0002",
+     "doi:10.1016/j.concog.2010.06.011",
+     "doi:10.1093/mind/113.450.319",
+     "doi:10.4324/9780429290404-7",
+     "doi:10.1017/upo9781844653485.002",
+     "doi:10.1017/upo9781844653485.013",
+     "doi:10.1515/9780773584266-002",
+     "doi:10.1515/9780773584266-013",
+     "doi:10.4324/9780203003749-13",
+     "doi:10.5040/9781474244480.ch-007"
+    ],
+    "access_levels": {
+     "doi:10.1093/oso/9780199275755.003.0002": "ABSTRACT_AVAILABLE",
+     "doi:10.1016/j.concog.2010.06.011": "METADATA_ONLY",
+     "doi:10.1093/mind/113.450.319": "METADATA_ONLY",
+     "doi:10.4324/9780429290404-7": "METADATA_ONLY",
+     "doi:10.1017/upo9781844653485.002": "METADATA_ONLY",
+     "doi:10.1017/upo9781844653485.013": "METADATA_ONLY",
+     "doi:10.1515/9780773584266-002": "METADATA_ONLY",
+     "doi:10.1515/9780773584266-013": "METADATA_ONLY",
+     "doi:10.4324/9780203003749-13": "METADATA_ONLY",
+     "doi:10.5040/9781474244480.ch-007": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "4E cognition extended mind embodied embedded review open access",
+    "limit": 10
+   },
+   "result_summary": "{'query': '4E cognition extended mind embodied embedded review open access', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780198735410.013.8', 'title': 'Interacting in the Open', 'authors':",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oxfordhb/9780198735410.013.8",
+     "doi:10.30687/jolma/2723-9640/2020/02/005",
+     "doi:10.1017/cbo9781139033916.018",
+     "doi:10.7551/mitpress/9780262014557.003.0003",
+     "doi:10.5040/9781474244480.ch-012",
+     "doi:10.7551/mitpress/8514.003.0004",
+     "doi:10.4324/9781003649359-19",
+     "doi:10.4324/9780429319792-7",
+     "doi:10.4324/9780203879313-20"
+    ],
+    "access_levels": {
+     "doi:10.1093/oxfordhb/9780198735410.013.8": "ABSTRACT_AVAILABLE",
+     "doi:10.30687/jolma/2723-9640/2020/02/005": "ABSTRACT_AVAILABLE",
+     "doi:10.1017/cbo9781139033916.018": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9780262014557.003.0003": "METADATA_ONLY",
+     "doi:10.5040/9781474244480.ch-012": "METADATA_ONLY",
+     "doi:10.7551/mitpress/8514.003.0004": "METADATA_ONLY",
+     "doi:10.4324/9781003649359-19": "METADATA_ONLY",
+     "doi:10.4324/9780429319792-7": "METADATA_ONLY",
+     "doi:10.4324/9780203879313-20": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.30687/jolma/2723-9640/2020/02/005",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198735410.013.8",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind thesis Clark Chalmers support and criticism",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "extended mind thesis Clark Chalmers support and criticism",
+    "results": [
+     {
+      "source_record_id": "doi:10.2139/ssrn.3794727",
+      "title": "The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Extended Mind Hypothesis",
+      "authors": [
+       "Panya Chakravarty"
+      ],
+      "year": 2021,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.2139/ssrn.3794727",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/jopedu/qhaf081",
+      "title": "Learning Andy Clark &amp; David Chalmers’ ‘The Extended Mind’ through Christopher Nolan’s\n                    <i>Memento</i>",
+      "authors": [
+       "Michael Quinn"
+      ],
+      "year": 2025,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Journal of Philosophy of Education",
+      "doi": "10.1093/jopedu/qhaf081",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/analys/58.1.7",
+      "title": "The Extended Mind",
+      "authors": [
+       "A. Clark",
+       "D. Chalmers"
+      ],
+      "year": 1998,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Analysis",
+      "doi": "10.1093/analys/58.1.7",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0003",
+      "title": "Memento’s Revenge: The Extended Mind, Extended",
+      "authors": [
+       "Andy Clark"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/9780262014038.003.0003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0002",
+      "title": "The Extended Mind",
+      "authors": [
+       "Andy Clark",
+       "David J. Chalmers"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/9780262014038.003.0002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/8535.003.0002",
+      "title": "The Extended Mind",
+      "authors": [
+       "Andy Clark",
+       "David J. Chalmers"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/8535.003.0002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/s11229-022-03963-w",
+      "title": "Mind embedded or extended: transhumanist and posthumanist reflections in support of the extended mind thesis",
+      "authors": [
+       "Mirko Farina",
+       "Andrea Lavazza"
+      ],
+      "year": 2022,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Synthese",
+      "doi": "10.1007/s11229-022-03963-w",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/obo/9780195396577-0099",
+      "title": "The Extended Mind Thesis",
+      "authors": [
+       "Julian Kiverstein",
+       "Mirko Farina",
+       "Andy Clark"
+      ],
+      "year": 2013,
+      "publication_type": "OTHER",
+      "venue": "Oxford Bibliographies in Philosophy",
+      "doi": "10.1093/obo/9780195396577-0099",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/8535.003.0003",
+      "title": "Memento's Revenge: The Extended Mind, Extended",
+      "authors": [
+       "Andy Clark"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/8535.003.0003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.12795/themata.2023.i67.11",
+      "title": "Andy Clark y David Chalmers. La mente extendida / The extended mind.",
+      "authors": [
+       "Sergio Quintero Martín"
+      ],
+      "year": 2023,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "THÉMATA. Revista de Filosofía",
+      "doi": "10.12795/themata.2023.i67.11",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.2139/ssrn.3794727",
+     "doi:10.1093/jopedu/qhaf081"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.2139/ssrn.3794727",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.2139/ssrn.3794727",
+     "title": "The Mind Leak: An Analysis of Clark &amp;amp; Chalmers Extended Mind Hypothesis",
+     "authors": [
+      "Panya Chakravarty"
+     ],
+     "year": 2021,
+     "publication_type": "OTHER",
+     "venue": null,
+     "doi": "10.2139/ssrn.3794727",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "The Extended Mind Hypothesis by Andy Clark and David Chalmers (1998) brings a new dimension into the mind-body debate, by holding the distinction between mind, body, and the environment as unprincipled and asserts that the mind extends into the world. In this paper, I argue that the scope of the mind is wider than described in the thought experiment presented by C&amp;amp;C, while also exploring the question, \"where does the mind stop, and the rest of the world begin?</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "385d0554fc118e3ed9923f0ca000ce5851a5997ab3325624d05a21beb4150530"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind hypothesis criticism Adams Aizawa bounds of cognition",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "extended mind hypothesis criticism Adams Aizawa bounds of cognition",
+    "results": [
+     {
+      "source_record_id": "doi:10.3366/edinburgh/9781474442244.003.0003",
+      "title": "The Victorian Extended Mind: George Eliot, Psychology and the Bounds of Cognition",
+      "authors": [
+       "Peter Garratt"
+      ],
+      "year": 2020,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Distributed Cognition in Victorian Culture and Modernism",
+      "doi": "10.3366/edinburgh/9781474442244.003.0003",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1080/09515080120033571",
+      "title": "The bounds of cognition",
+      "authors": [
+       "Fred Adams",
+       "Ken Aizawa"
+      ],
+      "year": 2001,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Philosophical Psychology",
+      "doi": "10.1080/09515080120033571",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0004",
+      "title": "Defending the Bounds of Cognition",
+      "authors": [
+       "Fred Adams",
+       "Ken Aizawa"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/9780262014038.003.0004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1002/9781444391718",
+      "title": "The Bounds of Cognition",
+      "authors": [
+       "Frederick Adams",
+       "Kenneth Aizawa"
+      ],
+      "year": 2010,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.1002/9781444391718",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9780262014038.003.0005",
+      "title": "Coupling, Constitution, and the Cognitive Kind: A Reply to Adams and Aizawa",
+      "authors": [
+       "Andy Clark"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/9780262014038.003.0005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/8535.003.0004",
+      "title": "Defending the Bounds of Cognition",
+      "authors": [
+       "Fred Adams",
+       "Ken Aizawa"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/8535.003.0004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/8535.003.0005",
+      "title": "Coupling, Constitution, and the Cognitive Kind: A Reply to Adams and Aizawa",
+      "authors": [
+       "Andy Clark"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Extended Mind",
+      "doi": "10.7551/mitpress/8535.003.0005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/s11097-009-9120-z",
+      "title": "A review of Frederick Adams and Kenneth Aizawa, The Bounds of Cognition",
+      "authors": [
+       "Lawrence A. Shapiro"
+      ],
+      "year": 2009,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Phenomenology and the Cognitive Sciences",
+      "doi": "10.1007/s11097-009-9120-z",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9780429244629-13",
+      "title": "Embodied Cognition and the Extended Mind",
+      "authors": [
+       "Fred Adams",
+       "Ken Aizawa"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Routledge Companion to Philosophy of Psychology",
+      "doi": "10.4324/9780429244629-13",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/analys/anp032",
+      "title": "The Bounds of Cognition * By FREDERICK ADAMS AND KENNETH AIZAWA",
+      "authors": [
+       "D. Browne"
+      ],
+      "year": 2009,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Analysis",
+      "doi": "10.1093/analys/anp032",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.3366/edinburgh/9781474442244.003.0003"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1080/09515080120033571",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1080/09515080120033571",
+     "title": "The bounds of cognition",
+     "authors": [
+      "Fred Adams",
+      "Ken Aizawa"
+     ],
+     "year": 2001,
+     "publication_type": "JOURNAL_ARTICLE",
+     "venue": "Philosophical Psychology",
+     "doi": "10.1080/09515080120033571",
+     "source_category": "UNKNOWN",
+     "access_level": "METADATA_ONLY",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "METADATA_ONLY",
+    "access_level_after": "METADATA_ONLY",
+    "returned_evidence_level": null,
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "无 OA 全文候选; DOI landing page 不构成全文可用",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "extended mind debate review internalism externalism cognition",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "extended mind debate review internalism externalism cognition",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oso/9780199275755.003.0002",
+      "title": "Externalism in Mind and Epistemology",
+      "authors": [
+       "Jessica Brown"
+      ],
+      "year": 2007,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Internalism and Externalism in Semantics and Epistemology",
+      "doi": "10.1093/oso/9780199275755.003.0002",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1016/j.concog.2010.06.011",
+      "title": "Beyond the internalism/externalism debate: The constitution of the space of perception",
+      "authors": [
+       "Charles Lenay",
+       "Pierre Steiner"
+      ],
+      "year": 2010,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Consciousness and Cognition",
+      "doi": "10.1016/j.concog.2010.06.011",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/mind/113.450.319",
+      "title": "Review: Epistemic Justification: Internalism vs. Externalism, Foundations vs. Virtues",
+      "authors": [
+       "D. Pritchard"
+      ],
+      "year": 2004,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Mind",
+      "doi": "10.1093/mind/113.450.319",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9780429290404-7",
+      "title": "Beyond internalism–externalism",
+      "authors": [
+       "Sanjit Chakraborty"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Labyrinth of Mind and World",
+      "doi": "10.4324/9780429290404-7",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/upo9781844653485.002",
+      "title": "Introduction: internalism and externalism",
+      "authors": [],
+      "year": 2003,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Externalism",
+      "doi": "10.1017/upo9781844653485.002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/upo9781844653485.013",
+      "title": "Conclusion: externalism, internalism, and idealism",
+      "authors": [],
+      "year": 2003,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Externalism",
+      "doi": "10.1017/upo9781844653485.013",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9780773584266-002",
+      "title": "Introduction: Internalism and Externalism",
+      "authors": [],
+      "year": 2003,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Externalism",
+      "doi": "10.1515/9780773584266-002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9780773584266-013",
+      "title": "Conclusion: Externalism, Internalism, and Idealism",
+      "authors": [],
+      "year": 2003,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Externalism",
+      "doi": "10.1515/9780773584266-013",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9780203003749-13",
+      "title": "Internalism and Externalism",
+      "authors": [],
+      "year": 2002,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Mind and its World",
+      "doi": "10.4324/9780203003749-13",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9781474244480.ch-007",
+      "title": "Internalism and Externalism in Mind",
+      "authors": [
+       "Sarah Sawyer"
+      ],
+      "year": 2015,
+      "publication_type": "OTHER",
+      "venue": "The Bloomsbury Companion to Philosophy of Mind",
+      "doi": "10.5040/9781474244480.ch-007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oso/9780199275755.003.0002"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "4E cognition extended mind embodied embedded review open access",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "4E cognition extended mind embodied embedded review open access",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oxfordhb/9780198735410.013.8",
+      "title": "Interacting in the Open",
+      "authors": [
+       "Maurice Lamb",
+       "Anthony Chemero"
+      ],
+      "year": 2018,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Oxford Handbook of 4E Cognition",
+      "doi": "10.1093/oxfordhb/9780198735410.013.8",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.30687/jolma/2723-9640/2020/02/005",
+      "title": "4E’s Are Too Many\n Why Enactive World-Making Does Not Need The Extended Mind Thesis",
+      "authors": [
+       "Alfonsina Scarinzi"
+      ],
+      "year": 2020,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "JoLMA",
+      "doi": "10.30687/jolma/2723-9640/2020/02/005",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/cbo9781139033916.018",
+      "title": "Embodied, embedded, and extended cognition",
+      "authors": [
+       "Andy Clark"
+      ],
+      "year": 2012,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Cambridge Handbook of Cognitive Science",
+      "doi": "10.1017/cbo9781139033916.018",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9780262014557.003.0003",
+      "title": "The Mind Embodied, Embedded, Enacted, and Extended",
+      "authors": [
+       "Mark Rowlands"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The New Science of the Mind",
+      "doi": "10.7551/mitpress/9780262014557.003.0003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9781474244480.ch-012",
+      "title": "Embodied Cognition and the Extended Mind",
+      "authors": [
+       "Michael Wheeler"
+      ],
+      "year": 2015,
+      "publication_type": "OTHER",
+      "venue": "The Bloomsbury Companion to Philosophy of Mind",
+      "doi": "10.5040/9781474244480.ch-012",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/8514.003.0004",
+      "title": "The Mind Embodied, Embedded, Enacted, and Extended",
+      "authors": [],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The New Science of the Mind",
+      "doi": "10.7551/mitpress/8514.003.0004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781003649359-19",
+      "title": "Embodied, embedded, enactive, extended… and exclusionary? Toward an inclusive E-Cognition for cognitive diversity",
+      "authors": [
+       "Víctor Fernández-Castro",
+       "Miguel Núñez de Prado-Gordillo"
+      ],
+      "year": 2025,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Analytic Philosophy and 4E Cognition",
+      "doi": "10.4324/9781003649359-19",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9780429319792-7",
+      "title": "The embodied, embedded, and extended mind",
+      "authors": [
+       "Shaun Gallagher",
+       "Dan Zahavi"
+      ],
+      "year": 2020,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Phenomenological Mind",
+      "doi": "10.4324/9780429319792-7",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9780203879313-20",
+      "title": "Embodied cognition and the extended mind",
+      "authors": [],
+      "year": 2009,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Routledge Companion to Philosophy of Psychology",
+      "doi": "10.4324/9780203879313-20",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oxfordhb/9780198735410.013.8",
+     "doi:10.30687/jolma/2723-9640/2020/02/005"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}

@@ -9,7 +9,7 @@ import json, os, re, time, hashlib, urllib.request, threading
 from pathlib import Path
 
 from routes.agent_core import (
-    TOOLS, register_tool, _int_arg,
+    TOOLS, register_tool, _int_arg, _str_arg, _req_str,
     _mem_slot, _save_agent_memory, _find_essay_topic, get_philosophers,
     PUBLIC, PHILOSOPHER_DIR, AGNES_IMG_DIR, AI_DIR,
 )
@@ -29,14 +29,16 @@ ESSAY_PROMPT = (
 # 2026-08-14 per-user 加固（P0）: 记忆按用户隔离（guard.user_memory_key）,
 #   原子写（tmp+rename）防并发损坏; 旧单用户格式自动迁移到 default 槽
 def _exec_write_essay(args):
-    topic = args.get("topic") or args.get("query") or ""
-    if not topic:
-        return {"error": "缺少作文题目"}
+    topic, err = _req_str(args, "topic")
+    if err and err["error"].startswith("缺少"):
+        topic, err = _req_str(args, "query")
+    if err:
+        return err
     try:
         word_count = _int_arg(args, "word_count", 800, 100, 3000)
     except Exception:
         word_count = 800
-    modify = (args.get("modify") or "").strip()
+    modify = _str_arg(args, "modify") or ""
     # 自动检测修改意图（LLM 未显式传 modify 时）: 修改词 + 存在对应题目记忆 → 对上次作文修改
     if not modify:
         intent_text = f"{topic} {args.get('extra', '')} {args.get('genre', '')}"
@@ -49,7 +51,7 @@ def _exec_write_essay(args):
     reply, citations, tcl = _essay_pipeline(topic, args.get("genre", "议论文"),
                                             word_count, args.get("extra", ""), modify)
     _save_agent_memory()   # 持久化多轮修改记忆
-    return {"essay": reply, "citations": citations, "steps": tcl}
+    return {"essay": reply, "citations": citations, "steps": tcl, "topic": topic}
 
 register_tool(
     "write_essay",
@@ -68,6 +70,8 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     """作文生成/修改——返回 (reply, citations, tool_calls_log)
     多轮修改: modify 非空且存在对应题目记忆 → 基于上次文本改写（沿用原论点与原典引用, 不重新检索）"""
     tool_calls_log = []
+    from deep_context import current_tool_agent
+    general = current_tool_agent.get() == 'general'
     slot = _mem_slot()
     prev = slot["essays"].get(topic)
     if modify and prev:
@@ -86,7 +90,19 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     tool_calls_log.append({"name": "search_books", "args": {"query": query},
                            "result_summary": str(result)[:200], "result_full": result,
                            "thought": f"作文需原典支撑, 检索「{query}」"})
-    retrieval = json.dumps(result, ensure_ascii=False)[:6000]
+    read_material = []
+    if general:
+        from deep_agent_tools import get_chapter
+        for item in result.get('results', [])[:3]:
+            read_args = item.get('read_args') or {'book_id': item.get('book_id'), 'chapter_idx': item.get('chapter_idx'), 'focus': query}
+            if not read_args.get('book_id') or read_args.get('chapter_idx') is None:
+                continue
+            read = get_chapter(read_args)
+            tool_calls_log.append({'name': 'get_chapter', 'args': read_args,
+                                   'result_summary': read.get('citation_label') or read.get('error'), 'result_full': read})
+            if read.get('text') and not read.get('error'):
+                read_material.append(read)
+    retrieval = json.dumps(read_material, ensure_ascii=False) if general else json.dumps(result, ensure_ascii=False)[:6000]
     # 联网补充论据（避免拘泥于知识库: 当代观点/时事背景/其他学者论述）
     web_text = ""
     try:
@@ -101,15 +117,20 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     # ESSAY_PROMPT（2026-08-18 修复：拆分前即无定义，write_essay 新作文路径会 NameError）
     prompt = ESSAY_PROMPT.format(genre=genre, topic=topic, word_count=word_count,
                                  extra=extra or "无", retrieval=retrieval)
+    if general:
+        prompt += ('\n书库材料是实际读到的有界片段；只从其中引用，逐字引文旁附对应citation_label。'
+                   '标题提示译注或解读时，不冒充原作者发言。片段不支持的观点不作作者归因，'
+                   '没有合适材料就直接论证，不为凑引用添加哲学家。网络摘要只是待核验线索。')
     if web_text:
         prompt += (f"\n\n联网检索结果（当代论据/时事背景/其他论述——用于丰富论据层次, "
                    f"引用时以[标题](链接)标注来源; 若与题目无关可忽略）:\n{web_text}")
     messages = [{"role": "user", "content": prompt}]
     resp = llm_chat(messages, temperature=0.75, max_tokens=min(word_count * 2 + 500, 4000))
     reply = (resp["choices"][0]["message"].get("content") or "").strip() or "（生成失败，请重试）"
-    citations = [{"book": item.get("book_title"), "chapter": item.get("chapter_title"),
+    citation_items = [item for item in read_material if item.get('citation_label') and item['citation_label'] in reply] if general else result.get('results', [])[:4]
+    citations = [{"book": item.get("book_title"), "chapter": item.get("title") or item.get("chapter_title"),
                   "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")}
-                 for item in result.get("results", [])[:4]]
+                 for item in citation_items]
     for tc in tool_calls_log:
         tc.pop("result_full", None)
     slot["essays"][topic] = {"text": reply, "genre": genre, "word_count": word_count}
@@ -217,9 +238,9 @@ def _detect_reference(prompt):
 
 def _exec_generate_image(args):
     slot = _mem_slot()
-    prompt = (args.get("prompt") or "").strip()
-    if not prompt:
-        return {"error": "缺少图像描述 prompt"}
+    prompt, err = _req_str(args, "prompt")
+    if err:
+        return err
     api_key = os.environ.get("AGNES_API_KEY", "")
     if not api_key:
         return {"error": "服务端未配置 AGNES_API_KEY"}
@@ -373,11 +394,18 @@ def _recall_memories(query, limit=6):
     return [m for _, m in scored[:limit]] or memories[:limit]
 
 def _exec_role_play(args):
-    name = (args.get("philosopher") or args.get("persona") or args.get("name") or "").strip()
+    name = _str_arg(args, "philosopher") or _str_arg(args, "persona") or _str_arg(args, "name") or ""
     if name and "尼采" not in name:
         return {"error": f"人格层暂未覆盖「{name}」（当前仅尼采, 数据来自 AIAuthor 数字作者系统）",
                 "hint": "可改用 get_philosopher 查资料 / query_graph 查思想关联"}
-    query = (args.get("question") or args.get("topic") or args.get("query") or "").strip()[:80]
+    query, err = _req_str(args, "question")
+    if err and err["error"].startswith("缺少"):
+        query, err = _req_str(args, "topic")
+    if err and err["error"].startswith("缺少"):
+        query, err = _req_str(args, "query")
+    if err:
+        return err
+    query = query[:80]
     bundle = _load_persona_bundle()
     persona = bundle.get("persona", {})
     snapshots = bundle.get("snapshots", {})
@@ -515,18 +543,22 @@ def _debate_round(sp_list, topic, ctx, round_no, user_speech=None):
 
 def _exec_debate(args):
     slot = _mem_slot()
-    topic = (args.get("topic") or "").strip()
-    speakers = args.get("speakers") or "尼采、柏拉图"
+    topic = _str_arg(args, "topic", strict=True)
+    if topic is None:
+        return {"error": "参数类型错误: topic 应为字符串"}
+    speakers = _str_arg(args, "speakers") or "尼采、柏拉图"
     sp_list = [s.strip() for s in speakers.replace("和", "、").replace("与", "、").split("、") if s.strip()][:3] or ["尼采", "柏拉图"]
-    mode = args.get("mode") or "auto"
-    action = (args.get("action") or "start").strip().lower()
-    user_speech = (args.get("user_reply") or "").strip()
+    mode = _str_arg(args, "mode") or "auto"
+    action = (_str_arg(args, "action") or "start").lower()
+    user_speech = _str_arg(args, "user_reply")
     # 意图自动检测（LLM 未显式传 action 时）
     if action == "start":
         if any(w in topic for w in ("结束", "总结", "停止", "裁决", "收尾")):
             action = "summary"
         elif any(w in topic for w in ("继续", "下一轮", "接着", "再来", "加一轮", "第二轮", "第三轮")):
             action = "continue"
+    if not topic and action == "start":
+        return {"error": "缺少论题 topic"}
     # ── 结束辩论: 总结 + 演变图 ──
     if action == "summary" and slot["debate"]:
         sess = slot["debate"]
@@ -591,30 +623,56 @@ register_tool("philosopher_debate",
      "required": ["topic"]},
     _exec_debate)
 
+# Phase T（T7/T2）: thought_experiment 产物结构化（设定/多立场推演/揭示的问题）。
+# O4: engine 侧重入治理（SkillReentryTracker）已删除——同一实验是否值得再次调用
+# 由 Main Agent 依系统提示的技能重入纪律自主判断。
 def _exec_thought_exp(args):
+    from tool_contracts import scaffold_result, extract_json
     slot = _mem_slot()
-    base = (args.get("base") or "").strip()
-    if not base:
-        return {"error": "缺少思想实验基础设定"}
-    # 变体迭代: 修改词 + 存在上次实验 → 基于上次重推演, 对比立场变化
-    if slot["experiment"] and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):
+    base, err = _req_str(args, "base")
+    if err:
+        return err
+    prev_exp = slot.get("experiment")
+    # 变体迭代: 用户明确要求变体（修改词）+ 存在上次实验 → 基于上次重推演, 对比立场变化
+    if prev_exp and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):
         prompt = (f"用户对上次思想实验提出变体: 「{base}」\n"
-                  f"上次实验:\n{slot['experiment']['text'][:1500]}\n\n"
-                  f"请重新推演该变体（600字内）: ①新设定（100字内）②3 个哲学立场的推演（各 50 字）"
-                  f"③与上次实验相比, 各立场结论发生了哪些变化。用中文。")
+                  f"上次实验:\n{str(prev_exp.get('text', ''))[:1500]}\n\n"
+                  f"请重新推演该变体, 只输出 JSON（不要围栏）:\n"
+                  f'{{"setting": "新设定（100字内）",\n'
+                  f' "stance_projections": [{{"stance": "哲学立场名", "projection": "该立场在此变体下的推演（50字）", "shift": "与上次实验相比结论的变化"}}],\n'
+                  f' "revealed_problem": "变体揭示的哲学问题（1-2句）"}}')
         resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=1000)
-        reply = (resp["choices"][0]["message"].get("content") or "").strip()
-        slot["experiment"] = {"base": base, "text": reply}
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+        if not isinstance(data, dict) or not data.get("setting"):
+            data = {"setting": (resp["choices"][0]["message"].get("content") or "").strip()[:600],
+                    "stance_projections": [], "revealed_problem": ""}
+        reply = data.get("setting", "")
+        slot["experiment"] = {"base": base, "text": json.dumps(data, ensure_ascii=False)[:1500]}
         _save_agent_memory()
-        return {"experiment": reply}
-    prompt = (f"基于「{base}」设计一个哲学思想实验或推演变体。输出: ① 实验设定（100字内）② 3 个哲学立场的推演（各 50 字）③ 它揭示的哲学问题。用中文。")
+        return scaffold_result("thought_experiment_scaffold",
+                               "变体推演脚手架: 新设定 + 多立场推演对比 + 揭示的问题",
+                               confidence=0.7,
+                               presentation_hint="主 Agent 以连续叙述呈现实验场景, 不逐条罗列 JSON 字段",
+                               **data)
+    prompt = (f"基于「{base}」设计一个哲学思想实验, 只输出 JSON（不要围栏）:\n"
+              f'{{"setting": "实验设定（100字内, 场景具体可想象）",\n'
+              f' "stance_projections": [{{"stance": "哲学立场名", "projection": "该立场下的推演（50字）"}}],\n'
+              f' "revealed_problem": "它揭示的哲学问题（1-2句）"}}\n'
+              f"3 个立场推演。用中文。")
     resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=800)
-    reply = (resp["choices"][0]["message"].get("content") or "").strip()
-    slot["experiment"] = {"base": base, "text": reply}
+    data = extract_json(resp["choices"][0]["message"].get("content"))
+    if not isinstance(data, dict) or not data.get("setting"):
+        raw = (resp["choices"][0]["message"].get("content") or "").strip()
+        data = {"setting": raw[:600] or base, "stance_projections": [], "revealed_problem": ""}
+    slot["experiment"] = {"base": base, "text": json.dumps(data, ensure_ascii=False)[:1500]}
     _save_agent_memory()
-    return {"experiment": reply}
+    return scaffold_result("thought_experiment_scaffold",
+                           "思想实验脚手架: 设定 + 多立场推演 + 揭示的问题——场景叙述与判断由主 Agent 完成",
+                           confidence=0.7,
+                           presentation_hint="主 Agent 以连续叙述呈现实验场景并回答用户之问, 不逐条罗列 JSON 字段",
+                           **data)
 
 register_tool("thought_experiment",
-    "设计/推演哲学思想实验（电车难题变体/洞穴比喻现代版）——生成设定、多立场推演与启示; 用户说'改/换成/如果'时基于上次实验做变体迭代。",
-    {"type": "object", "properties": {"base": {"type": "string"}}, "required": ["base"]},
+    "设计/推演哲学思想实验（电车难题变体/洞穴比喻现代版）——返回设定/多立场推演/揭示问题的结构化脚手架; 用户明确要求变体时（'改成/换成/如果'）基于上次实验迭代。同一实验的重复调用受重入策略约束——除非用户要求迭代或前次结果不可用。",
+    {"type": "object", "properties": {"base": {"type": "string", "description": "思想实验基础设定（变体迭代时描述变化点）"}}, "required": ["base"]},
     _exec_thought_exp)

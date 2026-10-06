@@ -1,0 +1,868 @@
+{
+ "case_id": "A05",
+ "category": "A",
+ "prompt": "父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "60675439c081c8db8150a2196de28c96e354f432",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T14:01:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.5",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？",
+   "wall_s": 45.7,
+   "ttft_s": 2.8,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "86d7efafa2e44ed7a26891c368009d8e:1:note:0",
+     "content": "我先查一下相关的思想资源，再回答你。"
+    }
+   ],
+   "provider_reasoning": "The user asks a philosophical question about filial obligation, indebtedness, parental authority over career and marriage. This is a values/normative question. I should give a substantive philosophical answer. I could use tools: search_books for 儒家 孝, 康德 义务, 洛克/密尔 自由, or advisor_council (user asks about a real-life decision from multiple philosophical traditions — the tool description says: \"用户要求'从几个/多个哲学传统或视角分析'某个现实抉择时必须用本工具\" — but here the user didn't explicitly request multiple perspectives. Still, advisor_council is for 人生决策/困惑 multi-perspective. The user asks \"我欠他们这些吗？\" — a real-life dilemma. I think using advisor_council plus searching classical texts (Confucian filial piety 原典, Kant on duty, Mill on liberty) would be good and grounded.\n\nLet me consider the instruction: \"关于其动机、经历或做法的肯定句，须有用户信息支持\" — I shouldn't assume their parents' motives or that they must obey. I should be careful.\n\nPlan: call advisor_council(question), search_books for 孝 儒家 (论语/孟子/孝经), Kant 义务/自主, Mill 论自由, maybe Locke. Then synthesize.\n\nLet me do parallel independent calls. First search_books for key texts, and advisor_council.\n\nLet me start with a few searches and the council.\n\nI'll do:\n- advisor_council(question)\n- search_books(\"孝\", author=\"孔子\") — actually 论语\n- search_books(\"父母 之命 婚姻\") hmm\n- search_books(\"启蒙 自主 不成熟\", author=\"康德\")\n- search_books(\"自由 干涉 家长主义\", author=\"密尔\")\n\nLet me make the calls. I'll batch them.\n\nCareful: search_books with author names. Let's try.\n\nActually, let me first check what's in the library. Let me do a couple of parallel calls.Let me read the 荀子·子道 chapter (highly relevant — 孝子所不从命有三), and 论语 relevant passages (里仁 事父母几谏; 学而), and 密尔《论自由》 for the harm principle / paternalism. Also maybe 康德启蒙 already have excerpt. Let me read 《论自由》 to get the actual principle text.\n\nAlso 孟子 might have 不孝有三 / 娶妻 父母之命. Actually 孟子·滕文公下: \"不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之。\" That's about marriage. Let's search.\n\nLet me do parallel: get_chapter for 荀子 ch30, search 论语 几谏 (里仁篇), search 孟子 父母之命 媒妁之言, and get 论自由 detail + chapter.\n\nLet me batch.Now read Mill 论自由 chapter 1 to get the harm principle text. Let me get chapter list — it says chapters: [] with matched 0. Let me call get_book_detail without focus to see chapters.\n\nAlso maybe read 论语里仁 chapter for context (already have exact passage). Good enough.\n\nLet me get Mill's chapters.Read chapter 1 (引论) focus on 干涉 违背其意志 自我保全.I want the core statement of the harm principle. It's around offset 5259+. Let me continue reading from 5259.Great — I now have Mill's harm principle verbatim, including the crucial line \"对于本人自己，对于他自己的身和心，个人乃是最高主权者\" and the maturity caveat.\n\nNow I have:\n- 荀子·子道: 从义不从父; 孝子所不从命有三; 孔子: \"审其所以从之之谓孝\"\n- 论语·里仁: 事父母几谏，见志不从，又敬不违，劳而不怨 → 几谏 = 委婉劝谏，且\"见志不从\"承认父母可能不听，子女仍敬但不违（不违\"礼\"？歧义）\n- 孟子·滕文公下: 不待父母之命、媒妁之言……则父母国人皆贱之 (about marriage, but note 孟子 context is 仕 by 道 analogy)\n- 康德: 启蒙（受监护状态；naturaliter maiorennes）\n- 密尔: 伤害原则\n\nShould I also check 孟子 \"不孝有三，无后为大\" — not needed. Maybe check 孝经 for 谏诤章: \"父有争子，则身不陷于不义。故当不义，则子不可以不争于父\" — that's 孝经 谏诤章. That would be a strong classical source. Let me check if 孝经 is in library.\n\nAlso worth checking 洛克 or 康德 on 婚姻/自主? And maybe 恩 debt reciprocity — 亚里士多德 on 感恩? Or 西塞罗? Hmm. The core philosophical question: does receiving a benefit (being raised) create an obligation to obey? Distinguish:\n1. 感恩义务 (gratitude) vs 服从义务 (obedience) — these are different. Gratitude typically requires acknowledgment, reciprocation of good, not surrender of autonomy.\n2. 受益是否自愿？子女并未同意被生养——这是\"未经同意的受益\"。父母养育是义务（他们把你带到世上就承担了照顾责任），所以这不是纯粹馈赠/恩惠。可以说：养育首先是父母自身的道德/法律义务，不是可交换的贷款。\n3. 即使承认恩情，回报的限度与内容：回报不等于交出职业与婚姻决定权。这两个是\"不可代理\"的人生决定（first-personal，涉及亲密关系、日常生活的承受者是你）。\n4. 但也不能走到另一个极端：父母有合理的关切、建议、以及在特定情境下（如经济依赖、你需要其资助）的实际影响力。要区分\"建议/期待\"和\"支配\"。\n5. 儒家传统本身并不支持\"从命即孝\"——荀子明确\"从义不从父\"，孝经谏诤章亦然。这是反驳\"中国传统要求绝对服从\"的重要资源。同时儒家确实重视关系性、报恩（如\"三年之丧\"），这点要诚实呈现。\n\nLet me check 孝经 in library. And also maybe search for a scholarship source? Probably not necessary. But maybe one scholarly source on filial obligation debate (e.g., 英语学界 filial piety / gratitude debate: e.g., \"gratitude and filial duty\"). Could be nice but optional. I'll do a quick search_scholarship to see if there's a relevant record — it enriches but I must be careful not to attribute without reading. Let me try one query: \"filial obligation gratitude parents autonomy\". If ABSTRACT available I could use it.\n\nLet me do parallel: search 孝经 in books; search_scholarship.\n\nActually the instruction says don't overload. A couple more calls is fine.The scholarship results are mostly sociology, not directly the philosophical argument. I could read one abstract (Funk 2015 \"choice and obligation\") — it's empirically about how adult children construct filial responsibility. Might be marginally useful but risks being tangential. I think the philosophical core is better served by the classical texts plus Mill and Kant. I'll skip reading those abstracts — or maybe read one quickly since ABSTRACT_AVAILABLE and it's genuinely relevant to the \"choice vs obligation\" framing. Let me read the Funk 2015 abstract; it's cheap and gives an empirically grounded note that filial responsibility is experienced as both choice and obligation. That's a legitimate support, and I'd have to be careful to note it's sociology, not a normative argument.\n\nActually, to keep focus and avoid padding, I'll read it — one call — then write.\n\nHmm. It's arguably useful but the user wants an answer to \"我欠他们这些吗\". A sociology abstract about Canadian/Japanese Canadian families wouldn't bear on their normative question. I'll skip it, or maybe include as a brief note. I think skipping is more honest — I don't want to pad with tangential citations. But I did search; I should state clearly that I didn't find/read philosophical literature directly on... Actually no need to mention the failed/skipped search in detail. I can mention I found mostly sociological work. Better: just not mention, keep answer focused on what I actually read. But honesty about coverage: not needed to report every search.\n\nActually, I'll read one abstract quickly because it could give a useful distinction and it's already in hand (access_level ABSTRACT_AVAILABLE). Let's do it — Funk 2015.\n\nLet me be efficient: read it and then write.Now I'll write the answer. Structure:\n\n1. 先把问题拆开：这不是一个\"欠不欠\"的问题，而是三个不同的问题被压缩在一起：\n   (a) 我是否对父母负有一些义务（感恩/回报）？\n   (b) 这些义务是否包含\"服从他们对我职业与婚姻的安排\"？\n   (c) 如果我不服从，我是否就是忘恩负义？\n\n2. 关于\"欠\"：养育之恩的债务类比本身很弱。\n   - 生育养育不是一次自愿交易：你没有被询问过是否愿意被生下来、被这样养大。一种典型的道德分析（我用自己的话，标明是我的整理）：父母把孩子带到世上，就承担了抚养义务，因此这是履行义务，而不是放贷。这一点有争议（有人认为即使如此，超出义务的付出仍产生感恩义务），我要如实说这是有争议的分析，不是定论。\n   - 但即便承认有感恩义务：感恩的内容通常是不忘、承认、在对方需要时回报关照、不羞辱对方——不是交出人生决定权。\n\n3. 区分两类东西：\n   - 可与不可代理的：职业与婚姻由你每天承担后果——是你上班、你与配偶共同生活。父母替你决定，代价由你支付。\n   - 报恩可以是实质的（赡养、陪伴、尊重、在重大选择上认真听取意见），不必是支配权的转移。\n\n4. 重要的一点：不要把\"中国传统=绝对服从\"当真。原典本身反对。\n   - 《荀子·子道》：\"从道不从君，从义不从父，人之大行也\"；\"孝子所不从命有三：从命则亲危……从命则亲辱……从命则禽兽\"；孔子答鲁哀公：\"故子从父，奚子孝？……审其所以从之之谓孝\"（即\"从命本身不等于孝，要看从的是什么\"）。\n   - 《论语·里仁》\"事父母几谏，见志不从，又敬不违，劳而不怨\"——\"几谏\"是委婉劝谏，\"见志不从\"承认父母可以不听；这句子有歧义（\"不违\"可解为不违礼/不违父母之志），我应指出这种解释分歧，不要把它当成清晰的\"你有权拒绝\"。\n   - 《孟子·滕文公下》：\"不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之。\" 这一条确实是对\"父母之命\"的正面肯定——我应该诚实呈现，不能只挑对我方便的。它的语境是论\"仕不由其道\"的类比，但它确实承认父母之命在婚姻中的地位。\n   所以儒家内部有两种张力：一面强调敬、养、顺、报（三年之丧、不违父之道），另一面强调\"从义不从父\"、谏诤。中国传统并未给出\"绝对服从\"的统一答案。\n\n5. 一个现代自由主义的界标：密尔《论自由》第一章的伤害原则（引原文）：\"人类之所以有理有权可以各别地或者集体地对其中任何分子的行动自由进行干涉，唯一的目的只是自我防卫……若说为了那人自己的好处……那不成为充足的理由\"；\"任何人的行为，只有涉及他人的那部分才须对社会负责。在仅只涉及本人的那部分，他的独立性在权利上则是绝对的。对于本人自己，对于他自己的身和心，个人乃是最高主权者。\" 并附上密尔自己的限定：该原则只适用于\"能力已达成熟的人类\"，不适用于幼童和需人照管者。这个限定很重要，正是父母话里的隐含前提——但成年子女已经不在这个范围内。\n   注意：密尔说的是社会/法律强制力的正当性，直接平行到家庭内部要小心；家庭的强制（情感施压、经济依附）不是法律强制。我应该诚实标注这个限度：密尔的原则是针对\"社会以强制和控制方法对付个人\"，用于家庭内部是一种类比延伸，不是直接适用。\n\n6. 康德的启蒙：受监护状态是\"没有他人的指导就不能使用自己的理智\"；\"要有勇气运用你自己的理智\"。这也提供一个\"成年\"的自我理解。注意康德这里讲的是理智的自主运用，与家庭伦理不是同一论域，是启发性的类比。\n\n7. \"欠\"这个模型的另一种可能：也许父母说的不是可交换的债务，而是他们自己感受到的失落/恐惧（养老无着、被社会评判、担心你受苦）。这我不该猜；只应说：如果他们真实的关切是这些，可以直接谈这些，而不是用\"你欠我们\"来结算——但这是他们的感受，我无法确认，只能作为可能提出来，让他自己核对。\n\n8. 一个可以把握的原则（不只给免责声明）：\n   - 可让的部分：听取意见、认真讨论、不羞辱、在父母真实需要（疾病、经济困难）时提供照顾、不把关系的破裂当作无所谓。\n   - 不宜让的部分：与你共同生活的人是谁、你每天做什么工作——因为后果承担者是你，且配偶也牵涉其中（如果父母替你安排婚姻，第三方也被卷入），这是密尔意义上\"涉及他人\"的复杂情形（婚配涉及另一个人），但这不是父母可以代理的理由。\n   - 折中做法：把\"安排\"改成\"意见和建议\"，把\"服从\"改成\"我可以听、可以解释、但最终我决定\"。\n   \n9. 最后的直接回答：\"欠\"的问题：你欠的是某种回应与关照，不是一个空白授权。若你一定要一个干净的回答：养育之恩可以产生义务，但不能产生对成年人的人身支配权；\"我养了你\"和\"所以你的工作和婚姻由我定\"之间缺一个必要的推论步骤。同时，如果你选择不听，你也要承担后果——父母可能失望、关系紧张、可能失去某些经济支持，这些是真实的代价，不是不存在的。这正是存在主义的诚实之处（本真选择+承担）——但这个视角的具体建议我要自己综合，不能照搬。\n\nAlso handle necessity/sufficiency: 养育是不是\"服从\"的必要条件？不是——即便没有养育，也不能支配成年人（如养父母、陌生人）。所以养育之恩不可能是支配权的充分条件，甚至不是必要条件（除非法定监护）。\n\nAlso: 有些情形下父母的介入有正当理由可谈——如果你在未成年、或有严重成瘾/精神危机导致无法自理，密尔的成熟限定就可能适用；这不是你描述的情形，但边界要留出。\n\nLength: medium-long but focused. Use clear headings. Avoid jargon padding. Cite with 出处.\n\nLet me note one caution: 论语\"又敬不违\"的解释。Common reading: 见父母志不从（父母不肯听自己的劝谏），仍然恭敬，不违逆（指不违背父母的意志？或\"不违\"指不停止（劳而不怨）？）。There's real scholarly debate. I'll flag it.\n\nAlso 荀子 chapter 子道 attribution: 荀子书中此段确为《荀子·子道》原文，我读到了。引文准确。\n\nI should also be careful: 《孟子·滕文公下》那段\"不待父母之命\"是在论\"君子之难仕\"，孟子用它作类比说明\"不由其道而往\"。我不应该断言孟子在此制定婚姻法规则；应如实说：这段确实以\"父母之命、媒妁之言\"为正面标准，但它出现在论\"仕\"的类比段落中，用途是类比。That's accurate — the passage says 丈夫生而愿为之有室，女子生而愿为之有家。父母之心，人皆有之。不待父母之命、媒妁之言……则父母国人皆贱之。古之人未尝不欲仕也，又恶不由其道。Yes.\n\nNow write. Keep it as a reasoned answer with a clear conclusion and conditions.\n\nFormat: headings, some quotes with citation labels. Not too long. Aim ~900-1200 Chinese characters? Probably more like 1200-1600. Let's be substantive but tight.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "干涉他人自由 家长主义 仅涉己行为",
+      "author": "密尔"
+     },
+     "status": "success",
+     "duration_seconds": 0.042,
+     "result_full": "{\"query\": \"干涉他人自由 家长主义 仅涉己行为\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"bece6ea379fa\", \"book_title\": \"妇女的屈从地位\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《妇女的屈从地位》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《功利主义》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"bece6ea379fa\", \"book_title\": \"妇女的屈从地位\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《妇女的屈从地位》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《功利主义》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": \"密尔\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "启蒙 不成熟 自己运用理智",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.092,
+     "result_full": "{\"query\": \"启蒙 不成熟 自己运用理智\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 65, \"chapter_title\": \"答复这个问题：“什么是启蒙运动？”\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·答复这个问题：“什么是启蒙运动？”】\", \"snippet\": \"答复这个问题：“什么是启蒙运动？” (1) 启蒙运动就是人类脱离自己所加之于自己以不成熟状态。不成熟状态 就是不经别人的引导，就对运用自己的理智无能为力。当其原因不在于缺乏理智，而在于不经别人的引导就缺乏勇气与决心去加以运用时，那么这种不成熟状态就是 自己所加之于自己的 了。Sapere aude！ (2) 要有勇气运用你 自己的 理智！这就是启蒙运动 (3) 的口号。 懒惰和怯懦乃是何以有如此之大量的人，当大自然早已把他们从外界的引导之下释放出来了以后（naturaliter maiorennes (4) ），却仍然愿意终身处于不成熟的状态之中，以及别人何以那么轻而易举地就俨然以他们的保护人自居的原因之所在。处于不成熟状态是那么地\", \"score\": 318, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 65, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 28, \"chapter_title\": \"纯粹实践理性的要素论\", \"citation_label\": \"【《康德文集》·纯粹实践理性的要素论】\", \"snippet\": \"志着英勇无畏的精神，因而假定了一个敌人。鉴于此，德性这个名称是一个庄严的名称，至于它经常被滥用来吹牛自夸，并且（如同近代启蒙这个词一样）遭到嘲讽，则丝毫无损于它。——这是因为，要求勇敢，就已经足以有一半称得起德性了；与此相反，懒惰的、全然不信任自身的、等待外部帮助的、怯懦的思维方式（在道德和宗教中）松懈了人的所有力量，使人自身不配得到这种帮助。 但是，那些勇敢的人们却错认了他们的敌人。他们的敌人不应该在自然的、只不过是未受教化的、但却毫不掩饰地向每一个人的意识公开呈现的偏好中去寻找，而是一个似乎不可见的、隐藏在理性背后的敌人，因而也就更加危险。理性运用智慧去与仅仅是不小心而可能被偏好蒙骗的愚蠢进行斗争，却不召唤它去反对用败坏灵魂的基\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 28, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 73, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"认识来说至少在我看来具有不容轻视的意义的新原则，它们虽然既不是初始性的，也不是最单纯的，但却因此而比其他任何原则都更便于运用，具有同样大的适用范围。何况，对于怀着这样的意图走上一条绝对没人走过的小道的人来说，犯错误跌上一跤是极容易的，我相信，善意的读者将以厚道的判断方法把这一切接纳入较好的类别。 第一章 论矛盾律 预示 由于在本文中我将主要致力于简明扼要，我认为，这里不再次抄录根据广为传播的知识在我们看来稳定且与健康理智一致的那些定义和公理，不力图效仿那些奴隶般地受制于连我也不知道的某种方法规定的人的习俗，要更好一些；这些人如果不从头到尾历数在哲学家们的书匣中找到的一切，就自己觉得没有按照方法和理性行事。由于在我看来决定这样做并不是\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 73, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 85, \"chapter_title\": \"纯然理性界限内的宗教\", \"citation_label\": \"【《康德文集》·纯然理性界限内的宗教】\", \"snippet\": \"志着英勇无畏的精神，因而假定了一个敌人。鉴于此，德性这个名称是一个庄严的名称，至于它经常被滥用来吹牛自夸，并且（如同近代启蒙这个词一样）遭到嘲讽，则丝毫无损于它。——这是因为，要求勇敢，就已经足以有一半称得起德性了；与此相反，懒惰的、全然不信任自身的、等待外部帮助的、怯懦的思维方式（在道德和宗教中）松懈了人的所有力量，使人自身不配得到这种帮助。 但是，那些勇敢的人们却错认了他们的敌人。他们的敌人不应该在自然的、只不过是未受教化的、但却毫不掩饰地向每一个人的意识公开呈现的偏好中去寻找，而是一个似乎不可见的、隐藏在理性背后的敌人，因而也就更加危险。理性运用智慧去与仅仅是不小心而可能被偏好蒙骗的愚蠢进行斗争，却不召唤它去反对用败坏灵魂的基\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 85, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 90, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"687~700页，哈勒，1799。 启蒙就是人从他咎由自取的受监护状态走出。受监护状态就是没有他人的指导就不能使用自己的理智的状态。如果这种受监护状态的原因不在于缺乏理智，而在于缺乏无须他人指导而使用自己的理智的决心和勇气，则它就是咎由自取的。因此，Sapere aude［要敢于认识］ [1] ！要有勇气使用你自己的理智！这就是启蒙的格言。 为什么有这么大一部分人，在自然早就使他们免除外来的指导（naturaliter maiorennes［自然方面的成年人］）之后，仍然乐意终生保持受监护状态？为什么另外一些人如此容易自命为他们的监护者？其原因就是懒惰和怯懦。受监护状态是如此舒适。如果我有一本书代替我拥有理智，有一位牧师代替我拥有良\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 90, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}], \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "孝 父母之命 听从"
+     },
+     "status": "success",
+     "duration_seconds": 1.711,
+     "result_full": "{\"query\": \"孝 父母之命 听从\", \"results\": [{\"book_id\": \"78687dc8052a\", \"book_title\": \"吕氏春秋\", \"author\": \"吕不韦\", \"chapter_idx\": 13, \"chapter_title\": \"孝行览\", \"citation_label\": \"【《吕氏春秋》·孝行览】\", \"snippet\": \"【孝行】 一曰：凡为天下，治国家，必务本而後末。所谓本者，非耕耘种植之谓，务其人也。务其人，非贫而富之，寡而众之，务其本也。务本莫贵於孝。人主孝，则名章荣，下服听，天下誉；人臣孝，则事君忠，处官廉，临难死；士民孝，则耕芸疾，守战固，不罢北。夫孝，三皇五帝之本务，而万事之纪也。夫执一术而百善至，百邪去，天下从者，其惟孝也！故论人必先以所亲，而後及所疏；必先以所重，而後及所轻。今有人於此，行於亲重，而不简慢於轻疏，则是笃谨孝道。先王之所以治天下也。故爱其亲，不敢恶人；敬其亲，不敢慢人。爱敬尽於事亲，光耀加於百姓，究於四海，此天子之孝也。曾子曰：“身者，父母之遗体也。行父母之遗体，敢不敬乎？居处不庄，非孝也；事君不忠，非孝也；莅官不敬，非\", \"score\": 0.5905, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"78687dc8052a\", \"chapter_idx\": 13, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 5.002}, {\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。 鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问\", \"score\": 0.5741, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.73}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 338, \"chapter_title\": \"221\", \"citation_label\": \"【《尼采文集（合集）》·221】\", \"snippet\": \" 宽容 。——父子之间的相互宽容远胜于母女之间的宽容。\", \"score\": 0.5591, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 338, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.481}, {\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 2, \"chapter_title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"snippet\": \"子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？” 有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” 子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。” 子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。” 曾子曰：“慎终追远，民德\", \"score\": 0.5482, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.299}, {\"book_id\": \"4d187a31575a\", \"book_title\": \"中庸\", \"author\": \"子思\", \"chapter_idx\": 20, \"chapter_title\": \"第十九章\", \"citation_label\": \"【《中庸》·第十九章】\", \"snippet\": \"子曰：“武王、周公，其达孝矣乎。 夫孝者，善继人之志，善述人之事者也。 春秋，修其祖庙，陈其宗器，设其裳衣，荐其时食。 宗庙之礼，所以序昭穆也。序爵，所以辨贵贱也。序事，所以辨贤也。旅酬下为上，所以逮贱也。燕毛所以序齿也。 践其位，行其礼，奏其乐，敬其所尊，爱其所亲，事死如事生，事亡如事存，孝之至也。 郊社之礼，所以事上帝也。宗庙之礼，所以祀乎其先也。明乎郊社之礼，禘尝之义，治国其如示诸掌乎。”\", \"score\": 0.534, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"4d187a31575a\", \"chapter_idx\": 20, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.063}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "advisor_council",
+     "args": {
+      "question": "父母说\"养我这么大，你就应该听我们安排工作和婚姻\"。子女是否欠父母这种服从？\"养育之恩\"能否构成对成年子女职业与婚姻选择的支配权？"
+     },
+     "status": "success",
+     "duration_seconds": 3.734,
+     "result_full": "{\"kind\": \"perspectives_scaffold\", \"summary\": \"三种思维模型的多视角建议脚手架: 视角/预设/张力点/综合提示; 最终建议由主 Agent 综合\", \"confidence\": 0.65, \"council\": {\"perspectives\": [{\"advisor\": \"亚里士多德（实践智慧/中道）\", \"advice\": \"若你把感恩理解为对等回报而非人身支配，可承认父母付出、在重大选择上认真听取意见，但保留最终决定权；具体让步多少，取决于你的处境、父母依赖程度与关系成本，走极端皆非中道。\", \"assumes\": \"你既在乎与父母的关系和感恩，也在乎自己人生的主导权。\"}, {\"advisor\": \"斯多葛（可控与不可控）\", \"advice\": \"父母的观念、失望与施压属不可控；你如何判断、回应、承担后果属可控。养育之恩是事实，但服从与否是你的选择。把力气放在清楚表达理由、设定边界，并准备承受他们不满。\", \"assumes\": \"你更看重内心自主与对自身选择的承担，而非改变父母。\"}, {\"advisor\": \"存在主义（本真选择）\", \"advice\": \"没有哪种“欠”能替你决定职业与婚姻；若因报恩而服从，那也是你选择服从，而非被恩情决定。问自己：这是我真正认可的生活吗？若否，选择并承担焦虑，好过把人生交给他人安排。\", \"assumes\": \"你愿意为成为自己负责，并接受选择带来的孤独与冲突。\"}], \"tensions\": [\"亚里士多德要求按情境权衡让步，斯多葛则把父母是否满意划出可控范围，二者对“该投入多少关系成本”判断不同。\", \"斯多葛强调接受父母不可控，存在主义却要求你主动选择并承担冲突，一个偏安顿内心，一个偏投入行动。\", \"亚里士多德的中道可能被存在主义视为以和谐稀释本真，存在主义的决断也可能被亚里士多德视为忽视关系与后果。\"], \"synthesis_hint\": \"可先区分“感恩回报”与“人身支配”，再按你实际处境权衡可让与不可让、可承受与不可承受的代价，形成自己的边界与承担方式。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"结构化中间产物——主 Agent 按用户处境裁剪呈现, 不得原样罗列了事\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "795658cafeab",
+      "chapter_idx": 30,
+      "focus": "孝子所不从命有三",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"chapter_idx\": 30, \"title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"text\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。\\n鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问，孔子不对。 孔子趋出以语子贡曰：“乡者，君问丘也，曰：‘子从父命，孝乎？臣从君命，贞 乎？’三问而丘不对，赐以为何如？”子贡曰：“子从父命，孝矣。臣从君命，贞 矣，夫子有奚对焉？”孔子曰：“小人哉！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。”\\n子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出则友贤，何为而无孝之名也！”\\n子路问于孔子曰：“鲁大夫练而床，礼邪？”孔子曰：“吾不知也。”子路出， 谓子贡曰：“吾以为夫子无所不知，夫子徒有所不知。”子贡曰：“汝何问哉？” 子路曰：“由问：‘鲁大夫练而床，礼邪？’夫子曰：‘吾不知也。’”子贡曰： “吾将为女问之。”子贡问曰：“练而床，礼邪？”孔子曰；“非礼也。”子贡出， 谓子路曰：“女谓夫子为有所不知乎！夫子徒无所不知。女问非也。礼：居是邑不 非其大夫。”\\n子路盛服而见孔子，孔子曰：“由，是裾裾何也？昔者江出于岷山，其始出也， 其源可以滥觞，及其至江之津也，不放舟，不避风，则不可涉也。非维下流水多邪？ 今女衣服既盛，颜色充盈，天下且孰肯谏女矣！子路趋而出，改服而入，盖犹若也。 孔子曰：“由志之！吾语汝：奋于言者华，奋于行者伐，色知而有能者，小人也。 故君子知之曰知之，不知曰不知，言之要也；能之曰能之，不能曰不能，行之至也。 言要则知，行至则仁；既仁且知，夫恶有不足矣哉！”\\n子路入，子曰：“由！知者若何？仁者若何？”子路对曰：“知者使人知己， 仁者使人爱己。”子曰：“可谓士矣。”子贡入，子曰：“赐！知者若何？仁者若 何？”子贡对曰：“知者知人，仁者爱人。”子曰：“可谓士君子矣。”颜渊入， 子曰：“回！知者若何？仁者若何？”颜渊对曰：“知者自知，仁者自爱。”子曰： “可谓明君子矣。”\\n子路问于孔子曰：“君子亦有忧乎？”孔子曰：“君子其未得也，则乐其意，既已得之，又乐其治。是以有终生之乐，无一日之忧。小人者其未得也，则忧不得； 既已得之，又恐失之。是以有终身之忧，无一日之乐也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1413, \"chapter_text_length\": 1413, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"孝子所不从命有三\"], \"focus_terms_found_in_chapter\": [\"孝子所不从命有三\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"孝子所不从命有三\", \"offset\": 72, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"offset\": 0, \"focus\": \"孝子所不从命有三\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"85ee806dca6d8ca002a255aedbb600fa6af6e04accb338c28ccbffd37a326127\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/795658cafeab?ch=30\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 1413]], \"covered_characters\": 1413, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "focus": "自由 干涉 权力 违背其意志"
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"id\": \"6a65e3ef874f\", \"title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《论自由》是英国哲学家约翰·斯图尔特·密尔的经典之作，首次出版于1859年。该书是自由主义政治哲学的奠基性文本，系统地阐述了个人自由与社会权威之间的界限。密尔在书中提出了著名的“伤害原则”，即只有当个人的行为伤害到他人时，社会才有权干涉。他主张思想自由、言论自由和个性发展是幸福社会的基石，并警告“多数人的暴政”可能比专制政府的压迫更为可怕。密尔将自由分为思想与言论自由、个性自由以及社会对个人行为的限制三个层面，强调自由不仅是个人幸福的必要条件，也是社会进步和真理发现的动力。书中还探讨了自由与功利的关系，密尔认为自由最终服务于人类的福祉，但自由本身具有内在价值。这部著作对后世的政治哲学、法学和伦理学产生了深远影响，成为现代民主社会自由理念的重要基石。\", \"rank\": 41.2, \"chapterCount\": 6, \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 6, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 6, \"readable\": true, \"chapters\": [], \"matched_chapters\": 0, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "不待父母之命 媒妁之言 钻穴隙相窥",
+      "author": "孟子"
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"query\": \"不待父母之命 媒妁之言 钻穴隙相窥\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 5, \"chapter_title\": \"滕文公章句下\", \"citation_label\": \"【《孟子》·滕文公章句下】\", \"snippet\": \"未尝闻仕如此其急。仕如此其急也，君子之难仕，何也？” 曰：“丈夫生而愿为之有室，女子生而愿为之有家。父母之心，人皆有之。不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之。古之人未尝不欲仕也，又恶不由其道。不由其道而往者，与钻穴隙之类也。” 滕文公章句下·第四节 彭更问曰：“后车数十乘，从者数百人，以传食于诸侯，不以泰乎？” 孟子曰：“非其道，则一箪食不可受于人；如其道，则舜受尧之天下，不以为泰，子以为泰乎？” 曰：“否。士无事而食，不可也。” 曰：“子不通功易事，以羡补不足，则农有余粟，女有余布；子如通之，则梓匠轮舆皆得食于子。于此有人焉，入则孝，出则悌，守先王之道，以待后之学者，而不得食于子。子何尊梓匠轮舆而轻为仁义\", \"score\": 209, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 5, \"focus\": \"不待父母之命 媒妁之言 钻穴隙相窥\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"citation_label\": \"【《孟子》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 14}, \"search_scope\": {\"author\": \"孟子\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "事父母几谏 见志不从 又敬不违",
+      "author": "孔子"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"query\": \"事父母几谏 见志不从 又敬不违\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 5, \"chapter_title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"snippet\": \"子曰：“夫子之道，忠恕而已矣。” 子曰：“君子喻于义，小人喻于利。” 子曰：“见贤思齐焉，见不贤而内自省也。” 子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。” 子曰：“父母在，不远游，游必有方。” 子曰：“三年无改于父之道，可谓孝矣。” 子曰：“父母之年，不可不知也。一则以喜，一则以惧。” 子曰：“古者言之不出，耻躬之不逮也。” 子曰：“以约失之者鲜矣。” 子曰：“君子欲讷于言而敏于行。” 子曰：“德不孤，必有邻。” 子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”\", \"score\": 210, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 5, \"focus\": \"事父母几谏 见志不从 又敬不违\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"citation_label\": \"【《论语》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 22}, \"search_scope\": {\"author\": \"孔子\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "limit": 10
+     },
+     "status": "success",
+     "duration_seconds": 0.002,
+     "result_full": "{\"id\": \"6a65e3ef874f\", \"title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《论自由》是英国哲学家约翰·斯图尔特·密尔的经典之作，首次出版于1859年。该书是自由主义政治哲学的奠基性文本，系统地阐述了个人自由与社会权威之间的界限。密尔在书中提出了著名的“伤害原则”，即只有当个人的行为伤害到他人时，社会才有权干涉。他主张思想自由、言论自由和个性发展是幸福社会的基石，并警告“多数人的暴政”可能比专制政府的压迫更为可怕。密尔将自由分为思想与言论自由、个性自由以及社会对个人行为的限制三个层面，强调自由不仅是个人幸福的必要条件，也是社会进步和真理发现的动力。书中还探讨了自由与功利的关系，密尔认为自由最终服务于人类的福祉，但自由本身具有内在价值。这部著作对后世的政治哲学、法学和伦理学产生了深远影响，成为现代民主社会自由理念的重要基石。\", \"rank\": 41.2, \"chapterCount\": 6, \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 6, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 6, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"重印“论自由”序言\"}, {\"index\": 1, \"title\": \"第一章 引论\"}, {\"index\": 2, \"title\": \"第二章 论思想自由和讨论自由\"}, {\"index\": 3, \"title\": \"第三章 论个性为人类福祉的因素之一\"}, {\"index\": 4, \"title\": \"第四章 论社会驾于个人的权威的限度\"}, {\"index\": 5, \"title\": \"第五章 本文教义的应用\"}], \"matched_chapters\": 6, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "chapter_idx": 1,
+      "focus": "违背其意志 干涉 自我保全",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的人们的意志。于是结果是，人民会要压迫其自己数目中的一部分；而此种妄用权力之需加防止正不亚于任何他种。这样看来，要限制政府施用于个人的权力这一点，即在能使掌权者对于群体，也就是对于群体中最有力的党派正常负责的时候，也仍然丝毫不失其重要性。这个看法，因其既投合思想家们的智虑，又同样投合欧洲社会中那些在其真实的或假想的利害上与民主适相反对的重要阶级的意向，自然不难树立起来；在今天的政治思想中，一般已把“多数的暴虐”这一点列入社会所须警防的诸种灾祸之内了。\\n和他种暴虐一样，这个多数的暴虐之可怕，人们起初只看到，现在一般俗见仍认为，主要在于它会通过公共权威的措施而起作用。但是深思的人们则已看出，当社会本身是暴君时，就是说，当社会作为集体而凌焉于构成它的各别个人时，它的肆虐手段并不限于通过其政治机构而做出的措施。社会能够并且确在执行它自己的诏令。而假如它所颁的诏令是错的而不是对的，或者其内容是它所不应干预的事，那么它就是实行一种社会暴虐；而这种社会暴虐比许多种类的政治压迫还可怕，因为它虽不常以极端性的刑罚为后盾，却使人们有更少的逃避办法，这是由于它透入生活细节更深得多，由于它奴役到灵魂本身。因此，仅只防御官府的暴虐还不够；对于得势舆论和得势威想的暴虐，对于社会要借行政处罚以外的办法来把它自己的观念和行事当作行为准则来强加于所见不同的人，以束缚任何与它的方式不相协稠的个性的发展，甚至，假如可能的话，阻止这种个性的形成，从而迫使一切人物都按照它自己的模型来剪裁他们自己的这种趋势——对于这些，也都需要加以防御。关于集体意见对个人独立的合法干涉，是有一个限度的；要找出这个限度并维持它不遭侵蚀，这对于获致人类事务的良好情况、正同防御政治专制一样，是必不可少的。\\n这个命题虽然在一般的说法下大概不会有何争论，但实践的问题在于究竟应该把这个限度划在哪里？也就是说，究竟应该怎样在个人独立与社会控制之间做出恰当的调整？这就是一个几乎一切工作尚待着手的题目了。凡一切足使存在对人有价值者，莫不赖对他人行动有所约束。因此，必须有某些行为准则，首先由法律来强加于某些事情，而对于许多不宜由法律来起作用的事情，还要由舆论来办。那些准则究竟应当是什么，乃是人类事务中的首要问题；假如把少数最明显的情事除外来说，这也是在解决方面前进得最少的问题之一。没有两个时代，也很少有两个国度，对这个问题的决定是一致的；一个时代或一个国度的决定在另一个时代或另一个国度看来就感到差异。可是任何一个特定的时代或国度的人们对这问题却并不感到任何疑难，恰象对于一个全人类所见一直相同的题目一样。他们在自己当中所获致的准则，在他们看来乃是自明的和自当的。这个普遍的错觉可说是习俗的魔术性的势力之一例。习俗这东西，不仅如老话所说是第二天性，简直是一向被误待为第一天性，习俗在阻止对于人类所相互强加的行为准则发生任何疑虑这一点上更有着完全的效力，因为在这个题目上一般都不认为必须提出理由，不论是一人对于另一人，或者是每人对他自己。人都否惯于相信，亦曾受到某些热烈倾向于皙学家性格的人们的鼓励去相信：在这种性质的题目上，他们的感想是优于理性的，从而就使理性成为不必要。导引他们达致关于约制人类行为的意见的一条实际的原则乃是各人心中的这样一种感想，即认为凡人都应当被要求按照他和他所与有同感的人们所愿意他们做的那样去做。确实，没有一个人对自己承认，他的判断标准乃是他自己的爱好；但在有关行为的问题上，一个没有理由作根据的意见实在只能算是一个人的择取；并且假定提出了只是诉诸他人的同样的择取的理由，那仍不过是多人的但非一人的爱好罢了。但是在一个常人看来，他自己的并且有他人与之相同的这种择取，对于他在道德上、趣味上、或者礼俗上所抱的观念来说，不仅是一个完全圆满的理由，而且一般说来是他所有的唯一的理由；那些观念并没有明白地写在他的宗教信条之中，但即使在宗教信条方面，指导他的看法的东西主要也是他自己的解释。这就可见，人们在什么可褒什么可贬这一点上的意见，乃是为影响着他们对他人行为的意愿的一切纷繁多样的原由所左右。影响人们在这一点上的意愿的原由，也和规定人们在其他任何问题上的意愿的原由一样，为数是极多的。这有时是他们的理性，有时又是他们的成见或迷信；往往是他们的社交性的爱好，时而又是他们的反社交性的爱好；是他们的妬意或忌心，是他们的妄自尊大或鄙薄他人；而最称一般的则是他们为己的欲望或恐惧，也就是他们的合法的或不合法的切身利益。特别要指出，若是哪个国度里有着一个占优势的阶级，那么一国的道德必是大部分发自那个阶极的阶级利益和阶级优越感。例如斯巴达人（Spartan）与其赫劳特农奴（Helot）之间的道德、殖民者与黑人之间的道德、君主与臣民之间的道德、贵族与平民之间的道德、以至男人与女人之间的道德，便大部分是那些阶权利益和阶极优越感的创造物；而这样产生出来的情操反过来又对优势阶级的成员们自己相互关系中的道德情绪起作用。另一方面，若是以前居于优势的阶级已失其优势，或者其优势已不孚众望，那么当时得势的道德情操就往往带有一种痛恶优越的意味。此外，关于法律或舆论所支持的行为准则，无论是许为或者是不许为，还有一点重大的、决定性的原由，就是人类对其现世主人或所奉神祗的假想中的好恶取舍的奴性服从。这种奴性服从，尽管本质上是自私的，却非伪善；它育出一种完全真纯的憎恶情操，竟至使得人们会烧死眩人和异端者。至于说到其余许多较低的影响力量，其中当然有社会一般的和明显的利害这一点在导引道德情操方面起着一分而且是颇大一分的作用，但这与其说是出于理性，说是由于社会利害自身，还不如说是出于从社会利害中生出的爱憎之感者为多。这爱憎之感对社会利害很少或者全无影响，在树立各项道德万面则表现为很大的力量。\\n这样看来，在实际上决定那些在法律惩罚或舆论支持之下要大家注意遵守的行为准则的主要东西，乃是社会的好恶，或社会中一些有势力的部分的好恶。对于这个情形，一般说来，就是一些在思想和感想方面都走在社会前头的人们也从未从原则上加以攻击，尽管他们在其中某些细目上会和它发生冲突。他们宁从事于探讨何事为社会所当好所当恶，而不去究问社会的好恶对于个人是否应当成为法律。他们宁愿就着他们自己持有异说的某些特定之点努力去改变人类的感想，而不把保卫自由、保障一切异端作为一般性的主张。只在一宗情事上，也只是随处有个别的人采取了有原则的较高的立场，并且一贯地维持下去，那就是在宗教信仰方面。这事在许多方面部有启发指示的意义，而就所谓道德威党之不能无误这一点说来，尤不失为一个最显明的例证；如神学家之相仇，就一个真诚的执迷者说来，确是道德情绪的最明白的事例之一。那首先冲破所谓一统教会的束搏的人们，一般说来，原也和那教会一样不愿允许宗教意见有所歧异。但是当冲突的热劲已过，各派都没有取得完全胜利，而每一教会或教派都降至仅希望保持其已得阵地的时候，这些少数派既见自己没有变成多数派的机会，乃不得不向他们所无法改变的人们吁请允许分歧。于是在这个战场上，也几乎仅仅在这个战场上，个人反对社会的权利才在有原则的广阔立场上为人们所主张，而社会想对倡异者施用权威的要求也才受到公开的争议。那些替世界创获它所享有的宗教自由的伟大作家们，多\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2259, \"excerpt_end\": 5259, \"chapter_text_length\": 10642, \"has_more\": true, \"next_offset\": 5259, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"干涉\"], \"focus_terms_found_in_chapter\": [\"干涉\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"干涉\", \"offset\": 2959, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 1, \"offset\": 2759, \"focus\": \"干涉\"}}, {\"term\": \"干涉\", \"offset\": 5684, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 1, \"offset\": 5484, \"focus\": \"干涉\"}}, {\"term\": \"干涉\", \"offset\": 6047, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 1, \"offset\": 5847, \"focus\": \"干涉\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"03af608ef94ceac5fa3fdcccf3c6de45a230c8b0fefa8acf41bd576517db260a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/6a65e3ef874f?ch=1\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2259, 5259]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "chapter_idx": 1,
+      "max_chars": 2400,
+      "offset": 5259,
+      "focus": "仅关涉本人 其行为仅涉及自己"
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"数都力主良心自由乃是一种无法取消的权利，都绝对否认一个人须为他自己的宗教信仰来向他人作出交代。可是人类在他所真正关心的事情上是这样自然而然地不能宽容，以致宗教自由实际上竟很少在什么地方得到实现，除非把那种厌恶神学争吵扰乱宁静而对宗教漠不关心的情况也加在宗教自由方面来算。即使在最富宽容的国度里，在几乎一切宗教人士的心中，对于宽容的义务的承认还是带有暗含的保留的。这一位在有关教会政府的问题上会带着异议加以容忍，但在有关教条的问题上则又不然；另一位能宽容一切人，独不能宽容一个天主教徒或一神教徒；又一位，只对信仰神启的宗教的一切人士都表宽容；还有少数人把宽容更稍稍推展一步，但碰到相信上帝和相信彼界时则又不能通融。总之可以说，凡在多数之感还真切强烈的地方，就不会看到服从多数之主张会有多少减弱。\\n在英国，由于我们政治历史上的一些特殊情况，和欧洲多数其他国度相比起来，舆论的束缚虽然或许较重，法律的束缚则是较轻的；在这里，对于使用立法权力或行政权力来直接干涉私人行为这一点，有着相当不小的嫉恨；这种嫉恨与其说是出自对于个人独立有什么正确的看法，倒不如说更多地是由于人们还存有一种思想习惯，把政府看作代表着与公众相反的利益的机构。多数人还没有学会去体认政府的权力就是他们的权力，政府的意见就是他们的意见。一旦他们学到这样，个人自由就许会遭到来自政府方面的侵犯，一如它已经遭到来自舆论方面的侵犯。但是，就目前论，这里正有着一种相当分量的情绪，随时都会引起来，去反对任何想要使用法律在人们迄今未曾受惯法律控制的一些事情上面来对个人进行控制的企图；至于这个事情究竟是否应当在法律控制的合法范围之内，这种反对情绪则并未怎样加以审辨；因此这种情绪，整个说来固属高度健康，但在应用到特定的事例时，也或常常被误用，正如它也常常有很好的根据一样。事实上，我们并没有什么公认的原则，召惯地用来测定政府干涉之当与不当。人们对此的决定都是依据本人的择取。有些人看到有什么好事要做，或者有什么灾祸要救，就情愿唆使政府去担负这个任务；另一些人则宁愿忍受任何数量的社会灾祸，而不愿在人生利害各部类当中加添要听从政府控制这一项。在一切特定的事件上，人们把自己分别列入这一边或那一边。他们在决定时，是依据他们情操上的这种一般方向，或者依据他们对于拟议中要由政府来做的这件特定事情所感到的利弊程度，又或者要看他们怎样相信政府会或是不会如他们所喜欢的样子去做；若说他们一贯抱有什么定见，认为什么事情宜由政府去做，那是非常少有的。在我看来，由于这样没有准则或原则，结果是，就现在说，这一边和那一边同样常都错误；人们几乎相等地不是不适当地乞灵于政府的干涉就是不适当地加以谴贡。\\n本文的目的是要力主一条极其简单的原则，使凡属社会以强制和控制方法对付个人之事，不论所用手段是法律惩罚方式下的物质力量或者是公众意见下的道德压力，都要绝对以它为准绳。这条原则就是：人类之所以有理有权可以各别地或者集体地对其中任何分子的行动自由进行干涉，唯一的目的只是自我防卫。这就是说，对于文明群体中的任一成员，所以能够施用一种权力以反其意志而不失为正当，唯一的目的只是要防止对他人的危害。若说为了那人自己的好处，不论是物质上的或者是精神上的好处，那不成为充足的理由，人们不能强迫一个人去做一件事或者不去做一件事。说因为这对他比较好，因为这会使他比较愉快，因为这在别人的意见认为是聪明的或者甚至是正当的；这样不能算是正当。所有这些理由，若是为了向他规劝，或是为了和他辨理，或是为了对他说服，以至是为了向他恳求，那都是好的；但只是不能借以对他实行强迫，或者说，如果他相反而行的话便要使他遭受什么灾祸。要使强迫成为正当，必须是所要对他加以吓阻的那宗行为将会对他人产生祸害。任何人的行为，只有涉及他人的那部分才须对社会负责。在仅只涉及本人的那部分，他的独立性在权利上则是绝对的。对于本人自己，对于他自己的身和心，个人乃是最高主权者。\\n或许无须多加说明，这条教义只适用于能力已达成熟的人类。我们不是在论幼童，或是在论尚在法定成年男女以下的青年。对于尚处在需要他人加以照管的状态的人们，对他们自己的行动也须加以防御，正如对外未的伤害须加以防御一样。根据同样理由，对于那种种族自身尚可视为未届成年的社会当中的一些落后状态，我们也可以置诸不论。在自发的进步途程中，早期的困难是如此严重，以致在克服困难的手段方面竟难容许有所选择；因此若遇有一个富有改善精神的统治者，他就有理由使用任何便宜方略借以达成一个非此就许不能达成的目的。在对付野蛮人时，专制政府正是一个合法的型式，只要目的是为着使他们有所改善，而所用手段又因这个目的之得以实现而显为正当，自由，作为一条原则来说，在人类还未达到能够借自由的和对等的讨论而获得改善的阶段以前的任何状态中，是无所适用的。不到那样的时候，人们只有一无所疑地服从一个阿喀霸（Akbar）或者一个查理曼（Charlemagne），假如他们幸而找到那样一位大帝的话。但是，一到人类获得了这种能力可以借说服或劝告来引他们去自行改善的时候（这个时期，所有国族老早已经达到，这里也必须提到我们自己），强制的办法，无论出以直接的形式或者出以如有不服则加痛惩的形式，就不能再成为为着他们自己的好处而许可使用的手段，就只有以保障他人安全为理由才能算是正当的了。\\n应当说明，在这篇论文中，凡是可以从抽象权利的概念（作为脱离功利而独立的一个东西）引申出来而有利于我的论据的各点，我都一概弃置未用。的确，在一切道德问题上，我最后总是诉诸功利的；但是这里所谓功利必须是最广义的，必须是把人当作前进的存在而以其永久利益为根据的。我要力争说，这样一些利益是享有威权来令个人自动性屈从于外来控制的，当然只是在每人涉及他人利益的那部分行动上。假如有人做出了一个有害于他人的行动，这就是一\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 5259, \"excerpt_end\": 7659, \"chapter_text_length\": 10642, \"has_more\": true, \"next_offset\": 7659, \"has_previous\": true, \"previous_offset\": 2859, \"focus_found\": false, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"03af608ef94ceac5fa3fdcccf3c6de45a230c8b0fefa8acf41bd576517db260a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/6a65e3ef874f?ch=1\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2259, 7659]], \"covered_characters\": 5400, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "filial obligation gratitude parents adult children autonomy career marriage choice",
+      "limit": 5
+     },
+     "status": "partial",
+     "duration_seconds": 1.215,
+     "result_full": "{\"query\": \"filial obligation gratitude parents adult children autonomy career marriage choice\", \"results\": [{\"source_record_id\": \"doi:10.1017/s0714980809990341\", \"title\": \"Of the Family Tree: Congruence on Filial Obligation between Older Parents and Adult Children in Japanese Canadian Families\", \"authors\": [\"Karen M. Kobayashi\", \"Laura Funk\"], \"year\": 2010, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Canadian Journal on Aging / La Revue canadienne du vieillissement\", \"doi\": \"10.1017/s0714980809990341\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1332/204674314x14110461145506\", \"title\": \"Constructing the meaning of filial responsibility: choice and obligation in the accounts of adult children\", \"authors\": [\"Laura Funk\"], \"year\": 2015, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Families, Relationships and Societies\", \"doi\": \"10.1332/204674314x14110461145506\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1017/9781316863121.005\", \"title\": \"Gratitude and Moral Obligation\", \"authors\": [\"Sara Etz Mendonça\", \"Fernanda Palhares\"], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Developing Gratitude in Children and Adolescents\", \"doi\": \"10.1017/9781316863121.005\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.26226/morressier.5cf632c1af72dec2b05548c2\", \"title\": \"The Effect of Parents's Fulfillment of Role Obligation on Children's Gratitude: Filial Belief as Moderators\", \"authors\": [\"Chih-Fen Wei\"], \"year\": 2019, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.26226/morressier.5cf632c1af72dec2b05548c2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1515/9789048529612-023\", \"title\": \"6. Parents and Adult Children\", \"authors\": [], \"year\": 2017, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Marriage, Sex and Death\", \"doi\": \"10.1515/9789048529612-023\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 2, \"READABLE_SOURCE_IDS\": [\"doi:10.1017/s0714980809990341\", \"doi:10.1332/204674314x14110461145506\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"filial obligation gratitude parents adult children autonomy career marriage choice\", \"status\": \"success\", \"raw_result_count\": 5}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"filial obligation gratitude parents adult children autonomy career marriage choice\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"filial obligation gratitude parents adult children autonomy career marriage choice\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "父有争子 则身不陷于不义 子不可以不争于父"
+     },
+     "status": "success",
+     "duration_seconds": 1.55,
+     "result_full": "{\"query\": \"父有争子 则身不陷于不义 子不可以不争于父\", \"results\": [{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。” 子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出\", \"score\": 0.6298, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"父有争子 则身不陷于不义 子不可以不争于父\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 5.087}, {\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\": \"【《韩非子》·忠孝】\", \"snippet\": \"天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，\", \"score\": 0.5949, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 52, \"focus\": \"父有争子 则身不陷于不义 子不可以不争于父\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.595}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 338, \"chapter_title\": \"221\", \"citation_label\": \"【《尼采文集（合集）》·221】\", \"snippet\": \" 宽容 。——父子之间的相互宽容远胜于母女之间的宽容。\", \"score\": 0.574, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 338, \"focus\": \"父有争子 则身不陷于不义 子不可以不争于父\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.3}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1332/204674314x14110461145506",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.083,
+     "result_full": "{\"source_record_id\": \"doi:10.1332/204674314x14110461145506\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1332/204674314x14110461145506\", \"title\": \"Constructing the meaning of filial responsibility: choice and obligation in the accounts of adult children\", \"authors\": [\"Laura Funk\"], \"year\": 2015, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Families, Relationships and Societies\", \"doi\": \"10.1332/204674314x14110461145506\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"This article reports findings from an interpretive study of filial responsibility constructions among 28 adult children with ageing parents in Victoria, Canada. Participants were interviewed in person and data were analysed using coding and constant comparison, with attention to the content and process of talk. Participants tended to have difficulty with using the construct of responsibility to describe the support they provided for ageing parents. Ambivalence was tied to symbolic associations of the construct with obligation and burden, which were difficult to reconcile with interpretations of filial relationships as loving and moral, and participants’ desires to construct themselves as autonomous. Participants also sought to interpret parent support as voluntary, yet the ideal of choice was difficult to reconcile with specific realities. The discussion highlights how the interpretive framework of choice may further inadvertently support political and economic goals that promote and increase the need for family care of older people. </jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"eb578203c33673c2accdb2980054835613226e6896ee724f3ea297351c1c6789\", \"excerpt_start\": 0, \"excerpt_end\": 1059, \"total_characters\": 1059, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"eb578203c33673c2accdb2980054835613226e6896ee724f3ea297351c1c6789\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 2.9,
+     "phase": "start",
+     "name": "advisor_council",
+     "call_id": "call_00_8PzAh1qUn5dfagC2TXyt4251"
+    },
+    {
+     "t": 3.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_VOVBiVLjeTaemE0HJ3bM5979"
+    },
+    {
+     "t": 3.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_kDWGYTJa7gcbyxlHUYhj3929"
+    },
+    {
+     "t": 3.4,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_03_ma7O3isD07ju22so70Kd9718",
+     "status": "success",
+     "duration_seconds": 0.042
+    },
+    {
+     "t": 3.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "启蒙 不成熟 自己运用理智",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.092,
+     "result_full": "{\"query\": \"启蒙 不成熟 自己运用理智\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 65, \"chapter_title\": \"答复这个问题：“什么是启蒙运动？”\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·答复这个问题：“什么是启蒙运动？”】\", \"snippet\": \"答复这个问题：“什么是启蒙运动？” (1) 启蒙运动就是人类脱离自己所加之于自己以不成熟状态。不成熟状态 就是不经别人的引导，就对运用自己的理智无能为力。当其原因不在于缺乏理智，而在于不经别人的引导就缺乏勇气与决心去加以运用时，那么这种不成熟状态就是 自己所加之于自己的 了。Sapere aude！ (2) 要有勇气运用你 自己的 理智！这就是启蒙运动 (3) 的口号。 懒惰和怯懦乃是何以有如此之大量的人，当大自然早已把他们从外界的引导之下释放出来了以后（naturaliter maiorennes (4) ），却仍然愿意终身处于不成熟的状态之中，以及别人何以那么轻而易举地就俨然以他们的保护人自居的原因之所在。处于不成熟状态是那么地\", \"score\": 318, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 65, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 28, \"chapter_title\": \"纯粹实践理性的要素论\", \"citation_label\": \"【《康德文集》·纯粹实践理性的要素论】\", \"snippet\": \"志着英勇无畏的精神，因而假定了一个敌人。鉴于此，德性这个名称是一个庄严的名称，至于它经常被滥用来吹牛自夸，并且（如同近代启蒙这个词一样）遭到嘲讽，则丝毫无损于它。——这是因为，要求勇敢，就已经足以有一半称得起德性了；与此相反，懒惰的、全然不信任自身的、等待外部帮助的、怯懦的思维方式（在道德和宗教中）松懈了人的所有力量，使人自身不配得到这种帮助。 但是，那些勇敢的人们却错认了他们的敌人。他们的敌人不应该在自然的、只不过是未受教化的、但却毫不掩饰地向每一个人的意识公开呈现的偏好中去寻找，而是一个似乎不可见的、隐藏在理性背后的敌人，因而也就更加危险。理性运用智慧去与仅仅是不小心而可能被偏好蒙骗的愚蠢进行斗争，却不召唤它去反对用败坏灵魂的基\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 28, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 73, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"认识来说至少在我看来具有不容轻视的意义的新原则，它们虽然既不是初始性的，也不是最单纯的，但却因此而比其他任何原则都更便于运用，具有同样大的适用范围。何况，对于怀着这样的意图走上一条绝对没人走过的小道的人来说，犯错误跌上一跤是极容易的，我相信，善意的读者将以厚道的判断方法把这一切接纳入较好的类别。 第一章 论矛盾律 预示 由于在本文中我将主要致力于简明扼要，我认为，这里不再次抄录根据广为传播的知识在我们看来稳定且与健康理智一致的那些定义和公理，不力图效仿那些奴隶般地受制于连我也不知道的某种方法规定的人的习俗，要更好一些；这些人如果不从头到尾历数在哲学家们的书匣中找到的一切，就自己觉得没有按照方法和理性行事。由于在我看来决定这样做并不是\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 73, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 85, \"chapter_title\": \"纯然理性界限内的宗教\", \"citation_label\": \"【《康德文集》·纯然理性界限内的宗教】\", \"snippet\": \"志着英勇无畏的精神，因而假定了一个敌人。鉴于此，德性这个名称是一个庄严的名称，至于它经常被滥用来吹牛自夸，并且（如同近代启蒙这个词一样）遭到嘲讽，则丝毫无损于它。——这是因为，要求勇敢，就已经足以有一半称得起德性了；与此相反，懒惰的、全然不信任自身的、等待外部帮助的、怯懦的思维方式（在道德和宗教中）松懈了人的所有力量，使人自身不配得到这种帮助。 但是，那些勇敢的人们却错认了他们的敌人。他们的敌人不应该在自然的、只不过是未受教化的、但却毫不掩饰地向每一个人的意识公开呈现的偏好中去寻找，而是一个似乎不可见的、隐藏在理性背后的敌人，因而也就更加危险。理性运用智慧去与仅仅是不小心而可能被偏好蒙骗的愚蠢进行斗争，却不召唤它去反对用败坏灵魂的基\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 85, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 90, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"687~700页，哈勒，1799。 启蒙就是人从他咎由自取的受监护状态走出。受监护状态就是没有他人的指导就不能使用自己的理智的状态。如果这种受监护状态的原因不在于缺乏理智，而在于缺乏无须他人指导而使用自己的理智的决心和勇气，则它就是咎由自取的。因此，Sapere aude［要敢于认识］ [1] ！要有勇气使用你自己的理智！这就是启蒙的格言。 为什么有这么大一部分人，在自然早就使他们免除外来的指导（naturaliter maiorennes［自然方面的成年人］）之后，仍然乐意终生保持受监护状态？为什么另外一些人如此容易自命为他们的监护者？其原因就是懒惰和怯懦。受监护状态是如此舒适。如果我有一本书代替我拥有理智，有一位牧师代替我拥有良\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 90, \"focus\": \"启蒙 成熟 自己 运用 理智\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"启蒙 不成熟 自己运用理智\", \"query_terms\": [\"启蒙\", \"成熟\", \"自己\", \"运用\", \"理智\"]}], \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 5.3,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "孝 父母之命 听从"
+     },
+     "status": "success",
+     "duration_seconds": 1.711,
+     "result_full": "{\"query\": \"孝 父母之命 听从\", \"results\": [{\"book_id\": \"78687dc8052a\", \"book_title\": \"吕氏春秋\", \"author\": \"吕不韦\", \"chapter_idx\": 13, \"chapter_title\": \"孝行览\", \"citation_label\": \"【《吕氏春秋》·孝行览】\", \"snippet\": \"【孝行】 一曰：凡为天下，治国家，必务本而後末。所谓本者，非耕耘种植之谓，务其人也。务其人，非贫而富之，寡而众之，务其本也。务本莫贵於孝。人主孝，则名章荣，下服听，天下誉；人臣孝，则事君忠，处官廉，临难死；士民孝，则耕芸疾，守战固，不罢北。夫孝，三皇五帝之本务，而万事之纪也。夫执一术而百善至，百邪去，天下从者，其惟孝也！故论人必先以所亲，而後及所疏；必先以所重，而後及所轻。今有人於此，行於亲重，而不简慢於轻疏，则是笃谨孝道。先王之所以治天下也。故爱其亲，不敢恶人；敬其亲，不敢慢人。爱敬尽於事亲，光耀加於百姓，究於四海，此天子之孝也。曾子曰：“身者，父母之遗体也。行父母之遗体，敢不敬乎？居处不庄，非孝也；事君不忠，非孝也；莅官不敬，非\", \"score\": 0.5905, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"78687dc8052a\", \"chapter_idx\": 13, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 5.002}, {\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。 鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问\", \"score\": 0.5741, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.73}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 338, \"chapter_title\": \"221\", \"citation_label\": \"【《尼采文集（合集）》·221】\", \"snippet\": \" 宽容 。——父子之间的相互宽容远胜于母女之间的宽容。\", \"score\": 0.5591, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 338, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.481}, {\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 2, \"chapter_title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"snippet\": \"子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？” 有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” 子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。” 子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。” 曾子曰：“慎终追远，民德\", \"score\": 0.5482, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.299}, {\"book_id\": \"4d187a31575a\", \"book_title\": \"中庸\", \"author\": \"子思\", \"chapter_idx\": 20, \"chapter_title\": \"第十九章\", \"citation_label\": \"【《中庸》·第十九章】\", \"snippet\": \"子曰：“武王、周公，其达孝矣乎。 夫孝者，善继人之志，善述人之事者也。 春秋，修其祖庙，陈其宗器，设其裳衣，荐其时食。 宗庙之礼，所以序昭穆也。序爵，所以辨贵贱也。序事，所以辨贤也。旅酬下为上，所以逮贱也。燕毛所以序齿也。 践其位，行其礼，奏其乐，敬其所尊，爱其所亲，事死如事生，事亡如事存，孝之至也。 郊社之礼，所以事上帝也。宗庙之礼，所以祀乎其先也。明乎郊社之礼，禘尝之义，治国其如示诸掌乎。”\", \"score\": 0.534, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"4d187a31575a\", \"chapter_idx\": 20, \"focus\": \"孝 父母之命 听从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.063}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 7.3,
+     "phase": "result_orphan",
+     "name": "advisor_council",
+     "args": {
+      "question": "父母说\"养我这么大，你就应该听我们安排工作和婚姻\"。子女是否欠父母这种服从？\"养育之恩\"能否构成对成年子女职业与婚姻选择的支配权？"
+     },
+     "status": "success",
+     "duration_seconds": 3.734,
+     "result_full": "{\"kind\": \"perspectives_scaffold\", \"summary\": \"三种思维模型的多视角建议脚手架: 视角/预设/张力点/综合提示; 最终建议由主 Agent 综合\", \"confidence\": 0.65, \"council\": {\"perspectives\": [{\"advisor\": \"亚里士多德（实践智慧/中道）\", \"advice\": \"若你把感恩理解为对等回报而非人身支配，可承认父母付出、在重大选择上认真听取意见，但保留最终决定权；具体让步多少，取决于你的处境、父母依赖程度与关系成本，走极端皆非中道。\", \"assumes\": \"你既在乎与父母的关系和感恩，也在乎自己人生的主导权。\"}, {\"advisor\": \"斯多葛（可控与不可控）\", \"advice\": \"父母的观念、失望与施压属不可控；你如何判断、回应、承担后果属可控。养育之恩是事实，但服从与否是你的选择。把力气放在清楚表达理由、设定边界，并准备承受他们不满。\", \"assumes\": \"你更看重内心自主与对自身选择的承担，而非改变父母。\"}, {\"advisor\": \"存在主义（本真选择）\", \"advice\": \"没有哪种“欠”能替你决定职业与婚姻；若因报恩而服从，那也是你选择服从，而非被恩情决定。问自己：这是我真正认可的生活吗？若否，选择并承担焦虑，好过把人生交给他人安排。\", \"assumes\": \"你愿意为成为自己负责，并接受选择带来的孤独与冲突。\"}], \"tensions\": [\"亚里士多德要求按情境权衡让步，斯多葛则把父母是否满意划出可控范围，二者对“该投入多少关系成本”判断不同。\", \"斯多葛强调接受父母不可控，存在主义却要求你主动选择并承担冲突，一个偏安顿内心，一个偏投入行动。\", \"亚里士多德的中道可能被存在主义视为以和谐稀释本真，存在主义的决断也可能被亚里士多德视为忽视关系与后果。\"], \"synthesis_hint\": \"可先区分“感恩回报”与“人身支配”，再按你实际处境权衡可让与不可让、可承受与不可承受的代价，形成自己的边界与承担方式。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"结构化中间产物——主 Agent 按用户处境裁剪呈现, 不得原样罗列了事\"}"
+    },
+    {
+     "t": 9.3,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_MjwKkVDHNKquBVmUqGDW8292"
+    },
+    {
+     "t": 9.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_TK5mlJlU44hE6xGhmtgc2270"
+    },
+    {
+     "t": 9.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_RiXKvJXvH2E5tONsxkJ64503"
+    },
+    {
+     "t": 9.8,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_03_UddrJhoEwYtaAx8ePeJl6992"
+    },
+    {
+     "t": 10.1,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "795658cafeab",
+      "chapter_idx": 30,
+      "focus": "孝子所不从命有三",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"chapter_idx\": 30, \"title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"text\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。\\n鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问，孔子不对。 孔子趋出以语子贡曰：“乡者，君问丘也，曰：‘子从父命，孝乎？臣从君命，贞 乎？’三问而丘不对，赐以为何如？”子贡曰：“子从父命，孝矣。臣从君命，贞 矣，夫子有奚对焉？”孔子曰：“小人哉！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。”\\n子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出则友贤，何为而无孝之名也！”\\n子路问于孔子曰：“鲁大夫练而床，礼邪？”孔子曰：“吾不知也。”子路出， 谓子贡曰：“吾以为夫子无所不知，夫子徒有所不知。”子贡曰：“汝何问哉？” 子路曰：“由问：‘鲁大夫练而床，礼邪？’夫子曰：‘吾不知也。’”子贡曰： “吾将为女问之。”子贡问曰：“练而床，礼邪？”孔子曰；“非礼也。”子贡出， 谓子路曰：“女谓夫子为有所不知乎！夫子徒无所不知。女问非也。礼：居是邑不 非其大夫。”\\n子路盛服而见孔子，孔子曰：“由，是裾裾何也？昔者江出于岷山，其始出也， 其源可以滥觞，及其至江之津也，不放舟，不避风，则不可涉也。非维下流水多邪？ 今女衣服既盛，颜色充盈，天下且孰肯谏女矣！子路趋而出，改服而入，盖犹若也。 孔子曰：“由志之！吾语汝：奋于言者华，奋于行者伐，色知而有能者，小人也。 故君子知之曰知之，不知曰不知，言之要也；能之曰能之，不能曰不能，行之至也。 言要则知，行至则仁；既仁且知，夫恶有不足矣哉！”\\n子路入，子曰：“由！知者若何？仁者若何？”子路对曰：“知者使人知己， 仁者使人爱己。”子曰：“可谓士矣。”子贡入，子曰：“赐！知者若何？仁者若 何？”子贡对曰：“知者知人，仁者爱人。”子曰：“可谓士君子矣。”颜渊入， 子曰：“回！知者若何？仁者若何？”颜渊对曰：“知者自知，仁者自爱。”子曰： “可谓明君子矣。”\\n子路问于孔子曰：“君子亦有忧乎？”孔子曰：“君子其未得也，则乐其意，既已得之，又乐其治。是以有终生之乐，无一日之忧。小人者其未得也，则忧不得； 既已得之，又恐失之。是以有终身之忧，无一日之乐也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1413, \"chapter_text_length\": 1413, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"孝子所不从命有三\"], \"focus_terms_found_in_chapter\": [\"孝子所不从命有三\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"孝子所不从命有三\", \"offset\": 72, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"offset\": 0, \"focus\": \"孝子所不从命有三\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"85ee806dca6d8ca002a255aedbb600fa6af6e04accb338c28ccbffd37a326127\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/795658cafeab?ch=30\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 1413]], \"covered_characters\": 1413, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 10.1,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "focus": "自由 干涉 权力 违背其意志"
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"id\": \"6a65e3ef874f\", \"title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《论自由》是英国哲学家约翰·斯图尔特·密尔的经典之作，首次出版于1859年。该书是自由主义政治哲学的奠基性文本，系统地阐述了个人自由与社会权威之间的界限。密尔在书中提出了著名的“伤害原则”，即只有当个人的行为伤害到他人时，社会才有权干涉。他主张思想自由、言论自由和个性发展是幸福社会的基石，并警告“多数人的暴政”可能比专制政府的压迫更为可怕。密尔将自由分为思想与言论自由、个性自由以及社会对个人行为的限制三个层面，强调自由不仅是个人幸福的必要条件，也是社会进步和真理发现的动力。书中还探讨了自由与功利的关系，密尔认为自由最终服务于人类的福祉，但自由本身具有内在价值。这部著作对后世的政治哲学、法学和伦理学产生了深远影响，成为现代民主社会自由理念的重要基石。\", \"rank\": 41.2, \"chapterCount\": 6, \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 6, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 6, \"readable\": true, \"chapters\": [], \"matched_chapters\": 0, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 10.1,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "不待父母之命 媒妁之言 钻穴隙相窥",
+      "author": "孟子"
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"query\": \"不待父母之命 媒妁之言 钻穴隙相窥\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 5, \"chapter_title\": \"滕文公章句下\", \"citation_label\": \"【《孟子》·滕文公章句下】\", \"snippet\": \"未尝闻仕如此其急。仕如此其急也，君子之难仕，何也？” 曰：“丈夫生而愿为之有室，女子生而愿为之有家。父母之心，人皆有之。不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之。古之人未尝不欲仕也，又恶不由其道。不由其道而往者，与钻穴隙之类也。” 滕文公章句下·第四节 彭更问曰：“后车数十乘，从者数百人，以传食于诸侯，不以泰乎？” 孟子曰：“非其道，则一箪食不可受于人；如其道，则舜受尧之天下，不以为泰，子以为泰乎？” 曰：“否。士无事而食，不可也。” 曰：“子不通功易事，以羡补不足，则农有余粟，女有余布；子如通之，则梓匠轮舆皆得食于子。于此有人焉，入则孝，出则悌，守先王之道，以待后之学者，而不得食于子。子何尊梓匠轮舆而轻为仁义\", \"score\": 209, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 5, \"focus\": \"不待父母之命 媒妁之言 钻穴隙相窥\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"citation_label\": \"【《孟子》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 14}, \"search_scope\": {\"author\": \"孟子\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 10.1,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "事父母几谏 见志不从 又敬不违",
+      "author": "孔子"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"query\": \"事父母几谏 见志不从 又敬不违\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 5, \"chapter_title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"snippet\": \"子曰：“夫子之道，忠恕而已矣。” 子曰：“君子喻于义，小人喻于利。” 子曰：“见贤思齐焉，见不贤而内自省也。” 子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。” 子曰：“父母在，不远游，游必有方。” 子曰：“三年无改于父之道，可谓孝矣。” 子曰：“父母之年，不可不知也。一则以喜，一则以惧。” 子曰：“古者言之不出，耻躬之不逮也。” 子曰：“以约失之者鲜矣。” 子曰：“君子欲讷于言而敏于行。” 子曰：“德不孤，必有邻。” 子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”\", \"score\": 210, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 5, \"focus\": \"事父母几谏 见志不从 又敬不违\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"citation_label\": \"【《论语》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 22}, \"search_scope\": {\"author\": \"孔子\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 11.6,
+     "phase": "result",
+     "name": "get_book_detail",
+     "call_id": "call_00_Ix4KgdXFxTWoPD8Kxusk9542",
+     "status": "success",
+     "duration_seconds": 0.002
+    },
+    {
+     "t": 12.4,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_6zyvEuZ3RTCdWI3aZJzb1631",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 13.5,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_zeDRvgUGpiQYdQnTifT10836",
+     "status": "success",
+     "duration_seconds": 0.004
+    },
+    {
+     "t": 19.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_WL3ia5OFBli33pqji4rG6480"
+    },
+    {
+     "t": 19.6,
+     "phase": "result",
+     "name": "search_scholarship",
+     "call_id": "call_01_xai8l3Bh4YT55FkBUXRU5689",
+     "status": "partial",
+     "duration_seconds": 1.215
+    },
+    {
+     "t": 21.3,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "父有争子 则身不陷于不义 子不可以不争于父"
+     },
+     "status": "success",
+     "duration_seconds": 1.55,
+     "result_full": "{\"query\": \"父有争子 则身不陷于不义 子不可以不争于父\", \"results\": [{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。” 子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出\", \"score\": 0.6298, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"父有争子 则身不陷于不义 子不可以不争于父\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 5.087}, {\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\": \"【《韩非子》·忠孝】\", \"snippet\": \"天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，\", \"score\": 0.5949, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 52, \"focus\": \"父有争子 则身不陷于不义 子不可以不争于父\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.595}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 338, \"chapter_title\": \"221\", \"citation_label\": \"【《尼采文集（合集）》·221】\", \"snippet\": \" 宽容 。——父子之间的相互宽容远胜于母女之间的宽容。\", \"score\": 0.574, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 338, \"focus\": \"父有争子 则身不陷于不义 子不可以不争于父\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.3}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 24.0,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_qmK098k23l4VU9gqD2xa2540",
+     "status": "success",
+     "duration_seconds": 0.083
+    }
+   ],
+   "answer": "## 先把这句话拆成三个不同的问题\n\n\"我就应该听他们安排\"这一句里塞了三件事，它们各自的答案是分开的：\n\n1. 我是否对父母负有某种义务（感恩、回报、照顾）？\n2. 这种义务是否包含**服从他们对我的职业与婚姻的安排**？\n3. 如果我不服从，我是不是就是忘恩负义？\n\n第 1 问的答案很可能是\"是\"；第 3 问的答案很可能是\"不\"；关键在于第 2 问——而它在很多家庭争论里被跳过了。\n\n## \"欠\"这个模型为什么不足以支撑\"安排\"\n\n把养育理解成借款、把服从理解成还款，有两个问题。\n\n**一是它把义务说成了交易。** 你没有同意过被生下来、被这样养大。一种常见的道德分析是：父母既然把孩子带到世上，抚养就是他们随之承担的、不可选的义务，因此那是\"履行职责\"，不是\"放贷\"。这一点我不当成定论——有理由认为，父母超出义务范围的那些额外付出（牺牲、忍耐、放弃的机会）仍会产生真实的感恩要求。但请注意这两者的差别：**感恩要求的是承认与回报，不是交出人生的决定权。**\n\n**二是\"我养了你\"到\"所以工作和婚姻由我定\"之间缺一步推论。** 养育要是能推出支配权，那么凡对某人有重大恩惠者都可以支配对方——这条推论显然过宽，而且它把\"成年\"这个事实抹掉了。养育也从不是支配的必要条件：父母并没有因为不再养育就失去什么，而是你对一个成年人本来就没有这种支配权。\n\n**还有一点位置上的不对称。** 工作是你每天要去做的事，婚姻是你要与之共同生活的人。这两件事的后果由你（如果涉及婚姻，还有另一个人）日复一日地承担。父母可以判断\"哪条路好\"，但承担后果的不是他们，所以他们提的是建议、期待或请求——不是可以代为行使的授权。\n\n## 顺带一说：把\"中国传统就是绝对服从\"当成前提，本身不成立\n\n很多人（包括一些父母）默认儒家等于\"父命不可违\"。原典并非如此。\n\n《荀子·子道》明说：\"**从道不从君，从义不从父，人之大行也。**\"接着列出可以不从命的情形：\"**孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱，不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。**\"同篇记孔子答鲁哀公\"子从父命，孝乎\"，孔子三问不答，事后批评子贡：\"**故子从父，奚子孝？臣从君，奚臣贞？审其所以从之之谓孝、之谓贞也。**\"——从命本身不算孝，要看所从的是什么。（以上引文见《荀子·子道》）\n\n《论语·里仁》说\"**事父母几谏，见志不从，又敬不违，劳而不怨**\"。\"几谏\"是委婉劝谏；\"见志不从\"承认父母可以不听你的。不过\"又敬不违\"该怎么解，历来有分歧（是\"不违逆父母\"还是\"不放弃恭敬\"），我不把它当成\"你有权拒绝\"的清晰依据。\n\n同时，反方向的材料也必须摆出来：《孟子·滕文公下》以\"**不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之**\"为负面图景，确实正面承认了父母之命在婚姻中的地位（该段是拿\"不由其道而仕\"作类比）。所以传统内部本身就有\"敬、养、顺、报\"与\"从义不从父、谏诤\"两股力量在拉扯，并不给你一个\"绝对服从\"的统一答案。\n\n## 一条更清楚的界标\n\n密尔在《论自由》里给出了一条可以借用的界线（他谈的是社会对个人的强制，不是家庭伦理，平行过来是一种类比延伸，不是直接适用）：\n\n> \"人类之所以有理有权可以各别地或者集体地对其中任何分子的行动自由进行干涉，唯一的目的只是自我防卫。这就是说，对于文明群体中的任一成员，所以能够施用一种权力以反其意志而不失为正当，唯一的目的只是要防止对他人的危害。若说为了那人自己的好处，不论是物质上的或者是精神上的好处，那不成为充足的理由……任何人的行为，只有涉及他人的那部分才须对社会负责。在仅只涉及本人的那部分，他的独立性在权利上则是绝对的。对于本人自己，对于他自己的身和心，个人乃是最高主权者。\"\n> ——密尔《论自由》第一章\n\n密尔自己加了一个限定，值得留意，因为它正是父母那句话的隐含前提：\"这条教义只适用于能力已达成熟的人类。我们不是在论幼童，或是在论尚在法定成年男女以下的青年。\"——这个限定是合理的：如果子女尚未成年，或有严重到无法自理的状况，\"为自己好而干预\"确有正当性。但一个能自己上班、自己结婚的成年子女，已经不在这个限定的范围里了。康德在《答复这个问题：\"什么是启蒙运动？\"》里说，受监护状态是\"没有他人的指导就不能使用自己的理智的状态\"，而\"自然早就使他们免除外来的指导\"，仍愿受监护，原因是\"懒惰和怯懦\"。这话不是针对你的父母，是指向一个普遍处境：成年意味着自己运用判断并担责。\n\n## 那\"我欠他们什么\"？\n\n可以这样分：\n\n**可以认下的**——不失联、不羞辱、认真听他们的意见并给出理由；在他们真实需要时（病、老、经济困难）提供照顾；重大决定上不把他们当外人。这些是实质性的回报，代价也不小。\n\n**不宜交出的**——与谁共同生活、每天做什么工作。这不是\"小事上让一步\"的问题，而是决定权本身的归属。\n\n**必须承认的代价**——如果你不服从，父母可能失望、关系紧张，甚至撤回经济支持或其他帮助。这些是真实的代价，不是说说就消失的。选择不服从的人也选择了承担它；这比把人生交出去之后长年怨怼要清楚。\n\n所以，直接回答你的问题：**养育可以产生义务，但不能产生对一个成年人的支配权。**\"我养你这么大\"和\"你的工作和婚姻由我安排\"之间，那一步推论是缺失的——不是因为你不感恩，而是因为感恩这一类的义务在概念上就不是转让决定权的义务。\n\n有一件事我无法替你判断，也不该替他",
+   "answer_chars": 2298,
+   "done_content": "## 先把这句话拆成三个不同的问题\n\n\"我就应该听他们安排\"这一句里塞了三件事，它们各自的答案是分开的：\n\n1. 我是否对父母负有某种义务（感恩、回报、照顾）？\n2. 这种义务是否包含**服从他们对我的职业与婚姻的安排**？\n3. 如果我不服从，我是不是就是忘恩负义？\n\n第 1 问的答案很可能是\"是\"；第 3 问的答案很可能是\"不\"；关键在于第 2 问——而它在很多家庭争论里被跳过了。\n\n## \"欠\"这个模型为什么不足以支撑\"安排\"\n\n把养育理解成借款、把服从理解成还款，有两个问题。\n\n**一是它把义务说成了交易。** 你没有同意过被生下来、被这样养大。一种常见的道德分析是：父母既然把孩子带到世上，抚养就是他们随之承担的、不可选的义务，因此那是\"履行职责\"，不是\"放贷\"。这一点我不当成定论——有理由认为，父母超出义务范围的那些额外付出（牺牲、忍耐、放弃的机会）仍会产生真实的感恩要求。但请注意这两者的差别：**感恩要求的是承认与回报，不是交出人生的决定权。**\n\n**二是\"我养了你\"到\"所以工作和婚姻由我定\"之间缺一步推论。** 养育要是能推出支配权，那么凡对某人有重大恩惠者都可以支配对方——这条推论显然过宽，而且它把\"成年\"这个事实抹掉了。养育也从不是支配的必要条件：父母并没有因为不再养育就失去什么，而是你对一个成年人本来就没有这种支配权。\n\n**还有一点位置上的不对称。** 工作是你每天要去做的事，婚姻是你要与之共同生活的人。这两件事的后果由你（如果涉及婚姻，还有另一个人）日复一日地承担。父母可以判断\"哪条路好\"，但承担后果的不是他们，所以他们提的是建议、期待或请求——不是可以代为行使的授权。\n\n## 顺带一说：把\"中国传统就是绝对服从\"当成前提，本身不成立\n\n很多人（包括一些父母）默认儒家等于\"父命不可违\"。原典并非如此。\n\n《荀子·子道》明说：\"**从道不从君，从义不从父，人之大行也。**\"接着列出可以不从命的情形：\"**孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱，不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。**\"同篇记孔子答鲁哀公\"子从父命，孝乎\"，孔子三问不答，事后批评子贡：\"**故子从父，奚子孝？臣从君，奚臣贞？审其所以从之之谓孝、之谓贞也。**\"——从命本身不算孝，要看所从的是什么。（以上引文见《荀子·子道》）\n\n《论语·里仁》说\"**事父母几谏，见志不从，又敬不违，劳而不怨**\"。\"几谏\"是委婉劝谏；\"见志不从\"承认父母可以不听你的。不过\"又敬不违\"该怎么解，历来有分歧（是\"不违逆父母\"还是\"不放弃恭敬\"），我不把它当成\"你有权拒绝\"的清晰依据。\n\n同时，反方向的材料也必须摆出来：《孟子·滕文公下》以\"**不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之**\"为负面图景，确实正面承认了父母之命在婚姻中的地位（该段是拿\"不由其道而仕\"作类比）。所以传统内部本身就有\"敬、养、顺、报\"与\"从义不从父、谏诤\"两股力量在拉扯，并不给你一个\"绝对服从\"的统一答案。\n\n## 一条更清楚的界标\n\n密尔在《论自由》里给出了一条可以借用的界线（他谈的是社会对个人的强制，不是家庭伦理，平行过来是一种类比延伸，不是直接适用）：\n\n> \"人类之所以有理有权可以各别地或者集体地对其中任何分子的行动自由进行干涉，唯一的目的只是自我防卫。这就是说，对于文明群体中的任一成员，所以能够施用一种权力以反其意志而不失为正当，唯一的目的只是要防止对他人的危害。若说为了那人自己的好处，不论是物质上的或者是精神上的好处，那不成为充足的理由……任何人的行为，只有涉及他人的那部分才须对社会负责。在仅只涉及本人的那部分，他的独立性在权利上则是绝对的。对于本人自己，对于他自己的身和心，个人乃是最高主权者。\"\n> ——密尔《论自由》第一章\n\n密尔自己加了一个限定，值得留意，因为它正是父母那句话的隐含前提：\"这条教义只适用于能力已达成熟的人类。我们不是在论幼童，或是在论尚在法定成年男女以下的青年。\"——这个限定是合理的：如果子女尚未成年，或有严重到无法自理的状况，\"为自己好而干预\"确有正当性。但一个能自己上班、自己结婚的成年子女，已经不在这个限定的范围里了。康德在《答复这个问题：\"什么是启蒙运动？\"》里说，受监护状态是\"没有他人的指导就不能使用自己的理智的状态\"，而\"自然早就使他们免除外来的指导\"，仍愿受监护，原因是\"懒惰和怯懦\"。这话不是针对你的父母，是指向一个普遍处境：成年意味着自己运用判断并担责。\n\n## 那\"我欠他们什么\"？\n\n可以这样分：\n\n**可以认下的**——不失联、不羞辱、认真听他们的意见并给出理由；在他们真实需要时（病、老、经济困难）提供照顾；重大决定上不把他们当外人。这些是实质性的回报，代价也不小。\n\n**不宜交出的**——与谁共同生活、每天做什么工作。这不是\"小事上让一步\"的问题，而是决定权本身的归属。\n\n**必须承认的代价**——如果你不服从，父母可能失望、关系紧张，甚至撤回经济支持或其他帮助。这些是真实的代价，不是说说就消失的。选择不服从的人也选择了承担它；这比把人生交出去之后长年怨怼要清楚。\n\n所以，直接回答你的问题：**养育可以产生义务，但不能产生对一个成年人的支配权。**\"我养你这么大\"和\"你的工作和婚姻由我安排\"之间，那一步推论是缺失的——不是因为你不感恩，而是因为感恩这一类的义务在概念上就不是转让决定权的义务。\n\n有一件事我无法替你判断，也不该替他",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "book": "论自由",
+     "chapter": "第一章 引论",
+     "book_id": "6a65e3ef874f",
+     "chapter_idx": 1,
+     "author": "约翰·斯图尔特·密尔",
+     "evidence_id": "read_d7d56732a636",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "涉及他人的那部分才须对社会负责。在仅只涉及本人的那部分，他的独立性在权利上则是绝对的。对于本人自己，对于他自己的身和心，个人乃是最高主权者。\n或许无须多加说明，这条教义只适用于能力已达成熟的人类。我们不是在论幼童，或是在论尚在法定成年男女以下的青年。对于尚处在需要他人加以照管的状态的人们，对他们自己的行动也须加以防御，正如对外未的伤害须加以防御一样。根据同样理由，对于那种种族自身尚可视为未届成年的社会当中的一些落后状态，我们也可以置诸不论。在自发的进步途程中，早期的困难是如此严重，以致在克服困难的手段方面竟难容许有所选择；因此若遇有一个富有改善精神的统治者，他就有理由使用任何便宜方略借以达成一个非此就许不能达成的目的。在对付野蛮人时，专制政府正是一个合法的型式，只要目的是为着使他们有所改善，而所用手段又因这个目的之得以实现而显为正当，自由，作为一条原则来说，在人类还未达到能够借自由的和对等的讨论而获得改善的阶段以前的任何状态中，是无所适用的。不到那样的时候，人们只有一无所疑地服从一个阿喀霸（Akbar）或者一个查理曼（Charlemagne），假如他们幸而找到那样一位大帝的话。但是，一到人类获得了这种能力可以借说服或劝告来引他们去自行改善的时候（这个时期，所有国族老早已经达到，这里也必须提到我们自己），强制的办法，无论出以直接的形式或者出以如有不服则加痛惩的形式，就不能再成为为着他",
+     "quoted_passages": [
+      "这条教义只适用于能力已达成熟的人类。我们不是在论幼童，或是在论尚在法定成年男女以下的青年。"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 10642,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 17,
+    "display_citations": 1,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "论自由",
+       "chapter": "第一章 引论",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 1,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "涉及他人的那部分才须对社会负责。在仅只涉及本人的那部分，他的独立性在权利上则是绝对的。对于本人自己，对于他自己的身和心，个人乃是最高主权者。\n或许无须多加说明，这条教义只适用于能力已达成熟的人类。我们不是在论幼童，或是在论尚在法定成年男女以下的青年。对于尚处在需要他人加以照管的状态的人们，对他们自己的行动也须加以防御，正如对外未的伤害须加以防御一样。根据同样理由，对于那种种族自身尚可视为未届成年的社会当中的一些落后状态，我们也可以置诸不论。在自发的进步途程中，早期的困难是如此严重，以致在克服困难的手段方面竟难容许有所选择；因此若遇有一个富有改善精神的统治者，他就有理由使用任何便宜方略借以达成一个非此就许不能达成的目的。在对付野蛮人时，专制政府正是一个合法的型式，只要目的是为着使他们有所改善，而所用手段又因这个目的之得以实现而显为正当，自由，作为一条原则来说，在人类还未达到能够借自由的和对等的讨论而获得改善的阶段以前的任何状态中，是无所适用的。不到那样的时候，人们只有一无所疑地服从一个阿喀霸（Akbar）或者一个查理曼（Charlemagne），假如他们幸而找到那样一位大帝的话。但是，一到人类获得了这种能力可以借说服或劝告来引他们去自行改善的时候（这个时期，所有国族老早已经达到，这里也必须提到我们自己），强制的办法，无论出以直接的形式或者出以如有不服则加痛惩的形式，就不能再成为为着他",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 10642,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "荀子",
+       "chapter": "子道",
+       "book_id": "795658cafeab",
+       "chapter_idx": 30,
+       "author": "荀子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。\n鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问，孔子不对。 孔子趋出以语子贡曰：“乡者，君问丘也，曰：‘子从父命，孝乎？臣从君命，贞 乎？’三问而丘不对，赐以为何如？”子贡曰：“子从父命，孝矣。臣从君命，贞 矣，夫子有奚对焉？”孔子曰：“小人哉！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。”\n子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出则友贤，何为而无孝之名也！”\n子路问于孔子曰：“鲁大夫练而床，礼邪？”孔子曰：“吾不知也。”子路出， 谓子贡曰：“吾以为夫子无所不知，夫子徒有所不知。”子贡曰：“汝",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 1413,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "论自由",
+       "chapter": "",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": -1,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "妇女的屈从地位",
+       "chapter": "",
+       "book_id": "bece6ea379fa",
+       "chapter_idx": -1,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "功利主义",
+       "chapter": "",
+       "book_id": "e23d6fac862d",
+       "chapter_idx": -1,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "答复这个问题：“什么是启蒙运动？”",
+       "book_id": "309de54e4392",
+       "chapter_idx": 65,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "答复这个问题：“什么是启蒙运动？” (1) 启蒙运动就是人类脱离自己所加之于自己以不成熟状态。不成熟状态 就是不经别人的引导，就对运用自己的理智无能为力。当其原因不在于缺乏理智，而在于不经别人的引导就缺乏勇气与决心去加以运用时，那么这种不成熟状态就是 自己所加之于自己的 了。Sapere aude！ (2) 要有勇气运用你 自己的 理智！这就是启蒙运动 (3) 的口号。 懒惰和怯懦乃是何以有如此之大量的人，当大自然早已把他们从外界的引导之下释放出来了以后（naturaliter maiorennes (4) ），却仍然愿意终身处于不成熟的状态之中，以及别人何以那么轻而易举地就俨然以他们的保护人自居的原因之所在。处于不成熟状态是那么地",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "纯粹实践理性的要素论",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 28,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "志着英勇无畏的精神，因而假定了一个敌人。鉴于此，德性这个名称是一个庄严的名称，至于它经常被滥用来吹牛自夸，并且（如同近代启蒙这个词一样）遭到嘲讽，则丝毫无损于它。——这是因为，要求勇敢，就已经足以有一半称得起德性了；与此相反，懒惰的、全然不信任自身的、等待外部帮助的、怯懦的思维方式（在道德和宗教中）松懈了人的所有力量，使人自身不配得到这种帮助。 但是，那些勇敢的人们却错认了他们的敌人。他们的敌人不应该在自然的、只不过是未受教化的、但却毫不掩饰地向每一个人的意识公开呈现的偏好中去寻找，而是一个似乎不可见的、隐藏在理性背后的敌人，因而也就更加危险。理性运用智慧去与仅仅是不小心而可能被偏好蒙骗的愚蠢进行斗争，却不召唤它去反对用败坏灵魂的基",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "相关论述",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 73,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "认识来说至少在我看来具有不容轻视的意义的新原则，它们虽然既不是初始性的，也不是最单纯的，但却因此而比其他任何原则都更便于运用，具有同样大的适用范围。何况，对于怀着这样的意图走上一条绝对没人走过的小道的人来说，犯错误跌上一跤是极容易的，我相信，善意的读者将以厚道的判断方法把这一切接纳入较好的类别。 第一章 论矛盾律 预示 由于在本文中我将主要致力于简明扼要，我认为，这里不再次抄录根据广为传播的知识在我们看来稳定且与健康理智一致的那些定义和公理，不力图效仿那些奴隶般地受制于连我也不知道的某种方法规定的人的习俗，要更好一些；这些人如果不从头到尾历数在哲学家们的书匣中找到的一切，就自己觉得没有按照方法和理性行事。由于在我看来决定这样做并不是",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "纯然理性界限内的宗教",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 85,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "志着英勇无畏的精神，因而假定了一个敌人。鉴于此，德性这个名称是一个庄严的名称，至于它经常被滥用来吹牛自夸，并且（如同近代启蒙这个词一样）遭到嘲讽，则丝毫无损于它。——这是因为，要求勇敢，就已经足以有一半称得起德性了；与此相反，懒惰的、全然不信任自身的、等待外部帮助的、怯懦的思维方式（在道德和宗教中）松懈了人的所有力量，使人自身不配得到这种帮助。 但是，那些勇敢的人们却错认了他们的敌人。他们的敌人不应该在自然的、只不过是未受教化的、但却毫不掩饰地向每一个人的意识公开呈现的偏好中去寻找，而是一个似乎不可见的、隐藏在理性背后的敌人，因而也就更加危险。理性运用智慧去与仅仅是不小心而可能被偏好蒙骗的愚蠢进行斗争，却不召唤它去反对用败坏灵魂的基",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "相关论述",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 90,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "687~700页，哈勒，1799。 启蒙就是人从他咎由自取的受监护状态走出。受监护状态就是没有他人的指导就不能使用自己的理智的状态。如果这种受监护状态的原因不在于缺乏理智，而在于缺乏无须他人指导而使用自己的理智的决心和勇气，则它就是咎由自取的。因此，Sapere aude［要敢于认识］ [1] ！要有勇气使用你自己的理智！这就是启蒙的格言。 为什么有这么大一部分人，在自然早就使他们免除外来的指导（naturaliter maiorennes［自然方面的成年人］）之后，仍然乐意终生保持受监护状态？为什么另外一些人如此容易自命为他们的监护者？其原因就是懒惰和怯懦。受监护状态是如此舒适。如果我有一本书代替我拥有理智，有一位牧师代替我拥有良",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "吕氏春秋",
+       "chapter": "孝行览",
+       "book_id": "78687dc8052a",
+       "chapter_idx": 13,
+       "author": "吕不韦",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "【孝行】 一曰：凡为天下，治国家，必务本而後末。所谓本者，非耕耘种植之谓，务其人也。务其人，非贫而富之，寡而众之，务其本也。务本莫贵於孝。人主孝，则名章荣，下服听，天下誉；人臣孝，则事君忠，处官廉，临难死；士民孝，则耕芸疾，守战固，不罢北。夫孝，三皇五帝之本务，而万事之纪也。夫执一术而百善至，百邪去，天下从者，其惟孝也！故论人必先以所亲，而後及所疏；必先以所重，而後及所轻。今有人於此，行於亲重，而不简慢於轻疏，则是笃谨孝道。先王之所以治天下也。故爱其亲，不敢恶人；敬其亲，不敢慢人。爱敬尽於事亲，光耀加於百姓，究於四海，此天子之孝也。曾子曰：“身者，父母之遗体也。行父母之遗体，敢不敬乎？居处不庄，非孝也；事君不忠，非孝也；莅官不敬，非",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼采文集（合集）",
+       "chapter": "221",
+       "book_id": "bedc9c78dfdf",
+       "chapter_idx": 338,
+       "author": "弗里德里希·尼采",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": " 宽容 。——父子之间的相互宽容远胜于母女之间的宽容。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论语",
+       "chapter": "学而篇",
+       "book_id": "d9272a80942a",
+       "chapter_idx": 2,
+       "author": "孔子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？” 有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” 子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。” 子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。” 曾子曰：“慎终追远，民德",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中庸",
+       "chapter": "第十九章",
+       "book_id": "4d187a31575a",
+       "chapter_idx": 20,
+       "author": "子思",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子曰：“武王、周公，其达孝矣乎。 夫孝者，善继人之志，善述人之事者也。 春秋，修其祖庙，陈其宗器，设其裳衣，荐其时食。 宗庙之礼，所以序昭穆也。序爵，所以辨贵贱也。序事，所以辨贤也。旅酬下为上，所以逮贱也。燕毛所以序齿也。 践其位，行其礼，奏其乐，敬其所尊，爱其所亲，事死如事生，事亡如事存，孝之至也。 郊社之礼，所以事上帝也。宗庙之礼，所以祀乎其先也。明乎郊社之礼，禘尝之义，治国其如示诸掌乎。”",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "孟子",
+       "chapter": "滕文公章句下",
+       "book_id": "dd03ec6572e7",
+       "chapter_idx": 5,
+       "author": "孟子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "未尝闻仕如此其急。仕如此其急也，君子之难仕，何也？” 曰：“丈夫生而愿为之有室，女子生而愿为之有家。父母之心，人皆有之。不待父母之命、媒妁之言，钻穴隙相窥，逾墙相从，则父母国人皆贱之。古之人未尝不欲仕也，又恶不由其道。不由其道而往者，与钻穴隙之类也。” 滕文公章句下·第四节 彭更问曰：“后车数十乘，从者数百人，以传食于诸侯，不以泰乎？” 孟子曰：“非其道，则一箪食不可受于人；如其道，则舜受尧之天下，不以为泰，子以为泰乎？” 曰：“否。士无事而食，不可也。” 曰：“子不通功易事，以羡补不足，则农有余粟，女有余布；子如通之，则梓匠轮舆皆得食于子。于此有人焉，入则孝，出则悌，守先王之道，以待后之学者，而不得食于子。子何尊梓匠轮舆而轻为仁义",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论语",
+       "chapter": "里仁篇",
+       "book_id": "d9272a80942a",
+       "chapter_idx": 5,
+       "author": "孔子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子曰：“夫子之道，忠恕而已矣。” 子曰：“君子喻于义，小人喻于利。” 子曰：“见贤思齐焉，见不贤而内自省也。” 子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。” 子曰：“父母在，不远游，游必有方。” 子曰：“三年无改于父之道，可谓孝矣。” 子曰：“父母之年，不可不知也。一则以喜，一则以惧。” 子曰：“古者言之不出，耻躬之不逮也。” 子曰：“以约失之者鲜矣。” 子曰：“君子欲讷于言而敏于行。” 子曰：“德不孤，必有邻。” 子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "韩非子",
+       "chapter": "忠孝",
+       "book_id": "6ec167f8492b",
+       "chapter_idx": 52,
+       "author": "韩非",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 17,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 43.715,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 2.9,
+     "ev": "assistant_commentary",
+     "chars": 18
+    },
+    {
+     "t": 2.9,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 2.9,
+     "ev": "tool_start",
+     "name": "advisor_council",
+     "call_id": "call_00_8PzAh1qUn5dfagC2TXyt4251"
+    },
+    {
+     "t": 3.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_VOVBiVLjeTaemE0HJ3bM5979"
+    },
+    {
+     "t": 3.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_kDWGYTJa7gcbyxlHUYhj3929"
+    },
+    {
+     "t": 3.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_ma7O3isD07ju22so70Kd9718"
+    },
+    {
+     "t": 3.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.042,
+     "result_chars": 1537,
+     "result_head": "{\"query\": \"干涉他人自由 家长主义 仅涉己行为\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \""
+    },
+    {
+     "t": 3.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.092,
+     "result_chars": 5707,
+     "result_head": "{\"query\": \"启蒙 不成熟 自己运用理智\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 65, \"chapter_ti"
+    },
+    {
+     "t": 5.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.711,
+     "result_chars": 3857,
+     "result_head": "{\"query\": \"孝 父母之命 听从\", \"results\": [{\"book_id\": \"78687dc8052a\", \"book_title\": \"吕氏春秋\", \"author\": \"吕不韦\", \"chapter_idx\": 13, \"chapter_title\": \"孝行览\", \"citation_label"
+    },
+    {
+     "t": 7.3,
+     "ev": "tool",
+     "name": "advisor_council",
+     "status": "success",
+     "duration_s": 3.734,
+     "result_chars": 996,
+     "result_head": "{\"kind\": \"perspectives_scaffold\", \"summary\": \"三种思维模型的多视角建议脚手架: 视角/预设/张力点/综合提示; 最终建议由主 Agent 综合\", \"confidence\": 0.65, \"council\": {\"perspectives\": [{\"advisor\": \"亚"
+    },
+    {
+     "t": 9.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_MjwKkVDHNKquBVmUqGDW8292"
+    },
+    {
+     "t": 9.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_TK5mlJlU44hE6xGhmtgc2270"
+    },
+    {
+     "t": 9.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_RiXKvJXvH2E5tONsxkJ64503"
+    },
+    {
+     "t": 9.8,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_03_UddrJhoEwYtaAx8ePeJl6992"
+    },
+    {
+     "t": 10.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.005,
+     "result_chars": 2819,
+     "result_head": "{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"chapter_idx\": 30, \"title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"text\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大"
+    },
+    {
+     "t": 10.1,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 1256,
+     "result_head": "{\"id\": \"6a65e3ef874f\", \"title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《论自由》是英国哲学家约翰·斯图尔特·密尔的经典之作，首次出版于1859年。该书是自由主义政治哲"
+    },
+    {
+     "t": 10.1,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.008,
+     "result_chars": 1289,
+     "result_head": "{\"query\": \"不待父母之命 媒妁之言 钻穴隙相窥\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 5, \"chapter_title\": \"滕文公章句下\", \"citatio"
+    },
+    {
+     "t": 10.1,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.01,
+     "result_chars": 1195,
+     "result_head": "{\"query\": \"事父母几谏 见志不从 又敬不违\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 5, \"chapter_title\": \"里仁篇\", \"citation_lab"
+    },
+    {
+     "t": 11.6,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_Ix4KgdXFxTWoPD8Kxusk9542"
+    },
+    {
+     "t": 11.7,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.002,
+     "result_chars": 1490,
+     "result_head": "{\"id\": \"6a65e3ef874f\", \"title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《论自由》是英国哲学家约翰·斯图尔特·密尔的经典之作，首次出版于1859年。该书是自由主义政治哲"
+    },
+    {
+     "t": 12.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_6zyvEuZ3RTCdWI3aZJzb1631"
+    },
+    {
+     "t": 12.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5162,
+     "result_head": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"的一部分人民的意志，亦即多数或者那些能使自己被承认为多数的"
+    },
+    {
+     "t": 13.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_zeDRvgUGpiQYdQnTifT10836"
+    },
+    {
+     "t": 13.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 4169,
+     "result_head": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 1, \"title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"text\": \"数都力主良心自由乃是一种无法取消的权利，都绝对否认一个人须"
+    },
+    {
+     "t": 19.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_WL3ia5OFBli33pqji4rG6480"
+    },
+    {
+     "t": 19.6,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_01_xai8l3Bh4YT55FkBUXRU5689"
+    },
+    {
+     "t": 20.9,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.215,
+     "result_chars": 4484,
+     "result_head": "{\"query\": \"filial obligation gratitude parents adult children autonomy career marriage choice\", \"results\": [{\"source_record_id\": \"doi:10.1017/s0714980809990341\""
+    },
+    {
+     "t": 21.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.55,
+     "result_chars": 2456,
+     "result_head": "{\"query\": \"父有争子 则身不陷于不义 子不可以不争于父\", \"results\": [{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citati"
+    },
+    {
+     "t": 24.0,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_qmK098k23l4VU9gqD2xa2540"
+    },
+    {
+     "t": 24.2,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.083,
+     "result_chars": 2831,
+     "result_head": "{\"source_record_id\": \"doi:10.1332/204674314x14110461145506\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1332/204674314x14110461145506\", \"title\": \"Cons"
+    },
+    {
+     "t": 43.8,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1439
+  }
+ ],
+ "total_wall_s": 45.7,
+ "status": "COMPLETED"
+}

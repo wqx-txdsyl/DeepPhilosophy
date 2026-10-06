@@ -1,0 +1,36 @@
+{
+ "O7E_DELIVERY_METRIC_V2_PROPOSAL": true,
+ "r1_correction": "V7-F2-R1 修正历史边界表述（Reviewer 2026-09-11: 不得把 V7-F1 未决问题表述为已确认）。本修正仅涉本提案文件；V3-V7 values/verdict 绝不回写。",
+ "context": "Builder 提案侧观察（非已决裁定）：REPAIR_CREATES_NEW_FATAL_ERROR 的实现语义为 any(Rk.introduced non-empty)——计任何新 fingerprint 而非仅 fatal；名称中的 fatal 与该实现语义不完全对应，prospective V2 据此提议改名并新增语义层指标。该指标的契约一致性与命名问题在 V7-F1 RCA 中均为未决状态（见 historical_boundary），本提案不预设其结论。",
+ "historical_boundary": {
+  "HISTORICAL_INTENT_ANY_INTRODUCED_AUTO_FATAL": "NOT_ESTABLISHED",
+  "METRIC_IMPLEMENTATION_MATCHES_INTENDED_CONTRACT": "UNRESOLVED",
+  "METRIC_NAME_ONLY_MISNOMER": "UNRESOLVED",
+  "MEASUREMENT_SEMANTIC_BUG": "UNRESOLVED",
+  "source": "V7_F1_R1_REPAIR_FINGERPRINT_RCA.json（冻结裁定, 保持原义）"
+ },
+ "legacy": {
+  "name": "REPAIR_CREATES_NEW_FATAL_ERROR",
+  "actual_semantics": "any(Rk.introduced non-empty)",
+  "V3_V7_values": "全部保持原义原 verdict 不回写"
+ },
+ "v2_metrics": [
+  {
+   "name": "REPAIR_INTRODUCED_FINGERPRINT_CASES",
+   "replaces": "REPAIR_CREATES_NEW_FATAL_ERROR",
+   "semantics": "任一 repair transition 出现新 fingerprint（名称如实）"
+  },
+  {
+   "name": "REPAIR_INTRODUCED_GENUINELY_NEW_ISSUE_CASES",
+   "semantics": "repair 真正制造此前不存在的语义错误",
+   "proposed_gate": "hard gate, zero tolerance"
+  },
+  {
+   "name": "REPAIR_TRANSITION_AMBIGUOUS_CASES",
+   "semantics": "无法可靠分类的 transition",
+   "proposed_gate": "hard gate, fail-closed"
+  }
+ ],
+ "compatibility": "旧名保留为 alias; 新指标仅供 V8+ 预注册; V3-V7 verdict 绝不回写",
+ "final_gate_unchanged": true
+}

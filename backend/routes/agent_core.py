@@ -7,6 +7,7 @@ S13 检索索引与文本 LRU / embedding 缓存与向量索引。
 """
 import json, os, re, time, hashlib, threading
 from collections import OrderedDict
+from functools import lru_cache
 from pathlib import Path
 
 import guard
@@ -26,16 +27,22 @@ AI_DIR = BASE.parent / "data" / "ai_author"             # 工具: role_play（AI
 
 # ── 数据加载（带缓存）────────────────────────────────
 _books_cache = None
+_books_stamp = None
 _network_cache = None
 _philosophers_cache = None
 _cache_lock = threading.Lock()
 
 def get_books():
-    global _books_cache
-    if _books_cache is None:
+    global _books_cache, _books_stamp
+    stat = BOOKS_FILE.stat()
+    stamp = (stat.st_mtime_ns, stat.st_size)
+    if _books_cache is not None and _books_stamp is None:
+        _books_stamp = stamp
+    if _books_cache is None or _books_stamp != stamp:
         with _cache_lock:
-            if _books_cache is None:
+            if _books_cache is None or _books_stamp != stamp:
                 _books_cache = json.load(open(BOOKS_FILE, encoding="utf-8"))
+                _books_stamp = stamp
     return _books_cache
 
 def get_network():
@@ -75,6 +82,35 @@ def chapter_meta(bid):
         return json.load(open(mp, encoding="utf-8"))
     return None
 
+@lru_cache(maxsize=128)
+def block_titles(bid):
+    """块文件标题索引 {idx: title}（lru 缓存; 2026-08-31 引用跳转兜底用）
+    背景: 部分书 toc 粒度细于块文件（多个 toc 条目共用一个合并块）, 证据章节名取的是
+    块标题, 在 toc 里无同名条目 → resolveCite 落空。反查块标题即可定位回 toc index。"""
+    bid = _safe_bid(bid)
+    if not bid:
+        return {}
+    out = {}
+    d = CHAPTERS_DIR / bid
+    if not d.is_dir():
+        return out
+    for cp in d.glob("*.json"):
+        if cp.name == "meta.json":
+            continue
+        try:
+            n = int(cp.stem)
+        except ValueError:
+            continue
+        try:
+            blk = json.load(open(cp, encoding="utf-8"))
+        except Exception:
+            continue
+        t = (blk.get("title") or "").strip()
+        if t:
+            out[n] = t
+    return out
+
+
 def read_chapter(bid, idx):
     bid = _safe_bid(bid)
     if not bid:
@@ -111,6 +147,33 @@ def _int_arg(args, key, default, lo=None, hi=None):
     if hi is not None and v > hi:
         v = hi
     return v
+
+def _str_arg(args, key, default="", max_len=None, strict=False):
+    """统一 str 解析（O10-T1 机械质量门）。
+    strict=False（检索/查找类）: 非字符串类型诚实 str 化（回显可见, 查找落空自然报错）;
+    strict=True（生成类必填内容参数）: 仅接受字符串, 其他类型 → None（调用方返回
+    结构化"参数类型错误"——垃圾输入不烧 LLM 生成, 也不被静默吞掉）。"""
+    v = args.get(key, default)
+    if isinstance(v, str):
+        s = v
+    elif not strict and isinstance(v, (int, float, bool)):
+        s = str(v)
+    else:
+        return None if strict else default
+    s = s.strip()
+    if max_len is not None:
+        s = s[:max_len]
+    return s
+
+def _req_str(args, key, max_len=None):
+    """生成类工具必填字符串参数: 非字符串/空 → (None, 错误dict)（T1 契约: 类型错误
+    必须结构化报错, 不得静默生成）"""
+    s = _str_arg(args, key, max_len=max_len, strict=True)
+    if s is None:
+        return None, {"error": f"参数类型错误: {key} 应为字符串"}
+    if not s:
+        return None, {"error": f"缺少 {key}"}
+    return s, None
 
 # ── 向量检索（智谱 embedding-2, numpy 余弦; 构建完成自动启用, 失败降级关键词）──
 _vectors = None
@@ -173,19 +236,33 @@ def invalidate_agent_cache():
 
 
 def _chapter_index(bid):
-    """构建/取回 章节文件索引（惰性; 一次构建后复用, 不再每请求读 meta.json/扫目录）"""
+    """按真实文件坐标缓存目录；文件签名变化时刷新目录与正文缓存。"""
+    global _CHAPTER_TEXTS_BYTES
     with _INDEX_LOCK:
+        folder = CHAPTERS_DIR / bid
+        entries = []
+        for p in folder.glob('*.json'):
+            if not p.stem.isdecimal() or p.stem != str(int(p.stem)):
+                continue
+            try:
+                stat = p.stat()
+            except FileNotFoundError:
+                continue
+            entries.append((int(p.stem),p,stat.st_mtime_ns,stat.st_size))
+        entries.sort()
+        signature = tuple((i,mtime,size) for i,_,mtime,size in entries)
         idx = _CHAPTER_INDEX.get(bid)
-        if idx is not None:
+        if idx is not None and idx.get('signature') == signature:
             return idx
+        old = _CHAPTER_TEXTS.pop(bid, None)
+        if old is not None:
+            _CHAPTER_TEXTS_BYTES = max(0,_CHAPTER_TEXTS_BYTES-sum(len(t)*2+128 for _,_,t in old))
         meta = chapter_meta(bid)
         n = (meta or {}).get("chapterCount") or 0
-        paths = []
-        for i in range(min(n, 300)):
-            p = CHAPTERS_DIR / bid / f"{i}.json"
-            if p.exists():
-                paths.append((i, p))
-        idx = {"chapterCount": n, "paths": paths}
+        # Actual filenames are the reader coordinates. Metadata can be stale,
+        # start at one, or undercount chapters; never drop those real files.
+        paths = [(i,p) for i,p,_,_ in entries]
+        idx = {"chapterCount": len(paths), "declaredChapterCount": n, "paths": paths, 'signature': signature}
         _CHAPTER_INDEX[bid] = idx
         return idx
 
@@ -194,12 +271,13 @@ def _book_chapter_texts(bid):
     """按需加载章节文本 [(idx, title, text), ...]（LRU; 超 128MB 淘汰最久未用书）"""
     global _CHAPTER_TEXTS_BYTES
     with _INDEX_LOCK:
+        index = _chapter_index(bid)
         cached = _CHAPTER_TEXTS.get(bid)
         if cached is not None:
             _CHAPTER_TEXTS.move_to_end(bid)
             return cached
         entries, size = [], 0
-        for i, p in _chapter_index(bid)["paths"]:
+        for i, p in index["paths"]:
             try:
                 ch = json.load(open(p, encoding="utf-8"))
                 title = ch.get("title", "")
@@ -313,7 +391,12 @@ _mem_lock = threading.Lock()
 _mem_all = None   # 全量缓存: {user_key: {"essays":{}, "image":None, "experiment":None, "debate":None}}
 
 def _mem_slot():
-    """当前用户的记忆槽 dict（懒加载全量缓存）"""
+    """当前用户的记忆槽 dict（懒加载全量缓存）
+    Phase T 加固: 逐键 setdefault 兜底——历史文件/迁移嵌套可能缺新增状态键（如 socratic）,
+    工具侧不再假设槽键齐全。"""
+    from deep_context import current_memory_overlay
+    if (overlay := current_memory_overlay.get()) is not None:
+        return overlay
     global _mem_all
     if _mem_all is None:
         _mem_all = {}
@@ -327,12 +410,17 @@ def _mem_slot():
         except Exception:
             _mem_all = {}
     key = guard.user_memory_key()
-    if key not in _mem_all:
-        _mem_all[key] = {"essays": {}, "image": None, "experiment": None, "debate": None}
-    return _mem_all[key]
+    slot = _mem_all.setdefault(key, {})
+    for _k, _v in (("essays", {}), ("image", None), ("experiment", None),
+                   ("debate", None), ("socratic", None)):
+        slot.setdefault(_k, _v)
+    return slot
 
 def _save_agent_memory():
     """原子写全量记忆（tmp+rename; 失败静默——记忆非关键数据）"""
+    from deep_context import current_memory_overlay
+    if current_memory_overlay.get() is not None:
+        return  # The general-agent transaction commits after successful completion.
     global _mem_all
     if _mem_all is None:
         return

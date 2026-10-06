@@ -1,0 +1,31 @@
+{
+  "case_id": "I04",
+  "platform": "doubao",
+  "status": "COMPLETED",
+  "source": "official_chat_browser",
+  "turns": [
+    {
+      "case_id": "I04",
+      "question": "请解释这段话的逻辑，不需要猜作者：“如果所有公正制度都允许申诉，而这个制度不允许申诉，那么它不是公正制度。”",
+      "turn": 1,
+      "submitted_at": "2026-10-02T14:28:04.297Z",
+      "platform": "doubao",
+      "mode": {
+        "model": "豆包 快速 (default)",
+        "thinking_toggle": "not exposed in current Doubao web UI",
+        "smart_search_toggle": "not exposed; model may search automatically"
+      },
+      "think_text": null,
+      "answer": "逻辑拆解\n原句：如果所有公正制度都允许申诉，而这个制度不允许申诉，那么它不是公正制度。\n符号化\n设：\nP\n：是公正制度\nQ\n：允许申诉\n“所有公正制度都允许申诉”：\nP→Q\n（如果是公正制度，则允许申诉）\n“这个制度不允许申诉”：\n¬Q\n结论：“它不是公正制度”：\n¬P\n推理形式：\n∴\n\t​\n\nP→Q\n¬Q\n¬P\n\t​\n\n\t​\n\n这是假言推理的否定后件式（modus tollens，拒取式），属于有效演绎推理。\n直白解释\n前提 1 划定：只要属于公正制度这一类，就一定具备 “允许申诉” 这个属性。\n前提 2 指出：眼前这个制度，缺少 “允许申诉” 这个属性。\n结论：它不属于公正制度这一类。\n注意：逻辑有效 ≠ 前提为真。\n这个推理形式本身没问题，但结论是否符合现实，取决于 “所有公正制度都允许申诉” 这个大前提是不是事实。如果大前提本身不成立，哪怕推理格式正确，结论也不一定为真。\n要不要我顺带对比一下容易和它混淆的逻辑谬误（否定前件、肯定后件）？\n假言推理的否定后件式的应用举例\n逻辑推理中的肯定后件式是指什么？\n如何判断一个逻辑推理是否有效？",
+      "web_search": {
+        "triggered": null,
+        "citation_count": 0,
+        "citations": []
+      },
+      "conversation_url": "https://www.doubao.com/chat/38444895466090242",
+      "completed_at": "2026-10-02T14:28:24.542Z",
+      "duration_s": 20,
+      "completion_evidence": "3 consecutive stable reads (lens+present) at 6s spacing; no generating markers"
+    }
+  ]
+}

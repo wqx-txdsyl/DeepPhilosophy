@@ -1,0 +1,400 @@
+{
+ "case_id": "DEV_P06",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《庄子·逍遥游》开篇的大鹏意象想说明什么？请读取原文，引用「小知不及大知」附近的段落，解释「小大之辩」在篇中的论证作用。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_dzr31TwED63odVQ6FVZs4441"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_D3lTs61qMYRBrUtpQS444194"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_RCgvx3E1WPG8s3EIFJnV6858",
+   "args": {
+    "query": "北冥有鱼 其名为鲲 化而为鸟"
+   },
+   "result_head": "{'results': [{'book_id': 'ea6f47b169f0', 'book_title': '庄子今注今译', 'author': '陈鼓应', 'chapter_idx': 7, 'chapter_title': '逍遥游', 'citation_label': '【《庄子今注今译》·逍遥游】', "
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_YmFMrDErEPD5GVtqJhQs1930"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_51cczcGXyoOGu40RockS0104",
+   "args": {
+    "book_id": "ea6f47b169f0",
+    "chapter_idx": 7
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_OeS2My0vXAJ7bMVmbduM1504",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》「小知不及大知」段落及「小大之辩」原文措辞与篇章位置",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '《庄"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_xR6aBL16MC0LTYnItfwg6149"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_7UJaz1dFag5kVPHSfhHh5550"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_AezyAT1PMGRHK9va9ldU3493"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_03_uap6XgAuMpIklhBYRXQC7084",
+   "args": {
+    "query": "此小大之辩也"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_7mg8RnWfdG2d9XQZG4rf3613"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_xQabtlP5nseNeZ1QpyfH6871",
+   "args": {
+    "query": "庄子 逍遥游"
+   },
+   "result_head": "{'results': [{'book_id': '32093eed6ff1', 'book_title': '中国哲学简史', 'author': '冯友兰', 'chapter_idx': 11, 'chapter_title': '第十章 道家第三阶段：庄子', 'citation_label': '【《中国哲学"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_CzJvTVep3TWe8qirlzoF9799",
+   "args": {
+    "book_id": "ea6f47b169f0"
+   },
+   "result_head": "{'id': 'ea6f47b169f0', 'title': '庄子今注今译', 'author': '陈鼓应', 'region': '东方', 'file_type': 'epub', 'summary': '《庄子今注今译》是陈鼓应先生对《庄子》一书的现代注释和翻译，是研究道家哲学的重要参考书。全书以郭庆藩《庄"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_QE52WLuyCDEmnuwDOVgI6024",
+   "args": {
+    "book_id": "ea6f47b169f0",
+    "chapter_idx": 7
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_y8FTp3FZqojgQb9gU2AF3847"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_PnUchermYQZ4RT6mKtdH7623",
+   "args": {
+    "book_id": "ea6f47b169f0",
+    "chapter_idx": 7
+   },
+   "result_head": "{'book_id': 'ea6f47b169f0', 'chapter_idx': 7, 'title': '逍遥游', 'book_title': '庄子今注今译', 'citation_label': '【《庄子今注今译》·逍遥游】', 'text': '〈逍遥游〉篇，主旨是说一个人当透破功名利禄、权势尊位的束缚"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_00_Fgv66LveL0DjpSsQA9I05086",
+   "args": {
+    "query": "小知不及大知 小年不及大年 朝菌不知晦朔 蟪蛄不知春秋"
+   },
+   "result_head": "{'results': [{'book_id': 'ea6f47b169f0', 'book_title': '庄子今注今译', 'author': '陈鼓应', 'chapter_idx': 26, 'chapter_title': '下册目录', 'citation_label': '【《庄子今注今译》·下册目录】"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》开篇大鹏段及「小知不及大知」周边段落的确切原文措辞与篇章衔接",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》「小知不及大知」段落及「小大之辩」原文措辞与篇章位置",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知\"附近段落及\"此小大之辩也\"的原文措辞与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《逍遥游》开篇大鹏段与\"小知不及大知\"至\"此小大之辩也\"一段的逐字原文，用于支撑用户要求的原文引用",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取原文，引用『小知不及大知』附近的段落\"，逐字引文必须从检索证据连续复制；当前上下文中的原文片段已被压缩不可见，若不重新读取则该引用无法落在核验过的文本上。",
+    "unresolved_evidence_gap": "《庄子·逍遥游》\"小知不及大知\"周边段落及\"此小大之辩也\"的确切原文文本"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "陈鼓应《庄子今注今译》中《逍遥游》\"小知不及大知\"至篇末\"小大之辩\"的逐字原文",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求引用《逍遥游》原文段落，逐字引文只能取自实际读取的文本；我已在库中定位到收录《庄子》全文的版本，但读取该章的动作因预算用完被拦，缺口具体而明确，仅需一次读取即可闭合。",
+    "unresolved_evidence_gap": "《庄子今注今译》中《逍遥游》一篇的原文文本（尤其\"小知不及大知\"段与篇末\"小大之辩\"句）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "陈鼓应《庄子今注今译》中《逍遥游》\"小知不及大知\"至篇末\"小大之辩\"的逐字原文",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:21:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《庄子·逍遥游》开篇大鹏段及「小知不及大知」周边段落的确切原文措辞与篇章衔接"
+   },
+   {
+    "ts": "2026-09-13 12:21:16",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   },
+   {
+    "ts": "2026-09-13 12:21:50",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》\"小知不及大知\"附近段落及\"此小大之辩也\"的原文措辞与上下文"
+   },
+   {
+    "ts": "2026-09-13 12:21:58",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《逍遥游》开篇大鹏段与\"小知不及大知\"至\"此小大之辩也\"一段的逐字原文，用于支撑用户要求的原文引用",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:22:13",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "陈鼓应《庄子今注今译》中《逍遥游》\"小知不及大知\"至篇末\"小大之辩\"的逐字原文",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:21:58",
+    "reason": "用户明确要求\"读取原文，引用『小知不及大知』附近的段落\"，逐字引文必须从检索证据连续复制；当前上下文中的原文片段已被压缩不可见，若不重新读取则该引用无法落在核验过的文本上。",
+    "unresolved_gap": "《庄子·逍遥游》\"小知不及大知\"周边段落及\"此小大之辩也\"的确切原文文本"
+   },
+   {
+    "ts": "2026-09-13 12:22:13",
+    "reason": "用户明确要求引用《逍遥游》原文段落，逐字引文只能取自实际读取的文本；我已在库中定位到收录《庄子》全文的版本，但读取该章的动作因预算用完被拦，缺口具体而明确，仅需一次读取即可闭合。",
+    "unresolved_gap": "《庄子今注今译》中《逍遥游》一篇的原文文本（尤其\"小知不及大知\"段与篇末\"小大之辩\"句）"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:21:06"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:21:50"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:21:50"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:21:50"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:22:03"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 198386,
+   "output_tokens": 17751,
+   "total_tokens": 216137
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 15,
+   "compacted_chars_saved": 24131,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11766,
+     "output_tokens": 483,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17308,
+     "output_tokens": 383,
+     "tool_chars_added": 9069
+    },
+    {
+     "round": 3,
+     "input_tokens": 14998,
+     "output_tokens": 1552,
+     "tool_chars_added": 2224
+    },
+    {
+     "round": 4,
+     "input_tokens": 15932,
+     "output_tokens": 1735,
+     "tool_chars_added": 1414
+    },
+    {
+     "round": 5,
+     "input_tokens": 17718,
+     "output_tokens": 3999,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 6,
+     "input_tokens": 12149,
+     "output_tokens": 528,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 13847,
+     "output_tokens": 1346,
+     "tool_chars_added": 2625
+    },
+    {
+     "round": 8,
+     "input_tokens": 18018,
+     "output_tokens": 586,
+     "tool_chars_added": 6725
+    },
+    {
+     "round": 9,
+     "input_tokens": 15923,
+     "output_tokens": 258,
+     "tool_chars_added": 633
+    },
+    {
+     "round": 10,
+     "input_tokens": 16089,
+     "output_tokens": 1827,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 11,
+     "input_tokens": 22769,
+     "output_tokens": 1054,
+     "tool_chars_added": 7458
+    },
+    {
+     "round": 12,
+     "input_tokens": 21869,
+     "output_tokens": 4000,
+     "tool_chars_added": 4000
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 198386,
+  "output_tokens": 17751,
+  "total_tokens": 216137
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 99.2
+}

@@ -25,7 +25,8 @@ function _read() {
 function _write(prefs) {
   try {
     localStorage.setItem(KEY, JSON.stringify(prefs));
-  } catch (e) { /* 配额等: 忽略 */ }
+    return true;
+  } catch (e) { return false; }
 }
 
 export function getPref(key) {
@@ -35,5 +36,7 @@ export function getPref(key) {
 export function setPref(key, value) {
   const prefs = _read();
   prefs[key] = value;
-  _write(prefs);
+  if (!_write(prefs)) return false;
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('phiagent-prefs-changed'));
+  return true;
 }

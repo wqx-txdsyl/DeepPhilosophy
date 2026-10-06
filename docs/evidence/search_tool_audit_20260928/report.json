@@ -1,0 +1,391 @@
+{
+  "environment": {
+    "research_db_enabled": "1",
+    "network_mode": "AUTO",
+    "providers": {
+      "crossref": {
+        "authentication": "not_required"
+      },
+      "openalex": {
+        "authentication": "public_quota_only"
+      },
+      "semantic_scholar": {
+        "authentication": "public_quota_only"
+      },
+      "metaso": {
+        "authentication": "required"
+      }
+    }
+  },
+  "method": "Fresh imported production tool functions; isolated cache, no DB writes, no agent/model calls. Not an HTTP test of the running service.",
+  "cases": [
+    {
+      "name": "web-control",
+      "args": {
+        "query": "Immanuel Kant"
+      },
+      "seconds": 1.33,
+      "result": {
+        "results": [],
+        "query": "Immanuel Kant",
+        "note": "未取得可用搜索结果，不能据此推断相关内容不存在。",
+        "mode": "search"
+      }
+    },
+    {
+      "name": "web-screenshot",
+      "args": {
+        "query": "冯苇杭"
+      },
+      "seconds": 1.35,
+      "result": {
+        "results": [],
+        "query": "冯苇杭",
+        "note": "未取得可用搜索结果，不能据此推断相关内容不存在。",
+        "mode": "search"
+      }
+    },
+    {
+      "name": "web-policy",
+      "args": {
+        "query": "教育部 严禁教师 违规收受 礼品礼金"
+      },
+      "seconds": 1.2,
+      "result": {
+        "results": [],
+        "query": "教育部 严禁教师 违规收受 礼品礼金",
+        "note": "未取得可用搜索结果，不能据此推断相关内容不存在。",
+        "mode": "search"
+      }
+    },
+    {
+      "name": "scholar-screenshot",
+      "args": {
+        "query": "gift giving reciprocity obligation in hierarchical relationships ethics"
+      },
+      "seconds": 2.91,
+      "result": {
+        "query": "gift giving reciprocity obligation in hierarchical relationships ethics",
+        "results": [],
+        "READABLE_RESULT_COUNT": 0,
+        "READABLE_SOURCE_IDS": [],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "RATE_LIMITED",
+            "detail": ""
+          },
+          {
+            "provider": "openalex",
+            "error": "RATE_LIMITED",
+            "detail": ""
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "name": "scholar-control",
+      "args": {
+        "query": "gift reciprocity"
+      },
+      "seconds": 2.08,
+      "result": {
+        "query": "gift reciprocity",
+        "results": [
+          {
+            "source_record_id": "doi:10.2307/3034495",
+            "title": "The Flow of Gifts: Reciprocity and Social Networks in a Chinese Village.",
+            "authors": [
+              "Hill Gates",
+              "Yunxiang Yan"
+            ],
+            "year": 1998,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Journal of the Royal Anthropological Institute",
+            "doi": "10.2307/3034495",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1257/aer.102.4.1644",
+            "title": "The Currency of Reciprocity: Gift Exchange in the Workplace",
+            "authors": [
+              "Sebastian Kube",
+              "Michel André Maréchal",
+              "Clemens Puppe"
+            ],
+            "year": 2012,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "American Economic Review",
+            "doi": "10.1257/aer.102.4.1644",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1177/0002716297554001005",
+            "title": "The Development Gift: The Problem of Reciprocity in the NGO World",
+            "authors": [
+              "R. L. Stirrat",
+              "Heiko Henkel"
+            ],
+            "year": 1997,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "The Annals of the American Academy of Political and Social Science",
+            "doi": "10.1177/0002716297554001005",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1080/15265161.2020.1851813",
+            "title": "Obligations of the “Gift”: Reciprocity and Responsibility in Precision Medicine",
+            "authors": [
+              "Sandra Soo‐Jin Lee"
+            ],
+            "year": 2020,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "The American Journal of Bioethics",
+            "doi": "10.1080/15265161.2020.1851813",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5422/fordham/9780823286478.003.0002",
+            "title": "Derrida: The Gift, the Impossible, and the Exclusion of Reciprocity",
+            "authors": [
+              "Marcel Hénaff"
+            ],
+            "year": 2019,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Philosophers' Gift",
+            "doi": "10.5422/fordham/9780823286478.003.0002",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5422/fordham/9780823286478.003.0004",
+            "title": "Levinas: Beyond Reciprocity—For-the-Other and the Costly Gift",
+            "authors": [
+              "Marcel Hénaff"
+            ],
+            "year": 2019,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Philosophers' Gift",
+            "doi": "10.5422/fordham/9780823286478.003.0004",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1016/s0014-2921(96)00051-7",
+            "title": "Gift exchange and reciprocity in competitive experimental markets",
+            "authors": [
+              "Ernst Fehr",
+              "Georg Kirchsteiger",
+              "Arno M. Riedl"
+            ],
+            "year": 1998,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "European Economic Review",
+            "doi": "10.1016/s0014-2921(96)00051-7",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1515/9780823286492-003",
+            "title": "Chapter 1. Derrida: The Gift, the Impossible, and the Exclusion of Reciprocity",
+            "authors": [],
+            "year": 2020,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Philosophers' Gift",
+            "doi": "10.1515/9780823286492-003",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "bibliographic_verified_fields": [
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 6,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.2307/3034495",
+          "doi:10.1257/aer.102.4.1644",
+          "doi:10.1177/0002716297554001005",
+          "doi:10.1080/15265161.2020.1851813",
+          "doi:10.5422/fordham/9780823286478.003.0002",
+          "doi:10.5422/fordham/9780823286478.003.0004"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "note": "结果中有 6 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点"
+      }
+    }
+  ],
+  "read_control": {
+    "name": "scholar-read-control",
+    "args": {
+      "source_record_id": "doi:10.2307/3034495"
+    },
+    "seconds": 0.01,
+    "result": {
+      "source_record_id": "doi:10.2307/3034495",
+      "bibliographic_record": {
+        "source_record_id": "doi:10.2307/3034495",
+        "title": "The Flow of Gifts: Reciprocity and Social Networks in a Chinese Village.",
+        "authors": [
+          "Hill Gates",
+          "Yunxiang Yan"
+        ],
+        "year": 1998,
+        "publication_type": "JOURNAL_ARTICLE",
+        "venue": "Journal of the Royal Anthropological Institute",
+        "doi": "10.2307/3034495",
+        "source_category": "UNKNOWN",
+        "access_level": "ABSTRACT_AVAILABLE",
+        "provider": "openalex",
+        "source_providers": [
+          "openalex"
+        ],
+        "retrieval_origin": "LIVE_OPENALEX",
+        "bibliographic_verified_fields": [
+          "authors",
+          "container_title",
+          "doi",
+          "publication_type",
+          "publication_year",
+          "title"
+        ],
+        "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+      },
+      "access_level_before": "ABSTRACT_AVAILABLE",
+      "access_level_after": "ABSTRACT_AVAILABLE",
+      "returned_evidence_level": "ABSTRACT_AVAILABLE",
+      "full_text_status": null,
+      "source_url": null,
+      "content_hash": null,
+      "access_notes": "abstract 返回; 状态字段单调不降",
+      "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+      "abstract": {
+        "text": "1. Introduction: the gift in anthropology and Chinese society 2. Xiajia village: a sketch of the field site 3. The world of gifts: a preliminary classification 4. The gift economy and Guanxi networks 5. The structure of Guanxi in village society 6. The principle of reciprocity and Renaqing ethics 7. Power and prestige in gift-exchange relations 8. Marriage transactions and social reformations 9. Conclusions: socialism, Guanxi, Renqing and the gift Notes Bibliography Character list Index.",
+        "source": "OPENALEX_INVERTED_INDEX",
+        "hash": "00c2d02af022bb21b459fd873c977ac5e82169a6f4860060ad5409e423aa5af5"
+      },
+      "evidence_origin": "ABSTRACT_METADATA"
+    }
+  }
+}

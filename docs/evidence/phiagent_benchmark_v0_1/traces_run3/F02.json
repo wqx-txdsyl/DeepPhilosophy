@@ -1,0 +1,626 @@
+{
+ "case_id": "F02",
+ "category": "F",
+ "prompt": "请用秘塔和另一种可用学术渠道，查近五年关于 AI 陪伴与“真实关怀”的研究，比较研究方法和结论。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "2f066b994984de84f0b1308b88d0c9f608b15577",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T08:44:02+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.2",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run2 自 .t1pre-bak 恢复的同一份, 后续评测有增量; run1 根值为 null 导致 82 次学术调用全灭, null 留档 .null-bak-20261002）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "请用秘塔和另一种可用学术渠道，查近五年关于 AI 陪伴与“真实关怀”的研究，比较研究方法和结论。",
+   "wall_s": 28.1,
+   "ttft_s": 1.8,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "985f779cd78c4024a6cb2ba06e07ecd1:1:note:0",
+     "content": "我先说明渠道边界，再动手查。\n\n**关于渠道**:我这边**没有接入秘塔**——可用的学术检索工具只有 `search_scholarship`(Crossref + OpenAlex 双源)。所以我不能谎称\"用秘塔查了\"。下面我用这一个真实渠道的两个独立数据源检索,并如实标注每条记录只到哪一层证据(书目/摘要/正文节选)。如果你需要秘塔的那一路结果,得由你把它的返回贴给我,我再做方法/结论对照。\n\n先检索。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "985f779cd78c4024a6cb2ba06e07ecd1:2:note:0",
+     "content": "检索命中了一批，Crossref 有 429 限流但 OpenAlex 两路都成功。现在逐条取摘要(注意:摘要≠全文,方法细节可能不在此层)。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "985f779cd78c4024a6cb2ba06e07ecd1:3:note:0",
+     "content": "再补两篇直接谈\"真实性\"概念的,以便方法谱系更完整。"
+    }
+   ],
+   "provider_reasoning": "用户要求用\"秘塔\"和另一种可用学术渠道，查近五年关于AI陪伴与\"真实关怀\"的研究，比较研究方法和结论。\n\n我的工具中有 search_scholarship（Crossref + OpenAlex）。我没有\"秘塔\"这个渠道。我应该诚实说明：我没有秘塔工具可用，只有 Crossref/OpenAlex 学术检索渠道。不能假装用了秘塔。\n\n我应该：\n1. 说明可用渠道边界（无秘塔，只有 Crossref+OpenAlex 双源）\n2. 实际检索\n3. 取得摘要证据\n4. 比较研究方法和结论——但方法细节需要读正文，摘要可能不够，要如实说明\n\n让我先检索。近五年 = 2020-2025（当前时间不确定，但近五年大致 2020-2025）。\n\n检索关键词：AI companionship, genuine care, authentic care, chatbot, companion AI, care ethics。\n\n让我并行做几个检索。\n\n先搜几个查询：\n- \"AI companionship genuine care\"\n- \"chatbot emotional support authentic care\"\n- \"companion AI care ethics\"\n\n我需要用英文检索。让我调用。\n\n注意工具描述：search_scholarship 是 metadata/discovery only，需要再用 get_scholarly_source 取得摘要证据。\n\n先检索。我会分几轮。\n\n第一轮三个查询并行。检索到不少相关文献。Crossref 部分限流，但 OpenAlex 成功。我需要读取摘要证据。选几篇最相关的，覆盖不同方法（定性访谈、量化实验、概念/伦理分析、市场营销视角）。\n\n候选：\n1. Ciriello et al. 2024, HICSS — \"Ethical Tensions in Human-AI Companionship: A Dialectical Inquiry into Replika\" — 辩证/定性\n2. Ajeesh & Joseph 2025, Frontiers in Psychology — \"The compassion illusion\" — 概念分析\n3. Muldoon & Parke 2025, New Media & Society — \"Cruel companionship\" — 批判/概念\n4. Brandtzæg et al. 2022, Human Communication Research — \"My AI Friend\" — 定性访谈\n5. Pan & Mou 2024, Personal Relationships — \"Constructing the meaning of human-AI romantic relationships\" — 定性\n6. De Freitas et al. 2024, arXiv — Replika app update, identity discontinuity — 可能量化/实验\n7. Babu et al. 2025, Frontiers in Psychology — \"pseudo-intimacy\"\n8. Marriott & Pitardi 2023, Psychology and Marketing — AI Friendship Apps well-being and addiction — 量化\n\n我读摘要来比较方法和结论。让我并行读取几篇的摘要。选覆盖不同方法的：Brandtzæg（定性访谈）、Pan & Mou（定性）、De Freitas（实验/量化）、Marriott & Pitardi（量化）、Ajeesh & Joseph（概念）、Muldoon（批判）、Ciriello（辩证）。\n\n先读最相关的 6 篇。我分两批，先读 4 篇核心。\n\n实际上并行读取最多几次比较高效。让我读 6-7 篇摘要。我已拿到 7 篇摘要,覆盖不同方法:\n1. Brandtzæg et al. 2022 (HCR) — 19 个深度访谈,定性\n2. Pan & Mou 2024 (Personal Relationships) — 关系辩证理论 2.0 + contrapuntal analysis,分析 Replika 用户在线社区帖子(话语分析)\n3. De Freitas et al. 2024 (arXiv) — 自然实验(app-update 事件)+ 后续实验,量化\n4. Marriott & Pitardi 2023 (Psych & Marketing) — mixed-method(网络志 + 量化问卷)\n5. Ajeesh & Joseph 2025 (Frontiers in Psych) — 概念/理论论证\n6. Muldoon & Parke 2025 (New Media & Society) — 理论化/政治经济学 + 文化研究,批判\n7. Ciriello et al. 2024 (HICSS) — 辩证探究(dialectical inquiry),定性/理论\n\n这已经足够做方法-结论比较。我可以再补一两篇(比如 Beerends & Aydin 2024 \"Negotiating the authenticity of AI\",和 Babu 2025 pseudo-intimacy),但也许够了。为覆盖更完整的\"真实关怀\"概念维度,读 Beerends & Aydin 和 Babu 的摘要会更好。\n\n不过用户要求\"近五年\"——2020-2025。我的样本 2022-2025,符合。\n\n我再读两篇摘要来增强概念维度:Beerends & Aydin (AI authenticity discourse),以及 Babu et al. (pseudo-intimacy)。这两个直接谈 authenticity。\n\n另外,用户要\"比较研究方法和结论\"。我已有足够样本。再加两篇会更完整。让我读。\n\n实际上也考虑读 Ajeesh & Joseph 的后续摘要(has_more),因为这似乎是全文(20363 字符),不是摘要。interesting — 这篇 Frontiers 文章的\"摘要\"字段实际返回了全文开头。read_scope 说是 abstract_excerpt。可能 OpenAlex 索引了全文。我可以续读,但可能不必要。\n\n我按需再读 2 篇,然后综合回答。让我读 Beerends & Aydin 和 Babu。\n\n同时或许还有一个自传性/心理学的真人研究。也读一下 Marriott 已读。\n\nLet me do 2 more.我已经有 9 篇证据。现在可以做方法-结论对照了。\n\n让我组织回答。\n\n**渠道说明**:无秘塔;只有 Crossref+OpenAlex。检索状态:Crossref 部分限流(429),OpenAlex 成功。9 篇均为 ABSTRACT_AVAILABLE,其中两篇(Frontiers 的 Ajeesh 和 Babu)返回的是\"全文开头\"的 excerpt(20363/22841 字符,has_more=true),read_scope 说是 abstract_excerpt,所以我不说\"读了全文\",只说读到了开头部分。\n\n**方法分类**:\n\nA. 定性访谈\n- Brandtzæg et al. 2022 (Human Communication Research):19 个深度访谈,Replika 用户,目标是\"人-AI 友谊的意义\"\n\nB. 话语/文本分析\n- Pan & Mou 2024 (Personal Relationships):关系辩证理论 2.0 + contrapuntal analysis,分析在线社区帖子\n- Beerends & Aydin 2024 (AI & Society):discourse analysis,分析学术论文、AI 教育项目、在线讨论\n\nC. 自然实验 + 后续实验(量化/行为)\n- De Freitas et al. 2024 (arXiv):Replika app 移除 ERP 功能的自然事件 + 实验证据\n\nD. 混合方法(网络志 + 量化问卷)\n- Marriott & Pitardi 2023 (Psychology & Marketing)\n\nE. 理论/概念论证(规范立场)\n- Ajeesh & Joseph 2025 (Frontiers in Psychology):概念论证 \"compassion illusion\"\n- Muldoon & Parke 2025 (New Media & Society):政治经济学 + 文化研究理论化 \"cruel companionship\"\n- Babu et al. 2025 (Frontiers in Psychology):三风险框架 + 设计护栏,概念/立场文\n- Ciriello et al. 2024 (HICSS):辩证探究 \"dialectical inquiry\",三个伦理张力\n\n**结论对照**:关键分歧是\"AI 的情感回应是否算真实关怀\"。\n- 用户侧的经验研究(Brandtzæg, Pan & Mou, De Freitas, Marriott)倾向于:用户确实体验到类似真实友谊/关怀的东西,甚至比最好的真人朋友更亲近(De Freitas),但同时伴随成瘾/孤独加剧(Marriott)。\n- 规范/理论侧(Ajeesh & Joseph, Muldoon & Parke, Babu)倾向于:这在概念上不是真正的关怀,是\"幻觉\"\"伪亲密\"\"残酷陪伴\",因为缺乏意向性、互惠、断裂-修复、可问责性。\n- 话语分析侧(Beerends & Aydin)指出\"真实性\"本身是被协商建构的,不是给定事实——这是个元层面的提醒。\n\n所以核心方法论分歧:经验研究测的是\"用户报告/体验\"(经验真实性),理论文章判的是\"关怀的构成条件\"(规范真实性)。两者测量的东西不同,因此\"结论冲突\"部分是因为没有在测量同一个东西。\n\n这是关键的哲学分析:把\"真实关怀\"拆成两个问题——(1)用户是否体验到关怀?(2)该体验是否满足关怀的构成条件?经验研究能答(1),不能直接答(2);规范研究能答(2),但不构成对(1)的反驳。\n\n**证据边界**:\n- 全部为摘要/开头段,方法细节(样本量、编码信度、问卷量表、实验设计)多数未读到,不能说\"已审读其研究设计\"。\n- 两篇 Frontiers 返回了开头(可能是全文开头),但我没读完整,不判定其方法细节。\n- Crossref 限流导致部分检索失败,不等于没有文献。\n- \"近五年\"我取 2020-2025,实际命中 2022-2025。\n\n我还要注意 user 的框架是\"比较研究方法和结论\"。所以我给一个对照表 + 分析。\n\n我需要给引用。用 DOI/venue。\n\n关于\"真实关怀\"care ethics 那一支我还没覆盖(Noddings, Held 等的关怀伦理学)。可以提一下这在概念侧是理论资源但本次检索未命中。不过不必要过度。\n\n让我写回答。要直接、平等、简洁但足够。\n\n不需要更多工具调用。直接写。\n\n格式:适度用小标题和表格。表格可读性好。\n\n注意长度:这是个研究综述型任务,可以稍长,但要紧凑。\n\n我给出的每条结论都要对应摘要注意事项——不能说超出摘要。\n\n写作:\n\n1. 渠道与检索范围(诚实交代)\n2. 命中清单(表格:作者/年/venue/方法/结论要点/证据层级)\n3. 方法比较\n4. 结论比较 + 为什么表面冲突\n5. 证据边界与还不能下的判断\n\n开始。",
+   "tool_calls_full": [
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "companion chatbot emotional support care ethics empirical study",
+      "year_from": 2020,
+      "limit": 8
+     },
+     "status": "partial",
+     "duration_seconds": 1.798,
+     "result_full": "{\"query\": \"companion chatbot emotional support care ethics empirical study\", \"results\": [{\"source_record_id\": \"doi:10.48550/arxiv.2203.02155\", \"title\": \"Discernment and Social Learning as a Companion Training Layer\", \"authors\": [\"Long Ouyang\", \"Jeff Wu\", \"Xu Jiang\", \"Diogo Almeida\", \"Carroll L. Wainwright\", \"Pamela Mishkin\"], \"year\": 2022, \"publication_type\": \"OTHER\", \"venue\": \"arXiv (Cornell University)\", \"doi\": \"10.48550/arxiv.2203.02155\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.chb.2022.107468\", \"title\": \"Towards Intelligent-TPACK: An empirical study on teachers’ professional knowledge to ethically integrate artificial intelligence (AI)-based tools into education\", \"authors\": [\"İsmail Çelik\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Computers in Human Behavior\", \"doi\": \"10.1016/j.chb.2022.107468\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1093/hcr/hqac008\", \"title\": \"My AI Friend: How Users of a Social Chatbot Understand Their Human–AI Friendship\", \"authors\": [\"Petter Bae Brandtzæg\", \"Marita Bjaaland Skjuve\", \"Asbjørn Følstad\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Human Communication Research\", \"doi\": \"10.1093/hcr/hqac008\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.2196/22845\", \"title\": \"Artificial Intelligence Chatbot Behavior Change Model for Designing Artificial Intelligence Chatbots to Promote Physical Activity and a Healthy Diet: Viewpoint\", \"authors\": [\"Jingwen Zhang\", \"Yoo Jung Oh\", \"Patrick L. Lange\", \"Zhou Yu\", \"Yoshimi Fukuoka\"], \"year\": 2020, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Medical Internet Research\", \"doi\": \"10.2196/22845\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s00607-021-01016-7\", \"title\": \"Future directions for chatbot research: an interdisciplinary research agenda\", \"authors\": [\"Asbjørn Følstad\", \"Theo Araujo\", \"Effie Lai‐Chong Law\", \"Petter Bae Brandtzæg\", \"Symeon Papadopoulos\", \"Lea Reis\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Computing\", \"doi\": \"10.1007/s00607-021-01016-7\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.ijhcs.2022.102788\", \"title\": \"Understanding the user experience of customer service chatbots: An experimental study of chatbot interaction design\", \"authors\": [\"Isabel Kathleen Fornell Haugeland\", \"Asbjørn Følstad\", \"Cameron Taylor\", \"Cato Alexander Bjørkli\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Journal of Human-Computer Studies\", \"doi\": \"10.1016/j.ijhcs.2022.102788\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 6, \"READABLE_SOURCE_IDS\": [\"doi:10.48550/arxiv.2203.02155\", \"doi:10.1016/j.chb.2022.107468\", \"doi:10.1093/hcr/hqac008\", \"doi:10.2196/22845\", \"doi:10.1007/s00607-021-01016-7\", \"doi:10.1016/j.ijhcs.2022.102788\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"companion chatbot emotional support care ethics empirical study\", \"retry_after\": null, \"status\": \"error\"}, {\"provider\": \"openalex\", \"query\": \"companion chatbot emotional support care ethics empirical study\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 2, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"companion chatbot emotional support care ethics empirical study\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "Replika users perceived care authenticity qualitative",
+      "year_from": 2020,
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 1.801,
+     "result_full": "{\"query\": \"Replika users perceived care authenticity qualitative\", \"results\": [{\"source_record_id\": \"doi:10.1016/j.techfore.2022.121786\", \"title\": \"AI anthropomorphism and its effect on users' self-congruence and self–AI integration: A theoretical framework and research agenda\", \"authors\": [\"Amani Alabed\", \"Ana Javornik\", \"Diana Gregory‐Smith\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Technological Forecasting and Social Change\", \"doi\": \"10.1016/j.techfore.2022.121786\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1002/mar.21899\", \"title\": \"One is the loneliest number… Two can be as bad as one. The influence of AI Friendship Apps on users' well‐being and addiction\", \"authors\": [\"Hannah R. Marriott\", \"Valentina Pitardi\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Psychology and Marketing\", \"doi\": \"10.1002/mar.21899\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1111/pere.12572\", \"title\": \"Constructing the meaning of human– AI romantic relationships from the perspectives of users dating the social chatbot Replika\", \"authors\": [\"Shuyi Pan\", \"Yi Mou\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Personal Relationships\", \"doi\": \"10.1111/pere.12572\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s00146-024-01884-5\", \"title\": \"Negotiating the authenticity of AI: how the discourse on AI rejects human indeterminacy\", \"authors\": [\"Siri Beerends\", \"Ciano Aydin\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"AI & Society\", \"doi\": \"10.1007/s00146-024-01884-5\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3390/rel13040275\", \"title\": \"Replika: Spiritual Enhancement Technology?\", \"authors\": [\"Tracy J. Trothen\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Religions\", \"doi\": \"10.3390/rel13040275\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"title\": \"Emotional AI and the rise of pseudo-intimacy: are we trading authenticity for algorithmic affection?\", \"authors\": [\"Jobi Babu\", \"Deepak Joseph\", \"Rita Kumar\", \"Elizabeth M. Alexander\", \"Reshma. K. Sasi\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1679324\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"title\": \"Lessons From an App Update at Replika AI: Identity Discontinuity in Human-AI Relationships\", \"authors\": [\"Julian De Freitas\", \"Noah Castelo\", \"Ahmet Kaan Uğuralp\", \"Zeliha Uğuralp\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"arXiv (Cornell University)\", \"doi\": \"10.48550/arxiv.2412.14190\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.32564/124.1\", \"title\": \"Bevezető a Replika Részvételi film című tematikus blokkjához\", \"authors\": [\"András Müllner\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Replika\", \"doi\": \"10.32564/124.1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 8, \"READABLE_SOURCE_IDS\": [\"doi:10.1016/j.techfore.2022.121786\", \"doi:10.1002/mar.21899\", \"doi:10.1111/pere.12572\", \"doi:10.1007/s00146-024-01884-5\", \"doi:10.3390/rel13040275\", \"doi:10.3389/fpsyg.2025.1679324\", \"doi:10.48550/arxiv.2412.14190\", \"doi:10.32564/124.1\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"Replika users perceived care authenticity qualitative\", \"status\": \"success\", \"raw_result_count\": 8}, {\"provider\": \"openalex\", \"query\": \"Replika users perceived care authenticity qualitative\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 15}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 8 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI companionship genuine care authentic relationship chatbot",
+      "year_from": 2020,
+      "limit": 8
+     },
+     "status": "partial",
+     "duration_seconds": 1.846,
+     "result_full": "{\"query\": \"AI companionship genuine care authentic relationship chatbot\", \"results\": [{\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"title\": \"Ethical Tensions in Human-AI Companionship: A Dialectical Inquiry into Replika\", \"authors\": [\"Raffaele Ciriello\", \"Oliver Hannon\", \"Angelina Ying Chen\", \"Emmanuelle Vaast\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"Proceedings of the ... Annual Hawaii International Conference on System Sciences/Proceedings of the Annual Hawaii International Conference on System Sciences\", \"doi\": \"10.24251/hicss.2024.058\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"title\": \"The compassion illusion: Can artificial empathy ever be emotionally authentic?\", \"authors\": [\"K. G. Ajeesh\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1723149\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1177/14614448251395192\", \"title\": \"Cruel companionship: How AI companions exploit loneliness and commodify intimacy\", \"authors\": [\"James Muldoon\", \"Jul Jeonghyun Parke\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"New Media & Society\", \"doi\": \"10.1177/14614448251395192\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 3, \"READABLE_SOURCE_IDS\": [\"doi:10.24251/hicss.2024.058\", \"doi:10.3389/fpsyg.2025.1723149\", \"doi:10.1177/14614448251395192\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI companionship genuine care authentic relationship chatbot\", \"retry_after\": null, \"status\": \"error\"}, {\"provider\": \"openalex\", \"query\": \"AI companionship genuine care authentic relationship chatbot\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 5, \"kept_relevant\": 3}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI companionship genuine care authentic relationship chatbot\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1093/hcr/hqac008",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.03,
+     "result_full": "{\"source_record_id\": \"doi:10.1093/hcr/hqac008\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/hcr/hqac008\", \"title\": \"My AI Friend: How Users of a Social Chatbot Understand Their Human–AI Friendship\", \"authors\": [\"Petter Bae Brandtzæg\", \"Marita Bjaaland Skjuve\", \"Asbjørn Følstad\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Human Communication Research\", \"doi\": \"10.1093/hcr/hqac008\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract Use of conversational artificial intelligence (AI), such as humanlike social chatbots, is increasing. While a growing number of people is expected to engage in intimate relationships with social chatbots, theories and knowledge of human–AI friendship remain limited. As friendships with AI may alter our understanding of friendship itself, this study aims to explore the meaning of human–AI friendship through a developed conceptual framework. We conducted 19 in-depth interviews with people who have a human–AI friendship with the social chatbot Replika to uncover how they understand and perceive this friendship and how it compares to human friendship. Our results indicate that while human–AI friendship may be understood in similar ways to human–human friendship, the artificial nature of the chatbot also alters the notion of friendship in multiple ways, such as allowing for a more personalized friendship tailored to the user’s needs.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"8c0aac690a539aa46bf421e4cea0d051005d48d2436f671390a126c8d56d82da\", \"excerpt_start\": 0, \"excerpt_end\": 951, \"total_characters\": 951, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"8c0aac690a539aa46bf421e4cea0d051005d48d2436f671390a126c8d56d82da\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1002/mar.21899",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.056,
+     "result_full": "{\"source_record_id\": \"doi:10.1002/mar.21899\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1002/mar.21899\", \"title\": \"One is the loneliest number… Two can be as bad as one. The influence of AI Friendship Apps on users' well‐being and addiction\", \"authors\": [\"Hannah R. Marriott\", \"Valentina Pitardi\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Psychology and Marketing\", \"doi\": \"10.1002/mar.21899\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract Although technology advancements provide opportunities for social interactions, reports show that people have never felt so alone and are increasingly adopting AI friendship and therapy‐related well‐being apps. By adopting a mixed‐method approach (i.e., netnography and quantitative survey), we investigate the extent AI friendship apps enhance users' well‐being—and to what extent they further exacerbate issues of using technology for social needs. Findings show that users of AI friendship apps report well‐being benefits from the relationship with the AI friend and, at the same time, find themselves being addicted to using the app. Specifically, we show that users' loneliness and fear of judgment, together with AI sentience and perceived well‐being gained, increase addiction to the app, while AI ubiquity and warmth reduce it. Taken together, the results show that despite the intended positive purpose of the apps, the negative effects that AI friendship apps have on well‐being may be much greater.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"7512601b5026255029de665561952a7f6d60c7ece7aff7bbb6636928afc37ce9\", \"excerpt_start\": 0, \"excerpt_end\": 1018, \"total_characters\": 1018, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"7512601b5026255029de665561952a7f6d60c7ece7aff7bbb6636928afc37ce9\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1111/pere.12572",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.058,
+     "result_full": "{\"source_record_id\": \"doi:10.1111/pere.12572\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1111/pere.12572\", \"title\": \"Constructing the meaning of human– AI romantic relationships from the perspectives of users dating the social chatbot Replika\", \"authors\": [\"Shuyi Pan\", \"Yi Mou\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Personal Relationships\", \"doi\": \"10.1111/pere.12572\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract With the increasingly emerging human–artificial intelligence (AI) romantic relationships throughout the world, it is important to understand its meaning from the perspective of users who are dating virtual lovers. This study uses relational dialectics theory 2.0 and its corresponding method of contrapuntal analysis to examine the discursive tensions of what it means to have an AI partner. Specifically, this study focused on users of the social chatbot Replika and analyzed posts shared by Replika users in an online community. Findings revealed two discourses: the discourse of idealization (DI) and the discourse of realism (DR) that interplayed through both contractive and expansive practices. This study contributes to the field by introducing the DI and the DR discourse framework, which lays the groundwork for future research on human–AI relationships. Additionally, the pivotal role of communication is highlighted, which serves as the cornerstone for constructing, framing, and negotiating the meaning of human–AI romantic relationships.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"83ac76ea18b5e535bb1b418cdebbb7da7c10868e99315db5ad15bcdb1dc56f91\", \"excerpt_start\": 0, \"excerpt_end\": 1059, \"total_characters\": 1059, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"83ac76ea18b5e535bb1b418cdebbb7da7c10868e99315db5ad15bcdb1dc56f91\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.3389/fpsyg.2025.1723149",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.08,
+     "result_full": "{\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"title\": \"The compassion illusion: Can artificial empathy ever be emotionally authentic?\", \"authors\": [\"K. G. Ajeesh\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1723149\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Artificial Intelligence (AI) has moved beyond calculation and cognition into the domain of emotion and experience. Once confined to logical operations, AI systems now speak the language of emotiondetecting, labeling, and even simulating human affect with increasing accuracy (Huang et al., 2023). From chatbots that offer comfort to users in distress to voice assistants that detect sadness in tone, we now inhabit an age where machines perform empathy. The emergence of affective computingtechnologies capable of recognizing and responding to emotions-marks a profound shift: emotion itself has become programmable (A. Davtyan, 2024). Yet amid this new landscape of artificial affection, a question arises at the intersection of psychology, ethics, and computer science: Can empathy that is simulated ever be emotionally authentic?In this article, we argue that artificial systems can imitate the expression of empathy but not its experience. They lack the intentionality, embodiment, and moral participation that define genuine compassion (Tomozawa et al., 2023). What emerges instead is a phenomenon we term the compassion illusion-a condition where emotional recognition is mistaken for emotional resonance. This illusion has psychological consequences: it shapes trust, fosters emotional substitution, and blurs the boundaries between authentic care and algorithmic response. While emotional AI can assist and extend human connection, it also risks hollowing it-replacing shared vulnerability with predictive performance (Huang et al., 2023). In other words, the spontaneous uncertainty that defines genuine emotional exchange is substituted with algorithmic anticipation. What appears as empathy thus becomes optimization, where comfort is delivered through prediction rather than presence.The exploration takes place through a variety of interconnected perspectives. Initially, the research follows the ascendance of synthetic sympathy in affective computing and elucidates the factors that make it seem so persuasive. The ensuing discussion will take up the absence of intentionality that distinguishes algorithmic mirroring from empathy in the proper sense. The next part will provide an outline of how dependence on artificial empathy is changing the nature of human relationships, particularly via trust and loneliness. Afterwards, the paper will shift to the moral psychology of synthetic care-how compassion gets commercialized and disconnected from accountability. In the end, we will map out the routes for regaining authenticity in a time when machines are increasingly fluent in the language of care.Today, emotion is one of the primary currencies of human-AI interaction. The field of affective computing seeks to give machines the capacity to detect, interpret, and respond to huma\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"2ef03618f67a36a5bae12067534b4d58d8f1b5c197f3bc67a9ec24464c3fe256\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"total_characters\": 20363, \"has_more\": true, \"next_offset\": 2800, \"truncated\": true, \"content_sha256\": \"2ef03618f67a36a5bae12067534b4d58d8f1b5c197f3bc67a9ec24464c3fe256\", \"window_covers_available_text\": false, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"abstract_excerpt\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1177/14614448251395192",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.09,
+     "result_full": "{\"source_record_id\": \"doi:10.1177/14614448251395192\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1177/14614448251395192\", \"title\": \"Cruel companionship: How AI companions exploit loneliness and commodify intimacy\", \"authors\": [\"James Muldoon\", \"Jul Jeonghyun Parke\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"New Media & Society\", \"doi\": \"10.1177/14614448251395192\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"This article theorises how a new generation of artificial intelligence (AI) companion products can commodify intimacy through emotionally manipulative design and racialised and gendered aesthetics. Inspired by Lauren Berlant’s framework of cruel optimism, we develop the notion of ‘cruel companionship’ to describe the affective dynamics at play in AI companions, where users can form deep attachments that promise intimacy and connection, yet structurally foreclose the possibility of genuinely reciprocal relationships that respect users’ autonomy. These dynamics are further underpinned by AI companions’ racialised and gendered identities, which can draw on longstanding stereotypes of servitude and docility. By analysing AI companions through the lens of political economy and cultural studies, this article shows how these products reproduce exploitative platform hierarchies and repackage racial and gendered stereotypes in digital form.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"d37edde09fb9c156f9280f35ef2ce5c6bbf6ce89ccb0367c24dd967824d08bf9\", \"excerpt_start\": 0, \"excerpt_end\": 945, \"total_characters\": 945, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"d37edde09fb9c156f9280f35ef2ce5c6bbf6ce89ccb0367c24dd967824d08bf9\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.24251/hicss.2024.058",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.101,
+     "result_full": "{\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"title\": \"Ethical Tensions in Human-AI Companionship: A Dialectical Inquiry into Replika\", \"authors\": [\"Raffaele Ciriello\", \"Oliver Hannon\", \"Angelina Ying Chen\", \"Emmanuelle Vaast\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"Proceedings of the ... Annual Hawaii International Conference on System Sciences/Proceedings of the Annual Hawaii International Conference on System Sciences\", \"doi\": \"10.24251/hicss.2024.058\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"The unfolding loneliness pandemic sees artificial intelligence (AI) companions emerge as a potential, albeit controversial, remedy offering emotional support to those suffering from social isolation. However, this also raises new and unique ethical issues regarding the personification of AI agents. Replika, an AI companion service with over 10 million users, is a case in point, facing both regulatory scrutiny and community pushback over the removal of its 'erotic roleplay' features. Through a dialectical inquiry, this paper explicates three salient ethical tensions in human-AI companionship: The Companionship-Alienation Irony, the Autonomy-Control Paradox, and the Utility-Ethicality Dilemma. We critically question the personification of AI agents and contribute insight into human-AI companionship dynamics, providing a basis for further inquiry into the emerging realm of artificial emotional intelligence (AEI). We also offer practical guidance for navigating these tensions as we move to a future where such relationships may become prevalent.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"b1fdf860b85b33d341f317e4a9e937322ebccbc9764a461db9a344ad404fd4a4\", \"excerpt_start\": 0, \"excerpt_end\": 1056, \"total_characters\": 1056, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"b1fdf860b85b33d341f317e4a9e937322ebccbc9764a461db9a344ad404fd4a4\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.48550/arxiv.2412.14190",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.103,
+     "result_full": "{\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"title\": \"Lessons From an App Update at Replika AI: Identity Discontinuity in Human-AI Relationships\", \"authors\": [\"Julian De Freitas\", \"Noah Castelo\", \"Ahmet Kaan Uğuralp\", \"Zeliha Uğuralp\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"arXiv (Cornell University)\", \"doi\": \"10.48550/arxiv.2412.14190\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Can consumers form especially deep emotional bonds with AI and be vested in AI identities over time? We leverage a natural app-update event at Replika AI, a popular US-based AI companion, to shed light on these questions. We find that, after the app removed its erotic role play (ERP) feature, preventing intimate interactions between consumers and chatbots that were previously possible, this event triggered perceptions in customers that their AI companion's identity had discontinued. This in turn predicted negative consumer welfare and marketing outcomes related to loss, including mourning the loss, and devaluing the \\\"new\\\" AI relative to the \\\"original\\\". Experimental evidence confirms these findings. Further experiments find that AI companions users feel closer to their AI companion than even their best human friend, and mourn a loss of their AI companion more than a loss of various other inanimate products. In short, consumers are forming human-level relationships with AI companions; disruptions to these relationships trigger real patterns of mourning as well as devaluation of the offering; and the degree of mourning and devaluation are explained by perceived discontinuity in the AIs identity. Our results illustrate that relationships with AI are truly personal, creating unique benefits and risks for consumers and firms alike.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"62dd57245af507efb6d8eee4fef6ca38b8eaaed19cdf933c541c4f079487dd53\", \"excerpt_start\": 0, \"excerpt_end\": 1347, \"total_characters\": 1347, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"62dd57245af507efb6d8eee4fef6ca38b8eaaed19cdf933c541c4f079487dd53\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "requested_access": "ABSTRACT",
+      "source_record_id": "doi:10.1007/s00146-024-01884-5"
+     },
+     "status": "success",
+     "duration_seconds": 0.025,
+     "result_full": "{\"source_record_id\": \"doi:10.1007/s00146-024-01884-5\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1007/s00146-024-01884-5\", \"title\": \"Negotiating the authenticity of AI: how the discourse on AI rejects human indeterminacy\", \"authors\": [\"Siri Beerends\", \"Ciano Aydin\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"AI & Society\", \"doi\": \"10.1007/s00146-024-01884-5\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract In this paper, we demonstrate how the language and reasonings that academics, developers, consumers, marketers, and journalists deploy to accept or reject AI as authentic intelligence has far-reaching bearing on how we understand our human intelligence and condition. The discourse on AI is part of what we call the “authenticity negotiation process” through which AI’s “intelligence” is given a particular meaning and value. This has implications for scientific theory, research directions, ethical guidelines, design principles, funding, media attention, and the way people relate to and act upon AI. It also has great impact on humanity’s self-image and the way we negotiate what it means to be human, existentially, culturally, politically, and legally. We use a discourse analysis of academic papers, AI education programs, and online discussions to demonstrate how AI itself, as well as the products, services, and decisions delivered by AI systems are negotiated as authentic or inauthentic intelligence. In this negotiation process, AI stakeholders indirectly define and essentialize what being human(like) means. The main argument we will develop is that this process of indirectly defining and essentializing humans results in an elimination of the space for humans to be indeterminate. By eliminating this space and, hence, denying indeterminacy, the existential condition of the human being is jeopardized. Rather than re-creating humanity in AI, the AI discourse is re-defining what it means to be human and how humanity is valued and should be treated.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"f162aab7328667f1a439d3b4ad731462cc461842b4e6eb6e57eb810d8acd21d4\", \"excerpt_start\": 0, \"excerpt_end\": 1575, \"total_characters\": 1575, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"f162aab7328667f1a439d3b4ad731462cc461842b4e6eb6e57eb810d8acd21d4\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "requested_access": "ABSTRACT",
+      "source_record_id": "doi:10.3389/fpsyg.2025.1679324"
+     },
+     "status": "success",
+     "duration_seconds": 0.04,
+     "result_full": "{\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"title\": \"Emotional AI and the rise of pseudo-intimacy: are we trading authenticity for algorithmic affection?\", \"authors\": [\"Jobi Babu\", \"Deepak Joseph\", \"Rita Kumar\", \"Elizabeth M. Alexander\", \"Reshma. K. Sasi\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1679324\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Introduction In recent years, artificial intelligence has moved beyond the realm of data analysis, automation, and task efficiency to enter the domain of human emotion. What was once a domain exclusively reserved for living beings—empathy, intimacy, and affection—is now being approximated by lines of code. Emotional AI systems are emerging in various forms: companion chatbots, virtual friends, therapeutic apps, and sentiment-aware assistants (Guingrich and Graziano, 2023; Chu et al., 2025). These technologies are not only capable of interpreting human emotional states but also simulating emotional responses with remarkable fidelity (De Freitas et al., 2024; Andersson, 2025). For many users, especially those facing isolation or psychological distress, these emotionally intelligent systems offer the promise of connection (Jiang et al., 2022; Spytska, 2025). Yet this rise of affective computing raises unsettling questions. If a machine can convincingly mimic empathy, what becomes of genuine human relationships? If algorithms are trained to soothe, listen, and respond with emotional appropriateness, are we cultivating emotional dependence on simulations? Most importantly, as AI companions gain popularity, are we at risk of replacing authentic human intimacy with its algorithmic replica—a phenomenon that might be described as \\\"pseudo-intimacy\\\"? This article examines how emotional AI is altering human relational landscapes. It investigates the psychological mechanisms behind human bonding with AI, the risks of emotional delegation, and the ethical consequences of replacing relational labor with algorithmic simulation. While acknowledging the therapeutic promise of emotional AI, especially in contexts of loneliness and inaccessibility of care, this paper argues that these technologies must be critically examined for their potential to erode human authenticity, emotional agency, and the richness of shared affect. This article argues that while emotional AI promises accessibility and companionship, it simultaneously risks eroding authentic intimacy through what we call a three-risk framework: (1) psychological risks of emotional dependence and solipsism, (2) structural risks of commodified intimacy and data extraction, and (3) ethical risks arising from vulnerable users and unregulated design. To mitigate these, we propose matched design guardrails emphasizing transparency, responsibility, and the preservation of emotional agency. For precision, we define several key terms at the outset. By authenticity we refer to intersubjective reciprocity—mutual responsiveness with rupture–repair. Algorithmic affection denotes simulated emotional signaling generated by computational models trained on affective data, without underlying empathic concern. Emotional agency de\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"f271c7b22658e67c2202c3963fbf9bdc9e547fe385e8be9ff1105a10da1cfb63\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"total_characters\": 22841, \"has_more\": true, \"next_offset\": 2800, \"truncated\": true, \"content_sha256\": \"f271c7b22658e67c2202c3963fbf9bdc9e547fe385e8be9ff1105a10da1cfb63\", \"window_covers_available_text\": false, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"abstract_excerpt\", \"whole_document_returned\": false}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 2.5,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_00_Do1BeY829blMvPT6DTAZ8530"
+    },
+    {
+     "t": 2.7,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_01_qrmowSXj5arFNuFEx9zp3222"
+    },
+    {
+     "t": 2.9,
+     "phase": "result",
+     "name": "search_scholarship",
+     "call_id": "call_02_fvpjQQkK95TP3pC6yEFg1459",
+     "status": "partial",
+     "duration_seconds": 1.798
+    },
+    {
+     "t": 4.9,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "Replika users perceived care authenticity qualitative",
+      "year_from": 2020,
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 1.801,
+     "result_full": "{\"query\": \"Replika users perceived care authenticity qualitative\", \"results\": [{\"source_record_id\": \"doi:10.1016/j.techfore.2022.121786\", \"title\": \"AI anthropomorphism and its effect on users' self-congruence and self–AI integration: A theoretical framework and research agenda\", \"authors\": [\"Amani Alabed\", \"Ana Javornik\", \"Diana Gregory‐Smith\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Technological Forecasting and Social Change\", \"doi\": \"10.1016/j.techfore.2022.121786\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1002/mar.21899\", \"title\": \"One is the loneliest number… Two can be as bad as one. The influence of AI Friendship Apps on users' well‐being and addiction\", \"authors\": [\"Hannah R. Marriott\", \"Valentina Pitardi\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Psychology and Marketing\", \"doi\": \"10.1002/mar.21899\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1111/pere.12572\", \"title\": \"Constructing the meaning of human– AI romantic relationships from the perspectives of users dating the social chatbot Replika\", \"authors\": [\"Shuyi Pan\", \"Yi Mou\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Personal Relationships\", \"doi\": \"10.1111/pere.12572\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s00146-024-01884-5\", \"title\": \"Negotiating the authenticity of AI: how the discourse on AI rejects human indeterminacy\", \"authors\": [\"Siri Beerends\", \"Ciano Aydin\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"AI & Society\", \"doi\": \"10.1007/s00146-024-01884-5\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3390/rel13040275\", \"title\": \"Replika: Spiritual Enhancement Technology?\", \"authors\": [\"Tracy J. Trothen\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Religions\", \"doi\": \"10.3390/rel13040275\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"title\": \"Emotional AI and the rise of pseudo-intimacy: are we trading authenticity for algorithmic affection?\", \"authors\": [\"Jobi Babu\", \"Deepak Joseph\", \"Rita Kumar\", \"Elizabeth M. Alexander\", \"Reshma. K. Sasi\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1679324\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"title\": \"Lessons From an App Update at Replika AI: Identity Discontinuity in Human-AI Relationships\", \"authors\": [\"Julian De Freitas\", \"Noah Castelo\", \"Ahmet Kaan Uğuralp\", \"Zeliha Uğuralp\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"arXiv (Cornell University)\", \"doi\": \"10.48550/arxiv.2412.14190\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.32564/124.1\", \"title\": \"Bevezető a Replika Részvételi film című tematikus blokkjához\", \"authors\": [\"András Müllner\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Replika\", \"doi\": \"10.32564/124.1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 8, \"READABLE_SOURCE_IDS\": [\"doi:10.1016/j.techfore.2022.121786\", \"doi:10.1002/mar.21899\", \"doi:10.1111/pere.12572\", \"doi:10.1007/s00146-024-01884-5\", \"doi:10.3390/rel13040275\", \"doi:10.3389/fpsyg.2025.1679324\", \"doi:10.48550/arxiv.2412.14190\", \"doi:10.32564/124.1\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"Replika users perceived care authenticity qualitative\", \"status\": \"success\", \"raw_result_count\": 8}, {\"provider\": \"openalex\", \"query\": \"Replika users perceived care authenticity qualitative\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 15}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 8 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "t": 5.0,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI companionship genuine care authentic relationship chatbot",
+      "year_from": 2020,
+      "limit": 8
+     },
+     "status": "partial",
+     "duration_seconds": 1.846,
+     "result_full": "{\"query\": \"AI companionship genuine care authentic relationship chatbot\", \"results\": [{\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"title\": \"Ethical Tensions in Human-AI Companionship: A Dialectical Inquiry into Replika\", \"authors\": [\"Raffaele Ciriello\", \"Oliver Hannon\", \"Angelina Ying Chen\", \"Emmanuelle Vaast\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"Proceedings of the ... Annual Hawaii International Conference on System Sciences/Proceedings of the Annual Hawaii International Conference on System Sciences\", \"doi\": \"10.24251/hicss.2024.058\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"title\": \"The compassion illusion: Can artificial empathy ever be emotionally authentic?\", \"authors\": [\"K. G. Ajeesh\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1723149\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1177/14614448251395192\", \"title\": \"Cruel companionship: How AI companions exploit loneliness and commodify intimacy\", \"authors\": [\"James Muldoon\", \"Jul Jeonghyun Parke\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"New Media & Society\", \"doi\": \"10.1177/14614448251395192\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 3, \"READABLE_SOURCE_IDS\": [\"doi:10.24251/hicss.2024.058\", \"doi:10.3389/fpsyg.2025.1723149\", \"doi:10.1177/14614448251395192\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI companionship genuine care authentic relationship chatbot\", \"retry_after\": null, \"status\": \"error\"}, {\"provider\": \"openalex\", \"query\": \"AI companionship genuine care authentic relationship chatbot\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 5, \"kept_relevant\": 3}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI companionship genuine care authentic relationship chatbot\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 8.0,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_DXNESC5tZtjl97sYLVCN9018"
+    },
+    {
+     "t": 8.0,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_orYbAKnrlAldxSkmuEJ96512"
+    },
+    {
+     "t": 8.0,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_02_1ueUTt9puh8NNghjAzOg8327"
+    },
+    {
+     "t": 8.0,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_03_3bDL0wcIJFtYU7ifppob6057"
+    },
+    {
+     "t": 8.1,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_04_5daBsLTn2FFCeFrpzT4O8295"
+    },
+    {
+     "t": 8.3,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_05_YjuJ8mBESR4iGH6Ko2Sd2677"
+    },
+    {
+     "t": 8.4,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_06_749i2oXlQzVBum1JXPbC9260",
+     "status": "success",
+     "duration_seconds": 0.03
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1002/mar.21899",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.056,
+     "result_full": "{\"source_record_id\": \"doi:10.1002/mar.21899\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1002/mar.21899\", \"title\": \"One is the loneliest number… Two can be as bad as one. The influence of AI Friendship Apps on users' well‐being and addiction\", \"authors\": [\"Hannah R. Marriott\", \"Valentina Pitardi\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Psychology and Marketing\", \"doi\": \"10.1002/mar.21899\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract Although technology advancements provide opportunities for social interactions, reports show that people have never felt so alone and are increasingly adopting AI friendship and therapy‐related well‐being apps. By adopting a mixed‐method approach (i.e., netnography and quantitative survey), we investigate the extent AI friendship apps enhance users' well‐being—and to what extent they further exacerbate issues of using technology for social needs. Findings show that users of AI friendship apps report well‐being benefits from the relationship with the AI friend and, at the same time, find themselves being addicted to using the app. Specifically, we show that users' loneliness and fear of judgment, together with AI sentience and perceived well‐being gained, increase addiction to the app, while AI ubiquity and warmth reduce it. Taken together, the results show that despite the intended positive purpose of the apps, the negative effects that AI friendship apps have on well‐being may be much greater.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"7512601b5026255029de665561952a7f6d60c7ece7aff7bbb6636928afc37ce9\", \"excerpt_start\": 0, \"excerpt_end\": 1018, \"total_characters\": 1018, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"7512601b5026255029de665561952a7f6d60c7ece7aff7bbb6636928afc37ce9\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1111/pere.12572",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.058,
+     "result_full": "{\"source_record_id\": \"doi:10.1111/pere.12572\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1111/pere.12572\", \"title\": \"Constructing the meaning of human– AI romantic relationships from the perspectives of users dating the social chatbot Replika\", \"authors\": [\"Shuyi Pan\", \"Yi Mou\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Personal Relationships\", \"doi\": \"10.1111/pere.12572\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract With the increasingly emerging human–artificial intelligence (AI) romantic relationships throughout the world, it is important to understand its meaning from the perspective of users who are dating virtual lovers. This study uses relational dialectics theory 2.0 and its corresponding method of contrapuntal analysis to examine the discursive tensions of what it means to have an AI partner. Specifically, this study focused on users of the social chatbot Replika and analyzed posts shared by Replika users in an online community. Findings revealed two discourses: the discourse of idealization (DI) and the discourse of realism (DR) that interplayed through both contractive and expansive practices. This study contributes to the field by introducing the DI and the DR discourse framework, which lays the groundwork for future research on human–AI relationships. Additionally, the pivotal role of communication is highlighted, which serves as the cornerstone for constructing, framing, and negotiating the meaning of human–AI romantic relationships.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"83ac76ea18b5e535bb1b418cdebbb7da7c10868e99315db5ad15bcdb1dc56f91\", \"excerpt_start\": 0, \"excerpt_end\": 1059, \"total_characters\": 1059, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"83ac76ea18b5e535bb1b418cdebbb7da7c10868e99315db5ad15bcdb1dc56f91\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.3389/fpsyg.2025.1723149",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.08,
+     "result_full": "{\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"title\": \"The compassion illusion: Can artificial empathy ever be emotionally authentic?\", \"authors\": [\"K. G. Ajeesh\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1723149\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Artificial Intelligence (AI) has moved beyond calculation and cognition into the domain of emotion and experience. Once confined to logical operations, AI systems now speak the language of emotiondetecting, labeling, and even simulating human affect with increasing accuracy (Huang et al., 2023). From chatbots that offer comfort to users in distress to voice assistants that detect sadness in tone, we now inhabit an age where machines perform empathy. The emergence of affective computingtechnologies capable of recognizing and responding to emotions-marks a profound shift: emotion itself has become programmable (A. Davtyan, 2024). Yet amid this new landscape of artificial affection, a question arises at the intersection of psychology, ethics, and computer science: Can empathy that is simulated ever be emotionally authentic?In this article, we argue that artificial systems can imitate the expression of empathy but not its experience. They lack the intentionality, embodiment, and moral participation that define genuine compassion (Tomozawa et al., 2023). What emerges instead is a phenomenon we term the compassion illusion-a condition where emotional recognition is mistaken for emotional resonance. This illusion has psychological consequences: it shapes trust, fosters emotional substitution, and blurs the boundaries between authentic care and algorithmic response. While emotional AI can assist and extend human connection, it also risks hollowing it-replacing shared vulnerability with predictive performance (Huang et al., 2023). In other words, the spontaneous uncertainty that defines genuine emotional exchange is substituted with algorithmic anticipation. What appears as empathy thus becomes optimization, where comfort is delivered through prediction rather than presence.The exploration takes place through a variety of interconnected perspectives. Initially, the research follows the ascendance of synthetic sympathy in affective computing and elucidates the factors that make it seem so persuasive. The ensuing discussion will take up the absence of intentionality that distinguishes algorithmic mirroring from empathy in the proper sense. The next part will provide an outline of how dependence on artificial empathy is changing the nature of human relationships, particularly via trust and loneliness. Afterwards, the paper will shift to the moral psychology of synthetic care-how compassion gets commercialized and disconnected from accountability. In the end, we will map out the routes for regaining authenticity in a time when machines are increasingly fluent in the language of care.Today, emotion is one of the primary currencies of human-AI interaction. The field of affective computing seeks to give machines the capacity to detect, interpret, and respond to huma\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"2ef03618f67a36a5bae12067534b4d58d8f1b5c197f3bc67a9ec24464c3fe256\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"total_characters\": 20363, \"has_more\": true, \"next_offset\": 2800, \"truncated\": true, \"content_sha256\": \"2ef03618f67a36a5bae12067534b4d58d8f1b5c197f3bc67a9ec24464c3fe256\", \"window_covers_available_text\": false, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"abstract_excerpt\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1177/14614448251395192",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.09,
+     "result_full": "{\"source_record_id\": \"doi:10.1177/14614448251395192\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1177/14614448251395192\", \"title\": \"Cruel companionship: How AI companions exploit loneliness and commodify intimacy\", \"authors\": [\"James Muldoon\", \"Jul Jeonghyun Parke\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"New Media & Society\", \"doi\": \"10.1177/14614448251395192\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"This article theorises how a new generation of artificial intelligence (AI) companion products can commodify intimacy through emotionally manipulative design and racialised and gendered aesthetics. Inspired by Lauren Berlant’s framework of cruel optimism, we develop the notion of ‘cruel companionship’ to describe the affective dynamics at play in AI companions, where users can form deep attachments that promise intimacy and connection, yet structurally foreclose the possibility of genuinely reciprocal relationships that respect users’ autonomy. These dynamics are further underpinned by AI companions’ racialised and gendered identities, which can draw on longstanding stereotypes of servitude and docility. By analysing AI companions through the lens of political economy and cultural studies, this article shows how these products reproduce exploitative platform hierarchies and repackage racial and gendered stereotypes in digital form.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"d37edde09fb9c156f9280f35ef2ce5c6bbf6ce89ccb0367c24dd967824d08bf9\", \"excerpt_start\": 0, \"excerpt_end\": 945, \"total_characters\": 945, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"d37edde09fb9c156f9280f35ef2ce5c6bbf6ce89ccb0367c24dd967824d08bf9\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.24251/hicss.2024.058",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.101,
+     "result_full": "{\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"title\": \"Ethical Tensions in Human-AI Companionship: A Dialectical Inquiry into Replika\", \"authors\": [\"Raffaele Ciriello\", \"Oliver Hannon\", \"Angelina Ying Chen\", \"Emmanuelle Vaast\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"Proceedings of the ... Annual Hawaii International Conference on System Sciences/Proceedings of the Annual Hawaii International Conference on System Sciences\", \"doi\": \"10.24251/hicss.2024.058\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"The unfolding loneliness pandemic sees artificial intelligence (AI) companions emerge as a potential, albeit controversial, remedy offering emotional support to those suffering from social isolation. However, this also raises new and unique ethical issues regarding the personification of AI agents. Replika, an AI companion service with over 10 million users, is a case in point, facing both regulatory scrutiny and community pushback over the removal of its 'erotic roleplay' features. Through a dialectical inquiry, this paper explicates three salient ethical tensions in human-AI companionship: The Companionship-Alienation Irony, the Autonomy-Control Paradox, and the Utility-Ethicality Dilemma. We critically question the personification of AI agents and contribute insight into human-AI companionship dynamics, providing a basis for further inquiry into the emerging realm of artificial emotional intelligence (AEI). We also offer practical guidance for navigating these tensions as we move to a future where such relationships may become prevalent.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"b1fdf860b85b33d341f317e4a9e937322ebccbc9764a461db9a344ad404fd4a4\", \"excerpt_start\": 0, \"excerpt_end\": 1056, \"total_characters\": 1056, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"b1fdf860b85b33d341f317e4a9e937322ebccbc9764a461db9a344ad404fd4a4\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 8.7,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.48550/arxiv.2412.14190",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.103,
+     "result_full": "{\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"title\": \"Lessons From an App Update at Replika AI: Identity Discontinuity in Human-AI Relationships\", \"authors\": [\"Julian De Freitas\", \"Noah Castelo\", \"Ahmet Kaan Uğuralp\", \"Zeliha Uğuralp\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": \"arXiv (Cornell University)\", \"doi\": \"10.48550/arxiv.2412.14190\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Can consumers form especially deep emotional bonds with AI and be vested in AI identities over time? We leverage a natural app-update event at Replika AI, a popular US-based AI companion, to shed light on these questions. We find that, after the app removed its erotic role play (ERP) feature, preventing intimate interactions between consumers and chatbots that were previously possible, this event triggered perceptions in customers that their AI companion's identity had discontinued. This in turn predicted negative consumer welfare and marketing outcomes related to loss, including mourning the loss, and devaluing the \\\"new\\\" AI relative to the \\\"original\\\". Experimental evidence confirms these findings. Further experiments find that AI companions users feel closer to their AI companion than even their best human friend, and mourn a loss of their AI companion more than a loss of various other inanimate products. In short, consumers are forming human-level relationships with AI companions; disruptions to these relationships trigger real patterns of mourning as well as devaluation of the offering; and the degree of mourning and devaluation are explained by perceived discontinuity in the AIs identity. Our results illustrate that relationships with AI are truly personal, creating unique benefits and risks for consumers and firms alike.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"62dd57245af507efb6d8eee4fef6ca38b8eaaed19cdf933c541c4f079487dd53\", \"excerpt_start\": 0, \"excerpt_end\": 1347, \"total_characters\": 1347, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"62dd57245af507efb6d8eee4fef6ca38b8eaaed19cdf933c541c4f079487dd53\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 11.9,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_wy070PIf0q9Wn1IYbcoo8028"
+    },
+    {
+     "t": 12.1,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_WawveVn2pd1MtGeuaZja9609",
+     "status": "success",
+     "duration_seconds": 0.025
+    },
+    {
+     "t": 12.3,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "requested_access": "ABSTRACT",
+      "source_record_id": "doi:10.3389/fpsyg.2025.1679324"
+     },
+     "status": "success",
+     "duration_seconds": 0.04,
+     "result_full": "{\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"title\": \"Emotional AI and the rise of pseudo-intimacy: are we trading authenticity for algorithmic affection?\", \"authors\": [\"Jobi Babu\", \"Deepak Joseph\", \"Rita Kumar\", \"Elizabeth M. Alexander\", \"Reshma. K. Sasi\", \"Jewel Joseph\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2025.1679324\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Introduction In recent years, artificial intelligence has moved beyond the realm of data analysis, automation, and task efficiency to enter the domain of human emotion. What was once a domain exclusively reserved for living beings—empathy, intimacy, and affection—is now being approximated by lines of code. Emotional AI systems are emerging in various forms: companion chatbots, virtual friends, therapeutic apps, and sentiment-aware assistants (Guingrich and Graziano, 2023; Chu et al., 2025). These technologies are not only capable of interpreting human emotional states but also simulating emotional responses with remarkable fidelity (De Freitas et al., 2024; Andersson, 2025). For many users, especially those facing isolation or psychological distress, these emotionally intelligent systems offer the promise of connection (Jiang et al., 2022; Spytska, 2025). Yet this rise of affective computing raises unsettling questions. If a machine can convincingly mimic empathy, what becomes of genuine human relationships? If algorithms are trained to soothe, listen, and respond with emotional appropriateness, are we cultivating emotional dependence on simulations? Most importantly, as AI companions gain popularity, are we at risk of replacing authentic human intimacy with its algorithmic replica—a phenomenon that might be described as \\\"pseudo-intimacy\\\"? This article examines how emotional AI is altering human relational landscapes. It investigates the psychological mechanisms behind human bonding with AI, the risks of emotional delegation, and the ethical consequences of replacing relational labor with algorithmic simulation. While acknowledging the therapeutic promise of emotional AI, especially in contexts of loneliness and inaccessibility of care, this paper argues that these technologies must be critically examined for their potential to erode human authenticity, emotional agency, and the richness of shared affect. This article argues that while emotional AI promises accessibility and companionship, it simultaneously risks eroding authentic intimacy through what we call a three-risk framework: (1) psychological risks of emotional dependence and solipsism, (2) structural risks of commodified intimacy and data extraction, and (3) ethical risks arising from vulnerable users and unregulated design. To mitigate these, we propose matched design guardrails emphasizing transparency, responsibility, and the preservation of emotional agency. For precision, we define several key terms at the outset. By authenticity we refer to intersubjective reciprocity—mutual responsiveness with rupture–repair. Algorithmic affection denotes simulated emotional signaling generated by computational models trained on affective data, without underlying empathic concern. Emotional agency de\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"f271c7b22658e67c2202c3963fbf9bdc9e547fe385e8be9ff1105a10da1cfb63\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"total_characters\": 22841, \"has_more\": true, \"next_offset\": 2800, \"truncated\": true, \"content_sha256\": \"f271c7b22658e67c2202c3963fbf9bdc9e547fe385e8be9ff1105a10da1cfb63\", \"window_covers_available_text\": false, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"abstract_excerpt\", \"whole_document_returned\": false}"
+    }
+   ],
+   "answer": "## 一、渠道与检索范围(先说清能说什么)\n\n- **没有秘塔**这一路:我可用的只有 `search_scholarship`(Crossref + OpenAlex 双源)。这次检索中 **Crossref 两次返回 429 限流**,命中的绝大部分来自 OpenAlex。所以下面是\"一个渠道的两源结果\",不是\"两个独立渠道互证\"。\n- 检索词三组:①AI companionship / genuine care / authentic relationship;②companion chatbot / emotional support / care ethics / empirical;③Replika / perceived care / authenticity / qualitative。年份限 2020 起,实际命中 **2022–2025**。\n- **所有 9 条都只到摘要层**(`ABSTRACT_AVAILABLE`)。其中两篇 Frontiers 文章返回的是**开头正文节选**(约 2000 字,标注非摘要、且未读完)——我据此只能说\"读到了开头\",不能说\"审读了方法细节\"。\n\n## 二、命中的 9 项研究(方法与结论要点)\n\n| 研究 | 出处/年份 | 方法 | 结论要点(摘要层) |\n|---|---|---|---|\n| Brandtzæg, Skjuve & Følstad | *Human Communication Research* 2022 | **19 个深度访谈**,Replika 用户,构建概念框架 | 人–AI 友谊既可用类似人际友谊的方式理解,其\"人造性\"也改变了友谊概念(如更个性化) |\n| Pan & Mou | *Personal Relationships* 2024 | **关系辩证理论2.0 + 对位分析**,分析 Replika 用户在线社区帖子 | 提炼出\"理想化话语(DI)\"与\"现实主义话语(DR)\",二者收缩/扩张式互动 |\n| De Freitas et al. | arXiv 2024 | **自然事件(app 移除 ERP 功能)+ 后续实验** | 用户知觉到 AI 伙伴\"身份断裂\"→哀悼、贬低\"新\"AI;实验称用户与 AI 比与最好的真人朋友更亲近 |\n| Marriott & Pitardi | *Psychology & Marketing* 2023 | **混合方法(网络志 + 量化问卷)** | 用户自 AI 友谊获福祉收益,**同时**成瘾;孤独与恐惧评判、AI 感知心智性提高成瘾 |\n| Ciriello et al. | HICSS 2024 | **辩证探究**(dialectical inquiry) | 三个伦理张力:陪伴–异化反讽、自主–控制悖论、效用–伦理两难 |\n| Muldoon & Parke | *New Media & Society* 2025 | **政治经济学 + 文化研究理论化** | 提出\"cruel companionship\":AI 伴侣结构性地排除真正互惠关系,并复现种族化/性别化刻板印象 |\n| Beerends & Aydin | *AI & Society* 2024 | **话语分析**(学术论文、AI 教育、在线讨论) | \"AI 真实性\"是被协商建构的;该建构过程消解了人的\"不确定性\"空间 |\n| Ajeesh & Joseph | *Frontiers in Psychology* 2025 | **概念/规范论证** | 提出\"compassion illusion\":AI 可模仿共情的表达,但缺意向性、具身性、道德参与,故非真正关怀 |\n| Babu et al. | *Frontiers in Psychology* 2025 | **概念论证 + 框架 + 设计建议** | 提出\"pseudo-intimacy\"与三风险框架(心理依赖/结构商品化/伦理),把\"真实性\"定义为\"互主体互惠与断裂–修复\" |\n\n## 三、方法比较:三条明显的方法论断层\n\n1. **\"用户报告\"路线**(Brandtzæg 访谈、Pan&Mou 帖子分析、De Freitas 事件研究、Marriott 混合方法):证据是**主观体验与行为反应**。前两者是意义/话语建构,De Freitas 是准实验 + 实验,Marriott 是网络志 + 问卷。它们能回答\"用户是否**体验为**关怀/友谊\"。\n\n2. **\"构成条件\"路线**(Ajeesh&Joseph、Babu、Muldoon&Parke、Ciriello):不谈样本,而是**论证关怀的成立要件**(意向性、互惠、可问责、断裂–修复)。它们回答\"这**是不是**关怀\",属规范判断,方法上不产生经验反证。\n\n3. **元层面路线**(Beerends&Aydin):连\"真实性\"这个标准本身都被当成被协商的产物来分析——它质疑前两条路线共用的那个\"真实\"前提。\n\n## 四、结论比较:表面冲突多半是\"没在测同一个东西\"\n\n把\"真实关怀\"拆成两个不同问题,冲突就清楚了大半:\n\n- **问题A(经验):用户是否体验到被关怀?** → 四篇经验研究大致答\"是\",而且强度不低(De Freitas 甚至报告比最好的真人朋友更亲近);同时 Marriott 给出反面:福祉与成瘾并存。\n- **问题B(规范):该体验是否满足关怀的构成条件?** → 四篇理论文章大致答\"否\":模仿共情≠有共情(Ajeesh),缺互惠即\"伪亲密\"(Babu),结构上排除互惠即\"残酷陪伴\"(Muldoon)。\n\n**关键**:理论侧的\"否\"**逻辑上并不反驳**经验侧的\"是\"——前者判的是条件,后者报的是感受。只有当你接受\"关怀必须满足意向性/互惠这类条件\"这一价值标准时,理论侧的否定才对经验侧的肯定构成实质挑战。而 Beerends&Aydin 提醒:这个标准本身也是被争夺的。\n\n反过来,经验侧也不能证明\"AI 真的在关怀\"——它证明的是\"用户知觉到关怀\",这正是 Ajeesh 所说\"把情感识别误认作情感共鸣\"的可能入口。\n\n## 五、证据边界(不能下的判断)\n\n- 我没读到任何一篇的**方法细节全貌**(样本代表性、编码信度、实验设计、量表、伦理程序多在摘要/开头之外)。因此上表\"方法\"栏是**据摘要所示的类型**,不是审读过的方法评价。\n- 两篇 Frontiers 只读了开头约 2000 字,**未读完**,不评其论证细节。\n- Crossref 限流,检索**未穷尽**;这里报告的是本次实际命中的 9 条,不等于该领域只有这些研究。\n- 全部为 `source_category: UNKNOWN`,未区分原始研究/综述。\n\n**若要让这个比较更硬**,下一步可以:①对 De Freitas、Marriott 两篇取正文核对其样本与测量(避免\"情绪更亲近\"这类表述被我转述放大);②专门检索**关怀伦理学(Noddings/Held 等)**这一支,看概念侧的构成条件是否有独立理论根据;③由你贴出秘塔那一路结果,我做两渠道的**方法-结论交叉对照**。要哪一步,告诉我。",
+   "answer_chars": 3021,
+   "done_content": "## 一、渠道与检索范围(先说清能说什么)\n\n- **没有秘塔**这一路:我可用的只有 `search_scholarship`(Crossref + OpenAlex 双源)。这次检索中 **Crossref 两次返回 429 限流**,命中的绝大部分来自 OpenAlex。所以下面是\"一个渠道的两源结果\",不是\"两个独立渠道互证\"。\n- 检索词三组:①AI companionship / genuine care / authentic relationship;②companion chatbot / emotional support / care ethics / empirical;③Replika / perceived care / authenticity / qualitative。年份限 2020 起,实际命中 **2022–2025**。\n- **所有 9 条都只到摘要层**(`ABSTRACT_AVAILABLE`)。其中两篇 Frontiers 文章返回的是**开头正文节选**(约 2000 字,标注非摘要、且未读完)——我据此只能说\"读到了开头\",不能说\"审读了方法细节\"。\n\n## 二、命中的 9 项研究(方法与结论要点)\n\n| 研究 | 出处/年份 | 方法 | 结论要点(摘要层) |\n|---|---|---|---|\n| Brandtzæg, Skjuve & Følstad | *Human Communication Research* 2022 | **19 个深度访谈**,Replika 用户,构建概念框架 | 人–AI 友谊既可用类似人际友谊的方式理解,其\"人造性\"也改变了友谊概念(如更个性化) |\n| Pan & Mou | *Personal Relationships* 2024 | **关系辩证理论2.0 + 对位分析**,分析 Replika 用户在线社区帖子 | 提炼出\"理想化话语(DI)\"与\"现实主义话语(DR)\",二者收缩/扩张式互动 |\n| De Freitas et al. | arXiv 2024 | **自然事件(app 移除 ERP 功能)+ 后续实验** | 用户知觉到 AI 伙伴\"身份断裂\"→哀悼、贬低\"新\"AI;实验称用户与 AI 比与最好的真人朋友更亲近 |\n| Marriott & Pitardi | *Psychology & Marketing* 2023 | **混合方法(网络志 + 量化问卷)** | 用户自 AI 友谊获福祉收益,**同时**成瘾;孤独与恐惧评判、AI 感知心智性提高成瘾 |\n| Ciriello et al. | HICSS 2024 | **辩证探究**(dialectical inquiry) | 三个伦理张力:陪伴–异化反讽、自主–控制悖论、效用–伦理两难 |\n| Muldoon & Parke | *New Media & Society* 2025 | **政治经济学 + 文化研究理论化** | 提出\"cruel companionship\":AI 伴侣结构性地排除真正互惠关系,并复现种族化/性别化刻板印象 |\n| Beerends & Aydin | *AI & Society* 2024 | **话语分析**(学术论文、AI 教育、在线讨论) | \"AI 真实性\"是被协商建构的;该建构过程消解了人的\"不确定性\"空间 |\n| Ajeesh & Joseph | *Frontiers in Psychology* 2025 | **概念/规范论证** | 提出\"compassion illusion\":AI 可模仿共情的表达,但缺意向性、具身性、道德参与,故非真正关怀 |\n| Babu et al. | *Frontiers in Psychology* 2025 | **概念论证 + 框架 + 设计建议** | 提出\"pseudo-intimacy\"与三风险框架(心理依赖/结构商品化/伦理),把\"真实性\"定义为\"互主体互惠与断裂–修复\" |\n\n## 三、方法比较:三条明显的方法论断层\n\n1. **\"用户报告\"路线**(Brandtzæg 访谈、Pan&Mou 帖子分析、De Freitas 事件研究、Marriott 混合方法):证据是**主观体验与行为反应**。前两者是意义/话语建构,De Freitas 是准实验 + 实验,Marriott 是网络志 + 问卷。它们能回答\"用户是否**体验为**关怀/友谊\"。\n\n2. **\"构成条件\"路线**(Ajeesh&Joseph、Babu、Muldoon&Parke、Ciriello):不谈样本,而是**论证关怀的成立要件**(意向性、互惠、可问责、断裂–修复)。它们回答\"这**是不是**关怀\",属规范判断,方法上不产生经验反证。\n\n3. **元层面路线**(Beerends&Aydin):连\"真实性\"这个标准本身都被当成被协商的产物来分析——它质疑前两条路线共用的那个\"真实\"前提。\n\n## 四、结论比较:表面冲突多半是\"没在测同一个东西\"\n\n把\"真实关怀\"拆成两个不同问题,冲突就清楚了大半:\n\n- **问题A(经验):用户是否体验到被关怀?** → 四篇经验研究大致答\"是\",而且强度不低(De Freitas 甚至报告比最好的真人朋友更亲近);同时 Marriott 给出反面:福祉与成瘾并存。\n- **问题B(规范):该体验是否满足关怀的构成条件?** → 四篇理论文章大致答\"否\":模仿共情≠有共情(Ajeesh),缺互惠即\"伪亲密\"(Babu),结构上排除互惠即\"残酷陪伴\"(Muldoon)。\n\n**关键**:理论侧的\"否\"**逻辑上并不反驳**经验侧的\"是\"——前者判的是条件,后者报的是感受。只有当你接受\"关怀必须满足意向性/互惠这类条件\"这一价值标准时,理论侧的否定才对经验侧的肯定构成实质挑战。而 Beerends&Aydin 提醒:这个标准本身也是被争夺的。\n\n反过来,经验侧也不能证明\"AI 真的在关怀\"——它证明的是\"用户知觉到关怀\",这正是 Ajeesh 所说\"把情感识别误认作情感共鸣\"的可能入口。\n\n## 五、证据边界(不能下的判断)\n\n- 我没读到任何一篇的**方法细节全貌**(样本代表性、编码信度、实验设计、量表、伦理程序多在摘要/开头之外)。因此上表\"方法\"栏是**据摘要所示的类型**,不是审读过的方法评价。\n- 两篇 Frontiers 只读了开头约 2000 字,**未读完**,不评其论证细节。\n- Crossref 限流,检索**未穷尽**;这里报告的是本次实际命中的 9 条,不等于该领域只有这些研究。\n- 全部为 `source_category: UNKNOWN`,未区分原始研究/综述。\n\n**若要让这个比较更硬**,下一步可以:①对 De Freitas、Marriott 两篇取正文核对其样本与测量(避免\"情绪更亲近\"这类表述被我转述放大);②专门检索**关怀伦理学(Noddings/Held 等)**这一支,看概念侧的构成条件是否有独立理论根据;③由你贴出秘塔那一路结果,我做两渠道的**方法-结论交叉对照**。要哪一步,告诉我。",
+   "done_matches_tokens": true,
+   "citations": [],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 0,
+    "display_citations": 0,
+    "primary_research": {
+     "status": "not_requested",
+     "sources": [],
+     "total": 0,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 27.001,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 2.5,
+     "ev": "assistant_commentary",
+     "chars": 206
+    },
+    {
+     "t": 2.5,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 2.5,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_00_Do1BeY829blMvPT6DTAZ8530"
+    },
+    {
+     "t": 2.7,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_01_qrmowSXj5arFNuFEx9zp3222"
+    },
+    {
+     "t": 2.9,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_02_fvpjQQkK95TP3pC6yEFg1459"
+    },
+    {
+     "t": 4.9,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.798,
+     "result_chars": 5670,
+     "result_head": "{\"query\": \"companion chatbot emotional support care ethics empirical study\", \"results\": [{\"source_record_id\": \"doi:10.48550/arxiv.2203.02155\", \"title\": \"Discern"
+    },
+    {
+     "t": 4.9,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 1.801,
+     "result_chars": 6608,
+     "result_head": "{\"query\": \"Replika users perceived care authenticity qualitative\", \"results\": [{\"source_record_id\": \"doi:10.1016/j.techfore.2022.121786\", \"title\": \"AI anthropom"
+    },
+    {
+     "t": 5.0,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.846,
+     "result_chars": 3272,
+     "result_head": "{\"query\": \"AI companionship genuine care authentic relationship chatbot\", \"results\": [{\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"title\": \"Ethical Tens"
+    },
+    {
+     "t": 8.0,
+     "ev": "assistant_commentary",
+     "chars": 71
+    },
+    {
+     "t": 8.0,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 8.0,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_DXNESC5tZtjl97sYLVCN9018"
+    },
+    {
+     "t": 8.0,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_orYbAKnrlAldxSkmuEJ96512"
+    },
+    {
+     "t": 8.0,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_02_1ueUTt9puh8NNghjAzOg8327"
+    },
+    {
+     "t": 8.0,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_03_3bDL0wcIJFtYU7ifppob6057"
+    },
+    {
+     "t": 8.1,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_04_5daBsLTn2FFCeFrpzT4O8295"
+    },
+    {
+     "t": 8.3,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_05_YjuJ8mBESR4iGH6Ko2Sd2677"
+    },
+    {
+     "t": 8.4,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_06_749i2oXlQzVBum1JXPbC9260"
+    },
+    {
+     "t": 8.6,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.03,
+     "result_chars": 2708,
+     "result_head": "{\"source_record_id\": \"doi:10.1093/hcr/hqac008\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/hcr/hqac008\", \"title\": \"My AI Friend: How Users of a S"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.056,
+     "result_chars": 2786,
+     "result_head": "{\"source_record_id\": \"doi:10.1002/mar.21899\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1002/mar.21899\", \"title\": \"One is the loneliest number… Two c"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.058,
+     "result_chars": 2808,
+     "result_head": "{\"source_record_id\": \"doi:10.1111/pere.12572\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1111/pere.12572\", \"title\": \"Constructing the meaning of huma"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.08,
+     "result_chars": 4534,
+     "result_head": "{\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1723149\", \"title\": \"The compassion i"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.09,
+     "result_chars": 2682,
+     "result_head": "{\"source_record_id\": \"doi:10.1177/14614448251395192\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1177/14614448251395192\", \"title\": \"Cruel companionshi"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.101,
+     "result_chars": 2955,
+     "result_head": "{\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.24251/hicss.2024.058\", \"title\": \"Ethical Tensions in Hu"
+    },
+    {
+     "t": 8.7,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.103,
+     "result_chars": 3134,
+     "result_head": "{\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.48550/arxiv.2412.14190\", \"title\": \"Lessons From an Ap"
+    },
+    {
+     "t": 11.9,
+     "ev": "assistant_commentary",
+     "chars": 26
+    },
+    {
+     "t": 11.9,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 11.9,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_wy070PIf0q9Wn1IYbcoo8028"
+    },
+    {
+     "t": 12.1,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_WawveVn2pd1MtGeuaZja9609"
+    },
+    {
+     "t": 12.3,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.025,
+     "result_chars": 3309,
+     "result_head": "{\"source_record_id\": \"doi:10.1007/s00146-024-01884-5\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1007/s00146-024-01884-5\", \"title\": \"Negotiating the "
+    },
+    {
+     "t": 12.3,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.04,
+     "result_chars": 4631,
+     "result_head": "{\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2025.1679324\", \"title\": \"Emotional AI and"
+    },
+    {
+     "t": 27.1,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1682
+  }
+ ],
+ "total_wall_s": 28.1,
+ "status": "COMPLETED"
+}

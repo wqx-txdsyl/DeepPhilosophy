@@ -21,7 +21,7 @@ function fmtSize(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-export default function AttachmentCard({ att, onRemove, onRetry }) {
+export default function AttachmentCard({ att, onRemove, onRetry, general = false }) {
   const { t } = useLang();
   const kindLabel = t(`kind${att.kind[0].toUpperCase()}${att.kind.slice(1)}`) || att.kind;
   return (
@@ -34,7 +34,9 @@ export default function AttachmentCard({ att, onRemove, onRetry }) {
           {fmtSize(att.size) && ` · ${fmtSize(att.size)}`}
           {att.status === 'uploading' && (<> · {t('uploading')}…</>)}
           {att.status === 'error' && ` · ${att.error || t('uploadFail')}`}
+          {general && att.truncated && ' · 仅提取前 20000 字符'}
         </span>
+        {general && att.status === 'ready' && <details className="general-attachment-preview"><summary>预览提取内容</summary><pre>{att.content || ''}</pre></details>}
       </span>
       {att.status === 'uploading' && <Loader2 size={13} className="cw-spinner" aria-label={t('uploading')} />}
       {att.status === 'error' && onRetry && (

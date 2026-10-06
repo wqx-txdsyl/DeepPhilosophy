@@ -6,11 +6,13 @@ A1 Tool Loop Observability: 单轮 invocation 轨迹（conversation/message/agen
     model retry、总时长）→ JSONL; 禁止记录原始 chain-of-thought
 A2 Duplicate Tool Call Guard: 同 turn same tool + effectively same args → 复用/拦截;
     参数实质变化/范围变化/失败重试/生成类工具一律放行
-A3 Tool Budget: soft（提醒收敛）/hard（graceful answer completion）配置化,
-    区分 useful/retry/duplicate/no-information-gain
+A3 Tool Budget: hard（graceful answer completion）配置化,
+    区分 useful/retry/duplicate/no-gain 计数（O4: 纯遥测, 无 soft 提示分支）
 A4 Model/Tool Error Recovery: 可恢复错误有限重试 → 耗尽后用已取得 evidence graceful
     completion; 不暴露 stack trace; 不丢 evidence
-A5 Termination: 显式结束条件 + 连续无增益轮守卫 + 防御性流帧处理
+A5 Termination: 显式结束条件 + 防御性流帧处理
+O4 Cognitive Layer Collapse: soft 预算提示 / no_gain 守卫 / RetrievalState 语义增益 /
+    no_gain_streak 状态链已删除——停止权威只在 Main Agent 宣告 + hard 机械上限。
 根因回归: "约 13 次工具调用后模型侧 error"（DeepSeek 流式连接中断）→ graceful recovery
 
 确定性单测: LLM 一律 mock（不依赖网络）; 真实 retrieval UAT 见 tools/dp_uat_phase_a.py。
@@ -50,8 +52,7 @@ async def _collect_stream(question, agent="general", language="zh", **kw):
     return [ev async for ev in elg.stream_agent(question, [], agent, None, language, **kw)]
 
 
-def _run_tools_node(calls, guard=None, budget=None, trace=None, tools=None, tool_count=0,
-                    no_gain_streak=0, retrieval_count=0):
+def _run_tools_node(calls, guard=None, budget=None, trace=None, tools=None, tool_count=0):
     """直接驱动 tools_node（mock 工具集, 不触网）"""
     if tools is None:
         tools = []
@@ -63,8 +64,7 @@ def _run_tools_node(calls, guard=None, budget=None, trace=None, tools=None, tool
                  "guard": guard or AR.DuplicateGuard(),
                  "budget": budget or AR.ToolBudget(retrieval_tools=set(elg.RETRIEVAL_TOOLS) | {"philosopher_memory"}),
                  "trace": trace or AR.ToolLoopTrace("conv-t", "msg-t", "general"),
-                 "agent": "general", "tool_count": tool_count,
-                 "no_gain_streak": no_gain_streak, "retrieval_count": retrieval_count}
+                 "agent": "general", "tool_count": tool_count}
         return asyncio.run(elg.tools_node(state))
     finally:
         elg.get_tools = orig_get_tools
@@ -136,35 +136,35 @@ def test_a3_budget_classification_useful_retry_duplicate_no_gain():
     assert (b.useful, b.no_gain, b.duplicate_reused, b.retry, b.total_executed) == (1, 2, 1, 1, 4)
 
 
-def test_a3_soft_and_hard_thresholds_from_config():
+def test_a3_hard_thresholds_from_config():
+    # O4: 只剩硬资源上限（soft 提示机制已删）
     b = AR.ToolBudget(retrieval_tools={"search_books"},
-                      cfg={"soft_retrieval": 8, "soft_total": 10, "hard_retrieval": 20, "hard_total": 24})
-    for _ in range(7):
+                      cfg={"hard_retrieval": 20, "hard_total": 24})
+    for _ in range(19):
         b.count("search_books", "unique", True, "new")
-    assert not b.soft_reached() and not b.hard_reached()
-    b.count("search_books", "unique", True, "new")            # 检索第 8 次
-    assert b.soft_reached() and not b.hard_reached()
-    for _ in range(12):
-        b.count("search_books", "unique", True, "new")
+    assert not b.hard_reached()
+    b.count("search_books", "unique", True, "new")            # 检索第 20 次
     assert b.hard_reached()
 
 
 def test_a3_engine_reads_budget_from_config_not_magic_numbers():
-    assert elg.RETRIEVAL_LIMIT == AR.TOOL_BUDGET["soft_retrieval"]
-    assert elg.RETRIEVAL_HARD == AR.TOOL_BUDGET["hard_retrieval"]
+    # O4: 引擎不再持有 RETRIEVAL_LIMIT/RETRIEVAL_HARD 别名——预算单一真源在 TOOL_BUDGET
+    assert not hasattr(elg, "RETRIEVAL_LIMIT") and not hasattr(elg, "RETRIEVAL_HARD")
+    assert AR.TOOL_BUDGET["hard_retrieval"] == AR._env_int("AGENT_HARD_RETRIEVAL", 20)
+    assert AR.TOOL_BUDGET["hard_total"] == AR._env_int("AGENT_HARD_TOTAL", 24)
     assert AR.RECURSION_LIMIT >= AR.TOOL_BUDGET["hard_total"] // 2 + 4   # 递归兜底必须高于 hard 预算轮数
     assert AR.TOOL_TIMEOUT == AR._env_int("AGENT_TOOL_TIMEOUT", 90)
 
 
 def test_a3_env_override(tmp_path, monkeypatch):
-    monkeypatch.setenv("AGENT_SOFT_TOTAL", "3")
+    monkeypatch.setenv("AGENT_HARD_TOTAL", "30")
     monkeypatch.setattr(AR, "TRACE_FILE", tmp_path / "t.jsonl")
     import importlib
     ar2 = importlib.reload(AR)
     try:
-        assert ar2.TOOL_BUDGET["soft_total"] == 3
+        assert ar2.TOOL_BUDGET["hard_total"] == 30
     finally:
-        monkeypatch.delenv("AGENT_SOFT_TOTAL", raising=False)
+        monkeypatch.delenv("AGENT_HARD_TOTAL", raising=False)
         importlib.reload(AR)   # 复位默认配置（env 已清, reload 恢复默认值）
 
 
@@ -214,13 +214,6 @@ def test_a4_retry_budget_exhausted_raises_model_call_error():
 # ═══════════════════════════════════════════════════════
 # A5 终止条件
 # ═══════════════════════════════════════════════════════
-def test_a5_no_gain_streak_verdict():
-    assert AR.no_gain_verdict(0) == "none"
-    assert AR.no_gain_verdict(1) == "none"
-    assert AR.no_gain_verdict(AR.NO_GAIN_WARN_STREAK) == "warn"
-    assert AR.no_gain_verdict(AR.NO_GAIN_FORCE_STREAK) == "force"
-
-
 def test_a5_should_continue_forced_rounds():
     state = {"messages": [AIMessage(content="", tool_calls=[{"name": "search_books", "args": {}, "id": "c"}])],
              "forced": True, "forced_tools_done": False}
@@ -287,7 +280,7 @@ def test_engine_tools_node_reuses_duplicate_without_execution():
     assert exec_counter["n"] == 0, "同参重复调用必须复用结果, 不再执行"
     assert msg.additional_kwargs["_reused"] is True and msg.additional_kwargs["_budget_class"] == "duplicate"
     assert msg.tool_call_id == "c1"
-    assert out["tool_count"] == 0 and out["no_gain_streak"] == 1
+    assert out["tool_count"] == 0
 
 
 def test_engine_tools_node_executes_unique_and_counts():
@@ -300,19 +293,16 @@ def test_engine_tools_node_executes_unique_and_counts():
          {"name": "get_chapter", "args": {"book_id": "b", "idx": 1}, "id": "c2"}],
         tools=[_fake_tool("search_books", _search), _fake_tool("get_chapter", lambda **kw: {"text": "段落"})])
     assert exec_counter["n"] == 1
-    assert out["tool_count"] == 2 and out["no_gain_streak"] == 0
+    assert out["tool_count"] == 2
     assert out["messages"][0].additional_kwargs["_info_gain"] == "new"
 
 
-def test_engine_tools_node_counts_no_gain_streak_for_empty_results():
+def test_engine_tools_node_marks_empty_results_as_no_gain_telemetry():
+    # O4: 空命中只计入遥测（info_gain/budget.no_gain）——不再产生 streak/守卫控制
     out = _run_tools_node([{"name": "search_books", "args": {"query": "生僻词xyz"}, "id": "c1"}],
                           tools=[_fake_tool("search_books", lambda **kw: {"results": []})])
     assert out["messages"][0].additional_kwargs["_info_gain"] == "empty"
-    assert out["no_gain_streak"] == 1
-    out2 = _run_tools_node([{"name": "search_books", "args": {"query": "另一生僻词abc"}, "id": "c2"}],
-                           tools=[_fake_tool("search_books", lambda **kw: {"results": []})],
-                           no_gain_streak=out["no_gain_streak"])
-    assert out2["no_gain_streak"] == 2   # 连续空命中 → warn/force 守卫接管
+    assert "no_gain_streak" not in out
 
 
 def test_engine_tools_node_failed_tool_retry_then_fallback_hint():
@@ -367,59 +357,67 @@ def _patch_llm(monkeypatch, fake, tools=None):
     monkeypatch.setattr(elg, "get_tools", lambda agent: tools or [])
 
 
-def test_engine_agent_node_soft_budget_hint_injected(monkeypatch):
+def test_engine_agent_node_soft_budget_no_control_effect(monkeypatch):
+    # O3 §5/§8 + O4: soft 机制已整体删除——工具计数不影响 prompt/forced
     fake = _FakeLLM([AIMessage(content="回答")])
     _patch_llm(monkeypatch, fake)
     budget = AR.ToolBudget(retrieval_tools={"search_books"},
-                           cfg={"soft_retrieval": 8, "soft_total": 10, "hard_retrieval": 20, "hard_total": 24})
+                           cfg={"hard_retrieval": 20, "hard_total": 24})
     for _ in range(8):
         budget.count("search_books", "unique", True, "new")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": budget, "no_gain_streak": 0, "model_retries": 0}
+             "budget": budget}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is False
-    assert any("预算提示" in m.content or "材料是否足以回答" in m.content
-               for m in fake.prompts[0] if isinstance(m, SystemMessage))
+    assert not any("预算提示" in m.content or "材料是否足以回答" in m.content
+                   for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
 def test_engine_agent_node_hard_budget_forces_answer(monkeypatch):
     fake = _FakeLLM([AIMessage(content="最终回答")])
     _patch_llm(monkeypatch, fake)
     budget = AR.ToolBudget(retrieval_tools={"search_books"},
-                           cfg={"soft_retrieval": 8, "soft_total": 10, "hard_retrieval": 20, "hard_total": 24})
+                           cfg={"hard_retrieval": 20, "hard_total": 24})
     for _ in range(24):
         budget.count("search_books", "unique", True, "new")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": budget, "no_gain_streak": 0, "model_retries": 0}
+             "budget": budget}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is True
     assert any("禁止调用任何工具" in m.content for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
-def test_engine_agent_node_no_gain_streak_forces_answer(monkeypatch):
+def test_engine_agent_node_no_gain_streak_no_control_effect(monkeypatch):
+    # O3 §4/§8 + O4: no_gain 状态字段已删除——即便按旧字面 streak 语义（连续 3 轮无增益）
+    # 也不再有 force 收口/注入任何指令; 行为只取决于 Main Agent 宣告。
     fake = _FakeLLM([AIMessage(content="最终回答")])
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "no_gain_streak": AR.NO_GAIN_FORCE_STREAK, "model_retries": 0}
+             "budget": AR.ToolBudget()}
     out = asyncio.run(elg.agent_node(state))
-    assert out["forced"] is True
+    assert out["forced"] is False
+    assert not any("无增益" in m.content or "不再检索" in m.content
+                   for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
 def test_engine_agent_node_model_retry_then_success(monkeypatch):
     fake = _FakeLLM([Exception("peer closed connection without sending complete message body"),
                      AIMessage(content="回答")])
     _patch_llm(monkeypatch, fake)
+    trace = AR.ToolLoopTrace("c", "m", "general")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "no_gain_streak": 0, "model_retries": 0}
+             "budget": AR.ToolBudget(), "trace": trace}
     out = asyncio.run(elg.agent_node(state))
-    assert out["model_retries"] == 1 and out["messages"][0].content == "回答"
+    # O5 字段级适配: model_retries state 字段已删（write-only）——计数真源 = trace.model_retries
+    assert "model_retries" not in out
+    assert trace.model_retries == 1 and out["messages"][0].content == "回答"
 
 
 def test_engine_agent_node_model_retry_exhausted_raises(monkeypatch):
     fake = _FakeLLM([Exception("peer closed connection")] * (AR.MODEL_RETRY["attempts"] + 1))
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "no_gain_streak": 0, "model_retries": 0}
+             "budget": AR.ToolBudget()}
     with pytest.raises(AR.ModelCallError):
         asyncio.run(elg.agent_node(state))
 
@@ -428,12 +426,23 @@ def test_engine_agent_node_model_retry_exhausted_raises(monkeypatch):
 # 根因回归: 图流中断 → graceful recovery（13 calls → error 的防护）
 # ═══════════════════════════════════════════════════════
 class _FakeAppMidTurnCrash:
-    """模拟: 13 次工具调用后模型侧流式连接中断（peer closed connection）"""
+    """模拟: 工具调用后模型侧流式连接中断（peer closed connection）。
 
-    def __init__(self, tool_result):
+    O2/Phase A 改写: graceful recovery = 同一个图原样重跑一次（不再调 AG.llm_chat
+    独立生成）。recovery_answer 给定时, 第二次 invocation（重跑）返回恢复轮正文;
+    给 None 时重跑继续崩溃（恢复失败 → 友好 error 路径）。"""
+
+    def __init__(self, tool_result, recovery_answer=None):
         self.tool_result = tool_result
+        self.recovery_answer = recovery_answer
+        self.invocations = 0
 
     async def astream(self, inputs, config, stream_mode="messages"):
+        self.invocations += 1
+        if self.recovery_answer and self.invocations >= 2:
+            # 恢复轮: 同一个 Main Agent 图重跑, 直接产出最终回答（evidence 已在上轮取得）
+            yield (AIMessageChunk(content=self.recovery_answer), {"langgraph_node": "agent"})
+            return
         yield (AIMessageChunk(content="", tool_call_chunks=[
             {"name": "search_books", "args": "{\"query\": \"尼采 永恒轮回\"}", "id": "c1", "index": 0}]),
                {"langgraph_node": "agent"})
@@ -456,18 +465,27 @@ def test_root_cause_13_calls_mid_turn_crash_recovers_with_evidence(monkeypatch, 
     stats_rec = []
     monkeypatch.setattr(elg, "_log_stats", lambda *a, **k: stats_rec.append(a))
     _stub_auto_websearch(monkeypatch)
-    monkeypatch.setattr(elg, "APP", _FakeAppMidTurnCrash(
+    _recovery = "永恒轮回是权力意志的试金石：一切价值重估的极端形式。"
+    fake_app = _FakeAppMidTurnCrash(
         tool_result={"results": [{"book_title": "查拉图斯特拉如是说", "chapter_title": "夜歌",
-                                   "snippet": "我是光", "author": "弗里德里希·尼采"}]}))
-    monkeypatch.setattr(AG, "llm_chat", lambda *a, **k:
-                        {"choices": [{"message": {"content": "永恒轮回是试金石——我在《查拉图斯特拉如是说》写过'我是光'【《查拉图斯特拉如是说》·夜歌】。"}}]})
+                                   "snippet": "我是光", "author": "弗里德里希·尼采"}]},
+        recovery_answer=_recovery)
+    monkeypatch.setattr(elg, "APP", fake_app)
+    llm_calls = []
+
+    def _forbidden_llm_chat(*a, **k):
+        llm_calls.append(a)
+        return {"choices": [{"message": {"content": ""}}]}
+    monkeypatch.setattr(AG, "llm_chat", _forbidden_llm_chat)
     evs = asyncio.run(_collect_stream("永恒轮回是什么意思？"))
     types = [ev["type"] for ev in evs]
     assert "error" not in types, "图流中断必须 graceful recovery, 不得以 error 终止"
+    assert fake_app.invocations == 2, "恢复 = 同一个图原样重跑一次"
     done = next(ev for ev in evs if ev["type"] == "done")
     assert done["tool_loop"]["recovered_after_error"] is True
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "已检索到的材料" in text or "永恒轮回" in text
+    assert text == _recovery, "恢复后正文来自主图重跑 invocation, 非第二 writer 代写"
+    assert llm_calls == [], "O2/Phase A: 恢复不得再调 AG.llm_chat 独立生成答案"
     assert done["tool_calls"], "已完成的工具调用证据必须保留在 done 中"
     # 观测: turn 汇总落盘且 error 有记录（不再把工具数记 0——stats 记录真实工具名）
     turns = [r for r in _trace_lines() if r["type"] == "turn"]
@@ -493,7 +511,7 @@ def test_root_cause_no_evidence_and_recovery_fails_friendly_error(monkeypatch):
         "stats error 路径工具数不再硬编码 0（含引擎自动补充的 websearch）"
 
 
-def test_stream_agent_partial_answer_before_crash_kept(monkeypatch):
+def test_stream_agent_interrupted_unfinished_answer_is_not_reported_complete(monkeypatch):
     class _CrashAfterAnswer:
         async def astream(self, inputs, config, stream_mode="messages"):
             yield (AIMessageChunk(content="回答已经开始流式输出：权力意志是自我克服的冲动。"), {"langgraph_node": "agent"})
@@ -501,10 +519,9 @@ def test_stream_agent_partial_answer_before_crash_kept(monkeypatch):
     monkeypatch.setattr(elg, "APP", _CrashAfterAnswer())
     evs = asyncio.run(_collect_stream("权力意志"))
     types = [ev["type"] for ev in evs]
-    assert "error" not in types
-    done = next(ev for ev in evs if ev["type"] == "done")
-    text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "权力意志" in text and done["tool_loop"]["recovered_after_error"] is True
+    assert "error" in types
+    assert "done" not in types
+    assert "token" not in types  # No validated paragraph was delivered before this interruption.
 
 
 # ═══════════════════════════════════════════════════════
@@ -538,13 +555,15 @@ def test_stream_agent_signature_backward_compatible():
 
 def test_done_event_carries_tool_loop_state(monkeypatch):
     monkeypatch.setattr(elg, "APP", _FakeAppMidTurnCrash(
-        tool_result={"results": [{"book_title": "查", "chapter_title": "夜歌", "snippet": "我是光"}]}))
+        tool_result={"results": [{"book_title": "查", "chapter_title": "夜歌", "snippet": "我是光"}]},
+        recovery_answer="回答正文：权力意志是自我克服的冲动。"))
     monkeypatch.setattr(AG, "llm_chat", lambda *a, **k:
-                        {"choices": [{"message": {"content": "回答正文【《查》·夜歌】"}}]})
+                        {"choices": [{"message": {"content": ""}}]})
     evs = asyncio.run(_collect_stream("测试", conversation_id="conv-x", message_id="msg-y"))
     done = next(ev for ev in evs if ev["type"] == "done")
     tl = done["tool_loop"]
     assert tl["invocation_id"] and tl["budget"]["cfg"]["hard_total"] == AR.TOOL_BUDGET["hard_total"]
     assert tl["budget"]["total_executed"] >= 0
+    assert tl["recovered_after_error"] == True  # stream_error 已发生 → 如实审计
     turns = [r for r in _trace_lines() if r["type"] == "turn"]
     assert turns[-1]["conversation_id"] == "conv-x" and turns[-1]["message_id"] == "msg-y"

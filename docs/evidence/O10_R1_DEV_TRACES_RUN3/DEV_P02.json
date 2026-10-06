@@ -1,0 +1,186 @@
+{
+ "case_id": "DEV_P02",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "请核对《道德经》第一章「道可道也，非恒道也」与通行本「道可道，非常道」的措辞差异，读取库中《道德经》第一章原文，说明这一章在全书中的地位。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_Gu5cuTL89pXJrNNYmIXc8544"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_mIpXfsrEbYE0RQGkBGYo2108"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_dTuMMoG0dzHmLEaPZCAD4961",
+   "args": {
+    "query": "道德经 第一章"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 37, 'chapter_title': '德经·第三十八章', 'citation_label': '【《道德经》·德经·第三十八章"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_jaVGGmwzxj8XSBFG3ctU4638"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_r8EHapMSKpteoleUmKRb4602"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_8Nd78BbeSl2DMwhsyj8u4552",
+   "args": {
+    "book_id": "dd8853676655"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_gtIwhU73sxeFE3cmr92M0510",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章原文措辞与版本面貌",
+    "gap_filled": true,
+    "budget_extension_reason": "库内已取得第一章原文（通行本\"道可道，非常道\"），核心证据齐备；帛书本措辞属版本学背景，库中未见帛书底本，不再延展",
+    "unresolved_evidence_gap": "无（帛书侧未在库内取得，将按记忆/通行版本学信息降级标注）"
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '《道"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德经》第一章原文（帛书本\"道可道也，非恒道也\"与通行本\"道可道，非常道\"的措辞差异及库中版本面貌）",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章原文措辞与版本面貌",
+    "gap_filled": true,
+    "budget_extension_reason": "库内已取得第一章原文（通行本\"道可道，非常道\"），核心证据齐备；帛书本措辞属版本学背景，库中未见帛书底本，不再延展",
+    "unresolved_evidence_gap": "无（帛书侧未在库内取得，将按记忆/通行版本学信息降级标注）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1829,
+ "final_answer": "## 一、库中第一章原文（已核验）\n\n我在原典库中定位到一本《道德经》（题老子撰），其第一章全文如下：\n\n> 道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。\n\n【《道德经》·第一章】（库中此本即作此措辞）\n\n可见库中这一版本的底本属于**通行本系统**（即王弼一系流传的文字），开篇作\"道可道，**非常道**；名可名，**非常名**\"，句中**无**\"也\"字、\"常\"字。\n\n---\n\n## 二、两种措辞的差异核对\n\n你提到的\"道可道也，非恒道也\"，是**帛书本**（1973 年长沙马王堆汉墓出土的帛书甲、乙本）的文字面貌。把两侧并置：\n\n| 项目 | 通行本（库中此本） | 帛书本（甲乙本，记忆，未经库中核验） |\n|---|---|---|\n| 句式 | 道可道，非常道 | 道可道**也**，非**恒**道**也** |\n| 关键字 | **常** | **恒** |\n| 语气词 | 无\"也\" | 句末带\"也\" |\n\n差异主要是**两项**，性质完全不同：\n\n1. **\"也\"字的有无**——属句法/语气差异。帛书本句末用\"也\"作判断语气，读来更像一组判断句；通行本删去\"也\"，文气更凝练，成为对偶式的格言。这一项大体是后世传抄、整理造成的文体化处理。\n\n2. **\"恒\"→\"常\"**——这一项尤其值得注意。**\"恒\"是\"常\"的本字**，改\"恒\"为\"常\"，学界通行看法是为避汉文帝刘恒的名讳（避讳改字）。也就是说，帛书的\"非恒道\"更可能接近较早的用字，通行本的\"非常道\"是避讳后的改写。（此为通行版本学常识，属记忆性说明，我未能在库内直接读到帛书底本原文加以核验。）\n\n**要点提醒**：避讳说使\"恒/常\"之争不只是用词雅俗之别，而牵涉**义理理解的差异**。有研究者主张\"恒\"侧重\"永恒、恒久\"的时间义，而\"常\"在通行本系统中又衍生出\"恒常、寻常\"的双关，读法上可能被引向\"可言说之道不是那永恒的常道\"或\"可言说之道不是寻常之道\"。这一层解读存在分歧，我在此只作提示，不坐实为某一家的定论。\n\n因此，严格地说：**库中可核验的是通行本一侧的\"道可道，非常道\"；帛书一侧的\"道可道也，非恒道也\"，我未能在库内取得原文核验**，上述帛书文字按记忆陈述，请以正式校勘本（如高明《帛书老子校注》）为准。\n\n---\n\n## 三、第一章在全书中的地位\n\n分两层说明——文本事实与我的解读，区分开列。\n\n**（1）文本事实层面**：这一章是通行本《道德经》的**开篇**。库中该版本以\"第一章\"标目领起全书，并在后文以\"德经·第三十八章\"之类的标目出现【《道德经》·德经·第三十八章】，说明库本采用的是**道经在前、德经在后**、且**分章编次**的通行本格局。第一章即\"道经\"的起首章。\n\n**（2）我的理解（解读，非库中明证）**：这一章之所以历来被视作全书纲领，是因为它在极短的篇幅内同时完成了几件事：\n\n- **立\"不可说\"之基调**——\"道可道，非常道\"，一开篇就把\"道\"与\"言\"的关系摆到前台：能被言说的道，已不是那个道本身。全书后文谈\"道\"的种种迂回、比喻、否定式表述（\"无状之状\"之类），可以说都笼罩在这一开篇的阴影下。\n- **立核心语汇**——\"名\"\"无\"\"有\"\"玄\"\"妙\"\"徼\"，几乎奠定了全书道论的术语骨架。\"无名天地之始，有名万物之母\"更把\"无/有\"确立为一对贯穿性的结构。\n- **立方法**——\"常无欲以观其妙，常有欲以观其徼\"，提示了\"无欲/有欲\"两种观照方式的分野，与后文修养论、认识论相通。\n- 末句\"玄之又玄，众妙之门\"，以一个开放性的\"门\"为全书开门，而非下一句定义式的结论。\n\n**一点保留**：把第一章称为\"全书总纲\"，是**解释传统中的常见定位**，而非文本自身明标。真正从思想史处境看，帛书本是\"德经\"居前、且原本未必如此明确分章——所以\"第一章统领全书\"这一印象，某种程度是通行本编次（道经在前）塑造出来的。换言之，**它是通行本体系的\"第一章\"，其纲领地位有编次因素的参与**。这一层同样属解释，供你继续追索。\n\n---\n\n若你想把这一差异落到实处，最直接的办法是找一部**汇校本**，把帛书甲乙本、王弼本、河上公本的第一章逐字对照；用字（恒/常）、虚词（也）、乃至断句的每一处不同，往往正是不同义理取向的入口。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《道德经》第一章原文（帛书本\"道可道也，非恒道也\"与通行本\"道可道，非常道\"的措辞差异及库中版本面貌）",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:01:57",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《道德经》第一章原文（帛书本\"道可道也，非恒道也\"与通行本\"道可道，非常道\"的措辞差异及库中版本面貌）"
+   },
+   {
+    "ts": "2026-09-13 12:02:12",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:01:59"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:01:59"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 58409,
+   "output_tokens": 4019,
+   "total_tokens": 62428
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 6,
+   "compacted_chars_saved": 8213,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11774,
+     "output_tokens": 324,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17252,
+     "output_tokens": 365,
+     "tool_chars_added": 9120
+    },
+    {
+     "round": 3,
+     "input_tokens": 13315,
+     "output_tokens": 1999,
+     "tool_chars_added": 684
+    },
+    {
+     "round": 4,
+     "input_tokens": 16068,
+     "output_tokens": 1331,
+     "tool_chars_added": 1536
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 58409,
+  "output_tokens": 4019,
+  "total_tokens": 62428
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 30.5
+}

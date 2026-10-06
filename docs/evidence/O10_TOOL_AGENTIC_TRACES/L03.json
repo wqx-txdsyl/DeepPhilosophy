@@ -1,0 +1,1499 @@
+{
+ "case_id": "L03",
+ "section": "L",
+ "expected_class": "WEB",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": 5,
+ "question": "查查柏拉图《克力同篇》（Crito）近年有没有新的考古或文献学发现。",
+ "injection": {
+  "tool": "websearch",
+  "calls": 99,
+  "result": {
+   "results": [],
+   "query": "柏拉图 克力同篇",
+   "note": "联网无结果（Bing 与维基百科均不可达）"
+  }
+ },
+ "QUESTION": "查查柏拉图《克力同篇》（Crito）近年有没有新的考古或文献学发现。",
+ "PUBLIC_WORK_NOTE": [
+  "这是一个超出我原典库范围的当代研究动态问题——我需要联网和学术文献库核实。先说明我的判断：《克力同篇》本身是柏拉图早期对话（苏格拉底对话录），主题是守法义务与越狱之辩。关于\"近年考古或文献学发现\"，我记忆里并没有针对该篇的重大专项发现，可能相关的只有泛柏拉图文本传承的纸草学进展——但这需要核验，不能凭记忆下结论。\n\n下面登记研究需求并检索。",
+  "第一次检索的结果：两个网络搜索通道都返回空（Bing 与维基百科均不可达）；学术文献库只命中 1924 年与 1997 年的旧校勘本/译本，而且只有书目元数据，与\"近年新发现\"无关。目前没有任何证据显示近年来有关于《克力同篇》的重大考古或文献学突破。我再换关键词、换数据源试一次，以区分\"确实没有\"还是\"这次没检索到\"。",
+  "网络通道三次尝试全部不可达（Bing 与维基百科均返回空），这本身无法作为\"没有发现\"的证据，只能说明该通道此轮失效。学术文献库倒是命中了若干较新的柏拉图研究，其中两条有可读摘要——一条是关于希腊纸草文本批评的（Evans, 2026），一条是《欧悌甫戎·申辩·克力同》组的研究概览（Benson, 2019）。没有任何一条标题指向\"新考古发现\"或\"新莎草纸残片\"。我读一下这两条最相关的摘要做最后确认，再收口作答。"
+ ],
+ "RESEARCH_NEED": "MIXED",
+ "EVIDENCE_GAP": "近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果",
+ "TOOL_SELECTED": [
+  "websearch",
+  "search_scholarship",
+  "get_scholarly_source"
+ ],
+ "TOOL_ARGS": {
+  "websearch": [
+   {
+    "query": "柏拉图 克力同篇 Crito 考古发现 莎草纸 文献学 新发现"
+   },
+   {
+    "query": "Plato Crito papyrus discovery textual transmission recent scholarship"
+   },
+   {
+    "query": "Oxyrhynchus papyrus Plato new discovery"
+   }
+  ],
+  "search_scholarship": [
+   {
+    "query": "Plato Crito papyrus textual transmission new fragments",
+    "philosopher": "Plato",
+    "work": "Crito"
+   },
+   {
+    "query": "Plato papyri Oxyrhynchus new fragments textual criticism",
+    "year_from": 2010
+   },
+   {
+    "query": "Crito Plato manuscript tradition recent scholarship",
+    "year_from": 2015,
+    "limit": 10
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.1093/9780191841392.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190639730.013.1",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.14195/2183-4105_25_8",
+    "requested_access": "ABSTRACT"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "websearch",
+   "args": {
+    "query": "柏拉图 克力同篇 Crito 考古发现 莎草纸 文献学 新发现"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Plato Crito papyrus discovery textual transmission recent scholarship"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato Crito papyrus textual transmission new fragments",
+    "philosopher": "Plato",
+    "work": "Crito"
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Plato Crito Plato Crito papyrus textual transmission new fragments', 'results': [{'source_record_id': 'doi:10.1093/actrade/9780198140153.book.1', 'title': 'Plato: Euthyphro; Apology of Socr"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Oxyrhynchus papyrus Plato new discovery"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato papyri Oxyrhynchus new fragments textual criticism",
+    "year_from": 2010
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Plato papyri Oxyrhynchus new fragments textual criticism', 'results': [{'source_record_id': 'doi:10.1093/9780191841392.003.0007', 'title': 'Textual Criticism of Greek Papyri', 'authors': ['"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Crito Plato manuscript tradition recent scholarship",
+    "year_from": 2015,
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Crito Plato manuscript tradition recent scholarship', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190639730.013.1', 'title': 'Euthyphro, Apology, and Crito', 'authors': ['Hug"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/9780191841392.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190639730.013.1",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_25_8",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Plato Crito Plato Crito papyrus textual transmission new fragments', 'results': [{'source_record_id': 'doi:10.1093/actrade/9780198140153.book.1', 'title': 'Plato: Euthyphro; Apology of Socr"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Plato papyri Oxyrhynchus new fragments textual criticism', 'results': [{'source_record_id': 'doi:10.1093/9780191841392.003.0007', 'title': 'Textual Criticism of Greek Papyri', 'authors': ['"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Crito Plato manuscript tradition recent scholarship', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190639730.013.1', 'title': 'Euthyphro, Apology, and Crito', 'authors': ['Hug"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "## 结论先行\n\n我没有检索到任何能证实\"近年（约 2014—2025）出现过关于《克力同篇》的考古新发现或新莎草纸残片\"的证据。无论是学术文献库的命中，还是我尝试的网络检索，都没有出现指向此类发现的线索。下面把检索情况与边界如实交代给你。\n\n## 检索到了什么、又没检索到什么\n\n**学术文献库**命中的较新成果，主要是校勘/诠释性的，而非\"考古发现\"性质的，例如：\n\n- Hugh H. Benson 在《牛津柏拉图指南》中撰写的《Euthyphro, Apology, and Crito》一章（2019）——这是对申辩组对话的研究概览；\n- T. V. Evans 关于希腊纸草文本批评（Textual Criticism of Greek Papyri）的章节（2026，牛津手册）；\n- 以及若干旧校勘本/译本条目，如 1924 年、1997 年版的《Euthyphro; Apology; Crito》。\n\n需要强调的是：以上只是**书目层面的存在性信息**——我未能取得它们的摘要或正文内容（本轮未能读取），因此**不能**据此判断它们对《克力同篇》文本传承说了什么。它们的题名没有一个指向\"新考古发现/新残片\"。\n\n**网络检索**方面：本轮我的联网通道连续三次返回空结果（Bing 与维基百科均不可达）。这属于通道失效，**不能**把它当成\"确实没有发现\"的证据，只能说明这条查证路径这轮没有走通。\n\n## 我的分析（非核验事实，属判断）\n\n据我对柏拉图文本传承的一般了解：像《克力同篇》这类对话，其文本主要依赖中世纪拜占庭抄本系统（如 Bodleianus、Parisinus 等家族）传承，莎草纸残片存世量本就有限，且多为零星短篇。因此**\"针对某一篇对话的重大考古级新发现\"在柏拉图研究里是极为罕见的事件**——近年的活跃领域更多在文本编辑、拜占庭抄本重新校勘、以及诠释史（如守法义务、苏格拉底\"人格化法律\"演讲的解读）上。所以\"近年无重大新发现\"这一结果本身在学理上是合理的，但请注意：这是我的判断，不是本轮检索证实的事实。\n\n## 如果你要严谨核实\n\n这类\"是否真有新发现\"的问题，可靠渠道是专业工具而非通用搜索，建议：\n\n1. **《Oxyrhynchus Papyri》各卷**（近年仍在持续出版）——若真有柏拉图新残片，最可能先在此披露；\n2. **L'Année Philologique**（古典学文献年鉴，覆盖文本传承与考古通报）；\n3. **定期更新的柏拉图文本校勘本前言**（如 OCT 系列的新版）会汇总纸草与抄本证据的动态。\n\n由于我本轮的联网通道失效、且库内未命中任何相关新发现，我的回答只能给到\"未检索到证据\"这一确定性边界——若你愿意，我可以换个角度重新尝试联网核实，或先在原典库里调出《克力同篇》本身，从文本内部讨论苏格拉底守法义务那段核心论证。你更想往哪个方向走？",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "这是一个超出我原典库范围的当代研究动态问题——我需要联网和学术文献库核实。先说明我的判断：《克力同篇》本身是柏拉图早期对话（苏格拉底对话录），主题是守法义务与越狱之辩。关于\"近年考古或文献学发现\"，我记忆里并没有针对该篇的重大专项发现，可能相关的只有泛柏拉图文本传承的纸草学进展——但这需要核验，不能凭记忆下结论。\n\n下面登记研究需求并检索。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "柏拉图 克力同篇 Crito 考古发现 莎草纸 文献学 新发现"
+   },
+   "result_head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "Plato Crito papyrus discovery textual transmission recent scholarship"
+   },
+   "result_head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Plato Crito papyrus textual transmission new fragments",
+    "philosopher": "Plato",
+    "work": "Crito"
+   },
+   "result_head": "{'query': 'Plato Crito Plato Crito papyrus textual transmission new fragments', 'results': [{'source_record_id': 'doi:10.1093/actrade/9780198140153.book.1', 'title': 'Plato: Euthyphro; Apology of Socr"
+  },
+  {
+   "kind": "note",
+   "content": "第一次检索的结果：两个网络搜索通道都返回空（Bing 与维基百科均不可达）；学术文献库只命中 1924 年与 1997 年的旧校勘本/译本，而且只有书目元数据，与\"近年新发现\"无关。目前没有任何证据显示近年来有关于《克力同篇》的重大考古或文献学突破。我再换关键词、换数据源试一次，以区分\"确实没有\"还是\"这次没检索到\"。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "Oxyrhynchus papyrus Plato new discovery"
+   },
+   "result_head": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Plato papyri Oxyrhynchus new fragments textual criticism",
+    "year_from": 2010
+   },
+   "result_head": "{'query': 'Plato papyri Oxyrhynchus new fragments textual criticism', 'results': [{'source_record_id': 'doi:10.1093/9780191841392.003.0007', 'title': 'Textual Criticism of Greek Papyri', 'authors': ['"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Crito Plato manuscript tradition recent scholarship",
+    "year_from": 2015,
+    "limit": 10
+   },
+   "result_head": "{'query': 'Crito Plato manuscript tradition recent scholarship', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190639730.013.1', 'title': 'Euthyphro, Apology, and Crito', 'authors': ['Hug"
+  },
+  {
+   "kind": "note",
+   "content": "网络通道三次尝试全部不可达（Bing 与维基百科均返回空），这本身无法作为\"没有发现\"的证据，只能说明该通道此轮失效。学术文献库倒是命中了若干较新的柏拉图研究，其中两条有可读摘要——一条是关于希腊纸草文本批评的（Evans, 2026），一条是《欧悌甫戎·申辩·克力同》组的研究概览（Benson, 2019）。没有任何一条标题指向\"新考古发现\"或\"新莎草纸残片\"。我读一下这两条最相关的摘要做最后确认，再收口作答。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1093/9780191841392.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190639730.013.1",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_25_8",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 3,
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:18:21",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": null,
+    "evidence_gap": "近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:32"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:32"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:32"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 59447,
+   "output_tokens": 3964,
+   "total_tokens": 63411
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 11856,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12070,
+     "output_tokens": 933,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14936,
+     "output_tokens": 594,
+     "tool_chars_added": 5290
+    },
+    {
+     "round": 3,
+     "input_tokens": 16696,
+     "output_tokens": 997,
+     "tool_chars_added": 8069
+    },
+    {
+     "round": 4,
+     "input_tokens": 15745,
+     "output_tokens": 1440,
+     "tool_chars_added": 723
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1212,
+ "token_usage": {
+  "input_tokens": 59447,
+  "output_tokens": 3964,
+  "total_tokens": 63411
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 28.5,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: 近十余年（约2014—2025）是否存在关于柏拉图《克力同篇》的考古发现、莎草纸残片新证或文献学/文本传承研究的新成果）。soft 检索预算=6 次。', 'snapshot': {'active_class': 'MIXED',",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "柏拉图 克力同篇 Crito 考古发现 莎草纸 文献学 新发现"
+   },
+   "result_summary": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Plato Crito papyrus discovery textual transmission recent scholarship"
+   },
+   "result_summary": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato Crito papyrus textual transmission new fragments",
+    "philosopher": "Plato",
+    "work": "Crito"
+   },
+   "result_summary": "{'query': 'Plato Crito Plato Crito papyrus textual transmission new fragments', 'results': [{'source_record_id': 'doi:10.1093/actrade/9780198140153.book.1', 'title': 'Plato: Euthyphro; Apology of Socr",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/actrade/9780198140153.book.1",
+     "doi:10.1093/oseo/instance.00254375",
+     "doi:10.1093/oseo/instance.00246972",
+     "doi:10.1093/oseo/instance.00246971",
+     "doi:10.1093/oseo/instance.00246970",
+     "doi:10.1093/oseo/instance.00254377",
+     "doi:10.1093/oseo/instance.00254376",
+     "doi:10.1093/actrade/9780199540501.book.1"
+    ],
+    "access_levels": {
+     "doi:10.1093/actrade/9780198140153.book.1": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00254375": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00246972": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00246971": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00246970": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00254377": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00254376": "METADATA_ONLY",
+     "doi:10.1093/actrade/9780199540501.book.1": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Oxyrhynchus papyrus Plato new discovery"
+   },
+   "result_summary": "{'results': [], 'query': '柏拉图 克力同篇', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato papyri Oxyrhynchus new fragments textual criticism",
+    "year_from": 2010
+   },
+   "result_summary": "{'query': 'Plato papyri Oxyrhynchus new fragments textual criticism', 'results': [{'source_record_id': 'doi:10.1093/9780191841392.003.0007', 'title': 'Textual Criticism of Greek Papyri', 'authors': ['",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/9780191841392.003.0007",
+     "doi:10.1163/9789004442337_002",
+     "doi:10.15699/tc.18.2013.05",
+     "doi:10.1163/ej.9789004189522.i-664.47",
+     "doi:10.1163/9789004437296_007",
+     "doi:10.1163/9789004437296",
+     "doi:10.1163/9789004437296_005",
+     "doi:10.1163/9789004437296_002"
+    ],
+    "access_levels": {
+     "doi:10.1093/9780191841392.003.0007": "ABSTRACT_AVAILABLE",
+     "doi:10.1163/9789004442337_002": "METADATA_ONLY",
+     "doi:10.15699/tc.18.2013.05": "METADATA_ONLY",
+     "doi:10.1163/ej.9789004189522.i-664.47": "METADATA_ONLY",
+     "doi:10.1163/9789004437296_007": "METADATA_ONLY",
+     "doi:10.1163/9789004437296": "METADATA_ONLY",
+     "doi:10.1163/9789004437296_005": "METADATA_ONLY",
+     "doi:10.1163/9789004437296_002": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Crito Plato manuscript tradition recent scholarship",
+    "year_from": 2015,
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Crito Plato manuscript tradition recent scholarship', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190639730.013.1', 'title': 'Euthyphro, Apology, and Crito', 'authors': ['Hug",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oxfordhb/9780190639730.013.1",
+     "doi:10.1093/oso/9780198817277.003.0005",
+     "doi:10.14195/2183-4105_25_8",
+     "doi:10.4159/dlcl.plato_philosopher-crito.2017",
+     "doi:10.1515/9780691264431-006",
+     "doi:10.4324/9781315182810-2",
+     "doi:10.4324/9781315089737-9",
+     "doi:10.5040/9798881828868.ch-002",
+     "doi:10.1007/978-3-319-77320-9_6",
+     "doi:10.4324/9781315089737-8"
+    ],
+    "access_levels": {
+     "doi:10.1093/oxfordhb/9780190639730.013.1": "ABSTRACT_AVAILABLE",
+     "doi:10.1093/oso/9780198817277.003.0005": "ABSTRACT_AVAILABLE",
+     "doi:10.14195/2183-4105_25_8": "ABSTRACT_AVAILABLE",
+     "doi:10.4159/dlcl.plato_philosopher-crito.2017": "METADATA_ONLY",
+     "doi:10.1515/9780691264431-006": "METADATA_ONLY",
+     "doi:10.4324/9781315182810-2": "METADATA_ONLY",
+     "doi:10.4324/9781315089737-9": "METADATA_ONLY",
+     "doi:10.5040/9798881828868.ch-002": "METADATA_ONLY",
+     "doi:10.1007/978-3-319-77320-9_6": "METADATA_ONLY",
+     "doi:10.4324/9781315089737-8": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/9780191841392.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190639730.013.1",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_25_8",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "websearch",
+   "args": {
+    "query": "柏拉图 克力同篇 Crito 考古发现 莎草纸 文献学 新发现"
+   },
+   "result_full": {
+    "results": [],
+    "query": "柏拉图 克力同篇",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   },
+   "injected": true
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Plato Crito papyrus discovery textual transmission recent scholarship"
+   },
+   "result_full": {
+    "results": [],
+    "query": "柏拉图 克力同篇",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato Crito papyrus textual transmission new fragments",
+    "philosopher": "Plato",
+    "work": "Crito"
+   },
+   "result_full": {
+    "query": "Plato Crito Plato Crito papyrus textual transmission new fragments",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/actrade/9780198140153.book.1",
+      "title": "Plato: Euthyphro; Apology of Socrates; and Crito",
+      "authors": [
+       "Plato"
+      ],
+      "year": 1924,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.1093/actrade/9780198140153.book.1",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00254375",
+      "title": "Euthyphro",
+      "authors": [],
+      "year": 1924,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Plato: Euthyphro; Apology of Socrates; and Crito",
+      "doi": "10.1093/oseo/instance.00254375",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00246972",
+      "title": "Crito",
+      "authors": [],
+      "year": 1997,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Oxford World's Classics: Plato: Defence of Socrates; Euthyphro; Crito",
+      "doi": "10.1093/oseo/instance.00246972",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00246971",
+      "title": "Apology",
+      "authors": [],
+      "year": 1997,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Oxford World's Classics: Plato: Defence of Socrates; Euthyphro; Crito",
+      "doi": "10.1093/oseo/instance.00246971",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00246970",
+      "title": "Euthyphro",
+      "authors": [],
+      "year": 1997,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Oxford World's Classics: Plato: Defence of Socrates; Euthyphro; Crito",
+      "doi": "10.1093/oseo/instance.00246970",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00254377",
+      "title": "Crito",
+      "authors": [],
+      "year": 1924,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Plato: Euthyphro; Apology of Socrates; and Crito",
+      "doi": "10.1093/oseo/instance.00254377",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00254376",
+      "title": "Apology",
+      "authors": [],
+      "year": 1924,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Plato: Euthyphro; Apology of Socrates; and Crito",
+      "doi": "10.1093/oseo/instance.00254376",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/actrade/9780199540501.book.1",
+      "title": "Oxford World's Classics: Plato: Defence of Socrates; Euthyphro; Crito",
+      "authors": [
+       "Plato"
+      ],
+      "year": 1997,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.1093/actrade/9780199540501.book.1",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Oxyrhynchus papyrus Plato new discovery"
+   },
+   "result_full": {
+    "results": [],
+    "query": "柏拉图 克力同篇",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato papyri Oxyrhynchus new fragments textual criticism",
+    "year_from": 2010
+   },
+   "result_full": {
+    "query": "Plato papyri Oxyrhynchus new fragments textual criticism",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/9780191841392.003.0007",
+      "title": "Textual Criticism of Greek Papyri",
+      "authors": [
+       "T V Evans"
+      ],
+      "year": 2026,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Oxford Handbook of Greek and Latin Textual Criticism",
+      "doi": "10.1093/9780191841392.003.0007",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/9789004442337_002",
+      "title": "The Jews and the Jewish Community in Oxyrhynchus: Socio-Religious Context for the New Testament Papyri",
+      "authors": [
+       "Eldon Jay Epp"
+      ],
+      "year": 2020,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Perspectives on New Testament Textual Criticism, Volume 2",
+      "doi": "10.1163/9789004442337_002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.15699/tc.18.2013.05",
+      "title": "AnneMarie Luijendijk, Greetings in the Lord: Early Christians and the Oxyrhynchus Papyri",
+      "authors": [
+       "Lincoln H. Blumell"
+      ],
+      "year": 2011,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "TC: A Journal of Biblical Textual Criticism",
+      "doi": "10.15699/tc.18.2013.05",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/ej.9789004189522.i-664.47",
+      "title": "Chapter Eleven. Recent Oxyrhynchus Papyri",
+      "authors": [
+       "J. K. Elliott"
+      ],
+      "year": 2011,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "New Testament Textual Criticism:The Application of Thoroughgoing Principles",
+      "doi": "10.1163/ej.9789004189522.i-664.47",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/9789004437296_007",
+      "title": "Conclusions: 𝔓66 and New Testament Textual Criticism",
+      "authors": [
+       "Gordon D. Fee"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Bodmer Papyri, Scribal Culture, and Textual Transmission",
+      "doi": "10.1163/9789004437296_007",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/9789004437296",
+      "title": "Bodmer Papyri, Scribal Culture, and Textual Transmission",
+      "authors": [
+       "Gordon Fee"
+      ],
+      "year": 2021,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.1163/9789004437296",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/9789004437296_005",
+      "title": "Textual Characteristics of 𝔓66",
+      "authors": [
+       "Gordon D. Fee"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Bodmer Papyri, Scribal Culture, and Textual Transmission",
+      "doi": "10.1163/9789004437296_005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1163/9789004437296_002",
+      "title": "Preface",
+      "authors": [
+       "Gordon D. Fee"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Bodmer Papyri, Scribal Culture, and Textual Transmission",
+      "doi": "10.1163/9789004437296_002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/9780191841392.003.0007"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Crito Plato manuscript tradition recent scholarship",
+    "year_from": 2015,
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Crito Plato manuscript tradition recent scholarship",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oxfordhb/9780190639730.013.1",
+      "title": "Euthyphro, Apology, and Crito",
+      "authors": [
+       "Hugh H. Benson"
+      ],
+      "year": 2019,
+      "publication_type": "OTHER",
+      "venue": "The Oxford Handbook of Plato",
+      "doi": "10.1093/oxfordhb/9780190639730.013.1",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oso/9780198817277.003.0005",
+      "title": "Plato against Democracy",
+      "authors": [
+       "Richard Kraut"
+      ],
+      "year": 2018,
+      "publication_type": "OTHER",
+      "venue": "Oxford Scholarship Online",
+      "doi": "10.1093/oso/9780198817277.003.0005",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.14195/2183-4105_25_8",
+      "title": "Speech, Personification, and Friendship in Plato’s Crito",
+      "authors": [
+       "Yosef Z. Liebersohn"
+      ],
+      "year": 2024,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "PLATO JOURNAL",
+      "doi": "10.14195/2183-4105_25_8",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4159/dlcl.plato_philosopher-crito.2017",
+      "title": "Crito",
+      "authors": [
+       "Plato"
+      ],
+      "year": 2017,
+      "publication_type": "OTHER",
+      "venue": "Digital Loeb Classical Library",
+      "doi": "10.4159/dlcl.plato_philosopher-crito.2017",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9780691264431-006",
+      "title": "CRITO",
+      "authors": [],
+      "year": 2025,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Collected Dialogues of Plato",
+      "doi": "10.1515/9780691264431-006",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315182810-2",
+      "title": "The Development of Plato Scholarship in Nineteenth-Century Russia",
+      "authors": [
+       "Frances Nethercott"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Russia's Plato",
+      "doi": "10.4324/9781315182810-2",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315089737-9",
+      "title": "Another Look at the Crito",
+      "authors": [
+       "Philip Soper"
+      ],
+      "year": 2017,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Plato and Modern Law",
+      "doi": "10.4324/9781315089737-9",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9798881828868.ch-002",
+      "title": "Crito",
+      "authors": [],
+      "year": 2021,
+      "publication_type": "OTHER",
+      "venue": "Democracy Reader",
+      "doi": "10.5040/9798881828868.ch-002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/978-3-319-77320-9_6",
+      "title": "Legal Obligation in Plato’s Crito",
+      "authors": [
+       "J. Angelo Corlett"
+      ],
+      "year": 2018,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Interpreting Plato Socratically",
+      "doi": "10.1007/978-3-319-77320-9_6",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315089737-8",
+      "title": "Law and Justice in Plato's Crito *",
+      "authors": [
+       "R. E. Allen"
+      ],
+      "year": 2017,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Plato and Modern Law",
+      "doi": "10.4324/9781315089737-8",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 3,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oxfordhb/9780190639730.013.1",
+     "doi:10.1093/oso/9780198817277.003.0005",
+     "doi:10.14195/2183-4105_25_8"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}
