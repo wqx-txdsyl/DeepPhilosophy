@@ -340,3 +340,23 @@ html.dark-mode .mtd-kw-pop {
 @media (max-width: 720px) {
   .mtd-branch-cards { grid-template-columns: 1fr; }
 }
+
+
+/* ── 隐藏滚动条 ── */
+.mtd, .mtd * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.mtd::-webkit-scrollbar,
+.mtd *::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
+/* ── 宗教/基督教 hero 全屏覆盖 ── */
+.school-detail .school-hero-section.school-hero {
+  min-height: 100svh !important;
+  max-height: 100svh;
+}
