@@ -11,6 +11,7 @@ import { ALL_DETAILS } from '../data/moreTopics';
 import ReligionDetail from '../components/more/ReligionDetail';
 import MythologyDetail from '../components/more/MythologyDetail';
 import './MorePage.css';
+import '../components/more/more-detail.css';
 
 /* 神话体系十二页：同一 MythologyDetail 布局，各体系数据模块驱动 */
 const RELIGION_PREFIX = 'religion/';
