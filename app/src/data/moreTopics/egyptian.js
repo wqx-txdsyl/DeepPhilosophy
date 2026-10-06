@@ -6,7 +6,7 @@ const overview = {
   lead: [
     '埃及神话是人类最古老的成文宗教体系：金字塔文（约前2400年）比《圣经》早了一千八百年。它围绕两条轴线展开——太阳的永恒往返（拉的白日航行与夜渡冥河）与王权的神圣传递（荷鲁斯与奥西里斯的生死循环）。尼罗河的年复一年泛滥与重生，就是这套神学的现实原型。',
     '埃及神话没有单一正典，而是多中心宇宙论并存：赫利奥波利斯的九柱神（亚图姆生九神）、赫尔摩波利斯的八元神、孟菲斯的普塔心智创世——三套创世说并行不悖，各自把自己的主神安放在创世首帧。埃及人对此毫不焦虑：神话是地方神庙的方言。',
-    '它对死亡的经营举世无双：木乃伊、棺椁、亡灵书、心脏称量、杜阿特冥界的十二小时夜航——一套完整的"死后技术体系"。这套体系的伦理内核是玛阿特（真理/秩序/正义）：死者的心脏要与一根羽毛对 weigh，42位陪审神面前宣读"否定自白"——我没有杀人、我没有偷窃、我没有说谎。',
+    '它对死亡的经营举世无双：木乃伊、棺椁、亡灵书、心脏称量、杜阿特冥界的十二小时夜航——一套完整的"死后技术体系"。这套体系的伦理内核是玛阿特（真理/秩序/正义）：死者的心脏要与一根羽毛比轻重，42位陪审神面前宣读"否定自白"——我没有杀人、我没有偷窃、我没有说谎。',
   ],
   sections: [
     {
@@ -59,7 +59,7 @@ const deities = [
     story: '一对被空气分开的恋人：努特弓身覆于其上、缀满星辰，盖布横卧其下、肤色草木——埃及的天空是女神、大地是男神。',
     source: '棺文', tags: ['天地'] },
   { id: 'osiris', name: '奥西里斯', glyph: '西', title: '冥王 · 死而复生之王', category: 'funerary', icon: null,
-    story: '被弟塞特杀害分尸、被伊西斯复活为冥界之王与死者审判长——绿肤、十字架? 曲柄杖与连枷的王，尼罗河泛滥即他苏醒的心跳。',
+    story: '被弟塞特杀害分尸、被伊西斯复活为冥界之王与死者审判长——绿肤、曲柄杖与连枷的王，尼罗河泛滥即他苏醒的心跳。',
     source: '普鲁塔克《论伊西斯与奥西里斯》、棺文', tags: ['冥王', '复活'] },
   { id: 'isis', name: '伊西斯', glyph: '伊', title: '魔法与王座女神', category: 'funerary', icon: null,
     story: '以魔法复活丈夫、抚养荷鲁斯、以毒计骗取拉的真名——古埃及最强大的魔法师。她的崇拜远播希腊罗马，是圣母像的远祖之一。',
@@ -77,7 +77,7 @@ const deities = [
     story: '朱鹭首神，象形文字的发明者、诸神的书记官与仲裁者；称量仪式旁记录判决，希腊人把他认作赫尔墨斯。',
     source: '棺文、《托特之书》传说', tags: ['书写', '记录'] },
   { id: 'maat', name: '玛阿特', glyph: '玛', title: '真理 · 秩序 · 正义女神', category: 'funerary', icon: null,
-    story: '头戴羽毛的女神，更是一种宇宙原则：法老的任务是"以玛阿特治理"。死者心脏将与她的羽毛对 weigh——羽毛比心轻者得永生。',
+    story: '头戴羽毛的女神，更是一种宇宙原则：法老的任务是"以玛阿特治理"。死者心脏将与她的羽毛比轻重——心脏不重于羽毛者得永生。',
     source: '《亡灵书》125章', tags: ['真理', '称量'] },
   { id: 'amun', name: '阿蒙', glyph: '蒙', title: '隐形之神 · 底比斯主神', category: 'cosmic', icon: null,
     story: '名字意为"隐藏者"。新王国与拉合体为帝国之神阿蒙-拉，祭司权势一度压过法老——埃及的"教皇国"时刻。',
@@ -103,7 +103,7 @@ const motifs = {
   ],
   items: [
     { id: 'eg-maat', name: '心脏称量', category: 'death', focus: '称量',
-      story: '死者入杜阿特，宣读42条否定自白（我没有杀人、没有偷窃、没有说谎），阿努比斯把心脏与玛阿特之羽对 weigh，托特记录，怪物阿米特吞噬不合格者。',
+      story: '死者入杜阿特，宣读42条否定自白（我没有杀人、没有偷窃、没有说谎），阿努比斯把心脏与玛阿特之羽对秤，托特记录，怪物阿米特吞噬不合格者。',
       motif: '死后审判的伦理化：来世入场券是道德记录而非陪葬品。',
       philosophy: '《亡灵书》125章的自白清单是最早的成文伦理清单——"内在良心法庭"的观念比摩西早了一千五百年。', links: [] },
     { id: 'eg-horus-eye', name: '荷鲁斯之眼', category: 'kingship', focus: '隼眼',
@@ -148,7 +148,7 @@ const motifs = {
 const strata = {
   intro: '埃及神话的层累是"石刻的层累"：三千年的神庙与棺椁文献，直到1822年罗塞塔石碑被破译才重新开口。',
   items: [
-    { era: '前2400', source: '《金字塔文》', quote: '王升于天， among 诸神。', contribution: '刻于乌纳斯金字塔内壁——人类最早的成文宗教文献，丧葬咒文集。', glyph: '塔', major: true, color: '#a77c4f' },
+    { era: '前2400', source: '《金字塔文》', quote: '王升于天，与诸神同列。', contribution: '刻于乌纳斯金字塔内壁——人类最早的成文宗教文献，丧葬咒文集。', glyph: '塔', major: true, color: '#a77c4f' },
     { era: '前2100', source: '《棺文》', quote: '（贵族棺椁内壁）', contribution: '金字塔文民主化：非王族亦可借咒文进入来世，奥西里斯崇拜兴起。', glyph: '棺', color: '#a98e53' },
     { era: '前1550起', source: '《亡灵书》', quote: '我未行不义。', contribution: '纸草丧葬文集的集大成——心脏称量与否定自白的标准版本流传千年。', glyph: '书', major: true, color: '#738e9a' },
     { era: '前1350', source: '《阿顿大颂》', quote: '哦，唯一的神，除你之外别无其他。', contribution: '阿肯那顿一神改革的文献——史上第一次一神论宣言，后被系统性抹除。', glyph: '顿', color: '#ad7770' },
@@ -173,9 +173,9 @@ const keywords = ['努恩', '九柱神', '玛阿特', '亡灵书', '心脏称量
 const keywordGlosses = {
   努恩: '原初之水，一切存在之前的状态——创世即"从水中浮现"。',
   九柱神: '赫利奥波利斯的创世神系：亚图姆生舒与泰芙努特，再生盖布努特，再生奥西里斯伊西斯塞特奈芙蒂斯。',
-  玛阿特: '真理、正义与宇宙秩序的女神兼原则——法老以之治国，死者心脏以之对 weigh。',
+  玛阿特: '真理、正义与宇宙秩序的女神兼原则——法老以之治国，死者心脏以之对秤。',
   亡灵书: '置于棺中的丧葬纸草文集：咒文、自白与杜阿特地图——死者的通关手册。',
-  心脏称量: '阿努比斯以玛阿特之羽对 weigh 死者心脏的审判仪式——不合格者被阿米特吞噬。',
+  心脏称量: '阿努比斯以玛阿特之羽对秤称量死者心脏的审判仪式——不合格者被阿米特吞噬。',
   '荷鲁斯之眼': '被塞特挖出又复原的隼眼，完整与痊愈的至强护符，兼作分数符号。',
   金字塔文: '刻于金字塔内壁的丧葬咒文集（约前2400）——人类最早的成文宗教文献。',
   杜阿特: '冥界之夜的国度：十二时辰十二关，太阳船与亡魂夜渡之地。',
@@ -193,7 +193,7 @@ const keywordGlosses = {
   赛德节: '法老在位三十年举行的王权更新大典——"立起德柱"重证国运。',
 };
 const keywordTargets = {
-  努恩: { sec: 'sec-cosmogony', motif: 'eg-creation-order' }, 九柱神: { sec: 'sec-cosmogony' },
+  努恩: { sec: 'sec-cosmogony', motif: 'eg-ogdoad' }, 九柱神: { sec: 'sec-cosmogony' },
   玛阿特: { sec: 'sec-motifs', motif: 'eg-maat' }, 亡灵书: { sec: 'sec-motifs', motif: 'eg-maat' },
   心脏称量: { sec: 'sec-motifs', motif: 'eg-maat' }, '荷鲁斯之眼': { sec: 'sec-motifs', motif: 'eg-horus-eye' },
   金字塔文: { sec: 'sec-strata' }, 杜阿特: { sec: 'sec-cosmogony', motif: 'eg-solar' },
@@ -220,7 +220,7 @@ export const egyptian = {
   disciplineId: 'mythology',
   name: '埃及神话',
   en: 'Egyptian Mythology',
-  subtitle: '尼罗河的秩序神学——太阳日日重生，心脏与羽毛对 weigh，死亡被经营成一项三千年的工程。',
+  subtitle: '尼罗河的秩序神学——太阳日日重生，心脏与羽毛比轻重，死亡被经营成一项三千年的工程。',
   heroImage: '/more/egyptian-hero.webp',
   heroQuote: '我未行不义，我未说谎，我未杀人。',
   heroQuoteAuthor: '《亡灵书》125章 否定自白',
@@ -253,7 +253,7 @@ export const egyptian = {
       { id: 'amun', name: '阿蒙', tier: 2, domain: '隐形之神', caption: '新王国的帝国之神' },
       { id: 'anubis', name: '阿努比斯', tier: 2, domain: '防腐之神', caption: '执秤的胡狼向导' },
       { id: 'thoth', name: '托特', tier: 2, domain: '书写之神', caption: '诸神的书记官' },
-      { id: 'maat', name: '玛阿特', tier: 2, domain: '真理 · 秩序', caption: '与心脏对 weigh 的羽毛' },
+      { id: 'maat', name: '玛阿特', tier: 2, domain: '真理 · 秩序', caption: '与心脏比轻重的羽毛' },
       { id: 'bastet', name: '巴斯特', tier: 2, domain: '猫女神', caption: '家宅与欢乐的守护' },
       { id: 'aton', name: '阿顿', tier: 2, domain: '太阳圆盘', caption: '一神改革的实验品' },
       { id: 'apophis', name: '阿波菲斯', tier: 3, domain: '混沌巨蛇', caption: '每夜重生的秩序之敌' },
@@ -271,7 +271,7 @@ export const egyptian = {
       { from: 'isis', to: 'horus', label: '母子', type: 'kin' },
       { from: 'ra', to: 'apophis', label: '夜夜斩战', type: 'war' },
       { from: 'set', to: 'apophis', label: '船头护卫', type: 'mandate' },
-      { from: 'anubis', to: 'maat', label: '执秤对 weigh', type: 'mandate' },
+      { from: 'anubis', to: 'maat', label: '执秤称量', type: 'mandate' },
       { from: 'thoth', to: 'maat', label: '记录判决', type: 'mandate' },
       { from: 'ra', to: 'amun', label: '合体', type: 'kin' },
     ],

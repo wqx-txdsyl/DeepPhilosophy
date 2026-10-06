@@ -4,7 +4,7 @@
 import { EXPAND } from './indian.expand';
 const overview = {
   lead: [
-    '印度神话是人类最庞大的神话体系：三三三三位神祇的说法、以"劫"（kalpa，43.2亿年）为单位的时间轮、循环无限的宇宙论。它的核心不是创世而是循环——创造、存续、毁灭，由梵天、毗湿奴、湿婆三位一体轮流执掌，无始无终。',
+    '印度神话是人类最庞大的神话体系：三十三位神祇的说法（《大森林奥义书》3.9.1 自三千三百零六递减至三十三，后世"三十三柯蒂"又被误读作"三亿三千万"）、以"劫"（kalpa，43.2亿年）为单位的时间轮、循环无限的宇宙论。它的核心不是创世而是循环——创造、存续、毁灭，由梵天、毗湿奴、湿婆三位一体分工执掌，无始无终。',
     '它的文献层深不见底：《梨俱吠陀》的因陀罗战歌（前1500年口传）、奥义书的哲学转向、两大史诗（《摩诃婆罗多》十万颂、《罗摩衍那》）、十八部往世书的神谱大全——每个时代都往体系里添加自己的层。',
     '印度神话还有一个独特的哲学装置：化身（avatara）。至高神不必亲自出场，而是"下降"为罗摩、克里希那等形象——神格的可拆分性让神话与哲学无缝互译：吠檀多说"梵我合一"，神话则说"你即是他"。',
   ],
@@ -38,19 +38,12 @@ const cosmogony = {
   ],
 };
 
-const deityCategories = [
-  { id: 'vedic', name: '吠陀诸神', note: '梨俱吠陀战歌里的旧神' },
-  { id: 'trinity', name: '三相神 · 三大主神', note: '梵天、毗湿奴、湿婆' },
-  { id: 'consort', name: '女神与神妃', note: '萨克蒂传统的力量之源' },
-  { id: 'epic', name: '史诗英雄与阿修罗', note: '罗摩、克里希那与魔界' },
-];
-
 const deities = [
   { id: 'brahma', name: '梵天', glyph: '梵', title: '创造之神 · 四面四臂', category: 'trinity', icon: null,
     story: '自毗湿奴脐中莲花而生，四头诵四吠陀，创世之后功成身退——全印度只有两座梵天神庙。创造者反而最没有存在感。',
     source: '往世书传统', tags: ['创造', '四面'] },
   { id: 'vishnu', name: '毗湿奴', glyph: '毗', title: '维护之神 · 十大化身', category: 'trinity', icon: null,
-    story: '卧于千头蛇阿南塔之上、漂浮于乳海的天蓝之神，以十大化身持续干预世界：鱼、龟、野猪、人狮、侏儒、罗摩、持斧罗摩、克里希那、佛陀、迦尔吉。',
+    story: '卧于千头蛇阿南塔之上、漂浮于乳海的天蓝之神，以十大化身持续干预世界：鱼、龟、野猪、人狮、侏儒、持斧罗摩、罗摩、克里希那、佛陀、迦尔吉。',
     source: '《薄伽梵歌》《薄伽梵往世书》', tags: ['维护', '化身'] },
   { id: 'shiva', name: '湿婆', glyph: '湿', title: '毁灭与再生之神 · 舞王', category: 'trinity', icon: null,
     story: '顶月、颈蛇、额第三眼、执三叉戟的苦行者，坦达瓦之舞即宇宙的毁灭与再造。毁灭即净化——他同时是瑜伽之主与家宅之夫。',
@@ -70,7 +63,7 @@ const deities = [
   { id: 'parvati', name: '帕尔瓦蒂', glyph: '帕', title: '雪山女神 · 湿婆神妃', category: 'consort', icon: null,
     story: '苦修千年赢得湿婆为夫；其愤怒化身杜尔迦（斩水牛魔）与迦梨（黑暗母神）——温柔的妻子与最凶的战神是同一人。',
     source: '《女神颂》（Devī Māhātmya）', tags: ['萨克蒂', '杜尔迦'] },
-  { id: 'ganesha', name: '象头神', glyph: '象', aka: '甘尼许', title: '智慧与除障之神', category: 'consort', icon: null,
+  { id: 'ganesha', name: '象头神', glyph: '象', aka: '甘尼许', title: '智慧与除障之神', category: 'family', icon: null,
     story: '湿婆之子，象头人身、坐骑为鼠——一切事业开端的祈请之神。象头的来历是父亲的暴怒与父亲补上的象首：一个关于父权与和解的故事。',
     source: '往世书传统', tags: ['智慧', '开端'] },
   { id: 'hanuman', name: '哈奴曼', glyph: '哈', title: '神猴 · 罗摩的忠仆', category: 'epic', icon: null,
@@ -103,7 +96,7 @@ const motifs = {
   ],
   items: [
     { id: 'in-yuga', name: '四的时代', category: 'cosmos', focus: '四时',
-      story: '宇宙周期分四时代：圆满时代（迦梨由迦？ 正义四足）、三分时代、二分时代与争斗时代（迦梨由迦，正义单足）；千组四时代为一劫，梵天的一日。',
+      story: '宇宙周期分四时代：圆满时代（萨蒂亚由迦，正义四足）、三分时代、二分时代与争斗时代（迦梨由迦，正义单足）；千组四时代为一劫，梵天的一日。',
       motif: '历史是下坡路：每个时代都比前一个更堕落——但循环会重来。',
       philosophy: '"迦梨由迦"（Kali Yuga，我们所在的最黑暗时代）给了印度神话一种末日感，却又以循环论消解了末日焦虑。', links: [] },
     { id: 'in-karma', name: '业报与轮回', category: 'dharma', focus: '业',
@@ -113,13 +106,13 @@ const motifs = {
     { id: 'in-avatara', name: '十大化身', category: 'avatara', focus: '化身',
       story: '毗湿奴十次降世：鱼救摩奴、龟驮山、野猪拱地、人狮撕魔、侏儒三步、罗摩、克里希那……直至末日白马迦尔吉。',
       motif: '神以化身"按时上线"处理具体危机——神话的版本更新机制。',
-      philosophy: '达罗毗荼? 有学者指出十化身序列暗合生物演化（水生→两栖→兽→半人→人）；此说流行而存争议。', links: [] },
+      philosophy: '有学者指出十化身序列暗合生物演化（水生→两栖→兽→半人→人）；此说流行而存争议。', links: [] },
     { id: 'in-samudra', name: '搅拌乳海', category: 'cosmos', focus: '搅拌',
       story: '神魔合作搅乳海取甘露：先得毒液（湿婆吞之脖颈染蓝），后得甘露；阿修罗被罗睺偷饮，身首分离——日月食由此而来。',
       motif: '合作与欺骗同框的创世工程：永生是一场排他性的分配。',
       philosophy: '罗睺的头颅不死后追逐日月吞噬之——天文学现象的神话说明书，与中国的天狗食月平行。', links: [] },
     { id: 'in-tapas', name: '苦修的杠杆', category: 'tapas', focus: '苦修',
-      story: '苦修（tapas）积蓄的热量可以撼动诸神：神被迫现身赐恩，恩赐一经给出不可收回——罗波那、摩耶? 皆以此得几乎不死的恩典。',
+      story: '苦修（tapas）积蓄的热量可以撼动诸神：神被迫现身赐恩，恩赐一经给出不可收回——罗波那、希兰亚卡西普皆以此得几乎不死的恩典。',
       motif: '凡人的力量杠杆：苦修是向宇宙透支的贷款，神只能签字。',
       philosophy: '权力契约的非对称解除机制——"恩赐不可撤销"让叙事有了天生的漏洞与张力。', links: [] },
     { id: 'in-gita', name: '战场上的《薄伽梵歌》', category: 'dharma', focus: '达摩',
@@ -143,7 +136,7 @@ const motifs = {
       motif: '以"找不到尽头"判定至高：宇宙论的极限测试。',
       philosophy: '梵的"无属性"（nirguna）被翻译成一件可以供奉的具体圣物——抽象哲学的具象化是印度教最成功的技术。', links: [] },
     { id: 'in-nataraja', name: '舞王的宇宙之舞', category: 'cosmos', focus: '舞',
-      story: '湿婆在一圈火焰中起舞：上右手持鼓（创造），上左手持火（毁灭），下右手作无畏印，脚踏倒伏的阿波asmara（无知）——宇宙在一支舞里生灭。',
+      story: '湿婆在一圈火焰中起舞：上右手持鼓（创造），上左手持火（毁灭），下右手作无畏印，脚踏倒伏的阿帕斯马拉（Apasmāra，无知）——宇宙在一支舞里生灭。',
       motif: '宇宙的完整周期被压缩进一个舞姿：物理、神学与美学合一。',
       philosophy: '现代物理学以"宇宙之舞"命名粒子对撞机外的那尊舞王像——科学史与神话史罕见的互致敬意。', links: [] },
   ],
@@ -164,11 +157,11 @@ const strata = {
 const bridges = {
   intro: '印度神话与哲学不是两个领域：吠檀多与奥义书就是神话的哲学形态，神话则是哲学的叙事皮肤。',
   items: [
-    { myth: '梵天创世却无人崇拜', philosophy: '梵的无属性与有属性之争', note: '哲学的"无相之梵"不可崇拜，于是宗教造出"有相之神"供人礼拜——商羯罗的不二论与虔信派的千年分工。', links: [] },
+    { myth: '梵天创世却无人崇拜', philosophy: '梵的无属性与有属性之争', note: '哲学的"无相之梵"不可崇拜，于是宗教造出"有相之神"供人礼拜——商羯罗的不二论与虔信派的千年分工。', links: [{ type: 'author', name: '商羯罗' }, { type: 'school', name: '吠檀多' }] },
     { myth: '克里希那的无执之行', philosophy: '行动瑜伽与义务论', note: '《薄伽梵歌》以战场讲"无执之行"——义务必须履行、结果不属于行动者：印度伦理学的最高公式。', links: [] },
     { myth: '因陀罗千次转世', philosophy: '诸神亦有轮回', note: '业报律高于神权——印度思想中连天帝都在轮回账簿上，与一神传统形成最深的结构对照。', links: [] },
     { myth: '湿婆的毁灭之舞', philosophy: '无常与涅槃', note: '毁灭被神格化为净化的序曲——"诸行无常"的舞蹈版，与佛教无常观共享同一宇宙感受。', links: [{ type: 'school', name: '道家' }] },
-    { myth: '奥义书的梵我合一', philosophy: '叔本华与德国观念论', note: '叔本华自称奥义书是他思想的安慰与启蒙——印度神话经由哲学完成了一次向西方的远征。', links: [] },
+    { myth: '奥义书的梵我合一', philosophy: '叔本华与德国观念论', note: '叔本华自称奥义书是他思想的安慰与启蒙——印度神话经由哲学完成了一次向西方的远征。', links: [{ type: 'author', name: '叔本华' }] },
   ],
 };
 
@@ -197,11 +190,11 @@ const keywordGlosses = {
 };
 const keywordTargets = {
   吠陀: { sec: 'sec-strata' }, 梵天: { sec: 'sec-pantheon' }, 毗湿奴: { sec: 'sec-motifs', motif: 'in-avatara' },
-  湿婆: { sec: 'sec-motifs', motif: 'in-nataraja' }, 因陀罗: { sec: 'sec-cosmogony', motif: 'in-indra' },
+  湿婆: { sec: 'sec-motifs', motif: 'in-nataraja' }, 因陀罗: { sec: 'sec-cosmogony' },
   化身: { sec: 'sec-motifs', motif: 'in-avatara' }, 达摩: { sec: 'sec-motifs', motif: 'in-gita' },
   业报: { sec: 'sec-motifs', motif: 'in-karma' }, 轮回: { sec: 'sec-motifs', motif: 'in-karma' },
   薄伽梵歌: { sec: 'sec-motifs', motif: 'in-gita' }, 搅拌乳海: { sec: 'sec-cosmogony', motif: 'in-samudra' },
-  金胎: { sec: 'sec-cosmogony', motif: 'in-yuga' }, 萨克蒂: { sec: 'sec-motifs', motif: 'in-sati' },
+  金胎: { sec: 'sec-cosmogony' }, 萨克蒂: { sec: 'sec-motifs', motif: 'in-sati' },
   林伽: { sec: 'sec-motifs', motif: 'in-linga' }, 迦梨由迦: { sec: 'sec-motifs', motif: 'in-yuga' },
   恒河: { sec: 'sec-motifs', motif: 'in-shiva-ganga' }, 奥义书: { sec: 'sec-strata' },
   摩诃婆罗多: { sec: 'sec-strata' }, 罗摩衍那: { sec: 'sec-strata' },
@@ -231,13 +224,13 @@ export const indian = {
   meta: [
     { label: '文明圈', value: '南亚 · 印度次大陆' },
     { label: '文献起点', value: '《梨俱吠陀》约前1500' },
-    { label: '收录神祇', value: '16 位' },
-    { label: '母题', value: '11 则' },
+    { label: '收录神祇', value: '55 位' },
+    { label: '母题', value: '33 则' },
   ],
   overview: { ...overview, sections: [...overview.sections, ...((EXPAND.overviewSections) || [])] },
   cosmogony,
   pantheon: {
-    intro: '十六位核心存在：三相神与吠陀旧神、女神传统与史诗英雄。金实线为神妃与亲缘，陶色虚线为战争，点线为化身与恩赐。',
+    intro: '十五位核心存在：三相神与吠陀旧神、女神传统与史诗英雄。金实线为神妃与亲缘，陶色虚线为战争，点线为化身与恩赐。',
     tiers: [
       { name: '三相神 · 主神', note: '创造、维护、毁灭' },
       { name: '吠陀 · 旧神', note: '梨俱吠陀的战歌诸神' },
@@ -270,7 +263,7 @@ export const indian = {
       { from: 'vishnu', to: 'rama', label: '第七化身', type: 'mandate' },
       { from: 'vishnu', to: 'krishna', label: '第八化身', type: 'mandate' },
       { from: 'indra', to: 'vritra', label: '杀蛇放水', type: 'war' },
-      { from: 'krishna', to: 'ravana', label: '史诗对手系', type: 'war' },
+      { from: 'rama', to: 'ravana', label: '弑敌救妻', type: 'war' },
       { from: 'parvati', to: 'kali', label: '愤怒化身', type: 'kin' },
       { from: 'hanuman', to: 'rama', label: '忠仆', type: 'mandate' },
       { from: 'indra', to: 'surya', label: '吠陀同僚', type: 'kin' },
@@ -282,6 +275,7 @@ export const indian = {
     { id: 'vedic', name: '吠陀 · 旧神', note: '梨俱吠陀的战歌诸神' },
     { id: 'consort', name: '女神 · 萨克蒂', note: '力量与时间的女性面' },
     { id: 'epic', name: '化身 · 英雄 · 魔界', note: '史诗叙事的行动者' },
+    { id: 'family', name: '神眷 · 从神', note: '坐骑、蛇王与主神家族' },
   ],
   deities: [...deities, ...((EXPAND && EXPAND.deities) || [])],
   motifs: { ...motifs, items: [...motifs.items, ...((EXPAND && EXPAND.motifs) || [])] },
