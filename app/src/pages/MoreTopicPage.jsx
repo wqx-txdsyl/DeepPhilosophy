@@ -15,7 +15,8 @@ import './MorePage.css';
 /* 神话体系十二页：同一 MythologyDetail 布局，各体系数据模块驱动 */
 const RELIGION_PREFIX = 'religion/';
 
-function ChristianityHub({ data, navigate }) {
+function ChristianityHub({ data }) {
+  const navigate = useNavigate();
   return (
     <div className="school-detail mtd">
       <section className="school-hero-section school-hero">
