@@ -5,9 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DAILY_QUOTES from '../data/dailyQuotes';
 import { normalizeTag } from '../data/tagMaps';
-import WorldMap from '../components/WorldMap';
 import NavBar from '../components/NavBar';
-import Icon from '../components/Icon';
 import CountUp from '../components/CountUp';
 import SectionReveal from '../components/SectionReveal';
 import Footer from '../components/Footer';
@@ -131,25 +129,6 @@ function HomePage() {
             <h2 className="home-showcase-title">{authorCount} 位哲学家</h2>
             <p className="home-showcase-desc">从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与Wikipedia链接。</p>
           </div>
-        </div>
-      </section>
-      </SectionReveal>
-
-      <SectionReveal>
-      <section className="home-world-section">
-        <h2 className="home-world-title">探索世界哲学</h2>
-        <p className="home-world-subtitle">悬停查看简介 · 点击进入详情</p>
-        <WorldMap />
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 24, flexWrap: 'wrap' }}>
-          {[
-            { l: <><Icon name="region-west" size={14} /> 西方 42 流派</>, p: '/western-philosophies', c: 'var(--ochre)' },
-            { l: <><Icon name="region-east" size={14} /> 东方 25 流派</>, p: '/eastern-philosophies', c: 'var(--prussian)' },
-            { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p: '/world-philosophies', c: '#5A8A5A' },
-          ].map(b => (
-            <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize: 12, color: b.c, cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}
-              onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>{b.l}</span>
-          ))}
         </div>
       </section>
       </SectionReveal>
