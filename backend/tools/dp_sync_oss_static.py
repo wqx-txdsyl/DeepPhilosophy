@@ -61,6 +61,8 @@ DIRS = [
     ("philosopher", "philosopher"),
     ("philosopher/data", "philosopher/data"),
     ("philosopher/editorial", "philosopher/editorial"),
+    # 更多频道 hero 背景图（2026-10-06 双轨提速: 同源 CF 边缘 3-6s → OSS 0.1s）
+    ("more", "more"),
 ]
 
 

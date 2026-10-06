@@ -1,3 +1,4 @@
+import CdnImage from '../components/CdnImage';
 /**
  * 更多 — 主题详情页（三级）
  * /more/:discipline/:topic
@@ -21,7 +22,7 @@ function ChristianityHub({ data }) {
   return (
     <div className="school-detail mtd">
       <section className="school-hero-section school-hero">
-        {data.heroImage && <img className="school-hero-art" src={data.heroImage} alt="" fetchPriority="high" />}
+        {data.heroImage && <CdnImage className="school-hero-art" src={data.heroImage} imageWidth={1600} alt="" fetchPriority="high" />}
         <header className="school-masthead">
           <Link className="school-brand" to="/">DeepPhilosophy</Link>
           <Link className="school-back" to="/more/religion">← 返回宗教</Link>

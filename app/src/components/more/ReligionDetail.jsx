@@ -1,3 +1,4 @@
+import CdnImage from '../../components/CdnImage';
 /**
  * ReligionDetail — 宗教体系详情页（"更多"三级页，宗教专用布局）
  * 区别于神话（故事→谱系→母题），宗教的核心维度是：
@@ -52,7 +53,7 @@ export default function ReligionDetail({ data, topic }) {
 
       {/* ═══ HERO ═══ */}
       <section className="school-hero-section school-hero" aria-label={`${data.name}封面`}>
-        {data.heroImage && <img className="school-hero-art" src={data.heroImage} alt="" fetchPriority="high" />}
+        {data.heroImage && <CdnImage className="school-hero-art" src={data.heroImage} imageWidth={1600} alt="" fetchPriority="high" />}
         <header className="school-masthead">
           <Link className="school-brand" to="/">DeepPhilosophy</Link>
           <Link className="school-back" to={`/more/${d.id}`}>← 返回{d.name}</Link>
@@ -242,7 +243,7 @@ export default function ReligionDetail({ data, topic }) {
 
         {/* ═══ 尾声 ═══ */}
         <section className="school-ending">
-          {data.heroImage && <img className="school-ending-art" src={data.heroImage} alt="" />}
+          {data.heroImage && <CdnImage className="school-ending-art" src={data.heroImage} imageWidth={1200} alt="" />}
           <p className="school-kicker">EPILOGUE · 尾声</p>
           <p className="school-closing-quote">{data.epilogue}</p>
           <div className="school-ending-links">
