@@ -1,3 +1,4 @@
+import Icon from '../components/Icon';
 /**
  * ChapterReader — 章节滚动式阅读器
  * 每章一页，上下滑动，底部切换章节
@@ -220,7 +221,8 @@ export default function ChapterReader({
   const pauseAuto = () => { if (autoPlaying) setAutoPlaying(false); };
 
   return (
-    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+<div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* 章节内容 — 滚动区 */}
       <div ref={scrollRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
         onWheel={pauseAuto}
@@ -589,7 +591,7 @@ export default function ChapterReader({
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: 12 }}
             onClick={() => setShowSettings(!showSettings)} title="阅读设置">
-            ⚙ 设置
+            <Icon name="btn-settings" size={11} style={{ marginRight: 3 }} />设置
           </button>
           <button className="btn btn-secondary" style={{
             padding: '4px 10px', fontSize: 12,

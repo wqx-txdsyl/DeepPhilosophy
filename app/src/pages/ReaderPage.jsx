@@ -285,7 +285,7 @@ function ReaderPage() {
         {textReady && (
           <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
             onClick={() => setShowReaderToc(!showReaderToc)}>
-            ☰ 目录
+            <Icon name="icon-menu" size={11} style={{ marginRight: 3 }} />目录
           </button>
         )}
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
