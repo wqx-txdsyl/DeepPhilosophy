@@ -18,6 +18,12 @@ import { cthulhu } from './cthulhu';
 
 export const ALL_DETAILS = {
   'religion/buddhism': buddhism,
+  'religion/orthodox': orthodox,
+  'religion/catholic': catholic,
+  'religion/protestant': protestant,
+  'religion/islam': islam,
+  'religion/hinduism': hinduism,
+  'religion/taoism': taoism,
   'mythology/chinese': chineseMythology,
   'mythology/honghuang': honghuang,
   'mythology/japanese': japanese,
@@ -33,3 +39,10 @@ export const ALL_DETAILS = {
 };
 
 import { buddhism } from './religion/buddhism';
+
+import { orthodox } from './religion/orthodox';
+import { catholic } from './religion/catholic';
+import { protestant } from './religion/protestant';
+import { islam } from './religion/islam';
+import { hinduism } from './religion/hinduism';
+import { taoism } from './religion/taoism';
