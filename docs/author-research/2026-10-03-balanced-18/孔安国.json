@@ -192,6 +192,46 @@
       "locator": "《后汉书·郑玄传》「又從東郡張恭祖受《周官》、《禮記》、《左氏春秋》、《韓詩》、《古文尚書》」",
       "verdict": "confirmed",
       "notes": "用于「古文《尚书》学的东汉传承」编辑性关联；郑玄与孔安国相隔约二百年，无接触。既有的 editorial/郑玄.json 只列马融、卢植、何休、孔子、王肃、朱熹、服虔、王弼，未列与孔安国的关系。"
+    },
+    {
+      "field": "sources（独立复核实访）",
+      "claim": "草稿 profile.sources 的 8 条 URL 全部实访可用，且含所引原文",
+      "sourceId": "ws-hs30",
+      "locator": "zh.wikisource《汉书》卷三十／卷八十八／卷三十六、《史记》卷一百二十一、《后汉书》卷三十五、《尚书正义》；Yale 出版社 Nylan 第三章注释 PDF；SEP 汉代条目",
+      "verdict": "confirmed",
+      "notes": "复核日 2026-10-06 逐条 curl：6 个维基文库页面与 Nylan PDF 均 200；《尚书正义》页含四库全书总目提要全文（「其書至晉豫章內史梅賾始奏於朝」「孔傳之依託，自朱子以來遞有論辯」「不云作傳」「始增入一『傳』字」及梅鷟／朱彝尊／閻若璩三例，逐句核对无误）；Nylan 注释原文作 'must be the work of Wang Su (195-256)'、'ascribed them to Huangfu Mi (215-282)'、'attributed to Zheng Zhong (d. AD 83)'、'Liu Qiyu (1987), pp. 98-99, argues that the forger, whose identity is unknowable'，与草稿一致；SEP 汉代条目 200，全文未出现 Kong Anguo 专节，草稿 coverage 的说明成立。"
+    },
+    {
+      "field": "profile.relations[0]",
+      "claim": "司马迁从孔安国问故（type=teacher 时 from 为施教者）",
+      "sourceId": "ws-hs88",
+      "locator": "《汉书·儒林传》「安國為諫大夫，授都尉朝，而司馬遷亦從安國問故」",
+      "verdict": "corrected",
+      "notes": "原值 from=司马迁、to=孔安国（字面读作司马迁是施教者，与史料相反）；新值 from=孔安国、to=司马迁，label 由「从安国问故（古文《尚书》说）」改为「司马迁从安国问故（古文《尚书》说）」，detail 补方向说明。方向依同批 editorial/何休.json 的「羊弼（师）→何休（生）」同例，并依既有包多数以 type=teacher 的 from 为施教者的用法（156 条 teacher 关系中以教师为 from 者为主）。"
+    },
+    {
+      "field": "profile.overview[3]",
+      "claim": "四库提要所举三条辨伪论据的具体内容",
+      "sourceId": "ws-shangshu-zhengyi",
+      "locator": "维基文库《尚书正义》卷首四库全书总目提要",
+      "verdict": "corrected",
+      "notes": "原值「地名在今地之后」表述不确；提要原文作「地名皆在安國後」，并具体为梅鷟《尚書考異》所攻《禹貢》「瀍水出河南北山」「積石山在金城西南羌中」两条、朱彝尊《經義考》所攻《書序》駒驪王朱蒙至漢元帝建昭二年（前 37）始建國一条、閻若璩所攻《泰誓》注與《論語》注相反一条。已按原文改写（草稿并未采纳提要中「其傳實據王肅之注而附益以舊訓」的旧判，仍并列现代诸说）。"
+    },
+    {
+      "field": "evidenceLimits",
+      "claim": "生卒年「约前 156—前 74」的来源层级",
+      "sourceId": "ws-hs88",
+      "locator": "《史记》《汉书》本传均不记生卒年",
+      "verdict": "corrected",
+      "notes": "原值称「通行的「约前 156—前 74」是后世推定」，未说明该组数字不在所读来源中；新值改为「站内目录与通行工具书所记……是后世推定（本包照录并标为推定）」，以免让读者以为该组数字可由《史记》《汉书》或四库提要推出。"
+    },
+    {
+      "field": "profile.relations（跨包镜像）",
+      "claim": "与同批 editorial/刘歆.json、editorial/何休.json 的两条关系同向同型同语义；既有 editorial/郑玄.json 无孔安国端点",
+      "sourceId": "ws-hs36",
+      "locator": "docs/author-research/2026-10-03-balanced-18/drafts/刘歆.json、何休.json；app/public/philosopher/editorial/郑玄.json",
+      "verdict": "confirmed",
+      "notes": "逐字比对：刘歆包「孔安国→刘歆／context／editorial-comparison／古文经学的传统关联」与何休包「孔安国→何休／context／editorial-comparison／今古文经学的编辑性对照」的 from/to/type/evidenceKind/label 与本包完全一致，detail 除「与同批 editorial/<对方>.json」一句外逐字相同；两包的 people 均列孔安国（era 约前156—前74年（生卒为推定）），与本包 identity.era 相容。既有 270 个 editorial 包中只有郑玄与孔安国有潜在端点：其实访为空（people 未列孔安国，relations 无该对），故本包该条标为单向 editorial-comparison 并已在 detail 注明。旧数据中的「孔安国→董仲舒」在 editorial/董仲舒.json 中无端点，草稿未沿用。"
     }
   ],
   "uncertainties": [
@@ -199,7 +239,9 @@
     "孔壁古文的发现与献书过程（鲁共王坏孔子宅、武帝末或天汉之后献书）在两《汉书》的不同段落详略与时间表述不一，草稿并列而不裁定。",
     "今本《尚书孔氏传》的作者归属没有定论：或归王肃、皇甫谧，或称晋代同名后裔伪造，或归郑众，刘起釪认为作伪者身份不可知（据 Nylan 2001 注释）。",
     "《论语孔安国注》今佚，只存何晏《论语集解》所引，其可靠性另有讨论，本包不据以论孔安国的思想。",
-    "孔安国的「思想」在史料上极薄：可确认的是文本整理、传授与「颇能言尚书事」一类记载，任何系统学说（如反谶纬、实事求是）都缺直接依据，草稿不写。"
+    "孔安国的「思想」在史料上极薄：可确认的是文本整理、传授与「颇能言尚书事」一类记载，任何系统学说（如反谶纬、实事求是）都缺直接依据，草稿不写。",
+    "生卒年「约前 156—前 74」这组数字不在本包所读的《史记》《汉书》《尚书正义》提要、Nylan 注释与 SEP 汉代条目中，草稿沿用站内目录与通行工具书的推定值并标为推定；本轮未新增可引的 https 学术来源为这组数字作证。",
+    "四库提要所引《舜典》「取王注從『慎徽五典』以下為《舜典》」一节的版本细节（今本二十八字为孔颖达增入等）属提要的考订意见，草稿只作流传史陈述，未据以判今本每一篇的成书。"
   ],
   "portraitNote": "unverified"
 }
