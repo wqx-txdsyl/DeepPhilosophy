@@ -16,7 +16,8 @@ import { celtic } from './celtic';
 import { roman } from './roman';
 import { cthulhu } from './cthulhu';
 
-export const MYTH_DETAILS = {
+export const ALL_DETAILS = {
+  'religion/buddhism': buddhism,
   'mythology/chinese': chineseMythology,
   'mythology/honghuang': honghuang,
   'mythology/japanese': japanese,
@@ -30,3 +31,5 @@ export const MYTH_DETAILS = {
   'mythology/roman': roman,
   'mythology/cthulhu': cthulhu,
 };
+
+import { buddhism } from './religion/buddhism';

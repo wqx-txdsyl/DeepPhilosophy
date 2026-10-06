@@ -7,13 +7,18 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import { getTopic } from '../data/moreContent';
-import { MYTH_DETAILS } from '../data/moreTopics';
+import { ALL_DETAILS } from '../data/moreTopics';
+import ReligionDetail from '../components/more/ReligionDetail';
 import MythologyDetail from '../components/more/MythologyDetail';
 import './MorePage.css';
 
 /* 神话体系十二页：同一 MythologyDetail 布局，各体系数据模块驱动 */
+const RELIGION_PREFIX = 'religion/';
 const DETAIL_REGISTRY = Object.fromEntries(
-  Object.entries(MYTH_DETAILS).map(([key, data]) => [key, { component: MythologyDetail, data }]),
+  Object.entries(ALL_DETAILS).map(([key, data]) => [
+    key,
+    { component: key.startsWith(RELIGION_PREFIX) ? ReligionDetail : MythologyDetail, data },
+  ]),
 );
 
 const OUTLINE = [
