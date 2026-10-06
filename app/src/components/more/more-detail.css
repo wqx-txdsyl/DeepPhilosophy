@@ -309,6 +309,8 @@ html.dark-mode .mtd-kw-pop {
   overflow: hidden; cursor: pointer; text-align: left; padding: 0;
   transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
   font-family: var(--font-sans);
+  display: flex; flex-direction: column; justify-content: flex-start;
+  align-items: stretch; line-height: normal;
 }
 .mtd-branch-card:hover {
   transform: translateY(-4px);
@@ -316,7 +318,7 @@ html.dark-mode .mtd-kw-pop {
   border-color: var(--ochre);
 }
 .mtd-branch-hero {
-  width: 100%; height: 180px; object-fit: cover; display: block;
+  width: 100%; height: 180px; object-fit: cover; display: block; flex-shrink: 0;
 }
 .mtd-branch-card h3 {
   font-family: var(--font-serif); font-weight: 400;
