@@ -50,7 +50,7 @@ export default function MoreDisciplinePage() {
       {d.topics ? (
         <section className="more-topics">
           <div className="more-topics-grid">
-            {d.topics.map(t => (
+            {d.topics.filter(t => !t.hidden).map(t => (
               <div
                 key={t.id}
                 className="more-topic"
