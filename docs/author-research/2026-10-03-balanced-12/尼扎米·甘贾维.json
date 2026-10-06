@@ -42,7 +42,15 @@
       "url": "https://www.iranicaonline.org/articles/haft-peykar",
       "type": "scholarly-encyclopedia",
       "accessedAt": "2026-10-05",
-      "readScope": "全文读取（作者署名 François de Blois）。支持：完成纪年 Ramażān 593 年14日=1197年8月初（另一传本 598/1202 系改动）；很可能是绝笔；题献马拉盖 Aḥmadilī 王朝 ʿAlāʾ-al-Dīn Körpe-Arslān（卒 604/1208）；巴赫拉姆·古尔框架取自《沙赫纳梅》同一题材、采用指涉并省略的写法以集中于新材料；来源含 Nezam-al-Molk《治政书》；第四（罗斯）公主故事为 Turandot 故事已知最古版本；全诗信息反宿命论、非占星手册、「不应读作苏菲寓言」、伦理内容属世俗；理想君主模型与不义君主批评的双重性。未见：—。"
+      "readScope": "全文读取（作者署名 François de Blois）。支持：完成纪年 Ramażān 593 年14日=1197年8月初（另一传本 598/1202 系改动）；很可能是绝笔；题献马拉盖的统治者 ʿAlāʾ-al-Dīn Körpe-Arslān b. Aq-Sonqor（卒 604/1208，条目未用「阿赫马迪勒王朝」之名）；巴赫拉姆·古尔框架取自《沙赫纳梅》同一题材、采用指涉并省略的写法以集中于新材料；来源含 Nezam-al-Molk《治政书》；第四（罗斯）公主故事为 Turandot 故事已知最古版本；全诗信息反宿命论、非占星手册、「不应读作苏菲寓言」、伦理内容属世俗；理想君主模型与不义君主批评的双重性。未见：—。"
+    },
+    {
+      "id": "jasb1905",
+      "title": "Journal of the Asiatic Society of Bombay（1905 年卷）·「The Date of the Death of Nizami」节（archive.org 全文本）",
+      "url": "https://archive.org/stream/bub_gb_aRO2AAAAIAAJ/bub_gb_aRO2AAAAIAAJ_djvu.txt",
+      "type": "scholarly-journal",
+      "accessedAt": "2026-10-06",
+      "readScope": "复核（第4组）读该节与相邻页：转引 Bacher 与 Robinson，据《蕾莉与马杰农》序言「已数过七个七」定 584/1188 时为四十九岁，推定生年 535/1141；列 576/586/596/597/598-599/602/606 等卒年异说，并引「六十三岁半」（63 岁 6 个月）一章为晚期注释者所加。OCR 文本，仅用于传统推算与卒年争议线索。"
     }
   ],
   "checks": [
@@ -261,13 +269,79 @@
       "locator": "全文",
       "verdict": "uncertain",
       "notes": "不设关系边；任务提示「内扎米提过海亚姆？」未获证实"
+    },
+    {
+      "field": "profile.life[0].body 生年推算",
+      "claim": "原记：伊朗百科系据《蕾莉与马杰农》序言「写至此诗时年四十七」倒推，且提示该序言段落或系插入",
+      "sourceId": "iranica-khamsa",
+      "locator": "复核逐篇检索 ḴAMSA OF NEẒĀMI / ESKANDAR-NĀMA / HAFT PEYKAR / LEYLI O MAJNUN 四篇（r.jina.ai 文本代理全文，2026-10-06）：无「age 47 / forty-seven」、无生年推算说明、无该段插入之说",
+      "verdict": "corrected",
+      "notes": "原值误置：已读 Iranica 四篇只径用 535/1141（或 1141-1209）而不说明依据。改为「通行生年由《蕾莉与马杰农》序言自述年岁的联句推出——早期研究读作『七个七』即四十九岁」，新增 jasb1905（JASB 1905）支持；『或系插入』一语删去，未核到出处。"
+    },
+    {
+      "field": "legacyIssues/uncertainties 中「《蕾莉与马杰农》题献希尔万沙（Akhsitan）说未见于已读文本」",
+      "claim": "原记：该题献说未见于已读文本",
+      "sourceId": "iranica-eskandar",
+      "locator": "「the author laments the death of the Šarvānšāh Aḵsatān (the dedicatee of Leylī o Majnūn)」；LEYLI O MAJNUN 篇「at the request of the ruler of Azarbaijan, Šervānšāh Aḵsetān」",
+      "verdict": "corrected",
+      "notes": "原记录有误：题献确见于 iranica-eskandar（并互证于 LEYLI O MAJNUN 篇）。草稿 overview[0]、life[3]、bibliography[2] 已补入阿赫萨坦题献及「其去世在《亚历山大纪》中被哀悼」。"
+    },
+    {
+      "field": "profile.people[4]（克尔佩-阿尔斯兰）",
+      "claim": "原写「马拉盖阿赫马迪勒（Aḥmadilī）王朝君主」",
+      "sourceId": "iranica-haftpeykar",
+      "locator": "Date and dedication 段",
+      "verdict": "corrected",
+      "notes": "已读条目只作「the ruler of Marāḡa, ʿAlāʾ-al-Dīn Körpe-Arslān b. Aq-Sonqor（卒 604/1208）」；「阿赫马迪勒王朝」未见于已读来源，已删并补 b. Aq-Sonqor（证据记录 readScope 同处一并改正）。"
+    },
+    {
+      "field": "profile.people[5]（诺斯拉特-丁·比什金）",
+      "claim": "原写「阿哈尔王公、皮什基尼（Piškīnī）王朝得名者」",
+      "sourceId": "iranica-eskandar",
+      "locator": "dedication 段：「the malek of Ahar, Noṣrat-al-Dīn Bīškīn b. Moḥammad」",
+      "verdict": "corrected",
+      "notes": "「皮什基尼王朝得名者」未见于已读来源，已删；只保留 malek of Ahar 与题献纪年（590/1194）。"
+    },
+    {
+      "field": "profile.life[4]/bibliography[3]（《亚历山大纪》两部分名）",
+      "claim": "原文作「诗的两分…及书名是后世编者的做法」「书名非作者自题」",
+      "sourceId": "iranica-eskandar",
+      "locator": "首段：「no strong evidence that the author used these names to distinguish the two parts」",
+      "verdict": "corrected",
+      "notes": "已改为来源原意：「二名系后世通称，无强证据表明作者以此二名区分两部」；并补第二部亦称 Ḵerad-nāma。"
+    },
+    {
+      "field": "profile.people[6]（肖塔·鲁斯塔维利 era/eraSource）",
+      "claim": "原写「约1160—1220」（站内目录 legacy 值）、eraSource=existing-catalog",
+      "sourceId": "iranica-khamsa",
+      "locator": "—（跨包一致性核对）",
+      "verdict": "corrected",
+      "notes": "与同批鲁斯塔维利包冲突（该包 identity.era：生卒年不详，活动于12世纪末—13世纪初）。已改齐为该表述并加「传统推定」，eraSource 改 editorial-peer；摘要注明目录旧值无据。"
+    },
+    {
+      "field": "profile.relations[4]（尼扎米↔鲁斯塔维利镜像）",
+      "claim": "本批原为 尼扎米→鲁斯塔维利，后由主编脚本统一为 鲁斯塔维利→尼扎米；原 detail 称「镜像边：同批鲁斯塔维利包以同标签、同语义设置」",
+      "sourceId": "iranica-khamsa",
+      "locator": "全文（无 Rustaveli 内容）",
+      "verdict": "corrected",
+      "notes": "第4组复核：两包统一为「肖塔·鲁斯塔维利→尼扎米·甘贾维」context/editorial-comparison，label「波斯叙事诗艺的编辑性比较」；detail 在两侧改为逐字相同的文本（去掉鲁斯塔维利包原先对 legacy 旧值的错误引述——legacy 实为「鲁斯塔维利→尼扎米 influence/同期交流」）。证据仅来源沉默，不写历史影响或师承。"
+    },
+    {
+      "field": "traditional 生年推算（新增来源核对）",
+      "claim": "早期研究据 584/1188 时年四十九岁（「七个七」）推定生于 535/1141",
+      "sourceId": "jasb1905",
+      "locator": "「The Date of the Death of Nizami」节（转引 Bacher/Robinson）",
+      "verdict": "confirmed",
+      "notes": "2026-10-06 经 archive.org 全文实读。另有 45、47 等读法（检索所见 1905 年 JASB 另一节作 45），故草稿并列而不写死。"
     }
   ],
   "uncertainties": [
     "Iranica 新站未见独立的 NIZAMI GANJAVI 传记主条目：站内搜索仅见分条目（ḴAMSA、ESKANDAR-NĀMA、HAFT PEYKAR 等）；旧版 URL（nizami-ganjavi 等变体）403/404，Wayback Machine 当日临时下线。生卒全名行（如 Elyās b. Yūsuf 之类拼写）未从已读来源逐字核到，草稿不写全名。",
     "博物馆抄本页（Met、Walters）当日访问全部被拦（403/429/Cloudflare），抄本证据转用 Iranica ḴAMSA 条目所记（BnF Suppl. pers. 1817，763/1362），未独立到馆藏页核对。",
     "三篇已读条目均未提及欧玛尔·海亚姆；两人关联不设关系边。",
-    "《蕾莉与马杰农》题献希尔万沙（Akhsitan）说、《秘密宝库》题献埃尔迪古兹朝廷说未见于已读文本，草稿只写已核实的两处题献（Körpe-Arslān、Bishkin）。",
+    "《蕾莉与马杰农》题献希尔万沙（Akhsitan）说已见 iranica-eskandar（并互证于 LEYLI O MAJNUN 篇），已补入草稿；《秘密宝库》题献埃尔迪古兹朝廷说未见于已读文本，仍不写入。",
+    "生年推算的联句年数各说不同（复核读到四十九、四十五、四十七三说），草稿并列而不写死；「该序言段系后人插入」一语未在已读来源中核到，已删。",
+    "「阿赫马迪勒（Aḥmadilī）王朝」「皮什基尼（Piškīnī）王朝得名者」两个王朝名未见于已读来源（历史学上或有其据），草稿已删，仅记 Iranica 原文的统治者名号。",
     "de Blois 重断代所据 ZDMG 161 (2012) 原论文未读，按 Iranica 条目转述采用。",
     "任务提示的传统卒年作 601AH/1209；已读 Iranica 条目作 535-605/1141-1209。两传并存，草稿采已读来源数值并注明分歧。",
     "Dowlatshah《诗人传记》（15世纪）等晚期传记材料（如「三任妻子」传说化叙事）本轮未能访问到相关学术讨论页面，debate 未采用；debate 改以五卷诗断代与文本学争论为题（候选二选一取后者）。"
