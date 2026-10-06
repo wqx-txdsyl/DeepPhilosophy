@@ -1,6 +1,6 @@
 # 哲学家资料资产扩充 · 续作任务书（交接 zcode 新会话）
 
-交接日期：2026-10-06（**第十三次交接**：批次 02-**20** 已上线（**315** 份 source-backed）；批次 **21 待开始**（剩余 337））。交接对象：zcode + GLM 5.3 新会话（本文件为唯一权威交接入口）。
+交接日期：2026-10-07（**第十四次交接**：批次 02-**21** 已上线（**330** 份 source-backed）；批次 **22 进行中**（剩余 322））。交接对象：zcode + GLM 5.3 新会话（本文件为唯一权威交接入口）。
 前序任务书：`docs/tasks/philosopher-assets-completion-zcode-glm53.md`（原始标准，仍有效）；本文件是其执行期的**进度快照与固化 SOP**，冲突处以本文件为准。
 
 ## 0. 用户新节奏（2026-10-05 指示，优先级最高）
@@ -12,7 +12,7 @@
 
 ## 1. 可直接复制给新会话的启动指令
 
-> 请执行本仓库 `docs/tasks/philosopher-assets-continuation-zcode.md`。先读它（含现状、SOP、内容过滤处置预案、附录A/B素拉事实），再读 `AGENTS.md`、`docs/tasks/philosopher-assets-progress.json`（台账）、`docs/tasks/research-agent-brief.md`。批次 20 已发布（若台账 release 无证据先按第 6 节补核验），随后按 SOP 开始**批次 21**（选名单登记前先核键/查重；选名单建议见第 4 节），剩余 337。节奏按第 0 节：每批即发布、快报、失败整表。已有的 315 份资料包、冻结批次、肖像停显记录不得破坏。人物条目身份先核对站内 data 文件再写。素拉·西瓦拉克已上线，不得在线抓取其任何页面。
+> 请执行本仓库 `docs/tasks/philosopher-assets-continuation-zcode.md`。先读它（含现状、SOP、内容过滤处置预案、附录A/B素拉事实），再读 `AGENTS.md`、`docs/tasks/philosopher-assets-progress.json`（台账）、`docs/tasks/research-agent-brief.md`。批次 21 已发布（dp-commit=ad0217db）。批次 22 研究代理已派发（要点 `docs/tasks/batch22-assignments.md`），按 SOP 收尾批次 22（校验→6复核+镜像→晋升→管线→台账/报告→发布），剩余 322。节奏按第 0 节：每批即发布、快报、失败整表。已有的 315 份资料包、冻结批次、肖像停显记录不得破坏。人物条目身份先核对站内 data 文件再写。素拉·西瓦拉克已上线，不得在线抓取其任何页面。
 
 ## 2. 现状快照（2026-10-06 第十三次交接）
 
