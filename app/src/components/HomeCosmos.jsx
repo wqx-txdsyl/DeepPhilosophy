@@ -449,7 +449,6 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     function onMove(e) {
       if (!activeRef.current) return;
       lastActiveRef.current = performance.now();
-      if (selected) { canvas.style.cursor = 'pointer'; return; } // 提示卡已钉在选中星上
       if (dragging && lastP) {
         const dx = e.clientX - lastP.x, dy = e.clientY - lastP.y;
         moved += Math.abs(dx) + Math.abs(dy);
@@ -459,6 +458,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         if (moved > 5) { hovered = null; if (tipRef.current) tipRef.current.style.opacity = '0'; canvas.style.cursor = 'grabbing'; }
         return;
       }
+      if (selected) { canvas.style.cursor = 'default'; return; } // 选中期间提示卡固定，无悬停
       const r = canvas.getBoundingClientRect();
       const mx = e.clientX - r.left, my = e.clientY - r.top;
       const hit = findHover(mx, my);
