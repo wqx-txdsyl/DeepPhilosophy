@@ -3,7 +3,7 @@
  * 所有流派数据存储在 /public/schools/data/school_*.json
  */
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import HeroSection from '../components/school/HeroSection';
 import OverviewSection from '../components/school/OverviewSection';
@@ -248,6 +248,7 @@ function goToSection(id) {
 
 export default function SchoolDetailPage() {
   const { name } = useParams();
+  const location = useLocation();
   const [loaded, setLoaded] = useState(null);
   const [error, setError] = useState(false);
   const [retry, setRetry] = useState(0);
@@ -283,6 +284,16 @@ export default function SchoolDetailPage() {
   useEffect(() => {
     if (loaded?.branch) requestAnimationFrame(() => goToSection('school-branches'));
   }, [loaded?.branch]);
+
+  // 深链定位：/school/:name#school-quotes 等锚点在资料载入后自动滚动（星图节点跳转依赖此行为）
+  useEffect(() => {
+    if (!loaded) return;
+    const hash = location.hash?.slice(1);
+    if (hash && document.getElementById(hash)) {
+      const timer = setTimeout(() => goToSection(hash), 60);
+      return () => clearTimeout(timer);
+    }
+  }, [loaded, location.hash]);
 
   if (error) return <div className="school-detail school-status"><h1>{name}</h1><p>暂时无法载入这一流派的资料。</p><button type="button" onClick={() => { setError(false); setRetry(value => value + 1); }}>重新载入</button><Link to="/genealogy">返回谱系 →</Link></div>;
   if (!data) return <div className="school-detail school-status" role="status"><p className="school-kicker">DEEP PHILOSOPHY</p><h1>{name}</h1><p>正在载入流派资料…</p></div>;
