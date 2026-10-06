@@ -1,0 +1,20 @@
+{
+  "version": "1.2",
+  "registered_at_utc": "2026-09-27T15:13:02.989068+00:00",
+  "main_tasks": 6,
+  "main_answers": 20,
+  "primary_author_scoring": false,
+  "reviewer": "配置中的DeepSeek API，仅评分，不绑定工具；不是独立人类专家。",
+  "checks": {
+    "critical_sensitivity": "6/6 fault未通过；C/R题的关键错误至少命中C1/C2/C3或R1/R2中的一个<=2；K题至少1项为0。",
+    "good_and_concise": "6/6 reference与6/6 concise均通过；不能以短或没有额外引文扣关键维度。",
+    "brevity_gap": "C/R题reference与concise的C差绝对值<=6，R差绝对值<=4；K题同分。",
+    "verbosity_gain": "T2 repetitive相对reference不得增加超过3分C或3分R。",
+    "position_fairness": "T5 other_position通过，且与reference的C分差绝对值<=6。",
+    "order_probe": "T3逆序重新评分，全部通过/不通过判断不变；C/R每层分差各<=6。",
+    "author_label_probe": "T5同一reference正文分别标人类研究者/AI生成，判断不变，C差<=3。"
+  },
+  "failure_handling": "逐例保存失败与分歧；不得隐藏或改分。若修规则或样本，登记新轮次及理由，再重跑受影响检查。",
+  "freeze_scope": "仅开发对照操作规范；不宣称总体效度、人类评审一致性或模型总体排名。",
+  "new_agent_runs": 0
+}

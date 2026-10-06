@@ -1,0 +1,66 @@
+{
+  "id": "Rae3b7c7d228dd3",
+  "ratings": {
+    "C1": 4,
+    "C2": 4,
+    "C3": 4,
+    "C4": 4,
+    "C5": 4,
+    "R1": 4,
+    "R2": 4,
+    "R3": 4
+  },
+  "reasons": {
+    "C1": {
+      "reason": "三项必做工作完成：多组记录的DOI/题名/作者/年份核对（A017、A020、A025、A035）；读取层级明确声明（仅摘要、未读全文，A031-33）且对摘要字段本身的成色做了元层核验（A028-30）；身份/流程/结论可靠性三层区分完成必做工作3（A006-12）。",
+      "answer_unit_ids": ["A017", "A025", "A031", "A006"],
+      "evidence": "回执#5/#6/#7；pool条目1/2/13/14"
+    },
+    "C2": {
+      "reason": "区分至少三层且各自独立（身份=持久定位、流程=评审环节、结论=方法与复制，A006-11）；并额外提出'字段名叫abstract不等于内容就是abstract'（A028-30）——该区分直接改变判断：对争论双方存而不判（A032）。",
+      "answer_unit_ids": ["A006", "A011", "A028", "A032"],
+      "evidence": "pool条目12证实aac4716的abstract字段确为'Aarts等'语境的编辑性导语（含</jats:title>残片）"
+    },
+    "C3": {
+      "reason": "决定性桥接：同一DOI机制下并存正相反结论→DOI不可能担保结论（A023-24）；OSF版本给出更细数字作对照（A025-26）；Ioannidis 2022更正记录支撑'高被引高声誉不豁免更正'（A034-36）；对无法核验处明确不做判断（A032、A037-38），结论未越界。",
+      "answer_unit_ids": ["A023", "A025", "A034", "A037"],
+      "evidence": "原包回执含'Correction: Why Most Published Research Findings Are False'（Ioannidis, 2022, 10.1371/journal.pmed.1004085, METADATA_ONLY）"
+    },
+    "C4": {
+      "reason": "处理了最强反方：承认DOI把'能不能核实'变成'可以核实'、比无出处说法更值得查（A040-43）；交代OpenAlex限流与'检索不到不等于不存在'（A037-38）；摘要字段provenance限制（A028-30）。",
+      "answer_unit_ids": ["A028", "A037", "A040", "A042"],
+      "evidence": ""
+    },
+    "C5": {
+      "reason": "2804字结构清晰（三层区分→对照核验→三个证据边界→正确用法→自我限定），三处引文以引用块逐字呈现且经得起pool核对，收尾明确声明证据层级（A046）。",
+      "answer_unit_ids": ["A019", "A022", "A046"],
+      "evidence": ""
+    },
+    "R1": {
+      "reason": "Gilbert评论摘要与pool条目2逐字一致（'three statistical errors…quite high'）；aac4716记录的abstract字段确为编辑性导语（pool条目12：'Empirically analyzing empirical evidence</jats:title>…Aarts et al. …about one-third to one-half…'），答案对其文体的判定准确且未冒充作者摘要；OSF版本摘要与署名（Nosek等）与pool条目14一致。",
+      "answer_unit_ids": ["A019", "A022", "A025", "A029"],
+      "evidence": "pool条目12/13/14；回执#7（447b3）"
+    },
+    "R2": {
+      "reason": "每条材料驱动具体一步：字段残片→元数据成色问题（A028-30）；两篇互斥→直接否证（A023-24）；447b3→数字对照（A025-26）；DOI发给评审报告/荐评/行业标准→DOI不蕴含研究结论（A013）；Ioannidis更正→'有DOI/高被引≠免检'（A034-36）。",
+      "answer_unit_ids": ["A013", "A023", "A034"],
+      "evidence": "回执#1/#2（wellcomeopenres评审报告、smpte标准）；pool条目12"
+    },
+    "R3": {
+      "reason": "引用全部有回执；证据层级如实（均为摘要级，A031-33、A046）；429限流与'回应是否存在为未知'如实声明（A037-38）；Ioannidis原论文与更正记录在回执中均为METADATA_ONLY，答案只引其存在未引其内容——范围诚实。",
+      "answer_unit_ids": ["A031", "A035", "A037", "A046"],
+      "evidence": "回执中pmed.0020124与pmed.1004085均access_level=METADATA_ONLY"
+    }
+  },
+  "audit": {
+    "condition_changes": [],
+    "unsupported_bridges": [],
+    "source_scope_issues": []
+  },
+  "errors": [],
+  "strength": "对'摘要字段本身的provenance'做元层审查（发现字段里混入编辑导语残片），超出任务最低要求且全部经得起pool逐字核对。",
+  "limits": [
+    "OSC正式回应是否存在无法核验（答案已自行声明为未知）",
+    "Ioannidis 2022更正记录仅元数据级，其内容未读取也不得评价"
+  ]
+}

@@ -26,5 +26,7 @@ async def api_update_profile(req: UpdateProfileRequest, user: dict = Depends(aut
 async def api_delete_account(user: dict = Depends(auth_required)):
     """删除账户及全部数据"""
     from auth import delete_account
+    from account_data import delete_account_data
+    delete_account_data(user["id"])
     delete_account(user["id"])
     return {"success": True, "message": "账户已删除"}

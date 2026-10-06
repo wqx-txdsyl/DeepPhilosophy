@@ -1,0 +1,1284 @@
+{
+  "id": "F03-T1",
+  "family": "R",
+  "rating_keys": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "original_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "task_required_work": [
+    "核对DOI对应题名、作者和出版信息",
+    "说明读到摘要还是全文，并评估实际方法或论证",
+    "区分有标识符、被发表、被引用与结论为真"
+  ],
+  "current_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "previous_turns": [],
+  "target_answer": "## 先给结论\n\n不能。DOI 保证的是\"这个记录能被找到、能被引用、标识不会失效\"，它不保证\"这篇论文的结论是对的\"。这两件事常被混成一件，但它们在证据层级上差得很远。\n\n下面我用刚才实际检索、实际读到的材料来说明，而不是抽象地说。\n\n---\n\n## 一、DOI 登记的对象，本身就不都是\"结论\"\n\n我第一轮检索\"同行评审与可复制性\"，返回的 DOI 里有这些：\n\n- `10.5256/f1000research.187759.r413599` —— 标题是 \"Peer Review** Report **For: A libraries reproducibility hackathon…\"（**评审报告**，不是被评审的论文）\n- `10.7717/peerj.8014/fig-5` —— 标题是 \"**Figure 5**: Meta-regression of researcher 'expertise and diligence'…\"（**一张图的图注**）\n\n这两个都有 `10.7717/…`、`10.5256/…` 形式的合法 DOI。也就是说：**DOI 的登记单位是\"对象\"，不是\"论断\"**。一张图、一份审稿意见、一份标准文档，都能拿到 DOI。既然连不作出结论的东西都有 DOI，\"有 DOI\"就没有理由被当作\"结论经得起检验\"的证据。\n\n再看第二组检索找到的一篇直接讨论 DOI 的论文（`10.20396/rdbci.v15i3.8646260`，2017，RDBCI）。我读到的是摘要，其中说这项研究要\"demonstrate the importance of DOI in the integration with the Lattes Platform **in order to guarantee author credibility**\"——即把 DOI 当作提升作者可信度的机制。这个说法本身就值得警惕：它说的是\"可信度信号\"，不是\"结论为真\"。而且这是一项描述性文献计量研究（统计 33 种期刊中有几种用了 DOI），它的设计也不足以支持\"用了 DOI ⇒ 内容可信\"这种因果主张。\n\n一句话：**DOI 是身份，不是资质。**\n\n---\n\n## 二、实际核验：同一个问题，四个 DOI，四种结论\n\n我为\"结论可靠性\"这个问题挑了一个真实的争议领域——自我损耗（ego depletion）。检索到四条都带 DOI 的记录：\n\n| 记录 | DOI | 我读到的内容层级 | 主张 |\n|---|---|---|---|\n| Baumeister, *Self-Control, Ego Depletion, and Social Psychology's Replication Crisis* (2019) | `10.31234/osf.io/uf3cn` | 仅一段简短描述文字 | 提供作者本人对该争议的视角，\"reviews history, controversy, evidence\" |\n| Giboin & Wolff, *The effect of ego depletion or mental fatigue on subsequent physical endurance performance: a meta-analysis* (2019) | `10.31234/osf.io/mr5pk` | 完整摘要 | 元分析 42 个独立效应量，ES = −0.506 [95% CI: −0.649, −0.369]，\"prior mental exertion is detrimental to subsequent physical endurance performance\" |\n| Carruth, Ramos & Miyake, *Does willpower mindset really moderate the ego-depletion effect? A preregistered replication of Job, Dweck, and Walton (2010)* (2023, PLOS ONE) | `10.1371/journal.pone.0287911` | 完整摘要 | 预注册复制，N = 187，\"**we failed to replicate the original results**: there was neither a significant main effect … nor a significant moderation\" |\n| Forestier & Chalabaev, 评 Lin et al. (2020) 的评论 (2020) | `10.31236/osf.io/n3yb4` | 完整摘要 | 质疑\"重新发明\"损耗范式的做法，指其缺自我控制的完整定义、混淆自我损耗与心理疲劳、耗损任务选择不当 |\n\n四个 DOI 全部可解析、全部是真实记录、全部合法。但它们**互相矛盾**：\n- 元分析说效应存在且不小（−0.506 不是小数字）；\n- 一项预注册复制说效应及其调节都不显著；\n- 一位原始提出者在复述争议；\n- 一组评论者说这一整批研究连概念定义都没理清。\n\n这里最要紧的一点：**DOI 无法在它们之间做裁决。** 你手里有四个 DOI，你的困惑一分没少。\n\n而且注意，DOI 甚至不能告诉你某条记录经过了什么检验。上面四条里，只有 PLOS ONE 那条的元数据（`container_title`: PLOS ONE，`publication_type`: JOURNAL\\_ARTICLE）显示了期刊发表；另三条 `venue` 为 null、类型为 OTHER，**元数据本身没有提供任何\"经过期刊同行评审\"的证据**——这不是说它们没被评审，而是说\"有 DOI\"这件事不携带这个信息。\n\n---\n\n## 三、我实际读到了什么（这一条对你判断可靠性同样关键）\n\n必须交代清楚，否则我就是在冒充读过更多：\n\n- `10.1371/journal.pone.0287911` 我请求了 `FULL_TEXT_IF_LEGALLY_AVAILABLE`，返回的是 **\"无 OA 全文候选; DOI landing page 不构成全文可用\"**——**我只读到了摘要，没有读到方法与数据**。所以\"预注册\"\"N = 187\"这些是摘要自述，我没有独立核验其分析计划。\n- `10.31234/osf.io/uf3cn`（Baumeister）返回的只是一段 163 字符的第三方描述性文字，**不是作者本人的摘要**。因此我不能说\"Baumeister 论证了 X\"——我只能说这条记录存在，且描述称其综述了历史、争议与证据。\n- 前面那份\"评审报告\"和那张\"Figure 5\"，`access_level` 均为 METADATA\\_ONLY，**我除标题外什么内容都没读到**。\n- 另外，本轮 OpenAlex 返回 429 限流。**\"没检索到\"不等于\"不存在\"**，这一点我也不会拿来当论据。\n\n这就引出第二层要点：**\"有 DOI\"和\"我读过\"是两回事，而\"我读过摘要\"和\"我读过全文\"又是两回事。** 你看到搜索结果里挂着一个 DOI，那一刻你拥有的其实是最低层级的元数据。\n\n---\n\n## 四、那到底什么支持\"结论可靠\"？一条可用的阶梯\n\n按我看这四篇材料得到的经验，判断顺序应当是：\n\n1. **论断到底在哪一层？** 标题/摘要里的结论，与全文里带条件的结论，强度往往不同。你至少要读到方法或结果那一步。\n2. **经过了什么关卡？** 期刊同行评审、预注册、注册报告——这些是不同关卡，强度不同，且都可以被绕过（预注册后偏离分析计划并不罕见）。元数据里的 `publication_type` 和 `venue` 比 DOI 有用得多。\n3. **是谁在做？** Carruth 等人不是 Job/Dweck/Walton，**独立第三方复制**比原作者团队的再报告权重高。这不是关于人品的判断，而是关于\"结论不依赖于某一组人的特定操作\"。\n4. **样本与设计能否支撑结论？** 原研究 N = 60，复制 N = 187。摘要还直接说原研究的统计证据 \"was on shaky ground\"——这是一个可核的具体理由，比\"发表在好期刊上\"具体得多。\n5. **机制是否自洽？** Giboin & Wolff 的摘要里藏着一个对内证不利的结果：**先前心智努力**的**时长**并不预测后续表现受损的**幅度**（r = −0.043）。如果机制是\"资源被消耗\"，时长与幅度不相关是尴尬的。作者自己也把它列为 \"surprising finding … needs to be addressed systematically\"。\n6. **文献汇总是否处理了发表偏倚？** 那条元分析汇总的是 \"the aggregate of the published literature\"——已发表文献的汇总对发表偏倚天然敏感。它的摘要没有说明是否做了相应校正，**这一点我未读到，属于待核事项，不能当作它已解决或未解决**。\n\n把这几步走完，你得到的才是理由。DOI 一步都没走。\n\n---\n\n## 五、回到你的问题\n\n- **有 DOI ⇒ 结论可靠？** 不成立。上面四个 DOI 里至少有两个结论方向相反，DOI 完全帮不上忙。\n- **没有 DOI ⇒ 结论不可靠？** 也不成立。DOI 是 2000 年前后才普及的；大量可靠的老文献、专著、手稿没有 DOI。\n- 所以 DOI 既不是可靠性的充分条件，也**不是必要条件**。它是一个**定位与引用工具**：让\"我说的到底是哪一份文本\"这个争论可以被终结。这很有价值——它让核验成为可能——但\"让核验成为可能\"恰恰预设了**核验还没做**。\n\n一句实用的话：**看到 DOI，你应该感到\"这下我可以去查原文了\"，而不是\"这下不用查了\"。**\n\n如果你愿意，把你的那篇论文的 DOI 给我，我可以按上面那条阶梯逐项走一遍——它到底经过了什么关卡、结论在摘要里还是在正文里、有没有独立复制。我能读到的层级我会如实标出来，读不到的我会明确说读不到。",
+  "tools_this_turn": [
+    {
+      "tool_index": 1,
+      "name": "search_scholarship",
+      "args": {
+        "query": "reliability of peer review and reproducibility of published findings",
+        "limit": 5
+      },
+      "status": "partial",
+      "result": {
+        "query": "reliability of peer review and reproducibility of published findings",
+        "results": [
+          {
+            "source_record_id": "doi:10.5256/f1000research.187759.r413599",
+            "title": "Peer Review Report For: A libraries reproducibility hackathon: connecting students to university research and testing the longevity of published code [version 2; peer review: 3 approved]",
+            "authors": [],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5256/f1000research.187759.r413599",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5256/f1000research.187759.r412602",
+            "title": "Peer Review Report For: A libraries reproducibility hackathon: connecting students to university research and testing the longevity of published code [version 2; peer review: 3 approved]",
+            "authors": [],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5256/f1000research.187759.r412602",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5256/f1000research.172297.r339316",
+            "title": "Peer Review Report For: A libraries reproducibility hackathon: connecting students to University research and testing the longevity of published code [version 1; peer review: 1 approved, 1 approved with reservations]",
+            "authors": [],
+            "year": 2024,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5256/f1000research.172297.r339316",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7287/peerj.65v0.1/reviews/2",
+            "title": "Peer Review #2 of \"Transcranial Doppler ultrasound to assess cerebrovascular reactivity: reliability, reproducibility and effect of posture (v0.1)\"",
+            "authors": [],
+            "year": 2013,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7287/peerj.65v0.1/reviews/2",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7287/peerj.65v0.1/reviews/1",
+            "title": "Peer Review #1 of \"Transcranial Doppler ultrasound to assess cerebrovascular reactivity: reliability, reproducibility and effect of posture (v0.1)\"",
+            "authors": [],
+            "year": 2013,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7287/peerj.65v0.1/reviews/1",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 0,
+        "READABLE_SOURCE_IDS": [],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "reliability of peer review and reproducibility of published findings",
+            "status": "success",
+            "raw_result_count": 5
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "reliability of peer review and reproducibility of published findings",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 5
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "reliability of peer review and reproducibility of published findings",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 2,
+      "name": "search_scholarship",
+      "args": {
+        "query": "DOI persistent identifier digital object identifier scholarly communication",
+        "limit": 5
+      },
+      "status": "partial",
+      "result": {
+        "query": "DOI persistent identifier digital object identifier scholarly communication",
+        "results": [
+          {
+            "source_record_id": "doi:10.20396/rdbci.v15i3.8646260",
+            "title": "O Digital Object Identifier (DOI) em periódicos científicos eletrônicos de comunicação e informação",
+            "authors": [
+              "Erik André de Nazaré Pires",
+              "Antônio Afonso Pereira Júnior",
+              "Carla Daniella Teixeira Girard",
+              "Cristiane Marina Teixeira Girard"
+            ],
+            "year": 2017,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "RDBCI: Revista Digital de Biblioteconomia e Ciência da Informação",
+            "doi": "10.20396/rdbci.v15i3.8646260",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2013",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2013",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2017",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2017",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2018",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2018",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/s9781614827757",
+            "title": "RP 2079:2013 : Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": 2013,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/s9781614827757",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 1,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.20396/rdbci.v15i3.8646260"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "DOI persistent identifier digital object identifier scholarly communication",
+            "status": "success",
+            "raw_result_count": 5
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "DOI persistent identifier digital object identifier scholarly communication",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 5
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "DOI persistent identifier digital object identifier scholarly communication",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 3,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.20396/rdbci.v15i3.8646260",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.20396/rdbci.v15i3.8646260",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.20396/rdbci.v15i3.8646260",
+          "title": "O Digital Object Identifier (DOI) em periódicos científicos eletrônicos de comunicação e informação",
+          "authors": [
+            "Erik André de Nazaré Pires",
+            "Antônio Afonso Pereira Júnior",
+            "Carla Daniella Teixeira Girard",
+            "Cristiane Marina Teixeira Girard"
+          ],
+          "year": 2017,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "RDBCI: Revista Digital de Biblioteconomia e Ciência da Informação",
+          "doi": "10.20396/rdbci.v15i3.8646260",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "The present study seeks to investigate the use of the Digital Object Identifier (DOI) in the scientific journals of Communication and Information and, providing new integration utilities with the Lattes Platform. In this sense, it aims to inform the existing titles in Communication Information in electronic format, demonstrate the importance of DOI in the integration with the Lattes Platform in order to guarantee author credibility and analyze the characteristics of publications that have DOI. The methodology used for the development of this study is bibliographic, research with descriptive-descriptive characteristics. From the development of the research, it is inferred that of all the analyzed journals (33 journals), 10 titles in the evaluation of 2013 and 06 titles of the evaluation of 2014 present DOI in their publications, all have WebQualis classification, Qualis A1 in the area Communication and Information. Most publications are international and only 3 titles are national. It is necessary that journals, principally national ones, accompany new technologies such as DOI for objects and ORCID for the identification of people, bringing more mechanisms that guarantee authors 'credibility and to bring the researchers' connection, and both can already be adopted in the Platform Lattes.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "03800e0ef1f177482798726b155d077c67b780a92cb782f0ccf804de32fb361f",
+          "excerpt_start": 0,
+          "excerpt_end": 1316,
+          "total_characters": 1316,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "03800e0ef1f177482798726b155d077c67b780a92cb782f0ccf804de32fb361f",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 4,
+      "name": "search_scholarship",
+      "args": {
+        "query": "failed replication ego depletion meta-analysis effect size",
+        "limit": 6
+      },
+      "status": "partial",
+      "result": {
+        "query": "failed replication ego depletion meta-analysis effect size",
+        "results": [
+          {
+            "source_record_id": "doi:10.31234/osf.io/uf3cn",
+            "title": "Self-Control, Ego Depletion, and Social Psychology’s Replication Crisis",
+            "authors": [
+              "Roy Baumeister"
+            ],
+            "year": 2019,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31234/osf.io/uf3cn",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.31234/osf.io/mr5pk",
+            "title": "The effect of ego depletion or mental fatigue on subsequent physical endurance performance: a meta-analysis",
+            "authors": [
+              "Louis-Solal Giboin",
+              "Wanja Wolff"
+            ],
+            "year": 2019,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31234/osf.io/mr5pk",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s00426-017-0862-x",
+            "title": "An updated meta-analysis of the ego depletion effect",
+            "authors": [
+              "Junhua Dang"
+            ],
+            "year": 2017,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Psychological Research",
+            "doi": "10.1007/s00426-017-0862-x",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.3389/fpsyg.2016.01155",
+            "title": "Commentary: A Multilab Preregistered Replication of the Ego-Depletion Effect",
+            "authors": [
+              "Junhua Dang"
+            ],
+            "year": 2016,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Frontiers in Psychology",
+            "doi": "10.3389/fpsyg.2016.01155",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7717/peerj.8014/fig-5",
+            "title": "Figure 5: Meta-regression of researcher ‘expertise and diligence’ on obtained effect size in replicating the ego depletion paradigm.",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7717/peerj.8014/fig-5",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.2139/ssrn.4631863",
+            "title": "The Effect Cognitive Load, Ego Depletion, Induction and Time Restriction on Moral Judgments About Sacrificial Dilemmas: A Meta-Analysis",
+            "authors": [
+              "Paul Rehren"
+            ],
+            "year": 2023,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.2139/ssrn.4631863",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 2,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.31234/osf.io/uf3cn",
+          "doi:10.31234/osf.io/mr5pk"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "failed replication ego depletion meta-analysis effect size",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "failed replication ego depletion meta-analysis effect size",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "failed replication ego depletion meta-analysis effect size",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 5,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.31234/osf.io/uf3cn"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.31234/osf.io/uf3cn",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.31234/osf.io/uf3cn",
+          "title": "Self-Control, Ego Depletion, and Social Psychology’s Replication Crisis",
+          "authors": [
+            "Roy Baumeister"
+          ],
+          "year": 2019,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.31234/osf.io/uf3cn",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "<p>Provides Baumeister's perspective on ego depletion and its status in the context of psychology's replication crisis. Reviews history, controversy, evidence.</p>",
+          "source": "crossref_METADATA",
+          "hash": "28558116e86d48569faa8142a8a98c05bd8cf2ba575d71df2354d4e57a67ee98",
+          "excerpt_start": 0,
+          "excerpt_end": 163,
+          "total_characters": 163,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "28558116e86d48569faa8142a8a98c05bd8cf2ba575d71df2354d4e57a67ee98",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 6,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.31234/osf.io/mr5pk"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.31234/osf.io/mr5pk",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.31234/osf.io/mr5pk",
+          "title": "The effect of ego depletion or mental fatigue on subsequent physical endurance performance: a meta-analysis",
+          "authors": [
+            "Louis-Solal Giboin",
+            "Wanja Wolff"
+          ],
+          "year": 2019,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.31234/osf.io/mr5pk",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "<p>Two independent lines of research propose that exertion of mental effort can impair subsequent performance due to ego depletion or mental fatigue. In this meta-analysis, we unite these research fields to facilitate a greater exchange between the two, to summarize the extant literature and to highlight open questions. We performed a meta-analysis to quantify the effect of ego-depletion and mental fatigue on subsequent physical endurance performance (42 independent effect sizes). We found that ego-depletion or mental fatigue leads to a reduction in subsequent physical endurance performance (ES = -0.506 [95% CI: -0.649, -0.369]) and that the duration of prior mental effort exertion did not predict the magnitude of subsequent performance impairment (r = -0.043). Further, analyses revealed that effects of prior mental exertion are more pronounced in subsequent tasks that use isolation tasks (e.g., handgrip; ES = -0.719 [-0.946, -0.493]) compared to whole-body endurance tasks (e.g. cycling; coefficient = 0.338 [0.057, 0.621]) and that the observed reduction in performance is higher when the person-situation fit is low (ES for high person-situation fit = -0.355 [-0.529, -0.181], coefficient for low person-situation fit = -0.336 [-0.599, -0.073]). Taken together, the aggregate of the published literature on ego depletion or mental fatigue indicates that prior mental exertion is detrimental to subsequent physical endurance performance. However, this analysis also highlights several open questions regarding the effects’ mechanisms and moderators. Particularly, the surprising finding that the duration of prior mental exertion seems to be unrelated to subsequent performance impairment needs to be addressed systematically.</p>",
+          "source": "crossref_METADATA",
+          "hash": "86713b65055f9beac2dfffc40017ad7f876474ea0e448800610ca12f744f0624",
+          "excerpt_start": 0,
+          "excerpt_end": 1746,
+          "total_characters": 1746,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "86713b65055f9beac2dfffc40017ad7f876474ea0e448800610ca12f744f0624",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 7,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 5,
+        "query": "multilab preregistered replication ego depletion effect"
+      },
+      "status": "partial",
+      "result": {
+        "query": "multilab preregistered replication ego depletion effect",
+        "results": [
+          {
+            "source_record_id": "doi:10.31236/osf.io/n3yb4",
+            "title": "Ego-depletion or mental fatigue?  Commentary: “Strong Effort Manipulations Reduce Response Caution: A Preregistered Reinvention of the Ego-Depletion Paradigm”",
+            "authors": [
+              "Cyril Forestier",
+              "Aïna Chalabaev"
+            ],
+            "year": 2020,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31236/osf.io/n3yb4",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.31234/osf.io/8cqpk",
+            "title": "Does Willpower Mindset Really Moderate the Ego-Depletion Effect? A Preregistered Replication of Job, Dweck, and Walton (2010)",
+            "authors": [
+              "Nicholas Carruth",
+              "Jairo Ramos",
+              "Akira Miyake"
+            ],
+            "year": 2018,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31234/osf.io/8cqpk",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1371/journal.pone.0287911",
+            "title": "Does willpower mindset really moderate the ego-depletion effect? A preregistered replication of Job, Dweck, and Walton (2010)",
+            "authors": [
+              "Nicholas P. Carruth",
+              "Jairo A. Ramos",
+              "Akira Miyake"
+            ],
+            "year": 2023,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "PLOS ONE",
+            "doi": "10.1371/journal.pone.0287911",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.3389/fpsyg.2016.01155",
+            "title": "Commentary: A Multilab Preregistered Replication of the Ego-Depletion Effect",
+            "authors": [
+              "Junhua Dang"
+            ],
+            "year": 2016,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Frontiers in Psychology",
+            "doi": "10.3389/fpsyg.2016.01155",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1080/01973533.2016.1269286",
+            "title": "Extending a Multilab Preregistered Replication of the Ego-Depletion Effect to a Research Program",
+            "authors": [
+              "Erich H. Witte",
+              "Frank Zenker"
+            ],
+            "year": 2017,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Basic and Applied Social Psychology",
+            "doi": "10.1080/01973533.2016.1269286",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 3,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.31236/osf.io/n3yb4",
+          "doi:10.31234/osf.io/8cqpk",
+          "doi:10.1371/journal.pone.0287911"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "multilab preregistered replication ego depletion effect",
+            "status": "success",
+            "raw_result_count": 5
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "multilab preregistered replication ego depletion effect",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 5
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "multilab preregistered replication ego depletion effect",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 8,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.1371/journal.pone.0287911"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1371/journal.pone.0287911",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1371/journal.pone.0287911",
+          "title": "Does willpower mindset really moderate the ego-depletion effect? A preregistered replication of Job, Dweck, and Walton (2010)",
+          "authors": [
+            "Nicholas P. Carruth",
+            "Jairo A. Ramos",
+            "Akira Miyake"
+          ],
+          "year": 2023,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "PLOS ONE",
+          "doi": "10.1371/journal.pone.0287911",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "This article reports a preregistered study in which we attempted to replicate the results of an influential study on the ego-depletion effect reported by Job, Dweck, and Walton in 2010. The original Job et al. study (Study 1, N</jats:italic> = 60) provided evidence that the ego-depletion effect—a performance decrease on a self-control task after performing another self-control task—occurs only for individuals who hold a belief that their willpower is limited. This moderation of the ego-depletion effect by one’s willpower mindset (limited vs. nonlimited) has been interpreted as evidence against a prevalent limited-resource account of self-control. Although this alternative account of the ego-depletion effect has become well-known, the statistical evidence of the original study was on shaky ground. We therefore conducted a preregistered replication of the original study with some methodological improvements. As in the original study, participants (N</jats:italic> = 187) performed a self-control task (Stroop color-word interference task) after performing the control or depletion version of a letter cancelation task. Despite extensive analyses, we failed to replicate the original results: There was neither a significant main effect of ego depletion nor a significant moderation of this ego-depletion effect by individual differences in willpower mindset. Together with other recent failures to replicate the original moderation effect, our results cast doubts on the claim that an individual’s view of whether willpower is limited or not affects one’s susceptibility to the ego-depletion effect.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "e0ed234a2315e92c43a1a71a099867a7eef62fde30f18e822b00a817b22dd924",
+          "excerpt_start": 0,
+          "excerpt_end": 1620,
+          "total_characters": 1620,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "e0ed234a2315e92c43a1a71a099867a7eef62fde30f18e822b00a817b22dd924",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 9,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.31236/osf.io/n3yb4"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.31236/osf.io/n3yb4",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.31236/osf.io/n3yb4",
+          "title": "Ego-depletion or mental fatigue?  Commentary: “Strong Effort Manipulations Reduce Response Caution: A Preregistered Reinvention of the Ego-Depletion Paradigm”",
+          "authors": [
+            "Cyril Forestier",
+            "Aïna Chalabaev"
+          ],
+          "year": 2020,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.31236/osf.io/n3yb4",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "<p>Ego-depletion has been one of the most criticized psychological phenomena these past years. New approaches have been proposed to increase its replicability, but often failed, mostly due to inaccurate conceptions that misguided methodological decisions, such as inappropriate tasks choice. In this commentary, we question the reinvention of the ego-depletion paradigm claimed by Lin et al. (2020). Specifically, we discuss the absence of a comprehensive definition of self-control, which is central to the concept of ego-depletion, the lack of distinction between ego-depletion and mental fatigue, and the depleting task chosen to induce ego-depletion that we deem inappropriate. We propose some conceptual clarifications to promote the implementation of rigorous methods in ego-depletion research.</p>",
+          "source": "crossref_METADATA",
+          "hash": "8282181863ec5da51d269220dd09c5d22692b4581f2d828bcf42883213a1c8ae",
+          "excerpt_start": 0,
+          "excerpt_end": 804,
+          "total_characters": 804,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "8282181863ec5da51d269220dd09c5d22692b4581f2d828bcf42883213a1c8ae",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 10,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+        "source_record_id": "doi:10.1371/journal.pone.0287911"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1371/journal.pone.0287911",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1371/journal.pone.0287911",
+          "title": "Does willpower mindset really moderate the ego-depletion effect? A preregistered replication of Job, Dweck, and Walton (2010)",
+          "authors": [
+            "Nicholas P. Carruth",
+            "Jairo A. Ramos",
+            "Akira Miyake"
+          ],
+          "year": 2023,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "PLOS ONE",
+          "doi": "10.1371/journal.pone.0287911",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": null,
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "无 OA 全文候选; DOI landing page 不构成全文可用",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "This article reports a preregistered study in which we attempted to replicate the results of an influential study on the ego-depletion effect reported by Job, Dweck, and Walton in 2010. The original Job et al. study (Study 1, N</jats:italic> = 60) provided evidence that the ego-depletion effect—a performance decrease on a self-control task after performing another self-control task—occurs only for individuals who hold a belief that their willpower is limited. This moderation of the ego-depletion effect by one’s willpower mindset (limited vs. nonlimited) has been interpreted as evidence against a prevalent limited-resource account of self-control. Although this alternative account of the ego-depletion effect has become well-known, the statistical evidence of the original study was on shaky ground. We therefore conducted a preregistered replication of the original study with some methodological improvements. As in the original study, participants (N</jats:italic> = 187) performed a self-control task (Stroop color-word interference task) after performing the control or depletion version of a letter cancelation task. Despite extensive analyses, we failed to replicate the original results: There was neither a significant main effect of ego depletion nor a significant moderation of this ego-depletion effect by individual differences in willpower mindset. Together with other recent failures to replicate the original moderation effect, our results cast doubts on the claim that an individual’s view of whether willpower is limited or not affects one’s susceptibility to the ego-depletion effect.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "e0ed234a2315e92c43a1a71a099867a7eef62fde30f18e822b00a817b22dd924",
+          "excerpt_start": 0,
+          "excerpt_end": 1620,
+          "total_characters": 1620,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "e0ed234a2315e92c43a1a71a099867a7eef62fde30f18e822b00a817b22dd924",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    }
+  ],
+  "citations_this_turn": [
+    {
+      "evidence_id": "sch_31b59b0ebee6",
+      "source_record_id": "doi:10.20396/rdbci.v15i3.8646260",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "O Digital Object Identifier (DOI) em periódicos científicos eletrônicos de comunicação e informação",
+      "book": "O Digital Object Identifier (DOI) em periódicos científicos eletrônicos de comunicação e informação",
+      "author": "Erik André de Nazaré Pires, Antônio Afonso Pereira Júnior, Carla Daniella Teixeira Girard, Cristiane Marina Teixeira Girard",
+      "year": 2017,
+      "doi": "10.20396/rdbci.v15i3.8646260",
+      "url": "https://doi.org/10.20396/rdbci.v15i3.8646260",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "The present study seeks to investigate the use of the Digital Object Identifier (DOI) in the scientific journals of Communication and Information and, providing new integration utilities with the Lattes Platform. In this sense, it aims to inform the existing titles in Communication Information in electronic format, demonstrate the importance of DOI in the integration with the Lattes Platform in order to guarantee author credibility and analyze the characteristics of publications that have DOI. The methodology used for the development of this study is bibliographic, research with descriptive-de"
+    },
+    {
+      "evidence_id": "sch_969b72c5a098",
+      "source_record_id": "doi:10.31234/osf.io/uf3cn",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Self-Control, Ego Depletion, and Social Psychology’s Replication Crisis",
+      "book": "Self-Control, Ego Depletion, and Social Psychology’s Replication Crisis",
+      "author": "Roy Baumeister",
+      "year": 2019,
+      "doi": "10.31234/osf.io/uf3cn",
+      "url": "https://doi.org/10.31234/osf.io/uf3cn",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "<p>Provides Baumeister's perspective on ego depletion and its status in the context of psychology's replication crisis. Reviews history, controversy, evidence.</p>"
+    },
+    {
+      "evidence_id": "sch_81b535aa7a2d",
+      "source_record_id": "doi:10.31234/osf.io/mr5pk",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "The effect of ego depletion or mental fatigue on subsequent physical endurance performance: a meta-analysis",
+      "book": "The effect of ego depletion or mental fatigue on subsequent physical endurance performance: a meta-analysis",
+      "author": "Louis-Solal Giboin, Wanja Wolff",
+      "year": 2019,
+      "doi": "10.31234/osf.io/mr5pk",
+      "url": "https://doi.org/10.31234/osf.io/mr5pk",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "<p>Two independent lines of research propose that exertion of mental effort can impair subsequent performance due to ego depletion or mental fatigue. In this meta-analysis, we unite these research fields to facilitate a greater exchange between the two, to summarize the extant literature and to highlight open questions. We performed a meta-analysis to quantify the effect of ego-depletion and mental fatigue on subsequent physical endurance performance (42 independent effect sizes). We found that ego-depletion or mental fatigue leads to a reduction in subsequent physical endurance performance (E"
+    },
+    {
+      "evidence_id": "sch_c119ed1a47d0",
+      "source_record_id": "doi:10.31236/osf.io/n3yb4",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Ego-depletion or mental fatigue?  Commentary: “Strong Effort Manipulations Reduce Response Caution: A Preregistered Reinvention of the Ego-Depletion Paradigm”",
+      "book": "Ego-depletion or mental fatigue?  Commentary: “Strong Effort Manipulations Reduce Response Caution: A Preregistered Reinvention of the Ego-Depletion Paradigm”",
+      "author": "Cyril Forestier, Aïna Chalabaev",
+      "year": 2020,
+      "doi": "10.31236/osf.io/n3yb4",
+      "url": "https://doi.org/10.31236/osf.io/n3yb4",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "<p>Ego-depletion has been one of the most criticized psychological phenomena these past years. New approaches have been proposed to increase its replicability, but often failed, mostly due to inaccurate conceptions that misguided methodological decisions, such as inappropriate tasks choice. In this commentary, we question the reinvention of the ego-depletion paradigm claimed by Lin et al. (2020). Specifically, we discuss the absence of a comprehensive definition of self-control, which is central to the concept of ego-depletion, the lack of distinction between ego-depletion and mental fatigue, "
+    },
+    {
+      "evidence_id": "sch_e531f93383ab",
+      "source_record_id": "doi:10.1371/journal.pone.0287911",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Does willpower mindset really moderate the ego-depletion effect? A preregistered replication of Job, Dweck, and Walton (2010)",
+      "book": "Does willpower mindset really moderate the ego-depletion effect? A preregistered replication of Job, Dweck, and Walton (2010)",
+      "author": "Nicholas P. Carruth, Jairo A. Ramos, Akira Miyake",
+      "year": 2023,
+      "doi": "10.1371/journal.pone.0287911",
+      "url": "https://doi.org/10.1371/journal.pone.0287911",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "This article reports a preregistered study in which we attempted to replicate the results of an influential study on the ego-depletion effect reported by Job, Dweck, and Walton in 2010. The original Job et al. study (Study 1, N</jats:italic> = 60) provided evidence that the ego-depletion effect—a performance decrease on a self-control task after performing another self-control task—occurs only for individuals who hold a belief that their willpower is limited. This moderation of the ego-depletion effect by one’s willpower mindset (limited vs. nonlimited) has been interpreted as evidence against"
+    }
+  ]
+}

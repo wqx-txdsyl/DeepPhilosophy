@@ -1,0 +1,5179 @@
+{
+ "version": "R2-zcode-20261004",
+ "rules": {
+  "turn_contribution": "C: C_precise/60*100; R: (C_precise+R_precise)/100*100",
+  "aggregation": "mean turns within task, then equal-weight mean over 60 tasks",
+  "pass_rule": "frozen v1.2 pass rule with adjudicated error statuses (confirmed or pending blocks)",
+  "dimension_scopes": "C dimension over all 60 tasks; R dimension over R-family tasks only"
+ },
+ "subjects": {
+  "chatgpt-work-sol61-high-20261002": {
+   "main_score": 80.36,
+   "c_dimension": 79.75,
+   "r_dimension": 68.17,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 34,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 10
+  },
+  "deepseek-browser-run1-20261002": {
+   "main_score": 77.83,
+   "c_dimension": 80.5,
+   "r_dimension": 66.79,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 30,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 8
+  },
+  "doubao-browser-run1-20261002": {
+   "main_score": 70.37,
+   "c_dimension": 73.0,
+   "r_dimension": 61.65,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 21,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 23
+  },
+  "phiagent-0.1.0": {
+   "main_score": 95.27,
+   "c_dimension": 95.34,
+   "r_dimension": 96.96,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 53,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0
+  },
+  "phiagent-0.1.1": {
+   "main_score": 99.42,
+   "c_dimension": 99.65,
+   "r_dimension": 98.75,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 59,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0
+  },
+  "phiagent-0.1.2": {
+   "main_score": 97.12,
+   "c_dimension": 97.66,
+   "r_dimension": 99.46,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 56,
+   "adjudicated_confirmed_errors": 1,
+   "adjudicated_pending_errors": 1
+  },
+  "phiagent-0.1.3": {
+   "main_score": 98.6,
+   "c_dimension": 98.93,
+   "r_dimension": 99.02,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 58,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0
+  },
+  "phiagent-0.1.4": {
+   "main_score": 99.14,
+   "c_dimension": 99.05,
+   "r_dimension": 99.11,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 59,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0
+  },
+  "phiagent-0.1.5": {
+   "main_score": 99.24,
+   "c_dimension": 99.31,
+   "r_dimension": 98.75,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 60,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0
+  }
+ },
+ "per_case_full": {
+  "chatgpt-work-sol61-high-20261002": {
+   "main_score": 80.36,
+   "c_dimension": 79.75,
+   "r_dimension": 68.17,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 34,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 10,
+   "per_case": {
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 88.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 88.75
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 83.3333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 83.3333
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 64.5833,
+     "pass": false,
+     "turn_contributions": {
+      "1": 64.5833
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 80.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 80.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 53.75,
+     "pass": false,
+     "turn_contributions": {
+      "2": 73.75,
+      "3": 31.25,
+      "1": 56.25
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 73.4375,
+     "pass": false,
+     "turn_contributions": {
+      "2": 100.0,
+      "3": 77.0833,
+      "4": 62.5,
+      "1": 54.1667
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 57.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 57.5
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 78.4722,
+     "pass": false,
+     "turn_contributions": {
+      "1": 77.0833,
+      "2": 72.9167,
+      "3": 85.4167
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 72.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.5
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 66.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 66.25
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 54.1667,
+     "pass": false,
+     "turn_contributions": {
+      "3": 77.5,
+      "1": 30.0,
+      "2": 55.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 70.8333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.8333
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 57.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 57.5
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 56.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 56.25
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 61.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 61.25
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 95.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 61.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 61.25
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 80.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 80.0
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 73.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 73.75
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 55.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 55.0
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 85.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 85.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 72.3958,
+     "pass": false,
+     "turn_contributions": {
+      "2": 87.5,
+      "3": 47.9167,
+      "4": 100.0,
+      "1": 54.1667
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 56.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 56.25
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 68.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 68.75
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 68.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 68.75
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 58.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 58.3333
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 68.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 68.75
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 80.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 80.0
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 72.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.5
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 51.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 51.25
+     }
+    }
+   }
+  },
+  "deepseek-browser-run1-20261002": {
+   "main_score": 77.83,
+   "c_dimension": 80.5,
+   "r_dimension": 66.79,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 30,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 8,
+   "per_case": {
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 71.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 71.25
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 96.5278,
+     "pass": true,
+     "turn_contributions": {
+      "3": 93.75,
+      "2": 95.8333,
+      "1": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 76.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 76.25
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 93.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 93.75
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 52.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 52.5
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 61.6667,
+     "pass": false,
+     "turn_contributions": {
+      "3": 83.75,
+      "2": 60.0,
+      "1": 41.25
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 48.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 48.75
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 80.2083,
+     "pass": false,
+     "turn_contributions": {
+      "4": 70.8333,
+      "2": 100.0,
+      "3": 95.8333,
+      "1": 54.1667
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 73.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 73.75
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 71.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 71.25
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 68.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 68.75
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 76.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 76.25
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 52.0833,
+     "pass": false,
+     "turn_contributions": {
+      "1": 52.0833
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 57.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 57.5
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 91.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.25
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 93.2292,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833,
+      "4": 100.0,
+      "2": 100.0,
+      "3": 95.8333
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 56.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 56.25
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 57.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 57.5
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 68.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 68.75
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 75.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 75.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 70.4167,
+     "pass": false,
+     "turn_contributions": {
+      "3": 66.25,
+      "1": 71.25,
+      "2": 73.75
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 70.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 63.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 63.75
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 66.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 66.25
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 47.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 47.5
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 43.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 43.75
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 75.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 75.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 70.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 81.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 81.25
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 57.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 57.5
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 43.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 43.75
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 75.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 75.0
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 75.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 75.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    }
+   }
+  },
+  "doubao-browser-run1-20261002": {
+   "main_score": 70.37,
+   "c_dimension": 73.0,
+   "r_dimension": 61.65,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 21,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 23,
+   "per_case": {
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 81.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 81.25
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 63.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 63.75
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 79.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 79.1667
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 70.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 56.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 56.25
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 62.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 62.5
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 75.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 75.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 83.8542,
+     "pass": true,
+     "turn_contributions": {
+      "4": 100.0,
+      "2": 81.25,
+      "3": 79.1667,
+      "1": 75.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 65.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 65.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 71.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 71.25
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 42.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 42.5
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 90.2778,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333,
+      "2": 91.6667,
+      "3": 83.3333
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 85.4167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 85.4167
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 77.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 77.5
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 70.8333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.8333
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 65.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 65.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 70.8333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.8333
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 70.8333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.8333
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 47.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 47.5
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 65.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 65.0
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 79.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 79.1667
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 62.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 62.5
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 41.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 41.25
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 79.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 79.1667
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 70.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 62.0833,
+     "pass": false,
+     "turn_contributions": {
+      "1": 63.75,
+      "2": 66.25,
+      "3": 56.25
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 60.4167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 60.4167
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 79.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 79.1667
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 62.5,
+     "pass": false,
+     "turn_contributions": {
+      "3": 62.5,
+      "2": 72.9167,
+      "1": 52.0833,
+      "4": 62.5
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 43.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 43.75
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 71.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 71.25
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 65.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 65.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 50.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 50.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 71.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 71.25
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 70.8333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.8333
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 57.0833,
+     "pass": false,
+     "turn_contributions": {
+      "2": 60.0,
+      "1": 37.5,
+      "3": 73.75
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 58.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 58.3333
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 62.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 62.5
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 56.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 56.25
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 85.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 85.0
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 53.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 53.75
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 43.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 43.75
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 51.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 51.25
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 72.9167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 72.9167
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 70.8333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 70.8333
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 79.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 79.1667
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 57.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 57.5
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 83.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 83.75
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 51.25,
+     "pass": false,
+     "turn_contributions": {
+      "1": 51.25
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 79.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 79.1667
+     }
+    }
+   }
+  },
+  "phiagent-0.1.0": {
+   "main_score": 95.27,
+   "c_dimension": 95.34,
+   "r_dimension": 96.96,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 53,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0,
+   "per_case": {
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0,
+      "4": 100.0,
+      "3": 100.0,
+      "2": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 88.0208,
+     "pass": false,
+     "turn_contributions": {
+      "1": 79.1667,
+      "4": 77.0833,
+      "3": 95.8333,
+      "2": 100.0
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 93.3333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 86.25,
+      "2": 100.0,
+      "3": 93.75
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 60.4167,
+     "pass": false,
+     "turn_contributions": {
+      "1": 60.4167
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 96.25,
+     "pass": true,
+     "turn_contributions": {
+      "2": 97.5,
+      "1": 95.0,
+      "3": 96.25
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 83.75,
+     "pass": false,
+     "turn_contributions": {
+      "1": 83.75
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 87.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 98.6111,
+     "pass": true,
+     "turn_contributions": {
+      "3": 95.8333,
+      "2": 100.0,
+      "1": 100.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 98.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 98.75
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 75.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 75.0
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": false,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 58.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 58.3333
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 95.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.0
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 83.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 83.3333
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 93.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 93.75
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 95.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.0
+     }
+    }
+   }
+  },
+  "phiagent-0.1.1": {
+   "main_score": 99.42,
+   "c_dimension": 99.65,
+   "r_dimension": 98.75,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 59,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0,
+   "per_case": {
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "3": 100.0,
+      "1": 100.0
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0,
+      "3": 100.0,
+      "2": 100.0,
+      "4": 100.0
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 98.9583,
+     "pass": true,
+     "turn_contributions": {
+      "3": 95.8333,
+      "1": 100.0,
+      "2": 100.0,
+      "4": 100.0
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 98.3333,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "1": 97.5,
+      "3": 97.5
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 96.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 96.25
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "3": 100.0,
+      "1": 100.0,
+      "2": 100.0
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 92.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 92.5
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 91.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.25
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    }
+   }
+  },
+  "phiagent-0.1.2": {
+   "main_score": 97.12,
+   "c_dimension": 97.66,
+   "r_dimension": 99.46,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 56,
+   "adjudicated_confirmed_errors": 1,
+   "adjudicated_pending_errors": 1,
+   "per_case": {
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 99.1667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5,
+      "3": 100.0,
+      "2": 100.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 81.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 81.25
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 93.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 93.75
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 98.9583,
+     "pass": true,
+     "turn_contributions": {
+      "4": 100.0,
+      "2": 100.0,
+      "1": 100.0,
+      "3": 95.8333
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0,
+      "4": 100.0,
+      "3": 100.0,
+      "2": 100.0
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 98.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 98.75
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "1": 100.0,
+      "3": 100.0
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "3": 100.0,
+      "2": 100.0,
+      "1": 100.0
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 83.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 83.3333
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": false,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 0.0,
+     "pass": false,
+     "turn_contributions": {
+      "1": 0.0
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    }
+   }
+  },
+  "phiagent-0.1.3": {
+   "main_score": 98.6,
+   "c_dimension": 98.93,
+   "r_dimension": 99.02,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 58,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0,
+   "per_case": {
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 98.3333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5,
+      "2": 97.5,
+      "3": 100.0
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 99.1667,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "1": 97.5,
+      "3": 100.0
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "3": 100.0,
+      "1": 100.0,
+      "4": 100.0,
+      "2": 100.0
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 98.9583,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0,
+      "4": 100.0,
+      "3": 95.8333,
+      "2": 100.0
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 93.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 93.75
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "1": 100.0,
+      "3": 100.0
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 83.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 83.3333
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 83.3333,
+     "pass": false,
+     "turn_contributions": {
+      "1": 83.3333
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 77.0833,
+     "pass": true,
+     "turn_contributions": {
+      "1": 77.0833
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 96.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 96.25
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    }
+   }
+  },
+  "phiagent-0.1.4": {
+   "main_score": 99.14,
+   "c_dimension": 99.05,
+   "r_dimension": 99.11,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 59,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0,
+   "per_case": {
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 94.7917,
+     "pass": true,
+     "turn_contributions": {
+      "4": 95.8333,
+      "1": 87.5,
+      "3": 95.8333,
+      "2": 100.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 92.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 92.5
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 96.6667,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "3": 100.0,
+      "1": 90.0
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "3": 100.0,
+      "1": 100.0,
+      "2": 100.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "3": 100.0,
+      "1": 100.0,
+      "4": 100.0,
+      "2": 100.0
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 98.3333,
+     "pass": true,
+     "turn_contributions": {
+      "2": 97.5,
+      "1": 97.5,
+      "3": 100.0
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 85.4167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 85.4167
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 87.5,
+     "pass": false,
+     "turn_contributions": {
+      "1": 87.5
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    }
+   }
+  },
+  "phiagent-0.1.5": {
+   "main_score": 99.24,
+   "c_dimension": 99.31,
+   "r_dimension": 98.75,
+   "tasks": 60,
+   "turns": 72,
+   "cases_pass": 60,
+   "adjudicated_confirmed_errors": 0,
+   "adjudicated_pending_errors": 0,
+   "per_case": {
+    "J05": {
+     "family": "C",
+     "turns": 3,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "1": 100.0,
+      "3": 100.0
+     }
+    },
+    "H03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J02": {
+     "family": "C",
+     "turns": 4,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "2": 100.0,
+      "1": 100.0,
+      "3": 100.0,
+      "4": 100.0
+     }
+    },
+    "G02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J03": {
+     "family": "R",
+     "turns": 3,
+     "score": 98.75,
+     "pass": true,
+     "turn_contributions": {
+      "2": 97.5,
+      "1": 100.0,
+      "3": 98.75
+     }
+    },
+    "J01": {
+     "family": "C",
+     "turns": 4,
+     "score": 98.9583,
+     "pass": true,
+     "turn_contributions": {
+      "4": 100.0,
+      "3": 95.8333,
+      "1": 100.0,
+      "2": 100.0
+     }
+    },
+    "G04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B01": {
+     "family": "C",
+     "turns": 1,
+     "score": 91.6667,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.6667
+     }
+    },
+    "I05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N05": {
+     "family": "C",
+     "turns": 1,
+     "score": 97.9167,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.9167
+     }
+    },
+    "F04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "D03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F03": {
+     "family": "R",
+     "turns": 1,
+     "score": 91.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 91.25
+     }
+    },
+    "M04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "J04": {
+     "family": "R",
+     "turns": 3,
+     "score": 98.75,
+     "pass": true,
+     "turn_contributions": {
+      "3": 98.75,
+      "1": 97.5,
+      "2": 100.0
+     }
+    },
+    "L03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C01": {
+     "family": "R",
+     "turns": 1,
+     "score": 96.25,
+     "pass": true,
+     "turn_contributions": {
+      "1": 96.25
+     }
+    },
+    "E03": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "A02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "G01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E04": {
+     "family": "R",
+     "turns": 1,
+     "score": 97.5,
+     "pass": true,
+     "turn_contributions": {
+      "1": 97.5
+     }
+    },
+    "B03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C04": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "E01": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "N02": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "M02": {
+     "family": "C",
+     "turns": 1,
+     "score": 95.8333,
+     "pass": true,
+     "turn_contributions": {
+      "1": 95.8333
+     }
+    },
+    "I03": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "H05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F05": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "L05": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "C05": {
+     "family": "R",
+     "turns": 1,
+     "score": 98.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 98.75
+     }
+    },
+    "C02": {
+     "family": "R",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "I04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "B04": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    },
+    "F01": {
+     "family": "R",
+     "turns": 1,
+     "score": 88.75,
+     "pass": true,
+     "turn_contributions": {
+      "1": 88.75
+     }
+    },
+    "A01": {
+     "family": "C",
+     "turns": 1,
+     "score": 100.0,
+     "pass": true,
+     "turn_contributions": {
+      "1": 100.0
+     }
+    }
+   }
+  }
+ }
+}

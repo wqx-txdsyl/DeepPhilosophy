@@ -1,0 +1,1376 @@
+{
+  "id": "F03-T1",
+  "family": "R",
+  "rating_keys": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "original_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "task_required_work": [
+    "核对DOI对应题名、作者和出版信息",
+    "说明读到摘要还是全文，并评估实际方法或论证",
+    "区分有标识符、被发表、被引用与结论为真"
+  ],
+  "current_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "previous_turns": [],
+  "target_answer": "## 直接回答\n\n不能。DOI 只解决\"这篇东西是什么、到哪里去找\"，不解决\"它的结论对不对\"。把前者当成后者，是把标识符误当质量认证。\n\n## 为什么不是一回事\n\n这里至少要分开三层，它们各自独立：\n\n- **身份**：DOI（Digital Object Identifier）由注册机构（如 Crossref）分配并登记元数据。它保证的是**持久定位**——链接不易失效、引用可被解析、版本可区分。\n- **流程**：论文是否经过同行评审、评审强度如何、是原创研究还是评论/预印本/技术标准。\n- **结论可靠性**：方法是否站得住、数据是否支持结论、是否被独立复制、有无后续更正。\n\n有 DOI 只稳定地给出第一项。第二、三项都得另行核查。一个便宜的检验是看 DOI 实际发给了什么：我这一轮检索里，拿到 DOI 的包括一份**同行评审报告**（`10.21956/wellcomeopenres.27740.r142083`，标题为 \"Peer Review Report For: …\"）、一份**荐评记录**（`10.3410/f.725745455.793510459`，\"Faculty Opinions recommendation of…\"），以及一份**行业标准**（`10.5594/smpte.rp2079.2013`，数字对象标识符与 EIDR 的表示规范）。这些东西都有 DOI，没有一个是\"经评审的原创研究结论\"。\n\n## 实际核验：同一主题，两篇都有 DOI，结论正相反\n\n我按你的要求取了两篇关于\"心理学可复制性\"的论文摘要来比对。\n\n**其一**，Open Science Collaboration，《Estimating the reproducibility of psychological science》，*Science*，2015，DOI `10.1126/science.aac4716`。我从 Crossref 元数据取到的摘要字段是这样写的：\n\n> \"They find that about one-third to one-half of the original findings were also observed in the replication study.\"\n\n**其二**，Gilbert、King、Pettigrew、Wilson，《Comment on \"Estimating the reproducibility of psychological science\"》，*Science*，2016，DOI `10.1126/science.aad7243`。摘要原文：\n\n> \"We show that this article contains three statistical errors and provides no support for such a conclusion. Indeed, the data are consistent with the opposite conclusion, namely, that the reproducibility of psychological science is quite high.\"\n\n两篇都有规范的 DOI、都发表于 *Science*、作者都属可信机构，**结论却相反**。这就是对\"有 DOI 即证明结论可靠\"最直接的否证：既然同一 DOI 机制下可以并存相反结论，DOI 本身就不可能担保结论。\n\n作为对照，同一研究在 OSF 上的存放版本（`10.31219/osf.io/447b3`，署名含 Nosek 等）给出的摘要数字更细：\n\n> \"Replication effects were half the magnitude of original effects… Thirty-six percent of replications had statistically significant results; 47% of original effect sizes were in the 95% confidence interval of the replication effect size…\"\n\n## 这次核验本身还露出三个证据边界\n\n1. **摘要字段里未必是作者摘要。** 上面第一条 `10.1126/science.aac4716` 返回的文字带着 \"Empirically analyzing empirical evidence\" 的残片，文体更像期刊编辑的导语，而不是论文作者写的摘要。字段名叫 abstract，不等于内容就是 abstract。\n2. **我只读到了摘要，没有读全文。** 所以我对 Gilbert 一方所称\"三处统计错误\"是否成立、OSC 如何回应，**不做判断**——这需要正文和后续往来。有 DOI 也帮不了这一步，它只是让我知道该去哪个文本里查。\n3. **\"有更正\"是常态而非例外。** 附带一条：被引极广的 Ioannidis《Why Most Published Research Findings Are False》（*PLoS Medicine*，2005，`10.1371/journal.pmed.0020124`）本身在 2022 年挂有一份更正记录（`10.1371/journal.pmed.1004085`）。高被引、高声誉、有 DOI，都不构成免于更正的理由。\n\n我还想补一句诚实的限制：我试图检索 OSC 是否有正式\"回应\"，本轮**没有**返回相对应记录，且 OpenAlex 一侧当时被限流（429）。所以\"是否存在回应、回应说了什么\"，在我这里仍是未知——**检索不到不等于不存在**。\n\n## 那 DOI 该怎么用\n\n它不是没有价值，只是价值在别处：**它把\"能不能核实\"变成\"可以核实\"**——可定位、可引用、可追溯版本与更正。它是可靠的**起点**，不是可靠的**结论**。\n\n真正影响可信度的，是这些可追问的问题：评审发生在哪一环、强度如何；预注册与数据是否公开；样本与统计是否足够；有没有被独立复制成功；有没有更正、撤稿或实质反驳。DOI 顶多提供一个可撤销的信任线索：来源清楚、便于查证，因此比无出处的说法更值得一查——但\"更值得查\"离\"结论可靠\"还差着整段核查工作。\n\n**一句话**：DOI 认领的是文本的身份，不是文本的真假。要判断结论，得读方法、读数据、读反驳，而不是读标识符。\n\n（说明：以上论文信息与摘要文字来自本轮检索返回的记录，均为摘要层级证据，非全文；我未据此判定这场可复制性争论中哪一方更有理。）",
+  "tools_this_turn": [
+    {
+      "tool_index": 1,
+      "name": "search_scholarship",
+      "args": {
+        "query": "DOI persistent identifier credibility of scholarly publications",
+        "limit": 6
+      },
+      "status": "partial",
+      "result": {
+        "query": "DOI persistent identifier credibility of scholarly publications",
+        "results": [
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2013",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2013",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.4314/joafss.v8i2.71647",
+            "title": "Digital Object Identifier (DOI) – a must know for every author of scholarly publications.",
+            "authors": [
+              "EA Awojobi"
+            ],
+            "year": 2011,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Journal of Agriculture, Forestry and the Social Sciences",
+            "doi": "10.4314/joafss.v8i2.71647",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2017",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2017",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2018",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2018",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.62891/904655e8",
+            "title": "dPID: A Persistent Identifier for Machine Actionability",
+            "authors": [
+              "Sina Iman"
+            ],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.62891/904655e8",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/s9781614827757",
+            "title": "RP 2079:2013 : Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": 2013,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/s9781614827757",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 0,
+        "READABLE_SOURCE_IDS": [],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "DOI persistent identifier credibility of scholarly publications",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "DOI persistent identifier credibility of scholarly publications",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "DOI persistent identifier credibility of scholarly publications",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 2,
+      "name": "search_scholarship",
+      "args": {
+        "query": "peer review reliability validity of published research conclusions",
+        "limit": 6
+      },
+      "status": "partial",
+      "result": {
+        "query": "peer review reliability validity of published research conclusions",
+        "results": [
+          {
+            "source_record_id": "doi:10.21956/wellcomeopenres.27740.r142083",
+            "title": "Peer Review Report For: The Brief Prakriti Inventory: Latent structure, reliability, and validity [version 1; peer review: 1 approved]",
+            "authors": [],
+            "year": 2025,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.21956/wellcomeopenres.27740.r142083",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.21956/wellcomeopenres.27740.r143882",
+            "title": "Peer Review Report For: The Brief Prakriti Inventory: Latent structure, reliability, and validity [version 1; peer review: 3 approved, 2 approved with reservations]",
+            "authors": [],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.21956/wellcomeopenres.27740.r143882",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7287/peerj.15447v0.2/reviews/1",
+            "title": "Peer Review #1 of \"Reliability and validity of the Körperkoordinationstest Für Kinder in Chinese children (v0.2)\"",
+            "authors": [],
+            "year": 2023,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7287/peerj.15447v0.2/reviews/1",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7287/peerj.15447v0.2/reviews/3",
+            "title": "Peer Review #3 of \"Reliability and validity of the Körperkoordinationstest Für Kinder in Chinese children (v0.2)\"",
+            "authors": [],
+            "year": 2023,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7287/peerj.15447v0.2/reviews/3",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7287/peerj.15447v0.1/reviews/3",
+            "title": "Peer Review #3 of \"Reliability and validity of the Körperkoordinationstest Für Kinder in Chinese children (v0.1)\"",
+            "authors": [],
+            "year": 2023,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7287/peerj.15447v0.1/reviews/3",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7287/peerj.15447v0.1/reviews/1",
+            "title": "Peer Review #1 of \"Reliability and validity of the Körperkoordinationstest Für Kinder in Chinese children (v0.1)\"",
+            "authors": [],
+            "year": 2023,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7287/peerj.15447v0.1/reviews/1",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 0,
+        "READABLE_SOURCE_IDS": [],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "peer review reliability validity of published research conclusions",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "peer review reliability validity of published research conclusions",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "peer review reliability validity of published research conclusions",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 3,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 6,
+        "query": "why most published research findings are false"
+      },
+      "status": "partial",
+      "result": {
+        "query": "why most published research findings are false",
+        "results": [
+          {
+            "source_record_id": "doi:10.31219/osf.io/29jnp",
+            "title": "Why most pre-published research findings are false.",
+            "authors": [
+              "Sebastian Lobentanzer"
+            ],
+            "year": 2020,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31219/osf.io/29jnp",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.37665/pplavua65492",
+            "title": "Why Most Published Research Findings are Still False, and Why You Should Care",
+            "authors": [
+              "Aaron Brown"
+            ],
+            "year": 2025,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Pan Pacific Symposium",
+            "doi": "10.37665/pplavua65492",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1371/journal.pmed.0020124",
+            "title": "Why Most Published Research Findings Are False",
+            "authors": [
+              "John P. A. Ioannidis"
+            ],
+            "year": 2005,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "PLoS Medicine",
+            "doi": "10.1371/journal.pmed.0020124",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1371/journal.pmed.1004085",
+            "title": "Correction: Why Most Published Research Findings Are False",
+            "authors": [
+              "John P. A. Ioannidis"
+            ],
+            "year": 2022,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "PLOS Medicine",
+            "doi": "10.1371/journal.pmed.1004085",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1080/09332480.2019.1579573",
+            "title": "Why Most Published Research Findings Are False",
+            "authors": [
+              "John P.A. Ioannidis"
+            ],
+            "year": 2019,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "CHANCE",
+            "doi": "10.1080/09332480.2019.1579573",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.23919/panpacific65826.2025.10908935",
+            "title": "Why Most Published Research Findings are Still False, and Why You Should Care",
+            "authors": [
+              "Aaron Brown"
+            ],
+            "year": 2025,
+            "publication_type": "PROCEEDINGS",
+            "venue": "2025 Pan Pacific Strategic Electronics Symposium (Pan Pacific)",
+            "doi": "10.23919/panpacific65826.2025.10908935",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 2,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.31219/osf.io/29jnp",
+          "doi:10.37665/pplavua65492"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "why most published research findings are false",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "why most published research findings are false",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "why most published research findings are false",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 4,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 6,
+        "query": "estimating reproducibility of psychological science"
+      },
+      "status": "partial",
+      "result": {
+        "query": "estimating reproducibility of psychological science",
+        "results": [
+          {
+            "source_record_id": "doi:10.1126/science.aac4716",
+            "title": "Estimating the reproducibility of psychological science",
+            "authors": [
+              "Open Science Collaboration"
+            ],
+            "year": 2015,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aac4716",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1126/science.aad7243",
+            "title": "Comment on “Estimating the reproducibility of psychological science”",
+            "authors": [
+              "Daniel T. Gilbert",
+              "Gary King",
+              "Stephen Pettigrew",
+              "Timothy D. Wilson"
+            ],
+            "year": 2016,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aad7243",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.31219/osf.io/447b3",
+            "title": "Estimating the Reproducibility of Psychological Science",
+            "authors": [
+              "Brian A. Nosek",
+              "Johanna Cohoon",
+              "Mallory Kidwell",
+              "Jeffrey Robert Spies"
+            ],
+            "year": 2016,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31219/osf.io/447b3",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.15200/winn.144136.67798",
+            "title": "Science AMA Series: We are authors of “Estimating the Reproducibility of Psychological Science” coordinated by the Center for Open Science AUA",
+            "authors": [
+              "CenterForOpenScience",
+              "r/Science AMAs"
+            ],
+            "year": 2015,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.15200/winn.144136.67798",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7554/elife.111001",
+            "title": "Estimating the replicability of Brazilian biomedical science",
+            "authors": [
+              "The Brazilian Reproducibility Initiative"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7554/elife.111001",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.3410/f.725745455.793510459",
+            "title": "Faculty Opinions recommendation of PSYCHOLOGY. Estimating the reproducibility of psychological science.",
+            "authors": [
+              "Peter König",
+              "Benedikt Ehinger"
+            ],
+            "year": 2015,
+            "publication_type": "OTHER",
+            "venue": "Faculty Opinions – Post-Publication Peer Review of the Biomedical Literature",
+            "doi": "10.3410/f.725745455.793510459",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 5,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1126/science.aac4716",
+          "doi:10.1126/science.aad7243",
+          "doi:10.31219/osf.io/447b3",
+          "doi:10.15200/winn.144136.67798",
+          "doi:10.7554/elife.111001"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "estimating reproducibility of psychological science",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "estimating reproducibility of psychological science",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "estimating reproducibility of psychological science",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    },
+    {
+      "tool_index": 5,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.1126/science.aac4716",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1126/science.aac4716",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1126/science.aac4716",
+          "title": "Estimating the reproducibility of psychological science",
+          "authors": [
+            "Open Science Collaboration"
+          ],
+          "year": 2015,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Science",
+          "doi": "10.1126/science.aac4716",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "Empirically analyzing empirical evidence</jats:title> One of the central goals in any scientific endeavor is to understand causality. Experiments that seek to demonstrate a cause/effect relation most often manipulate the postulated causal factor. Aarts et al.</jats:italic> describe the replication of 100 experiments reported in papers published in 2008 in three high-ranking psychology journals. Assessing whether the replication and the original experiment yielded the same result according to several criteria, they find that about one-third to one-half of the original findings were also observed in the replication study. </jats:p> Science</jats:italic> , this issue 10.1126/science.aac4716</jats:related-article> </jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "b641af0de377dbebdb6f50741912e709c76970a865d0d793a3d0ee32ee9fc178",
+          "excerpt_start": 0,
+          "excerpt_end": 729,
+          "total_characters": 729,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "b641af0de377dbebdb6f50741912e709c76970a865d0d793a3d0ee32ee9fc178",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 6,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.1126/science.aad7243",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1126/science.aad7243",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1126/science.aad7243",
+          "title": "Comment on “Estimating the reproducibility of psychological science”",
+          "authors": [
+            "Daniel T. Gilbert",
+            "Gary King",
+            "Stephen Pettigrew",
+            "Timothy D. Wilson"
+          ],
+          "year": 2016,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Science",
+          "doi": "10.1126/science.aad7243",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "A paper from the Open Science Collaboration (Research Articles, 28 August 2015, aac4716) attempting to replicate 100 published studies suggests that the reproducibility of psychological science is surprisingly low. We show that this article contains three statistical errors and provides no support for such a conclusion. Indeed, the data are consistent with the opposite conclusion, namely, that the reproducibility of psychological science is quite high.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "1a2bca10c7801d0501c79282c8a1a60ee7f5d941a9cba1352210018df200aecc",
+          "excerpt_start": 0,
+          "excerpt_end": 465,
+          "total_characters": 465,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "1a2bca10c7801d0501c79282c8a1a60ee7f5d941a9cba1352210018df200aecc",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 7,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.31219/osf.io/447b3",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.31219/osf.io/447b3",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.31219/osf.io/447b3",
+          "title": "Estimating the Reproducibility of Psychological Science",
+          "authors": [
+            "Brian A. Nosek",
+            "Johanna Cohoon",
+            "Mallory Kidwell",
+            "Jeffrey Robert Spies"
+          ],
+          "year": 2016,
+          "publication_type": "OTHER",
+          "venue": null,
+          "doi": "10.31219/osf.io/447b3",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。",
+        "abstract": {
+          "text": "<p>Reproducibility is a defining feature of science, but the extent to which it characterizes current research is unknown. We conducted replications of 100 experimental and correlational studies published in three psychology journals using high-powered designs and original materials when available. Replication effects were half the magnitude of original effects, representing a substantial decline. Ninety-seven percent of original studies had statistically significant results. Thirty-six percent of replications had statistically significant results; 47% of original effect sizes were in the 95% confidence interval of the replication effect size; 39% of effects were subjectively rated to have replicated the original result; and if no bias in original results is assumed, combining original and replication results left 68% with statistically significant effects. Correlational tests suggest that replication success was better predicted by the strength of original evidence than by characteristics of the original and replication teams.</p>",
+          "source": "crossref_METADATA",
+          "hash": "8c3d547d1f2a632a01a0f572e8354b9f22bea70eb864e1c01914a435e8b11e13",
+          "excerpt_start": 0,
+          "excerpt_end": 1047,
+          "total_characters": 1047,
+          "has_more": false,
+          "next_offset": null,
+          "truncated": false,
+          "content_sha256": "8c3d547d1f2a632a01a0f572e8354b9f22bea70eb864e1c01914a435e8b11e13",
+          "window_covers_available_text": true,
+          "source_abstract_completeness": "unverified"
+        },
+        "evidence_origin": "ABSTRACT_METADATA",
+        "requested_access": "ABSTRACT",
+        "read_scope": "available_abstract",
+        "whole_document_returned": false
+      }
+    },
+    {
+      "tool_index": 8,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 6,
+        "query": "Response to Comment on Estimating the reproducibility of psychological science"
+      },
+      "status": "partial",
+      "result": {
+        "query": "Response to Comment on Estimating the reproducibility of psychological science",
+        "results": [
+          {
+            "source_record_id": "doi:10.1126/science.aac4716",
+            "title": "Estimating the reproducibility of psychological science",
+            "authors": [
+              "Open Science Collaboration"
+            ],
+            "year": 2015,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aac4716",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1126/science.aad7243",
+            "title": "Comment on “Estimating the reproducibility of psychological science”",
+            "authors": [
+              "Daniel T. Gilbert",
+              "Gary King",
+              "Stephen Pettigrew",
+              "Timothy D. Wilson"
+            ],
+            "year": 2016,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aad7243",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.31219/osf.io/447b3",
+            "title": "Estimating the Reproducibility of Psychological Science",
+            "authors": [
+              "Brian A. Nosek",
+              "Johanna Cohoon",
+              "Mallory Kidwell",
+              "Jeffrey Robert Spies"
+            ],
+            "year": 2016,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31219/osf.io/447b3",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1093/oxfordhb/9780190068226.013.14",
+            "title": "Ethical Naturalism, Non-Naturalism, and In-Between",
+            "authors": [
+              "Ralph Wedgwood"
+            ],
+            "year": 2023,
+            "publication_type": "BOOK_CHAPTER",
+            "venue": "The Oxford Handbook of Moral Realism",
+            "doi": "10.1093/oxfordhb/9780190068226.013.14",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LOCAL_CURATED",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.15200/winn.144136.67798",
+            "title": "Science AMA Series: We are authors of “Estimating the Reproducibility of Psychological Science” coordinated by the Center for Open Science AUA",
+            "authors": [
+              "CenterForOpenScience",
+              "r/Science AMAs"
+            ],
+            "year": 2015,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.15200/winn.144136.67798",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7554/elife.111001.1.sa0",
+            "title": "Author response: Estimating the replicability of Brazilian biomedical science",
+            "authors": [
+              "The Brazilian Reproducibility Initiative"
+            ],
+            "year": 2026,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.7554/elife.111001.1.sa0",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 5,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1126/science.aac4716",
+          "doi:10.1126/science.aad7243",
+          "doi:10.31219/osf.io/447b3",
+          "doi:10.1093/oxfordhb/9780190068226.013.14",
+          "doi:10.15200/winn.144136.67798"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "partial",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "Response to Comment on Estimating the reproducibility of psychological science",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "Response to Comment on Estimating the reproducibility of psychological science",
+            "retry_after": null,
+            "status": "error"
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 6
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "provider_errors": [
+          {
+            "provider": "openalex",
+            "error": "PROVIDER_RATE_LIMIT",
+            "detail": "429",
+            "query": "Response to Comment on Estimating the reproducibility of psychological science",
+            "retry_after": null
+          }
+        ],
+        "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+      }
+    }
+  ],
+  "citations_this_turn": [
+    {
+      "evidence_id": "sch_b59904983efe",
+      "source_record_id": "doi:10.1126/science.aac4716",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Estimating the reproducibility of psychological science",
+      "book": "Estimating the reproducibility of psychological science",
+      "author": "Open Science Collaboration",
+      "year": 2015,
+      "doi": "10.1126/science.aac4716",
+      "url": "https://doi.org/10.1126/science.aac4716",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "Empirically analyzing empirical evidence</jats:title> One of the central goals in any scientific endeavor is to understand causality. Experiments that seek to demonstrate a cause/effect relation most often manipulate the postulated causal factor. Aarts et al.</jats:italic> describe the replication of 100 experiments reported in papers published in 2008 in three high-ranking psychology journals. Assessing whether the replication and the original experiment yielded the same result according to several criteria, they find that about one-third to one-half of the original findings were also observe"
+    },
+    {
+      "evidence_id": "sch_6eeb81371698",
+      "source_record_id": "doi:10.1126/science.aad7243",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Comment on “Estimating the reproducibility of psychological science”",
+      "book": "Comment on “Estimating the reproducibility of psychological science”",
+      "author": "Daniel T. Gilbert, Gary King, Stephen Pettigrew, Timothy D. Wilson",
+      "year": 2016,
+      "doi": "10.1126/science.aad7243",
+      "url": "https://doi.org/10.1126/science.aad7243",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "A paper from the Open Science Collaboration (Research Articles, 28 August 2015, aac4716) attempting to replicate 100 published studies suggests that the reproducibility of psychological science is surprisingly low. We show that this article contains three statistical errors and provides no support for such a conclusion. Indeed, the data are consistent with the opposite conclusion, namely, that the reproducibility of psychological science is quite high.</jats:p>"
+    },
+    {
+      "evidence_id": "sch_544736032913",
+      "source_record_id": "doi:10.31219/osf.io/447b3",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Estimating the Reproducibility of Psychological Science",
+      "book": "Estimating the Reproducibility of Psychological Science",
+      "author": "Brian A. Nosek, Johanna Cohoon, Mallory Kidwell, Jeffrey Robert Spies",
+      "year": 2016,
+      "doi": "10.31219/osf.io/447b3",
+      "url": "https://doi.org/10.31219/osf.io/447b3",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "<p>Reproducibility is a defining feature of science, but the extent to which it characterizes current research is unknown. We conducted replications of 100 experimental and correlational studies published in three psychology journals using high-powered designs and original materials when available. Replication effects were half the magnitude of original effects, representing a substantial decline. Ninety-seven percent of original studies had statistically significant results. Thirty-six percent of replications had statistically significant results; 47% of original effect sizes were in the 95% "
+    }
+  ]
+}

@@ -1,0 +1,1418 @@
+{
+ "case_id": "J05",
+ "section": "J",
+ "expected_class": "MIXED",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "某论文声称尼采在《道德谱系》里否认真理，这个引用靠谱吗？",
+ "injection": null,
+ "QUESTION": "某论文声称尼采在《道德谱系》里否认真理，这个引用靠谱吗？",
+ "PUBLIC_WORK_NOTE": [
+  "**工作笔记**：用户要判断一篇论文的引用是否可靠——\"尼采在《道德谱系》里否认真理\"。我暂时知道的是：尼采确实在《道德谱系》第三篇大谈\"求真意志\"（Wille zur Wahrheit）与禁欲理想的关系，但\"否认真理\"这个说法很可能是对尼采立场的粗化转述。论文引的到底是哪一节、原文措辞是什么，我还不知道，所以下一步要去原典库定位《道德谱系》中涉及\"真理/求真意志\"的原文段落并读取上下文核验。",
+  "**工作笔记**：检索初步定位到库中《道德谱系》第三篇（\"禁欲主义理念意味着什么？\"）以合集体例收录（book_id bedc9c78dfdf，章节 552），\"求真意志\"确实出现在《善恶的彼岸》第一章。但论文说\"《道德谱系》里否认真理\"，关键是要看第三篇第 24、27 节讲求真意志的具体措辞——我不能仅凭片段就判定。下一步读取第三篇原文，并确认《道德谱系》在库中的书目结构，然后核对上下文。",
+  "**工作笔记**：我需要申请预算延展——核心证据缺口尚未闭合：我还没读到《道德谱系系》第三篇关于\"求真意志与真理\"的原文措辞，而这恰恰是判断该引用可靠与否的唯一根据。库中《道德谱系系》收在《尼采文集（合集）》里，第三篇（\"禁欲主义理念意味着什么？\"）位于该合集章节 552。下一步申请延展并直接读取该章原文。",
+  "**工作笔记**：已读到《道德谱系系系》第三篇开头（第一至第五节）——主题是禁欲理想，核心句\"人需要一个目标，因此人宁可期盼虚无，也不能没有期盼\"确实在此篇。但我还没读到第 24 节那段关键原文（把\"求真意志\"诊断为禁欲理想的残余），而这恰是论文\"尼采否认真理\"说法的可能出处。库中此篇开头未直接出现\"求真意志\"，怀疑该译本用\"真理意志\"或分置于其他子章。下一步换关键词搜索并以目录定位第 24 节，读取原文核验。",
+  "**工作笔记**：库中《尼采文集（合集）》把各书拆成极细的索引条目，但《道德谱系系系系系》第三篇（chapter 552）返回的却是被截断的窗口，我没能直接拿到第 24 节那段关键原文——而\"求真意志是禁欲理想残余\"正是判断\"否认真理\"转述是否要命的核心文本。上一轮检索未命中该节（返回的多是《朝霞》格言与其他书），说明我可能一直在用错译词。我打算申请一次延展，用更贴近该篇命题的译词再定位一次，若仍无命中就如实收口。",
+  "**工作笔记**：这一轮检索仍未直接命中第三篇第 24 节。但库中结构已清晰：《尼采文集（合集）》把《道德谱系系系系系系系》第三篇作为 chapter 552（我读过开头，\"人需要一个目标，因此人宁可期盼虚无，也不能没有期盼\"），而第 24 节应在该篇后段、很可能是紧随其后的独立索引条目（553、554…）。我打算探测 553 号条目，看它是不是第三篇的续表；若是，就能读到第 24 节原文，否则如实收口并标注证据边界。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本",
+ "TOOL_SELECTED": [
+  "search_books",
+  "get_book_detail",
+  "list_books",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "求真意志 禁欲理想 真理"
+   },
+   {
+    "query": "尼采 道德谱系 真理 上帝 影子"
+   },
+   {
+    "query": "真理意志 无神论 禁欲主义 信仰"
+   },
+   {
+    "query": "真理意志 禁欲理想 残余 无神论"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "bedc9c78dfdf"
+   },
+   {
+    "book_id": "bedc9c78dfdf"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "弗里德里希·尼采"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 552
+   },
+   {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 553
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "求真意志 禁欲理想 真理"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '5c935000a2a7', 'book_title': '善恶的彼岸', 'author': '弗里德里希·尼采', 'chapter_idx': 7, 'chapter_title': '第一章 哲人的偏见', 'citation_label': '【《善恶的彼岸》·第一章 哲人的偏见】', 'snippet': '1 [1] [15]那诱使"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "尼采 道德谱系 真理 上帝 影子"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '40a5f4bf8cb4', 'book_title': '哲学辞典', 'author': '伏尔泰', 'chapter_idx': 104, 'chapter_title': '条目笔划索引', 'citation_label': '【《哲学辞典》·条目笔划索引】', 'snippet': '条目笔划索引 二画 六画 光荣、光荣的541 三"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "phase": "executed",
+   "result_head": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "弗里德里希·尼采"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 552
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 552, 'title': '第三章 禁欲主义理念意味着什么？', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】', 'text': '第三章\\n禁欲主义理念意味着什么？\\n智慧要求我们无忧无虑、机敏幽默、强壮"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "真理意志 无神论 禁欲主义 信仰"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 248, 'chapter_title': '131', 'citation_label': '【《尼采文集（合集）》·131】', 'snippet': ' 基督教与自杀 。——基督教把在它"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "真理意志 禁欲理想 残余 无神论"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'e5a8abe31f07', 'book_title': '中国哲学辞典', 'author': '韦政通', 'chapter_idx': 19, 'chapter_title': '书尾笔画索引', 'citation_label': '【《中国哲学辞典》·书尾笔画索引】', 'snippet': '封面 书名 版权 前言 目录 一以贯之 一"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 553
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 553, 'title': '译后记', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·译后记】', 'text': '1995年夏天，学友李永平先生约我翻译尼采的《论道德的谱系》，当时感到盛情难却，就冒冒失失地接了下来。后来由于冗事缠身，进展很"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '5c935000a2a7', 'book_title': '善恶的彼岸', 'author': '弗里德里希·尼采', 'chapter_idx': 7, 'chapter_title': '第一章 哲人的偏见', 'citation_label': '【《善恶的彼岸》·第一章 哲人的偏见】', 'snippet': '1 [1] [15]那诱使"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '40a5f4bf8cb4', 'book_title': '哲学辞典', 'author': '伏尔泰', 'chapter_idx': 104, 'chapter_title': '条目笔划索引', 'citation_label': '【《哲学辞典》·条目笔划索引】', 'snippet': '条目笔划索引 二画 六画 光荣、光荣的541 三"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐"
+  },
+  {
+   "name": "list_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 552, 'title': '第三章 禁欲主义理念意味着什么？', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】', 'text': '第三章\\n禁欲主义理念意味着什么？\\n智慧要求我们无忧无虑、机敏幽默、强壮"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 248, 'chapter_title': '131', 'citation_label': '【《尼采文集（合集）》·131】', 'snippet': ' 基督教与自杀 。——基督教把在它"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'e5a8abe31f07', 'book_title': '中国哲学辞典', 'author': '韦政通', 'chapter_idx': 19, 'chapter_title': '书尾笔画索引', 'citation_label': '【《中国哲学辞典》·书尾笔画索引】', 'snippet': '封面 书名 版权 前言 目录 一以贯之 一"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 553, 'title': '译后记', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·译后记】', 'text': '1995年夏天，学友李永平先生约我翻译尼采的《论道德的谱系》，当时感到盛情难却，就冒冒失失地接了下来。后来由于冗事缠身，进展很"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "## 结论先行\n\n这个引用**如果被当作《道德谱系》原意的直接概括，是不靠谱的**——它把一个\"价值重估\"层面的论断，偷换成了一个\"认识论\"层面的论断。不过要下最终判断，还得看这篇论文具体引的是哪一节、原文措辞是什么。下面把我能核验的和不能核验的分开讲。\n\n## 一、尼采在《道德谱系》里实际做的不是\"否认真理\"\n\n先说我这次在原典库中确实读到的东西。《道德谱系》第三篇的主题就是\"禁欲主义理念\"，开篇即：\n\n禁欲主义的理念对各类人分别意味着什么——在艺术家眼中近乎无，在哲学家和学者眼中则像是高级精神活动最有利的条件。\n\n（说明：库中此书以《尼采文集》合集体例收录，为谢地坤译本，见其\"译后记\"。）\n\n这一篇的整个argument是：**连\"科学\"、连无神论者与学者的\"求真意志\"（Wille zur Wahrheit），也仍然是禁欲理想的一种形态**。尼采要问的，不是\"真理存不存在\"，而是\"**求真意志本身有什么价值？我们为什么无条件地要去追求真理？这种'对真理的信仰'是不是一种尚未被审查的道德立场？**\"\n\n换句话说，尼采在《道德谱系》里做的是**对\"求真意志\"的价值谱系学批判**（把\"追求真理\"这个冲动还原为一种价值设定、一种禁欲主义的残余），而不是断言\"没有真理\"或\"真理是假的\"。\n\n## 二、\"否认真理\"这个说法通常怎么来的——三种失真的可能\n\n1. **把\"批判求真意志的价值\"读成\"否认真理存在\"**。这是最常见的滑坡。尼采质疑的是\"真理**值得**无条件追求吗\"，不等于\"真理不**存在**\"。\n2. **把《善恶的彼岸》的视角主义倒灌进《道德谱系》**。尼采在《善恶的彼岸》开篇第一章就在追问\"我们身上的什么要'追求真理'\"（该片段我在库中的《善恶的彼岸》确有定位），其视角主义命题——一切认识都是\"视角性的\"——常被简化为\"没有客观真理\"。但这是《善恶的彼岸》的论域，把它当成《道德谱系》的原话，就属于**错误的出处归因**。\n3. **转引后期笔记**。把《权力意志》编者辑录的笔记里的极端表述，安到《道德谱系》头上。\n\n这三种都属于把尼采某个更精确、更受限制的主张，压缩成一句可以任意引用的口号。\n\n## 三、需要如实说明的证据边界\n\n**我没能核验到《道德谱系》第三篇第 24 节的逐字原文**——库中这一篇是节选（仅约四千字），恰恰不包含我记忆中那段把\"求真意志\"列为禁欲理想最后形态的关键文字（第 24 节）。所以上面关于第 24 节的描述，是我对该篇整体论旨的**转述，未经库中该节原文核验**，不能当作逐字引用。若要坐实这一判断，需要去核对德文原著第三篇第 24、27 节的原文。\n\n## 四、怎么判断这篇论文靠不靠谱\n\n给你三个可以当场检验的硬指标：\n\n- **它给的是\"《道德谱系》第 X 篇第 Y 节\"这种可核查的位置，还是笼统的\"尼采认为……\"？** 只给后者，基本可判定为不可靠的转引。\n- **它引的是尼采原文措辞，还是某本二手导论的加工句？** 逐字引文与转述是两回事。\n- **它是否区分了\"求真意志批判\"与\"真理不存在\"？** 如果论文自己也把两者混为一谈，那它连尼采的问题是什么都没抓住。\n\n## 五、我的综合判断\n\n\"尼采在《道德谱系》里否认真理\"——**作为口号它流传很广，作为对这本书的准确概括它是失真的**。更站得住的表述是：\n\n尼采在《道德谱系》第三篇中，把求真意志——即那种无条件追求真理的意志——谱系化地诊断为禁欲理想的一种、而且是其最后的形态，由此质疑无条件追求真理这一价值设定本身。\n\n这里还牵涉一个**真实的学界争议**：尼采的视角主义究竟是否构成对\"客观真理\"的否定，还是只主张\"一切认识都带有视角、不存在无视角的'上帝之眼'\"——这两条读法在解释史上长期对立（前者读成虚无主义，后者读成一种关于认识条件的主张）。这一句是学界层面的分歧，不是我替尼采下的定论。\n\n**所以：引用本身不必全废，但论文若拿它当\"尼采否认真理\"的证据，就属于误读级别的不严谨——建议直接查它有没有给出节号与原文，那是最快的试金石。**",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "**工作笔记**：用户要判断一篇论文的引用是否可靠——\"尼采在《道德谱系》里否认真理\"。我暂时知道的是：尼采确实在《道德谱系》第三篇大谈\"求真意志\"（Wille zur Wahrheit）与禁欲理想的关系，但\"否认真理\"这个说法很可能是对尼采立场的粗化转述。论文引的到底是哪一节、原文措辞是什么，我还不知道，所以下一步要去原典库定位《道德谱系》中涉及\"真理/求真意志\"的原文段落并读取上下文核验。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德谱系》中尼采关于\"真理/求真意志\"的原文措辞与章节位置，以核验\"否认真理\"这一转述是否成立",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "求真意志 禁欲理想 真理"
+   },
+   "result_head": "{'results': [{'book_id': '5c935000a2a7', 'book_title': '善恶的彼岸', 'author': '弗里德里希·尼采', 'chapter_idx': 7, 'chapter_title': '第一章 哲人的偏见', 'citation_label': '【《善恶的彼岸》·第一章 哲人的偏见】', 'snippet': '1 [1] [15]那诱使"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "尼采 道德谱系 真理 上帝 影子"
+   },
+   "result_head": "{'results': [{'book_id': '40a5f4bf8cb4', 'book_title': '哲学辞典', 'author': '伏尔泰', 'chapter_idx': 104, 'chapter_title': '条目笔划索引', 'citation_label': '【《哲学辞典》·条目笔划索引】', 'snippet': '条目笔划索引 二画 六画 光荣、光荣的541 三"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：检索初步定位到库中《道德谱系》第三篇（\"禁欲主义理念意味着什么？\"）以合集体例收录（book_id bedc9c78dfdf，章节 552），\"求真意志\"确实出现在《善恶的彼岸》第一章。但论文说\"《道德谱系》里否认真理\"，关键是要看第三篇第 24、27 节讲求真意志的具体措辞——我不能仅凭片段就判定。下一步读取第三篇原文，并确认《道德谱系》在库中的书目结构，然后核对上下文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_head": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "blocked",
+   "args": {
+    "author": "弗里德里希·尼采"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：我需要申请预算延展——核心证据缺口尚未闭合：我还没读到《道德谱系系》第三篇关于\"求真意志与真理\"的原文措辞，而这恰恰是判断该引用可靠与否的唯一根据。库中《道德谱系系》收在《尼采文集（合集）》里，第三篇（\"禁欲主义理念意味着什么？\"）位于该合集章节 552。下一步申请延展并直接读取该章原文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "仍需读取《道德谱系》第三篇（尤其第24、27节）关于求真意志与真理的原文措辞，才能判定\"尼采否认真理\"是否是对该书的可靠转述",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "前两次检索只定位到候选（《善恶的彼岸》第一章、《尼采文集》合集章节位置），尚未读取《道德谱系》第三篇原文；核验\"否认真理\"这一转述必须看原文措辞与上下文，否则无法作答。",
+    "unresolved_evidence_gap": "《道德谱系》第三篇第24、27节原文措辞及其对\"真理/求真意志\"的确切表述"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 552
+   },
+   "result_head": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 552, 'title': '第三章 禁欲主义理念意味着什么？', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】', 'text': '第三章\\n禁欲主义理念意味着什么？\\n智慧要求我们无忧无虑、机敏幽默、强壮"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：已读到《道德谱系系系》第三篇开头（第一至第五节）——主题是禁欲理想，核心句\"人需要一个目标，因此人宁可期盼虚无，也不能没有期盼\"确实在此篇。但我还没读到第 24 节那段关键原文（把\"求真意志\"诊断为禁欲理想的残余），而这恰是论文\"尼采否认真理\"说法的可能出处。库中此篇开头未直接出现\"求真意志\"，怀疑该译本用\"真理意志\"或分置于其他子章。下一步换关键词搜索并以目录定位第 24 节，读取原文核验。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "真理意志 无神论 禁欲主义 信仰"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 248, 'chapter_title': '131', 'citation_label': '【《尼采文集（合集）》·131】', 'snippet': ' 基督教与自杀 。——基督教把在它"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：库中《尼采文集（合集）》把各书拆成极细的索引条目，但《道德谱系系系系系》第三篇（chapter 552）返回的却是被截断的窗口，我没能直接拿到第 24 节那段关键原文——而\"求真意志是禁欲理想残余\"正是判断\"否认真理\"转述是否要命的核心文本。上一轮检索未命中该节（返回的多是《朝霞》格言与其他书），说明我可能一直在用错译词。我打算申请一次延展，用更贴近该篇命题的译词再定位一次，若仍无命中就如实收口。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已读第三篇开头但未取得第24节原文；该节是\"否认真理\"这一归因的唯一决定性证据，缺它无法下可靠判断，故申请一次定向检索。",
+    "unresolved_evidence_gap": "《道德谱系》第三篇第24节（求真意志与禁欲理想）的原文措辞"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "真理意志 禁欲理想 残余 无神论"
+   },
+   "result_head": "{'results': [{'book_id': 'e5a8abe31f07', 'book_title': '中国哲学辞典', 'author': '韦政通', 'chapter_idx': 19, 'chapter_title': '书尾笔画索引', 'citation_label': '【《中国哲学辞典》·书尾笔画索引】', 'snippet': '封面 书名 版权 前言 目录 一以贯之 一"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：这一轮检索仍未直接命中第三篇第 24 节。但库中结构已清晰：《尼采文集（合集）》把《道德谱系系系系系系系》第三篇作为 chapter 552（我读过开头，\"人需要一个目标，因此人宁可期盼虚无，也不能没有期盼\"），而第 24 节应在该篇后段、很可能是紧随其后的独立索引条目（553、554…）。我打算探测 553 号条目，看它是不是第三篇的续表；若是，就能读到第 24 节原文，否则如实收口并标注证据边界。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 553
+   },
+   "result_head": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 553, 'title': '译后记', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·译后记】', 'text': '1995年夏天，学友李永平先生约我翻译尼采的《论道德的谱系》，当时感到盛情难却，就冒冒失失地接了下来。后来由于冗事缠身，进展很"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德谱系》中尼采关于\"真理/求真意志\"的原文措辞与章节位置，以核验\"否认真理\"这一转述是否成立",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "仍需读取《道德谱系》第三篇（尤其第24、27节）关于求真意志与真理的原文措辞，才能判定\"尼采否认真理\"是否是对该书的可靠转述",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "前两次检索只定位到候选（《善恶的彼岸》第一章、《尼采文集》合集章节位置），尚未读取《道德谱系》第三篇原文；核验\"否认真理\"这一转述必须看原文措辞与上下文，否则无法作答。",
+    "unresolved_evidence_gap": "《道德谱系》第三篇第24、27节原文措辞及其对\"真理/求真意志\"的确切表述"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已读第三篇开头但未取得第24节原文；该节是\"否认真理\"这一归因的唯一决定性证据，缺它无法下可靠判断，故申请一次定向检索。",
+    "unresolved_evidence_gap": "《道德谱系》第三篇第24节（求真意志与禁欲理想）的原文措辞"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:11:27",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《道德谱系》中尼采关于\"真理/求真意志\"的原文措辞与章节位置，以核验\"否认真理\"这一转述是否成立",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:11:35",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "仍需读取《道德谱系》第三篇（尤其第24、27节）关于求真意志与真理的原文措辞，才能判定\"尼采否认真理\"是否是对该书的可靠转述",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 17:12:12",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:11:35",
+    "reason": "前两次检索只定位到候选（《善恶的彼岸》第一章、《尼采文集》合集章节位置），尚未读取《道德谱系》第三篇原文；核验\"否认真理\"这一转述必须看原文措辞与上下文，否则无法作答。",
+    "unresolved_gap": "《道德谱系》第三篇第24、27节原文措辞及其对\"真理/求真意志\"的确切表述"
+   },
+   {
+    "ts": "2026-09-13 17:12:12",
+    "reason": "已读第三篇开头但未取得第24节原文；该节是\"否认真理\"这一归因的唯一决定性证据，缺它无法下可靠判断，故申请一次定向检索。",
+    "unresolved_gap": "《道德谱系》第三篇第24节（求真意志与禁欲理想）的原文措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:11:31"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:11:49"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 147043,
+   "output_tokens": 14606,
+   "total_tokens": 161649
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 11,
+   "compacted_chars_saved": 23482,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12070,
+     "output_tokens": 701,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17677,
+     "output_tokens": 721,
+     "tool_chars_added": 9216
+    },
+    {
+     "round": 3,
+     "input_tokens": 14500,
+     "output_tokens": 804,
+     "tool_chars_added": 863
+    },
+    {
+     "round": 4,
+     "input_tokens": 18400,
+     "output_tokens": 2089,
+     "tool_chars_added": 6010
+    },
+    {
+     "round": 5,
+     "input_tokens": 19861,
+     "output_tokens": 3877,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 6,
+     "input_tokens": 25334,
+     "output_tokens": 1486,
+     "tool_chars_added": 6672
+    },
+    {
+     "round": 7,
+     "input_tokens": 24441,
+     "output_tokens": 3270,
+     "tool_chars_added": 1229
+    },
+    {
+     "round": 8,
+     "input_tokens": 14760,
+     "output_tokens": 1658,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1699,
+ "token_usage": {
+  "input_tokens": 147043,
+  "output_tokens": 14606,
+  "total_tokens": 161649
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 90.3,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德谱系》中尼采关于\"真理/求真意志\"的原文措辞与章节位置，以核验\"否认真理\"这一转述是否成立",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《道德谱系》中尼采关于\"真理/求真意志\"的原文措辞与章节位置，以核验\"否认真理\"这一转述是否成立）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "求真意志 禁欲理想 真理"
+   },
+   "result_summary": "{'results': [{'book_id': '5c935000a2a7', 'book_title': '善恶的彼岸', 'author': '弗里德里希·尼采', 'chapter_idx': 7, 'chapter_title': '第一章 哲人的偏见', 'citation_label': '【《善恶的彼岸》·第一章 哲人的偏见】', 'snippet': '1 [1] [15]那诱使",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "尼采 道德谱系 真理 上帝 影子"
+   },
+   "result_summary": "{'results': [{'book_id': '40a5f4bf8cb4', 'book_title': '哲学辞典', 'author': '伏尔泰', 'chapter_idx': 104, 'chapter_title': '条目笔划索引', 'citation_label': '【《哲学辞典》·条目笔划索引】', 'snippet': '条目笔划索引 二画 六画 光荣、光荣的541 三",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_summary": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "弗里德里希·尼采"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "仍需读取《道德谱系》第三篇（尤其第24、27节）关于求真意志与真理的原文措辞，才能判定\"尼采否认真理\"是否是对该书的可靠转述",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "前两次检索只定位到候选（《善恶的彼岸》第一章、《尼采文集》合集章节位置），尚未读取《道德谱系》第三篇原文；核验\"否认真理\"这一转述必须看原文措辞与上下文，否则无法作答。",
+    "unresolved_evidence_gap": "《道德谱系》第三篇第24、27节原文措辞及其对\"真理/求真意志\"的确切表述"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 仍需读取《道德谱系》第三篇（尤其第24、27节）关于求真意志与真理的原文措辞，才能判定\"尼采否认真理\"是否是对该书的可靠转述）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 ge",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 552
+   },
+   "result_summary": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 552, 'title': '第三章 禁欲主义理念意味着什么？', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】', 'text': '第三章\\n禁欲主义理念意味着什么？\\n智慧要求我们无忧无虑、机敏幽默、强壮",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "真理意志 无神论 禁欲主义 信仰"
+   },
+   "result_summary": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 248, 'chapter_title': '131', 'citation_label': '【《尼采文集（合集）》·131】', 'snippet': ' 基督教与自杀 。——基督教把在它",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已读第三篇开头但未取得第24节原文；该节是\"否认真理\"这一归因的唯一决定性证据，缺它无法下可靠判断，故申请一次定向检索。",
+    "unresolved_evidence_gap": "《道德谱系》第三篇第24节（求真意志与禁欲理想）的原文措辞"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《道德谱系》第三篇第24节（把求真意志诊断为禁欲理想残余）的原文措辞——这是判定\"尼采否认真理\"转述可靠性的核心文本）。soft 检索预算=5 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_ch",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "真理意志 禁欲理想 残余 无神论"
+   },
+   "result_summary": "{'results': [{'book_id': 'e5a8abe31f07', 'book_title': '中国哲学辞典', 'author': '韦政通', 'chapter_idx': 19, 'chapter_title': '书尾笔画索引', 'citation_label': '【《中国哲学辞典》·书尾笔画索引】', 'snippet': '封面 书名 版权 前言 目录 一以贯之 一",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 553
+   },
+   "result_summary": "{'book_id': 'bedc9c78dfdf', 'chapter_idx': 553, 'title': '译后记', 'book_title': '尼采文集（合集）', 'citation_label': '【《尼采文集（合集）》·译后记】', 'text': '1995年夏天，学友李永平先生约我翻译尼采的《论道德的谱系》，当时感到盛情难却，就冒冒失失地接了下来。后来由于冗事缠身，进展很",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "尼采 道德谱系 真理 上帝 影子"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "40a5f4bf8cb4",
+      "book_title": "哲学辞典",
+      "author": "伏尔泰",
+      "chapter_idx": 104,
+      "chapter_title": "条目笔划索引",
+      "citation_label": "【《哲学辞典》·条目笔划索引】",
+      "snippet": "条目笔划索引 二画 六画 光荣、光荣的541 三画 上帝，诸神424 四画 自然法（对话）600 伊纳爵·德·罗耀拉577 七画 五画 形而上学 645 阿贝（修道院长）1 布拉斯费姆（侮辱神明）254 八画 （圣）披得670 722条目笔划索引 十一画 善，至善225 国家，政府481 善，一切皆善236 善，论物质与道德两方面的善恶229 物体 382 奢侈，豪华612 偶像、偶像崇拜者、偶像崇拜557 九画 十二画 变态易形，投胎",
+      "score": 0.569
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 49,
+      "chapter_title": "第四节 作为艺术的权力意志",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 作为艺术的权力意志】",
+      "snippet": "意大利学者瓦蒂莫提示我们若要恰当地理解尼采的，“超人”形象，最有帮助的可能只有尼采在最后创作阶段（即《权力意志》时期的大量笔记中）形成的艺术观。 [35] 确实，我们看到，中期尼采由于疏远瓦格纳（至少部分地是出于这个原因）而开始怀疑艺术，贬低艺术的意义和作用，否定自己在《悲剧的诞生》中赋予艺术的形而上学性，然而到了后期，更准确地讲，是到《快乐的科学》第五部（作于1887年，故属于晚期《权力意志》时期），尼采又改变了姿态，重又赋予艺术以一",
+      "score": 0.564
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 12,
+      "chapter_title": "第一节 疯子之言：上帝死了",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第一节 疯子之言：上帝死了】",
+      "snippet": "说到尼采，人们首先就会想到“上帝死了”。“上帝死了”差不多成了尼采的专名。在我们这儿，人们甚至简单地和轻佻地把它理解为纯粹的疯人疯语。 根据海德格尔的提示，我们可以看到，尼采早在《悲剧的诞生》时期就已经有“上帝死了”的想法了（这当然是受瓦格纳的影响），而且在1870年的一则笔记中这样写道：“我相信原始日耳曼人的话：一切神都必然要走向死亡。” [3] 然而，尼采最早明确地道出“上帝死了”这个断言，却是在1882年的《快乐的科学》里。正是从",
+      "score": 0.562
+     },
+     {
+      "book_id": "4b4d8792d7c9",
+      "book_title": "苏菲的哲学课",
+      "author": "多米尼克·贾尼科",
+      "chapter_idx": 26,
+      "chapter_title": "23.无法归类的尼采",
+      "citation_label": "【《苏菲的哲学课》·23.无法归类的尼采】",
+      "snippet": "23.无法归类的尼采 之所以没有在“思想长廊”那两节介绍尼采，不是因为他不够伟大，而是因为很难把他纳入传统哲学的框架里去。在他精神崩溃之前，这位叛逆的思想家如此自我介绍：“我是炸药。”他的悲惨命运使他的人生更显得不同凡响：一八八八年的冬天，他四十四岁，在意大利都灵的街头抱着一匹马突然失声痛哭，又给朋友们发了一些激情洋溢的明信片，落款是“上了十字架的人”，然后陷入了间歇性的半疯半抑郁的状态。 我真应该鼓励年轻人学习这样一位缺乏冷静，也不那",
+      "score": 0.559
+     },
+     {
+      "book_id": "309de54e4392",
+      "book_title": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 15,
+      "chapter_title": "索引",
+      "citation_label": "【《康德著作集（套装10册）（汉译世界学术名著丛书）》·索引】",
+      "snippet": "索　引 （本索引按汉语拼音字母顺序排列） A 阿那克萨克拉（Anaxagoras）。 爱（Liebe）禀好的本能的爱和敬重的实践的爱。 爱邻人（Naechstenliebe）。 傲慢（Arroganz）。 B 柏拉图（Plato）。 榜样（Urbild）。 被造物/创造（Schoepfung）被造物/创造的概念。 本能（Instinkt）与理性相对。 本能的（pathologische[与实践的相对]）；本能的情感；本能的法则；本能的爱",
+      "score": 0.554
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 43,
+      "chapter_title": "附录：尼采与虚无主义",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·附录：尼采与虚无主义】",
+      "snippet": "（加缪　著） 绝对的肯定 自从人类对神做道德的批判那一瞬间开始，便杀死了内心的神。但道德的根据是什么呢？借正义之名来否定神，没有神的观念是不是能想象正义的观念呢？如果真是这样，我们会不会变得不合理呢？尼采所面对的，就是这种不合理。为了突破这一点，他把不合理一直带入极端，意即道德是未经建立便被打破的神的最后肖像。于是，神是不存在的，神不保证人的存在，而人为了存在，应该去行动。 单独者 施蒂纳(1) 从人的内心所包含的神开始，想打破一切的神",
+      "score": 0.552
+     },
+     {
+      "book_id": "d1986c75d6b2",
+      "book_title": "偶像的黄昏",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 13,
+      "chapter_title": "一个不合时宜者的漫游",
+      "citation_label": "【《偶像的黄昏》·一个不合时宜者的漫游】",
+      "snippet": " 我那不可能做的事。——塞内卡 (1) ：或者德行的斗牛士。——卢梭 (2) ：或者进入污秽的原始自然 (3) 的返归自然。—— 席勒 ：或者塞金根的道德号手 (4) ——但丁 (5) ：或者在坟墓里作诗的鬣狗 (6) 。——康德：或者伪善言辞 (7) 作为理知的特性 (8) 。—— 维克多 · 雨果 (9) ：或者荒谬之海上的法鲁斯 (10) 。—— 李斯特 (11) ：或者精湛技巧的学校——追逐女人 (12) 。—— 乔治 · 桑 ",
+      "score": 0.551
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 523,
+      "chapter_title": "一个不合时宜者的漫游",
+      "citation_label": "【《尼采文集（合集）》·一个不合时宜者的漫游】",
+      "snippet": " 我那不可能做的事。——塞内卡 (1) ：或者德行的斗牛士。——卢梭 (2) ：或者进入污秽的原始自然 (3) 的返归自然。—— 席勒 ：或者塞金根的道德号手 (4) ——但丁 (5) ：或者在坟墓里作诗的鬣狗 (6) 。——康德：或者伪善言辞 (7) 作为理知的特性 (8) 。—— 维克多 · 雨果 (9) ：或者荒谬之海上的法鲁斯 (10) 。—— 李斯特 (11) ：或者精湛技巧的学校——追逐女人 (12) 。—— 乔治 · 桑 ",
+      "score": 0.551
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 11,
+      "chapter_title": "第三节 苏格拉底主义批判",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第三节 苏格拉底主义批判】",
+      "snippet": "后期尼采仍然秉持了他前期关于苏格拉底主义和“科学乐观主义”的基本判断。在《权力意志》时期的一则笔记中，尼采回顾了自己的早期著作《悲剧的诞生》，明确地总结道：“对苏格拉底的批判构成本书的重头：苏格拉底乃是悲剧的敌人，是那种魔力般的—预防性的艺术本能的消解者；苏格拉底主义乃是对生命和艺术的最大误解：道德、辩证法、理论人的知足常乐，乃是疲乏无力的一种形式；著名的希腊式的明朗只不过是一道 晚霞 ……只要强大的种族依然富有力量，它们就有勇气如其所",
+      "score": 0.55
+     },
+     {
+      "book_id": "5c935000a2a7",
+      "book_title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 2,
+      "chapter_title": "Pütz版前言",
+      "citation_label": "【《善恶的彼岸》·Pütz版前言】",
+      "snippet": "著作的各个阶段 通观尼采的全部著述，不免产生这样的印象，即它们可以清楚地划分为三个阶段：第一阶段的作品包括《悲剧的诞生》（1872）和《不合时宜的沉思》（1873-76）。从中可以看出，作者是叔本华和瓦格纳的忠实追随者。他的文学批评素来言辞激烈，甚至富有攻击性，矛头直指“经院派”，其始作俑者在尼采看来是苏格拉底；他批判19世纪的学究派，鞭挞日益匮乏的德意志精神，痛心于其中力量、生命的丰盈以及天才性的丧失。第二阶段从《人性的、太人性的》（",
+      "score": 0.549
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 8,
+      "chapter_title": "权力意志作为德性",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·权力意志作为德性】",
+      "snippet": "什么是善？凡是增强我们人类权力感，增强我们人类的权力意志以及权力本身的东西，都是善。 什么是恶？凡是源于虚弱的东西都是恶。 什么是幸福？幸福不过是那种意识到权力在增长，意识到反抗被克服的感觉。 幸福不是心满意足，而是更多的权力，不是和平本身，而是战斗；不是德性而是能干（文艺复兴时期的德性，也即virtü，恰恰是和道德无关的德性）。 ——尼采，《敌基督者》 当然，尼采自己言过其实了。夸张（以及不自量力）是热情的常见症状。于是，基于一两句较",
+      "score": 0.547
+     },
+     {
+      "book_id": "795658cafeab",
+      "book_title": "荀子",
+      "author": "荀子",
+      "chapter_idx": 1,
+      "chapter_title": "目录",
+      "citation_label": "【《荀子》·目录】",
+      "snippet": "Cover Page 目录 劝学 修身 不苟 荣辱 非相 非十二子 仲尼 儒效 王制 富国 王霸 君道 臣道 致士 议兵 强国 天论 正论 礼论 乐论 解蔽 正名 性恶 君子 成相 赋 大略 宥坐 子道 法行",
+      "score": 0.544
+     },
+     {
+      "book_id": "fea8d6ddc565",
+      "book_title": "哲学小史",
+      "author": "奈杰尔·沃伯顿",
+      "chapter_idx": 42,
+      "chapter_title": "译名对照表",
+      "citation_label": "【《哲学小史》·译名对照表】",
+      "snippet": "a state of nature 自然状态 A Theory of Justice 《正义论》 absurdity 荒谬性 agnostic 不可知论者的 agnosticism 不可知论 alienation 异化 Alsatian 阿尔萨斯狗 amphetamine 安非他命 An Assay Concerning Human Understanding 《人类理解论》 analytic 分析的 analytic statemen",
+      "score": 0.543
+     },
+     {
+      "book_id": "40a5f4bf8cb4",
+      "book_title": "哲学辞典",
+      "author": "伏尔泰",
+      "chapter_idx": 3,
+      "chapter_title": "目录",
+      "citation_label": "【《哲学辞典》·目录】",
+      "snippet": "录 目 ABBE阿贝(修道院长) ABRAHAM亚伯拉罕 ADAM亚当 .22 AME灵魂 31 AMITIE 友谊 AMOUR ...84 爱情... AMOURPROPRE 88 自尊心 AMOURSOCRATIQUE苏格拉底式的爱情... 89 ANCIENSETMODERNES古人与今人 ANGE天使... 118 ANTHROPOPHAGE吃人的人 134 APIS阿庇斯牛 146 APOCALYPSE 148 启示录………·",
+      "score": 0.542
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 548,
+      "chapter_title": "译序",
+      "citation_label": "【《尼采文集（合集）》·译序】",
+      "snippet": "《论道德的谱系》是我27年前翻译的尼采名著，出版之后重印过不少次，但一直未作任何修改。现在承蒙上海人民出版社邀约，本书将再次出版。利用这个机会，我重新审校了一遍译文，对一些文字作了修改。同时，我想借此机会谈谈对这本书的感想。 我们知道，尼采对欧洲近现代文化的转型和发展发挥了重要作用，自20世纪初的“五四运动”以来，他对中国知识分子也产生过重要影响，无论是过去的王国维、鲁迅、郭沫若这些大文人，还是现在的成千上万的大学生，对尼采都是耳熟能详",
+      "score": 0.542
+     }
+    ],
+    "query": "尼采 道德谱系 真理 上帝 影子",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "求真意志 禁欲理想 真理"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "5c935000a2a7",
+      "book_title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 7,
+      "chapter_title": "第一章 哲人的偏见",
+      "citation_label": "【《善恶的彼岸》·第一章 哲人的偏见】",
+      "snippet": "1 [1] [15]那诱使我们有时不惜铤而走险的求真意志 [2] 啊，那自古至今所有哲人怀着敬意谈论的著名真诚啊！这追求真理的意志将什么样的问题抛给了我们！这是些多么怪异、糟糕、可疑的问题！这可是由来已久了——然而又似乎从未开始？要是我们终于产生怀疑，失去耐心，不胜其烦而掉头他去，要是我们从这位斯芬克斯 [3] 身上学会了自己也来发问，那么这又有什么奇怪呢？究竟 谁 在此向我们发问呢？究竟是我们身上的 什么 要“追求真理”呢？——确实，",
+      "score": 0.548
+     },
+     {
+      "book_id": "0ed8c0c49e2f",
+      "book_title": "在绝望之巅",
+      "author": "E·M·齐奥朗",
+      "chapter_idx": 44,
+      "chapter_title": "真理，怎样的字眼！",
+      "citation_label": "【《在绝望之巅》·真理，怎样的字眼！】",
+      "snippet": "通过遏制欲望而获得解放的想法，是人类的头脑想出来的最大的愚蠢行径。为什么要把生命变得狭小？为什么要为了完全无动于衷和自由的幻觉这样的小利就把它毁掉？在你亲手将生命扼杀之后，你怎么还敢谈论生命如何如何？比起冷酷而骄傲的哲学家，我更尊敬欲望受挫、在爱情中感到不幸和绝望的人。一个充满哲学家的世界，该有多么可怕的前景！应该将他们悉数消灭，这样生活才能自然而然地—盲目而非理性地继续下去。 我讨厌这些不为真理所动的人的智慧，他们不用自己的神经和血肉",
+      "score": 0.524
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 552,
+      "chapter_title": "第三章 禁欲主义理念意味着什么？",
+      "citation_label": "【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】",
+      "snippet": "第三章 禁欲主义理念意味着什么？ 智慧要求我们无忧无虑、机敏幽默、强壮有力；智慧是一个女子，她永远只爱斗士。 ——《查拉图斯特拉如是说》 一 禁欲主义的理念意味着什么呢？在艺术家看来，这种理念意味着无或者形形色色；在哲学家和学者们看来，这种理念就好像揣测和直觉到高级精神活动的最有利的条件；在女人看来，这种理念充其量意味着和蔼可亲的诱惑，漂亮肉体上的少许温柔，一只漂亮而又胖乎乎的动物的天真无邪；在生理上有残疾和不幸的人（大多数垂死的人）看",
+      "score": 0.52
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 4,
+      "chapter_title": "第二节 以悲剧性反悲观主义",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 以悲剧性反悲观主义】",
+      "snippet": "让我们接着来说叔本华的意志形而上学。德国当代学者萨弗兰斯基（Rüdiger Safranski）认为，尼采始终同意叔本华哲学的两个基本观念，即：其一，世界不是什么有理性的和精神的东西，而是冲动和幽暗的本能，生气勃勃而没有意义；其二，叔本华以否定意志为主题描写出来的一种超验认识的可能性。这种“超验”并不是宗教意义上的超验性，而是一种意志的力量，一种意志强力的摆脱，尼采先是称之为“兽性的解放”，后来则把它解释为“宁愿要无不愿不要”的意志的胜",
+      "score": 0.518
+     },
+     {
+      "book_id": "a1448e164acc",
+      "book_title": "别笑，我是正经哲学书",
+      "author": "富增章成",
+      "chapter_idx": 32,
+      "chapter_title": "“上帝已死”",
+      "citation_label": "【《别笑，我是正经哲学书》·“上帝已死”】",
+      "snippet": "尼采Friedrich Wilhelm Nietzsche 存在主义 人会把自己拥有力量的这个想法，视为“真实”。 德国 权力意志、超人1844年—1900年 《查拉图斯特拉如是说》《善恶的彼岸》 不要别扭，坦率发挥你的潜能 ● 心怀愤懑就会制造歪理？ 人有一种意志，希望自己能比他人更有存在的价值，这是一种自我提升、成长、扩充能力的根本动力，称为“权力意志”，也就是想自我实现、往上爬的欲望。 人活着虽然受到这种强烈力量的驱使，但遗憾的是",
+      "score": 0.505
+     },
+     {
+      "book_id": "74ee21ced920",
+      "book_title": "道德与立法原理导论",
+      "author": "杰里米·边沁",
+      "chapter_idx": 2,
+      "chapter_title": "第二章 与功利原理相反的原理",
+      "citation_label": "【《道德与立法原理导论》·第二章 与功利原理相反的原理】",
+      "snippet": "功利原理以外的所有其1.如果功利原理是一个在所有场合都起主宰作用的原理，那他原理--概么从刚才作过的考察可以得出-个结论：在任何场合与之不同的无论何种原理都必定错误。因此，要证明任何其他原理是错的，只需展示其貌，即展示它所作的规定在这一或那一点上与功利原理的规定有所不同：陈述之便是驳倒之。项原理可2.-一项原理可以两种方式同功利原理有别：（1）始终一贯地以什么方式成为错误的与之对立，可称为禁欲主义的原理便是如此。(2)如同可以发生的那样",
+      "score": 0.501
+     },
+     {
+      "book_id": "1f6fe151032b",
+      "book_title": "鬼谷子",
+      "author": "鬼谷子",
+      "chapter_idx": 14,
+      "chapter_title": "实意法腾蛇",
+      "citation_label": "【《鬼谷子》·实意法腾蛇】",
+      "snippet": "实意者，气之虑也。心欲安静，虑欲深远；心安静则神策生，虑深远则计谋成；神策生则志不可乱，计谋成则功不可间。意虑定则心遂安 ，心遂安则所行不错，神自得矣。得则凝。识气寄，奸邪得而倚之，诈谋得而惑之；言无由心矣。固信心术守真一而不化，待人意率之交会，听之候也。寄谋者，存亡之枢机。虑不会，则听不审矣。候之不得，寄谋失矣。则意无所信，虚而无实。故寄谋之虑，务在实意；实意必从心术始。 无为而求，安静五脏，和通六腑；精神魂魄固守不动，乃能内视反听 ",
+      "score": 0.501
+     },
+     {
+      "book_id": "05e1c5812784",
+      "book_title": "生存哲学",
+      "author": "卡尔·雅斯贝尔斯",
+      "chapter_idx": 3,
+      "chapter_title": "第二讲 真理论",
+      "citation_label": "【《生存哲学》·第二讲 真理论】",
+      "snippet": "真实性问题真理这个名词具有无比的魅力。它显然暗含着我们人生的真谛之所在。损害了真理，则一切靠损害真理而赢得的东西也就统统为之败坏。真理能引起痛苦，能使人灰心绝望。然而它，不问内容如何，单单由于是真的，也就能令人深得安慰了，因为：真理毕竞是有的。真理给予鼓舞。不管在什么地方，我只要接触了它，心里就滋生出冲动，不能自已地追求它。真理提供依靠。它是一种不可摊毁的东西，同存在（Sein）结合着的东西。然而真理这个对我们保持强大吸引力的东西，它究",
+      "score": 0.499
+     },
+     {
+      "book_id": "44a32441dabe",
+      "book_title": "人类理解论",
+      "author": "约翰·洛克",
+      "chapter_idx": 67,
+      "chapter_title": "第四卷　第十九章狂热",
+      "citation_label": "【《人类理解论》·第四卷　第十九章狂热】",
+      "snippet": "1理之爱是必要的---任何肯具探求具理的人，首先就应該使自己底心發生一种爱惜眞理的心。因为不爱眞理的人并不肯费心来追求它，而且在失掉眞理时，亦不觉得可惜。在学界中没有一个人不自命是爱眞理者；而且任何有理性的动物，我們如果以为他不爱眞理，则他一定会見怪你。虽然如此，可是我們可以正确地为具理而爱具理的人果竞是很少数的，即在那些自命为爱具理的人們方面，亦是如此的。不过一个人怎样才能知道自己眞是爱眞理的，那乃是值得研究的一件事，不过我想具正的具",
+      "score": 0.499
+     },
+     {
+      "book_id": "d0c5ade4fcbd",
+      "book_title": "叔本华哲学经典（套装共5册）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 3,
+      "chapter_title": "三 谈禁欲",
+      "citation_label": "【《叔本华哲学经典（套装共5册）》·三 谈禁欲】",
+      "snippet": "禁欲的礼赞 当个体化原理的摩耶1面纱高举在一个人的眼前时，此人就没有“人我”之别，对别人的痛苦亦如自己的痛苦一样关心，他不但会尽自己的最大力量协助别人，并且，为解救大多数人甚至可以牺牲一己。循此以进，若一个人认识最内在的真正自我，他必然愿意以一身承担生存以及全世界的痛苦。 对他而言，一切灾难痛苦并不是旁人的事，他不会眼睁睁看着他人苦恼而无动于衷，只要他间接得知，不，只要认为别人有苦恼的可能，对他的精神就会产生相同的作用。因为他已洞察个体",
+      "score": 0.498
+     },
+     {
+      "book_id": "309de54e4392",
+      "book_title": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 46,
+      "chapter_title": "第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识",
+      "citation_label": "【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】",
+      "snippet": "第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识 在这世界内，或是就是在这世界以外，除了 好的意志 之外，没有什么东西有可以无限制地被认为好的可能。智力、机警、判断力以及其他理智上的 材力 （无论它叫做什么），或是勇气、果断、坚忍，属于气质上的，无疑地从许多方面看是好的，是人喜欢有的；可是，假如运用这些优点的意志，就是所谓 品格 不是好的，那末，这些天赋材性也会变成极恶毒极害人的东西。命运的赐予也是这样：权势、财富、荣誉，就",
+      "score": 0.495
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 205,
+      "chapter_title": "88",
+      "citation_label": "【《尼采文集（合集）》·88】",
+      "snippet": " 严肃地追求真理 。——严肃认真地追求真理！人们对这话的理解是多么不同啊！同一些观点、证明和检验方式，一个思想家会感到它们本身是一种轻率，他在这个或者那个时刻被这种轻率所战胜，不免羞愧，——同一些观点，却能使一个艺术家，一个遇到这些观点、有时以这些观点为生的艺术家，产生这样一种意识，即：现在他被追求真理的至深的严肃性所掌握了，而且值得赞赏的是，他虽然身为艺术家，但同时也显示出一种追求假象之对立面的极为严肃的欲望。所以有可能，一个人恰恰以",
+      "score": 0.495
+     },
+     {
+      "book_id": "d0c5ade4fcbd",
+      "book_title": "叔本华哲学经典（套装共5册）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 6,
+      "chapter_title": "六 人生的空虚与烦恼",
+      "citation_label": "【《叔本华哲学经典（套装共5册）》·六 人生的空虚与烦恼】",
+      "snippet": "一 从最低到最高等的意志现象所显现的各阶段中，意志总是孜孜不倦地努力着，但并没有最终目标或目的，因为努力就是意志唯一的本质，不能说达到目标就算终了。所以，它永远无法获得最后的满足，沿途只有荆棘障碍，就这样永无尽期地持续下去。我们可举出最单纯的自然现象，以重力的例子来说明。重力无休无止地努力，向着一个也许抵达时重力和物质都要破灭的重力场中心突进；即使把宇宙弄成一个球体，它也不会中止。 我们再观察其他比较单纯的自然现象：固体的努力是想借溶解",
+      "score": 0.492
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 48,
+      "chapter_title": "哲学意义上的真理与谎言",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·哲学意义上的真理与谎言】",
+      "snippet": "叫我真理探寻者，我就满足了。 ——路德维希·维特根斯坦，给姐姐的信 当论及更大的哲学问题——生活的意义、道德的本性、上帝的存在和人格性，以及自然的目的论——时，无论既有的说法是什么，寻求“真理”到底是什么意思，却完全不清楚。哲学教义看起来更像是信仰的表白、对现实的看法、解释、概念雕塑、一种艺术形式，而不是关于真理本身的假设或主张。黑格尔追随柏拉图，清楚地区分了哲学之真（“真理”）与科学和日常生活之真，并捍卫前者的独特地位。 然而，两千多",
+      "score": 0.49
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 289,
+      "chapter_title": "第九卷",
+      "citation_label": "【《西方百年学术经典著作》·第九卷】",
+      "snippet": "苏：“最后就轮到僭主政治的个人了。对于这些人我们已经问过，他是如何从民主政治形成的呢？他又是如何生活，是幸福还是痛苦呢？” “是的，”他说，“最后剩下来的问题就是他了。” “但是，”我说，“在这之前还有一个问题留待回答。” 阿：“什么问题？” 苏：“我认为我们还没有充分地给欲望的性质和种类下好定义。只有回答了这个问题，我们的提问才不至于迷离不清。” “好的，”他说，“亡羊补牢，为时不晚。” “非常正确，”我说，“现在来看看我想要理解的这",
+      "score": 0.49
+     }
+    ],
+    "query": "求真意志 禁欲理想 真理",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_full": {
+    "id": "bedc9c78dfdf",
+    "title": "尼采文集（合集）",
+    "author": "弗里德里希·尼采",
+    "region": "西方",
+    "file_type": "epub",
+    "summary": "《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐的科学》与《朝霞》以格言体展开对道德、科学与宗教的批判；《偶像的黄昏》锤击西方传统哲学的偶像；《论道德的谱系》追溯道德的历史起源；《不合时宜的沉思》批判时代精神；《瓦格纳事件》与《尼采反瓦格纳》记录他与瓦格纳的决裂。合集系统呈现尼采“重估一切价值”的完整思想图景。",
+    "rank": 47.2,
+    "chapterCount": 596,
+    "toc": [
+     "查拉图斯特拉如是说（注释本）",
+     "中文版前言",
+     "前言",
+     "查拉图斯特拉之序言",
+     "查拉图斯特拉的演讲",
+     "第二部",
+     "第三部",
+     "第四部",
+     "科利版编后记",
+     "尼采手稿和笔记简写表",
+     "译后记",
+     "悲剧的诞生（注释本）",
+     "中文版前言",
+     "一种自我批评的尝试",
+     "序言：致理查德·瓦格纳",
+     "一",
+     "二",
+     "三",
+     "四",
+     "五",
+     "六",
+     "七",
+     "八",
+     "九",
+     "十",
+     "十一",
+     "十二",
+     "十三",
+     "十四",
+     "十五"
+    ]
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 552
+   },
+   "result_full": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 552,
+    "title": "第三章 禁欲主义理念意味着什么？",
+    "book_title": "尼采文集（合集）",
+    "citation_label": "【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】",
+    "text": "第三章\n禁欲主义理念意味着什么？\n智慧要求我们无忧无虑、机敏幽默、强壮有力；智慧是一个女子，她永远只爱斗士。\n——《查拉图斯特拉如是说》\n一\n禁欲主义的理念意味着什么呢？在艺术家看来，这种理念意味着无或者形形色色；在哲学家和学者们看来，这种理念就好像揣测和直觉到高级精神活动的最有利的条件；在女人看来，这种理念充其量意味着和蔼可亲的诱惑，漂亮肉体上的少许温柔，一只漂亮而又胖乎乎的动物的天真无邪；在生理上有残疾和不幸的人（大多数垂死的人）看来，这种理念意味着一种让自己觉得“大大地好于”这个世界的尝试，它还意味着释放自己的一种神圣形式和与漫长的痛苦和无聊进行斗争的主要手段；在传教士看来，禁欲主义理念是真正的僧侣信仰，是行使权力的最好工具，也是通往权力的“最高”许可证；最后，在圣徒们看来，这种理念是他们冬眠的借口，是他们对最终荣誉的追求［novissima gloriae cupido］，是他们在虚无中的（“上帝”那里）安息，而且还是他们精神错乱的形式。虽然禁欲主义的理念对人有如此之多的意义，但它主要表现了人的意志的基本事实：对空虚的恐惧［horror-vacui］。 人需要一个目标 ，因此，人宁可期盼 虚无 ，也不能 没有期盼 。理解我的意思吗？已经理解了吗？“根本没有弄懂！我的先生！”那么，让我们从头开始吧。\n二\n禁欲主义的理念意味着什么？我还是举一个例子，因为我在这里经常被问道，像艺术家理查德·瓦格纳这样一个人，为什么在其晚年会尊重贞洁呢？从某种意义上讲，瓦格纳是一贯这样做的，只是在最近才具有禁欲主义的含义。这种“含义”上的变化，这种意义上的突变，意味着什么呢？这种突变是这样一种行动，它使瓦格纳径直跳跃到自己的对立面。一个艺术家突然跳跃到自己的对立面，这究竟意味着什么呢？假如我们要简短地探讨这个问题，就会立即回想起瓦格纳一生中所经历的最美好、最强盛、最快乐、 最勇敢 的时光。那时候，瓦格纳在其内心深处反复思考路德式的婚礼。有谁知道：我们今天用优美的歌声代替婚礼曲是出于何种偶然的情况？在这优美的歌声中又有多少是原来曲子里的旋律？但是，毋庸置疑的是，在“路德式的婚礼”中，既颂扬了贞洁，同时也赞美了性欲。我认为，这样做才是正确的，这才是“瓦格纳式的”，因为在贞洁与性欲之间不存在必然的对立；一切美好的婚姻，一切真挚的爱情，都超越了这种对立。在我看来，瓦格纳或许是做了件善事，他在路德的优美和勇敢的喜剧中，让他的德国同胞们又一次记住这件使人愉悦的事实，因为过去和现在一直有许多德国人污蔑性欲。路德的最大功绩，或许就莫过于他有勇气承认他的情欲（那时人们十分委婉地把性欲称为“福音新教的自由”……）。甚至就是在贞洁与性欲确实存在对立的情况下，也需要用幸福的方式使之不是长期地成为悲剧式的对立。所有教养良好、心情愉快的凡人都是同意这种看法的，他们不同意那种把“动物与天使”的不稳定平衡一概视为反对生存（Dasein）的理由的观点，他们中的最为杰出的人物，如歌德、阿裴斯，甚至在其中看到了一种生命刺激力。正是这些“矛盾”引诱人们去生存。除此之外，这也是不言而喻的：如果有一天让不幸的猪去崇拜贞洁——确实有这样的猪——这岂不是太妙了吗！它们只会把贞洁视为自己的对立面，只会崇拜不幸的猪的对立面——啊，这将是多么可悲的咕噜声和热情！人们设想一下，理查德·瓦格纳在其晚年无法逾越那种痛苦而又无聊的对立，而且还要把它塞进乐曲里，搬上舞台去， 这是为什么？ 人们还可以再问一下，这些猪与瓦格纳、与我们有什么关系？\n三\n这里自然不应回避另外一个问题，这就是他与那个男的（啊，实际上是非常的非男性化的）“乡巴佬”到底是什么关系？那是个可怜鬼和朴实的小伙子巴西法尔，他最后被瓦格纳用叫人难以对付的手段变成天主教徒。什么，这个巴西法尔确实被视为 严肃庄重 的人了吗？人们自然可以企图猜测相反的结果，甚至可以有此期望。瓦格纳创造的巴西法尔是愉快的人，这就好像是交响乐的终曲和悲剧的尾声，悲剧家瓦格纳愿意以此用一种与他的身份完全相符合的方式，与我们、与他自己，尤其是与悲剧相告别。也就是说，瓦格纳愿意用一种非常高超和非常大胆的讽刺剧的夸张手法来显现悲剧本身，显现一切可怕的尘世庄严和尘世悲伤，显现最终被克服的、违反自然本性的禁欲主义理念中的 最粗暴形式 ，并以此向从前的一切告别。正如所说，如果是这样的，这与一个伟大的悲剧家的身份是完全相符合的。任何一个艺术家，只有当他懂得 俯视 自己艺术的时候，只有当他懂得 嘲笑 自己的时候，他才会达到自己的光辉顶峰，瓦格纳就像这样的艺术家一样。那么，瓦格纳的《巴西法尔》是不是他通过私下冷静的思考而对自己作出的嘲笑呢，是不是他对业已获取的艺术家的最终自由而谱写的凯旋曲呢？如前所说，人们希望如此；否则， 被视为严肃庄重的 巴西法尔将会是怎样一个人呢？难道人们确实有必要把他看作一个“疯狂仇视知识、精神和性欲的畸形人”吗（正像有人对我说的那样）？或者把他看作一种对性欲和精神的极度诅咒吗？再则是否把他看作一种堕落和返回到基督教病态的理念和蒙昧主义的理念的行为吗？最后，是否可以把他看作一位艺术家的自我否定和自我舍弃呢？这位艺术家始终以其高昂的意志追求与之相反的东西，即他的艺术甚至他的生命的 至高精神化和性欲化 。人们或许还记得，瓦格纳当时是如何满怀激情、亦步亦趋地追随哲学家费尔巴哈的。费尔巴哈所说的“健康的性欲”，在30年代和40年代对瓦格纳及许多德国人来说（他们称自己为“年轻的德国人”），听起来不啻为拯救人类的言论。难道瓦格纳最终 改变 了自己从费尔巴哈那里所学到的东西？至少看起来，他最终有 改变 的意图……而且这种下降还不仅仅是在舞台上吹捧巴西法尔。瓦格纳在其晚年灰暗乏味、拘谨生硬的作品中，不计其数地透露了他那隐秘的期望和沮丧困惑、彷徨不定的意愿，这就是他明确地宣讲回归、皈依、否定、基督教、中世纪，并且向其弟子们说什么“这里是虚无！你们到其他地方寻找救赎吧”！他甚至还乞求“救世主的血”……\n四\n在这种非常尴尬却又是十分典型的情况下，我坦承自己的看法：如果人们看待一位艺术家不是像看待其作品那样认真，那么，最好把艺术家与其作品分开。归根结蒂，艺术家只是其作品的先决条件、母腹和土壤，在一定情况下，是其作品生长的肥料，因此，如果人们愿意欣赏艺术品本身的话，在大多数时候就必须忘记艺术家。探究一部作品的 起源 ，是生理学家和精神分析家的事情，它从来就与审美的人们及艺术家毫无关系！在《巴西法尔》的编剧和诗人身上，存在着一种根深蒂固、令人恐惧的退回到中世纪的灵魂对立，存在着一种逃避高尚、严谨和规范之精神的敌视态度，存在着一种知识的 性反常 （如果读者同意我使用这个词的话）。这种情况正如一个孕妇不可避免地会有呕吐和古怪的脾气一样，但正如所说，为了享受得到孩子的愉悦，就必须忘记怀孕带来的痛苦。人们应当防止艺术家由于心理感应而非常容易犯的错误，这就是英国人所说的：艺术家所能展现、构造和表达出的东西，就好像是艺术家本人一样。事实却不是这样，如果艺术家确实是这样的，艺术家就根本不去展现、构造和表达这样的东西。如果荷马是阿基琉斯，歌德是浮士德，那么，荷马就不会塑造出阿基琉斯，歌德也不会塑造出浮士德。一个完善和全面的艺术家永远是与“真相”、事实相分离的。另一方面，人们也知道，艺术家有时对他自己最内在的永恒的“非真实性”和虚假性感到厌倦直至怀疑，以至于他尝试着径直闯入自己的禁区，进入真实，变成真实。结果怎么样呢？我们可以猜到……这就是 典型的艺术家不切实际的愿望 。晚年瓦格纳也沉湎于这种不切实际的愿望，他不得不为此付出昂贵的代价，并且厄运缠身（他为此失去了一些有价值的朋友）。最后，完全撇开这种不切实际的愿望不论，而是仅仅为了瓦格纳，谁不期望瓦格纳 以其他方式 与我们、与他的艺术告别呢？不是用《巴西法尔》，而是用胜利的、自信的、瓦格纳的方式——在关于他的全部意愿时，少一些迷惑不清，少一些模棱两可。此外，还要少一些叔本华，少一些虚无主义……\n五\n那么，禁欲主义的理念究竟意味着什么呢？我们直截了当地说，对艺术家来说， 它什么也不是 ！……或者说，它的含义如此纷繁杂多，因而就什么也不是！……我们首先撇开艺术家不论，因为他们在很长时期并非独立地在世界中存在和反抗世界，所以，他们的价值评判及其演变不足以得到认可！艺术家在任何时代都是某种道德、某种哲学或某种宗教的侍从，更何况他们还是其欣赏者和施舍者的随机应变的仆人，是新旧暴力的嗅觉灵敏的吹鼓手。至少他们需要保护、需要支持和需要业已建立的权威，艺术家从来就不是自立自为的，独立存在是与他们最深层的本能相悖的。譬如，一俟时机来到，理查德·瓦格纳就把哲学家叔本华当作他的代言人和保护人。假如没有哲学家叔本华提供的支持，假如没有叔本华在70年代所达到的威望，谁还能够想象出瓦格纳竟然有崇尚禁欲主义理念的勇气呢？（这里没有考虑，假如一个艺术家在 新的 德国没有获得牛奶，他是否还可能具有忠于帝国的思维方式。）我们在这里遇到了一个更加严肃的问题：假如一个 真正的 哲学家，一个像叔本华那样具有独立精神的哲学家，一个目标坚定、勇敢自信，善于独立判断，不期待他人的保护，不盲从上层指示的男子汉和骑士，他崇尚禁欲主义理念，这又意味着什么呢？现在让我们思考叔本华的值得注意、对某些人来说甚至是动人的艺术观，因为显而易见的是，正是这种艺术观才促使理查德·瓦格纳转向了叔本华（正如人们知道的那样，诗人黑尔维格劝说了瓦格纳作这一转向），并且造成了这样一种结果，在瓦格纳的早期与晚期的美学信仰方面出现了全面的理论矛盾——譬如，早期观点反映在《歌剧与戏剧》之中，而晚期观点则出现在1870年以后出版的作品之中。对瓦格纳来说，音乐在此之前是一种手段，一种媒介，一个“女人”——她有待于成长为一种目的，一个男人——也就是说，有待于发展为戏剧！瓦格纳一度认为，运用叔本华的理论和创新，就可以在美妙音乐的优先权［majorem musicae gloriam］方面做出更多的事情——也就是拥有音乐的 主权 。这与叔本华的观点如出一辙：音乐不同于其他的艺术，音乐是自在的独立艺术，它 不是 现象的反映，而是意志自我表达的语言；它直接来自“灵魂深处”，是它的最根本、最原始、最直截了当的表达。由于叔本华哲学，音乐的价值急剧上升，与此相伴的是， 这位音乐家 的地位也得到了前所未有的飞速上升，他从此成为一道神谕，一位教士，甚至还不只是一位教士，而是“自在”之物的代言人，是彼岸世界的传声筒——他成了上帝的心腹发言人，他因此不再只谈论音乐，而是谈论形而上学——他终于有一天谈论起 禁欲主义的理念 ，这又何足为怪？\n六\n尽管叔本华根本不用康德的眼光看问题，但他利用了康德对美学问题的阐述。康德尊重艺术，是通过他在美的诸属性中喜爱和突出了那些崇敬知识的属性：非个体性和普遍有效性。我们在这里暂不讨论，这种看法是否在主要方面是错误的。我唯一想指出的是，康德同其他所有哲学家一样，不是从艺术家的（创造者的）体验去观察美学问题，而是仅仅从“观察者”的角度去思考美，而且在不知不觉中把“观察者”本身也塞进了“美的”概念之中。但愿这些研究美的哲学家对这样的“观察者”有足够的了解，这是些具有伟大的 人格 和经验的哲学家，在美的领域满怀着独特和强烈的体验、欲望、惊奇和陶醉的哲学家！但是，正如我担心的那样，事实总是与此相反：我们从他们那里获得的诸定义，从一开始就与康德的那个著名的关于美的定义一样，它在基本错误的躯壳中缺少细致的自我体验。康德说：“美就是没有私利的愉悦。”没有私利！人们可以把这个定义与另一个定义比较一下，它是由真正的“观察者”和艺术家司汤达作出的，司汤达把美称为对幸福的许诺［une promesse de bonheur］。这种看法恰恰 否定 和祛除了康德所特别强调的审美状态中的东西：没有私利［le désintéressemente］。到底谁是正确的，是康德还是司汤达？我们的美学家们当然会往有利于康德一边的秤盘加砝码，甚至说什么，人们在美的诱惑下可以“ 没有私利 ”地观看裸体女人，人们当然会对此加以嘲笑。在涉及这个难堪的情况方面，艺术家们的体验倒是“更有私利的”，但皮格马利翁 (1) 无论如何不是一个“不会审美的人”。不过，我们的美学家们是在这样的阐述中表现自己的清白，假如我们会因此更好地设想他们的清白无辜，那我们或许就会尊敬他们。譬如，会把康德以乡村牧师般的纯真来教授触觉的特性看作他的荣誉！我们在这里回到叔本华哲学，他以完全不同于康德的方式接触各门艺术，但却没有摆脱康德的定义的束缚。这是怎么回事？叔本华以最为私下的方式，从最经常感受的经验来诠释“没有私利”这个词汇，这种情况够奇特的。叔本华谈论美学沉思的作用时，语气如此肯定，这在他谈论其他问题时是很罕见的。他说，美学沉思的作用恰恰是与“私利性”针锋相对的，它们就像蛇麻腺与樟脑互相排斥一样；他把这种来自“意志”的东西赞美为审美状态的巨大优越性和效用，并为此而从不懈怠。有人或许会问，叔本华的基本思想“意志与表象”，即他的只有通过“表象”才能形成意志的拯救的思想，是否并非起源于那种普遍化的性体验。（在注意叔本华哲学的所有问题时，不要忽略，它是一个二十六岁年轻人的思想；因此，它既是叔本华的一个特点，也是这个年龄的一个特点。）让我们倾听叔本华为赞颂审美状态所写的无数篇章中的最有表现力的一章（《作为意志与表象的世界》第一卷 (2) ，第231页），我们从所说的语句中听出了语调、苦难、幸福和感激。“这是一个没有痛苦的状态，伊壁鸠鲁称之为至善和神灵的境界；我们在那一时刻摆脱了意志的压力，我们欢庆意志苦役的安息日，伊克西翁 (3) 的火轮停止了转动……”多么激烈的言辞！多么痛苦不堪和百无聊赖的图像！“那一时刻”与“伊克西翁的火轮”“意志的苦役”“意志的压力”构成了多么反常的时间对照！但是，即使叔本华从他个人来说是百分之百的正确，这对于直观美的本质又有什么作用？叔本华描写了美的一个作用——平静意志，这个作用是符合常规的吗？正如所说，司汤达的天性在感性生活方面并不逊色于叔本华，但却比叔本华更幸福，他提出美的另外一个作用——“美 许诺 幸福”。对司汤达来说， 意志的激动 （私利的激动）似乎正是通过事实的美而造成的。有人或许会特别指责叔本华，说他在这里错误地把自己看作康德的信徒，而他根本不是以康德的方式理解康德关于美的定义——他对美的欣赏是出自“私利的”，甚至是出自最强烈、最个性的私利，这是一个逃脱苦难的苦难者的私利……现在让我们回到一开始就提出的问题上：“一个哲学家崇尚禁欲"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "真理意志 无神论 禁欲主义 信仰"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 248,
+      "chapter_title": "131",
+      "citation_label": "【《尼采文集（合集）》·131】",
+      "snippet": " 基督教与自杀 。——基督教把在它形成之际提出的对于自杀的要求弄成了它的权力的杠杆：它只允许两种自杀方式，用至高的尊严和至高的希望把它们掩饰起来，并用一种可怕的方式禁止所有其他的自杀方式。然而，殉教和禁欲者的慢性自戕却是被允许的。",
+      "score": 0.6
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 249,
+      "chapter_title": "132",
+      "citation_label": "【《尼采文集（合集）》·132】",
+      "snippet": " 反基督教 。——现在，反基督教不再是我们的理由，而是我们的趣味。",
+      "score": 0.591
+     },
+     {
+      "book_id": "e7c27b39a87c",
+      "book_title": "尼采与哲学",
+      "author": "吉尔·德勒兹",
+      "chapter_idx": 4,
+      "chapter_title": "五、超人：反辩证法",
+      "citation_label": "【《尼采与哲学》·五、超人：反辩证法】",
+      "snippet": "1. 虚无主义（nihilisme） 在“虚无主义”一词中，nihil 并不意指非存在，而首先是指虚无的价值。当生命被否定、被贬抑时，便具有了虚无的价值。贬抑总是预设了一种虚构：歪曲和贬抑正是通过虚构进行的，而与生命的对抗也是通过虚构进行的（《反基督教》，第15 页，梦幻与虚构的对抗）。整个生命因此变得不真实，被表征为表象，并且整体上具有了虚无的价值。另一个世界的观念，各种形式的超感性世界（上帝，本质，善，真）的观念，超越生命的诸价值的",
+      "score": 0.589
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 646,
+      "chapter_title": "论迷信",
+      "citation_label": "【《西方百年学术经典著作》·论迷信】",
+      "snippet": "对于上帝，宁肯没有想法，也不要觉得他没有价值。没有想法只是代表没有信仰，但如果说上帝的存在没有任何价值，那就是在侮辱他。迷信的存在就是对上帝的侮辱。在这一点上，普鲁塔克(1)说得非常好：“我宁愿别人说世上根本没有普鲁塔克这个人，也不愿他们说，普鲁塔克的孩子刚生下来，就被他给吃了。”就像诗人们在诗作中塑造的萨图尔努斯(2)一样。上帝受到多大的侮辱，人类就会面临多大的危险。 无神论使人理智，使人的心向哲学、法律、名望和自然的虔诚靠拢，虽然这",
+      "score": 0.587
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 645,
+      "chapter_title": "论无神论",
+      "citation_label": "【《西方百年学术经典著作》·论无神论】",
+      "snippet": "我宁愿相信《众圣传》(1)、《塔木德》(2)和《古兰经》(3)中的寓言故事，也不愿相信这个宇宙中没有任何神。上帝根本不需要创造什么奇迹去说服无神论者，因为人世间现存的一切事物都足以反驳他们。懂得一点哲学，人可能会倾向于无神论；但如果深入研究哲学，人的心灵就会慢慢向宗教靠近。因为，如果一个人只关注形成事物的一些散乱的、不重要的原因，他的心可能就会停在这些上面，不再前进；但如果他看到了这些不重要原因之间的联系，明白了它们是一个联盟，是紧紧联",
+      "score": 0.586
+     },
+     {
+      "book_id": "bbac1be0bb4b",
+      "book_title": "黑格尔作品集（套装共14册）",
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "chapter_idx": 439,
+      "chapter_title": "第二章 过渡时期",
+      "citation_label": "【《黑格尔作品集（套装共14册）》·第二章 过渡时期】",
+      "snippet": "一、 唯心论和怀疑论 一般的思维本是单纯的、普遍的自身等同者。因此它在本质上是否定的运动。由于这种运动，就形成了这种自身等同性，就扬弃了确定的东西。这种自为存在的运动，现在是思维本身的主要环节；在这时以前，它是在思维之外的。思维把自己像这样理解为在自身内的运动时，就是自我意识，起初它是形式的，是个别的自我意识。——在 怀疑论 中，思维具有着个别自我意识的形式，但是〔与古代怀疑论〕 [293] 有所不同，现在是以确信现实为基础的。〔在古代",
+      "score": 0.582
+     },
+     {
+      "book_id": "74ee21ced920",
+      "book_title": "道德与立法原理导论",
+      "author": "杰里米·边沁",
+      "chapter_idx": 2,
+      "chapter_title": "第二章 与功利原理相反的原理",
+      "citation_label": "【《道德与立法原理导论》·第二章 与功利原理相反的原理】",
+      "snippet": "功利原理以外的所有其1.如果功利原理是一个在所有场合都起主宰作用的原理，那他原理--概么从刚才作过的考察可以得出-个结论：在任何场合与之不同的无论何种原理都必定错误。因此，要证明任何其他原理是错的，只需展示其貌，即展示它所作的规定在这一或那一点上与功利原理的规定有所不同：陈述之便是驳倒之。项原理可2.-一项原理可以两种方式同功利原理有别：（1）始终一贯地以什么方式成为错误的与之对立，可称为禁欲主义的原理便是如此。(2)如同可以发生的那样",
+      "score": 0.582
+     },
+     {
+      "book_id": "4a4a200536bd",
+      "book_title": "西方哲学史（第9版）",
+      "author": "撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽",
+      "chapter_idx": 16,
+      "chapter_title": "第十二章 启蒙哲学",
+      "citation_label": "【《西方哲学史（第9版）》·第十二章 启蒙哲学】",
+      "snippet": "第十二章启蒙哲学 12.1 自然神论和无神论 英国自然神论 大不列颠自然神论之父是切尔布利的爱德华·赫伯特( Edward Herbert of Cherbury，1583－1648 )。他是个贵族，从过军，也当过外交官。在其最有名的著作《论真理》( On Truth ，1624 )中，赫伯特阐明了一个哲学体系，它以这样一种理论为基础：我们的心灵包含本能的、普遍为真的“共同观念”。这些观念有的使得我们对周围世界如此这般地进行感知，有的使",
+      "score": 0.58
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 464,
+      "chapter_title": "347",
+      "citation_label": "【《尼采文集（合集）》·347】",
+      "snippet": " 虔信者及其对信仰的需要 。——一个人在多大程度上需要一种 信仰 才能成长，一个人需要多少“坚固之物”，因为 依靠 之而不想动摇之的“坚固之物”，——此乃一个人的力量的标尺（或者讲得更清晰些，是一个人的虚弱的标尺）。在我看来，在古老的欧洲，在今天依然，大多数人是需要基督教的：所以它也总还能得到信仰。因为人就是这样：他可能千百次地驳斥某个信条，——假如他需要这个信条，那么，他也总是会一再地把它当做“真的”，——依照圣经里讲的那个著名的“力",
+      "score": 0.575
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 510,
+      "chapter_title": "第四卷",
+      "citation_label": "【《尼采文集（合集）》·第四卷】",
+      "snippet": " 良心问题。 ——“一句话（in summa）：你们到底想要什么样的革新？”——我们要使“因”不再成为“罪”，“果”不再成为“罚”。  最严厉理论的好处。—— 只要 一个人信仰最严厉的 道德理论 ，人们就会手持一面粗筛子，漏掉他的许多道德缺点。相反，带有自由精神的道德家的生活却总是被放在显微镜下仔细检查：人们认为，他生活中的每项错误都是他那不得人心理论的最好反驳。  所谓“本身”。 (1) ——从前人问，什么是可笑的东西？好像在我们之外",
+      "score": 0.569
+     },
+     {
+      "book_id": "81218d6e1646",
+      "book_title": "走出唯一真理观",
+      "author": "陈嘉映",
+      "chapter_idx": 29,
+      "chapter_title": "朱利安·巴吉尼《无神论》序",
+      "citation_label": "【《走出唯一真理观》·朱利安·巴吉尼《无神论》序】",
+      "snippet": "（朱利安·巴吉尼《无神论》，付满译，译林出版社，2018年） 作者说，他这本书的主要目的是“要为无神论的肯定性提供论证”。作者是西方人，是广义的“基督教世界”中人，在那里，过去很多很多个世纪，所有人都信仰上帝，今天，很多人不那么信了，或根本不信了，但愿意说自己是“无神论者”的，仍然不多。所以作者要提供论证，为无神论辩护。 大多数中国人不信上帝，似乎没必要为无神论做辩护。不过，作者提供的论证，涉及很多有意思的问题，例如帕斯卡尔赌注问题（帕",
+      "score": 0.567
+     },
+     {
+      "book_id": "d0c5ade4fcbd",
+      "book_title": "叔本华哲学经典（套装共5册）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 25,
+      "chapter_title": "论生命意志的肯定与否定",
+      "citation_label": "【《叔本华哲学经典（套装共5册）》·论生命意志的肯定与否定】",
+      "snippet": "一 在某种范围内，这是一个显然的先天真理，创造了世界现象的意志一定不会因为处于潜在的状态而丧失对现象的支配力。现在我们知道，如果前一种状况构成意志活动的现象，那么后一种状况便构成非意志活动的现象。从本质上看，这与佛家的涅槃相同。 生命意志的否定根本不含有消灭实体的意思在内，只表示否定意志活动；以往有意志活动的东西现在不再有意志活动了。这个作为“物自体”的意志，我们只有透过生命意志的活动才能知道它，因此意志不再表现这种活动以后就无法说明或",
+      "score": 0.564
+     },
+     {
+      "book_id": "bbac1be0bb4b",
+      "book_title": "黑格尔作品集（套装共14册）",
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "chapter_idx": 146,
+      "chapter_title": "C．思想对客观性的第三态度",
+      "citation_label": "【《黑格尔作品集（套装共14册）》·C．思想对客观性的第三态度】",
+      "snippet": "直接知识或直观知识 § 61 批判哲学认为思维是 主观的 ，并且认为思维的 终极 的、不可克服的规定是 抽象的普遍性 、形式的同一性。于是就把思维当作是与真理相反对的，因为真理不是抽象的普遍性，而是具体的普遍性。在思维的这种最高规定即理性里，范畴没有得到重视。——与此正相反对的观点便认思维只是一种 特殊的 活动，因此便宣称思维不能够认识真理。 § 62 依照这种理论，思维既然是特殊的活动，就只能以 范畴 为其整个的内容和产物。但范畴既然",
+      "score": 0.564
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 260,
+      "chapter_title": "143",
+      "citation_label": "【《尼采文集（合集）》·143】",
+      "snippet": "143 (55) 多神论的最大好处 。——个体为自己树立了他 自己的 理想，并且从中推导出自己的法则、快乐和权利——迄今为止，这都被视为人类所有迷途中最可怕的，被视为偶像崇拜本身；实际上，少数冒险一试的人总是需要对自己做一种辩护，而且这种辩护通常是这样的：“不是我！不是我！而是 一个上帝 通过我而为！”正是在创造诸神的神奇艺术和力量——多神论——中，这种欲望才能得到释放，才能变得纯净、完美、高贵：因为它原始地是一种普通而微不足道的欲望，",
+      "score": 0.563
+     },
+     {
+      "book_id": "e5a8abe31f07",
+      "book_title": "中国哲学辞典",
+      "author": "韦政通",
+      "chapter_idx": 19,
+      "chapter_title": "书尾笔画索引",
+      "citation_label": "【《中国哲学辞典》·书尾笔画索引】",
+      "snippet": "封面 书名 版权 前言 目录 一以贯之 一本 一曲之士 二程 十七世纪思想 十义 十六字传心 十伦 十翼 七去（七出） 七教 七情 卜签 八卦 人 人口论 人文 人文化成 人为万物之灵 人心 人本 人师 人伦 人极 人的形成 人性论 人定胜天 人理 人禽之辨 人道 人爵 入官 几 九惠之教 九畴 三才 三不去 三从 三世 三代与汉唐 三达德 三至 三年之丧 三纲 三表 三事 三教合一 士 大一统 大丈夫 大义灭亲 大心 大同 大学之道 ",
+      "score": 0.56
+     }
+    ],
+    "query": "真理意志 无神论 禁欲主义 信仰",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "真理意志 禁欲理想 残余 无神论"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "e5a8abe31f07",
+      "book_title": "中国哲学辞典",
+      "author": "韦政通",
+      "chapter_idx": 19,
+      "chapter_title": "书尾笔画索引",
+      "citation_label": "【《中国哲学辞典》·书尾笔画索引】",
+      "snippet": "封面 书名 版权 前言 目录 一以贯之 一本 一曲之士 二程 十七世纪思想 十义 十六字传心 十伦 十翼 七去（七出） 七教 七情 卜签 八卦 人 人口论 人文 人文化成 人为万物之灵 人心 人本 人师 人伦 人极 人的形成 人性论 人定胜天 人理 人禽之辨 人道 人爵 入官 几 九惠之教 九畴 三才 三不去 三从 三世 三代与汉唐 三达德 三至 三年之丧 三纲 三表 三事 三教合一 士 大一统 大丈夫 大义灭亲 大心 大同 大学之道 ",
+      "score": 0.54
+     },
+     {
+      "book_id": "497b0228c3a6",
+      "book_title": "哲学科学全书纲要",
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "chapter_idx": 32,
+      "chapter_title": "第一部分. 主观精神.",
+      "citation_label": "【《哲学科学全书纲要》·第一部分. 主观精神.】",
+      "snippet": "灵魂. § . 388. 精神作为自然的真理已 生成 。除了这一结果在一般的理念内具有真理的意义外，且更好地说具有第一性的东西对立于先行的东西而有的意义外，概念中的生成或过渡就具有 自由的判断 较确定的意义。已生成的精神因此具有这样的含义：自然在自己本身作为非真理性的东西扬弃自己，而精神设定自己为前提，以此也不再是作为那种尚在肉体个别性内、于 己外存在着的 普遍性，而是作为在其具体化和总体性中 单纯的 普遍性；在这种普遍性中，它是 灵魂",
+      "score": 0.532
+     },
+     {
+      "book_id": "497b0228c3a6",
+      "book_title": "哲学科学全书纲要",
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "chapter_idx": 45,
+      "chapter_title": "第一部分. 主观精神.",
+      "citation_label": "【《哲学科学全书纲要》·第一部分. 主观精神.】",
+      "snippet": "灵魂. § . 388. 精神作为自然的真理已 生成 。除了这一结果在一般的理念内具有真理的意义外，且更好地说具有第一性的东西对立于先行的东西而有的意义外，概念中的生成或过渡就具有 自由的判断 较确定的意义。已生成的精神因此具有这样的含义：自然在自己本身作为非真理性的东西扬弃自己，而精神设定自己为前提，以此也不再是作为那种尚在肉体个别性内、于 己外存在着的 普遍性，而是作为在其具体化和总体性中 单纯的 普遍性；在这种普遍性中，它是 灵魂",
+      "score": 0.525
+     },
+     {
+      "book_id": "e7c27b39a87c",
+      "book_title": "尼采与哲学",
+      "author": "吉尔·德勒兹",
+      "chapter_idx": 4,
+      "chapter_title": "五、超人：反辩证法",
+      "citation_label": "【《尼采与哲学》·五、超人：反辩证法】",
+      "snippet": "1. 虚无主义（nihilisme） 在“虚无主义”一词中，nihil 并不意指非存在，而首先是指虚无的价值。当生命被否定、被贬抑时，便具有了虚无的价值。贬抑总是预设了一种虚构：歪曲和贬抑正是通过虚构进行的，而与生命的对抗也是通过虚构进行的（《反基督教》，第15 页，梦幻与虚构的对抗）。整个生命因此变得不真实，被表征为表象，并且整体上具有了虚无的价值。另一个世界的观念，各种形式的超感性世界（上帝，本质，善，真）的观念，超越生命的诸价值的",
+      "score": 0.522
+     },
+     {
+      "book_id": "5c935000a2a7",
+      "book_title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 7,
+      "chapter_title": "第一章 哲人的偏见",
+      "citation_label": "【《善恶的彼岸》·第一章 哲人的偏见】",
+      "snippet": "1 [1] [15]那诱使我们有时不惜铤而走险的求真意志 [2] 啊，那自古至今所有哲人怀着敬意谈论的著名真诚啊！这追求真理的意志将什么样的问题抛给了我们！这是些多么怪异、糟糕、可疑的问题！这可是由来已久了——然而又似乎从未开始？要是我们终于产生怀疑，失去耐心，不胜其烦而掉头他去，要是我们从这位斯芬克斯 [3] 身上学会了自己也来发问，那么这又有什么奇怪呢？究竟 谁 在此向我们发问呢？究竟是我们身上的 什么 要“追求真理”呢？——确实，",
+      "score": 0.52
+     },
+     {
+      "book_id": "bbac1be0bb4b",
+      "book_title": "黑格尔作品集（套装共14册）",
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "chapter_idx": 439,
+      "chapter_title": "第二章 过渡时期",
+      "citation_label": "【《黑格尔作品集（套装共14册）》·第二章 过渡时期】",
+      "snippet": "一、 唯心论和怀疑论 一般的思维本是单纯的、普遍的自身等同者。因此它在本质上是否定的运动。由于这种运动，就形成了这种自身等同性，就扬弃了确定的东西。这种自为存在的运动，现在是思维本身的主要环节；在这时以前，它是在思维之外的。思维把自己像这样理解为在自身内的运动时，就是自我意识，起初它是形式的，是个别的自我意识。——在 怀疑论 中，思维具有着个别自我意识的形式，但是〔与古代怀疑论〕 [293] 有所不同，现在是以确信现实为基础的。〔在古代",
+      "score": 0.519
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 495,
+      "chapter_title": "楞伽经大乘性宗顿教四十一法门",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·楞伽经大乘性宗顿教四十一法门】",
+      "snippet": "浙水慈云沙门续法述 一诸识生灭　　二藏识境界　　三有无妄计 四顿渐净流　　五常不思议　　六建立诽谤 七空无生性　　八如来藏性　　九四大修行 十诸法因缘　　十一言说分别　十二远离四句 十三大般涅槃　十四分别缘起　十五常声依幻 十六四果差别　十七圣智一乘　十八意成身相 十九五无间业　二十诸佛体性　廿一四等密意 廿二依二密法　廿三法离有无　廿四宗趣言说 廿五虚妄分别　廿六善于语义　廿七迷执解脱 廿八智不得境　廿九勿习世论　三十涅槃差别 卅一如",
+      "score": 0.514
+     },
+     {
+      "book_id": "5c935000a2a7",
+      "book_title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 6,
+      "chapter_title": "目录",
+      "citation_label": "【《善恶的彼岸》·目录】",
+      "snippet": "第一章 哲人的偏见 第二章 自由的精神 第三章 宗教性的本质 第四章 格言与插曲 第五章 论道德的自然史 第六章 吾辈学者 第七章 吾辈美德 第八章 民族与祖国",
+      "score": 0.508
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 552,
+      "chapter_title": "第三章 禁欲主义理念意味着什么？",
+      "citation_label": "【《尼采文集（合集）》·第三章 禁欲主义理念意味着什么？】",
+      "snippet": "第三章 禁欲主义理念意味着什么？ 智慧要求我们无忧无虑、机敏幽默、强壮有力；智慧是一个女子，她永远只爱斗士。 ——《查拉图斯特拉如是说》 一 禁欲主义的理念意味着什么呢？在艺术家看来，这种理念意味着无或者形形色色；在哲学家和学者们看来，这种理念就好像揣测和直觉到高级精神活动的最有利的条件；在女人看来，这种理念充其量意味着和蔼可亲的诱惑，漂亮肉体上的少许温柔，一只漂亮而又胖乎乎的动物的天真无邪；在生理上有残疾和不幸的人（大多数垂死的人）看",
+      "score": 0.506
+     },
+     {
+      "book_id": "2733906ea3f6",
+      "book_title": "哲学家们都干了些什么",
+      "author": "林欣浩",
+      "chapter_idx": 48,
+      "chapter_title": "四十八、中国哲学",
+      "citation_label": "【《哲学家们都干了些什么》·四十八、中国哲学】",
+      "snippet": "说到主观真理，有必要提一下中国哲学。 因为我们翻开中国哲学史一看，哇咧，到处都是独断论，除了名家、墨家等少数在整个中国史上属于非主流的学派之外，大部分哲学学派都不喜欢逻辑思辨。哲学著作常常上来就说，天是什么样的，好比什么什么，人性是什么样的，好比什么什么，有时举一两个孤立的例子佐证。说完这些，就直接得出各种各样的结论了。对于习惯了反复抬杠的咱们来说，实在是太独断了。 但是当我们接受了主观真理以后发现，中国哲学这么搞也没什么问题。而且中国",
+      "score": 0.506
+     },
+     {
+      "book_id": "d1986c75d6b2",
+      "book_title": "偶像的黄昏",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 13,
+      "chapter_title": "一个不合时宜者的漫游",
+      "citation_label": "【《偶像的黄昏》·一个不合时宜者的漫游】",
+      "snippet": " 我那不可能做的事。——塞内卡 (1) ：或者德行的斗牛士。——卢梭 (2) ：或者进入污秽的原始自然 (3) 的返归自然。—— 席勒 ：或者塞金根的道德号手 (4) ——但丁 (5) ：或者在坟墓里作诗的鬣狗 (6) 。——康德：或者伪善言辞 (7) 作为理知的特性 (8) 。—— 维克多 · 雨果 (9) ：或者荒谬之海上的法鲁斯 (10) 。—— 李斯特 (11) ：或者精湛技巧的学校——追逐女人 (12) 。—— 乔治 · 桑 ",
+      "score": 0.506
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 523,
+      "chapter_title": "一个不合时宜者的漫游",
+      "citation_label": "【《尼采文集（合集）》·一个不合时宜者的漫游】",
+      "snippet": " 我那不可能做的事。——塞内卡 (1) ：或者德行的斗牛士。——卢梭 (2) ：或者进入污秽的原始自然 (3) 的返归自然。—— 席勒 ：或者塞金根的道德号手 (4) ——但丁 (5) ：或者在坟墓里作诗的鬣狗 (6) 。——康德：或者伪善言辞 (7) 作为理知的特性 (8) 。—— 维克多 · 雨果 (9) ：或者荒谬之海上的法鲁斯 (10) 。—— 李斯特 (11) ：或者精湛技巧的学校——追逐女人 (12) 。—— 乔治 · 桑 ",
+      "score": 0.506
+     },
+     {
+      "book_id": "9efee732eaff",
+      "book_title": "语词和对象",
+      "author": "威拉德·范·奥曼·蒯因",
+      "chapter_idx": 0,
+      "chapter_title": "前言",
+      "citation_label": "【《语词和对象》·前言】",
+      "snippet": "48.唯名论和实在论49.虚假的偏好。本体论的许诺 50.ENTIANONGRATA· 51.极限的神话 52.几何对象. 53.作为哲学范式的序偶 54.数、心与身 55.类向何处去？ 56.语义上溯 参考书目·. 索引 后记.... 第一章语言与真理1.从日常的事物着手面前这张熟悉的书桌，通过对我的压力的阻抗，通过光线反射于1我的眼中，而显示它的存在。所有物理的事物，不管多么遥远，都只是通过它们在我们感官表面上引起的结果而为我们所知",
+      "score": 0.506
+     },
+     {
+      "book_id": "40a5f4bf8cb4",
+      "book_title": "哲学辞典",
+      "author": "伏尔泰",
+      "chapter_idx": 7,
+      "chapter_title": "灵魂",
+      "citation_label": "【《哲学辞典》·灵魂】",
+      "snippet": "AME灵魂 第一节 灵魂是-一个含义不清的名词，它表示我们自身感觉到的已知 效果的未知本原。灵魂这个词，相当于拉丁文的anima（嘘气，生 命的本原），或希腊文的IvEvμα（音译“普纽玛”意即嘘气），相当 于其它民族拿来表达他们了解得不比我们更清楚的那些事物的名 词。 在拉丁文和由拉丁派生的语言里，灵魂这个词的意思就是活 力。所以人们说人的灵魂、动物的灵魂、植物的灵魂，为表示他们 繁殖和生活的本原。人们说这个词的时候，心里本来只不过有",
+      "score": 0.506
+     },
+     {
+      "book_id": "0ed8c0c49e2f",
+      "book_title": "在绝望之巅",
+      "author": "E·M·齐奥朗",
+      "chapter_idx": 44,
+      "chapter_title": "真理，怎样的字眼！",
+      "citation_label": "【《在绝望之巅》·真理，怎样的字眼！】",
+      "snippet": "通过遏制欲望而获得解放的想法，是人类的头脑想出来的最大的愚蠢行径。为什么要把生命变得狭小？为什么要为了完全无动于衷和自由的幻觉这样的小利就把它毁掉？在你亲手将生命扼杀之后，你怎么还敢谈论生命如何如何？比起冷酷而骄傲的哲学家，我更尊敬欲望受挫、在爱情中感到不幸和绝望的人。一个充满哲学家的世界，该有多么可怕的前景！应该将他们悉数消灭，这样生活才能自然而然地—盲目而非理性地继续下去。 我讨厌这些不为真理所动的人的智慧，他们不用自己的神经和血肉",
+      "score": 0.504
+     }
+    ],
+    "query": "真理意志 禁欲理想 残余 无神论",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 553
+   },
+   "result_full": {
+    "book_id": "bedc9c78dfdf",
+    "chapter_idx": 553,
+    "title": "译后记",
+    "book_title": "尼采文集（合集）",
+    "citation_label": "【《尼采文集（合集）》·译后记】",
+    "text": "1995年夏天，学友李永平先生约我翻译尼采的《论道德的谱系》，当时感到盛情难却，就冒冒失失地接了下来。后来由于冗事缠身，进展很慢，直到1997年底才把书译完。《论道德的谱系》是一部名著，已经有了多种语言译本。为了慎重起见，在翻译过程中，我参照了英译本。但坦率地说，英译本很糟，与原著相去甚远，不具有参照价值。此外，书中的一大段拉丁文，是由中国社科院外文所王焕生先生校对的，值此《论道德的谱系》出版之际，对他深表谢意。\n尼采是一位诗人哲学家，更是一位鞭笞社会，批判传统的英勇无畏、激情昂扬的斗士。读他的书（当然是德文原著，而不是那些各种各样的译本，因为其中一些译本实在是水分太大），时常感到一股股激情在拍打着胸口，让人兴奋不已。但是，作为一名从事欧洲近现代理性主义哲学的研究者，我更推崇理性的分析和合乎逻辑的推理。因此，当我还是研究生时，读尼采的书往往既有兴奋，也有不安，尤其是在掩卷遐思、反复推敲之后，更有一种不舒服的感觉。现在，在翻译这本书的过程中，这种感觉就常常变为一种格格不入。诚然，勇敢和激情是诗人的特性，但是在追溯历史、批判现实时，激情是不能替代冷静的思考和理性的批判的，仅仅依靠勇敢和激情不仅是不全面的，而且容易失之偏颇。就拿本书的两个核心观点来讲，否定基督教产生于“圣灵”，否定人之良心产生于“人心中的上帝之音”，固然有批判教会的积极意义，但是，把基督教的产生归结于犹太人的“怨恨精神”，把良心说成是犹太人的“残酷的本能”，毕竟是太离谱了。在这方面，还是马克思主义哲学说得对，“宗教是被压迫生灵的叹息，是无情世界的感情”（引自马克思《〈黑格尔法哲学批判〉导言》）。我们由此可以明确地说，基督教在其初期具有一种拯救民众于水火的人道精神，并且还以神的形式容纳了被压迫民众的人性。所以，基督教本身有其产生的历史必然性和存在的合理性。至于社会伦理范畴的“良心”，同样是人类社会长期发展的必然结果，是人类社会不可或缺的人的行为准则和道德规范。一个没有人类行为规则和道德规范的社会只能是人类早期的洪荒时代。现在，有些人往往只是突出尼采批判传统的积极性，并且竭力美化他的个性自由的观点，但却忽视理性分析的准确性和必要性，忽视追求真理的基本因素，这是应当引起我们重视的。\n最后，我还想说的是，翻译哲学著作如同翻译文学著作一样，除去专业和个人素养不论，译者的气质和秉性在一定程度上应当与原著的作者相一致，最起码是不矛盾的。否则，这样的工作在很大程度上是不舒服，甚至是勉为其难的。就我而言，翻译尼采的著作就是一件很不舒服的事情。所以，我的译后感只能是：一己为甚，岂有他哉！\n谢地坤"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 7
+}

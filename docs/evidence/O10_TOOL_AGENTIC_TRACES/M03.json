@@ -1,0 +1,796 @@
+{
+ "case_id": "M03",
+ "section": "M",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "在原典库里搜“存在先于本质”并读取原文。",
+ "injection": {
+  "tool": "search_books",
+  "calls": 99,
+  "result": {
+   "results": [],
+   "query": "存在先于本质",
+   "method": "lexical",
+   "degraded_reason": "embedding_unavailable"
+  }
+ },
+ "QUESTION": "在原典库里搜“存在先于本质”并读取原文。",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记研究需求：这属于原典定位与原文核验类请求，需要在库中检索\"存在先于本质\"这一表述并读取对应篇章原文确认措辞与出处。",
+  "工作笔记：首次关键词检索\"存在先于本质\"零命中，可能是检索采用词法匹配、长词组难以命中。目前尚未知库中是否有萨特著作。我打算换更基础的检索词——分头试\"萨特\"\"存在主义是一种人道主义\"，先确认库里有没有这部作品与相关章节。",
+  "工作笔记：两次 search_books 都返回零命中，且看起来命中被缓存复用、检索处于词法降级状态，仅凭这个还不足以断定库中无萨特著作——连\"库里究竟有没有萨特的书\"都还没确认。这正是尚未闭合的证据缺口，我申请一次预算延展，改用完全不同的通道（按作者列书目、按概念溯源）来核实。",
+  "工作笔记：确认了库中收录两本萨特著作——《存在主义是一种人道主义》和《存在与虚无》，两者简介都点出\"存在先于本质\"。该命题最集中的阐发在《存在主义是一种人道主义》。下一步先看该书的目录/章节结构，再读取原文核验确切措辞与上下文。",
+  "工作笔记：确认《存在主义是一种人道主义》共 8 章，正文《存在主义是一种人道主义》是其中第 5 项；《存在与虚无》的详情查询已触及预算上限。要核验\"存在先于本质\"的确切措辞与上下文，我必须读取该正文篇章原文——这是核心证据缺口，申请一次预算延展用于读取该章。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落",
+ "TOOL_SELECTED": [
+  "search_books",
+  "list_books",
+  "concept_trace",
+  "get_book_detail",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "存在先于本质"
+   },
+   {
+    "query": "萨特 存在主义"
+   },
+   {
+    "query": "存在主义是一种人道主义"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "萨特"
+   },
+   {
+    "author": "萨特"
+   }
+  ],
+  "concept_trace": [
+   {
+    "concept": "存在先于本质"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "40750581f8e8"
+   },
+   {
+    "book_id": "274c59617693"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "40750581f8e8",
+    "chapter_idx": 4
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "存在先于本质"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "萨特 存在主义"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "存在主义是一种人道主义"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "萨特"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "萨特"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': '274c59617693', 'title': '存在与虚无', 'author': '让-保罗·萨特', 'region': '西方', 'rank': 43.4, 'summary': '《存在与虚无》是萨特的存在主义哲学代表作，基于现象学方法探讨人的存在。萨特提出“存在先于本质”，认为人首先存在，然后通过自由选择定义自己。他区分了“自在的存在”和“自为的"
+  },
+  {
+   "name": "concept_trace",
+   "args": {
+    "concept": "存在先于本质"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'NO_NEW_INFORMATION_LOOP', 'message': '检索被拒: 上一次检索没有带来新信息, 且本次查询与已执行的查询高度相似（相似度口径: bigram-Jaccard ≥ 0.75）。禁止同通道改写碰运气:要么换明确不同的数据源/证据目标重新表述, 要么综合作答并如实标注证据边界。', 'similar_to': '存在先于本质'}"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "40750581f8e8"
+   },
+   "phase": "executed",
+   "result_head": "{'id': '40750581f8e8', 'title': '存在主义是一种人道主义', 'author': '让-保罗·萨特', 'region': '西方', 'file_type': 'epub', 'summary': '《存在主义是一种人道主义》是法国哲学家让-保罗·萨特于1946年发表的著名演讲，旨在回应外界对存在主义的误解和批评。萨特明确阐述了存在主义的核心命题：“存在先于本质”"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "274c59617693"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "40750581f8e8",
+    "chapter_idx": 4
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': '40750581f8e8', 'chapter_idx': 4, 'title': '存在主义是一种人道主义', 'book_title': '存在主义是一种人道主义', 'citation_label': '【《存在主义是一种人道主义》·存在主义是一种人道主义】', 'text': '本文的目的是针对几种对存在主义的责难进行辩护。\\n首先，存在主义曾被指责为鼓励人们对人"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "list_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': '274c59617693', 'title': '存在与虚无', 'author': '让-保罗·萨特', 'region': '西方', 'rank': 43.4, 'summary': '《存在与虚无》是萨特的存在主义哲学代表作，基于现象学方法探讨人的存在。萨特提出“存在先于本质”，认为人首先存在，然后通过自由选择定义自己。他区分了“自在的存在”和“自为的"
+  },
+  {
+   "name": "concept_trace",
+   "head": "{'error': 'NO_NEW_INFORMATION_LOOP', 'message': '检索被拒: 上一次检索没有带来新信息, 且本次查询与已执行的查询高度相似（相似度口径: bigram-Jaccard ≥ 0.75）。禁止同通道改写碰运气:要么换明确不同的数据源/证据目标重新表述, 要么综合作答并如实标注证据边界。', 'similar_to': '存在先于本质'}"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': '40750581f8e8', 'title': '存在主义是一种人道主义', 'author': '让-保罗·萨特', 'region': '西方', 'file_type': 'epub', 'summary': '《存在主义是一种人道主义》是法国哲学家让-保罗·萨特于1946年发表的著名演讲，旨在回应外界对存在主义的误解和批评。萨特明确阐述了存在主义的核心命题：“存在先于本质”"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': '40750581f8e8', 'chapter_idx': 4, 'title': '存在主义是一种人道主义', 'book_title': '存在主义是一种人道主义', 'citation_label': '【《存在主义是一种人道主义》·存在主义是一种人道主义】', 'text': '本文的目的是针对几种对存在主义的责难进行辩护。\\n首先，存在主义曾被指责为鼓励人们对人"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "我已取得该命题的原典原文，证据缺口闭合，下面综合作答。\n\n---\n\n## 一、检索结果：库中确有萨特著作\n\n原典库收录了萨特两部代表作，简介均点到\"存在先于本质\"：\n- 《存在主义是一种人道主义》（1946 年演讲）\n- 《存在与虚无》\n\n该命题**最集中、最明确的阐发**就在《存在主义是一种人道主义》这篇演讲正文中。以下引文均来自库内已核验的该章原文。\n\n## 二、原文关键段落\n\n命题首次出现，是萨特用来说明**基督教存在主义与无神论存在主义的唯一共同点**时：\n\n> 他们的共同点只是认为 **存在** 先于 **本质**——或者不妨说，哲学必须从主观开始。\n\n紧接着，他给出正面界定：\n\n> 我们说存在先于本质的意思指什么呢？意思就是说首先有人，人碰上自己，在世界上涌现出来——然后才给自己下定义。\n\n并把这一点称为整个学说的起点：\n\n> 人除了自己认为的那样以外，什么都不是。这就是存在主义的第一原则。\n\n最后落到伦理后果：\n\n> 如果存在真是先于本质的话，人就要对自己是怎样的人负责。\n\n以上均出自【《存在主义是一种人道主义》·存在主义是一种人道主义】。\n\n## 三、上下文里这一命题是\"针对什么\"提出来的\n\n读原文可见，这一说法不是孤立的口号，而是嵌在一段**对照论证**里：\n\n1. **先立反例（本质先于存在）**：萨特拿\"裁纸刀\"作比——匠人心里先有刀的**概念/公式**，才造出刀，故\"裁纸刀的本质……先于它的存在\"。他进而说，凡把上帝当作造物主的学说（笛卡儿、莱布尼茨），乃至 18 世纪无神论哲学（狄德罗、伏尔泰、康德），都保留了\"人的概念先于经验中的人\"这一结构。\n\n2. **再翻转为无神论存在主义的立场**：他认为无神论存在主义\"比较能自圆其说\"——因为\"如果上帝并不存在，那么至少总有一个东西先于其本质就已经存在了\"；这个东西就是**人**。原文区分了两种存在者：**物**是本质先于存在，**人**是存在先于本质。这正是萨特后来在《存在与虚无》中\"自在的存在\"与\"自为的存在\"之别的前身。\n\n3. **由命题推出\"责任\"**：命题的实践含义是——既然人先存在、后自我定义，人就无法推诿于\"人性\"或神意，必须\"把自己存在的责任完全由自己担负起来\"，且这种选择同时为全人类树立形象。\n\n## 四、一点必要的澄清\n\n- 我核验到的**逐字原文**只落在《存在主义是一种人道主义》这一篇；至于《存在与虚无》，库中虽有其条目，但我本轮**未读取其正文**，因此不以正式引用方式标注它——只能说该书简介同样点到这一命题（书目级证据，非原文级）。\n- 引文中的\"存在 先于 本质\"在原文里带有排版空格，属文本格式，非语义强调。\n- \"存在先于本质\"在萨特这里是**针对\"人的存在方式\"**说的，不能读成一种普遍形而上学断言——对物而言恰恰相反（本质先于存在）。这是原文用裁纸刀之喻亲自划下的界限。\n\n如果你愿意，我可以继续读取《存在与虚无》相应章节，把这两部作品里\"存在—本质\"关系的处理做一次文本对照。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记研究需求：这属于原典定位与原文核验类请求，需要在库中检索\"存在先于本质\"这一表述并读取对应篇章原文确认措辞与出处。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"存在先于本质\"在库中的确切出处与原文措辞（哪部著作、哪一章节，以及上下文的完整表述）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "存在先于本质"
+   },
+   "result_head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：首次关键词检索\"存在先于本质\"零命中，可能是检索采用词法匹配、长词组难以命中。目前尚未知库中是否有萨特著作。我打算换更基础的检索词——分头试\"萨特\"\"存在主义是一种人道主义\"，先确认库里有没有这部作品与相关章节。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "萨特 存在主义"
+   },
+   "result_head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "存在主义是一种人道主义"
+   },
+   "result_head": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "blocked",
+   "args": {
+    "author": "萨特"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：两次 search_books 都返回零命中，且看起来命中被缓存复用、检索处于词法降级状态，仅凭这个还不足以断定库中无萨特著作——连\"库里究竟有没有萨特的书\"都还没确认。这正是尚未闭合的证据缺口，我申请一次预算延展，改用完全不同的通道（按作者列书目、按概念溯源）来核实。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "concept_trace"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收有萨特著作（如《存在主义是一种人道主义》）以及\"存在先于本质\"命题的原文出处——目前仅试过一个检索词组且检索降级，不足以判定",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "首轮关键词零命中且检索处于词法降级（embedding_unavailable），但这属于检索通道问题，尚未排除库中确有此书或相关原文；需改换\"按作者查书目 + 概念溯源\"的独立通道核实，否则无法给出可靠的\"库中有/无\"结论",
+    "unresolved_evidence_gap": "库内是否存在萨特著作条目及\"存在先于本质\"的原文段落"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "萨特"
+   },
+   "result_head": "{'books': [{'id': '274c59617693', 'title': '存在与虚无', 'author': '让-保罗·萨特', 'region': '西方', 'rank': 43.4, 'summary': '《存在与虚无》是萨特的存在主义哲学代表作，基于现象学方法探讨人的存在。萨特提出“存在先于本质”，认为人首先存在，然后通过自由选择定义自己。他区分了“自在的存在”和“自为的"
+  },
+  {
+   "kind": "tool",
+   "name": "concept_trace",
+   "phase": "blocked",
+   "args": {
+    "concept": "存在先于本质"
+   },
+   "result_head": "{'error': 'NO_NEW_INFORMATION_LOOP', 'message': '检索被拒: 上一次检索没有带来新信息, 且本次查询与已执行的查询高度相似（相似度口径: bigram-Jaccard ≥ 0.75）。禁止同通道改写碰运气:要么换明确不同的数据源/证据目标重新表述, 要么综合作答并如实标注证据边界。', 'similar_to': '存在先于本质'}"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：确认了库中收录两本萨特著作——《存在主义是一种人道主义》和《存在与虚无》，两者简介都点出\"存在先于本质\"。该命题最集中的阐发在《存在主义是一种人道主义》。下一步先看该书的目录/章节结构，再读取原文核验确切措辞与上下文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "40750581f8e8"
+   },
+   "result_head": "{'id': '40750581f8e8', 'title': '存在主义是一种人道主义', 'author': '让-保罗·萨特', 'region': '西方', 'file_type': 'epub', 'summary': '《存在主义是一种人道主义》是法国哲学家让-保罗·萨特于1946年发表的著名演讲，旨在回应外界对存在主义的误解和批评。萨特明确阐述了存在主义的核心命题：“存在先于本质”"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "args": {
+    "book_id": "274c59617693"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：确认《存在主义是一种人道主义》共 8 章，正文《存在主义是一种人道主义》是其中第 5 项；《存在与虚无》的详情查询已触及预算上限。要核验\"存在先于本质\"的确切措辞与上下文，我必须读取该正文篇章原文——这是核心证据缺口，申请一次预算延展用于读取该章。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已通过书目层定位到目标章节（该书第5项正文），但尚未读取任何原文；读取该章是 PRIMARY 闭环的必经步骤，否则无法给出可核验的原文引用，只能凭记忆陈述——不符合引用纪律",
+    "unresolved_evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"的原句及上下文"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "40750581f8e8",
+    "chapter_idx": 4
+   },
+   "result_head": "{'book_id': '40750581f8e8', 'chapter_idx': 4, 'title': '存在主义是一种人道主义', 'book_title': '存在主义是一种人道主义', 'citation_label': '【《存在主义是一种人道主义》·存在主义是一种人道主义】', 'text': '本文的目的是针对几种对存在主义的责难进行辩护。\\n首先，存在主义曾被指责为鼓励人们对人"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"存在先于本质\"在库中的确切出处与原文措辞（哪部著作、哪一章节，以及上下文的完整表述）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收有萨特著作（如《存在主义是一种人道主义》）以及\"存在先于本质\"命题的原文出处——目前仅试过一个检索词组且检索降级，不足以判定",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "首轮关键词零命中且检索处于词法降级（embedding_unavailable），但这属于检索通道问题，尚未排除库中确有此书或相关原文；需改换\"按作者查书目 + 概念溯源\"的独立通道核实，否则无法给出可靠的\"库中有/无\"结论",
+    "unresolved_evidence_gap": "库内是否存在萨特著作条目及\"存在先于本质\"的原文段落"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已通过书目层定位到目标章节（该书第5项正文），但尚未读取任何原文；读取该章是 PRIMARY 闭环的必经步骤，否则无法给出可核验的原文引用，只能凭记忆陈述——不符合引用纪律",
+    "unresolved_evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"的原句及上下文"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "NO_NEW_INFORMATION_LOOP",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 3,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:15:30",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "\"存在先于本质\"在库中的确切出处与原文措辞（哪部著作、哪一章节，以及上下文的完整表述）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:15:36",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "库中是否收有萨特著作（如《存在主义是一种人道主义》）以及\"存在先于本质\"命题的原文出处——目前仅试过一个检索词组且检索降级，不足以判定",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 17:15:42",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:15:36",
+    "reason": "首轮关键词零命中且检索处于词法降级（embedding_unavailable），但这属于检索通道问题，尚未排除库中确有此书或相关原文；需改换\"按作者查书目 + 概念溯源\"的独立通道核实，否则无法给出可靠的\"库中有/无\"结论",
+    "unresolved_gap": "库内是否存在萨特著作条目及\"存在先于本质\"的原文段落"
+   },
+   {
+    "ts": "2026-09-13 17:15:42",
+    "reason": "已通过书目层定位到目标章节（该书第5项正文），但尚未读取任何原文；读取该章是 PRIMARY 闭环的必经步骤，否则无法给出可核验的原文引用，只能凭记忆陈述——不符合引用纪律",
+    "unresolved_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"的原句及上下文"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:15:31"
+   },
+   {
+    "tool": "concept_trace",
+    "code": "NO_NEW_INFORMATION_LOOP",
+    "ts": "2026-09-13 17:15:36"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:15:39"
+   }
+  ],
+  "blocked_codes": [
+   "NO_NEW_INFORMATION_LOOP",
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 87757,
+   "output_tokens": 3822,
+   "total_tokens": 91579
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 3182,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12063,
+     "output_tokens": 303,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 12927,
+     "output_tokens": 207,
+     "tool_chars_added": 1294
+    },
+    {
+     "round": 3,
+     "input_tokens": 13009,
+     "output_tokens": 773,
+     "tool_chars_added": 441
+    },
+    {
+     "round": 4,
+     "input_tokens": 15184,
+     "output_tokens": 525,
+     "tool_chars_added": 2771
+    },
+    {
+     "round": 5,
+     "input_tokens": 15289,
+     "output_tokens": 646,
+     "tool_chars_added": 809
+    },
+    {
+     "round": 6,
+     "input_tokens": 19285,
+     "output_tokens": 1368,
+     "tool_chars_added": 6870
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 4,
+  "verified_exact": 4,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1264,
+ "token_usage": {
+  "input_tokens": 87757,
+  "output_tokens": 3822,
+  "total_tokens": 91579
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 26.2,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"存在先于本质\"在库中的确切出处与原文措辞（哪部著作、哪一章节，以及上下文的完整表述）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: \"存在先于本质\"在库中的确切出处与原文措辞（哪部著作、哪一章节，以及上下文的完整表述））。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "存在先于本质"
+   },
+   "result_summary": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "萨特 存在主义"
+   },
+   "result_summary": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "存在主义是一种人道主义"
+   },
+   "result_summary": "{'results': [], 'query': '存在先于本质', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "萨特"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收有萨特著作（如《存在主义是一种人道主义》）以及\"存在先于本质\"命题的原文出处——目前仅试过一个检索词组且检索降级，不足以判定",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "首轮关键词零命中且检索处于词法降级（embedding_unavailable），但这属于检索通道问题，尚未排除库中确有此书或相关原文；需改换\"按作者查书目 + 概念溯源\"的独立通道核实，否则无法给出可靠的\"库中有/无\"结论",
+    "unresolved_evidence_gap": "库内是否存在萨特著作条目及\"存在先于本质\"的原文段落"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 库中是否收有萨特著作（如《存在主义是一种人道主义》）以及\"存在先于本质\"命题的原文出处——目前仅试过一个检索词组且检索降级，不足以判定）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "萨特"
+   },
+   "result_summary": "{'books': [{'id': '274c59617693', 'title': '存在与虚无', 'author': '让-保罗·萨特', 'region': '西方', 'rank': 43.4, 'summary': '《存在与虚无》是萨特的存在主义哲学代表作，基于现象学方法探讨人的存在。萨特提出“存在先于本质”，认为人首先存在，然后通过自由选择定义自己。他区分了“自在的存在”和“自为的",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "concept_trace",
+   "args": {
+    "concept": "存在先于本质"
+   },
+   "result_summary": "{'error': 'NO_NEW_INFORMATION_LOOP', 'message': '检索被拒: 上一次检索没有带来新信息, 且本次查询与已执行的查询高度相似（相似度口径: bigram-Jaccard ≥ 0.75）。禁止同通道改写碰运气:要么换明确不同的数据源/证据目标重新表述, 要么综合作答并如实标注证据边界。', 'similar_to': '存在先于本质'}",
+   "thought": "执行 concept_trace",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "40750581f8e8"
+   },
+   "result_summary": "{'id': '40750581f8e8', 'title': '存在主义是一种人道主义', 'author': '让-保罗·萨特', 'region': '西方', 'file_type': 'epub', 'summary': '《存在主义是一种人道主义》是法国哲学家让-保罗·萨特于1946年发表的著名演讲，旨在回应外界对存在主义的误解和批评。萨特明确阐述了存在主义的核心命题：“存在先于本质”",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "274c59617693"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已通过书目层定位到目标章节（该书第5项正文），但尚未读取任何原文；读取该章是 PRIMARY 闭环的必经步骤，否则无法给出可核验的原文引用，只能凭记忆陈述——不符合引用纪律",
+    "unresolved_evidence_gap": "《存在主义是一种人道主义》正文中\"存在先于本质\"的原句及上下文"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《存在主义是一种人道主义》正文中\"存在先于本质\"命题的确切原文措辞与上下文——这是回答的正确性所依赖的核心证据，尚未读取到任何该命题的原文段落）。soft 检索预算=5 次。（PRIMARY 闭环: search 命中候选后,",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "40750581f8e8",
+    "chapter_idx": 4
+   },
+   "result_summary": "{'book_id': '40750581f8e8', 'chapter_idx': 4, 'title': '存在主义是一种人道主义', 'book_title': '存在主义是一种人道主义', 'citation_label': '【《存在主义是一种人道主义》·存在主义是一种人道主义】', 'text': '本文的目的是针对几种对存在主义的责难进行辩护。\\n首先，存在主义曾被指责为鼓励人们对人",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "存在先于本质"
+   },
+   "result_full": {
+    "results": [],
+    "query": "存在先于本质",
+    "method": "lexical",
+    "degraded_reason": "embedding_unavailable"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "萨特 存在主义"
+   },
+   "result_full": {
+    "results": [],
+    "query": "存在先于本质",
+    "method": "lexical",
+    "degraded_reason": "embedding_unavailable"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "存在主义是一种人道主义"
+   },
+   "result_full": {
+    "results": [],
+    "query": "存在先于本质",
+    "method": "lexical",
+    "degraded_reason": "embedding_unavailable"
+   },
+   "injected": true
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "萨特"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "274c59617693",
+      "title": "存在与虚无",
+      "author": "让-保罗·萨特",
+      "region": "西方",
+      "rank": 43.4,
+      "summary": "《存在与虚无》是萨特的存在主义哲学代表作，基于现象学方法探讨人的存在。萨特提出“存在先于本质”，认为人首先存在，然后通过自由选择定义自己。他区分了“自在的存在”和“自为的存在”，并分析了虚无、时间性、身体和他人的关系。萨特强调人的绝对自由和责任感，认为人注定自由，必须为自己的选择负责。该书对20世纪"
+     },
+     {
+      "id": "40750581f8e8",
+      "title": "存在主义是一种人道主义",
+      "author": "让-保罗·萨特",
+      "region": "西方",
+      "rank": 43.1,
+      "summary": "《存在主义是一种人道主义》是法国哲学家让-保罗·萨特于1946年发表的著名演讲，旨在回应外界对存在主义的误解和批评。萨特明确阐述了存在主义的核心命题：“存在先于本质”，即人首先存在，然后通过自己的选择和行动来定义自己。他强调人的自由和责任感，认为人没有预设的本质，必须自己创造意义。萨特区分了“自在存"
+     }
+    ],
+    "total": 2
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "40750581f8e8"
+   },
+   "result_full": {
+    "id": "40750581f8e8",
+    "title": "存在主义是一种人道主义",
+    "author": "让-保罗·萨特",
+    "region": "西方",
+    "file_type": "epub",
+    "summary": "《存在主义是一种人道主义》是法国哲学家让-保罗·萨特于1946年发表的著名演讲，旨在回应外界对存在主义的误解和批评。萨特明确阐述了存在主义的核心命题：“存在先于本质”，即人首先存在，然后通过自己的选择和行动来定义自己。他强调人的自由和责任感，认为人没有预设的本质，必须自己创造意义。萨特区分了“自在存在”和“自为存在”，并指出人作为“自为存在”是自由的，但自由伴随着沉重的责任。他反驳了存在主义是悲观主义或主观主义的指责，认为存在主义是一种人道主义，因为它尊重人的尊严和自由，鼓励人积极介入生活。萨特还讨论了“他人即地狱”等观点，并强调个人选择对全人类的影响。这篇演讲是理解萨特哲学和存在主义运动的重要文本，对20世纪思想、文学和社会运动产生了深远影响。",
+    "rank": 43.1,
+    "chapterCount": 8,
+    "toc": [
+     "封面",
+     "版权申明",
+     "译者序一",
+     "译者序二",
+     "存在主义是一种人道主义",
+     "莱维访谈（一）",
+     "莱维访谈（二）",
+     "莱维访谈（三）"
+    ]
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "40750581f8e8",
+    "chapter_idx": 4
+   },
+   "result_full": {
+    "book_id": "40750581f8e8",
+    "chapter_idx": 4,
+    "title": "存在主义是一种人道主义",
+    "book_title": "存在主义是一种人道主义",
+    "citation_label": "【《存在主义是一种人道主义》·存在主义是一种人道主义】",
+    "text": "本文的目的是针对几种对存在主义的责难进行辩护。\n首先，存在主义曾被指责为鼓励人们对人生采取无所作为的绝望态度。因为解决的途径既然全部堵塞了，人们必然会认为任何行动都是完全无用的，而最终接受一种观望哲学。再者，由于观望是一种奢侈品，所以它只是另一种资产阶级哲学。共产党人特别指责这一点。\n我们受到的另一方面责难是，我们强调了人类处境的阴暗一面，描绘卑鄙、肮脏、下流的事情，而忽视某些具有魅力和美并属于人性光明一面的事情：例如，在天主教批评家梅昔埃小姐看来，我们就忘掉了婴儿是怎样笑的。不论从左的方面或者右的方面，我们都被指责为抹杀了人类的一致性，而孤立地看待人类。其所以如此，共产党人说，是因为我们的理论是建立在纯粹主观性上——建立在笛卡儿的“我思” 上：这就是孤立的人找到自己的时刻；在这样的处境，人是无法同存在于自我之外的他人取得一致的。这个 我 是无法通过 我思 接触到人的。\n基督教方面则责备我们否认人类事业的真实性和严肃性。因为既然我们不承认上帝立下的那些戒条和一切规定的永恒价值，那么剩下来的就只有自愿行动可言了。谁喜欢怎样做就可以怎样做，而且根据这种观点，我们将无法申斥任何人的观点或者行动。\n今天我就是准备答复这些责难；也是为了这个缘故，我把这篇短文称为“存在主义是一种人道主义”。不少人看见我在这个问题上提到人道主义也许感到诧异，但是我们将试着说明我们是怎样理解人道主义的。不管怎样，我们首先可以这样说，存在主义，根据我们对这个名词的理解，是一种使人生成为可能的学说；这种学说还肯定任何真理和任何行动既包含客观环境，又包含人的主观性在内。人家加给我们的主要罪名当然是指我们过分强调了人生的恶的一面。最近有人告诉我，说有一位太太只要在神经紧张的时刻嘴里滑出一句下流话，就为自己开脱说，“我敢说我成了个存在主义者了”。所以，看来丑恶和存在主义被视为同一回事了。这就是为什么有些人说我们是“自然主义者”的缘故，但是果真如此的话，他们这样对我们大惊小怪又为着何来，因为目前人们对所谓真正的自然主义好像并不怎样害怕或者引以为耻。有些人完全吃得下一本左拉的小说，例如《大地》，然而一读到一本存在主义小说就感到恶心。有些人把希望寄托在人类的智慧上——那是一种悲惨的智慧——但是发现我们的智慧更加悲惨。然而还有什么比“施舍先及亲友” ，或“提拔一个坏蛋，他要控诉你赔偿损失；打倒他，他反而奉承你”这类的格言更加使人丧气的呢？我们全都知道有许许多多类似这样的格言；它们全都是一个意思——就是对当权者切不可以反对；决不要反抗当权派；要安分，不要以下犯上。再不然就是这样：任何不符合某些传统的行为只是浪漫主义；或者任何没有为成功经验所证实的行为必然招致挫折，而且由于经验证明人类毫无例外地都倾向于作恶，因此一定要有严厉的法规来约束他们，否则的话，就会出现无政府主义。然而，就是这些人嘴里一直讲着这些丧气的格言，而且一听见人们谈到某些相当令人可恨的行为时，就说“人性都是一样的”——恰恰就是这些嘴里一直唠叨着现实主义的人，偏要埋怨存在主义对事物的看法太阴暗了。说实在话，他们的过分责难使我不得不怀疑，使他们恼火的很可能不是我们的悲观主义，而是我们的乐观主义。因为归根到底，我即将试图向你们阐明的这门学说，其所以令人感到恐慌——可不是吗——就是它为人类打开了选择的可能性。为了证明这一点，让我们把整个问题按照严格的哲学标准来论述一下。那么，我们谈论的这个存在主义究竟是什么呢？\n多数使用这个名词的人，要他解释存在主义是什么意思时，都会弄得糊里糊涂。因为自从存在主义变得时髦以来，人们常常欣然宣称这个音乐家或那个画家是“存在主义者”。《光明》杂志的一位专栏作家就自己署名为“存在主义者”；的确，这个名词目前被人们随便用来指许许多多事情，几乎弄得毫无意义可言了。看来，所有那些急切想在晚近最招摇的事情或者运动中插一手的人，由于缺乏诸如超现实主义之类的新奇学说，就抓着这个哲学不放了，但是从这里面他们是找不到合意的东西的。因为，说实在话，在所有的教导中，这是最不招摇，最最严肃的：它完全是为专业人员和哲学家们提出的。尽管如此，它还是很容易讲清楚。\n问题之所以变得复杂，是因为有两种存在主义。一方面是基督教的存在主义，这些人里面可以举雅斯贝斯 和加布里埃尔·马塞尔，两个人都自称是天主教徒；另一方面是存在主义的无神论者，这些人里面得包括海德格尔 以及法国的那些存在主义者和我。他们的共同点只是认为 存在 先于 本质 ——或者不妨说，哲学必须从主观开始。这话究竟是什么意思呢？\n试拿一件工艺品——例如一本书或者一把裁纸刀 ——来说，它是一个对此已有一个概念的匠人制造的；他对裁纸刀的概念，以及制造裁纸刀的此前已有的工艺（这也是概念的一部分，说到底，即一个公式）同样已心中有数。因此裁纸刀既是一件可以按照固定方式制造出来的物件，又是一个达到某一固定目的的东西，因为人们无法想象一个人会制造一把裁纸刀而不知道它派什么用场。所以我们说，裁纸刀的本质，也就是使它的制作和定义成为可能的许多公式和质地的总和，先于它的存在。这个样式的裁纸刀或者书籍就是靠这样在我眼前出现的。我们这样说是从技术角度来看世界，而且我们可以说制作先于存在。\n当我们想到上帝是造物主时，我们在大部分时间里都把他想象为一个超凡的工匠。我们考虑哲学问题时，不管是笛卡儿那样的学说，或者莱布尼茨的学说，多少总含有这样的意思，就是意志跟在理性后面，至多是随理性一同出现，所以当上帝创造时，他完全明白自己在创造什么。由于这个缘故，人的概念在上帝的脑子里就和裁纸刀的概念在工匠的脑子里相似：上帝按照一定程序和一种概念造人，完全像工匠按照定义和公式制造裁纸刀一样。所以每一个人都是藏在神圣理性中的某种概念的体现。在18世纪的无神论哲学里，上帝的观念被禁止了，但是尽管如此，本质先于存在的思想仍然没有出现；这种思想到处都碰得见，在狄德罗的著作里，在伏尔泰的著作里，甚至在康德的著作里。人具有一种人性；这种“人性”，也即人的概念，是人身上都有的，它意味着每一个人都是这个普遍概念——人的概念——的特殊例子。在康德的哲学里，这种普遍性被推向极端，以至森林中的野人、处于原始状态的人和资产阶级全都包括在同一定义里，并且具有同样的基本特征。在这里，人的本质又一次先于我们在经验中看见的人在历史上的出现。\n无神论存在主义——我也是其代表人之一——则比较能自圆其说；它宣称如果上帝并不存在，那么至少总有一个东西先于其本质就已经存在了；先要有这个东西的存在，然后才能用什么概念来说明它。这个东西就是人，或者按照海德格尔的说法，人的实在（human reality）。我们说存在先于本质的意思指什么呢？意思就是说首先有人，人碰上自己，在世界上涌现出来——然后才给自己下定义。如果人在存在主义者眼中是不能下定义的，那是因为在一开头人是什么都说不上的。他所以说得上是往后的事，那时候他就会是他认为的那种人了。所以，人性是没有的，因为没有上帝提供一个人的概念。人就是人。这不仅说他是自己认为的那样，而且也是他愿意成为的那样——是他（从无到有）从不存在到存在之后愿意成为的那样。人除了自己认为的那样以外，什么都不是。这就是存在主义的第一原则。而且这也就是人们称作它的“主观性”所在，他们用主观性这个字眼是为了责难我们。但是我们讲主观性的意思除了说人比一块石头或者一张桌子具有更大的尊严外，还能指什么呢？我们的意思是说，人首先是存在——人在谈得上别的一切之前，首先是一个把自己推向未来的东西，并且感觉到自己在这样做。人确实是一个拥有主观生命的规划，而不是一种苔藓或者一种真菌，或者一棵花椰菜。在把自己投向未来之前，什么都不存在；连理性的天堂里也没有他；人只是在企图成为什么时才取得存在。可并不是他想要成为的那样。因为我们一般理解的“想要”或者“意图”，往往是在我们使自己成为现在这样时所作的自觉决定。我可以想参加一次宴会，写一本书，或者结婚——但是碰到这种情形时，一般称为“我的意志”的，很可能体现了一个先前的而且更为自发的决定。不过，如果存在真是先于本质的话，人就要对自己是怎样的人负责。所以存在主义的第一个后果是使人人明白自己的本来面目，并且把自己存在的责任完全由自己担负起来。还有，当我们说人对自己负责时，我们并不是指他仅仅对自己的个性负责，而是对所有的人负责。“主观主义”这个词有双重意义，而我们的论敌只在其中一个意义上做文章。主观主义一方面指个人的自由，另一方面也指人越不出人的主观性。这后一层意义在存在主义哲学里是比较深奥的。当我们说人自己作选择时，我们的确指我们每一个人必须亲自作出选择；但是我们这样说也意味着，人在为自己作出选择时，也为所有的人作出选择。因为实际上，人为了把自己造成他愿意成为的那种人而可能采取的一切行动中，没有一个行动不是同时在创造一个他认为自己应当如此的人的形象。在这一形象或那一形象之间作出选择的同时，他也就肯定了所选择的形象的价值；因为我们不能选择更坏的。我们选择的总是更好的；而且对我们说来，如果不是对大家都是更好的，那还有什么是更好的呢？再者，如果存在先于本质，而且在模铸自己形象的同时我们要存在下去，那么这个形象就是对所有的人以及我们所处的整个时代都是适用的。我们的责任因此要比先前设想的重大得多，因为它牵涉到整个人类。举例说，如果我是个工人，我可以决定参加一个基督教的工会，而不参加共产党的工会。而如果我以一个会员的资格，宣称安分守己毕竟是最好的处世之道，因为人的王国不是在这个世界上，这就不仅仅是我一个人承担责任 的问题。我要人人都安分守己，因此我的行动是代表全人类承担责任。再举一个比较属于个人的例子，我决定结婚并且生儿育女；尽管这一决定只是根据我的处境、我的情感或者欲望作出的，但这一来却不仅为我自己承担责任，而且号召全人类奉行一夫一妻制。所以我这样既对自己负责，也对所有的人负责；我在创造一种我希望人人都如此的人的形象。在模铸自己时，我模铸了人。\n这就使我们能够理解诸如痛苦、听任、绝望——也许有点夸大了的——这一类名词。下面你们就会看到，这原是很简单的。首先，我们说痛苦是什么意思呢？存在主义者坦然说人是痛苦的。他的意思是这样——当一个人对一件事情承担责任时，他完全意识到不但为自己的将来作了抉择，而且通过这一行动同时成了为全人类作出抉择的立法者——在这样一个时刻，人是无法摆脱那种整个的和重大的责任感的。诚然，有许多人并不表现有这种内疚。但是我们肯定他们只是掩盖或者逃避这种痛苦。的确，许多人认为他们的所作所为仅仅牵涉到他们本人，不关别人的事。而如果你问他们：“若是人人都这样做，那怎么办？”他们将耸耸肩膀，并且回答说：“并不是人人都这样做。”但是说实话，一个人应当永远扪心自问，如果人人都照你这样去做，那将是什么情形；而且除了靠自我欺骗外，是无法逃避这种于心不安的心情的。那个说“并不是人人都这样做”从而为自己开脱的说谎者，在良心上一定很不好受，原因是他的这一说谎行为无形中就肯定了它所否定的事情的普遍价值。他的痛苦恰恰是欲盖弥彰。这种痛苦就是克尔恺郭尔 叫做的“亚伯拉罕的痛苦”。你知道这故事吗？一个天使命令亚伯拉罕牺牲他的儿子：如果现身的真正是个天使并且说，“你，亚伯拉罕，应当牺牲你的儿子”，那当然非遵守不可。但是任何人碰到这种情形都会盘算，第一，是不是真正的天使；第二，我是不是真正的亚伯拉罕。证据在哪里呢？一个为幻觉所苦的疯女人说有人打电话给她，并对她发命令。医生问她：“跟你说话的是谁？”她回答：“他说是上帝。”的确，有什么能向她证明是上帝呢？如果一个天使出现在我面前，有什么证据表明它是天使呢？再说，如果我听见声音，谁能够证明它是来自天堂，还是来自地狱，还是来自我自己的潜意识，还是某种病态引起的呢？谁能够证明这些声音确是对我说的呢？\n那么谁能够证明我有资格，根据我自己的选择，把我关于人的概念强行加给人类呢？我将永远找不到任何证据，没有任何迹象会使我相信是如此。如果有个声音向我说话，它是否天使的声音还得由我自己来决定。如果我认为某一行动是好的，只有我有资格说它是好的而不是坏的。没有什么证据表明我是亚伯拉罕：虽说如此，我仍旧时时刻刻在行动上作出示范。不管什么人，也不管碰上什么事情，总好像全人类的眼睛都落在他的行动上，并且按照这种情况约束他的行动。所以任何人都应该说：“难道我真有这样的资格吗，使我的所作所为能成为人类的表率？”如果有人不这样问，他就是掩饰自己的痛苦。显然，我们在这里谈的痛苦是不会导致无所作为的。它是一种很单纯的痛苦，是所有那些承担过责任的人全都熟悉的那种痛苦。例如，一个军事领袖负责组织进攻，并使若干士兵送掉性命；在这样做时，他是作了选择的，而且压根儿是他一人作出选择。当然，他是执行上级的命令，但是上级的命令比较笼统，要他自己来领会，而十个人或者十四个人或者二十个人的生命就系在他的领会上。在作出这项决定时，他是没法不感到痛苦的。所有的领袖都懂得这种痛苦。它阻止不了他们采取行动；相反，它是他们行动的真正条件，因为这个行动先就假定有多种可能性，而选择其中之一时，他们懂得其价值只是由于被挑选上了。所以，存在主义形容的痛苦就是这种痛苦，而且下面我们将会看到，通过对别的有关人员负有直接责任这件事，存在主义使这种痛苦变得明确了。它根本不是一幅把我们与行动隔开的屏障，而是行动本身的一个条件。\n而当我们谈到“听任”——这是海德格尔最爱用的字眼——时，我们的意思只是说上帝不存在，并且必须把上帝不存在的后果一直推衍到底。存在主义者强烈反对某种类型的世俗道德论，因为它企图花最少的气力将上帝压抑下去。在将近1880年时，法国有一批教授竭力想创立一种世俗的道德哲学；他们的话是这样说的：“上帝是一个无用而且很花钱的假设，因此我们不需要他。”可是如果我们要有道德，要一个社会和一个遵守法律的世界，那就必须认真对待某些价值；这些价值必须赋予先天的存在。如人要诚实，不打谎语，不打老婆，抚养儿女，等等，都必须认为是先天的义务；因此在这个问题上，我们还得做一点工作，使我们能够指给人看，这些价值照样是存在的；当然上帝是没有的，但是这些价值仍然写在一个理性天堂上。换一句话说——而且我相信这是我们在法国叫做过激派的中心思想——上帝虽然不存在，但是一切照旧；我们将重新发现同样的诚实准则、进步准则、人道准则，而且我们将会把上帝作为一个过时的假设处理掉，让他不声不响地死掉。存在主义者则与此相反；他认为上帝不存在是一个极端尴尬的事情，因为随着上帝的消失，一切能在理性天堂内找到价值的可能性都消失了。任何先天的价值都不再存在"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}

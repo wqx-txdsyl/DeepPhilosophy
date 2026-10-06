@@ -1,0 +1,350 @@
+{
+ "case_id": "DEV_P03",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "苏格拉底在受审时如何谈论死亡？请在库中定位《申辩》篇（苏格拉底的申辩）的相关原文段落，引用一处原话并解释其论证。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_bSIPONlsvbNf2ST1PfJP0612"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_OkYQac5S7z4h10IevzJh1168",
+   "result_head": "{'results': [{'book_id': 'b220d9690317', 'book_title': '打开：周濂的100堂西方哲学课', 'author': '周濂', 'chapter_idx': 21, 'chapter_title': '019 苏格拉底为什么勇于赴死？', 'citation_labe"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_RxV4MqHRylCf8Zixftqj0680",
+   "result_head": "{'book_id': '35279e2e439d', 'chapter_idx': 2, 'title': '苏格拉底的申辩篇', 'book_title': '柏拉图对话集', 'citation_label': '【《柏拉图对话集》·苏格拉底的申辩篇】', 'text': '苏格拉底的申辩篇\\n（伦理的）\\nSu"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_68ztS5I9geWzbF5rx6ad3063",
+   "result_head": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 392, 'chapter_title': '临终境界', 'citation_label': '【《南怀瑾经典"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_MkrRmWulRNpEBUOwGNpu6263"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_OFnvg6nrmgzEBA0KBsQd1422",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_K20pcEg6d1sojGMt6ItX2973",
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《申辩》篇判决后苏格拉底论死亡（无梦睡眠/灵魂迁徙）段落的确切原文措辞）。soft 检索预算=3 次。预算延展已获准（BUDGET_EXTENSI"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_jlrtl8WIg0ALjHftyfIY3595"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_gBNa9PLls5Kyfi8JSt3S4099",
+   "result_head": "{'book_id': '35279e2e439d', 'chapter_idx': 2, 'title': '苏格拉底的申辩篇', 'book_title': '柏拉图对话集', 'citation_label': '【《柏拉图对话集》·苏格拉底的申辩篇】', 'text': '苏格拉底的申辩篇\\n（伦理的）\\nSu"
+  },
+  {
+   "name": "list_books",
+   "phase": "executed",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_INTuq2kL2UodRc5YkDej8608",
+   "result_head": "{'books': [{'id': 'e74dc59d508e', 'title': '柏拉图哲学作品集（套装6册）', 'author': '柏拉图', 'region': '西方', 'rank': 48.8, 'summary': '柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_RLwwzwjFzPoMFpFKsvJf1296",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_00_Q1MeMNeq5px2pnf5OfOZ7310",
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《申辩》篇判决后论死亡段落的确切原文（库中节选本缺失，需查另一版本《柏拉图哲学作品集》））。soft 检索预算=5 次。预算延展已获准（BUDGE"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-10",
+   "tool_call_id": "call_00_OAr8KBH8I3ISgzBlCAZH1350",
+   "result_head": "{'id': 'e74dc59d508e', 'title': '柏拉图哲学作品集（套装6册）', 'author': '柏拉图', 'region': '西方', 'file_type': 'epub', 'summary': '柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品集收录了"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-11",
+   "tool_call_id": "call_00_VBT1zdk3t7kFNUULecQg3898",
+   "result_head": "{'book_id': 'e74dc59d508e', 'chapter_idx': 23, 'title': '译者序', 'book_title': '柏拉图哲学作品集（套装6册）', 'citation_label': '【《柏拉图哲学作品集（套装6册）》·译者序】', 'text': \"本篇是柏拉图对话录最早的"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-12",
+   "tool_call_id": "call_00_kL10BCts1Xhtpssso9OX8640"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-12",
+   "tool_call_id": "call_01_LNnIfUAsM8DBzL6kOWxr8748",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《申辩》篇中苏格拉底论述死亡的原文段落措辞与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《申辩》篇判决后苏格拉底论死亡（无梦睡眠/灵魂迁徙）段落的确切原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求引用《申辩》篇论死亡的一处原话并解释其论证；此前 get_chapter 仅返回该篇头尾窗口，判决后集中论死亡的段落（约40c以下）措辞尚未取得，无此证据无法完成引用核验。",
+    "unresolved_evidence_gap": "《申辩》篇第三次发言中关于\"死亡是两种可能之一、无梦睡眠是奇妙收获\"的原话"
+   }
+  },
+  {
+   "args": {
+    "evidence_gap": "《申辩》篇判决后论死亡段落的确切原文（库中节选本缺失，需查另一版本《柏拉图哲学作品集》）",
+    "gap_filled": false,
+    "budget_extension_reason": "库中已核验的《柏拉图对话集》本《申辩》篇为节选（止于访问手艺人），不含判决后论死亡段落；库内《柏拉图哲学作品集（套装6册）》此前从未查阅，是明确不同的数据源，可能收录完整申辩篇，这是闭合用户所要求的原话引用的最后一条可行路径。",
+    "unresolved_evidence_gap": "《申辩》篇第三次发言中关于\"死亡或是无梦睡眠、或是灵魂迁徙\"的原话措辞",
+    "research_need": "PRIMARY"
+   }
+  },
+  {
+   "args": {
+    "evidence_gap": "严群译本《申辩》篇判决后论死亡段落的确切原文措辞与所在章节",
+    "gap_filled": false,
+    "budget_extension_reason": "上一轮 get_chapter 按目录索引读取到的是\"译者序\"而非申辩篇正文，章节索引与目录错位，尚未取得论死亡的原文；改用该段落的特征表述在全库定位，是达成用户明确要求的原话引用的必要一步。",
+    "unresolved_evidence_gap": "苏格拉底关于\"死亡或是毫无知觉的无梦睡眠、或是灵魂迁往另一世界\"的原话",
+    "research_need": "PRIMARY"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1746,
+ "final_answer": "## 先说清楚证据边界（这一步不能省）\n\n我在库中做了定位尝试，结果需要如实告知：**库内所收的《申辩》篇没有包含苏格拉底集中论死亡的段落，因此我无法为你给出经原典库核验的逐字原文。**\n\n具体情况是：\n\n- 库中《柏拉图对话集》所收《苏格拉底的申辩篇》，是一个**节选本**（篇幅约四千字），内容止于苏格拉底讲述自己遍访政治家、诗人、手艺人以验证神签的阶段，**并未延伸到判决之后的最后发言**，而苏格拉底论死亡的段落恰恰在那一部分。\n- 库内另有《柏拉图哲学作品集（套装6册）》，其第二册《游叙弗伦·苏格拉底的申辩·克力同》（严群译）应当收录完整的《申辩》篇；但我几次章节定位都未能命中该篇正文（读到的是相邻的译者序等），**没有取到论死亡段落的确切措辞**。\n\n所以下面关于论证的重建，性质必须标明：**它是基于哲学史通行内容的结构性转述，不是我本次在库中核到的逐字原文**。凡涉及原文措辞处，我都会标注（记忆，未经库中核验），不当作正式引用。\n\n---\n\n## 苏格拉底论死亡：段落位置与论证大意（转述）\n\n按学界通行的斯特方页码，这段论述在《申辩》篇末尾、苏格拉底被判死刑后的最后发言中（约 40c–42a 一段；此为通行页码标注，未经本库核验）。它的核心是一个**二难论证**：\n\n**大前提（穷尽？）**：死亡必然属于以下二者之一——\n1. **化为乌有、毫无知觉**；\n2. **灵魂从此处迁往彼处**（即灵魂移居到另一个世界）。\n\n**第一条分支**：如果死亡是毫无知觉的湮灭，那它就像**一场无梦的睡眠**。而人若酣睡一夜连梦都不做，那比一生中任何一天都更美。故此，若死后只是这样，死亡便是\"奇妙的收获\"（记忆中的概括，未经库中核验）。\n\n**第二条分支**：如果死亡是灵魂的迁徙，那么那边聚集着所有已逝者，有真正主持公道的法官，有因正义而死的义人；能与他们交谈、互相考察，乃是莫大的幸福。\n\n**结论**：两条分支都导向\"死亡不是坏事\"，于是死亡无论哪种情形都不可怕。他由此解释自己为何既不怨恨判他死刑的人，也不惧怕赴死，并说\"该走了\"——**我去死，你们去活，我们哪条路更好，只有神知道**（末句为通行记忆中译，未经库中核验，此处只作转述，不作逐字引用）。\n\n---\n\n## 这个论证该怎么看（我的分析）\n\n**1. 它本质上是\"二难推理\"（dilemma）**：把死亡的可能性劈成两半，逐一说明每一半都不坏，从而得出\"死不可怕\"。逻辑力量在于两个分支**收敛于同一实践结论**——不惧死。\n\n**2. 但它没有证明这两者穷尽了所有可能**。例如灵魂死后受罚、或某种中间状态，都不在讨论之列。所以严格说，它是一个在给定二分下的论证，而非对死后状态的完备断言。\n\n**3. 真正承重的是一个信仰前提，而非经验证据**：苏格拉底反复诉诸\"**好人无论生前死后，神都不会忽视他**\"。这个信念把他整篇申辩串了起来——他相信自己是受神差遣从事哲学考察的，因此死亡对他不构成真正的威胁。也就是说，**论证的支点不在\"死亡实际是什么\"，而在\"神意不会亏待义人\"**。\n\n**4. 与\"自知无知\"呼应的认识论谦逊极其关键**。他并不宣称知道死亡是福是祸；正相反，他认为**惧怕死亡就是自以为知道了其实并不知道的事**——没有人真正知道死亡是否反而是最大的好事，人们却把它当成最大的恶来畏惧。这是全篇\"我唯一知道的就是我一无所知\"的一个实践应用：不惧死，正因为不敢假装知道死后的真相。\n\n**5. 这一立场与《斐多篇》的关系**：《斐多篇》里苏格拉底对灵魂不朽给出了更系统的形而上学论证，而《申辩》篇这里只是**实践性的、二难式的**论说——两处不能混为一谈（《斐多篇》的论证我同样未在本库核验）。\n\n---\n\n## 关于你想要的那处\"原话\"\n\n坦率讲，**我没能在库中核到这一段的原文**，因此不会替你补一个未经核验的逐字引文来充数。如果你需要精确译文，可靠的路径是查阅完整译本中《申辩》篇末尾（约 40c 之后）苏格拉底的最后发言——库内可及的候选是《柏拉图哲学作品集（套装6册）》第二册所收的严群译本。若你愿意，我可以基于你手头的具体译本文字，帮你逐句核对措辞并分析其论证细节。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "严群译本《申辩》篇判决后论死亡段落的确切原文措辞与所在章节",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:13:08",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《申辩》篇中苏格拉底论述死亡的原文段落措辞与上下文"
+   },
+   {
+    "ts": "2026-09-13 11:13:19",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《申辩》篇判决后苏格拉底论死亡（无梦睡眠/灵魂迁徙）段落的确切原文措辞",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:13:33",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《申辩》篇判决后论死亡段落的确切原文（库中节选本缺失，需查另一版本《柏拉图哲学作品集》）",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:13:55",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "严群译本《申辩》篇判决后论死亡段落的确切原文措辞与所在章节",
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:13:19",
+    "reason": "用户明确要求引用《申辩》篇论死亡的一处原话并解释其论证；此前 get_chapter 仅返回该篇头尾窗口，判决后集中论死亡的段落（约40c以下）措辞尚未取得，无此证据无法完成引用核验。",
+    "unresolved_gap": "《申辩》篇第三次发言中关于\"死亡是两种可能之一、无梦睡眠是奇妙收获\"的原话"
+   },
+   {
+    "ts": "2026-09-13 11:13:33",
+    "reason": "库中已核验的《柏拉图对话集》本《申辩》篇为节选（止于访问手艺人），不含判决后论死亡段落；库内《柏拉图哲学作品集（套装6册）》此前从未查阅，是明确不同的数据源，可能收录完整申辩篇，这是闭合用户所要求的原话引用的最后一条可行路径。",
+    "unresolved_gap": "《申辩》篇第三次发言中关于\"死亡或是无梦睡眠、或是灵魂迁徙\"的原话措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:17"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:17"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:29"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:55"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 220118,
+   "output_tokens": 10716,
+   "total_tokens": 230834
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 14,
+   "compacted_chars_saved": 23939,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11627,
+     "output_tokens": 351,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14567,
+     "output_tokens": 249,
+     "tool_chars_added": 5030
+    },
+    {
+     "round": 3,
+     "input_tokens": 14982,
+     "output_tokens": 459,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 4,
+     "input_tokens": 15437,
+     "output_tokens": 386,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 5,
+     "input_tokens": 14160,
+     "output_tokens": 388,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 6,
+     "input_tokens": 15528,
+     "output_tokens": 631,
+     "tool_chars_added": 2029
+    },
+    {
+     "round": 7,
+     "input_tokens": 19920,
+     "output_tokens": 397,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 8,
+     "input_tokens": 16779,
+     "output_tokens": 324,
+     "tool_chars_added": 793
+    },
+    {
+     "round": 9,
+     "input_tokens": 16944,
+     "output_tokens": 625,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 10,
+     "input_tokens": 18907,
+     "output_tokens": 284,
+     "tool_chars_added": 2902
+    },
+    {
+     "round": 11,
+     "input_tokens": 18484,
+     "output_tokens": 499,
+     "tool_chars_added": 778
+    },
+    {
+     "round": 12,
+     "input_tokens": 19123,
+     "output_tokens": 2973,
+     "tool_chars_added": 671
+    },
+    {
+     "round": 13,
+     "input_tokens": 23660,
+     "output_tokens": 3150,
+     "tool_chars_added": 3574
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 220118,
+  "output_tokens": 10716,
+  "total_tokens": 230834
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 74.2
+}

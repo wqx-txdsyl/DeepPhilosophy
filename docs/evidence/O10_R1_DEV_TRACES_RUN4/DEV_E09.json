@@ -1,0 +1,241 @@
+{
+ "case_id": "DEV_E09",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "和老朋友的联系只剩下互相点赞。这种「弱连接」还算友谊吗？还是说友谊需要某种最低限度的「共同在场」？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_hW2sDO6HrYh8duTdb7wP3991"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_pwXcC2JxegciBatZVbi25205",
+   "args": {
+    "query": "友谊 三种 德性 快乐 有用 共同生活",
+    "limit": 8
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 95, 'chapter_title': '41 赫拉克利特主义', 'citation_label': '【《"
+  },
+  {
+   "name": "list_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_tMMAg3B2G0dDSQPKgyfB6474"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_tpkUQ5BWlYAKyQVcCLNe0561",
+   "args": {
+    "book_id": "de8732de1469",
+    "chapter_idx": 17
+   },
+   "result_head": "{'book_id': 'de8732de1469', 'chapter_idx': 17, 'title': '13 与性无关的朋友之爱', 'book_title': '一堂终身哲学课：回答一生必然遇到的20个人生难题', 'citation_label': '【《一堂终身哲学课：回答一生必然遇到的20个人生难题》"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_2ht0bW01NNv8t2htP8hl0071",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_6PUZXr0pb0BFB4f8AJ4a5619",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第八、九卷关于友爱三分类（实用的/快乐的/德性的）以及\"共同生活\"在完满友爱中地位的原文章节措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "已确认库中存在《尼各马可伦理学[注释导读本]》却尚未读取相关章节, 若不延展则对亚里士多德友爱论只能凭记忆转述, 违反原典核验要求",
+    "unresolved_evidence_gap": "友爱三分类与\"共同生活\"构成完满友爱条件的原文措辞及上下文"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《尼各马可伦理学》第八、九卷关于友爱三分类（实用的/快乐的/德性的）以及\"共同生活\"在完满友爱中地位的原文章节措辞）。soft 检索预算=3 次。"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_FGsPZWRIwz0AJ7obnX117815",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "result_head": "{'id': 'e574c8e7f515', 'title': '尼各马可伦理学[注释导读本]', 'author': '亚里士多德', 'region': '西方', 'file_type': 'pdf', 'summary': '《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_Bfyxy71X2YU1DP3fzI7w4735",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 8
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 8, 'title': '第八卷 友爱论', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】', 'text': '第八卷友爱"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德《尼各马可伦理学》中友谊三分类（实用的/快乐的/德性的）与\"共同生活/共同在场\"在何种意义上构成完满友谊条件的原文表述与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第八、九卷关于友爱三分类（实用的/快乐的/德性的）以及\"共同生活\"在完满友爱中地位的原文章节措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "已确认库中存在《尼各马可伦理学[注释导读本]》却尚未读取相关章节, 若不延展则对亚里士多德友爱论只能凭记忆转述, 违反原典核验要求",
+    "unresolved_evidence_gap": "友爱三分类与\"共同生活\"构成完满友爱条件的原文措辞及上下文"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《尼各马可伦理学》第八、九卷关于友爱三分类（实用的/快乐的/德性的）以及\"共同生活\"在完满友爱中地位的原文章节措辞",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:18:37",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "亚里士多德《尼各马可伦理学》中友谊三分类（实用的/快乐的/德性的）与\"共同生活/共同在场\"在何种意义上构成完满友谊条件的原文表述与上下文"
+   },
+   {
+    "ts": "2026-09-13 12:18:47",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第八、九卷关于友爱三分类（实用的/快乐的/德性的）以及\"共同生活\"在完满友爱中地位的原文章节措辞",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:18:47",
+    "reason": "已确认库中存在《尼各马可伦理学[注释导读本]》却尚未读取相关章节, 若不延展则对亚里士多德友爱论只能凭记忆转述, 违反原典核验要求",
+    "unresolved_gap": "友爱三分类与\"共同生活\"构成完满友爱条件的原文措辞及上下文"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:18:45"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 140503,
+   "output_tokens": 13502,
+   "total_tokens": 154005
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 11407,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11752,
+     "output_tokens": 805,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15054,
+     "output_tokens": 678,
+     "tool_chars_added": 5165
+    },
+    {
+     "round": 3,
+     "input_tokens": 16396,
+     "output_tokens": 503,
+     "tool_chars_added": 5051
+    },
+    {
+     "round": 4,
+     "input_tokens": 14689,
+     "output_tokens": 445,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 5,
+     "input_tokens": 16033,
+     "output_tokens": 383,
+     "tool_chars_added": 1943
+    },
+    {
+     "round": 6,
+     "input_tokens": 16327,
+     "output_tokens": 667,
+     "tool_chars_added": 1347
+    },
+    {
+     "round": 7,
+     "input_tokens": 18898,
+     "output_tokens": 2985,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 8,
+     "input_tokens": 15591,
+     "output_tokens": 3036,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 9,
+     "input_tokens": 15763,
+     "output_tokens": 4000,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 140503,
+  "output_tokens": 13502,
+  "total_tokens": 154005
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 76.9
+}

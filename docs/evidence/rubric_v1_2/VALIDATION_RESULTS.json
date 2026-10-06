@@ -1,0 +1,523 @@
+{
+  "interpretation": "Synthetic control calibration only; invalid results are not repaired, rescaled or silently counted as passing.",
+  "preregistration_hashes": {
+    "RULES_CANDIDATE.json": true,
+    "TASKS.json": true,
+    "PLAN.json": true,
+    "BLIND_PACKETS.json": true,
+    "BLIND_KEY.json": true
+  },
+  "frozen_rules_match_candidate": true,
+  "checks": {
+    "critical_sensitivity": {
+      "status": "blocked",
+      "cases": {
+        "T1": true,
+        "T2": true,
+        "T3": true,
+        "T4": true,
+        "T5": true,
+        "T6": null
+      }
+    },
+    "good_and_concise": {
+      "status": "fail",
+      "cases": {
+        "T1:reference": true,
+        "T1:concise": true,
+        "T2:reference": null,
+        "T2:concise": false,
+        "T3:reference": true,
+        "T3:concise": true,
+        "T4:reference": true,
+        "T4:concise": null,
+        "T5:reference": false,
+        "T5:concise": false,
+        "T6:reference": null,
+        "T6:concise": null
+      }
+    },
+    "brevity_gap": {
+      "status": "fail",
+      "cases": {
+        "T1": false,
+        "T2": null,
+        "T3": true,
+        "T4": null,
+        "T5": false,
+        "T6": null
+      }
+    },
+    "verbosity_gain": {
+      "status": "blocked",
+      "cases": {
+        "T2": null
+      }
+    },
+    "position_fairness": {
+      "status": "fail",
+      "cases": {
+        "T5": false
+      }
+    },
+    "order_probe": {
+      "status": "pass",
+      "cases": {
+        "T3-97075": true,
+        "T3-71026": true,
+        "T3-48338": true
+      }
+    },
+    "author_label_probe": {
+      "status": "fail",
+      "cases": {
+        "same_answer": false
+      }
+    }
+  },
+  "accepted_round2": 20,
+  "invalid_round2": {
+    "T2-50761": "reason keys differ from rating keys",
+    "T4-80574": "reason keys differ from rating keys",
+    "T6-24749": "invalid ordinal rating; never rescale provider output",
+    "T6-66060": "invalid ordinal rating; never rescale provider output",
+    "T6-91391": "invalid ordinal rating; never rescale provider output"
+  },
+  "records": {
+    "T1-19345": {
+      "task": "T1",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 4,
+        "C3": 4,
+        "C4": 3,
+        "C5": 4,
+        "R1": 4,
+        "R2": 4,
+        "R3": 4
+      },
+      "exact": {
+        "C": 57.5,
+        "R": 40.0
+      },
+      "display": {
+        "C": 58,
+        "R": 40
+      },
+      "verdict": "pass"
+    },
+    "T1-25789": {
+      "task": "T1",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 3,
+        "C3": 3,
+        "C4": 2,
+        "C5": 4,
+        "R1": 4,
+        "R2": 3,
+        "R3": 4
+      },
+      "exact": {
+        "C": 46.25,
+        "R": 36.25
+      },
+      "display": {
+        "C": 46,
+        "R": 36
+      },
+      "verdict": "pass"
+    },
+    "T1-51049": {
+      "task": "T1",
+      "family": "R",
+      "ratings": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 1,
+        "C4": 1,
+        "C5": 2,
+        "R1": 1,
+        "R2": 1,
+        "R3": 2
+      },
+      "exact": {
+        "C": 22.5,
+        "R": 12.5
+      },
+      "display": {
+        "C": 23,
+        "R": 13
+      },
+      "verdict": "fail"
+    },
+    "T2-24001": {
+      "task": "T2",
+      "family": "R",
+      "ratings": {
+        "C1": 3,
+        "C2": 3,
+        "C3": 3,
+        "C4": 2,
+        "C5": 3,
+        "R1": 3,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 42.5,
+        "R": 30.0
+      },
+      "display": {
+        "C": 43,
+        "R": 30
+      },
+      "verdict": "fail"
+    },
+    "T2-57363": {
+      "task": "T2",
+      "family": "R",
+      "ratings": {
+        "C1": 3,
+        "C2": 3,
+        "C3": 3,
+        "C4": 2,
+        "C5": 2,
+        "R1": 3,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 41.25,
+        "R": 30.0
+      },
+      "display": {
+        "C": 41,
+        "R": 30
+      },
+      "verdict": "fail"
+    },
+    "T2-99340": {
+      "task": "T2",
+      "family": "R",
+      "ratings": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 1,
+        "C4": 1,
+        "C5": 2,
+        "R1": 2,
+        "R2": 2,
+        "R3": 2
+      },
+      "exact": {
+        "C": 22.5,
+        "R": 20.0
+      },
+      "display": {
+        "C": 23,
+        "R": 20
+      },
+      "verdict": "fail"
+    },
+    "T3-48338": {
+      "task": "T3",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 4,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4,
+        "R1": 4,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 52.5,
+        "R": 33.75
+      },
+      "display": {
+        "C": 53,
+        "R": 34
+      },
+      "verdict": "pass"
+    },
+    "T3-71026": {
+      "task": "T3",
+      "family": "R",
+      "ratings": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 2,
+        "C4": 1,
+        "C5": 2,
+        "R1": 2,
+        "R2": 2,
+        "R3": 2
+      },
+      "exact": {
+        "C": 27.5,
+        "R": 20.0
+      },
+      "display": {
+        "C": 28,
+        "R": 20
+      },
+      "verdict": "fail"
+    },
+    "T3-97075": {
+      "task": "T3",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 4,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4,
+        "R1": 4,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 52.5,
+        "R": 33.75
+      },
+      "display": {
+        "C": 53,
+        "R": 34
+      },
+      "verdict": "pass"
+    },
+    "T4-27472": {
+      "task": "T4",
+      "family": "R",
+      "ratings": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 0,
+        "C4": 0,
+        "C5": 1,
+        "R1": 1,
+        "R2": 1,
+        "R3": 1
+      },
+      "exact": {
+        "C": 7.5,
+        "R": 10.0
+      },
+      "display": {
+        "C": 8,
+        "R": 10
+      },
+      "verdict": "fail"
+    },
+    "T4-56037": {
+      "task": "T4",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 3,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4,
+        "R1": 3,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 48.75,
+        "R": 30.0
+      },
+      "display": {
+        "C": 49,
+        "R": 30
+      },
+      "verdict": "pass"
+    },
+    "T5-19183": {
+      "task": "T5",
+      "family": "C",
+      "ratings": {
+        "C1": 3,
+        "C2": 2,
+        "C3": 2,
+        "C4": 2,
+        "C5": 3
+      },
+      "exact": {
+        "C": 33.75
+      },
+      "display": {
+        "C": 34
+      },
+      "verdict": "fail"
+    },
+    "T5-28673": {
+      "task": "T5",
+      "family": "C",
+      "ratings": {
+        "C1": 3,
+        "C2": 3,
+        "C3": 3,
+        "C4": 2,
+        "C5": 3
+      },
+      "exact": {
+        "C": 42.5
+      },
+      "display": {
+        "C": 43
+      },
+      "verdict": "fail"
+    },
+    "T5-76125": {
+      "task": "T5",
+      "family": "C",
+      "ratings": {
+        "C1": 4,
+        "C2": 3,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4
+      },
+      "exact": {
+        "C": 48.75
+      },
+      "display": {
+        "C": 49
+      },
+      "verdict": "pass"
+    },
+    "T5-78253": {
+      "task": "T5",
+      "family": "C",
+      "ratings": {
+        "C1": 1,
+        "C2": 1,
+        "C3": 1,
+        "C4": 1,
+        "C5": 2
+      },
+      "exact": {
+        "C": 16.25
+      },
+      "display": {
+        "C": 16
+      },
+      "verdict": "fail"
+    },
+    "author-ai": {
+      "task": "T5",
+      "family": "C",
+      "ratings": {
+        "C1": 4,
+        "C2": 3,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4
+      },
+      "exact": {
+        "C": 48.75
+      },
+      "display": {
+        "C": 49
+      },
+      "verdict": "pass"
+    },
+    "author-human": {
+      "task": "T5",
+      "family": "C",
+      "ratings": {
+        "C1": 3,
+        "C2": 3,
+        "C3": 3,
+        "C4": 2,
+        "C5": 3
+      },
+      "exact": {
+        "C": 42.5
+      },
+      "display": {
+        "C": 43
+      },
+      "verdict": "fail"
+    },
+    "retest-T3-48338": {
+      "task": "T3",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 4,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4,
+        "R1": 4,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 52.5,
+        "R": 33.75
+      },
+      "display": {
+        "C": 53,
+        "R": 34
+      },
+      "verdict": "pass"
+    },
+    "retest-T3-71026": {
+      "task": "T3",
+      "family": "R",
+      "ratings": {
+        "C1": 2,
+        "C2": 2,
+        "C3": 2,
+        "C4": 1,
+        "C5": 2,
+        "R1": 2,
+        "R2": 2,
+        "R3": 2
+      },
+      "exact": {
+        "C": 27.5,
+        "R": 20.0
+      },
+      "display": {
+        "C": 28,
+        "R": 20
+      },
+      "verdict": "fail"
+    },
+    "retest-T3-97075": {
+      "task": "T3",
+      "family": "R",
+      "ratings": {
+        "C1": 4,
+        "C2": 4,
+        "C3": 3,
+        "C4": 3,
+        "C5": 4,
+        "R1": 4,
+        "R2": 3,
+        "R3": 3
+      },
+      "exact": {
+        "C": 52.5,
+        "R": 33.75
+      },
+      "display": {
+        "C": 53,
+        "R": 34
+      },
+      "verdict": "pass"
+    }
+  },
+  "usage": {
+    "requests_with_response": 34,
+    "total_tokens": 91631
+  },
+  "automated_evaluator_accepted": false
+}

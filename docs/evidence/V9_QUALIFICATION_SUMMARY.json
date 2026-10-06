@@ -1,0 +1,122 @@
+{
+ "V9_QUALIFICATION_SUMMARY": true,
+ "run": "V9_QUAL",
+ "PRODUCTION_MODEL": "deepseek-v4-flash",
+ "PRODUCTION_PATH": true,
+ "QUALIFICATION_BASE": "232783e67f7c9ea37ad9ff0acfafc8c9cba54a11",
+ "QUALIFICATION_HEAD": "967fde3e6831cfbb6a91849b99328d35cead9cd5",
+ "MANIFEST_SHA256": "9f95ae4ca4ce42e4f78421856f84828ffa8a765b0ff2e54d7573004db03981b7",
+ "FRESH_CASES": true,
+ "PREVIOUSLY_CONSUMED_CASES": 0,
+ "CASE_COUNT": 14,
+ "canonical_summary_fed_to_checker": {
+  "run": "V9_QUAL",
+  "model": "deepseek-v4-flash",
+  "CALIBRATION_COMPLETED": 14,
+  "CALIBRATION_PUBLISHED": 14,
+  "CALIBRATION_REPAIR_TRIGGERED": 9,
+  "CALIBRATION_REPAIR_CONVERGED": 9,
+  "CALIBRATION_REPAIR_CONVERGENCE": 1.0,
+  "TERMINAL_PENDING": 0,
+  "VALIDATOR_EMPTY_FINAL": 0,
+  "TERMINAL_CANDIDATE_EMPTY": 0,
+  "PUBLIC_INVALID_CITATIONS": 0,
+  "UNVERIFIED_PUBLIC_EXACT_QUOTES": 0,
+  "PUBLIC_ACCESS_OVERCLAIMS_MEASURED": false,
+  "ACCESS_OVERCLAIM_GATE": "DEFERRED_TO_CANONICAL_JUDGE",
+  "LOCAL_PATCH_ANCHOR_RESOLUTION_RATE": 1.0,
+  "PROMPT_ISSUE_COVERAGE": 1.0,
+  "LINKED_EVIDENCE_STARVATION": 0,
+  "UNKNOWN_SLICE_ID": 0,
+  "UNINTENTIONAL_QUOTE_WRAPPER_LOSS": 0,
+  "NON_TARGET_TEXT_CHANGED_CHARS": 0,
+  "INTENTIONAL_QUOTE_TO_PARAPHRASE": 9,
+  "PARAPHRASE_INTRODUCED_QUOTE_ISSUES": 1,
+  "SCHOLARLY_SEARCH_CASES": 13,
+  "SCHOLARLY_SOURCE_FETCH_CASES": 1,
+  "SCHOLARLY_RECORD_COUNT": 605,
+  "SCHOLARLY_FETCH_RESULT_COUNT": 3,
+  "SCHOLARLY_CONTENT_EVIDENCE_COUNT": 1,
+  "FINAL_PUBLICATION_RATE": 1.0,
+  "STITCHED_PUBLIC_QUOTES": 0,
+  "REPAIR_CREATES_NEW_FATAL_ERROR": 1,
+  "TOOL_LOOP_ABORTS": 0,
+  "candidate": "deepseek-v4-flash",
+  "judged": 8,
+  "JUDGE_CASES_EXPECTED": 14,
+  "JUDGE_CASES_VALID": 8,
+  "JUDGE_CASES_MISSING": 6,
+  "EVALUATION_INVALID": true,
+  "REQUIRED_DIMENSION_MISSING_SCORE": 6,
+  "REQUIRED_DIMENSION_MEDIAN_LT_2": 3,
+  "FATAL_FLAG_COUNTS_BY_TYPE": {
+   "FABRICATED_BIBLIOGRAPHY": 0,
+   "FABRICATED_SCHOLAR_ATTRIBUTION": 0,
+   "PRIMARY_TEXT_MISREPRESENTATION": 0,
+   "MAJOR_ANACHRONISM": 0,
+   "FALSE_EXACT_QUOTE": 0,
+   "LITERATURE_ACCESS_OVERCLAIM": 0
+  },
+  "missing_required": [
+   {
+    "case_id": "V9-09",
+    "dimension": "ALL_JUDGE_VOTES_INVALID"
+   },
+   {
+    "case_id": "V9-10",
+    "dimension": "ALL_JUDGE_VOTES_INVALID"
+   },
+   {
+    "case_id": "V9-11",
+    "dimension": "ALL_JUDGE_VOTES_INVALID"
+   },
+   {
+    "case_id": "V9-12",
+    "dimension": "ALL_JUDGE_VOTES_INVALID"
+   },
+   {
+    "case_id": "V9-13",
+    "dimension": "ALL_JUDGE_VOTES_INVALID"
+   },
+   {
+    "case_id": "V9-14",
+    "dimension": "ALL_JUDGE_VOTES_INVALID"
+   }
+  ],
+  "required_dims": {
+   "argument_reconstruction": 3.429,
+   "historical_discipline": 2.875,
+   "literature_orientation": 1.333,
+   "interpretive_plurality": 2.333,
+   "textual_grounding": 0.0
+  },
+  "applicable_dims": {
+   "textual_grounding": 3.286,
+   "argument_reconstruction": 3.375,
+   "interpretive_plurality": 2.4,
+   "historical_discipline": 2.875,
+   "literature_orientation": 2.2
+  },
+  "dims": {
+   "textual_grounding": 3.286,
+   "argument_reconstruction": 3.375,
+   "interpretive_plurality": 2.4,
+   "historical_discipline": 2.875,
+   "literature_orientation": 2.2
+  },
+  "applicable_mean": 2.909,
+  "fatal_flags": []
+ },
+ "EVALUATION_INVALID_NOTE": "judge 六例（V9-09~14）全部 vote_unparseable（各 3 票, 共 18 票连续解析失败——基础设施级签名）→ EVALUATION_INVALID=true, 学术分数不可用作有效测量; 失败证据如实保留交 Reviewer 裁定",
+ "v8f2_regression_telemetry": {
+  "PLAN_ONLY_TERMINAL_BLOCKED": 0,
+  "PLAN_ONLY_EXHAUSTION_FAIL_CLOSED": 0,
+  "REPAIR_NO_OP_COUNT": 0,
+  "REPAIR_NO_OP_ESCALATED": 0,
+  "SCHOLARLY_QUERY_REFORMULATION_COUNT": 8,
+  "SCHOLARLY_PROVIDER_FAILOVER_COUNT": 0,
+  "note": "reformulation 计数经 scholarly_cache query 主题归因（18 次 V9 主题检索中 8 次触发, 方法与逐案明细入 evidence）; provider_failover=0（scholarly_trace.provider_errors=0/86, V9 期间 provider 健康）"
+ },
+ "FULL_TEST_SHA": "967fde3e6831cfbb6a91849b99328d35cead9cd5",
+ "FULL_TEST_RESULT": "889 passed / 0 failed (cd backend && ../.venv/bin/python -m pytest tests/ -q @ QUALIFICATION_HEAD)"
+}

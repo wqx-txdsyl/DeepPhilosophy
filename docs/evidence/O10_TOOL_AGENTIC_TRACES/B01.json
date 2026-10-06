@@ -1,0 +1,454 @@
+{
+ "case_id": "B01",
+ "section": "B",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "请找到《论语》中“克己复礼为仁”的原文和上下文。",
+ "injection": null,
+ "QUESTION": "请找到《论语》中“克己复礼为仁”的原文和上下文。",
+ "PUBLIC_WORK_NOTE": [
+  "工作笔记：用户要的是《论语》\"克己复礼为仁\"的原文与上下文，这属于精确引文/出处核验，回答正确性依赖原典文本，需读取对应篇章确认措辞与语境。我印象中此语出自《颜渊》篇（答颜渊问仁），但必须核验而不能凭记忆。下一步先在原典库检索定位，再读取该章原文。",
+  "工作笔记：检索已命中《论语》\"颜渊篇\"（book_id d9272a80942a，chapter_idx 13），片段显示这正是颜渊问仁的完整问答。但检索片段只是线索，按闭环要求我需读取该章原文核对完整措辞与上下文。下一步读取该章正文。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答）",
+ "TOOL_SELECTED": [
+  "search_books",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "克己复礼为仁"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 13
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "克己复礼为仁"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 674, 'chapter_title': '颜渊第十二', 'citation_label': '【《南怀瑾经典合集（共24册）》·颜渊第十二】', 'snippet': '天人合一 下论《"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 13
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 13, 'title': '颜渊篇', 'book_title': '论语', 'citation_label': '【《论语》·颜渊篇】', 'text': '颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 674, 'chapter_title': '颜渊第十二', 'citation_label': '【《南怀瑾经典合集（共24册）》·颜渊第十二】', 'snippet': '天人合一 下论《"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'd9272a80942a', 'chapter_idx': 13, 'title': '颜渊篇', 'book_title': '论语', 'citation_label': '【《论语》·颜渊篇】', 'text': '颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "已核验原文。此语出自《论语·颜渊篇》，问者是颜渊，且不是孤立一句，而是一组完整问答。以下引文均据《论语·颜渊篇》原文。\n\n**原文与上下文**\n\n《论语·颜渊篇》记载颜渊向孔子问仁，孔子答以约束自身、使言行合于礼便是仁，并说一旦做到这一点，天下都会称许其仁，而行仁的关键在于自己而非他人；颜渊追问具体的条目，孔子告诉他凡是看、听、说、动都要合于礼，颜渊遂表示自己虽不聪敏，也愿照此践行。\n\n**几点需要辨析的上下文脉络**\n\n1. **问答结构是三段式**：孔子先给定义（克己复礼为仁）→ 再申明其效力与根据（一日克己复礼，天下归仁；为仁由己，而由人乎哉）→ 最后落到具体条目（非礼勿视、听、言、动，即所谓\"四勿\"）。颜渊\"请问其目\"这一问，正是从原则追问到操作，是理解整章的关键。\n\n2. **\"为仁由己，而由人乎哉\"点出了\"仁\"的主体性**：仁不是外在规范强加的结果，其根据被安放在自己身上。（这是我的解读）这与下文的\"克己\"—\"由己\"存在一种张力：一方面要克除自己（克己），一方面又说为仁由己——通常的读法是，\"克己\"所克的是私欲之己，\"由己\"所由的是主体决断之己，二者指向同一自我工夫的不同面。\n\n3. **同一篇中另有几组\"问仁\"**，可与本章对照，看出孔子对\"仁\"的回答因材施教、随人而异：\n   - 仲弓问仁，孔子答\"出门如见大宾，使民如承大祭。己所不欲，勿施于人\"（【《论语》·颜渊篇】）；\n   - 司马牛问仁，孔子答\"仁者，其言也讱\"（同上）；\n   - 樊迟问仁，孔子答\"爱人\"（同上）。\n\n   可见\"克己复礼\"并不是孔子给\"仁\"的唯一表述，而是针对颜渊这一特定学生、特定层面的回答。\n\n4. **一个文本/解释上的注意点**：\"克己复礼\"一语，后世（尤其宋儒）常以\"克去己私、复归天理\"来解，把\"克己\"与\"复礼\"讲成去私存理的心性工夫。这属于**后世的解释传统**，可看作对文本的发挥；就《颜渊篇》这段文本本身而言，孔子紧接着给出的是\"非礼勿视、听、言、动\"这样一组行为层面的条目，\"礼\"是明确的行为规范坐标。（此为解释层次的说明，非孔子自述其学说如此。）\n\n**小结**：原句为\"克己复礼为仁\"，出《论语·颜渊篇》首章，问者为颜渊，全章由\"克己复礼—天下归仁—为仁由己\"的原则陈述，转入\"四勿\"的实践条目，是《论语》中论\"仁\"最集中的段落之一。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "工作笔记：用户要的是《论语》\"克己复礼为仁\"的原文与上下文，这属于精确引文/出处核验，回答正确性依赖原典文本，需读取对应篇章确认措辞与语境。我印象中此语出自《颜渊》篇（答颜渊问仁），但必须核验而不能凭记忆。下一步先在原典库检索定位，再读取该章原文。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "克己复礼为仁"
+   },
+   "result_head": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 674, 'chapter_title': '颜渊第十二', 'citation_label': '【《南怀瑾经典合集（共24册）》·颜渊第十二】', 'snippet': '天人合一 下论《"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：检索已命中《论语》\"颜渊篇\"（book_id d9272a80942a，chapter_idx 13），片段显示这正是颜渊问仁的完整问答。但检索片段只是线索，按闭环要求我需读取该章原文核对完整措辞与上下文。下一步读取该章正文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 13
+   },
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 13, 'title': '颜渊篇', 'book_title': '论语', 'citation_label': '【《论语》·颜渊篇】', 'text': '颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:52:05",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答）",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 2,
+  "soft_limit": 3,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 55920,
+   "output_tokens": 2721,
+   "total_tokens": 58641
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 2,
+   "compacted_chars_saved": 4577,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12068,
+     "output_tokens": 371,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15201,
+     "output_tokens": 255,
+     "tool_chars_added": 5171
+    },
+    {
+     "round": 3,
+     "input_tokens": 14414,
+     "output_tokens": 918,
+     "tool_chars_added": 2031
+    },
+    {
+     "round": 4,
+     "input_tokens": 14237,
+     "output_tokens": 1177,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 986,
+ "token_usage": {
+  "input_tokens": 55920,
+  "output_tokens": 2721,
+  "total_tokens": 58641
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 20.0,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《论语》\"克己复礼为仁\"的原文措辞、所在篇章及上下文（问者、完整问答））。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "克己复礼为仁"
+   },
+   "result_summary": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 674, 'chapter_title': '颜渊第十二', 'citation_label': '【《南怀瑾经典合集（共24册）》·颜渊第十二】', 'snippet': '天人合一 下论《",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 13
+   },
+   "result_summary": "{'book_id': 'd9272a80942a', 'chapter_idx': 13, 'title': '颜渊篇', 'book_title': '论语', 'citation_label': '【《论语》·颜渊篇】', 'text': '颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "克己复礼为仁"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 674,
+      "chapter_title": "颜渊第十二",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·颜渊第十二】",
+      "snippet": "天人合一 下论《先进》第十一篇已经讲完了，这是对于上论的《学而》——个人的内养，《为政》——个人发挥到外用的一些事实的注解。现在孔子思想的一个大问题来了。 颜渊问仁。子曰：克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？ 这一段对于仁的研究，是孔子思想的中心。我们先从文字方面讨论颜渊问孔子什么叫做仁，由这句话我们就想到，《里仁》这一篇不都讲的仁吗？在讲上论《里仁》时，已经说过这是一个大问题，我们以后慢慢研究。现在到了“以后",
+      "score": 0.527
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 22,
+      "chapter_title": "正义vs. 复仇：毫无根据的对立",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·正义vs. 复仇：毫无根据的对立】",
+      "snippet": "说到杜林关于应在反动感情土壤中寻找正义故乡的原话，我们应当用另一句生硬的反话来反驳这句热爱真理的话：最后被正义精神征服的土壤是反动感情的土壤。 ——尼采，《道德的谱系》 复仇通常与正义相对照，甚至相对立。（“我不是要复仇；我要正义”是强制性的报应要求。 ）人们说复仇是一种恶，是“以恶报恶”的轮回，从《克力同》（ Crito ）中的苏格拉底到当代的死刑争论，这种说法常常不过是用来在正义讨论中禁绝进一步提到复仇。 复仇应当作正义的典范而加以",
+      "score": 0.513
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 633,
+      "chapter_title": "论复仇",
+      "citation_label": "【《西方百年学术经典著作》·论复仇】",
+      "snippet": "复仇是一种野蛮的正义。如果一个人做了罪大恶极的事，那不过是触犯了法律；但如果另外一个人再去找他复仇，那就是无视法律，就是剥夺法律的责任。因此，一个人越是要去复仇，法律就越应该制裁他。复仇之后，你确实和仇人平等了。但如果你选择原谅仇人，无疑就比他高出一等，因为宽容和原谅乃是君王的风范。所罗门曾经说过：宽恕人的过失，便是自己的荣耀(1)。过去的事情已经是过眼云烟，不可改变了。如果一个人足够聪明，他就会觉得，现在和未来的事都够浪费人的精力了，",
+      "score": 0.512
+     },
+     {
+      "book_id": "d9272a80942a",
+      "book_title": "论语",
+      "author": "孔子",
+      "chapter_idx": 13,
+      "chapter_title": "颜渊篇",
+      "citation_label": "【《论语》·颜渊篇】",
+      "snippet": "颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。”颜渊曰：“回虽不敏，请事斯语矣。” 仲弓问仁，子曰：“出门如见大宾，使民如承大祭。己所不欲，勿施于人。在邦无怨，在家无怨。”仲弓曰：“雍虽不敏，请事斯语矣。” 司马牛问仁，子曰：“仁者，其言也讱。”曰：“其言也讱，斯谓之仁已乎？”子曰：“为之难，言之得无讱乎？” 司马牛问君子，子曰：“",
+      "score": 0.503
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 78,
+      "chapter_title": "德经·第七十九章",
+      "citation_label": "【《道德经》·德经·第七十九章】",
+      "snippet": "德经·第七十九章 和大怨，必有余怨；报怨以德，安可以为善？是以圣人执左契，不责于人。故有德司契，无德司彻。天道无亲，常与善人。",
+      "score": 0.497
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 29,
+      "chapter_title": "第二十八章",
+      "citation_label": "【《中庸》·第二十八章】",
+      "snippet": "子曰：“愚而好自用，贱而好自专。生乎今之世，反古之道。如此者灾及其身者也。” 非天子不议礼，不制度，不考文。 今天下，车同轨，书同文，行同伦。 虽有其位，苟无其德，不敢作礼乐焉。虽有其德，苟无其位，亦不敢作礼乐焉。 子曰：“吾说夏礼，杞不足徵也。吾学殷礼，有宋存焉。吾学周礼，今用之。吾从周。”",
+      "score": 0.496
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 37,
+      "chapter_title": "德经·第三十八章",
+      "citation_label": "【《道德经》·德经·第三十八章】",
+      "snippet": "德经·第三十八章 上德不德，是以有德；下德不失德，是以无德。上德无为而无以为；下德无为而有以为。上仁为之而无以为；上义为之而有以为。上礼为之而莫之应，则攘臂而扔之。故失道而后德，失德而后仁，失仁而后义，失义而后礼。夫礼者，忠信之薄，而乱之首。前识者，道之华，而愚之始。是以大丈夫处其厚，不居其薄；处其实，不居其华。故去彼取此。",
+      "score": 0.494
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 15,
+      "chapter_title": "第十六章",
+      "citation_label": "【《道德经》·第十六章】",
+      "snippet": "致虚极；守静笃。万物并作，吾以观复。夫物芸芸，各复归其根。归根曰静，静曰复命。复命曰常，知常曰明。不知常，妄作凶。知常容，容乃公，公乃全，全乃天，天乃道，道乃久，歿身不殆。",
+      "score": 0.494
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 26,
+      "chapter_title": "第二十五章",
+      "citation_label": "【《中庸》·第二十五章】",
+      "snippet": "诚者自成也，而道自道也。 诚者，物之终始，不诚无物。是故君子诚之为贵。 诚者，非自成己而已也。所以成物也。成己仁也。成物知也。性之德也，合外内之道也。故时措之宜也。",
+      "score": 0.489
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 23,
+      "chapter_title": "正义的善柔一面：同情与道德情操",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·正义的善柔一面：同情与道德情操】",
+      "snippet": "无论人们会认为某人怎样自私，这个人的天性中总是明显地存在着这样一些本性，这些本性使他关心别人的命运，把别人的幸福看成是自己的事情，虽然他除了看到别人幸福而感到高兴以外，一无所得。这种本性就是怜悯或同情，就是当我们看到或逼真地想象到他人的不幸遭遇时所产生的感情……最大的恶棍，极其严重地违犯社会法律的人，也不会全然丧失同情心。 ——亚当·斯密，《道德情操论》 我维护复仇作为正义的典范，目的是为了重建情感在形塑和促发我们的正义感时的作用。在此",
+      "score": 0.489
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 9,
+      "chapter_title": "第八章",
+      "citation_label": "【《中庸》·第八章】",
+      "snippet": "子曰：“回之为人也：择乎中庸，得一善，则拳拳服膺而弗失之矣。”",
+      "score": 0.486
+     },
+     {
+      "book_id": "d9272a80942a",
+      "book_title": "论语",
+      "author": "孔子",
+      "chapter_idx": 5,
+      "chapter_title": "里仁篇",
+      "citation_label": "【《论语》·里仁篇】",
+      "snippet": "子曰：“里仁为美，择不处仁，焉得知？” 子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。” 子曰：“唯仁者能好人，能恶人。” 子曰：“苟志于仁矣，无恶也。” 子曰：“富与贵，是人之所欲也；不以其道得之，不处也。贫与贱，是人之所恶也；不以其道得之，不去也。君子去仁，恶乎成名？君子无终食之间违仁，造次必于是，颠沛必于是。” 子曰：“我未见好仁者，恶不仁者。好仁者，无以尚之；恶不仁者，其为仁矣，不使不仁者加乎其身。有能一日用其力",
+      "score": 0.474
+     },
+     {
+      "book_id": "1aaee7b6bdfe",
+      "book_title": "周易",
+      "author": "佚名",
+      "chapter_idx": 24,
+      "chapter_title": "复卦",
+      "citation_label": "【《周易》·复卦】",
+      "snippet": "《复》：亨。出入无疾，朋来无咎。反覆其道，七日来复，利有攸往。 初九：不远复，无祗悔，元吉。 六二：休复，吉。 六三：频复，厉无咎。 六四：中行独复。 六五：敦复，无悔。 上六：迷复，凶，有灾眚。用行师，终有大败，以其国君，凶；至于十年，不克征。",
+      "score": 0.473
+     },
+     {
+      "book_id": "96a84c0450cd",
+      "book_title": "马基雅维利语录",
+      "author": "马基雅维利",
+      "chapter_idx": 160,
+      "chapter_title": "人出于本性，无论在得到恩惠的时候还是施与他人恩惠的时候，都会受到义理的感染。",
+      "citation_label": "【《马基雅维利语录》·人出于本性，无论在得到恩惠的时候还是施与他人恩惠的时候，都会受到义理的感染。】",
+      "snippet": "人出于本性，无论在得到恩惠的时候还是施与他人恩惠的时候，都会受到义理的感染。 ——《君主论》",
+      "score": 0.473
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 25,
+      "chapter_title": "作为正义的复仇：报复的合理性",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·作为正义的复仇：报复的合理性】",
+      "snippet": "不可否认，当作恶者得到应有的报应时，我们会有一种审美满足、诗性正义的愉悦感。惩罚的冲动主要是一种扯平的冲动……一旦能够根据所做恶事的大小和形态精确裁定惩罚，这种满足感会更为强烈……是所谓mida k'neged mida——以牙还牙，lex talionis（一报还一报）。 ——亚瑟·雷利菲尔德（Arthur Lelyveld）， 《惩罚：支持与反对》（ Punishment：For and Against） 仁慈的上帝，请不要仁慈对待",
+      "score": 0.469
+     }
+    ],
+    "query": "克己复礼为仁",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 13
+   },
+   "result_full": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 13,
+    "title": "颜渊篇",
+    "book_title": "论语",
+    "citation_label": "【《论语》·颜渊篇】",
+    "text": "颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。”颜渊曰：“回虽不敏，请事斯语矣。”\n仲弓问仁，子曰：“出门如见大宾，使民如承大祭。己所不欲，勿施于人。在邦无怨，在家无怨。”仲弓曰：“雍虽不敏，请事斯语矣。”\n司马牛问仁，子曰：“仁者，其言也讱。”曰：“其言也讱，斯谓之仁已乎？”子曰：“为之难，言之得无讱乎？”\n司马牛问君子，子曰：“君子不忧不惧。”曰：“不忧不惧，斯谓之君子已乎？”子曰：“内省不疚，夫何忧何惧？”\n司马牛忧曰：“人皆有兄弟，我独亡。”子夏曰：“商闻之矣：死生有命，富贵在天。君子敬而无失，与人恭而有礼，四海之内皆兄弟也。君子何患乎无兄弟也？”\n子张问明，子曰：“浸润之谮，肤受之愬，不行焉，可谓明也已矣；浸润之谮、肤受之愬不行焉，可谓远也已矣。”\n子贡问政，子曰：“足食，足兵，民信之矣。”子贡曰：“必不得已而去，于斯三者何先？”曰：“去兵。”子贡曰：“必不得已而去，于斯二者何先？”曰：“去食。自古皆有死，民无信不立。”\n棘子成曰：“君子质而已矣，何以文为？”子贡曰：“惜乎，夫子之说君子也！驷不及舌。文犹质也，质犹文也。虎豹之鞟犹犬羊之鞟。”\n哀公问于有若曰：“年饥，用不足，如之何？”有若对曰：“盍彻乎？”曰：“二，吾犹不足，如之何其彻也？”对曰：“百姓足，君孰与不足？百姓不足，君孰与足？”\n子张问崇德辨惑，子曰：“主忠信，徙义，崇德也。爱之欲其生，恶之欲其死；既欲其生又欲其死，是惑也。‘诚不以富，亦只以异。’”\n齐景公问政于孔子，孔子对曰：“君君，臣臣，父父，子子。”公曰：“善哉！信如君不君、臣不臣、父不父、子不子，虽有粟，吾得而食诸？”\n子曰：“片言可以折狱者，其由也与？”子路无宿诺。\n子曰：“听讼，吾犹人也。必也使无讼乎。”\n子张问政，子曰：“居之无倦，行之以忠。”\n子曰：“博学于文，约之以礼，亦可以弗畔矣夫。”\n子曰：“君子成人之美，不成人之恶；小人反是。”\n季康子问政于孔子，孔子对曰：“政者，正也。子帅以正，孰敢不正？”\n季康子患盗，问于孔子。孔子对曰：“苟子之不欲，虽赏之不窃。”\n季康子问政于孔子曰：“如杀无道以就有道，何如？”孔子对曰：“子为政，焉用杀？子欲善而民善矣。君子之德风，小人之德草，草上之风必偃。”\n子张问：“士何如斯可谓之达矣？”子曰：“何哉尔所谓达者？”子张对曰：“在邦必闻，在家必闻。”子曰：“是闻也，非达也。夫达也者，质直而好义，察言而观色，虑以下人。在邦必达，在家必达。夫闻也者，色取仁而行违，居之不疑。在邦必闻，在家必闻。”\n樊迟从游于舞雩之下，曰：“敢问崇德、修慝、辨惑。”子曰：“善哉问！先事后得，非崇德与？攻其恶，无攻人之恶，非修慝与？一朝之忿，忘其身，以及其亲，非惑与？”\n樊迟问仁，子曰：“爱人。”问知，子曰：“知人。”樊迟未达，子曰：“举直错诸枉，能使枉者直。”樊迟退，见子夏，曰：“乡也吾见于夫子而问知，子曰：‘举直错诸枉，能使枉者直’，何谓也？”子夏曰：“富哉言乎！舜有天下，选于众，举皋陶，不仁者远矣。汤有天下，选于众，举伊尹，不仁者远矣。”\n子贡问友，子曰：“忠告而善道之，不可则止，毋自辱焉。”\n曾子曰：“君子以文会友，以友辅仁。”",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "孔子",
+      "canonical_title": "论语",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  }
+ ],
+ "retrieval_calls_executed": 2
+}

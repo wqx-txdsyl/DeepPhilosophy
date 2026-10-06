@@ -1,0 +1,123 @@
+{
+  "ratings": {
+    "C1": 3,
+    "C2": 4,
+    "C3": 3,
+    "C4": 4,
+    "C5": 4,
+    "R1": 4,
+    "R2": 3,
+    "R3": 4
+  },
+  "reasons": {
+    "C1": {
+      "reason": "主体、量词、强度保持；三项必做工作完成（两家问题不同A007-A019、两组分歧A023-A046、结论与待核项A048-A061）。扣分：web=required 未满足——28条回执无 websearch（OpenAlex 限流如实提及 A060），ruling c 计入C1。",
+      "answer_unit_ids": [
+        "A005",
+        "A050",
+        "A060"
+      ],
+      "evidence": "本轮工具回执#1-#28（无websearch；#16为限流error）"
+    },
+    "C2": {
+      "reason": "观念来源+归纳辩护 vs 先天条件（A016-A018）；『彻底解决』的三条件刻画（A056-A058：窄化难题+特定休谟解读+特定重构同时成立）；休谟三派与靶子同一性的联系（A030）。区分均改变判断。",
+      "answer_unit_ids": [
+        "A016",
+        "A017",
+        "A030",
+        "A056",
+        "A057",
+        "A058"
+      ],
+      "evidence": "pool[9]"
+    },
+    "C3": {
+      "reason": "桥接成立：两侧各有内部争论→非共识；即便某重构成立也只部分回应。扣分：A042-A045 把 Watkins『康德对休谟的回应』一章列为『为康德辩护的代表』并归入『正方主张康德确实给出了休谟所需的答案』——与该章论旨（康德的回应不是对休谟的直接反驳，见池内 Chance 摘要 pool[7] 所述 Watkins 立场）相悖，对立结构中一侧定位有误（自知未读正文仍作了归属断言）。",
+      "answer_unit_ids": [
+        "A042",
+        "A045",
+        "A050",
+        "A051"
+      ],
+      "evidence": "pool[7]（Chance摘要转述Watkins论旨）"
+    },
+    "C4": {
+      "reason": "反方四人（Steinhoff/Van Cleve/Lambeth/Stern）＋正方三人并明示正方仅书目级（A044）；待核项声明（A060）；不冒称共识。",
+      "answer_unit_ids": [
+        "A037",
+        "A038",
+        "A040",
+        "A041",
+        "A042",
+        "A044",
+        "A060"
+      ],
+      "evidence": "pool[51][44][24][14]"
+    },
+    "C5": {
+      "reason": "紧凑清晰、无冗余；待核项收尾恰当。",
+      "answer_unit_ids": [
+        "A060"
+      ],
+      "evidence": ""
+    },
+    "R1": {
+      "reason": "原典引文与库本核对一致：『任何例子中都不能再前进一步……第三种关系』『自然界的终极力量和效验完全不为我们所知』（pool[1][19][52]）；『通过纯然的感觉，相互继起的种种显象的客观关系还是未定的』『只有通过……从属于因果性的规律……才是可能的』（pool[3][10][28][33][53]）；A/B 版原理差异经译者注标注（read_c4a1af51e758）；A020 有界节选与译者信息缺失的说明。",
+      "answer_unit_ids": [
+        "A009",
+        "A010",
+        "A013",
+        "A014",
+        "A020"
+      ],
+      "evidence": "pool[1][19][52][3][10][28][33][53]；read_c4a1af51e758"
+    },
+    "R2": {
+      "reason": "反方文献群与池内摘要逐字吻合：Steinhoff（pool[51]）、Van Cleve（pool[44]）、Lambeth（pool[24]）、Stern（pool[14]）、Beebee（pool[9]）、Faggion 引文（pool[54]，回执#21）；Beck 经 Van Cleve 摘要支撑。扣分：Watkins 定位与其实际论旨不符（见C3）；A044 称对这几项『检索到的是书目与标题，并未读到正文』，但 Faggion 的引文明出自已取回的摘要（回执#21/pool[54]），证据范围表述不准（保守方向的不实）。",
+      "answer_unit_ids": [
+        "A037",
+        "A038",
+        "A040",
+        "A041",
+        "A042",
+        "A043",
+        "A044"
+      ],
+      "evidence": "pool[51][44][24][14][9][54][7]"
+    },
+    "R3": {
+      "reason": "章节级标签＋摘要层级声明＋待核项（OpenAlex限流、检索不完整，A060）；Beck 归属经 Van Cleve 摘要支撑；Steinhoff/Faggion 转述与摘要一致。仅缺外部web锚点（对应C1扣分）。",
+      "answer_unit_ids": [
+        "A020",
+        "A032",
+        "A044",
+        "A060"
+      ],
+      "evidence": "回执#11/#20/#21/#26 与正文出处对应"
+    }
+  },
+  "audit": {
+    "condition_changes": [],
+    "unsupported_bridges": [],
+    "source_scope_issues": [
+      {
+        "unit_id": "A042",
+        "issue": "Watkins『康德对休谟的回应』一章被列为辩护方代表，与池内 Chance 摘要（pool[7]）所述 Watkins『不应读作反驳休谟』的论旨不符"
+      },
+      {
+        "unit_id": "A044",
+        "issue": "称对 Faggion 等仅『书目与标题』级，但 Faggion 摘要实际已取回（回执#21）且引文出自摘要——读取层级表述与回执不符（保守方向）"
+      },
+      {
+        "unit_id": "A023",
+        "issue": "web=required 通道未使用：研究解释经本地文献库摘要获取"
+      }
+    ]
+  },
+  "errors": [],
+  "strength": "反方文献群（Steinhoff/Van Cleve/Lambeth/Stern/Faggion）的引证经池逐字核实全部为真，分歧定位精准。",
+  "limits": [
+    "各文献仅摘要层级；Watkins 章未读、其定位存疑；web 未使用。"
+  ],
+  "id": "Rf9ab45db43f6d7"
+}

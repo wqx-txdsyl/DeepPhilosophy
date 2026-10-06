@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { DrawIoEmbed } from 'react-drawio';
 import { useLang } from '../utils/i18n';
+import { plainText } from '../data/generalStream';
 
 /**
  * DrawioInline — 对话内的 draw.io 内嵌编辑器（编辑后的图回填到此, 可继续编辑）
  */
-export default function DrawioInline({ xml, onEdit, height = 320 }) {
+export default function DrawioInline({ xml, onEdit, height = 320, general = false }) {
   const { t } = useLang();
   const ref = useRef(null);
   const [ready, setReady] = useState(false);
@@ -24,11 +25,11 @@ export default function DrawioInline({ xml, onEdit, height = 320 }) {
           onLoad={() => setReady(true)} onInit={() => setReady(true)} />
       </div>
       {onEdit && (
-        <button onClick={onEdit} title={t('drawioReEdit')}
+        <button onClick={onEdit} title={general ? plainText(t('drawioReEdit')) : t('drawioReEdit')}
           style={{ position: 'absolute', top: 6, right: 6, fontSize: 11, cursor: 'pointer',
                    padding: '3px 8px', borderRadius: 6, border: '1px solid var(--border)',
                    background: 'var(--card-bg)', color: 'var(--text-dim)', zIndex: 5 }}>
-          {t('drawioReEdit')}
+          {general ? plainText(t('drawioReEdit')) : t('drawioReEdit')}
         </button>
       )}
     </div>

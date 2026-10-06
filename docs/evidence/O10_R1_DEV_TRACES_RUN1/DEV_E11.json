@@ -1,0 +1,211 @@
+{
+ "case_id": "DEV_E11",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "有人说「平平稳稳也是一生」，父母却说「年轻人就该闯」。奋斗的人生一定比安稳的人生更好吗？这种比较本身可能有客观答案吗？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_0dFKs1MsANkKR7YqH2dv3233"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_Co8we5RIyGgkNzE0HU973113"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_Uz7CSX4TBHEzi2HZsT6T9011"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_jv2LFgBFrdvoCCltId4f4267"
+  },
+  {
+   "name": "concept_trace",
+   "phase": "blocked",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_SmhXbRKMcSxrGmnFH0kE1887",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_GIZaFdbeEZu2qsleMRUs8739"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_lDw4SFbOc6YcrNAq30tb2925"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_Yg9ixzBj4NyyGFNC1CFz2029",
+   "result_head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 20, 'chapter_title': '20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？', 'cita"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_q96o6jKtWfmFohJfKsj72724"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_PHPuCqSUOehgnUjP5I4m5194",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "密尔关于快乐有质的差异/高级快乐的原文、亚里士多德关于幸福是合德性活动的原文、以及价值客观性与价值多元论（可通约性问题）的原典依据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "密尔《功利主义》中高级快乐/低级快乐区分的原文；亚里士多德《尼各马可伦理学》中\"幸福是灵魂合乎德性的活动\"的原文",
+    "gap_filled": false,
+    "budget_extension_reason": "已取得的证据多为二手转述（周濂对亚里士多德的通俗解读），缺失密尔与亚里士多德本人措辞的直接支撑，而这两点是本题\"价值有无客观标准\"论证的核心依据",
+    "unresolved_evidence_gap": "密尔《功利主义》高级快乐论述的原文与亚里士多德《尼各马可伦理学》幸福定义的原文"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2339,
+ "final_answer": "我先把一个前提说清楚：这一轮我在原典库里对密尔《功利主义》和亚里士多德《尼各马可伦理学》的直接原文检索并未成功——命中的多是通俗哲学读物（如周濂、郁喆隽、富增章成的解读），我未能真正核验到两位作者的原文措辞。因此下面凡涉及他们具体主张的地方，我都以转述处理并标注其确定性，不冒充逐字引文；主体是分析。\n\n---\n\n## 一、先把\"哪个更好\"拆开——它其实压着四个不同的问题\n\n\"奋斗的人生是不是比安稳的人生更好\"，这句话里混着至少四个层次的问题，答案并不共享：\n\n1. **经验问题**：哪种生活实际上带来更多幸福、满足或痛苦？（这是可调查的问题，但答案因人因境而异。）\n2. **规范问题**：哪种生活更值得过、更有价值？\n3. **元伦理问题**：上面这个\"更值得\"，有没有一个客观标准来判定？\n4. **实践问题**：我这个人，此刻该选哪一种？\n\n争论之所以常年打转，多半是因为父母在回答第4个问题，用第1、2层的话（\"年轻人就该闯\"），而\"平平稳稳也是一生\"是在回答第2、3层。**把不同层次的问题叠在一起争，永远争不出结果。**\n\n## 二、\"更好\"能不能有客观答案——取决于四种元伦理立场\n\n对第3个问题，哲学史上有几种互不相同的答案，它们各自内部是自洽的，冲突在于起点：\n\n**（1）价值一元论／客观主义：有客观答案，而且唯一。**\n亚里士多德《尼各马可伦理学》的框架是目的论的：每类事物有它的功能（ergon），人的独特功能是理性活动，于是\"好的人生\"就是灵魂合乎德性的活动（eudaimonia）。在这个框架下，\"哪种人生更好\"原则上可判定。但要注意两点：亚里士多德本人也承认幸福需要外在善、运气与条件，并非纯粹内在品质；而且他的标准推出的未必是\"闯\"——冒险冲动本身不是德性，除非它服务于某种实现。（此段是转述，未核验到原文措辞。）\n\n密尔《功利主义》走的是另一条路：他主张快乐不仅有量的差别，还有质的差别，所以\"做一个不满足的人胜于做一只满足的猪，做一个不满足的苏格拉底胜于做一个满足的傻瓜\"——**这句广为流传，但我这一轮未能在库中核验到原文，请当作大意转述。**如果这个层级成立，则价值比较就有客观尺度（由\"有资格的评判者\"裁定）。但恰恰是这个标准，后来被广泛质疑为循环或精英偏见。\n\n**（2）价值主观主义：没有跨主体的客观答案。**\n价值源于个人偏好或态度。那么\"奋斗比安稳好\"就只是说话者偏好的投射，无法得到客观证实。这种立场能解释分歧为何顽固，但代价是：似乎也无法批评\"一个人甘心被奴役、被愚弄，只要他自己满意\"。\n\n**（3）价值多元论：可能有客观答案的\"反面\"，但不是相对主义。**\n这是我认为对你这道题最锋利的一种资源。以赛亚·伯林主张，终极价值是多元的，且彼此**不可通约**——没有一个共同尺度能把\"冒险成就\"与\"平静安康\"放到同一把秤上换算（记忆中的伯林观点，本轮未在库中核验）。如果他是对的，那么\"奋斗是否比安稳更好\"之所以没有终极答案，**不是因为我们认识不够，而是价值世界的结构本身拒斥一元的排序**。注意：这与\"什么都行\"的相对主义不同——伯林仍认为多种价值都是客观的善，只是它们无法被一个总排名收编。\n\n**（4）存在主义：答案不在发现，而在创造。**\n萨特式立场（\"存在先于本质\"）会说：没有先验答案，价值由自由选择在行动中造就；逃避选择本身也是一种选择，且要为之负责。这条路线把问题从\"哪个更好\"移到\"我是否本真地承担了自己的选择\"。\n\n## 三、关键区分：不存在总排序 ≠ 不存在任何客观评价\n\n回答\"这种比较本身可能有客观答案吗\"，我认为要分两种读法：\n\n- 若问的是：**有没有一个对所有人、所有处境都成立的总排名，说\"奋斗＞安稳\"或反之？**——很可能没有。多元论与不可通约性给了这否定回答一个不诉诸\"人心不同\"的理由。\n- 若问的是：**在给定某个人的价值框架、或某种特定的善理论内部，能否客观评价？**——可以。一旦你接受某个框架（比如\"我以自我实现为最高善\"或\"我以家庭安宁为最高善\"），框架**内部**关于\"哪种活法更符合我这个善\"就是有对错可言的，可以论证、可以反驳，这是\"有条件的客观性\"。\n\n**所以我的综合判断是：**价值比较在\"总排序\"层面很可能没有客观答案，但在\"框架内\"层面可以有客观答案。混淆这两者，才会得出\"那就各随各便吧\"的虚无结论——那一步是不成立的。\n\n## 四、回到你的处境\n\n\"奋斗一定比安稳好\"里的\"一定\"，本身就是一个假的普遍命题——它把一种有条件的好，说成了无条件的好。同样，\"平平稳稳也是一生\"若用来堵住一切反思，也把一种价值说成了绝对。\n\n与其问\"哪个更好\"，不如换三个**可回答**的问题：\n\n1. 这种生活是不是**我**真正选择、并且愿意承担其全部代价的？（本真性问题）\n2. 它服务的，是我真正认同的那个善，还是别人替我认定的善？（框架归属问题）\n3. 我有没有能力与条件去承担这条路？（亚里士多德式的处境问题——他没有把幸福说成纯意志的事）\n\n最后反问你一句，也算把这场争论从父母与你的对峙里抽出来：\n\n假设奋斗与安稳都能通向好的人生，那么你在意的，究竟是哪一种生活更值得过，还是哪一种更像是你自己、是你愿意为之负责的那一种？\n\n如果是后者，那么这场比较的真正对象，从来不是两种人生，而是你与自己之间的关系。\n\n---\n\n**证据边界说明**：本轮原典库对密尔、亚里士多德原文的直接核验未成功，相关表述均为转述；伯林的价值多元论属学界通识，我未能在此库中定位原文。若你希望，我可以下一轮专门去核实密尔\"有资格的评判者\"论证与亚里士多德幸福定义的原文措辞。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "密尔《功利主义》中高级快乐/低级快乐区分的原文；亚里士多德《尼各马可伦理学》中\"幸福是灵魂合乎德性的活动\"的原文",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:11:57",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "密尔关于快乐有质的差异/高级快乐的原文、亚里士多德关于幸福是合德性活动的原文、以及价值客观性与价值多元论（可通约性问题）的原典依据"
+   },
+   {
+    "ts": "2026-09-13 11:12:02",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "密尔《功利主义》中高级快乐/低级快乐区分的原文；亚里士多德《尼各马可伦理学》中\"幸福是灵魂合乎德性的活动\"的原文",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:12:02",
+    "reason": "已取得的证据多为二手转述（周濂对亚里士多德的通俗解读），缺失密尔与亚里士多德本人措辞的直接支撑，而这两点是本题\"价值有无客观标准\"论证的核心依据",
+    "unresolved_gap": "密尔《功利主义》高级快乐论述的原文与亚里士多德《尼各马可伦理学》幸福定义的原文"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "concept_trace",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:11:57"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:12:06"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:12:06"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 80198,
+   "output_tokens": 6274,
+   "total_tokens": 86472
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 8,
+   "compacted_chars_saved": 20792,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11619,
+     "output_tokens": 1252,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 19654,
+     "output_tokens": 787,
+     "tool_chars_added": 13395
+    },
+    {
+     "round": 3,
+     "input_tokens": 19472,
+     "output_tokens": 537,
+     "tool_chars_added": 9780
+    },
+    {
+     "round": 4,
+     "input_tokens": 15668,
+     "output_tokens": 3159,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 5,
+     "input_tokens": 13785,
+     "output_tokens": 539,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 80198,
+  "output_tokens": 6274,
+  "total_tokens": 86472
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 48.3
+}

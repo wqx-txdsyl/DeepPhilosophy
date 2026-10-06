@@ -1,0 +1,540 @@
+{
+  "date": "2026-09-22",
+  "reviewer": "本轮Codex，非盲评，非独立人工专家",
+  "scale": "每维0–10，按权重换算100分；单题单次，不是准确率",
+  "dimensions": {
+    "直接回答": 10,
+    "题意与条件保持": 15,
+    "概念准确": 15,
+    "推论有效": 20,
+    "反对意见与边界": 10,
+    "证据恰当与可追溯": 10,
+    "表达清晰": 10,
+    "实际帮助": 5,
+    "哲学洞见": 5
+  },
+  "versions": {
+    "baseline-eval": {
+      "name": "原版基线",
+      "mean_score": 66.2,
+      "cases": [
+        {
+          "case": "comfort",
+          "dimensions": {
+            "直接回答": 6,
+            "题意与条件保持": 7,
+            "概念准确": 7,
+            "推论有效": 7,
+            "反对意见与边界": 8,
+            "证据恰当与可追溯": 8,
+            "表达清晰": 6,
+            "实际帮助": 6,
+            "哲学洞见": 7
+          },
+          "score": 69.5,
+          "reason": "区分善良意志与情感真诚，但开头替用户设定结论，AI能力断言缺少依据。",
+          "seconds": 56.906,
+          "tool_calls": 6,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/comfort"
+        },
+        {
+          "case": "navigation",
+          "dimensions": {
+            "直接回答": 6,
+            "题意与条件保持": 6,
+            "概念准确": 6,
+            "推论有效": 6,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 7,
+            "实际帮助": 7,
+            "哲学洞见": 7
+          },
+          "score": 64.0,
+          "reason": "纠错/人格评价的区分有用；将陌生出口直接归为不可责的无知过快。",
+          "seconds": 46.357,
+          "tool_calls": 6,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/navigation"
+        },
+        {
+          "case": "equal_outcomes",
+          "dimensions": {
+            "直接回答": 7,
+            "题意与条件保持": 6,
+            "概念准确": 5,
+            "推论有效": 5,
+            "反对意见与边界": 6,
+            "证据恰当与可追溯": 8,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 6
+          },
+          "score": 59.0,
+          "reason": "把接受者价值等同于可感知差别，又把无人知道的痛苦作为无受益者例子，概念错置。",
+          "seconds": 53.511,
+          "tool_calls": 5,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/equal_outcomes"
+        },
+        {
+          "case": "teacher_transfer",
+          "dimensions": {
+            "直接回答": 8,
+            "题意与条件保持": 6,
+            "概念准确": 6,
+            "推论有效": 6,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 8,
+            "表达清晰": 7,
+            "实际帮助": 6,
+            "哲学洞见": 7
+          },
+          "score": 66.5,
+          "reason": "出于履职不自动是康德的出于义务；学生不知情不取消题设中对动机的判断。",
+          "seconds": 49.598,
+          "tool_calls": 8,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/teacher_transfer"
+        },
+        {
+          "case": "formal_logic",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 8,
+            "概念准确": 7,
+            "推论有效": 3,
+            "反对意见与边界": 8,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 7,
+            "实际帮助": 6,
+            "哲学洞见": 6
+          },
+          "score": 67.5,
+          "reason": "正确判无效，但末段声称补充动物不是猫就是狗即可有效，明显错误。",
+          "seconds": 8.738,
+          "tool_calls": 0,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/formal_logic"
+        },
+        {
+          "case": "kant_hume",
+          "dimensions": {
+            "直接回答": 8,
+            "题意与条件保持": 8,
+            "概念准确": 6,
+            "推论有效": 6,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 7,
+            "实际帮助": 7,
+            "哲学洞见": 7
+          },
+          "score": 69.0,
+          "reason": "实际读取双方，范围说明较完整；关于休谟无任何相应印象的表述忽略内在印象，引用含同上。",
+          "seconds": 44.411,
+          "tool_calls": 9,
+          "blocked": 2,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/kant_hume"
+        },
+        {
+          "case": "analects",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 9,
+            "概念准确": 8,
+            "推论有效": 8,
+            "反对意见与边界": 8,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 8,
+            "实际帮助": 8,
+            "哲学洞见": 7
+          },
+          "score": 83.0,
+          "reason": "定位和上下文有效，略冗长，篇章递进属于解释而非单凭出处核验成立。",
+          "seconds": 10.199,
+          "tool_calls": 2,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/analects"
+        },
+        {
+          "case": "false_quote",
+          "dimensions": {
+            "直接回答": 8,
+            "题意与条件保持": 6,
+            "概念准确": 4,
+            "推论有效": 4,
+            "反对意见与边界": 5,
+            "证据恰当与可追溯": 4,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 5
+          },
+          "score": 51.0,
+          "reason": "结论正确，但汉语算法的词源断言未经核验；目录十八篇与二十篇叙述冲突，全文核验过程不充分。",
+          "seconds": 58.545,
+          "tool_calls": 12,
+          "blocked": 5,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/baseline-eval/false_quote"
+        }
+      ]
+    },
+    "release-candidate-eval": {
+      "name": "v6 提示词候选",
+      "mean_score": 66.0,
+      "cases": [
+        {
+          "case": "comfort",
+          "dimensions": {
+            "直接回答": 5,
+            "题意与条件保持": 5,
+            "概念准确": 5,
+            "推论有效": 5,
+            "反对意见与边界": 6,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 5,
+            "实际帮助": 4,
+            "哲学洞见": 5
+          },
+          "score": 52.5,
+          "reason": "把效果先缩成短期缓解；声称价值必须有人在乎；友爱类比未充分证明。",
+          "seconds": 87.722,
+          "tool_calls": 7,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/comfort"
+        },
+        {
+          "case": "navigation",
+          "dimensions": {
+            "直接回答": 5,
+            "题意与条件保持": 5,
+            "概念准确": 5,
+            "推论有效": 5,
+            "反对意见与边界": 6,
+            "证据恰当与可追溯": 5,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 5
+          },
+          "score": 52.0,
+          "reason": "继续反转用户观察，把责怪资格和受损条件说成必要条件，设计者价值表达讨论不足。",
+          "seconds": 70.731,
+          "tool_calls": 5,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/navigation"
+        },
+        {
+          "case": "equal_outcomes",
+          "dimensions": {
+            "直接回答": 7,
+            "题意与条件保持": 7,
+            "概念准确": 5,
+            "推论有效": 5,
+            "反对意见与边界": 6,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 6
+          },
+          "score": 59.5,
+          "reason": "保持固定条件，但把动机价值限定在行动者一侧；后果论与功利主义过度合并。",
+          "seconds": 66.084,
+          "tool_calls": 5,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/equal_outcomes"
+        },
+        {
+          "case": "teacher_transfer",
+          "dimensions": {
+            "直接回答": 8,
+            "题意与条件保持": 8,
+            "概念准确": 7,
+            "推论有效": 7,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 7,
+            "实际帮助": 7,
+            "哲学洞见": 7
+          },
+          "score": 74.5,
+          "reason": "明显减少不必要检索；仍把甲动机更好默认化，插入履职更可靠的经验旁论。",
+          "seconds": 43.766,
+          "tool_calls": 1,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/teacher_transfer"
+        },
+        {
+          "case": "formal_logic",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 9,
+            "概念准确": 7,
+            "推论有效": 7,
+            "反对意见与边界": 8,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 6,
+            "实际帮助": 7,
+            "哲学洞见": 7
+          },
+          "score": 77.0,
+          "reason": "反模型正确；把所有猫是狗误述为完全重合，并把集合关系只列三种，冗长。",
+          "seconds": 10.721,
+          "tool_calls": 0,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/formal_logic"
+        },
+        {
+          "case": "kant_hume",
+          "dimensions": {
+            "直接回答": 8,
+            "题意与条件保持": 8,
+            "概念准确": 6,
+            "推论有效": 6,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 6,
+            "表达清晰": 7,
+            "实际帮助": 7,
+            "哲学洞见": 7
+          },
+          "score": 68.0,
+          "reason": "阅读双方但长期绕行；否认必然性观念有相应印象后又说心灵推移，说明不够准确；部分出处不是标准标签。",
+          "seconds": 106.85,
+          "tool_calls": 16,
+          "blocked": 3,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/kant_hume"
+        },
+        {
+          "case": "analects",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 8,
+            "概念准确": 8,
+            "推论有效": 8,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 6,
+            "实际帮助": 6,
+            "哲学洞见": 6
+          },
+          "score": 77.0,
+          "reason": "真句核验正确，泄露book_id和工具定位参数，附加他书讨论超出简单核验。",
+          "seconds": 15.587,
+          "tool_calls": 5,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/analects"
+        },
+        {
+          "case": "false_quote",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 8,
+            "概念准确": 6,
+            "推论有效": 6,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 8,
+            "表达清晰": 5,
+            "实际帮助": 6,
+            "哲学洞见": 5
+          },
+          "score": 67.5,
+          "reason": "verify_quote提供真实全文扫描，结论可信；把22个文件称22章，另加未核验语史推论且过长。",
+          "seconds": 18.225,
+          "tool_calls": 5,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/release-candidate-eval/false_quote"
+        }
+      ]
+    },
+    "frozen-eval": {
+      "name": "保留旧提示词＋工具修复",
+      "mean_score": 62.2,
+      "cases": [
+        {
+          "case": "comfort",
+          "dimensions": {
+            "直接回答": 6,
+            "题意与条件保持": 6,
+            "概念准确": 5,
+            "推论有效": 5,
+            "反对意见与边界": 6,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 6
+          },
+          "score": 57.0,
+          "reason": "读到斯密和友爱论但未改善类比；把AI说成有善意又说无承担，效果与关系二分偏强。",
+          "seconds": 52.066,
+          "tool_calls": 6,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/comfort"
+        },
+        {
+          "case": "navigation",
+          "dimensions": {
+            "直接回答": 4,
+            "题意与条件保持": 4,
+            "概念准确": 3,
+            "推论有效": 3,
+            "反对意见与边界": 4,
+            "证据恰当与可追溯": 6,
+            "表达清晰": 5,
+            "实际帮助": 4,
+            "哲学洞见": 4
+          },
+          "score": 39.5,
+          "reason": "严重过度推论：不责怪与不共担等同、工具平静等于彻底无关；还猜测一个不存在的章节。",
+          "seconds": 74.109,
+          "tool_calls": 15,
+          "blocked": 3,
+          "errors": 1,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/navigation"
+        },
+        {
+          "case": "equal_outcomes",
+          "dimensions": {
+            "直接回答": 7,
+            "题意与条件保持": 6,
+            "概念准确": 4,
+            "推论有效": 4,
+            "反对意见与边界": 5,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 5
+          },
+          "score": 53.0,
+          "reason": "把不接受后果论直接推成真心有额外价值，忽略其他非后果论标准；受益者价值范围过窄。",
+          "seconds": 34.35,
+          "tool_calls": 5,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/equal_outcomes"
+        },
+        {
+          "case": "teacher_transfer",
+          "dimensions": {
+            "直接回答": 7,
+            "题意与条件保持": 5,
+            "概念准确": 5,
+            "推论有效": 4,
+            "反对意见与边界": 5,
+            "证据恰当与可追溯": 7,
+            "表达清晰": 6,
+            "实际帮助": 5,
+            "哲学洞见": 5
+          },
+          "score": 53.0,
+          "reason": "称用户预设关心比履职好，实际用户在问是否足以证明；将不知动机误作不可论证。",
+          "seconds": 82.199,
+          "tool_calls": 15,
+          "blocked": 4,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/teacher_transfer"
+        },
+        {
+          "case": "formal_logic",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 9,
+            "概念准确": 8,
+            "推论有效": 8,
+            "反对意见与边界": 8,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 7,
+            "实际帮助": 8,
+            "哲学洞见": 7
+          },
+          "score": 82.0,
+          "reason": "推理主干与有效补充前提正确；结论不成立措辞混淆不被蕴含和为假。",
+          "seconds": 11.872,
+          "tool_calls": 0,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/formal_logic"
+        },
+        {
+          "case": "kant_hume",
+          "dimensions": {
+            "直接回答": 8,
+            "题意与条件保持": 8,
+            "概念准确": 6,
+            "推论有效": 6,
+            "反对意见与边界": 7,
+            "证据恰当与可追溯": 5,
+            "表达清晰": 7,
+            "实际帮助": 7,
+            "哲学洞见": 6
+          },
+          "score": 66.5,
+          "reason": "双方实际读取，仅5次调用；正文转述修复丢掉部分出处，并再次混淆外部与内在印象。",
+          "seconds": 90.809,
+          "tool_calls": 5,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/kant_hume"
+        },
+        {
+          "case": "analects",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 9,
+            "概念准确": 8,
+            "推论有效": 8,
+            "反对意见与边界": 8,
+            "证据恰当与可追溯": 9,
+            "表达清晰": 8,
+            "实际帮助": 8,
+            "哲学洞见": 7
+          },
+          "score": 83.0,
+          "reason": "原文和入口正确；解释较长，通行版本异文说明没有额外版本证据。",
+          "seconds": 11.865,
+          "tool_calls": 4,
+          "blocked": 1,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/analects"
+        },
+        {
+          "case": "false_quote",
+          "dimensions": {
+            "直接回答": 9,
+            "题意与条件保持": 8,
+            "概念准确": 5,
+            "推论有效": 5,
+            "反对意见与边界": 6,
+            "证据恰当与可追溯": 8,
+            "表达清晰": 6,
+            "实际帮助": 6,
+            "哲学洞见": 5
+          },
+          "score": 64.0,
+          "reason": "真实逐字扫描和范围更清楚；仍追加未经核验的词源与思想史绝对判断。",
+          "seconds": 27.589,
+          "tool_calls": 3,
+          "blocked": 0,
+          "errors": 0,
+          "artifact": "backend/tools/_tmp/prompt-tools-rebuild-20260921/frozen-eval/false_quote"
+        }
+      ]
+    }
+  }
+}

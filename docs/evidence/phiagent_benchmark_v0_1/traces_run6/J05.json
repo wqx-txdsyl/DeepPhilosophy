@@ -1,0 +1,1096 @@
+{
+ "case_id": "J05",
+ "category": "J",
+ "prompt": "如果一个观点得到很多学者支持，我应该接受吗？",
+ "follow_up_turns": [
+  "但历史上很多共识后来都错了。",
+  "我没有时间读完所有论文，难道只能自己从零证明？"
+ ],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "60675439c081c8db8150a2196de28c96e354f432",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T14:01:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.5",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "如果一个观点得到很多学者支持，我应该接受吗？",
+   "wall_s": 39.4,
+   "ttft_s": 7.5,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "8857bf0bafb8417abaaa8747f9fb70f1:1:note:0",
+     "content": "我先确认一下本地可用的相关原典，再据概念本身回答。"
+    }
+   ],
+   "provider_reasoning": "The user asks a philosophical question in Chinese: \"If a viewpoint is supported by many scholars, should I accept it?\" This is a question about epistemic justification, appeal to authority, consensus, testimony.\n\nI should answer with clear concepts, defensible reasons, and checkable materials. This is a general philosophical question — no need for tools necessarily? But the instructions say I can use tools when appropriate. This is a conceptual/epistemological question that connects to: ad verecundiam fallacy, social epistemology (testimony), Kuhn's paradigm, peer disagreement literature, Hume on testimony, Mill on fallibility, consensus in science.\n\nLet me consider whether to search the library. The question is a genuine philosophy question about authority of consensus. It could benefit from citations to primary texts. But the user didn't ask for citations. Still, my instruction says \"讲清主张、依据及其连接\" and materials should support specific steps. I could optionally check whether there's relevant material in the library.\n\nI think a good answer: distinguish several things:\n1. \"很多学者支持\" is evidence, but of what kind? It's testimony/aggregated testimony. Its force depends on (a) whether the scholars are relevantly expert, (b) whether their agreement is independent or correlated (shared bias, shared paradigm, incentive structures), (c) whether the claim is in their domain of competence, (d) whether there's a mechanism connecting consensus to truth in that domain.\n2. Consensus ≠ proof. Necessary vs sufficient: consensus is neither necessary nor sufficient for truth. But it can be strong defeasible evidence in some domains (e.g., empirical science with independent methods and error-correction) and weak in others (e.g., contested normative/philosophical questions).\n3. The distinction between acceptance (belief) vs acting on it / provisional reliance. You might adopt as working assumption (credence) while tracking disagreement.\n4. Epistemic deference: it's rational to defer when you have reason to think others are better positioned (division of epistemic labor). But blind deference in matters where you must decide for yourself (values, life choices) is different.\n5. Asymmetry: majority vote is not evidence of truth for many kinds of questions (math proof, logic). A proof doesn't get truer with more votes.\n6. What would make it wrong: appeal to authority fallacy — the fallacy is not citing experts, but citing them outside their expertise or treating authority as conclusive.\n7. Practical guidance: ask what's the base rate of consensus being right in this domain; is disagreement live among equally competent people; what would change their minds; is there selection effect in who becomes a scholar.\n\nAlso: the literature — peer disagreement (Kelly, Christensen, Elga), epistemic peer; social epistemology (Goldman); philosophy: the \"conciliationism vs steadfast\" debate. Kuhn: normal science consensus. Mill On Liberty ch.2: even true opinions need contestation. Hume on testimony. Also Chinese context: 荀子? \"三人成虎\"? Could mention.\n\nLet me check the library for relevant primary sources to ground claims. I could search for \"共识\" or \"意见\" or Hume's \"论奇迹\" testimony, Mill's On Liberty chapter 2. That would strengthen. But is it necessary? The instruction says to check facts when I use them. If I cite Mill or Hume, I should verify. Let me do a couple of searches.\n\nActually the instruction says: \"先认清任务。只据假设或不查资料时，不调用检索与读取工具\" — meaning when answering purely from reasoning without needing sources, don't call tools. But \"材料应支持、限制或挑战具体一步\". I think this question is fundamentally conceptual and I can answer well without tools. However, using the library could add grounded citations. Given the guidance \"其他情形按需要自主调用\" (otherwise call as needed), I have discretion.\n\nI think a modest amount of grounding would help — e.g., verify a Mill On Liberty passage about the need for contestation of opinion, or Hume's essay on testimony. Let me do a quick search to see what's available, then decide. Let me search for \"多数人的意见\" or Mill's 论自由.\n\nLet me search books for relevant passages.\n\nI'll do a couple parallel searches: search_books query=\"共识\" and search for Mill 论自由 \"意见\" — actually author filter.\n\nLet me just try: search_books(query=\"舆论的暴政 多数\") and search_books(query=\"意见 讨论 自由\", author=\"密尔\").\n\nHmm, be careful about token use. Let me do a small number.\n\nActually, let me think about whether the answer really needs citations. The question is a general epistemic one. I can answer well with conceptual analysis. But adding one or two verified textual anchors (e.g., Mill on the value of contesting received opinion even when true) would let me give a concrete example of a reason. Also maybe Kuhn on consensus. Let me check the library.\n\nI'll run two searches in parallel.\n\nLet me do it.\n\nActually, let me consider: risk of over-tooling. The system prompt emphasizes deep thinking over tool count: \"不以篇幅、术语或工具数量代替深度\". So I should think carefully and answer, using tools only if genuinely helpful. I'll do a quick check for Mill and maybe Hume on testimony, since those are directly relevant and I'd like verified quotes if I use them.\n\nLet me search.The library results aren't directly on point (Montesquieu on federal decisions, Alain de Botton on Athens/Socrates — the latter is actually relevant: 多数人的意见等同于真理 in Athens, and Socrates' trial as a case where majority was wrong). Let me check Mill's On Liberty if in library — search for 论自由.\n\nActually the de Botton passage is a secondary source about Socrates. Could be used as illustration but it's a popular secondary work.\n\nLet me search for 密尔 论自由 with author filter.Mill's On Liberty chapter 2 exists. The famous passage about \"假如全人类都持一种意见而只有一个人持相反意见\" and about the value of contesting true opinions. Let me read chapter 2 to get a verified passage. That would be a good anchor for \"even a true, widely held opinion needs live contestation — consensus alone doesn't secure its rational grounds.\"\n\nLet me read chapter 2 with a focus.\n\nActually, let me search within chapter 2 for the specific claim about 公认意见 losing vitality when unchallenged. Let me use verify_quote or read chapter with focus.\n\nLet me get chapter 2 with focus=\"权威 公认 意见 不受争论\".\n\nI'll read the chapter to find relevant text.Good, I have Mill's On Liberty chapter 2 — a verified passage. Key content: Mill argues that even if a received opinion is true, holding it as a prejudice without being able to defend it against objections means it's \"a dead dogma, not a living truth\" — not knowledge. This supports one strand: consensus/acceptance without grasping grounds isn't knowing.\n\nNow I have enough. Let me also consider whether to cite the de Botton passage about Athens (多数人的意见等同于真理) — but that's a secondary popular work, and I'd be citing it as a description of Athens, which is not needed.\n\nI could also mention Kuhn or the social epistemology literature but I don't need to cite. If I mention \"认识论上的同行分歧（peer disagreement）讨论\" I should be careful not to attribute specific claims to unread sources. I could just describe the general structure of the debate without attributing to specific works, or note that I haven't read the specific literature here.\n\nActually, I should be careful: the instruction says I shouldn't cite sources I haven't verified. I'll refer to debates generically (e.g., \"当代社会认识论中关于同行分歧的争论\")—it's a well-known debate, but I should keep attributions minimal and clearly generic, or flag as unverified. Better: describe the positions without naming specific works as authorities. I can mention Mill (verified quote) and possibly Hume but I didn't find Hume's testimony material, so I won't cite Hume as a source claim. I can mention the classical fallacy of ad verecundiam (appeal to authority) as a standard logical concept — that's a standard term; safe to name as a concept without a specific textual claim.\n\nAlso relevant: the ancient logic of \"诉诸权威\" being a fallacy only when misused; the distinction between consensus as evidence vs. consensus as decision rule. Also 从众/\"三人成虎\".\n\nNow, the analysis structure:\n\n1. Clarify the question: \"应该接受吗\" — need to separate:\n   - 接受 = 相信其为真（形成信念）？还是当作工作假设？还是服从/照着行动？\n   - 观点的类型：经验科学问题 / 数学-逻辑问题 / 规范-价值问题 / 历史事实 / 有利益纠缠的问题。\n   - \"很多学者支持\"包括：多少？是不是该领域的专家？意见是否独立？\n\n2. Core claim: 学术共识通常是证据，但是可废止的（defeasible）证据，不是充分条件，也不是必要条件。所以\"很多学者支持\"既不使观点必然为真，也不使你可以无理由地接受。\n\n理由：\n(a) 学者也是人，其判断可能系统性偏差；若共识来自共同的方法论、共同的经费来源、共同的范式训练或发表激励，那么100个学者不等于100份独立证据。独立证据的数量才是相关的，学者人数只是其代理指标（proxy）。这里要谈\"独立性\"——相关证据量取决于独立的信息来源数。\n(b) 专家论证的有效性依赖于他们提供了理由。如果只知道\"多数支持\"而不知道支持的理由，你接受的是权威而非真理。这是\"以人为据\"的误用，而不是专家意见本身的错。注意区分：援引权威并不是自动谬误；在超出你能力且你有理由相信对方更可靠的领域，援引权威是理性的。\n(c) 承认共识是证据，但要说清这是哪一类证据：它是\"认识论劳动分工\"下的间接证据。其力量取决于：\n   - 专业相关性（他们是否在研究该问题的领域？跨领域学者常无优势）\n   - 分歧是否真实存在（是否有一批同样合格的专家持相反意见？）\n   - 该领域共识的正确率历史如何（科学共识通常可靠度高，但历史上也几次整体倒转——这是经验论断，需要范围限定；我不给具体数字，因为没有核查）\n   - 是否存在选择效应（谁成为该领域学者？）\n(d) 必要/充分：共识不是充分条件（多数派可以集体错误——逻辑与数学是清楚的：证明不因投票变真）；也不是必要条件（许多真观点曾长期是少数）。所以不能做\"只要有共识就该接受\"或\"没有共识就不该接受\"的一刀切。\n(e) 对于价值/人生问题，情况不同：这类问题的\"真理\"标准本身有争议，且他人共识不能替你决定你要什么，不能替代你自己的判断（这属于\"权威不能替代你对自己生活的权衡\"）。这里要小心：不是说价值问题没有对错，而是说共识的证据力较弱，而且决定责任在你。\n\n3. Mill 的引文：即便一个公认意见是真的，若只是作为成见被持有、不能应对反驳，那就不是\"知真理\"，而是\"一个偶合于真理字面的迷信\"。→ 说明\"得到很多学者支持\"这一点，对你自己而言并不能替代理解理由；接受的正当性一部分来自你对理由的把握。\n\n4. 所以，正确的做法不是\"接受/不接受\"二选一，而是一个分层的态度：\n   - 对待经验/技术问题：可以（也应该）倾向性地依赖专家共识，但保留它属于可废止的证据，并追踪分歧与错误纠正机制。\n   - 对待你自己必须亲自判断的问题（价值、人生选择、必须负责的决策）：共识可作重要输入，但不能作替代。\n   - 无论哪种：分清\"我因它被多数支持而接受\"和\"我因它的理由而被说服\"。前者需要额外的元理由。\n\n5. 什么情况会改变答案（条件化判断）：\n   - 如果问题是高度技术性且你合理判断自己在能力上无法独立评估，且专家群体内部高度一致、机制上鼓励纠错 → 接受（作为信念）是理性的。\n   - 如果专家群体内部存在相当数量的同等合格者的分歧，或共识与谁获益相关 → 你应该把自己的信念度调低，而不是接受。\n   - 数学/逻辑：多数票无关。\n\n6. 常见反对：有人说\"你不懂就不要质疑专家\"（这是对的，作为行动指南）；回应：这不等于\"多数支持就为真\"，也不等于你无权提出质疑——可区分\"质疑\"与\"拒绝\"；且区分\"我作为外行是否应照做\"与\"命题是否为真\"。\n\n7. 最后给一个可操作的检查清单：\n   - 这些学者是哪些领域的？是否有相关专长？\n   - 他们的意见是独立的，还是有共同来源/共同激励？\n   - 有没有同等资格的少数派？他们最强的反对理由是什么？\n   - 你能说出这个观点的最好理由和最强反驳吗？（Mill 的标准）\n   - 你接受它，是当作信念、工作假设还是行动依据？（这三种的可废止门槛不同）\n\nAlso address: the question \"我应该接受吗\" — the answer: 不一定；但也不应该仅仅因为它是共识就拒绝。关键是把\"人数\"换成\"独立证据+可检验的理由\"，并区分接受的程度与用途。\n\nLet me also make sure I don't overclaim about \"科学共识历史上整体倒转\" — I'll keep it as a general well-known point but hedge: 我不在这里给出具体案例统计。Actually I could mention that the history of science contains major reversals (地心说/燃素说) — the Mill passage itself mentions 地球中心说/热素论 as examples of alternative explanations in natural philosophy. That's verified in the text I read. Good, I can use that as an example that a near-consensus view in natural philosophy was replaced — but careful: Mill's passage says \"有以地球中心说代替太阳中心说的，有以热素论代替氧气论的\" — he uses them as examples of competing explanations that must be shown to be untenable. Interesting: Mill's wording is odd (\"以地球中心说代替太阳中心说\" = replacing heliocentrism with geocentrism). Actually as translated, it lists competing hypotheses. The point: even in natural philosophy there can be alternative explanations. I'll use the historical fact loosely rather than as Mill's claim. Better: mention 地心说/燃素说 as standard historical examples of overturned near-consensus, marked as well-known history, without a citation.\n\nHmm — but is 地心说 really a \"consensus of scholars\"? Historically yes in a sense. It's fine as a loose illustration; I'll keep it light and not build the argument on it.\n\nLet me also add the point about \"共识\" vs \"专家共识\" vs \"多数人意见\": the question says \"很多学者支持\" which is about expert/lay distinction. If the scholars are in a relevant field vs. just \"有学问的人\". Important: \"学者\" is not a competence class — what matters is whether they have the specific expertise and access to evidence on this question.\n\nAlso there's the 元问题: 你的问题本身是一个认识论问题，而\"是否接受\"取决于你的目标是真信念还是可辩护的行动。区分\"接受一个命题\"、\"以它为依据行动\"、\"向他人引述它\"。\n\nLength: Should be substantial but not bloat. Maybe 900-1300 Chinese characters? Actually the question deserves a decent treatment. I'll aim for a well-structured answer, maybe 1100-1500 characters... Let me write maybe 1400-1800 characters. Keep it tight, no filler bullets beyond what's needed. Use some structure but not excessive headers.\n\nFormat: Chinese, use a few short sections maybe with bold or headings. I'll avoid too many headers. Maybe 4-5 sections.\n\nLet me write.\n\nStructure:\n- 直接回答：不应该仅因人多就接受；也不应仅因此就不接受。共识是可废止的证据，不是接受的理由本身。\n- 一、先分清\"接受\"是哪种（信念/工作假设/行动依据），以及\"学者支持\"是哪类证据\n- 二、共识作为证据的力量取决于什么（独立性、专业相关性、分歧是否存在、纠错机制）\n- 三、必要与充分：多数票在数学/逻辑无效；在经验领域它有价值但可废止；在价值问题它证据力弱且不能替你负责\n- 四、Mill 的引文：即使真，若作为成见持有也不是知真理——接受需要你能把握理由\n- 五、可操作的判断条件 + 反驳回应（\"你不懂就别质疑\"）\n- 结尾：一句收束，保留条件。\n\nI'll include the Mill quote as a short verified excerpt with citation label 【《论自由》·第二章】. The quote: \"他的意见不论怎样真确，若不时常经受充分的和无所畏惧的讨论，那么它虽得到主张也只是作为死的教条而不是作为活的真理\" — and \"这不是有知于真理。这样主持下的真理，毋宁说只是一个迷信，偶然贴在宣告真理的字面上罢了。\" Good, both verified in the read text.\n\nNote the text has OCR-ish typos \"郎使\" (即使) — I'll quote accurately as in the edition, maybe with 改正 note? Transcribing quotation: I should be faithful. I'll quote the second: \"这不是有知于真理。这样主持下的真理，毋宁说只是一个迷信，偶然贴在宣告真理的字面上罢了。\" That's clean. And the first sentence I'll quote as is but it has no typo. Let me check: \"他的意见不论怎样真确，若不时常经受充分的和无所畏惧的讨论，那么它虽得到主张也只是作为死的教条而不是作为活的真理\" — yes clean.\n\nAlso mention: Mill's context is 言论自由/讨论自由, not exactly 专家共识 — I should note the argument is Mill's about received opinion and its grounds, and I'm using it for a related but not identical point. Be honest about the transfer.\n\nAlright, write it. I'll note the reader link? Probably not necessary but could add the reader_url. The instruction says \"引用提供真实出处与可靠阅读地址\". I'll include the chapter citation; maybe add the reader link. I'll include it lightly.\n\nLet me write the final answer.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "多数人的意见 舆论 权威 接受",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.87,
+     "result_full": "{\"query\": \"多数人的意见 舆论 权威 接受\", \"results\": [{\"book_id\": \"eef5ec46714f\", \"book_title\": \"论法的精神\", \"author\": \"孟德斯鸠\", \"chapter_idx\": 47, \"chapter_title\": \"附录 有关《论法的精神》的资料\", \"citation_label\": \"【《论法的精神》·附录 有关《论法的精神》的资料】\", \"snippet\": \"员的亚该亚联合体中，始终按照大多数成员的意见行事，否则就不可能作出任何决议。在贵族政体的联合体中，一切以贵族领袖属下的大多数人的意见为准；在君主政体的联合体中，一切以统治民族的意见为准。此类联邦可由以下几种方式组成：由若干政体相同的国家组成，这种联邦最符合自然；由若干政体不同的国家组成，这种联邦最容易产生弊病[19]，日耳曼联邦就属于此类；近邻同盟指定菲利普主政时期的希腊联邦也属于此类。2） 这些联邦为了生存下去应以什么作为法律的原则。——联合体的成员如果地位平等，每个成员除了满足联合体的条件之外，没有别的事要做，除非联合体的条件具有破坏联合体的性质。联合体的成员如果地位不平等，那就应该防止不平等状况日益严重。为此就应保存其武装力量\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"eef5ec46714f\", \"chapter_idx\": 47, \"focus\": \"多数人的意见 舆论 权威 接受\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"8a451d16f1b4\", \"book_title\": \"哲学的慰藉\", \"author\": \"阿兰·德波顿\", \"chapter_idx\": 5, \"chapter_title\": \"第一章　对与世不合的慰藉\", \"citation_label\": \"【《哲学的慰藉》·第一章　对与世不合的慰藉】\", \"snippet\": \"两三次，全城的男性公民，大约3万人，应邀到集市西南的普尼克斯山头集会，用举手表决的办法决定城邦的重大问题。对于城邦来说，多数人的意见就等同于真理。 审判苏格拉底那天，陪审团有500名公民。公诉人一开始就要他们把站在他们面前的这位哲学家当作一个不诚实的人。他上天入地刨根问底，他提出异端邪说，他善于用闪烁的辞藻让弱理战胜强理，他故意通过谈话腐蚀年轻人，对他们施加邪恶的影响。 苏格拉底对这些指控进行申辩。他解释说，他从未对天上或地下的事物提出过理论；他信奉神明，并非异端；他从未腐蚀过雅典的青年，只不过有些逍遥自在的富家子弟模仿了他的提问法，证明某些重要人物无知，使他们感到恼火。即使他误导了任何人，那也是无意的，他没有理由故意对同伴施加坏影\", \"score\": 171, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"8a451d16f1b4\", \"chapter_idx\": 5, \"focus\": \"多数人的意见 舆论 权威 接受\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"7729ccdecb0f\", \"book_title\": \"马克思恩格斯文集\", \"author\": \"卡尔·马克思/弗里德里希·恩格斯\", \"chapter_idx\": 42, \"chapter_title\": \"弗·恩格斯＊德国的革命和反革命\", \"citation_label\": \"【《马克思恩格斯文集》·弗·恩格斯＊德国的革命和反革命】\", \"snippet\": \"着一个参加进来。但同时有一点也同样是十分明显的，而且为各个现代国家的历史所证实，即农村居民由于分散于广大地区，难以达到大多数人的意见一致，所以他们永远不能胜利地从事独立的运动。他们需要更集中、更开化、更活跃的城市居民的富有首创精神的推动。 上面对在最近的运动爆发时构成德意志民族的各个最重要的阶级的概述，已经足以说明这次运动中普遍存在的不一致、不协调和明显的矛盾等情况的一大部分。当如此各不相同、如此互相矛盾而又如此奇异地互相交织的利益发生剧烈冲突的时候，当各地区各省的这些互相冲突的利益以各种不同的比例混合在一起的时候，尤其是当德国没有伦敦或巴黎那样一个大的中心的时候（这种城市的各项权威性的决定，可以避免每一个地区每一次都要用斗争来重新\", \"score\": 168, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"7729ccdecb0f\", \"chapter_idx\": 42, \"focus\": \"多数人的意见 舆论 权威 接受\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"88dc7d5961df\", \"book_title\": \"西方百年学术经典著作\", \"author\": \"佚名\", \"chapter_idx\": 707, \"chapter_title\": \"原编者的话\", \"citation_label\": \"【《西方百年学术经典著作》·原编者的话】\", \"snippet\": \"果，理性个人主义的缺乏最终等同于理性的缺乏。启蒙运动者理解的仅仅是个人理性的呼声。至于民主主义人士，当他只是盲目地服从大多数人的意见时，他冒着相信他在遵循自己的理性的风险。 就普遍思想而论，为了避免占据主导地位的思想与行为过度分离，最好的方法是迫使人们进入实践。这是真正的民主的优势。它迫使每个公民和政府一起投身于一种务实的方法，调整发展趋势，从而在政治上创造普遍思想，促使平等产生；这种方法也引发不稳定性。 实际上，托克维尔害怕历史会从占据绝对优势的行动（其仅知道政治实践的野蛮民族的特征）过渡到理论的胜利（其脱离各种形式的实践）。[230] 但对哲学的批评不仅仅是与方法论有关的事情，它不仅仅指责哲学缺乏与实践的关联。在《论美国的民主》\", \"score\": 18, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"88dc7d5961df\", \"chapter_idx\": 707, \"focus\": \"多数人的意见 舆论 权威 接受\"}, \"material_role\": \"EDITORIAL_CANDIDATE\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 4, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "权威 论证 谬误 以人为据",
+      "limit": 6
+     },
+     "status": "empty",
+     "duration_seconds": 2.151,
+     "result_full": "{\"query\": \"权威 论证 谬误 以人为据\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "意见 即使是正确的 也应允许争论",
+      "author": "密尔",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.015,
+     "result_full": "{\"query\": \"意见 即使是正确的 也应允许争论\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 论思想自由和讨论自由\", \"citation_label\": \"【《论自由》·第二章 论思想自由和讨论自由】\", \"snippet\": \"占据人心的最大问题的讨论已告截止，我们就不能希望看到那种曾使某些历史时期特别突出的一般精神活跃的高度水平。并且，只要所谓争论是避开了那些大而重要足以燃起热情的题目，人民的心灵就永不会从基础上被搅动起来，而所给予的推动也永不会把即使具有最普通智力的人们提高到思想动物的尊严。关于那种活跃情况，有三个历史时期可以为例：一个是紧接宗教改革之后一段时间内的欧洲的情况；另一个仅限于欧洲大陆并仅限于较有文化的阶级，那是十八世纪后半期的思考运动；第三个时期为时更短，就是德国在歌德（Goethe）和费希特（Fichte）时期知识方面的跃动。这三个时期在其所发展出来的一些特定意见上是大不相同的，但有一点则三者一样，就是在那三个时期中权威的枷锁都被打碎了\", \"score\": 227, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 2, \"focus\": \"意见 即使 正确 允许 争论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"意见 即使是正确的 也应允许争论\", \"query_terms\": [\"意见\", \"即使\", \"正确\", \"允许\", \"争论\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 5, \"chapter_title\": \"第五章 本文教义的应用\", \"citation_label\": \"【《论自由》·第五章 本文教义的应用】\", \"snippet\": \"同事情上经相互同意来共同规定的自由。这个问题，只要参加者各人的意志始终不变，就不出现什么困难；但是由于意志是会变的，所以即使在只关他们自己的事情上，彼此间也往往有必要成立一个定约；而当他们这样做了之后，照一般规律来说，就宜遵守那个定约。可是或许在每个国度的法律中，这个一般规律也有某些例外。不仅不责成人们遵守那种违犯第三方面的权利的定约，就是某种定约有害于双方自己时，这有时也足可成为叫他们解除那个定约的充分理由。 例如，在我国和大多数其他文明国度里，一个自己卖身为奴或者允许他人出卖己身为奴的定约在法律上是无效的、作废的，无论法律或舆论都不强制实行。这样限制一个人自愿处置其自己一生命运的权力，其根据是明显的，在这一极端的事例中尤其可以看\", \"score\": 223, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 5, \"focus\": \"意见 即使 正确 允许 争论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"意见 即使是正确的 也应允许争论\", \"query_terms\": [\"意见\", \"即使\", \"正确\", \"允许\", \"争论\"]}, {\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 1, \"chapter_title\": \"第一章 引论\", \"citation_label\": \"【《论自由》·第一章 引论】\", \"snippet\": \"，阻止这种个性的形成，从而迫使一切人物都按照它自己的模型来剪裁他们自己的这种趋势——对于这些，也都需要加以防御。关于集体意见对个人独立的合法干涉，是有一个限度的；要找出这个限度并维持它不遭侵蚀，这对于获致人类事务的良好情况、正同防御政治专制一样，是必不可少的。 这个命题虽然在一般的说法下大概不会有何争论，但实践的问题在于究竟应该把这个限度划在哪里？也就是说，究竟应该怎样在个人独立与社会控制之间做出恰当的调整？这就是一个几乎一切工作尚待着手的题目了。凡一切足使存在对人有价值者，莫不赖对他人行动有所约束。因此，必须有某些行为准则，首先由法律来强加于某些事情，而对于许多不宜由法律来起作用的事情，还要由舆论来办。那些准则究竟应当是什么，乃是\", \"score\": 218, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 1, \"focus\": \"意见 即使 正确 允许 争论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"意见 即使是正确的 也应允许争论\", \"query_terms\": [\"意见\", \"即使\", \"正确\", \"允许\", \"争论\"]}], \"catalogue_matches\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《论自由》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"bece6ea379fa\", \"book_title\": \"妇女的屈从地位\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《妇女的屈从地位》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e23d6fac862d\", \"book_title\": \"功利主义\", \"author\": \"约翰·斯图尔特·密尔\", \"citation_label\": \"【《功利主义》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": \"密尔\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "休谟 见证 证言 他人的报告 可信度",
+      "limit": 6
+     },
+     "status": "empty",
+     "duration_seconds": 1.87,
+     "result_full": "{\"query\": \"休谟 见证 证言 他人的报告 可信度\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6a65e3ef874f",
+      "chapter_idx": 2,
+      "focus": "公认的意见 不遭争论 失去活力",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 2, \"title\": \"第二章 论思想自由和讨论自由\", \"citation_label\": \"【《论自由》·第二章 论思想自由和讨论自由】\", \"text\": \"可以为例：一个是紧接宗教改革之后一段时间内的欧洲的情况；另一个仅限于欧洲大陆并仅限于较有文化的阶级，那是十八世纪后半期的思考运动；第三个时期为时更短，就是德国在歌德（Goethe）和费希特（Fichte）时期知识方面的跃动。这三个时期在其所发展出来的一些特定意见上是大不相同的，但有一点则三者一样，就是在那三个时期中权威的枷锁都被打碎了。那时，旧的精神专制已被推翻，而新的还未代立。正是由那三个时期所给予的推动才把欧洲造成现在这样。无论在人心方面或者在制度方面出现的每一进步，都可清楚地分别溯踪于三者中的或此或彼。可是若干时间以来，有些现象表明所有那三项推动力量已经差不多用光；我们若不再度力主精神自由，我们就不能期待什么新的起步了。\\n现在我要转到论证的第二部分，不再假定任何公认意见都会谬误，而姑且冒认它们皆系真确，然后来考查一下，若不对那些意见的真确性进行自由和公开的讨论而迳加以主张，这样又有什么价值。凡持有一种坚强意见的人，不论怎样不甘承认其意见有谬误的可能，只要一想，他的意见不论怎样真确，若不时常经受充分的和无所畏惧的讨论，那么它虽得到主张也只是作为死的教条而不是作为活的真理——他只要想到这一点，就应该为它所动了。\\n有一类人（幸而不象从前那样多了）想，有人对于他们所认为真确的意见只要无怀疑地表示赞同，虽然对于它的根据一无所知，也不能替它在最肤浅的反驳面前作一番守得住的辩护，那也就足够了。这样的人，只要一旦能够领到权威方面教给他们的信条，便自然而然会想，若还允许对这信条有所问难，那就没有好处而只有害处。这样的人，当他们的势力得势时，就会使得人们几乎不可能以聪明而有考虑的方式排斥一个公认的意见，虽然仍不免卤莽而无知地把它排斥；这是因为，要完全堵绝讨论究竟不大可能，而当它一旦达到时，没有坚定信念作基础的信条自然一遇辩论的影子就会退避三舍。根本说来，郎使舍弃这个可能性不提——就假定真确意见是深踞心中，但系作为一个成见、一个脱离论证的信条、一个反对论证的证据而深踞心中——这也不是一个理性动物主持真理时所应取的办法。这不是有知于真理。这样主持下的真理，毋宁说只是一个迷信，偶然贴在宣告真理的字面上罢了。\\n假如说人类的智力和判断力是应当培养的（这至少是新教徒所不否认的事），那么试问任什么事物上最适于锻炼一个人的那些能力呢？难道还有比那些关涉本人甚切以致必须对它们抱有意见的事物更为适宜的吗？假如说对于理解力的培养在一个事情中要胜于在另一个事情中，这无疑最好是在学得自己的意见的根据中来进行。在一些要有所信便首须信得正确的题目上，人们不论相信什么，总应当能够为它至少在普通的反驳面前作辩护。但是有人会说：“把他们的意见的根据教给他们就成了，对于一个意见、不见得因为没有听到争论就一定是鹦鹉学舌，譬如学习几何学的人并非单把定理装入记忆，同时也懂得和学会演证；若因他们从未听到什么人否认并试图证倒几何学的真理就说他们对于几何学真理的根据懵然无知，那就未免荒唐了。毫无疑问，若只说到象数学这个题目，其中根本没有错的一方要说的东西，那样说法是很可以的。数学真理的证据有其特殊之点，就是所有论据都在一方。这里没有反驳，也没有对反驳的答复。但是在每一个可能有不同意见的题目上，真理却象是摆在一架天秤上，要靠两组互相冲突的理由来较量。即使在自然哲学当中，对于同一事实也可能有另种解释：例如有以地球中心说代替太阳中心说的，有以热素论代替氧气论的；这就必须能够表明为什么那个另一说不能成为真理；除非到这一点已经得到表明，并且我们也知道它是怎样得到表明的，我们就不算懂得我们所持意见的根据。至于再转到一些远较复杂的题目，转到道德、宗教、政治、社会关系、生活事务等等，那在每一个要争执的意见上倒有四分之三的论证须用于驱除一些有利于不同意见的现象。古代有个除一人而外的最大演说家留有记载说，他对于敌方的情事，郎使不用比研究自己的情事时所用的更大的强度，至少总要用同样的强度来加以研究。西塞罗（Cicero）用这种办法当作在公开辩论时获得成功的手段，这正是为了达到真理而研究任何题目的人们都需要仿效的。一个人对于一件情事若仅仅知道他自己的一方，他对那个情事就所知甚少。他的理由也许很好，也许不曾有一个人能驳倒它，但是假如他也同样不能驳倒反对方面的理由，也不尽知那些理由都是什么，那么他便没有根据就两种意见之中有所择取。这时他的合理立场应当是把判断悬搁起来；他若不甘心于这样，他便不是被权威带着走，就是象世界上一般情况那样采取他自己情绪上所最倾向的一方。进一步讲，一个人之听取敌方的论据，若仅听到自己的教师们所转述的样子，其中并伴有他们所提供的作为辩驳的东西，那也还不够。那不是对待论据的公正办法，也不会拿它们真正触到自己的心。他必须能够从实在相信那些论据、真试替它们辩护、并为它们竭尽一切努力的人们那里听到那些论据。他必须在那些论据的最花巧又最动听的表达形式之下来认识那些论据；他必须感受到那种为真确见解所必须遇到并予以解决的难题的全部压力；否则他就永不能真正掌握到足以对付并解决那个难题的真理。百分之九十九的所谓受过教育的人们都是处于这种情况，甚至那些能为自己的意见滔滔辩护的人们\\n也是如此。他们的结论也许真确，但对于他们所知的东西而言则会是谬误：他们从未把自己投放在与他们思想不同的人们的精神境地去想一想那些人必会说些什么；因而若照知这一字的本义说来，他们可说是并不知他们自己所宣奉的教义。一个教义的某些部分足以说明其余部分并将它释为正当，这在他们是不知的；有些考虑足以表明两个似乎彼此冲突的事实实在可以互相调和，或者足以指明在看来都很有力的两个理由之间应当如何取舍，这在他们也是不知的。总之，对于所有足以转变比重、足以决定一个全面理解者的判断的那部分真理，他们都是陌生的；而要真正知道那部分真理，只有兼顾双方、无所偏重、并力图从最强的光亮下来观察双方的理由的人们才能做到。要在一些道德的和人文的题目上取得一个真正的理解，这是一条最根本的纪律，甚至在一切重要真理上如果没有反对者，我们还不可不想象一些反对者，并供给他们以最技巧的魔鬼辩护者所能编出的最有力的论据。\\n为了减弱上述那些考虑的力量，讨论自由的敌人或许又会说，没有必要要人类一般都知道都理解哲学家们和神学家们所能讲的反对或赞成其意见的一切道理。他们说，无需要求普通人都能揭示一个天才反对者的一切误言或妄言。他们说，只要总有一些人能够答复那些误言或妄言，使得凡是会把不学的人们引导向错误的东西没有不遭到批驳的，那就足够了。他们说，一些心思简单的人，既经有人把反复传授的真理的明显根据教给他们，就可把一切余事托给权威人士；他们既明知自己无知无才去解决每一个能被提出的难题，就大可在反正有对该项工作特有训练的人们已经或者能够对已提出的一切难题予以解答的保证之下去安静休息了。\\n对于这个见解，让我姑且让步到那些在理解真理（这应当伴随着信仰真理）的数量上最容易感到满足的人们所能要求的最大限度；即使如此，赞成讨论自由的论据也并未有所削弱。因为就是这个说法也承认人类应当有一个理性的保证：对于一切反驳已经予以满意的答复；既然如此，如果不把需要得到答复的反驳说出来，它们又怎能得到答复呢？如果反驳者没有机会表明答复是未能令人满意的、又怎能知道答复是令人满意的呢？即\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 13863, \"excerpt_end\": 16863, \"chapter_text_length\": 30135, \"has_more\": true, \"next_offset\": 16863, \"has_previous\": true, \"previous_offset\": 10863, \"focus_found\": true, \"focus_terms_matched\": [\"公认的意见\"], \"focus_terms_found_in_chapter\": [\"公认的意见\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"公认的意见\", \"offset\": 14563, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 2, \"offset\": 14363, \"focus\": \"公认的意见\"}}, {\"term\": \"公认的意见\", \"offset\": 18039, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 2, \"offset\": 17839, \"focus\": \"公认的意见\"}}, {\"term\": \"公认的意见\", \"offset\": 28329, \"read_args\": {\"book_id\": \"6a65e3ef874f\", \"chapter_idx\": 2, \"offset\": 28129, \"focus\": \"公认的意见\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"f38a1db7266fc48174f1381d07e4741b17ac0145a36e06dab78ec06a5eab509f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/6a65e3ef874f?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"约翰·斯图尔特·密尔\", \"canonical_title\": \"论自由\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[13863, 16863]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 7.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_uF4zexT6GcORKDFELhu34717"
+    },
+    {
+     "t": 7.8,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_L8AcuwdCrZPZUncU0bXP8709",
+     "status": "success",
+     "duration_seconds": 1.87
+    },
+    {
+     "t": 10.1,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "权威 论证 谬误 以人为据",
+      "limit": 6
+     },
+     "status": "empty",
+     "duration_seconds": 2.151,
+     "result_full": "{\"query\": \"权威 论证 谬误 以人为据\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 11.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_YglutY0BM2Uy7Xe9ZOPS1828"
+    },
+    {
+     "t": 12.0,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_S6kYGjmnEbBs2ae15DGi0760",
+     "status": "success",
+     "duration_seconds": 0.015
+    },
+    {
+     "t": 14.0,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "休谟 见证 证言 他人的报告 可信度",
+      "limit": 6
+     },
+     "status": "empty",
+     "duration_seconds": 1.87,
+     "result_full": "{\"query\": \"休谟 见证 证言 他人的报告 可信度\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 15.8,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_90HwUIs2l6SWAuhg18Lq4243",
+     "status": "success",
+     "duration_seconds": 0.004
+    }
+   ],
+   "answer": "## 先拆问题\n\n“很多学者支持”提供的是一种**证据**，不是结论。它属于间接证据：你自己没走完那条论证链，转而依赖别人走过的。这类证据可以是好的，但它的好坏取决于谁能给出什么理由，而不取决于人数本身。所以答案是：**单凭“支持的人多”不足以让你接受，单凭“这是多数意见”也不足以让你拒绝；关键是这份共识在多大程度上构成独立、可信、可纠错的证据。**\n\n## 一、“接受”指什么？\n\n三件事一定要分开：\n\n- **形成信念**（我认为它是真的）\n- **当作工作假设**（先按它做，随时可改）\n- **当作行动依据**（据此决定怎么做、并承担后果）\n\n三者的门槛不同。技术问题上，你完全可以在能力不足时按专家共识行动——这叫认识论上的分工，是理性的。但这不等于你必须把它当成已证实的真理来相信。\n\n## 二、共识的证据力量取决于什么\n\n人数只是“独立证据量”的一个代理指标，而这个代理经常失真。要问：\n\n1. **专业相关性**：“学者”不是一种专业能力。文学教授对疫苗免疫学的多数意见，不具备专家意见的分量；跨领域签名常常只是立场表达。\n2. **独立性**：一百个共享同一范式训练、同一经费来源、同一发表激励、同一套可解难题清单的研究者，提供的信息量远少于一百份彼此独立的证据。共识究竟来自多个独立线索的汇聚，还是来自同一条线索的复制，性质完全不同。\n3. **分歧是否真实存在**：同等合格的专家中有没有相当数量的少数派？他们最强的理由是什么？（密尔在《论自由》第二章说，一个人若“仅仅知道他自己的一方”，即使理由不错又没人驳倒，“他也没有根据就两种意见之中有所择取”，合理立场是悬搁判断。）[《论自由》·第二章 论思想自由和讨论自由](https://deepphilosophy.top/reader/6a65e3ef874f?ch=2)\n4. **纠错机制**：这个领域有没有让错误被发现、被承认、被惩罚的机制？有预测可检验的领域，共识的可靠性远高于无法检验、立场与身份利益深度绑定的领域。\n\n## 三、必要与充分都不成立\n\n- **不是充分条件**：数学和逻辑是最清楚的例子——证明不因投票变真。经验领域也有整体倒转的先例（地心说、燃素说），说明“当时近乎一致的专家意见”并非不可错。\n- **不是必要条件**：大量真观点曾长期是少数派。\n- **在规范与价值问题上证据力更弱**：不是因为这些题目没有对错，而是“很多学者这么认为”只能作为一项输入，不能替代你对“我该看重什么、我要过怎样的生活”的权衡；而且这类决定的后果由你承担，不由那些学者承担。\n\n## 四、密尔给的判据：接受的质量\n\n密尔论证说，一个意见“不论怎样真确，若不时常经受充分的和无所畏惧的讨论，那么它虽得到主张也只是作为死的教条而不是作为活的真理”；若把它作为脱离论证的信条来持有，“这不是有知于真理。这样主持下的真理，毋宁说只是一个迷信，偶然贴在宣告真理的字面上罢了。”\n\n要注意他讨论的语境是言论与讨论自由，不是“专家共识”本身；但其中一点可以直接搬过来：**你接受的正当性，有一部分来自你对理由的把握，而不是来自来源的声望。** 只会说“很多学者都这么说”的人，和真正理解这些理由的人，持有的东西不是一种。\n\n## 五、判断条件\n\n- 若问题是高度技术性的，你合理判断自己无法独立评估，且专业群体内部高度一致、纠错机制健全 → **倾向接受（至少作为行动依据）是理性的**。\n- 若群体内存在实质的同等资格分歧，或共识与谁获益相关 → **降低置信度，保留判断**，而不是接受或断然否定。\n- 数学与逻辑命题 → 人数无关。\n- 你必须亲自负责的生活与价值抉择 → 共识可作重要参考，但**不能替代**你的判断。\n\n最后回应一个常见反驳：“你不懂就别质疑专家。”这句话作为行动指南通常是对的——你不该拿自己在网上的十分钟去推翻别人二十年的工作。但它不支持“多数支持即为真”这个命题，也不禁止你追问理由。可以区分**照做**与**判断**：照做往往应当，判断仍须自己保留。真正的错误不是援引权威，而是把权威当成了可以停止追问理由的地方。",
+   "answer_chars": 1713,
+   "done_content": "## 先拆问题\n\n“很多学者支持”提供的是一种**证据**，不是结论。它属于间接证据：你自己没走完那条论证链，转而依赖别人走过的。这类证据可以是好的，但它的好坏取决于谁能给出什么理由，而不取决于人数本身。所以答案是：**单凭“支持的人多”不足以让你接受，单凭“这是多数意见”也不足以让你拒绝；关键是这份共识在多大程度上构成独立、可信、可纠错的证据。**\n\n## 一、“接受”指什么？\n\n三件事一定要分开：\n\n- **形成信念**（我认为它是真的）\n- **当作工作假设**（先按它做，随时可改）\n- **当作行动依据**（据此决定怎么做、并承担后果）\n\n三者的门槛不同。技术问题上，你完全可以在能力不足时按专家共识行动——这叫认识论上的分工，是理性的。但这不等于你必须把它当成已证实的真理来相信。\n\n## 二、共识的证据力量取决于什么\n\n人数只是“独立证据量”的一个代理指标，而这个代理经常失真。要问：\n\n1. **专业相关性**：“学者”不是一种专业能力。文学教授对疫苗免疫学的多数意见，不具备专家意见的分量；跨领域签名常常只是立场表达。\n2. **独立性**：一百个共享同一范式训练、同一经费来源、同一发表激励、同一套可解难题清单的研究者，提供的信息量远少于一百份彼此独立的证据。共识究竟来自多个独立线索的汇聚，还是来自同一条线索的复制，性质完全不同。\n3. **分歧是否真实存在**：同等合格的专家中有没有相当数量的少数派？他们最强的理由是什么？（密尔在《论自由》第二章说，一个人若“仅仅知道他自己的一方”，即使理由不错又没人驳倒，“他也没有根据就两种意见之中有所择取”，合理立场是悬搁判断。）[《论自由》·第二章 论思想自由和讨论自由](https://deepphilosophy.top/reader/6a65e3ef874f?ch=2)\n4. **纠错机制**：这个领域有没有让错误被发现、被承认、被惩罚的机制？有预测可检验的领域，共识的可靠性远高于无法检验、立场与身份利益深度绑定的领域。\n\n## 三、必要与充分都不成立\n\n- **不是充分条件**：数学和逻辑是最清楚的例子——证明不因投票变真。经验领域也有整体倒转的先例（地心说、燃素说），说明“当时近乎一致的专家意见”并非不可错。\n- **不是必要条件**：大量真观点曾长期是少数派。\n- **在规范与价值问题上证据力更弱**：不是因为这些题目没有对错，而是“很多学者这么认为”只能作为一项输入，不能替代你对“我该看重什么、我要过怎样的生活”的权衡；而且这类决定的后果由你承担，不由那些学者承担。\n\n## 四、密尔给的判据：接受的质量\n\n密尔论证说，一个意见“不论怎样真确，若不时常经受充分的和无所畏惧的讨论，那么它虽得到主张也只是作为死的教条而不是作为活的真理”；若把它作为脱离论证的信条来持有，“这不是有知于真理。这样主持下的真理，毋宁说只是一个迷信，偶然贴在宣告真理的字面上罢了。”\n\n要注意他讨论的语境是言论与讨论自由，不是“专家共识”本身；但其中一点可以直接搬过来：**你接受的正当性，有一部分来自你对理由的把握，而不是来自来源的声望。** 只会说“很多学者都这么说”的人，和真正理解这些理由的人，持有的东西不是一种。\n\n## 五、判断条件\n\n- 若问题是高度技术性的，你合理判断自己无法独立评估，且专业群体内部高度一致、纠错机制健全 → **倾向接受（至少作为行动依据）是理性的**。\n- 若群体内存在实质的同等资格分歧，或共识与谁获益相关 → **降低置信度，保留判断**，而不是接受或断然否定。\n- 数学与逻辑命题 → 人数无关。\n- 你必须亲自负责的生活与价值抉择 → 共识可作重要参考，但**不能替代**你的判断。\n\n最后回应一个常见反驳：“你不懂就别质疑专家。”这句话作为行动指南通常是对的——你不该拿自己在网上的十分钟去推翻别人二十年的工作。但它不支持“多数支持即为真”这个命题，也不禁止你追问理由。可以区分**照做**与**判断**：照做往往应当，判断仍须自己保留。真正的错误不是援引权威，而是把权威当成了可以停止追问理由的地方。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_5",
+     "book": "论自由",
+     "chapter": "第二章 论思想自由和讨论自由",
+     "book_id": "6a65e3ef874f",
+     "chapter_idx": 2,
+     "author": "约翰·斯图尔特·密尔",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_21"
+     ],
+     "excerpt": "用同样的强度来加以研究。西塞罗（Cicero）用这种办法当作在公开辩论时获得成功的手段，这正是为了达到真理而研究任何题目的人们都需要仿效的。一个人对于一件情事若仅仅知道他自己的一方，他对那个情事就所知甚少。他的理由也许很好，也许不曾有一个人能驳倒它，但是假如他也同样不能驳倒反对方面的理由，也不尽知那些理由都是什么，那么他便没有根据就两种意见之中有所择取。这时他的合理立场应当是把判断悬搁起来；他若不甘心于这样，他便不是被权威带着走，就是象世界上一般情况那样采取他自己情绪上所最倾向的一方。进一步讲，一个人之听取敌方的论据，若仅听到自己的教师们所转述的样子，其中并伴有他们所提供的作为辩驳的东西，那也还不够。那不是对待论据的公正办法，也不会拿它们真正触到自己的心。他必须能够从实在相信那些论据、真试替它们辩护、并为它们竭尽一切努力的人们那里听到那些论据。他必须在那些论据的最花巧又最动听的表达形式之下来认识那些论据；他必须感受到那种为真确见解所必须遇到并予以解决的难题的全部压力；否则他就永不能真正掌握到足以对付并解决那个难题的真理。百分之九十九的所谓受过教育的人们都是处于这种情况，甚至那些能为自己的意见滔滔辩护的人们\n也是如此。他们的结论也许真确，但对于他们所知的东西而言则会是谬误：他们从未把自己投放在与他们思想不同的人们的精神境地去想一想那些人必会说些什么；因而若照知这一字的本义说来，他们可",
+     "quoted_passages": [
+      "仅仅知道他自己的一方",
+      "不论怎样真确，若不时常经受充分的和无所畏惧的讨论，那么它虽得到主张也只是作为死的教条而不是作为活的真理",
+      "这不是有知于真理。这样主持下的真理，毋宁说只是一个迷信，偶然贴在宣告真理的字面上罢了。"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 30135,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 7,
+    "display_citations": 1,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "论自由",
+       "chapter": "第二章 论思想自由和讨论自由",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 2,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "用同样的强度来加以研究。西塞罗（Cicero）用这种办法当作在公开辩论时获得成功的手段，这正是为了达到真理而研究任何题目的人们都需要仿效的。一个人对于一件情事若仅仅知道他自己的一方，他对那个情事就所知甚少。他的理由也许很好，也许不曾有一个人能驳倒它，但是假如他也同样不能驳倒反对方面的理由，也不尽知那些理由都是什么，那么他便没有根据就两种意见之中有所择取。这时他的合理立场应当是把判断悬搁起来；他若不甘心于这样，他便不是被权威带着走，就是象世界上一般情况那样采取他自己情绪上所最倾向的一方。进一步讲，一个人之听取敌方的论据，若仅听到自己的教师们所转述的样子，其中并伴有他们所提供的作为辩驳的东西，那也还不够。那不是对待论据的公正办法，也不会拿它们真正触到自己的心。他必须能够从实在相信那些论据、真试替它们辩护、并为它们竭尽一切努力的人们那里听到那些论据。他必须在那些论据的最花巧又最动听的表达形式之下来认识那些论据；他必须感受到那种为真确见解所必须遇到并予以解决的难题的全部压力；否则他就永不能真正掌握到足以对付并解决那个难题的真理。百分之九十九的所谓受过教育的人们都是处于这种情况，甚至那些能为自己的意见滔滔辩护的人们\n也是如此。他们的结论也许真确，但对于他们所知的东西而言则会是谬误：他们从未把自己投放在与他们思想不同的人们的精神境地去想一想那些人必会说些什么；因而若照知这一字的本义说来，他们可",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 30135,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "论法的精神",
+       "chapter": "附录 有关《论法的精神》的资料",
+       "book_id": "eef5ec46714f",
+       "chapter_idx": 47,
+       "author": "孟德斯鸠",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "员的亚该亚联合体中，始终按照大多数成员的意见行事，否则就不可能作出任何决议。在贵族政体的联合体中，一切以贵族领袖属下的大多数人的意见为准；在君主政体的联合体中，一切以统治民族的意见为准。此类联邦可由以下几种方式组成：由若干政体相同的国家组成，这种联邦最符合自然；由若干政体不同的国家组成，这种联邦最容易产生弊病[19]，日耳曼联邦就属于此类；近邻同盟指定菲利普主政时期的希腊联邦也属于此类。2） 这些联邦为了生存下去应以什么作为法律的原则。——联合体的成员如果地位平等，每个成员除了满足联合体的条件之外，没有别的事要做，除非联合体的条件具有破坏联合体的性质。联合体的成员如果地位不平等，那就应该防止不平等状况日益严重。为此就应保存其武装力量",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学的慰藉",
+       "chapter": "第一章　对与世不合的慰藉",
+       "book_id": "8a451d16f1b4",
+       "chapter_idx": 5,
+       "author": "阿兰·德波顿",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "两三次，全城的男性公民，大约3万人，应邀到集市西南的普尼克斯山头集会，用举手表决的办法决定城邦的重大问题。对于城邦来说，多数人的意见就等同于真理。 审判苏格拉底那天，陪审团有500名公民。公诉人一开始就要他们把站在他们面前的这位哲学家当作一个不诚实的人。他上天入地刨根问底，他提出异端邪说，他善于用闪烁的辞藻让弱理战胜强理，他故意通过谈话腐蚀年轻人，对他们施加邪恶的影响。 苏格拉底对这些指控进行申辩。他解释说，他从未对天上或地下的事物提出过理论；他信奉神明，并非异端；他从未腐蚀过雅典的青年，只不过有些逍遥自在的富家子弟模仿了他的提问法，证明某些重要人物无知，使他们感到恼火。即使他误导了任何人，那也是无意的，他没有理由故意对同伴施加坏影",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "马克思恩格斯文集",
+       "chapter": "弗·恩格斯＊德国的革命和反革命",
+       "book_id": "7729ccdecb0f",
+       "chapter_idx": 42,
+       "author": "卡尔·马克思/弗里德里希·恩格斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "着一个参加进来。但同时有一点也同样是十分明显的，而且为各个现代国家的历史所证实，即农村居民由于分散于广大地区，难以达到大多数人的意见一致，所以他们永远不能胜利地从事独立的运动。他们需要更集中、更开化、更活跃的城市居民的富有首创精神的推动。 上面对在最近的运动爆发时构成德意志民族的各个最重要的阶级的概述，已经足以说明这次运动中普遍存在的不一致、不协调和明显的矛盾等情况的一大部分。当如此各不相同、如此互相矛盾而又如此奇异地互相交织的利益发生剧烈冲突的时候，当各地区各省的这些互相冲突的利益以各种不同的比例混合在一起的时候，尤其是当德国没有伦敦或巴黎那样一个大的中心的时候（这种城市的各项权威性的决定，可以避免每一个地区每一次都要用斗争来重新",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "西方百年学术经典著作",
+       "chapter": "原编者的话",
+       "book_id": "88dc7d5961df",
+       "chapter_idx": 707,
+       "author": "佚名",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "果，理性个人主义的缺乏最终等同于理性的缺乏。启蒙运动者理解的仅仅是个人理性的呼声。至于民主主义人士，当他只是盲目地服从大多数人的意见时，他冒着相信他在遵循自己的理性的风险。 就普遍思想而论，为了避免占据主导地位的思想与行为过度分离，最好的方法是迫使人们进入实践。这是真正的民主的优势。它迫使每个公民和政府一起投身于一种务实的方法，调整发展趋势，从而在政治上创造普遍思想，促使平等产生；这种方法也引发不稳定性。 实际上，托克维尔害怕历史会从占据绝对优势的行动（其仅知道政治实践的野蛮民族的特征）过渡到理论的胜利（其脱离各种形式的实践）。[230] 但对哲学的批评不仅仅是与方法论有关的事情，它不仅仅指责哲学缺乏与实践的关联。在《论美国的民主》",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论自由",
+       "chapter": "第五章 本文教义的应用",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 5,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "同事情上经相互同意来共同规定的自由。这个问题，只要参加者各人的意志始终不变，就不出现什么困难；但是由于意志是会变的，所以即使在只关他们自己的事情上，彼此间也往往有必要成立一个定约；而当他们这样做了之后，照一般规律来说，就宜遵守那个定约。可是或许在每个国度的法律中，这个一般规律也有某些例外。不仅不责成人们遵守那种违犯第三方面的权利的定约，就是某种定约有害于双方自己时，这有时也足可成为叫他们解除那个定约的充分理由。 例如，在我国和大多数其他文明国度里，一个自己卖身为奴或者允许他人出卖己身为奴的定约在法律上是无效的、作废的，无论法律或舆论都不强制实行。这样限制一个人自愿处置其自己一生命运的权力，其根据是明显的，在这一极端的事例中尤其可以看",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论自由",
+       "chapter": "第一章 引论",
+       "book_id": "6a65e3ef874f",
+       "chapter_idx": 1,
+       "author": "约翰·斯图尔特·密尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，阻止这种个性的形成，从而迫使一切人物都按照它自己的模型来剪裁他们自己的这种趋势——对于这些，也都需要加以防御。关于集体意见对个人独立的合法干涉，是有一个限度的；要找出这个限度并维持它不遭侵蚀，这对于获致人类事务的良好情况、正同防御政治专制一样，是必不可少的。 这个命题虽然在一般的说法下大概不会有何争论，但实践的问题在于究竟应该把这个限度划在哪里？也就是说，究竟应该怎样在个人独立与社会控制之间做出恰当的调整？这就是一个几乎一切工作尚待着手的题目了。凡一切足使存在对人有价值者，莫不赖对他人行动有所约束。因此，必须有某些行为准则，首先由法律来强加于某些事情，而对于许多不宜由法律来起作用的事情，还要由舆论来办。那些准则究竟应当是什么，乃是",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 7,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 37.498,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 7.6,
+     "ev": "assistant_commentary",
+     "chars": 25
+    },
+    {
+     "t": 7.6,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 7.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_uF4zexT6GcORKDFELhu34717"
+    },
+    {
+     "t": 7.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_L8AcuwdCrZPZUncU0bXP8709"
+    },
+    {
+     "t": 9.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.87,
+     "result_chars": 3485,
+     "result_head": "{\"query\": \"多数人的意见 舆论 权威 接受\", \"results\": [{\"book_id\": \"eef5ec46714f\", \"book_title\": \"论法的精神\", \"author\": \"孟德斯鸠\", \"chapter_idx\": 47, \"chapter_title\": \"附录 有关《论法的精神》的"
+    },
+    {
+     "t": 10.1,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 2.151,
+     "result_chars": 336,
+     "result_head": "{\"query\": \"权威 论证 谬误 以人为据\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_s"
+    },
+    {
+     "t": 11.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_YglutY0BM2Uy7Xe9ZOPS1828"
+    },
+    {
+     "t": 12.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_S6kYGjmnEbBs2ae15DGi0760"
+    },
+    {
+     "t": 12.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.015,
+     "result_chars": 3506,
+     "result_head": "{\"query\": \"意见 即使是正确的 也应允许争论\", \"results\": [{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"author\": \"约翰·斯图尔特·密尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 论思想自由"
+    },
+    {
+     "t": 14.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.87,
+     "result_chars": 341,
+     "result_head": "{\"query\": \"休谟 见证 证言 他人的报告 可信度\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"sea"
+    },
+    {
+     "t": 15.8,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_90HwUIs2l6SWAuhg18Lq4243"
+    },
+    {
+     "t": 16.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 5220,
+     "result_head": "{\"book_id\": \"6a65e3ef874f\", \"book_title\": \"论自由\", \"chapter_idx\": 2, \"title\": \"第二章 论思想自由和讨论自由\", \"citation_label\": \"【《论自由》·第二章 论思想自由和讨论自由】\", \"text\": \"可以为例：一个是紧接宗教改"
+    },
+    {
+     "t": 37.6,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 994
+  },
+  {
+   "turn": 2,
+   "question": "但历史上很多共识后来都错了。",
+   "wall_s": 30.7,
+   "ttft_s": 23.9,
+   "public_notes": [],
+   "provider_reasoning": "The user says: \"但历史上很多共识后来都错了。\" This is a follow-up. In the previous turn, I already mentioned 地心说、燃素说 as examples of consensus reversing. Now the user pushes: many historical consensus were later wrong.\n\nI need to respond well. Key moves:\n- I did mention this, so acknowledge that this isn't a new point but it deserves being taken seriously — the question is what follows.\n- The argument form: \"many past consensuses were wrong\" → what conclusion? Careful: does it support rejecting consensus? No. This is a selection-bias / reference-class problem: we observe the reversed ones precisely because they reversed. Also survivorship and hindsight.\n- Important distinctions: \n  1. \"很多\" needs range basis. \"Many\" in absolute count vs. proportion. The relevant question is base rate: of all expert consensuses that met certain conditions, what fraction were overturned? We have no clean denominator. Historical record is biased toward the dramatic reversals (they get recorded, taught, and remembered); the ones that held are boring and invisible.\n  2. Distinguish types: consensus about unobservable/theoretical posits vs. consensus about robust observable regularities. Also distinguish consensus of a closed, authority-enforcing institution (church, party) vs. distributed scientific community with mechanisms.\n  3. Reversals in science typically replace a theory with a better one that preserved the successful predictions (correspondence principle) — so \"wrong\" is often partial: the old theory was not \"nothing was right.\" E.g., Newtonian mechanics is still used for bridges. This matters: if consensus is typically \"wrong\" only in the sense of being a limiting case, this weakens the skeptical inference.\n  4. Also distinguish: was the historical consensus an *expert* consensus in the relevant sense, or a lay/institutional one? Geocentrism was endorsed by both astronomers and theology, but also, in fact, experts kept improving predictions; the resistance was partly institutional/scriptural. Hmm, need care. Actually Ptolemaic astronomy was genuinely the best available empirically — it made predictions, and Copernicus was not immediately better empirically. That's an interesting point: sometimes the wrong consensus was *epistemically justified* given the evidence available. That's a key distinction: justified-then vs. careless-then. A consensus can be later shown false while having been the rational thing to believe. This shows \"wrong\" ≠ \"irrational to accept.\" And that's the crux: your question is \"should I accept?\" — which is about rationality of acceptance given available evidence, not about guaranteed truth.\n  5. Pessimistic induction (Laudan's \"pessimistic meta-induction\"): the history of science is a graveyard of successful theories; so our current theories are probably false too. This is a real, named argument. Worth naming and giving its strongest form and the standard replies. I should present it: the argument from the user's point is a version of pessimistic meta-induction. Replies: (a) the argument concerns *theories* (unobservable posits, deep ontology), not *consensus about well-tested regularities/predictions*; (b) if we restrict to theories whose central entities are \"genuinely referential\" or to structural/empirical content, the record looks better (structural realism); (c) selective realism; (d) the induction's reference class is ill-defined.\n  6. The consequence for the practical question: even granting the pessimistic induction, what follows? Not \"reject consensus.\" It follows: (a) hold consensus beliefs with calibrated confidence (don't treat as certainty); (b) prefer robust, multiply-determined, mechanism-supported consensus in domains with error-correction; (c) keep the possibility of revision live; (d) importantly, the alternative — ignoring consensus and trusting your own unaided judgment — has a *worse* track record. This is a comparative question. There's a nice point: the fact that consensus is revisable is a *feature* of the process you'd want, and the mechanism by which it gets fixed is the same community. The record of corrections is evidence that the institution works, not that it doesn't.\n  7. Also the asymmetry: for the individual, the relevant comparison is not \"consensus vs. truth\" but \"consensus vs. my alternative.\" Base rate of an individual amateur overturning a well-supported consensus is far lower than the consensus's error rate. Both are low, but one is much lower.\n  8. Distinguish \"the consensus was wrong\" from \"the consensus's practical guidance was disastrous.\" Sometimes (e.g., medical practices) the consensuses were wrong with costs. So you want to know the cost structure — reversible vs irreversible decisions.\n\nI should probably do some research for accuracy. The question involves real historical cases and possibly a named argument (Laudan's pessimistic meta-induction). I should verify: Laudan 1981 \"A Confutation of Convergent Realism\" — pessimistic meta-induction. Let me search the local library and also scholarship search. Also 密尔 quote already used.\n\nLet me plan tool calls:\n- search_scholarship for \"pessimistic meta-induction Laudan\" and maybe for \"expert consensus accuracy Tetlock\" or \"scientific consensus reliability\".\n- search_books for 共识 / 库恩 范式 to ground claims — probably Kuhn would be relevant (paradigm shifts). Maybe 波普尔.\n- Maybe websearch for historical base-rate? Hmm, might be relevant: \"how often are scientific consensuses overturned\" — there's a paper. But careful about overclaiming.\n\nLet me do a few parallel calls: search_scholarship (pessimistic meta-induction), search_books (库恩 范式 不可通约?), search_scholarship for expert consensus.\n\nActually let me be efficient but grounded. Key factual claims I'd like to support:\n1. Laudan's pessimistic meta-induction — named argument, real. Verify via scholarship search.\n2. Kuhn on paradigm change — local library likely has 《科学革命的结构》.\n3. Maybe Tetlock's Expert Political Judgment on expert accuracy — for the base-rate point. Optional.\n4. Correspondence principle / Newtonian mechanics as limiting case — standard, but could find in local book.\n\nLet me call tools.\n\nI'll do: search_scholarship(\"pessimistic meta-induction scientific realism Laudan\"), search_books(\"共识 科学革命 范式\"), and maybe query_graph? Not needed.\n\nLet me start with a batch.\n\nThen maybe read a bit from Kuhn.\n\nLet me go.Let me read the Kuhn chapter 8 (对危机的反应) for the passage about not abandoning paradigm without a successor — that's a strong point for my argument. Also read the pessimistic meta-induction abstract.\n\nLet me get the readable scholarship source: doi:10.1093/oso/9780190946814.003.0002 (Tulodziecki on miasma theory) — that's about whether past theories were approximately true, relevant.\n\nAlso read Kuhn chapter 8 and maybe chapter 6.\n\nLet me do parallel calls.Good material. Now, the user's argument is the pessimistic meta-induction. Let me consider what a good response does.\n\nKey structure:\n1. Acknowledge: this is a real argument with a name (悲观元归纳, pessimistic meta-induction). Don't dismiss. And I already used 地心说/燃素说 — the user is entitled to say \"you admitted reversals exist, so your position is unstable.\"\n\n2. But: the inference \"很多共识后来错了\" → \"我不该接受共识\" doesn't follow. Why? Several distinct reasons, and I should be careful not to just wave away.\n\nReason A: 从\"有错误\"推不出\"错误率高到足以放弃\"。需要分母。观察到的反转是被记录、被讲授、被记忆的那一批，因为反转本身是新闻。那些没被推翻的共识是沉默的。这是一次抽样偏差。而且我不知道确切比例——诚实说：现有文献（如 Laudan 的悲观元归纳）本身就在争论这个比例该怎么算，Tulodziecki 那篇甚至主张瘴气说这类\"成功却为假\"且没有任何连续性保留的例子确实存在，用来反驳实在论者的拯救策略。所以我不该假装\"其实反转很少\"。正确的是：**数量之争没有定论，所以不能靠它。**\n\nReason B: 更重要的一步——**认识论上的正当性 ≠ 事后为真**。托勒密天文学在当时是最佳可得的经验理论；库恩的材料正好说明这一点：科学家并不是\"把反常当反例\"就丢弃范式；反常一直存在，谜与反例之间没有明显分界线。所以在当时接受它是理性的，哪怕后来为假。你的问题\"我应该接受吗\"问的是**在现有证据下接受是否合理**，不是\"它是否最终为真\"。这个区分是关键的：如果接受的标准是\"保证为真\"，那么任何经验信念（包括你自己的判断）都不合格，标准会自我摧毁——包括你用来拒绝共识的那条推理本身也是经验推理。\n\nReason C: 反过来问代价。拒绝共识、只凭自己判断，其错误率有历史记录吗？也是很高的，而且**没有纠错机制**。共识至少有一个可被推翻的通道（这正是那些反转发生的方式：由学科内部的人、用学科的标准推翻的）。个人独断的反转记录看不到这种通道。所以这是比较，不是单方面举证。\n\nReason D: 所以历史反转真正支持的不是\"别接受\"，而是几条更精确的规则：\n- 区分共识的内容类型：关于**可观察的稳健规律与预测**（\"这颗药降低死亡率\"）的共识，历史反转率远低于关于**深层本体论**（\"物质由不可分的原子构成\"、\"以太\"）的共识。库恩的材料、PMI 的争论主要针对后者。因此当你依赖共识时，要看你实际依赖的是它的哪一部分——经常你只需要它的**预测能力**，不需要它的**本体论**。\n- 区分共识的**生成方式**：封闭机构背书 vs. 有公开反驳渠道的判断。\n- **可逆性**：错了能不能改？打疫苗、修桥是可逆/低成本的；不可逆的重大决定要更谨慎。\n- 保留**修正的触发条件**：不是\"永远怀疑\"，而是\"我知道什么证据出现时我会改\"。这是把历史教训制度化的方式，而不是变成空转的怀疑论。\n\nReason E: 一个内在张力/自我指涉检查。悲观元归纳本身是一条关于科学的经验概括，由科学史的证据支持，且它在哲学家内部并不被普遍接受（实在论者有各种回应）。如果\"多数人支持也不足以接受\"是针对共识的，那么这条论证的力度也不能靠它自身的共识；它必须自己站住。它可以站住，但它的结论只是\"当前的深度理论很可能不完全为真\"，而不是\"不要接受任何共识\"。这是强度上的差别：从\"可能为假\"到\"应当拒绝\"中间缺一大块。\n\nAlso: 关于\"很多\"这个词的核查义务。用户说\"很多\"，这在历史上是真的（可以列举），但\"很多\"在绝对数上几乎必然为真（几千年、无数共识），所以这个前提几乎不可能是假的，也因此它几乎不能推出什么。要让它有力度，必须变成\"多数\"或\"在健全的领域里多数\"，而这一步缺少可靠的分母。这是一个很好的论证诊断点。\n\nAlso, a nuance worth adding: reversals are often partial, not wholesale. But careful — Tulodziecki argues there ARE cases with no continuity (miasma theory) that were successful and false. So I should NOT claim \"reversals usually preserve truth.\" I should say: 有些反转保留了旧理论的预测（牛顿力学在低速下仍可用），有些没有（瘴气说的例子被用来反对这种\"连续性\"救援）。所以\"其实没真错\"这条辩护不可靠。Be honest. That strengthens my credibility and shows I'm not defending consensus by wishful thinking.\n\nAlso worth noting: the reversal of a consensus is usually done by insiders with better evidence, in the same community. So the consensus mechanism and the correction mechanism are the same institution. If you trust the correction, you have reason to give some weight to the current state, because the current state is the output of that same process plus more evidence. Not conclusive, but relevant.\n\nLet me also mention: 库恩 point that paradigm rejection requires an alternative. This has a practical corollary: \"不接受共识\" leaves a vacuum — you will in fact act on *some* framework; the question is which. Explicitly: 认识上的悬搁不等于行动上的悬搁。如果你必须行动，你不用共识就得用别的，而那个别的通常是你的直觉 + 你恰好读到的少数派，这恰恰是最容易被选择性证据俘获的组合。\n\nShould I cite Mill again? Not necessary. Maybe not.\n\nFormat: moderate length, headers, some structure. Should be philosophically rigorous but readable. The user's message is short — they're pushing back. I should engage directly, agree that the point is serious, then sort out what follows. Don't be defensive.\n\nCitations: I'll cite the Kuhn chapter for \"科学家不因反例拒斥范式 / 谜与反例无明确界线\" and Tulodziecki abstract for \"成功而为假且无连续性保留的案例确实存在，实在论者的救援不充分\". Careful with the abstract claim: the abstract says the chapter argues extant realist responses are inadequate, using miasma theory showing genuinely successful yet false theories that do not exhibit required continuities. That's what the abstract says — I'll report it as the chapter's stated thesis, not as established fact. Good.\n\nAlso I should be clear about what's mine vs sourced.\n\nLet me also make the key distinction prominent: 接受是否合理（当时证据）vs 是否为真（事后）。And the self-defeat point.\n\nLength: maybe 900-1200 characters of Chinese... actually more like 1200-1800 字. Reasonable. Not too long. Let me write it tightly.\n\nOne more: the user says \"但历史上很多共识后来都错了\" — I should validate the premise and I already gave two examples in the previous turn. I should say: 对，而且我上一条自己就举了两个。所以这条得正面处理，不能靠\"反转其实很少\"敷衍。Good opening.\n\nAlso careful: don't overclaim about base rates. Say honestly: 坦率说，这个比例没有公认的数字，而且相关争论（连\"成功却为假\"的案例能否被连续性挽救）在专业内部仍在进行。\n\nWrite it.",
+   "tool_calls_full": [
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "pessimistic meta-induction history of science successful theories false Laudan",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.24,
+     "result_full": "{\"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"title\": \"Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory\", \"authors\": [\"Dana Tulodziecki\"], \"year\": 2021, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Contemporary Scientific Realism\", \"doi\": \"10.1093/oso/9780190946814.003.0002\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/978-94-009-2855-8_1\", \"title\": \"Testing Theories of Scientific Change\", \"authors\": [\"Rachel Laudan\", \"Larry Laudan\", \"Arthur Donovan\"], \"year\": 1988, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Scrutinizing Science\", \"doi\": \"10.1007/978-94-009-2855-8_1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.shpsa.2010.10.002\", \"title\": \"Realism, Ramsey sentences and the pessimistic meta-induction\", \"authors\": [\"David Papineau\"], \"year\": 2010, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies in History and Philosophy of Science Part A\", \"doi\": \"10.1016/j.shpsa.2010.10.002\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.shpsa.2016.06.009\", \"title\": \"The re-emergence of hyphenated history-and-philosophy-of-science and the testing of theories of scientific change\", \"authors\": [\"Larry Laudan\", \"Rachel Laudan\"], \"year\": 2016, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies in History and Philosophy of Science Part A\", \"doi\": \"10.1016/j.shpsa.2016.06.009\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.5040/9781474290333.ch-004\", \"title\": \"The Pessimistic Meta-Induction\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"A Critical Introduction to Scientific Realism\", \"doi\": \"10.5040/9781474290333.ch-004\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 1, \"READABLE_SOURCE_IDS\": [\"doi:10.1093/oso/9780190946814.003.0002\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "范式 科学革命 常规科学 反常 危机",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.644,
+     "result_full": "{\"query\": \"范式 科学革命 常规科学 反常 危机\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论的突现\", \"citation_label\": \"【《科学革命的结构》·第七章　危机与科学理论的突现】\", \"snippet\": \"。由于常规科学活动不是为了追求发现，更不是为了直接追求发明新理论，那么像这样的理论怎么能从常规科学中产生出来呢？ 如果说反常意识在新现象的突现中起着作用，那么谁也不会对一种类似的但更深刻的意识是所有可接受的理论变化的必要条件这一点感到惊奇。我认为，在这一点上，历史证据是十分明确的。在哥白尼发 第七章危机与科学理论的突现57表天体运行论之前，托勒密天文学处在一种矛盾重重的状况。1）伽利略对运动学的责献，与经院批评家在亚里士多德理论中所发现的困难密切相关。2）牛顿的光和颜色的新理论起源于这样一种发现，即：没有一种现存的前范式理论能说明光谱的长度，面代替牛顿理论的波动理论正好发表于人们对在衍射和偏正效应与牛顿理论的关系上产生的反常日益关注\", \"score\": 324, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 6, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 7, \"chapter_title\": \"第八章　对危机的反应\", \"citation_label\": \"【《科学革命的结构》·第八章　对危机的反应】\", \"snippet\": \"的反常情况下从不肯做的事情中去发现。虽然他们可能开始失去信心，然后考虑别的选择方案，但他们决不会抛弃已导致他们陷入危机的范式。这就是说，他们并不把反常视作反例，虽则在科学哲学的词汇里，这些反常就是反例。这种概括部分地只是一种来自历史事实的陈述，其事例前面已有所述，下面还将给出更多。这些都暗示出我们后面对拒斥范式的考察将会发现更多的东西：一个科学理论，一旦达到范式的地位，要宣布它无效，就必须有另一个合适的候选者取代它的地位才行。科学发展的历史研究已经告诉我们，迄今为止根本就不像否证主义方法论框框所说的能直接与自然界做比较的过程。这种议论并不意味着，科学家决不拒斥科学理论，也不意味着，经验和实验在他们拒斥科学理论的过程中是不必要的。但它\", \"score\": 309, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 7, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 9, \"chapter_title\": \"第十章　革命是世界观的改变\", \"citation_label\": \"【《科学革命的结构》·第十章　革命是世界观的改变】\", \"snippet\": \"。可是，学生们进人的这个世界，并不是被环境的性质和科学的性质决定面一成不变的。宁可说，它是被环境和学生在其中受训练的特定常规科学传统二者联合决定的。因此，在科学革命的时候，常规科学传统发生了变化，科学家对环境的知觉必须重新训练一在一些熟悉的情况中 第十章革命是世界观的改变95他必须学习去看一种新的格式塔。在这样做之后，他所探究的世界似乎各处都会与他以前所居住的世界彼此间不可通约了。由不同范式指导的学派间彼此多少总会有误解，这是其另一个理由。 当然，格式塔实验最普通的形式只显示出知觉转变的性质。它们并没有告诉我们：在知觉过程中范式或过去同化了的经验的作用是什么。但在这一方面，已经有了很丰富的心理学文献，它的大部分源自汉诺威研究所的开拓\", \"score\": 302, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 9, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 13, \"chapter_title\": \"第十四章　后记——1969\", \"citation_label\": \"【《科学革命的结构》·第十四章　后记——1969】\", \"snippet\": \"术等等构成的整体。另一方面，它指谓着那个整体的一种元素，即具体的谜题解答；把它们当作模型和范例，可以取代明确的规则以作为常规科学中其他谜题解答的基础。这个词的第一种意义（可称作社会的意义）是下面第二节的主题；第三节则讨论“范式是示范性的以往成就”。 至少从哲学上说，“范式”的第二种意义是更深层的一种，我就这种意义所做的论断，是本书所引起的争论和误解的主要来源，更是我被指责为使科学成为一种主观的、非理性的事业的主要原因。这些问题将在第四、五两节讨论。前一节论证像“主观的”、“置觉的”这一类学眼不可能恰当地用于描述隐含在共有范例中的知识成分。虽然这样的知识随着规则和标准的变化重薪释义后会有基本的变化，然面它们是系统的、经得住时间考验的，\", \"score\": 302, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 13, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 8, \"chapter_title\": \"第九章　科学革命的本质与必然性\", \"citation_label\": \"【《科学革命的结构》·第九章　科学革命的本质与必然性】\", \"snippet\": \"做出选择一样，在相互竞争的范式之间做出选择，就等于在不相容的社会生活方式间做选择。正因为这样，范式的选择并不是也不能凭借常规科学所特有的评估程序，因为这些评估程序都部分依据某一特定范式，面正是这一特定范式出了毛病，面临争论，才有其他范式试图取而代之。当不同范式在范式选择中彼此竞争、互相辩驳时，每-个范式都同时是论证的起点和终点。每一学派都用它自已的范式去为这一范式瓣护。 指出这种论证的循环性，当然不会使论证错误或者无效。当以某一范式为其立论前提的人在为这种范式辩护时，其论证能清楚地展现 第九章科学革命的本质与必然性81出，在人们采用了这种新的自然观后，整个研究将会是怎样的境况。这种展并极其说服力，常常令人不能不信服。然而不管其说服力\", \"score\": 298, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"327e5a1db152\", \"book_title\": \"50堂经典哲学思维课\", \"author\": \"郁喆隽\", \"chapter_idx\": 16, \"chapter_title\": \"16 托马斯·库恩《科学革命的结构》 科学为何也会发生革命？\", \"citation_label\": \"【《50堂经典哲学思维课》·16 托马斯·库恩《科学革命的结构》 科学为何也会发生革命？】\", \"snippet\": \"，两者之间的转换、过渡不能用传统的理性主义来加以说明。那么我们该如何解释出现在常态科学中的革命呢？ Ⅲ “科学革命”起于反常 按照库恩的理论，任何一个范式里面都会出现一些难题，库恩称之为“反常”（anomaly）。出现反常，并不一定意味着需要抛弃或者否定整个范式，但是如若一个范式无法解决的问题太多，人们对这一范式的信心也就会开始动摇。库恩认为这种信任危机一旦产生，就会导致三种结果。第一种结果是，常规科学最终能够解决危机，然后一起回归常态；第二种结果是，问题无法解决，科学界只好把问题记录下来，搁置在一边，等待日后解决；第三种结果是，新范式和老范式并存，它们相互竞争，进入所谓的“范式战争”。例如，在拉瓦锡之前，人们提出“燃素说”来解释燃\", \"score\": 288, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"327e5a1db152\", \"chapter_idx\": 16, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 11, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "36725cea3e3c",
+      "chapter_idx": 7,
+      "focus": "他们并不把反常视作反例",
+      "max_chars": 3500
+     },
+     "status": "success",
+     "duration_seconds": 0.085,
+     "result_full": "{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"chapter_idx\": 7, \"title\": \"第八章　对危机的反应\", \"citation_label\": \"【《科学革命的结构》·第八章　对危机的反应】\", \"text\": \"第八章对危机的反应现在让我们假定，危机是新理论出现的前提条件，那么我们要问，\\n科学家们对危机的存在是怎样反应的呢？这个问题的部分明显面又重要的答案是：首先应从注意科学家在面临甚至是严重的和长期的反常情况下从不肯做的事情中去发现。虽然他们可能开始失去信心，然后考虑别的选择方案，但他们决不会抛弃已导致他们陷入危机的范式。这就是说，他们并不把反常视作反例，虽则在科学哲学的词汇里，这些反常就是反例。这种概括部分地只是一种来自历史事实的陈述，其事例前面已有所述，下面还将给出更多。这些都暗示出我们后面对拒斥范式的考察将会发现更多的东西：一个科学理论，一旦达到范式的地位，要宣布它无效，就必须有另一个合适的候选者取代它的地位才行。科学发展的历史研究已经告诉我们，迄今为止根本就不像否证主义方法论框框所说的能直接与自然界做比较的过程。这种议论并不意味着，科学家决不拒斥科学理论，也不意味着，经验和实验在他们拒斥科学理论的过程中是不必要的。但它的确意味着最终将成为中心要点的东西一即导致科学家拒斥先前已接受的理论之判别行动，总是同时\\n伴随着接受另一个理论的决策；导致做出这种决策的判断，包含着范式与自然界的比较以及范式间的相互比较。\\n此外，对科学家因为面临反常或反例就会拒斥范式这一想法表示怀疑，还有第二个理由。在闸发这一条理由时，我的论证将预示着本文的另一个主要论题。上述怀疑的理由纯粹是事实性的；这就是说，这些理由本身使是一种时下盛行的认识论的反例。由此，如果我提出的论点是正确的话，它们就能有助于给这种认识论创造一种危机，或者更准确地说，加强这种久已存在的危机。上述理由本身不能也不会证明这种哲学理论是错误的，因为它的维护者将像我们在前面所说的科学家\\n第八章对危机的反应67在面临反常时所做的那样做。他们将会设计出大量的阐释并对他们的理论作特设性的修改，以消除任何明显的冲突。事实上，许多相关的修改和限定早已见诸文献了。因此，如果这些认识论的反例不止于构成一种小小的刺激，那将是因为它们有助于构建一种新的不同的科学分析理论，在这种分析理论中，这些反例就不再是困难的来源了。此外，如果一种典型的模式（我们在后面谈科学革命时将要考察这种典型模式）可以适用于这种情况，那么，这些反常就将似乎不再是简单的事实了。从一种新的科学知识理论来看，这些反常倒很像是恒真式（tautol-ogy），很难设想对这种局面还会有其他的陈述。\\n例如，人们经常注意到牛赖的运动第二定律，虽然它是几个世纪来艰辛的事实和理论探究的结晶，但对那些按照牛顿理论进行研究的人来说，却很像是一个纯逻辑的陈述，任何观察实验也不能驳倒它。1]在第十章中，我们将会看到，在道尔顿以前，化学定比定律是一种偶然的实验发现，是一种值得怀疑的概括，但在道尔顿的工作以后，它就成\\n了化学化合物定义的一个部分，实验工作本身就不可能推翻它了。科学家面对反常或反例时并不拒斥范式，这一概括在许多这样的地方都表现出来了。科学家不能一面拒斥范式，一面又仍然是科学家。2】\\n虽然历史不大可能记载他们的名字，但确有一些人因为不能容忍危机而被迫抛弃了科学。那些有创造性的科学家像艺术家一样，有时候必须能生活在一个不协调的世界里一在另一个地方我已经把这种必要性描述为暗含在科学研究中的“必要的张力“3）。但是，我认为，\\n[1]特别请见 N. R. Hanson, Patterns ef Discorery ( Cambridge, 1958）， Pp. 99-105 中的讨论。\\n[2）因为按库恩的观点，没有范式也就没有科学，就不成其为科学家。所以一面拒斥范式，一面又想成为科学家，那是不可能的。—译注\\n[ 3 ] T. S. Kuhn, * The Essential Tension; Tradition and Innovation in Seientifie Research\\\" , in The Third ( 1959 ) Unirersity of Utah Research Conference on the Identification ofCreatite Talent , ed. Calvin W. Taylor ( Salt Lake City, 1959) . pp. 162-177. 关于艺术家之间的)可比较现象，见 Frank Barron，“The Psychology of Imagination°, Scienific American, CXCIX( September, 1958 ) , 151-166 ,esp. 160.\\n这种拒斥科学而改行乃是靠反例本身所能导致的仅有的一类范式拒斥。一旦发现了据以观察自然界的第一个范式，就再也不会有缺乏任何范式的研究工作了。拒斥一个范式而又不同时用另一个范式去取而代之，也就等于拒斥了科学本身。这种行为只反映出人的行为而不是范式。他必然会被他的同行看做是“只会责怪他的工具的木匠”。\\n同样的论点反过来说，至少可以同样有效：不存在无反例的研究。因为，区分常规科学与处于危机状态的科学的究竞是什么呢？答案显然不是说常规科学没有面临反例。恰恰相反，我们前面所称的谜才构成常规科学，谜的存在只是因为没有任何范式能为科学研究提供完全解决它的所有问题的基础。只有极少几个似乎曾是这样的学科（例如，儿何光学），但却在很短时间内就根本不能提供进行研究的问题，而变成解决工程问题的工具了。除了那些特别专门的工具性问题之外，每一个被常规科学看作是谜的问题，从另一种观点看，都可被看作\\n反例，因而被看作危机之源。哥白尼看作是反例的东西，托勒密的大多数后继者却看作是在观察和理论之间相一致中的一个谜。拉瓦锡看作是反例的东西，普利斯特列却看作是在燃素理论闸释中的一个已成功地解决了的谜。爱因斯坦看作是反例的东西，洛伦兹、菲茨杰拉德和其他人却看作是在闸释牛顿理论和麦克斯韦理论中所产生的一个谜。此外，危机的存在本身并不能使一个谜转变成一个反例。谜和反例之间不存在明显的分界线。相反，由于范式变形的增多，危机使常规解谜规则变得松弛，最终容许一种新范式突现。因此我认为，只能两者择一：要么任何科学理论都不曾面临过反例，要么所有科学理论始终都面临若反例。\\n还会有其他可能的情况吗？这个向题必然要求对哲学作历史的和批判的阐明，而这些论题在此不再讨论。但是，我们至少可以注意到两个理由，以解释科学为什么如此合适于提供对以下概括的一种说明，即事实唯一地决定了一个陈述的真和假。常规科学必须不断地力求使理论和事实更加密切地一致起来，而这样的活动会很容易地被看成是检验或看成是寻求证实或否证。其实不然，它的目标是解谜，面只有假定\\n第八章对危机的反应69范式的有效性，谜的存在才有可能。所以解谜不成只能怪科学家而不能怪理论。这里，我们再次引用前面已引过的谚语：“低劣的未匠才会责怪他的工具。”此外，科学教学把对一种理论的讨论与对它的范例的应用的评论结合在一起的方式，也有助于加强一种主要是从其他来源得出的证实理论的印象。这样做的一个最简单的理由，是读科学教科书的人会轻易地把应用当作是支持理论的证据，当作是该理论应被信任的理由。但是，学科学的学生接受理论，是教师和教科书的权威造成的，而不是因为证据。他们还能有别的选择吗？或是他们有能力做出\\n判别吗？教科书中所给出的应用不是作为证据，学习这些应用是学习在现行实践基础上的范式的一部分。如果把应用当作证据，那么，由于教科书并没有提供其他的诠释，或没有讨论那些科学家还未能用范式解答的问题，就会认定这些教科书的作者有极端的偏见。这种指责当然是毫无理由的。\\n让我们回到最初的问题上。科学家在意识到理论和自然界之间的一致中存在反常时是怎样做出反应的呢？刚才讨论过的情况表明，即使这种不一致比在理论的其他应用中所经历的不一致大到无以解释的地步，也不一定会导致任何深刻的反应。总会有不一致存在。甚至最难解决的不一致通常都会在常规实践中最终获得解决。通常的情况是，科学家愿意等待，尤其当该领域的其他部分还有许多问题存在时更是如此。例如，我们已经注意到，在牛顿初次计算月球的近地点运动以后的60年间，预测值只有观察值的一半。当欧洲最好的数学物理学家继续与这个众所周知的不一致徒劳无功地拼搏时，时常有人建议修改牛顿的平方反比定律。但没有人非常认真地考虑过这些建议，而在实践中，这种对一个主要的反常持有的耐心已被证明是合理的。克莱劳（Clairaut）在1750年就已指出，只是应用的数学错了，而牛赖理论\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 3500, \"chapter_text_length\": 11576, \"has_more\": true, \"next_offset\": 3500, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"他们并不把反常视作反例\"], \"focus_terms_found_in_chapter\": [\"他们并不把反常视作反例\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"他们并不把反常视作反例\", \"offset\": 164, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 7, \"offset\": 0, \"focus\": \"他们并不把反常视作反例\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"8edb9727f72f3343c5f770e5e1980f0d7db5c30a397f37281a75adedde891462\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/36725cea3e3c?ch=7\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 3500]], \"covered_characters\": 3500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1093/oso/9780190946814.003.0002",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.086,
+     "result_full": "{\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"title\": \"Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory\", \"authors\": [\"Dana Tulodziecki\"], \"year\": 2021, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Contemporary Scientific Realism\", \"doi\": \"10.1093/oso/9780190946814.003.0002\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract</jats:title> This chapter begins with the pessimistic meta-induction (PMI), which seeks to undercut the realist’s alleged connection between success and (approximate) truth by arguing that highly successful, yet wildly false theories are typical of the history of science and shows how realist responses to the PMI try to rehabilitate this connection by stressing various kinds of continuity between earlier and later theories. It then goes on to argue that the extant realist responses are inadequate, by showing—through the example of the 19th century miasma theory of disease—that there are cases of genuinely successful, yet false theories that do not exhibit any of the required realist continuities. The chapter then suggests that this case is problematic for realists regardless of whether the miasma theory is approximately true or not.</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"b21aa08f796c44ba589a797166cad36f6d860555e3e2e512f84e22cdd51852b6\", \"excerpt_start\": 0, \"excerpt_end\": 862, \"total_characters\": 862, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"b21aa08f796c44ba589a797166cad36f6d860555e3e2e512f84e22cdd51852b6\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 9.4,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_00_tT0IR5FQmYogcBM9pRLx0235"
+    },
+    {
+     "t": 9.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_qdfzUZmEGD3gO2jaHwlw0248"
+    },
+    {
+     "t": 11.0,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "pessimistic meta-induction history of science successful theories false Laudan",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.24,
+     "result_full": "{\"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"title\": \"Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory\", \"authors\": [\"Dana Tulodziecki\"], \"year\": 2021, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Contemporary Scientific Realism\", \"doi\": \"10.1093/oso/9780190946814.003.0002\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/978-94-009-2855-8_1\", \"title\": \"Testing Theories of Scientific Change\", \"authors\": [\"Rachel Laudan\", \"Larry Laudan\", \"Arthur Donovan\"], \"year\": 1988, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Scrutinizing Science\", \"doi\": \"10.1007/978-94-009-2855-8_1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.shpsa.2010.10.002\", \"title\": \"Realism, Ramsey sentences and the pessimistic meta-induction\", \"authors\": [\"David Papineau\"], \"year\": 2010, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies in History and Philosophy of Science Part A\", \"doi\": \"10.1016/j.shpsa.2010.10.002\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.shpsa.2016.06.009\", \"title\": \"The re-emergence of hyphenated history-and-philosophy-of-science and the testing of theories of scientific change\", \"authors\": [\"Larry Laudan\", \"Rachel Laudan\"], \"year\": 2016, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies in History and Philosophy of Science Part A\", \"doi\": \"10.1016/j.shpsa.2016.06.009\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.5040/9781474290333.ch-004\", \"title\": \"The Pessimistic Meta-Induction\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"A Critical Introduction to Scientific Realism\", \"doi\": \"10.5040/9781474290333.ch-004\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 1, \"READABLE_SOURCE_IDS\": [\"doi:10.1093/oso/9780190946814.003.0002\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 11.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "范式 科学革命 常规科学 反常 危机",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.644,
+     "result_full": "{\"query\": \"范式 科学革命 常规科学 反常 危机\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论的突现\", \"citation_label\": \"【《科学革命的结构》·第七章　危机与科学理论的突现】\", \"snippet\": \"。由于常规科学活动不是为了追求发现，更不是为了直接追求发明新理论，那么像这样的理论怎么能从常规科学中产生出来呢？ 如果说反常意识在新现象的突现中起着作用，那么谁也不会对一种类似的但更深刻的意识是所有可接受的理论变化的必要条件这一点感到惊奇。我认为，在这一点上，历史证据是十分明确的。在哥白尼发 第七章危机与科学理论的突现57表天体运行论之前，托勒密天文学处在一种矛盾重重的状况。1）伽利略对运动学的责献，与经院批评家在亚里士多德理论中所发现的困难密切相关。2）牛顿的光和颜色的新理论起源于这样一种发现，即：没有一种现存的前范式理论能说明光谱的长度，面代替牛顿理论的波动理论正好发表于人们对在衍射和偏正效应与牛顿理论的关系上产生的反常日益关注\", \"score\": 324, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 6, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 7, \"chapter_title\": \"第八章　对危机的反应\", \"citation_label\": \"【《科学革命的结构》·第八章　对危机的反应】\", \"snippet\": \"的反常情况下从不肯做的事情中去发现。虽然他们可能开始失去信心，然后考虑别的选择方案，但他们决不会抛弃已导致他们陷入危机的范式。这就是说，他们并不把反常视作反例，虽则在科学哲学的词汇里，这些反常就是反例。这种概括部分地只是一种来自历史事实的陈述，其事例前面已有所述，下面还将给出更多。这些都暗示出我们后面对拒斥范式的考察将会发现更多的东西：一个科学理论，一旦达到范式的地位，要宣布它无效，就必须有另一个合适的候选者取代它的地位才行。科学发展的历史研究已经告诉我们，迄今为止根本就不像否证主义方法论框框所说的能直接与自然界做比较的过程。这种议论并不意味着，科学家决不拒斥科学理论，也不意味着，经验和实验在他们拒斥科学理论的过程中是不必要的。但它\", \"score\": 309, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 7, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 9, \"chapter_title\": \"第十章　革命是世界观的改变\", \"citation_label\": \"【《科学革命的结构》·第十章　革命是世界观的改变】\", \"snippet\": \"。可是，学生们进人的这个世界，并不是被环境的性质和科学的性质决定面一成不变的。宁可说，它是被环境和学生在其中受训练的特定常规科学传统二者联合决定的。因此，在科学革命的时候，常规科学传统发生了变化，科学家对环境的知觉必须重新训练一在一些熟悉的情况中 第十章革命是世界观的改变95他必须学习去看一种新的格式塔。在这样做之后，他所探究的世界似乎各处都会与他以前所居住的世界彼此间不可通约了。由不同范式指导的学派间彼此多少总会有误解，这是其另一个理由。 当然，格式塔实验最普通的形式只显示出知觉转变的性质。它们并没有告诉我们：在知觉过程中范式或过去同化了的经验的作用是什么。但在这一方面，已经有了很丰富的心理学文献，它的大部分源自汉诺威研究所的开拓\", \"score\": 302, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 9, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 13, \"chapter_title\": \"第十四章　后记——1969\", \"citation_label\": \"【《科学革命的结构》·第十四章　后记——1969】\", \"snippet\": \"术等等构成的整体。另一方面，它指谓着那个整体的一种元素，即具体的谜题解答；把它们当作模型和范例，可以取代明确的规则以作为常规科学中其他谜题解答的基础。这个词的第一种意义（可称作社会的意义）是下面第二节的主题；第三节则讨论“范式是示范性的以往成就”。 至少从哲学上说，“范式”的第二种意义是更深层的一种，我就这种意义所做的论断，是本书所引起的争论和误解的主要来源，更是我被指责为使科学成为一种主观的、非理性的事业的主要原因。这些问题将在第四、五两节讨论。前一节论证像“主观的”、“置觉的”这一类学眼不可能恰当地用于描述隐含在共有范例中的知识成分。虽然这样的知识随着规则和标准的变化重薪释义后会有基本的变化，然面它们是系统的、经得住时间考验的，\", \"score\": 302, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 13, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 8, \"chapter_title\": \"第九章　科学革命的本质与必然性\", \"citation_label\": \"【《科学革命的结构》·第九章　科学革命的本质与必然性】\", \"snippet\": \"做出选择一样，在相互竞争的范式之间做出选择，就等于在不相容的社会生活方式间做选择。正因为这样，范式的选择并不是也不能凭借常规科学所特有的评估程序，因为这些评估程序都部分依据某一特定范式，面正是这一特定范式出了毛病，面临争论，才有其他范式试图取而代之。当不同范式在范式选择中彼此竞争、互相辩驳时，每-个范式都同时是论证的起点和终点。每一学派都用它自已的范式去为这一范式瓣护。 指出这种论证的循环性，当然不会使论证错误或者无效。当以某一范式为其立论前提的人在为这种范式辩护时，其论证能清楚地展现 第九章科学革命的本质与必然性81出，在人们采用了这种新的自然观后，整个研究将会是怎样的境况。这种展并极其说服力，常常令人不能不信服。然而不管其说服力\", \"score\": 298, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"327e5a1db152\", \"book_title\": \"50堂经典哲学思维课\", \"author\": \"郁喆隽\", \"chapter_idx\": 16, \"chapter_title\": \"16 托马斯·库恩《科学革命的结构》 科学为何也会发生革命？\", \"citation_label\": \"【《50堂经典哲学思维课》·16 托马斯·库恩《科学革命的结构》 科学为何也会发生革命？】\", \"snippet\": \"，两者之间的转换、过渡不能用传统的理性主义来加以说明。那么我们该如何解释出现在常态科学中的革命呢？ Ⅲ “科学革命”起于反常 按照库恩的理论，任何一个范式里面都会出现一些难题，库恩称之为“反常”（anomaly）。出现反常，并不一定意味着需要抛弃或者否定整个范式，但是如若一个范式无法解决的问题太多，人们对这一范式的信心也就会开始动摇。库恩认为这种信任危机一旦产生，就会导致三种结果。第一种结果是，常规科学最终能够解决危机，然后一起回归常态；第二种结果是，问题无法解决，科学界只好把问题记录下来，搁置在一边，等待日后解决；第三种结果是，新范式和老范式并存，它们相互竞争，进入所谓的“范式战争”。例如，在拉瓦锡之前，人们提出“燃素说”来解释燃\", \"score\": 288, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"327e5a1db152\", \"chapter_idx\": 16, \"focus\": \"范式 科学革命 常规科学 反常 危机\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 11, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 12.9,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_et5aUBKZeazq4plXKBqw7080"
+    },
+    {
+     "t": 13.0,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_I6s9eWTUpjgTaiMy37ei5056",
+     "status": "success",
+     "duration_seconds": 0.085
+    },
+    {
+     "t": 13.3,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1093/oso/9780190946814.003.0002",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.086,
+     "result_full": "{\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"title\": \"Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory\", \"authors\": [\"Dana Tulodziecki\"], \"year\": 2021, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Contemporary Scientific Realism\", \"doi\": \"10.1093/oso/9780190946814.003.0002\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract</jats:title> This chapter begins with the pessimistic meta-induction (PMI), which seeks to undercut the realist’s alleged connection between success and (approximate) truth by arguing that highly successful, yet wildly false theories are typical of the history of science and shows how realist responses to the PMI try to rehabilitate this connection by stressing various kinds of continuity between earlier and later theories. It then goes on to argue that the extant realist responses are inadequate, by showing—through the example of the 19th century miasma theory of disease—that there are cases of genuinely successful, yet false theories that do not exhibit any of the required realist continuities. The chapter then suggests that this case is problematic for realists regardless of whether the miasma theory is approximately true or not.</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"b21aa08f796c44ba589a797166cad36f6d860555e3e2e512f84e22cdd51852b6\", \"excerpt_start\": 0, \"excerpt_end\": 862, \"total_characters\": 862, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"b21aa08f796c44ba589a797166cad36f6d860555e3e2e512f84e22cdd51852b6\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    }
+   ],
+   "answer": "## 你说得对，而且我上一条自己就举了两个例子\n\n所以这条不能靠“其实反转很少”敷衍过去。这个论证有名字——**悲观元归纳（pessimistic meta-induction）**：科学史是成功理论的坟场，因此当前理论很可能也不真。它是一条严肃的论证，不是外行抱怨。但它推不出“不该接受共识”，原因在于它和你的问题之间有一段缺口。\n\n## 先看前提的强度\n\n“很多共识后来错了”——这句话几乎不可能是假的：几千年的学科史里，绝对数量上被推翻的共识当然很多。**正因为几乎不可能假，它几乎推不出什么。** 要让它有力度，得改成“多数共识后来错了”或“在机制健全的领域里错误率仍高”，而这一步缺少可靠的分母。我们看到的反转恰好是被记录、被讲授、被记住的那一批——因为反转本身是新闻；没被推翻的共识是沉默的。这是一个抽样偏差。\n\n而且我不打算靠“其实反转很少”替你解决这个困难：**这个比例至今没有公认数字**。相关争论仍在进行中。Tulodziecki 就用 19 世纪瘴气说论证：确实存在既成功又为假、且**不含**实在论者所要求的那些连续性保留的案例，因此几种常见的挽救策略都不充分[《Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory》·摘要](https://doi.org/10.1093/oso/9780190946814.003.0002)。所以“旧理论其实没真错”这条辩护不能当靠山。这是该论证有力的一面。\n\n## 但它回答的不是你问的问题\n\n你问的是“我**应该**接受吗”，问的是**在现有证据下接受是否合理**。历史反转说的是“**最终是否为真**”。这是两个不同的判断，混在一起就得出错误结论。\n\n托勒密天文学在当时是最佳可得经验理论，它在一些预测上不输哥白尼体系。库恩的材料正说明：科学家并不因为遇到反例就丢弃范式——“他们并不把反常视作反例”，而且“谜和反例之间不存在明显的分界线”，究竟算谜还是算反例，取决于你站在哪个范式里看[《科学革命的结构》·第八章 对危机的反应](https://deepphilosophy.top/reader/36725cea3e3c?ch=7)。**所以一个后来被证伪的共识，完全可以是当时理性的选择。**“它错了”不等于“接受它当时不合理”。\n\n这一步很要紧：如果你的接受标准是“保证最终为真”，那没有任何经验信念合格——包括你此刻用来拒绝共识的那条历史归纳本身，它也是一条经验概括。\n\n## 而且这是比较题，不是单方举证\n\n拒绝共识不是回到零，而是换成另一个依据：你自己的判断、加上你恰好读到的那几个少数派。后者的历史战绩并不好，而且**缺少纠错通道**。那些反转是怎么发生的？由学科内部的人、用学科的标准、拿新证据推翻的——纠错机制和共识机制是同一个机构。你信任纠错，就多少得给“该机构目前加更多证据后的输出”一点权重。\n\n再加一条：认识上的悬搁不等于行动上的悬搁。你要做决定时，不用共识就得用别的东西，而“直觉＋选择性读到的异见”恰好是最容易被偏见俘获的组合。\n\n## 历史教训真正支持的规则\n\n比“别接受”精确得多：\n\n- **问你依赖的是哪一部分。** 分“可观察的稳健规律与预测”与“深层本体论”。以太、燃素这类本体论断言的反转率高得多，而 PMI 争论主要打的是后者。多数时候你只需前者的预测力，不需要后者的形而上学承诺。\n- **看共识怎么生成的。** 封闭机构背书、不容反驳的共识，与有公开反驳渠道的共识，证据性质完全不同。\n- **看可逆性。** 错了能不能改？可逆的低成本决定，值得按共识走；不可逆的重大决定，门槛要提高。\n- **给出修正条件。** 不是永远怀疑，而是明确“什么证据出现我就会改”。这才是把历史教训制度化，而不是退化成空转的怀疑论。\n\n最后检查一下强度。“当前深度理论很可能不**完全**为真”——这我接受。“所以不该接受任何共识”——这中间缺一大块推理。你的前提支持前者，不支持后者。",
+   "answer_chars": 1726,
+   "done_content": "## 你说得对，而且我上一条自己就举了两个例子\n\n所以这条不能靠“其实反转很少”敷衍过去。这个论证有名字——**悲观元归纳（pessimistic meta-induction）**：科学史是成功理论的坟场，因此当前理论很可能也不真。它是一条严肃的论证，不是外行抱怨。但它推不出“不该接受共识”，原因在于它和你的问题之间有一段缺口。\n\n## 先看前提的强度\n\n“很多共识后来错了”——这句话几乎不可能是假的：几千年的学科史里，绝对数量上被推翻的共识当然很多。**正因为几乎不可能假，它几乎推不出什么。** 要让它有力度，得改成“多数共识后来错了”或“在机制健全的领域里错误率仍高”，而这一步缺少可靠的分母。我们看到的反转恰好是被记录、被讲授、被记住的那一批——因为反转本身是新闻；没被推翻的共识是沉默的。这是一个抽样偏差。\n\n而且我不打算靠“其实反转很少”替你解决这个困难：**这个比例至今没有公认数字**。相关争论仍在进行中。Tulodziecki 就用 19 世纪瘴气说论证：确实存在既成功又为假、且**不含**实在论者所要求的那些连续性保留的案例，因此几种常见的挽救策略都不充分[《Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory》·摘要](https://doi.org/10.1093/oso/9780190946814.003.0002)。所以“旧理论其实没真错”这条辩护不能当靠山。这是该论证有力的一面。\n\n## 但它回答的不是你问的问题\n\n你问的是“我**应该**接受吗”，问的是**在现有证据下接受是否合理**。历史反转说的是“**最终是否为真**”。这是两个不同的判断，混在一起就得出错误结论。\n\n托勒密天文学在当时是最佳可得经验理论，它在一些预测上不输哥白尼体系。库恩的材料正说明：科学家并不因为遇到反例就丢弃范式——“他们并不把反常视作反例”，而且“谜和反例之间不存在明显的分界线”，究竟算谜还是算反例，取决于你站在哪个范式里看[《科学革命的结构》·第八章 对危机的反应](https://deepphilosophy.top/reader/36725cea3e3c?ch=7)。**所以一个后来被证伪的共识，完全可以是当时理性的选择。**“它错了”不等于“接受它当时不合理”。\n\n这一步很要紧：如果你的接受标准是“保证最终为真”，那没有任何经验信念合格——包括你此刻用来拒绝共识的那条历史归纳本身，它也是一条经验概括。\n\n## 而且这是比较题，不是单方举证\n\n拒绝共识不是回到零，而是换成另一个依据：你自己的判断、加上你恰好读到的那几个少数派。后者的历史战绩并不好，而且**缺少纠错通道**。那些反转是怎么发生的？由学科内部的人、用学科的标准、拿新证据推翻的——纠错机制和共识机制是同一个机构。你信任纠错，就多少得给“该机构目前加更多证据后的输出”一点权重。\n\n再加一条：认识上的悬搁不等于行动上的悬搁。你要做决定时，不用共识就得用别的东西，而“直觉＋选择性读到的异见”恰好是最容易被偏见俘获的组合。\n\n## 历史教训真正支持的规则\n\n比“别接受”精确得多：\n\n- **问你依赖的是哪一部分。** 分“可观察的稳健规律与预测”与“深层本体论”。以太、燃素这类本体论断言的反转率高得多，而 PMI 争论主要打的是后者。多数时候你只需前者的预测力，不需要后者的形而上学承诺。\n- **看共识怎么生成的。** 封闭机构背书、不容反驳的共识，与有公开反驳渠道的共识，证据性质完全不同。\n- **看可逆性。** 错了能不能改？可逆的低成本决定，值得按共识走；不可逆的重大决定，门槛要提高。\n- **给出修正条件。** 不是永远怀疑，而是明确“什么证据出现我就会改”。这才是把历史教训制度化，而不是退化成空转的怀疑论。\n\n最后检查一下强度。“当前深度理论很可能不**完全**为真”——这我接受。“所以不该接受任何共识”——这中间缺一大块推理。你的前提支持前者，不支持后者。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_2",
+     "book": "科学革命的结构",
+     "chapter": "第八章　对危机的反应",
+     "book_id": "36725cea3e3c",
+     "chapter_idx": 7,
+     "author": "托马斯·库恩",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_18"
+     ],
+     "excerpt": "在面临甚至是严重的和长期的反常情况下从不肯做的事情中去发现。虽然他们可能开始失去信心，然后考虑别的选择方案，但他们决不会抛弃已导致他们陷入危机的范式。这就是说，他们并不把反常视作反例，虽则在科学哲学的词汇里，这些反常就是反例。这种概括部分地只是一种来自历史事实的陈述，其事例前面已有所述，下面还将给出更多。这些都暗示出我们后面对拒斥范式的考察将会发现更多的东西：一个科学理论，一旦达到范式的地位，要宣布它无效，就必须有另一个合适的候选者取代它的地位才行。科学发展的历史研究已经告诉我们，迄今为止根本就不像否证主义方法论框框所说的能直接与自然界做比较的过程。这种议论并不意味着，科学家决不拒斥科学理论，也不意味着，经验和实验在他们拒斥科学理论的过程中是不必要的。但它的确意味着最终将成为中心要点的东西一即导致科学家拒斥先前已接受的理论之判别行动，总是同时\n伴随着接受另一个理论的决策；导致做出这种决策的判断，包含着范式与自然界的比较以及范式间的相互比较。\n此外，对科学家因为面临反常或反例就会拒斥范式这一想法表示怀疑，还有第二个理由。在闸发这一条理由时，我的论证将预示着本文的另一个主要论题。上述怀疑的理由纯粹是事实性的；这就是说，这些理由本身使是一种时下盛行的认识论的反例。由此，如果我提出的论点是正确的话，它们就能有助于给这种认识论创造一种危机，或者更准确地说，加强这种久已存在的危机。上述理由本身",
+     "quoted_passages": [
+      "他们并不把反常视作反例",
+      "谜和反例之间不存在明显的分界线"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 11576,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "sch_35ba8c37a4a3",
+     "source_record_id": "doi:10.1093/oso/9780190946814.003.0002",
+     "source_type": "scholarly",
+     "used": true,
+     "title": "Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory",
+     "book": "Theoretical Continuity, Approximate Truth, and the Pessimistic Meta-Induction: Revisiting the Miasma Theory",
+     "author": "Dana Tulodziecki",
+     "year": 2021,
+     "doi": "10.1093/oso/9780190946814.003.0002",
+     "url": "https://doi.org/10.1093/oso/9780190946814.003.0002",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "excerpt": "Abstract</jats:title> This chapter begins with the pessimistic meta-induction (PMI), which seeks to undercut the realist’s alleged connection between success and (approximate) truth by arguing that highly successful, yet wildly false theories are typical of the history of science and shows how realist responses to the PMI try to rehabilitate this connection by stressing various kinds of continuity between earlier and later theories. It then goes on to argue that the extant realist responses are inadequate, by showing—through the example of the 19th century miasma theory of disease—that there a"
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 6,
+    "display_citations": 2,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "科学革命的结构",
+       "chapter": "第八章　对危机的反应",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 7,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "在面临甚至是严重的和长期的反常情况下从不肯做的事情中去发现。虽然他们可能开始失去信心，然后考虑别的选择方案，但他们决不会抛弃已导致他们陷入危机的范式。这就是说，他们并不把反常视作反例，虽则在科学哲学的词汇里，这些反常就是反例。这种概括部分地只是一种来自历史事实的陈述，其事例前面已有所述，下面还将给出更多。这些都暗示出我们后面对拒斥范式的考察将会发现更多的东西：一个科学理论，一旦达到范式的地位，要宣布它无效，就必须有另一个合适的候选者取代它的地位才行。科学发展的历史研究已经告诉我们，迄今为止根本就不像否证主义方法论框框所说的能直接与自然界做比较的过程。这种议论并不意味着，科学家决不拒斥科学理论，也不意味着，经验和实验在他们拒斥科学理论的过程中是不必要的。但它的确意味着最终将成为中心要点的东西一即导致科学家拒斥先前已接受的理论之判别行动，总是同时\n伴随着接受另一个理论的决策；导致做出这种决策的判断，包含着范式与自然界的比较以及范式间的相互比较。\n此外，对科学家因为面临反常或反例就会拒斥范式这一想法表示怀疑，还有第二个理由。在闸发这一条理由时，我的论证将预示着本文的另一个主要论题。上述怀疑的理由纯粹是事实性的；这就是说，这些理由本身使是一种时下盛行的认识论的反例。由此，如果我提出的论点是正确的话，它们就能有助于给这种认识论创造一种危机，或者更准确地说，加强这种久已存在的危机。上述理由本身",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 11576,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第七章　危机与科学理论的突现",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 6,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "。由于常规科学活动不是为了追求发现，更不是为了直接追求发明新理论，那么像这样的理论怎么能从常规科学中产生出来呢？ 如果说反常意识在新现象的突现中起着作用，那么谁也不会对一种类似的但更深刻的意识是所有可接受的理论变化的必要条件这一点感到惊奇。我认为，在这一点上，历史证据是十分明确的。在哥白尼发 第七章危机与科学理论的突现57表天体运行论之前，托勒密天文学处在一种矛盾重重的状况。1）伽利略对运动学的责献，与经院批评家在亚里士多德理论中所发现的困难密切相关。2）牛顿的光和颜色的新理论起源于这样一种发现，即：没有一种现存的前范式理论能说明光谱的长度，面代替牛顿理论的波动理论正好发表于人们对在衍射和偏正效应与牛顿理论的关系上产生的反常日益关注",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第十章　革命是世界观的改变",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 9,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "。可是，学生们进人的这个世界，并不是被环境的性质和科学的性质决定面一成不变的。宁可说，它是被环境和学生在其中受训练的特定常规科学传统二者联合决定的。因此，在科学革命的时候，常规科学传统发生了变化，科学家对环境的知觉必须重新训练一在一些熟悉的情况中 第十章革命是世界观的改变95他必须学习去看一种新的格式塔。在这样做之后，他所探究的世界似乎各处都会与他以前所居住的世界彼此间不可通约了。由不同范式指导的学派间彼此多少总会有误解，这是其另一个理由。 当然，格式塔实验最普通的形式只显示出知觉转变的性质。它们并没有告诉我们：在知觉过程中范式或过去同化了的经验的作用是什么。但在这一方面，已经有了很丰富的心理学文献，它的大部分源自汉诺威研究所的开拓",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第十四章　后记——1969",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 13,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "术等等构成的整体。另一方面，它指谓着那个整体的一种元素，即具体的谜题解答；把它们当作模型和范例，可以取代明确的规则以作为常规科学中其他谜题解答的基础。这个词的第一种意义（可称作社会的意义）是下面第二节的主题；第三节则讨论“范式是示范性的以往成就”。 至少从哲学上说，“范式”的第二种意义是更深层的一种，我就这种意义所做的论断，是本书所引起的争论和误解的主要来源，更是我被指责为使科学成为一种主观的、非理性的事业的主要原因。这些问题将在第四、五两节讨论。前一节论证像“主观的”、“置觉的”这一类学眼不可能恰当地用于描述隐含在共有范例中的知识成分。虽然这样的知识随着规则和标准的变化重薪释义后会有基本的变化，然面它们是系统的、经得住时间考验的，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第九章　科学革命的本质与必然性",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 8,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "做出选择一样，在相互竞争的范式之间做出选择，就等于在不相容的社会生活方式间做选择。正因为这样，范式的选择并不是也不能凭借常规科学所特有的评估程序，因为这些评估程序都部分依据某一特定范式，面正是这一特定范式出了毛病，面临争论，才有其他范式试图取而代之。当不同范式在范式选择中彼此竞争、互相辩驳时，每-个范式都同时是论证的起点和终点。每一学派都用它自已的范式去为这一范式瓣护。 指出这种论证的循环性，当然不会使论证错误或者无效。当以某一范式为其立论前提的人在为这种范式辩护时，其论证能清楚地展现 第九章科学革命的本质与必然性81出，在人们采用了这种新的自然观后，整个研究将会是怎样的境况。这种展并极其说服力，常常令人不能不信服。然而不管其说服力",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "50堂经典哲学思维课",
+       "chapter": "16 托马斯·库恩《科学革命的结构》 科学为何也会发生革命？",
+       "book_id": "327e5a1db152",
+       "chapter_idx": 16,
+       "author": "郁喆隽",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，两者之间的转换、过渡不能用传统的理性主义来加以说明。那么我们该如何解释出现在常态科学中的革命呢？ Ⅲ “科学革命”起于反常 按照库恩的理论，任何一个范式里面都会出现一些难题，库恩称之为“反常”（anomaly）。出现反常，并不一定意味着需要抛弃或者否定整个范式，但是如若一个范式无法解决的问题太多，人们对这一范式的信心也就会开始动摇。库恩认为这种信任危机一旦产生，就会导致三种结果。第一种结果是，常规科学最终能够解决危机，然后一起回归常态；第二种结果是，问题无法解决，科学界只好把问题记录下来，搁置在一边，等待日后解决；第三种结果是，新范式和老范式并存，它们相互竞争，进入所谓的“范式战争”。例如，在拉瓦锡之前，人们提出“燃素说”来解释燃",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 6,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 29.139,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 9.4,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_00_tT0IR5FQmYogcBM9pRLx0235"
+    },
+    {
+     "t": 9.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_qdfzUZmEGD3gO2jaHwlw0248"
+    },
+    {
+     "t": 11.0,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.24,
+     "result_chars": 4432,
+     "result_head": "{\"query\": \"pessimistic meta-induction history of science successful theories false Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1093/oso/9780190946814.003."
+    },
+    {
+     "t": 11.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.644,
+     "result_chars": 5106,
+     "result_head": "{\"query\": \"范式 科学革命 常规科学 反常 危机\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与"
+    },
+    {
+     "t": 12.9,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_et5aUBKZeazq4plXKBqw7080"
+    },
+    {
+     "t": 13.0,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_I6s9eWTUpjgTaiMy37ei5056"
+    },
+    {
+     "t": 13.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.085,
+     "result_chars": 4955,
+     "result_head": "{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"chapter_idx\": 7, \"title\": \"第八章　对危机的反应\", \"citation_label\": \"【《科学革命的结构》·第八章　对危机的反应】\", \"text\": \"第八章对危机的反应现在让我"
+    },
+    {
+     "t": 13.3,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.086,
+     "result_chars": 2636,
+     "result_head": "{\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0002\", \"title\": \""
+    },
+    {
+     "t": 29.2,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 959
+  },
+  {
+   "turn": 3,
+   "question": "我没有时间读完所有论文，难道只能自己从零证明？",
+   "wall_s": 25.7,
+   "ttft_s": 7.2,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "0aeedf0bf5a44db79f223f60d882bec0:1:note:0",
+     "content": "你抓到的是这个立场最实际的困难。我先把话说清楚：**从零证明不是唯一选项，而且几乎没有人真的这么做过。**\n\n让我先看看本地有没有关于\"依赖他人证言\"的材料，再给你具体规则。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "0aeedf0bf5a44db79f223f60d882bec0:2:note:0",
+     "content": "第一本命中就直接对上了你的问题。让我读一下上下文。"
+    }
+   ],
+   "provider_reasoning": "用户这是在推进一个对话。前两轮已经讨论了：共识能否作为接受依据、历史反转问题。现在用户的追问是：\"我没有时间读完所有论文，难道只能自己从零证明？\"\n\n这是一个有真实张力的反问。用户在质疑我前两轮里那个隐含的立场——我说\"关键是理由\"。用户觉得那等于要他自己从零证明，而他没有时间。\n\n我需要直接回应：不是的。认识论分工（epistemic division of labor）本来就是理性的核心。但这里有个关键的区分点，前两轮已经埋下了：\n\n1. 接受来自别人的证言（testimony）本来就是正常的、不可消除的。\n2. 但\"依赖证言\"和\"依赖人数\"不是一回事。\n3. 关键是：你不能证明，但你能做的是**二阶判断**——评估这个共识的生成机制、独立性、纠错通道、以及相关性。这些都不需要读完论文。\n\n我应该讲：\n- 从零证明是一个假的对立。没有人从零证明。\n- 理性的依赖证言不是偷懒，是分工。休谟、里德、Coady 的证言认识论。\n- 但依赖证言需要\"辩护来源\"（defeater）意识——你不需要检查每个信念，你需要检查那些高风险或异常的信号。\n- 我可以给出可操作的：不需要读论文，需要问什么。\n\n我要不要检索？这里涉及的哲学资源：证言知识（testimony）的认识论，可以引用休谟、托马斯·里德（Thomas Reid）、C.A.J. Coady、Jennifer Lackey、Alvin Goldman 的 expert testimony。也许我该查一下本地书库有没有相关内容，这样引用更可靠。\n\n我前两轮都引用了密尔《论自由》、库恩《科学革命的结构》，用了具体链接。用户可能期待同样质量的引用。\n\n让我想想这里最核心的哲学论点。用户面临的是一个**实践约束**：时间有限。这实际上是个资源分配问题。\n\n理性的回应结构：\n\n1. **否认对立**：接受证言不需要你从零证明。从来没有人从零证明任何东西。连\"我读得懂这篇论文\"都依赖别人。这是认识论分工，不是缺陷。\n\n2. **但依赖证言≠依赖人数**：回到第一轮。证言的力量来自来源的可靠性，而不是数量。所以你需要评估的是来源，不是统计粉丝数。\n\n3. **关键的实用原则**：你不需要读所有论文，你需要的是\"抽样式信任\"+\"触发器/警觉信号\"。这就是 Goldman 说的\"专家证言\"问题，或者更实际地说：\n   - 检查领域是否有纠错机制\n   - 检查是否有真实的、同等资格的异议\n   - 检查你依赖的是具体哪一部分\n   - 检查错误是否可逆\n\n4. **反直觉但重要的一点**：你的时间有限，恰恰是\"应该依赖共识\"的理由，而不是拒绝它的理由——因为你自己从零搞的风险高得多。但依赖的方式要对。\n\n5. **真正的成本核算**：读完论文不是唯一选择，你还有\"委托给一个你验证过的次级来源\"的选项——一个你确认过判断力的作者、一本教科书、一个综述。这叫间接依赖，经过一个可信的中间人。\n\n6. **承认不可消除的残余**：你的信任可能被背叛。没有完全免疫的办法。这不能消除，只能降低。\n\n我要不要查书库？让我看看有没有关于证言认识论的资源。我搜一下\"证言\"或\"testimony\"、\"知识 权威\"。也可以搜休谟或里德。\n\n实际上，让我考虑这个问题是否需要引用。用户的问题是实践性的，我可以用概念工具回答。但前两轮的模式是给了高质量引用。我应该尝试检索一下，看能不能找到相关的。\n\n让我搜索几个关键词：证言、知识的权威、专家、休谟。\n\n我搜一下：证言 testimony。\n\n其实我应该并行搜索几个可能有用的。让我搜：\n- \"证言\"（concept_trace 或 search_books）\n- 休谟 证言\n- 里德\n\n让我用 search_books 搜相关概念。\n\n我并行调用几个搜索。\n\n实际上我们先看看有什么书。我要小心，不要为了引用而引用。但搜索一下是有价值的，如果有的话可以加强。\n\n让我搜索：\n1. search_books \"证言\"\n2. search_books \"权威\" 或者 \"信念 证据\"\n3. concept_trace \"证言\"\n\n我一次性发出去。\n\n我想核心论点不依赖特定引用也能成立，但如果书库里有关于证言认识论或认识论分工的材料，会很有帮助。让我试试。\n\n考虑到工具描述，concept_trace 查概念逐字分布，search_books 检索。我两者都试。\n\n让我先搜索。我找到了一本很有用的：《哲学思维：清晰思考的12条关键原则》朱利安·巴吉尼，第一章集中注意力，里面有关于\"证言\"和社会认识论的段落。让我读取上下文来确认并引用。\n\n这段话很重要：\"没有一个人能亲身验证万事万物的一切真相，因此，我们必须依靠他人的见证。\"这正好回应用户的问题。\n\n让我读取这一章。这段巴吉尼的文字非常好，直接回应了用户的问题：\n\n\"因为没有一个人能亲身验证万事万物的一切真相，因此，我们必须依靠他人的见证。\"——这直接否定了\"从零证明\"的必要性。\n\n同时还有\"聆听别人说话并不代表永远听从别人所说\"——这正好平衡了，依赖证言≠盲从。\n\n还有\"证言不公\"——谁的声音被压制。\n\n我现在可以组织一个完整的回答了。核心论点：\n\n1. **否认假对立**：从零证明不是选项，也不是要求。没有人从零证明。巴吉尼明确说：没有一个人能亲身验证万事万物的一切真相。\n\n2. **但依赖证言≠依赖人数**：回到前两轮。你依赖的是来源可靠性，不是粉丝数。巴吉尼的区分：\"聆听别人说话并不代表永远听从别人所说\"。\n\n3. **实践上的关键**：你不需要读所有论文，你需要的是\"分层委托\"+\"抽样式验证\"+\"警报触发器\"。\n\n具体操作：\n- 委托可信的中间人（教科书、综述、你验证过判断力的作者）\n- 抽样验证（挑一个你能核的环节，看看它是否站得住，这检验的是整个来源的可靠性，而不是证明全部）\n- 触发器（哪些信号让你提高警惕：异议被压制、利益相关、机制不健全）\n\n4. **信任的风险不可消除，只能降低**：这正是你时间有限应付出的代价，而且比从零搞的代价小。\n\n5. **区分照做与判断**（呼应第一轮）。\n\n6. **巴吉尼的另一种资源**：证言不公——谁没被听到。这是一个额外维度：如果某个观点\"很多学者支持\"，部分原因可能是别人的证言被系统性压制了。这提醒我们\"多数\"本身可能是排斥的产物。\n\n这里要小心：不要把巴吉尼的\"证言不公\"当作\"多数意见不可信\"的证明——那是误用。它只是说，某些声音没被听到，要注意。这是相关的，但要防止过度延伸。\n\n让我也想想承认不确定性的地方：巴吉尼这本书是通俗哲学著作（朱利安·巴吉尼是普及型哲学家），不是社会认识论的专业论文。我引用它作为概念说明是可以的，但不应把它当作证言认识论的权威文献。我应该诚实标注这一点。\n\n实际上，社会认识论（social epistemology）和金曼（Goldman）、弗里克（Fricker）、兰顿（Lackey）是这方面的专业文献。巴吉尼提到了弗里克和兰顿。我如果要更权威，可以搜一下。但我觉得巴吉尼这段已经足够好了，作为对你问题的直接回应。我可以补充说这只是入门性说明。\n\n现在，我要不要给一个明确的\"操作规则\"？用户要的是实用的东西。让我给一个清晰的三步：\n\n1. 不要从零证明——找一个可问责的中间来源\n2. 抽样核验——挑一个关键环节自己检查\n3. 设定触发器——什么时候回头重估\n\n再加一个成本核算：你时间有限这个约束本身，恰恰是\"应该依赖共识/专家\"的理由，而不是拒绝它的理由。因为你亲自从零搞不仅慢，而且你作为非专家的错误率更高。这不是要你放弃判断，是让你把有限的时间投到收益最高的地方——检查来源的可信度，而不是重走别人的路。\n\n还有一个很关键的点：从零证明在逻辑上也不可能。你所谓的\"从零\"，其实依赖了大量别人的东西——你读论文要用别人建立的方法论、统计工具、语言。所以\"自己证明\"和\"依赖别人\"的界限是模糊的。这是巴吉尼那句\"没有一个人能亲身验证万事万物\"的深意。\n\n我还要回应用户前两轮的关切：历史反转。这里可以连起来：正因为可能反转，你才需要的是\"可修正的信念\"和\"触发器\"，而不是\"自己从头证明\"。自己从头证明并不能防止你陷入后见之明看不到的共识——因为你也可能是错的。\n\n好，我组织回答。要有结构，但不要用太多标签。平等语气。\n\n长度控制：前两轮都是中等偏长的清晰回答。保持一致。\n\n引用格式：按系统提示，\"引用提供真实出处与可靠阅读地址\"。我用 markdown 链接格式吗？第一轮我用了 [《论自由》...](url)。这里我也可以这样。巴吉尼的 reader_url 是 https://deepphilosophy.top/reader/a9a41388cecc?ch=1\n\n素材真实性核对：我引用的是实际读到的文字。\n- \"因为没有一个人能亲身验证万事万物的一切真相，因此，我们必须依靠他人的见证。\"——逐字。\n- \"聆听别人说话并不代表永远听从别人所说。\"——逐字。\n- \"盲目接受别人说的一切并不等于专心倾听\"——逐字。\n\n好。注意布局核对：layout_verified 是 false，文本是 normalized_library_text。我引用时不给版面坐标，只给章节和读者链接，这是诚实的。\n\n现在写回答。\n\n结构：\n1. 先直接否定假对立\n2. 为什么\"从零\"本身是个幻觉\n3. 那具体怎么办（三步）\n4. 回到你的历史关切：依赖证言和可修正不矛盾\n5. 一个附加维度：谁的声音没被听到（巴吉尼）\n6. 收尾：区分照做与判断，承认残余风险\n\n我要避免让人觉得我在回避。用户可能有点恼火——\"难道只能自己从零证明？\"语气带点反问/挑刺。我应该直接承认：不，从来不需要，我上面也没说要。如果有人的话说成那样，那是错的。\n\n不过要小心：我前两轮确实强调了\"关键是理由\"\"你接受的正当性来自你对理由的把握\"。用户可能觉得我是在要求他懂所有理由。我应该澄清：把握理由不等于独自发明或验证所有理由。二阶把握就够——你知道这个共识是怎么来的、为什么值得信、什么条件下不成立。\n\n这是我第一轮就提到的\"照做与判断\"的区分，现在深化。\n\n写吧。",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "证言 知识 权威 相信他人",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.28,
+     "result_full": "{\"query\": \"证言 知识 权威 相信他人\", \"results\": [{\"book_id\": \"464a5d944002\", \"book_title\": \"狱中札记\", \"author\": \"安东尼奥·葛兰西\", \"chapter_idx\": 2, \"chapter_title\": \"第三部分　第三章　哲学研究\", \"citation_label\": \"【《狱中札记》·第三部分　第三章　哲学研究】\", \"snippet\": \"解释成是结构的直接表现，在理论中应被当做原始的幼稚病来加以驳斥，而在实践中则应以具体的政治和历史著作的作者马克思的真正的证言来加以择击。从这种观点来看，《拿破仑第三政变记》和关于东方问题的著作特别重要，当然也还包括其他著作（《德国的革命和反革命》，《法兰西内战》和-一些较为短小的作品）。对这些作品进行分析，可以使人们更好地建立起马克思主义的历史的方法论，把分散在他的全部著作中的理论论断加以综合，进行说明和解释。 由此可以看到，马克思在其具体研究中采取了真正的预防措①金都雷：《现代主义及宗教与哲学的相Ⅱ关系》，巴闻，拉召尔札，1909年， 知识分子图书馆822——施，这些预防措施在他的-股著作中不可能有其荐在的位置。在这些预防措施中，\", \"score\": 175, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 2, \"focus\": \"证言 知识 权威 相信他人\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "concept_trace",
+     "args": {
+      "concept": "证言"
+     },
+     "status": "success",
+     "duration_seconds": 2.29,
+     "result_full": "{\"concept\": \"证言\", \"hits\": 90, \"matched_books\": 49, \"timeline\": [{\"book\": \"论法的精神\", \"book_id\": \"eef5ec46714f\", \"author\": \"孟德斯鸠\", \"chapter\": \"第二十八章　法国公民法的起源与沿革\", \"chapter_idx\": 42, \"citation_label\": \"【《论法的精神》·第二十八章　法国公民法的起源与沿革】\", \"snippet\": \"文字的道理[145]。第十三节 萨利克法或萨利安法兰克法与里普埃尔法兰克法以及其他蛮族法的区别萨利克法规定，不得使用消极证言。也就是说，依据萨利克法，提起诉讼和提出控告的人必须为自己的主张提供证据，而被告仅仅予以否认是不够的。这种规定与世界上几乎所有国家的法律相符。里普埃尔法兰克人的法律具有另一种精神[146]，它只要求提供消极证言。一个被提起诉讼或被控告的人，在大多数情况下可以通过与若干证人一起发誓，证明自己并未做过被指控的事。案情越重，参与立誓的证人就应越多[147]，有时可多达七十二名[148]。日耳曼尼亚人、巴伐利亚人、图林根人、弗里兹人、萨克森人、伦巴第人和勃艮第人的法律，都与里普埃尔人的法律如出一辙。我说过，萨利克法不接\", \"matched_chapters\": 5, \"read_args\": {\"book_id\": \"eef5ec46714f\", \"chapter_idx\": 42, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"交往行为理论\", \"book_id\": \"87bfe5b27ca1\", \"author\": \"尤尔根·哈贝马斯\", \"chapter\": \"一、导论：对合理性问题的理解\", \"chapter_idx\": 3, \"citation_label\": \"【《交往行为理论》·一、导论：对合理性问题的理解】\", \"snippet\": \"的有效性要求？如何对这些理由本身加以检验？那些对于有效性要求具有重要意义的论据及其理由何以会比其他论据显得更强或更弱？论证言语可以区分为三个不同的方面。首先，作为过程（Prozeβ）来看，论证所涉及到的是一种并非或然的交往形式，因为理想条件几乎得到了充分的满足。由此，我曾经尝试着指出过，论证的一般交往前提是理想言语情境的决定条件[39]。这个观点想必还有不尽如人意的地方；但是，我始终认为，我的出发点是正确的，任何一个合格的言语者，只要他认为已经进人-个论证过程当中，他就必须充分满足相应的一般条件，而我就是想对这些一般条件加以重建。论证的参与者一般都要满足这样的条件，即：他们的交往结构必须排除一切强制（无论是外在对沟通过程的强制，还是\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"87bfe5b27ca1\", \"chapter_idx\": 3, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"上帝之城\", \"book_id\": \"bcc83fdfca5e\", \"author\": \"奥古斯丁\", \"chapter\": \"第十一卷\", \"chapter_idx\": 11, \"citation_label\": \"【《上帝之城》·第十一卷】\", \"snippet\": \"诗篇~48: 1 以下。 《诗篇~48:8 。 帝的城欢喜，这城就是至高者居住的圣所。上帝在其中，城必不动摇。\\\"①从这些证言中一一其他相同的证言还有许多，要是全部提到那就太长了-一我们知道有一座上帝之城，由于她的创建者用爱激励我们，所以我们希望成为她的公民。 属地之城的公民喜爱他们自己的神灵甚于喜爱这座圣城的创建者，因为他们不知道他是万神之神。然而，他们的神灵不是虚假的， 而是不虔诚的因此变成一种极为贫乏的力量，它们竭力追求自己的私利，向它们被误导的服从者寻求神圣的荣耀。倒不如说，上帝是虔诚的、神圣的神灵的上帝，它们乐意服从惟→者上帝，而不愿服从众多神抵，即它们自己，它们乐意崇拜上帝，而不乐意自己被当作上帝崇拜。② 所以我们已经在前\", \"matched_chapters\": 14, \"read_args\": {\"book_id\": \"bcc83fdfca5e\", \"chapter_idx\": 11, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"哲学谈话录\", \"book_id\": \"3e85310c7179\", \"author\": \"爱比克泰德\", \"chapter\": \"论坚定\", \"chapter_idx\": 30, \"citation_label\": \"【《哲学谈话录》·论坚定】\", \"snippet\": \", 是不是有好有坏呢? 我伤害谁了吗? 我是否已将每个人的利益放在除他之外的任何别人的控制之下了呢?” 你将为神做怎样的证言?“哦, 主啊, 我正深受煎熬, 身遭不幸; 没有人关心我,也没有人给我任何东西, 所有的人都在指责我, 说我的坏话。” 这就是你要作的证言吗? 这就是你想用来让神对你的传唤蒙羞出丑的方式吗?为了让你做如此重要的证言, 他曾经把这种荣誉赐给了你, 并认为你被带到这个世界上是有价值的。一个对你有统治权的人宣判道:“我判你既不虔诚, 也不敬神。”你出了什么事了? “有人判我既不虔诚, 也不敬神。” 还有别的吗? “没了。” 如果这个人对某个假言三段论进行判断, 并宣称:“我断定‘如果现在是白天, 就一定有光’ 这个\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"3e85310c7179\", \"chapter_idx\": 30, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"神学大全　第一集　第7卷\", \"book_id\": \"9ed36aca09c5\", \"author\": \"托马斯·阿奎那\", \"chapter\": \"附录一：《永恒之父通谕》\", \"chapter_idx\": 17, \"citation_label\": \"【《神学大全　第一集　第7卷》·附录一：《永恒之父通谕》】\", \"snippet\": \"在一种较高的层次上利用这样一些甚至连聪明的异教徒也能认知的真理，实在是一种机遇。因为这样一些人的智慧，以及对手的这样一些证言，都为天主教真理提供了证据。再者，这样一种处理问题的方式，显然并不是新近发明的方法，而是一种教会的圣师们大量使用过的古代方法。还有，神圣传统的这些尊贵的证人和守护者在希伯来人的一次活动中看到了一种形式，而且几乎可以说是一种类型。希伯来人，当他们走出埃及的时候，被命令随身带着金银器血，穿上埃及人的珍贵的外套。藉着一种突然改变了的用法，这些原本是提供给迷信、提供给耻辱仪式的财富，就用来服务于真正的上帝。 钮开萨拉的格列高利，由于这个缘故而赞赏奥利金。他说，奥利金为了捍卫基督宗教的智慧，为了破除迷信，非常在行地收集到\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"9ed36aca09c5\", \"chapter_idx\": 17, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"法哲学原理\", \"book_id\": \"17c85f942c78\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter\": \"第二章 市民社会\", \"chapter_idx\": 14, \"citation_label\": \"【《法哲学原理》·第二章 市民社会】\", \"snippet\": \"验内容，像 事实 那样，其认识的素材乃是现成的感性直观、感性的主观确信和相应的陈述和保证。现在所要做的就是根据这些陈述、证言和证明情况等等作出结论和综合。从这种素材和适合于它的方法中所出现的客观真理，如果我们企图严格地客观地加以规定，就会导致 一半证明 ，如果再用严格的逻辑方法作真实的推论——这同时在自身中包含形式上的不一贯性，——就会导致 非常刑罚 。这种客观真理所具有的含义，与理性规定的真理性或某一定理的——其素材早经理智为自己规定成为抽象的——真理性，是完全不同的。现在，表明认识某一事件的这种经验真理性是法院真正的法律上职权，并表明法院在这一职权中具有独特的资格，从而具有排他的 自在 权利和必要性来从事这项工作，——表明这些乃\", \"matched_chapters\": 3, \"read_args\": {\"book_id\": \"17c85f942c78\", \"chapter_idx\": 14, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"哲学思维：清晰思考的12条关键原则\", \"book_id\": \"a9a41388cecc\", \"author\": \"朱利安·巴吉尼\", \"chapter\": \"第一章集中注意力\", \"chapter_idx\": 1, \"citation_label\": \"【《哲学思维：清晰思考的12条关键原则》·第一章集中注意力】\", \"snippet\": \"个领域方兴未艾，它主要检视社群、网络和其他人群在知 识形成过程中所发挥的作用一这些要素之前一直没有得到应有的 认识。 “证言”是社会认识论的一个关键概念。因为没有一个人能亲 004哲学思维  身验证万事万物的一切真相，因此，我们必须依靠他人的见证。但 是，说到这里，我们究竟应该信赖谁的证言？何时的证言？为了什 么的证言？还有，哪些人的证言遭到了不公正的摒弃？为什么有些 人的证言没有被听到？ 如果有些人的看法遭到了不公正的排挤或者忽视，而另一些人 的看法得到了过分的重视，我们就称其为“证言不公”。米兰达·弗 里克和雷·兰顿等当代哲学家都曾强调指出：长久以来，女性的声 音始终受到压制和削弱，她们像是被捂住了嘴，只能发出含混不清 的鸣噜声\", \"matched_chapters\": 2, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"狱中札记\", \"book_id\": \"464a5d944002\", \"author\": \"安东尼奥·葛兰西\", \"chapter\": \"第三部分　第三章　哲学研究\", \"chapter_idx\": 2, \"citation_label\": \"【《狱中札记》·第三部分　第三章　哲学研究】\", \"snippet\": \"解释成是结构的直接表现，在理论中应被当做原始的幼稚病来加以驳斥，而在实践中则应以具体的政治和历史著作的作者马克思的真正的证言来加以择击。从这种观点来看，《拿破仑第三政变记》和关于东方问题的著作特别重要，当然也还包括其他著作（《德国的革命和反革命》，《法兰西内战》和-一些较为短小的作品）。对这些作品进行分析，可以使人们更好地建立起马克思主义的历史的方法论，把分散在他的全部著作中的理论论断加以综合，进行说明和解释。 由此可以看到，马克思在其具体研究中采取了真正的预防措①金都雷：《现代主义及宗教与哲学的相Ⅱ关系》，巴闻，拉召尔札，1909年， 知识分子图书馆822——施，这些预防措施在他的-股著作中不可能有其荐在的位置。在这些预防措施中，\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 2, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"思想录\", \"book_id\": \"9dc98919ade8\", \"author\": \"布莱兹·帕斯卡尔\", \"chapter\": \"附录三：帕斯卡尔生平和著作年表\", \"chapter_idx\": 18, \"citation_label\": \"【《思想录》·附录三：帕斯卡尔生平和著作年表】\", \"snippet\": \"》43一50。***转引自（法）阿兰·佩雷菲特著，孟如等译《官主义的害》第262页，商务，1981。+帕斯卡尔也写了调查证言（1656年8月8日)，见梅纳《帕斯卡尔：未刊文献》（BlaisePascal，TEXTESINEDITS，35页，比利时布鲁日和巴黎，1962，北京图书馆藏）17一23。此书共刊三项文献，另两项为1653年4月给多马的收据（13一16)，思想录新材料（25一33)。++见《莫特维尔夫人回忆录》（Memoire，巴黎，1855），转引自赛勒斯399。这里所谓神物是耶稣受难所戴荆棘冠上的棘（Sainte-Epine/HolyThorn），为拉·波泰里（LaPotherie）所收藏。这件事看来蹊跷，东西本身，展示的\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"9dc98919ade8\", \"chapter_idx\": 18, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"宗教经验种种\", \"book_id\": \"469fc9745e43\", \"author\": \"威廉·詹姆斯\", \"chapter\": \"第十讲皈依（结论）\", \"chapter_idx\": 11, \"citation_label\": \"【《宗教经验种种》·第十讲皈依（结论）】\", \"snippet\": \"，也是在实践中。卫斯理临死前写道：仅在伦敦一地，我就发现我们教派652名成员，曾有过极其清楚的经验，我没有理由怀疑他们的证言。他们每个人（没有一个例外）都宣称，他解脱罪草是瞬间的，变化刹那间完成。假如有一半人，或者三分之一，或者二十分之一，宣称他们的转变是逐渐完成的，那么我会相信他们的确如此，以为有些人逐渐认信，有些人则瞬间认信。然面，经过了这么长的时间，我没有发现一个人这么说，因此我只能相信，认信通常（并非始终）瞬间的过程。①新教一些比较普通的派别，始终不太重视这种瞬间皈依。它们像天主教一样，以为基督的血、圣礼，以及个人平常的宗教功课，实际上足以让他得教，即使从来没有严重危机的经验，从未经历自我绝望、屈从、然后得教的过程。相反，卫\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 11, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}], \"scanned_chapters\": 12435, \"note\": \"仅统计可在原文逐字确认的词项出现；这是按书聚合的分布，不等于概念起源或历史演变。需阅读上下文核实用法，异译词需另行检索。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "专家 权威 意见 判断 分工",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.298,
+     "result_full": "{\"query\": \"专家 权威 意见 判断 分工\", \"results\": [{\"book_id\": \"960c47f35066\", \"book_title\": \"规训与惩罚\", \"author\": \"米歇尔·福柯\", \"chapter_idx\": 6, \"chapter_title\": \"第三章 全景敞视主义\", \"citation_label\": \"【《规训与惩罚》·第三章 全景敞视主义】\", \"snippet\": \"”的目的。由于有了这种新的限制，刽子手这种痛苦的直接制造者被一个技术人员大军所取代。他们包括监狱看守、医生、牧师、精神病专家、心理学家、教育学家等。他们接近犯人，高唱法律所需要的赞歌。他们反复断言，肉体和痛苦不是法律惩罚行动的最终目标。今天，医生会照顾死刑犯，直至最后一刻。他们作为慈善事业的代表和痛苦的安慰者与那些执行死刑的人共同工作。这是很值得玩味的。在即将行刑之际，犯人被注射镇静剂。这是一个司法保持克制的乌托邦：夺走犯人的生命，但不让他有所感觉；剥夺囚犯的全部权利，但不造成痛苦；施加刑罚，但没有任何肉体痛苦。诉诸心理一药理学和各种心理“阻断物”——哪怕是暂时的——是这种“非肉体”刑罚的一个合乎逻辑的结果。 现代处决仪式证实了这一\", \"score\": 228, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"960c47f35066\", \"chapter_idx\": 6, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"464a5d944002\", \"book_title\": \"狱中札记\", \"author\": \"安东尼奥·葛兰西\", \"chapter_idx\": 1, \"chapter_title\": \"第二部分　第二章　政治随笔\", \"citation_label\": \"【《狱中札记》·第二部分　第二章　政治随笔】\", \"snippet\": \"达到白热化，抛杀可以播毁统师的“神奇领导品质”的批判意识和无情讽刺（就像布郎热冒险的情形）。①但是此类的应急行为从性质上判断，不可能产生长期和根本作用。它几乎在各个方面都适于复辟和重建，却不适于建立新的国家和新的民族和社会结构（正如马基雅弗利的《君主论》中讨论的问题一样，复辟的主题只是《君主论》的修辞要素，它与意大利发源于罗马帝国并注定要恢复古罗马秩序和权威这一文学主题有关）②。它具有守成的性质，不适合独到的创造。它潜在的假设就是：现存的集体意志变得松邂无力，它经历了危险、急迫却算不上终极毁灭性的衰落，可以不必从零开始创造新的集体意志，只需对集体意志进行再度加强和巩固，并把它导向具体和合理的目标，但是具体性和合理的程度还没有经过普遍\", \"score\": 225, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 1, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"464a5d944002\", \"book_title\": \"狱中札记\", \"author\": \"安东尼奥·葛兰西\", \"chapter_idx\": 2, \"chapter_title\": \"第三部分　第三章　哲学研究\", \"citation_label\": \"【《狱中札记》·第三部分　第三章　哲学研究】\", \"snippet\": \"一节哲学研究作为参考的一些初步观点下面这种流布甚广的偏见必须加以革除：哲学是一种奇怪而艰难的东西，因为它是由特定领域内的专家或专业的和系统的哲学家所从事的专门的智识活动。人人都是哲学家。为证明此观点，首先必须对人所固有的“自发哲学”的界限和特征加以界定。这种哲学包含在： 1.语言本身中，语言不只是与内容无涉的语法上的字，语言是既定的观念和概念之总体； 2.“常识”和“健全的见识”；3.大众的宗教，从而也包含在信仰、迷信、意见、看待事物的方式和行动方式的整个体系里，它们被以“民俗”的名目捆扎为一体。 在首先证明人人都是哲学家：虽然是有其自己的方式并且是不自觉地（因为即使在任何--种智识活动的最细微表现里，在 ①葛兰西赋子这两个名间的意\", \"score\": 225, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 2, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"d5c8b95c2fb0\", \"book_title\": \"学术的进展\", \"author\": \"弗朗西斯·培根\", \"chapter_idx\": 3, \"chapter_title\": \"第二卷 献给国王陛下\", \"citation_label\": \"【《学术的进展》·第二卷 献给国王陛下】\", \"snippet\": \"。隆下有一句至理名言：“对于所有的习惯和先例，要考察它们当初出现的时代，如果那个时代的人们软弱无知，这些惯例就会逐渐失去权威，被人们怀疑。”现代大学的惯例和规定都是从遥远的古代演化来的，更应当受到第二次的检验。这里我可以举一二个明显面熟悉的例子来说明。有一种问题自古已然，并且很普遍，我也只能把它们称作错误，那就是大学的学者在时机未成熟的时候过早开始教授逻辑学和修辞学，实际上这些学科更适合毕业生而不是儿童和新生。因为公正地说，这两门学科是科学中最重要的学科，是艺术中的艺术。其中的一种教人如何判断，另一种教人学会修饰。它们是教人陈述和布置内容的规则和指导，如果学习者脑中空空如也，没有储存任何内容，还没有积蓄西塞罗所谓的“原料和变化”的时\", \"score\": 225, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d5c8b95c2fb0\", \"chapter_idx\": 3, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"406efc92bfd4\", \"book_title\": \"生活的哲学\", \"author\": \"朱尔斯·埃文斯\", \"chapter_idx\": 15, \"chapter_title\": \"尾声 思考死亡，就是思考人生\", \"citation_label\": \"【《生活的哲学》·尾声 思考死亡，就是思考人生】\", \"snippet\": \"健康有好处”。古代哲学，如西塞罗所说，训练我们去做我们自己的医生，自我跟踪技术把权力交到了我们手中。我们不需要简单地信任专家：我们都能成为我们自己自我提高方面的专家。 斯多葛哲学与体育运动 斯多葛派经常把哲学比喻成为奥运会而训练。神让你遭受不幸，就像拳击教练送给你一个陪练，看你的训练有了多大进步，你在身体、头脑和灵魂上提高了多少。如果你在现代生活中寻找这种斯多葛派的态度，除了服务业，你最有可能找到它的地方就是在体育界。历史学家达林·麦克马洪曾经说，现在体育教练以一种奇怪的方式，在学校里填补了以前被哲学家和牧师占据的位置。他说：“在学校里唯一教授价值观的人好像就是体育教练了。”（实际上，对体育道德的研究是学院哲学中正在兴起的领域。）比\", \"score\": 224, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"406efc92bfd4\", \"chapter_idx\": 15, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"406efc92bfd4\", \"book_title\": \"生活的哲学\", \"author\": \"朱尔斯·埃文斯\", \"chapter_idx\": 18, \"chapter_title\": \"附录三 让理性放假，在音乐里活！\", \"citation_label\": \"【《生活的哲学》·附录三 让理性放假，在音乐里活！】\", \"snippet\": \"受了伤；所以你要弄清你什么地方比较薄弱，这样你可以给予它最强的保护。”其次，当你感到怒气正在降临时，休息一下，如愤怒控制专家所说的“愤怒最好的解药是等待”；塞内加写道：“让它引起的最初的激情变得越来越弱直到消失，覆盖了心灵的浓雾消退。”再次，试着微笑而非皱眉：“放松面部表情，让我们的声音更柔和，脚步更缓慢；逐渐地，外部特征改变了内在的情绪。” 还有需要解决的长期的结构性问题。其中一些问题是社会和行为方面的。社会心理学家探讨“社会传染”——我们会从周围的人那里学来好习惯和坏习惯。塞内加说过类似的话：“恶习偷偷地走来，并迅速传给身边的人。由此，就像在瘟疫时不要坐在感染了瘟疫、受到疾病折磨的人的尸体的周围一样……在选择朋友时，我们一定要注\", \"score\": 224, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"406efc92bfd4\", \"chapter_idx\": 18, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 36, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a9a41388cecc",
+      "chapter_idx": 1,
+      "focus": "证言 社会认识论 依靠他人的见证",
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"a9a41388cecc\", \"book_title\": \"哲学思维：清晰思考的12条关键原则\", \"chapter_idx\": 1, \"title\": \"第一章集中注意力\", \"citation_label\": \"【《哲学思维：清晰思考的12条关键原则》·第一章集中注意力】\", \"text\": \"个民主社\\n会？既然医院和医疗信托机构把救死扶伤当作最高宗旨，为什么它\\n\\n们离不开患者倡导组织的督促？上述观点并不缺少站得住脚的论\\n证。不论性别、肤色或者种族背景，人人都拥有平等的权利与机\\n会，这个道理早已深入人心，不存在什么异议。患者的福祉高于一\\n切，这是每位医疗工作者笃行的最高信条。尽管这些原则得到了几\\n乎所有人的拥护，但是它们并未击穿层出不穷的偏见和冷漠一几\\n百年来的压制和精英权力把这一切刻进了大众心理的深处。想清楚\\n一件事是一回事，注意它是另一回事。\\n如果只是在抽象层面想通一个向题，我们的思想就没有做到足\\n够通透。只是单纯在脑海中建构概念，这样的思考是贫乏无物的。\\n这种脱节的认识无法与我们从生活中获得的经验充分接轨，因此，\\n它无法改变我们的行为，甚至无法改变我们内心深处的想法。那\\n么，如何让思想走出“大脑”，走进“心灵”，并付诸行动？一切的\\n根源在于密切关注。我们必须更多地关注世界，留心他人。\\n想做到专心一致，就必须关注它的社会维度。这一点非常重\\n要。我们不能只在乎这个世界对我们来说是什么样的，还要注意它\\n对别人而言是什么样的。因此，在思考类似种族主义、厌女倾向或\\n者患者倡导组织等问题时，我们必须特别留意他人的感受和证词，\\n尤其要关注那些受其影响最深刻、最剧烈的人。\\n纵观哲学史，尤其是（但不限于）西方哲学史，这种需要并未\\n得到一贯的、充分的认可。直到近些年，为数不少的哲学家才开\\n始正视这个问题。很明显，他们大多来自一个较新的领域：社会认\\n识论。这个领域方兴未艾，它主要检视社群、网络和其他人群在知\\n识形成过程中所发挥的作用一这些要素之前一直没有得到应有的\\n认识。\\n“证言”是社会认识论的一个关键概念。因为没有一个人能亲\\n004哲学思维\\n\\n身验证万事万物的一切真相，因此，我们必须依靠他人的见证。但\\n是，说到这里，我们究竟应该信赖谁的证言？何时的证言？为了什\\n么的证言？还有，哪些人的证言遭到了不公正的摒弃？为什么有些\\n人的证言没有被听到？\\n如果有些人的看法遭到了不公正的排挤或者忽视，而另一些人\\n的看法得到了过分的重视，我们就称其为“证言不公”。米兰达·弗\\n里克和雷·兰顿等当代哲学家都曾强调指出：长久以来，女性的声\\n音始终受到压制和削弱，她们像是被捂住了嘴，只能发出含混不清\\n的鸣噜声。兰顿指出，社会（尤其是色情作品）对性的表达、讨论\\n和描述方式损毁了女性的性选择能力。女性的拒绝从未被当真过。\\n这主要是因为人们习以为常地认为，女性口中的“不要”是“犹抱\\n琵琶”、是“故作正经”，还有人硬是把它理解为“欲擒故纵”。\\n哈维·卡雷尔写过很多文章讨论这样一种情况：在医患相处的\\n过程中，患者是最了解自已身体和健康状况的人，可是，这些患者\\n独有的认识并没有得到重视。医生才是唯一的专家。这种文化造成\\n了对护士和患者等基层人员所具知识的系统性轻视。卡雷尔这些关\\n于专业医务人员的著述为临床实践带来了一些改变。它证明了这样\\n的认识并不只是理论上的推测。\\n聆听别人说话并不代表永远听从别人所说。举个例子，当我说\\n“站在马路边上对经过的美女吹口哨是一种不尊重女性的行为”时，\\n可能有人会说，不对，某位女士很喜欢有人对她吹口哨。但这并\\n不能证明我的说法是错的，尤其是因为还有很多女性并不认同她的\\n看法。蜻蜓点水般在遭受直接影响的人群中进行一次投票调查同样\\n无法得到正确的答案。在有些父权主义盛行的社会里，歧视女性的\\n社会准则早已根深蒂固，大部分女性可能会表示自己对现状非常满\\n\\n意。照这样说，有时医生懂的就是比患者多。\\n盲目接受别人说的一切并不等于专心倾听，那只是被动接收对\\n方嘴巴里发出的声音并将其全盘接受。真正的倾听不仅是聆听对方\\n的话语，还要参与其中，有时还会提出不同意见。认为一个人无法\\n接受批评或挑战，那才是我们对他（她）的不尊重。\\n聪明的倾听还需要注意区分对象。比如，很多人想为跨性别人\\n士提供最有力的帮助，他们热切地期待倾听跨性别人群讲述自已的\\n经历和期望。这些都是再好不过的。但是，跨性别人士的想法各不\\n相同，即使是最强大、最仗义执言的支持团体，也无法为每一位跨\\n性别者代言。\\n如果卓越的思考需要的只是聚精会神，为什么还要劳神费力地\\n提高我们的逻辑技能、科学修养和统计素养呢？这一切都是值得努\\n力的，因为它们是行之有效的工具和手段，能帮助我们更好地集中\\n注意力，告诫我们应该当心什么。不过，单纯地凝神专注已经可以\\n让我们相当好地思考。实际上我认为，思考在很大程度上就是专心\\n致志。做到专心并不容易，它需要我们付出极大的气力。“专心”\\n（attend）一词的拉丁词源（adtendere）可以说明这一点：其中的\\n“ad”本义为“朝着”，“tendere”本义为“拉扯”，二者合在一起的\\n字面意义为“朝着...拉扯”。如此看来，要想近距离地专注于某\\n个事物，不付出足够的气力是不行的。“专心”还意味着身临其境，\\n就像出席婚礼一样。无论需要注意的是什么，我们都必须完全地亲\\n身投入其中。与之相关的法语动词是“attendre”，其含义是等待。\\n这提醒我们，耐心和恒心往往是人们付出注意力、收获成功的必要\\n条件，缺一不可。\\n为了说明专心是第一要务，我们要花些时间来钻研西方哲学史\\n006哲学思维\\n\\n上的几桩公案。以“我思故我在”为例。即使对哲学一无所知的\\n人大概也会经常提到它，很多人甚至知道它的拉丁文写法（cogito\\nergo sum)。它的提出者是17世纪的法国哲学家笛卡儿。虽然这\\n句话只有3个拉丁单词，但它似乎道尽了我们所认为的自已对哲\\n学的一切了解。它包括了人对自身的认识（cogito，思考）和存\\n在（sum，存在）问题，最重要的是，它还谈到了逻辑论证的建构\\n(ergo，因此)。\\n它使用的模式还展现了最短论证的真实模样。这种模式从一个\\n前提出发（在这里，前提是“我思”），然后推出一个结论（“我\\n在”），整个过程的真正动作由一个字来概括（“故”）。类似这样的\\n逻辑论证带来了被我们视为真理的结果，揭示了崭新的、令人惊讶\\n的结论。它们一本正经、明白无误地把前提同结论联系在一起。它\\n被普遍视为最标准的推理范式。哲学家是最懂得其中运用之妙的行\\n家里手。如此说来，想学会最好地进行推理，最顺理成章的做法是\\n帅法哲学。\\n但是，我认为这里存在夸大哲学形式论证重要性的风险，或者\\n说得再宽泛一些，它可能夸大了推理的重要性。比如，我把前面的\\n两段看作推理演练：我本想阐明哲学论证需要什么，但是在此过程\\n中，我在精确地描述哲学时所花费的力气要多于建构论证本身。它\\n只在末尾出现了很短的一段论证。我通过这段论证提出的是，如果\\n说推理就是为了得出结论，那么它属于哲学的专长，因此，哲学算\\n是推理技能最好的老师。但是，这个论证所做的一切不过是把已经\\n表述过的启示明白无误地说出来。想知道这一论证是否通顺，我们\\n的主要工作并不是分析它从前提到结论的推进过程。相反，我们要\\n去检验它的假设：类似这样的论证算是良好推理的范式吗？哲学家\\n\\n是个中专家吗？为了回答这些问题，我们就必须凝神审视它在推理\\n过程中实际发挥的逻辑作用，以及哲学家使用它们的频率和实际效\\n果等。也就是说，我们在整个过程中做得最多的是仔细观察、审视\\n相关描述是否抓住了原本想要描述的对象。这里需要的注意力远远\\n大于推论本身。\\n当足够专心时，我们可能会被自已的发现惊呆。请仔细思考\\n“我思故我在”这句话：它真的是一项论证吗？看起来是的，毕竟\\n它有连词“因而”（即“故”字)。可是，它如果是一项论证，实\\n在称不上有趣。我们可以从任意一项论“我”的陈述中得出“故我\\n在”的结论。比如，为什么不能是“我饮故我在”？为什么不能说\\n“我是粉色的，所以我存在”？它们似乎同样说得通。\\n在形式逻辑看来，“我思故我在”属于一种循环论证：结论之\\n\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 810, \"excerpt_end\": 4010, \"chapter_text_length\": 11557, \"has_more\": true, \"next_offset\": 4010, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"证言\", \"社会认识论\", \"依靠他人的见证\"], \"focus_terms_found_in_chapter\": [\"证言\", \"社会认识论\", \"依靠他人的见证\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"证言\", \"offset\": 1506, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"offset\": 1306, \"focus\": \"证言\"}}, {\"term\": \"证言\", \"offset\": 1589, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"offset\": 1389, \"focus\": \"证言\"}}, {\"term\": \"证言\", \"offset\": 1595, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"offset\": 1395, \"focus\": \"证言\"}}, {\"term\": \"社会认识论\", \"offset\": 1510, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"offset\": 1310, \"focus\": \"社会认识论\"}}, {\"term\": \"依靠他人的见证\", \"offset\": 1562, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"offset\": 1362, \"focus\": \"依靠他人的见证\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"7d361dbb5ba413c24cef9c720a78cac7a26072e8279e822169a489fa091140f5\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a9a41388cecc?ch=1\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[810, 4010]], \"covered_characters\": 3200, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 7.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_gd0JVOOrTj5ybKOm1Usi8694"
+    },
+    {
+     "t": 7.7,
+     "phase": "start",
+     "name": "concept_trace",
+     "call_id": "call_01_Sxw21hAMt9pOOlWqjqzA5808"
+    },
+    {
+     "t": 7.8,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_02_shHjjX4bX9HpnTtJQTud3756",
+     "status": "success",
+     "duration_seconds": 2.28
+    },
+    {
+     "t": 10.2,
+     "phase": "result_orphan",
+     "name": "concept_trace",
+     "args": {
+      "concept": "证言"
+     },
+     "status": "success",
+     "duration_seconds": 2.29,
+     "result_full": "{\"concept\": \"证言\", \"hits\": 90, \"matched_books\": 49, \"timeline\": [{\"book\": \"论法的精神\", \"book_id\": \"eef5ec46714f\", \"author\": \"孟德斯鸠\", \"chapter\": \"第二十八章　法国公民法的起源与沿革\", \"chapter_idx\": 42, \"citation_label\": \"【《论法的精神》·第二十八章　法国公民法的起源与沿革】\", \"snippet\": \"文字的道理[145]。第十三节 萨利克法或萨利安法兰克法与里普埃尔法兰克法以及其他蛮族法的区别萨利克法规定，不得使用消极证言。也就是说，依据萨利克法，提起诉讼和提出控告的人必须为自己的主张提供证据，而被告仅仅予以否认是不够的。这种规定与世界上几乎所有国家的法律相符。里普埃尔法兰克人的法律具有另一种精神[146]，它只要求提供消极证言。一个被提起诉讼或被控告的人，在大多数情况下可以通过与若干证人一起发誓，证明自己并未做过被指控的事。案情越重，参与立誓的证人就应越多[147]，有时可多达七十二名[148]。日耳曼尼亚人、巴伐利亚人、图林根人、弗里兹人、萨克森人、伦巴第人和勃艮第人的法律，都与里普埃尔人的法律如出一辙。我说过，萨利克法不接\", \"matched_chapters\": 5, \"read_args\": {\"book_id\": \"eef5ec46714f\", \"chapter_idx\": 42, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"交往行为理论\", \"book_id\": \"87bfe5b27ca1\", \"author\": \"尤尔根·哈贝马斯\", \"chapter\": \"一、导论：对合理性问题的理解\", \"chapter_idx\": 3, \"citation_label\": \"【《交往行为理论》·一、导论：对合理性问题的理解】\", \"snippet\": \"的有效性要求？如何对这些理由本身加以检验？那些对于有效性要求具有重要意义的论据及其理由何以会比其他论据显得更强或更弱？论证言语可以区分为三个不同的方面。首先，作为过程（Prozeβ）来看，论证所涉及到的是一种并非或然的交往形式，因为理想条件几乎得到了充分的满足。由此，我曾经尝试着指出过，论证的一般交往前提是理想言语情境的决定条件[39]。这个观点想必还有不尽如人意的地方；但是，我始终认为，我的出发点是正确的，任何一个合格的言语者，只要他认为已经进人-个论证过程当中，他就必须充分满足相应的一般条件，而我就是想对这些一般条件加以重建。论证的参与者一般都要满足这样的条件，即：他们的交往结构必须排除一切强制（无论是外在对沟通过程的强制，还是\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"87bfe5b27ca1\", \"chapter_idx\": 3, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"上帝之城\", \"book_id\": \"bcc83fdfca5e\", \"author\": \"奥古斯丁\", \"chapter\": \"第十一卷\", \"chapter_idx\": 11, \"citation_label\": \"【《上帝之城》·第十一卷】\", \"snippet\": \"诗篇~48: 1 以下。 《诗篇~48:8 。 帝的城欢喜，这城就是至高者居住的圣所。上帝在其中，城必不动摇。\\\"①从这些证言中一一其他相同的证言还有许多，要是全部提到那就太长了-一我们知道有一座上帝之城，由于她的创建者用爱激励我们，所以我们希望成为她的公民。 属地之城的公民喜爱他们自己的神灵甚于喜爱这座圣城的创建者，因为他们不知道他是万神之神。然而，他们的神灵不是虚假的， 而是不虔诚的因此变成一种极为贫乏的力量，它们竭力追求自己的私利，向它们被误导的服从者寻求神圣的荣耀。倒不如说，上帝是虔诚的、神圣的神灵的上帝，它们乐意服从惟→者上帝，而不愿服从众多神抵，即它们自己，它们乐意崇拜上帝，而不乐意自己被当作上帝崇拜。② 所以我们已经在前\", \"matched_chapters\": 14, \"read_args\": {\"book_id\": \"bcc83fdfca5e\", \"chapter_idx\": 11, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"哲学谈话录\", \"book_id\": \"3e85310c7179\", \"author\": \"爱比克泰德\", \"chapter\": \"论坚定\", \"chapter_idx\": 30, \"citation_label\": \"【《哲学谈话录》·论坚定】\", \"snippet\": \", 是不是有好有坏呢? 我伤害谁了吗? 我是否已将每个人的利益放在除他之外的任何别人的控制之下了呢?” 你将为神做怎样的证言?“哦, 主啊, 我正深受煎熬, 身遭不幸; 没有人关心我,也没有人给我任何东西, 所有的人都在指责我, 说我的坏话。” 这就是你要作的证言吗? 这就是你想用来让神对你的传唤蒙羞出丑的方式吗?为了让你做如此重要的证言, 他曾经把这种荣誉赐给了你, 并认为你被带到这个世界上是有价值的。一个对你有统治权的人宣判道:“我判你既不虔诚, 也不敬神。”你出了什么事了? “有人判我既不虔诚, 也不敬神。” 还有别的吗? “没了。” 如果这个人对某个假言三段论进行判断, 并宣称:“我断定‘如果现在是白天, 就一定有光’ 这个\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"3e85310c7179\", \"chapter_idx\": 30, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"神学大全　第一集　第7卷\", \"book_id\": \"9ed36aca09c5\", \"author\": \"托马斯·阿奎那\", \"chapter\": \"附录一：《永恒之父通谕》\", \"chapter_idx\": 17, \"citation_label\": \"【《神学大全　第一集　第7卷》·附录一：《永恒之父通谕》】\", \"snippet\": \"在一种较高的层次上利用这样一些甚至连聪明的异教徒也能认知的真理，实在是一种机遇。因为这样一些人的智慧，以及对手的这样一些证言，都为天主教真理提供了证据。再者，这样一种处理问题的方式，显然并不是新近发明的方法，而是一种教会的圣师们大量使用过的古代方法。还有，神圣传统的这些尊贵的证人和守护者在希伯来人的一次活动中看到了一种形式，而且几乎可以说是一种类型。希伯来人，当他们走出埃及的时候，被命令随身带着金银器血，穿上埃及人的珍贵的外套。藉着一种突然改变了的用法，这些原本是提供给迷信、提供给耻辱仪式的财富，就用来服务于真正的上帝。 钮开萨拉的格列高利，由于这个缘故而赞赏奥利金。他说，奥利金为了捍卫基督宗教的智慧，为了破除迷信，非常在行地收集到\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"9ed36aca09c5\", \"chapter_idx\": 17, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"法哲学原理\", \"book_id\": \"17c85f942c78\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter\": \"第二章 市民社会\", \"chapter_idx\": 14, \"citation_label\": \"【《法哲学原理》·第二章 市民社会】\", \"snippet\": \"验内容，像 事实 那样，其认识的素材乃是现成的感性直观、感性的主观确信和相应的陈述和保证。现在所要做的就是根据这些陈述、证言和证明情况等等作出结论和综合。从这种素材和适合于它的方法中所出现的客观真理，如果我们企图严格地客观地加以规定，就会导致 一半证明 ，如果再用严格的逻辑方法作真实的推论——这同时在自身中包含形式上的不一贯性，——就会导致 非常刑罚 。这种客观真理所具有的含义，与理性规定的真理性或某一定理的——其素材早经理智为自己规定成为抽象的——真理性，是完全不同的。现在，表明认识某一事件的这种经验真理性是法院真正的法律上职权，并表明法院在这一职权中具有独特的资格，从而具有排他的 自在 权利和必要性来从事这项工作，——表明这些乃\", \"matched_chapters\": 3, \"read_args\": {\"book_id\": \"17c85f942c78\", \"chapter_idx\": 14, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"哲学思维：清晰思考的12条关键原则\", \"book_id\": \"a9a41388cecc\", \"author\": \"朱利安·巴吉尼\", \"chapter\": \"第一章集中注意力\", \"chapter_idx\": 1, \"citation_label\": \"【《哲学思维：清晰思考的12条关键原则》·第一章集中注意力】\", \"snippet\": \"个领域方兴未艾，它主要检视社群、网络和其他人群在知 识形成过程中所发挥的作用一这些要素之前一直没有得到应有的 认识。 “证言”是社会认识论的一个关键概念。因为没有一个人能亲 004哲学思维  身验证万事万物的一切真相，因此，我们必须依靠他人的见证。但 是，说到这里，我们究竟应该信赖谁的证言？何时的证言？为了什 么的证言？还有，哪些人的证言遭到了不公正的摒弃？为什么有些 人的证言没有被听到？ 如果有些人的看法遭到了不公正的排挤或者忽视，而另一些人 的看法得到了过分的重视，我们就称其为“证言不公”。米兰达·弗 里克和雷·兰顿等当代哲学家都曾强调指出：长久以来，女性的声 音始终受到压制和削弱，她们像是被捂住了嘴，只能发出含混不清 的鸣噜声\", \"matched_chapters\": 2, \"read_args\": {\"book_id\": \"a9a41388cecc\", \"chapter_idx\": 1, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"狱中札记\", \"book_id\": \"464a5d944002\", \"author\": \"安东尼奥·葛兰西\", \"chapter\": \"第三部分　第三章　哲学研究\", \"chapter_idx\": 2, \"citation_label\": \"【《狱中札记》·第三部分　第三章　哲学研究】\", \"snippet\": \"解释成是结构的直接表现，在理论中应被当做原始的幼稚病来加以驳斥，而在实践中则应以具体的政治和历史著作的作者马克思的真正的证言来加以择击。从这种观点来看，《拿破仑第三政变记》和关于东方问题的著作特别重要，当然也还包括其他著作（《德国的革命和反革命》，《法兰西内战》和-一些较为短小的作品）。对这些作品进行分析，可以使人们更好地建立起马克思主义的历史的方法论，把分散在他的全部著作中的理论论断加以综合，进行说明和解释。 由此可以看到，马克思在其具体研究中采取了真正的预防措①金都雷：《现代主义及宗教与哲学的相Ⅱ关系》，巴闻，拉召尔札，1909年， 知识分子图书馆822——施，这些预防措施在他的-股著作中不可能有其荐在的位置。在这些预防措施中，\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 2, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"思想录\", \"book_id\": \"9dc98919ade8\", \"author\": \"布莱兹·帕斯卡尔\", \"chapter\": \"附录三：帕斯卡尔生平和著作年表\", \"chapter_idx\": 18, \"citation_label\": \"【《思想录》·附录三：帕斯卡尔生平和著作年表】\", \"snippet\": \"》43一50。***转引自（法）阿兰·佩雷菲特著，孟如等译《官主义的害》第262页，商务，1981。+帕斯卡尔也写了调查证言（1656年8月8日)，见梅纳《帕斯卡尔：未刊文献》（BlaisePascal，TEXTESINEDITS，35页，比利时布鲁日和巴黎，1962，北京图书馆藏）17一23。此书共刊三项文献，另两项为1653年4月给多马的收据（13一16)，思想录新材料（25一33)。++见《莫特维尔夫人回忆录》（Memoire，巴黎，1855），转引自赛勒斯399。这里所谓神物是耶稣受难所戴荆棘冠上的棘（Sainte-Epine/HolyThorn），为拉·波泰里（LaPotherie）所收藏。这件事看来蹊跷，东西本身，展示的\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"9dc98919ade8\", \"chapter_idx\": 18, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"宗教经验种种\", \"book_id\": \"469fc9745e43\", \"author\": \"威廉·詹姆斯\", \"chapter\": \"第十讲皈依（结论）\", \"chapter_idx\": 11, \"citation_label\": \"【《宗教经验种种》·第十讲皈依（结论）】\", \"snippet\": \"，也是在实践中。卫斯理临死前写道：仅在伦敦一地，我就发现我们教派652名成员，曾有过极其清楚的经验，我没有理由怀疑他们的证言。他们每个人（没有一个例外）都宣称，他解脱罪草是瞬间的，变化刹那间完成。假如有一半人，或者三分之一，或者二十分之一，宣称他们的转变是逐渐完成的，那么我会相信他们的确如此，以为有些人逐渐认信，有些人则瞬间认信。然面，经过了这么长的时间，我没有发现一个人这么说，因此我只能相信，认信通常（并非始终）瞬间的过程。①新教一些比较普通的派别，始终不太重视这种瞬间皈依。它们像天主教一样，以为基督的血、圣礼，以及个人平常的宗教功课，实际上足以让他得教，即使从来没有严重危机的经验，从未经历自我绝望、屈从、然后得教的过程。相反，卫\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 11, \"focus\": \"证言\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}], \"scanned_chapters\": 12435, \"note\": \"仅统计可在原文逐字确认的词项出现；这是按书聚合的分布，不等于概念起源或历史演变。需阅读上下文核实用法，异译词需另行检索。\"}"
+    },
+    {
+     "t": 10.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "专家 权威 意见 判断 分工",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.298,
+     "result_full": "{\"query\": \"专家 权威 意见 判断 分工\", \"results\": [{\"book_id\": \"960c47f35066\", \"book_title\": \"规训与惩罚\", \"author\": \"米歇尔·福柯\", \"chapter_idx\": 6, \"chapter_title\": \"第三章 全景敞视主义\", \"citation_label\": \"【《规训与惩罚》·第三章 全景敞视主义】\", \"snippet\": \"”的目的。由于有了这种新的限制，刽子手这种痛苦的直接制造者被一个技术人员大军所取代。他们包括监狱看守、医生、牧师、精神病专家、心理学家、教育学家等。他们接近犯人，高唱法律所需要的赞歌。他们反复断言，肉体和痛苦不是法律惩罚行动的最终目标。今天，医生会照顾死刑犯，直至最后一刻。他们作为慈善事业的代表和痛苦的安慰者与那些执行死刑的人共同工作。这是很值得玩味的。在即将行刑之际，犯人被注射镇静剂。这是一个司法保持克制的乌托邦：夺走犯人的生命，但不让他有所感觉；剥夺囚犯的全部权利，但不造成痛苦；施加刑罚，但没有任何肉体痛苦。诉诸心理一药理学和各种心理“阻断物”——哪怕是暂时的——是这种“非肉体”刑罚的一个合乎逻辑的结果。 现代处决仪式证实了这一\", \"score\": 228, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"960c47f35066\", \"chapter_idx\": 6, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"464a5d944002\", \"book_title\": \"狱中札记\", \"author\": \"安东尼奥·葛兰西\", \"chapter_idx\": 1, \"chapter_title\": \"第二部分　第二章　政治随笔\", \"citation_label\": \"【《狱中札记》·第二部分　第二章　政治随笔】\", \"snippet\": \"达到白热化，抛杀可以播毁统师的“神奇领导品质”的批判意识和无情讽刺（就像布郎热冒险的情形）。①但是此类的应急行为从性质上判断，不可能产生长期和根本作用。它几乎在各个方面都适于复辟和重建，却不适于建立新的国家和新的民族和社会结构（正如马基雅弗利的《君主论》中讨论的问题一样，复辟的主题只是《君主论》的修辞要素，它与意大利发源于罗马帝国并注定要恢复古罗马秩序和权威这一文学主题有关）②。它具有守成的性质，不适合独到的创造。它潜在的假设就是：现存的集体意志变得松邂无力，它经历了危险、急迫却算不上终极毁灭性的衰落，可以不必从零开始创造新的集体意志，只需对集体意志进行再度加强和巩固，并把它导向具体和合理的目标，但是具体性和合理的程度还没有经过普遍\", \"score\": 225, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 1, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"464a5d944002\", \"book_title\": \"狱中札记\", \"author\": \"安东尼奥·葛兰西\", \"chapter_idx\": 2, \"chapter_title\": \"第三部分　第三章　哲学研究\", \"citation_label\": \"【《狱中札记》·第三部分　第三章　哲学研究】\", \"snippet\": \"一节哲学研究作为参考的一些初步观点下面这种流布甚广的偏见必须加以革除：哲学是一种奇怪而艰难的东西，因为它是由特定领域内的专家或专业的和系统的哲学家所从事的专门的智识活动。人人都是哲学家。为证明此观点，首先必须对人所固有的“自发哲学”的界限和特征加以界定。这种哲学包含在： 1.语言本身中，语言不只是与内容无涉的语法上的字，语言是既定的观念和概念之总体； 2.“常识”和“健全的见识”；3.大众的宗教，从而也包含在信仰、迷信、意见、看待事物的方式和行动方式的整个体系里，它们被以“民俗”的名目捆扎为一体。 在首先证明人人都是哲学家：虽然是有其自己的方式并且是不自觉地（因为即使在任何--种智识活动的最细微表现里，在 ①葛兰西赋子这两个名间的意\", \"score\": 225, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"464a5d944002\", \"chapter_idx\": 2, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"d5c8b95c2fb0\", \"book_title\": \"学术的进展\", \"author\": \"弗朗西斯·培根\", \"chapter_idx\": 3, \"chapter_title\": \"第二卷 献给国王陛下\", \"citation_label\": \"【《学术的进展》·第二卷 献给国王陛下】\", \"snippet\": \"。隆下有一句至理名言：“对于所有的习惯和先例，要考察它们当初出现的时代，如果那个时代的人们软弱无知，这些惯例就会逐渐失去权威，被人们怀疑。”现代大学的惯例和规定都是从遥远的古代演化来的，更应当受到第二次的检验。这里我可以举一二个明显面熟悉的例子来说明。有一种问题自古已然，并且很普遍，我也只能把它们称作错误，那就是大学的学者在时机未成熟的时候过早开始教授逻辑学和修辞学，实际上这些学科更适合毕业生而不是儿童和新生。因为公正地说，这两门学科是科学中最重要的学科，是艺术中的艺术。其中的一种教人如何判断，另一种教人学会修饰。它们是教人陈述和布置内容的规则和指导，如果学习者脑中空空如也，没有储存任何内容，还没有积蓄西塞罗所谓的“原料和变化”的时\", \"score\": 225, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d5c8b95c2fb0\", \"chapter_idx\": 3, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"406efc92bfd4\", \"book_title\": \"生活的哲学\", \"author\": \"朱尔斯·埃文斯\", \"chapter_idx\": 15, \"chapter_title\": \"尾声 思考死亡，就是思考人生\", \"citation_label\": \"【《生活的哲学》·尾声 思考死亡，就是思考人生】\", \"snippet\": \"健康有好处”。古代哲学，如西塞罗所说，训练我们去做我们自己的医生，自我跟踪技术把权力交到了我们手中。我们不需要简单地信任专家：我们都能成为我们自己自我提高方面的专家。 斯多葛哲学与体育运动 斯多葛派经常把哲学比喻成为奥运会而训练。神让你遭受不幸，就像拳击教练送给你一个陪练，看你的训练有了多大进步，你在身体、头脑和灵魂上提高了多少。如果你在现代生活中寻找这种斯多葛派的态度，除了服务业，你最有可能找到它的地方就是在体育界。历史学家达林·麦克马洪曾经说，现在体育教练以一种奇怪的方式，在学校里填补了以前被哲学家和牧师占据的位置。他说：“在学校里唯一教授价值观的人好像就是体育教练了。”（实际上，对体育道德的研究是学院哲学中正在兴起的领域。）比\", \"score\": 224, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"406efc92bfd4\", \"chapter_idx\": 15, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"406efc92bfd4\", \"book_title\": \"生活的哲学\", \"author\": \"朱尔斯·埃文斯\", \"chapter_idx\": 18, \"chapter_title\": \"附录三 让理性放假，在音乐里活！\", \"citation_label\": \"【《生活的哲学》·附录三 让理性放假，在音乐里活！】\", \"snippet\": \"受了伤；所以你要弄清你什么地方比较薄弱，这样你可以给予它最强的保护。”其次，当你感到怒气正在降临时，休息一下，如愤怒控制专家所说的“愤怒最好的解药是等待”；塞内加写道：“让它引起的最初的激情变得越来越弱直到消失，覆盖了心灵的浓雾消退。”再次，试着微笑而非皱眉：“放松面部表情，让我们的声音更柔和，脚步更缓慢；逐渐地，外部特征改变了内在的情绪。” 还有需要解决的长期的结构性问题。其中一些问题是社会和行为方面的。社会心理学家探讨“社会传染”——我们会从周围的人那里学来好习惯和坏习惯。塞内加说过类似的话：“恶习偷偷地走来，并迅速传给身边的人。由此，就像在瘟疫时不要坐在感染了瘟疫、受到疾病折磨的人的尸体的周围一样……在选择朋友时，我们一定要注\", \"score\": 224, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"406efc92bfd4\", \"chapter_idx\": 18, \"focus\": \"专家 权威 意见 判断 分工\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 36, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 11.6,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_UxsL5KPxp09Cqf0HEgc85864",
+     "status": "success",
+     "duration_seconds": 0.003
+    }
+   ],
+   "answer": "## 不是。这个二选一从一开始就是假的\n\n我前两轮强调\"关键是理由\"，如果你的读法是\"那你得自己把理由走一遍\"，那是误读——**\"把握理由\"不等于\"独自重建理由\"**。没有一个人是从零证明任何东西的。巴吉尼把这一点说得最直接：\n\n> 因为没有一个人能亲身验证万事万物的一切真相，因此，我们必须依靠他人的见证。\n\n[《哲学思维：清晰思考的12条关键原则》·第一章 集中注意力](https://deepphilosophy.top/reader/a9a41388cecc?ch=1)\n\n你读得懂那篇论文、会用里面的统计方法、甚至知道该搜什么关键词——这些全部依赖别人。所谓\"从零\"，只是一个你自己没算过账的说法。依赖证言不是理性的妥协，是理性唯一可能的形态。\n\n## 那\"接受共识\"和\"盲从\"的区别在哪\n\n区别在**你依赖的是来源的可靠性，还是人数**。这一点前两轮说过，现在它变得可操作了。巴吉尼紧接着给的界线是：\n\n> 聆听别人说话并不代表永远听从别人所说。\n\n以及：\"盲目接受别人说的一切并不等于专心倾听。\"\n\n也就是说，你不需要复制别人的证明，但你需要**能追问、能提异议、能看出哪里可疑**。这是一种二阶能力，成本比读完全部论文低得多。\n\n## 时间有限时，具体怎么做\n\n**1. 找一个可问责的中间来源，而不是自己重走全程。**\n教科书、综述文章、一个你验证过判断力的作者——这些都是合法的委托对象。你委托的不是\"结论正确\"，而是\"这个人/这本书错了会露出来\"。选来源的标准是第一轮那四条：专业相关、独立、有真实的异议、有纠错机制。\n\n**2. 抽样核验，而不是全量核验。**\n挑**一个**你能亲手检查的环节，看它站不站得住。目的不是证明那个结论，而是校准来源的可靠度——像校验一台秤，称一个已知重量就够了，不必称完所有东西。这一步通常花几十分钟，不是几年。\n\n**3. 设定触发器，写清楚\"什么时候回头改\"。**\n这直接接上你上一轮的历史关切。共识会错这件事，不能靠\"自己从头证明\"来防——你自己也可能陷在后见之明看不见的共识里。能防它的是**可修正的信念加明确的推翻条件**：\n\n- 出现了同等资格、但被压制的异议\n- 你依赖的那部分（深层本体论 vs. 可观察规律）正好是历史上反转率高的那类\n- 错误不可逆、代价大\n- 共识与谁获益高度相关\n\n## 一个容易漏掉的维度\n\n\"很多学者支持\"这句话里的\"很多\"，本身可能是筛选的结果。巴吉尼提到社会认识论里的\"证言不公\"——米兰达·弗里克和雷·兰顿都论证过，有些声音长期被系统性压制和忽视。这意味着：共识的多数，有时是排除造成的，而不是证据汇聚造成的。这不是说多数一定不可信（那是过度延伸），而是说问一句\"哪些人的话没被算进去\"是有价值的。\n\n（说明一下出处层级：巴吉尼这本是普及性哲学著作，不是社会认识论的专业论文，引它作概念说明可以；若要深究证言与专家知识，得去找弗里克、兰顿、戈德曼那一支的文献。我这次没读那些。）\n\n## 收尾\n\n你真正要处理的是**有限时间的分配**。这个约束恰恰支持依赖共识，而不是反对它——因为你自己从零搞不但慢，而且作为非专家的错误率更高。\"接受\"和\"会判断\"也不冲突：你可以照共识行动，同时保留追问和推翻的通道。真正的错误不是依赖别人，而是**把依赖当成可以停止追问的地方**——无论那个\"别人\"是一篇论文，还是一百个签名。",
+   "answer_chars": 1412,
+   "done_content": "## 不是。这个二选一从一开始就是假的\n\n我前两轮强调\"关键是理由\"，如果你的读法是\"那你得自己把理由走一遍\"，那是误读——**\"把握理由\"不等于\"独自重建理由\"**。没有一个人是从零证明任何东西的。巴吉尼把这一点说得最直接：\n\n> 因为没有一个人能亲身验证万事万物的一切真相，因此，我们必须依靠他人的见证。\n\n[《哲学思维：清晰思考的12条关键原则》·第一章 集中注意力](https://deepphilosophy.top/reader/a9a41388cecc?ch=1)\n\n你读得懂那篇论文、会用里面的统计方法、甚至知道该搜什么关键词——这些全部依赖别人。所谓\"从零\"，只是一个你自己没算过账的说法。依赖证言不是理性的妥协，是理性唯一可能的形态。\n\n## 那\"接受共识\"和\"盲从\"的区别在哪\n\n区别在**你依赖的是来源的可靠性，还是人数**。这一点前两轮说过，现在它变得可操作了。巴吉尼紧接着给的界线是：\n\n> 聆听别人说话并不代表永远听从别人所说。\n\n以及：\"盲目接受别人说的一切并不等于专心倾听。\"\n\n也就是说，你不需要复制别人的证明，但你需要**能追问、能提异议、能看出哪里可疑**。这是一种二阶能力，成本比读完全部论文低得多。\n\n## 时间有限时，具体怎么做\n\n**1. 找一个可问责的中间来源，而不是自己重走全程。**\n教科书、综述文章、一个你验证过判断力的作者——这些都是合法的委托对象。你委托的不是\"结论正确\"，而是\"这个人/这本书错了会露出来\"。选来源的标准是第一轮那四条：专业相关、独立、有真实的异议、有纠错机制。\n\n**2. 抽样核验，而不是全量核验。**\n挑**一个**你能亲手检查的环节，看它站不站得住。目的不是证明那个结论，而是校准来源的可靠度——像校验一台秤，称一个已知重量就够了，不必称完所有东西。这一步通常花几十分钟，不是几年。\n\n**3. 设定触发器，写清楚\"什么时候回头改\"。**\n这直接接上你上一轮的历史关切。共识会错这件事，不能靠\"自己从头证明\"来防——你自己也可能陷在后见之明看不见的共识里。能防它的是**可修正的信念加明确的推翻条件**：\n\n- 出现了同等资格、但被压制的异议\n- 你依赖的那部分（深层本体论 vs. 可观察规律）正好是历史上反转率高的那类\n- 错误不可逆、代价大\n- 共识与谁获益高度相关\n\n## 一个容易漏掉的维度\n\n\"很多学者支持\"这句话里的\"很多\"，本身可能是筛选的结果。巴吉尼提到社会认识论里的\"证言不公\"——米兰达·弗里克和雷·兰顿都论证过，有些声音长期被系统性压制和忽视。这意味着：共识的多数，有时是排除造成的，而不是证据汇聚造成的。这不是说多数一定不可信（那是过度延伸），而是说问一句\"哪些人的话没被算进去\"是有价值的。\n\n（说明一下出处层级：巴吉尼这本是普及性哲学著作，不是社会认识论的专业论文，引它作概念说明可以；若要深究证言与专家知识，得去找弗里克、兰顿、戈德曼那一支的文献。我这次没读那些。）\n\n## 收尾\n\n你真正要处理的是**有限时间的分配**。这个约束恰恰支持依赖共识，而不是反对它——因为你自己从零搞不但慢，而且作为非专家的错误率更高。\"接受\"和\"会判断\"也不冲突：你可以照共识行动，同时保留追问和推翻的通道。真正的错误不是依赖别人，而是**把依赖当成可以停止追问的地方**——无论那个\"别人\"是一篇论文，还是一百个签名。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_8",
+     "book": "哲学思维：清晰思考的12条关键原则",
+     "chapter": "第一章集中注意力",
+     "book_id": "a9a41388cecc",
+     "chapter_idx": 1,
+     "author": "朱利安·巴吉尼",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_6"
+     ],
+     "excerpt": "个民主社\n会？既然医院和医疗信托机构把救死扶伤当作最高宗旨，为什么它\n\n们离不开患者倡导组织的督促？上述观点并不缺少站得住脚的论\n证。不论性别、肤色或者种族背景，人人都拥有平等的权利与机\n会，这个道理早已深入人心，不存在什么异议。患者的福祉高于一\n切，这是每位医疗工作者笃行的最高信条。尽管这些原则得到了几\n乎所有人的拥护，但是它们并未击穿层出不穷的偏见和冷漠一几\n百年来的压制和精英权力把这一切刻进了大众心理的深处。想清楚\n一件事是一回事，注意它是另一回事。\n如果只是在抽象层面想通一个向题，我们的思想就没有做到足\n够通透。只是单纯在脑海中建构概念，这样的思考是贫乏无物的。\n这种脱节的认识无法与我们从生活中获得的经验充分接轨，因此，\n它无法改变我们的行为，甚至无法改变我们内心深处的想法。那\n么，如何让思想走出“大脑”，走进“心灵”，并付诸行动？一切的\n根源在于密切关注。我们必须更多地关注世界，留心他人。\n想做到专心一致，就必须关注它的社会维度。这一点非常重\n要。我们不能只在乎这个世界对我们来说是什么样的，还要注意它\n对别人而言是什么样的。因此，在思考类似种族主义、厌女倾向或\n者患者倡导组织等问题时，我们必须特别留意他人的感受和证词，\n尤其要关注那些受其影响最深刻、最剧烈的人。\n纵观哲学史，尤其是（但不限于）西方哲学史，这种需要并未\n得到一贯的、充分的认可。直到近些年，为数不少的哲学家才",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 11557,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 7,
+    "display_citations": 1,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "哲学思维：清晰思考的12条关键原则",
+       "chapter": "第一章集中注意力",
+       "book_id": "a9a41388cecc",
+       "chapter_idx": 1,
+       "author": "朱利安·巴吉尼",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "个民主社\n会？既然医院和医疗信托机构把救死扶伤当作最高宗旨，为什么它\n\n们离不开患者倡导组织的督促？上述观点并不缺少站得住脚的论\n证。不论性别、肤色或者种族背景，人人都拥有平等的权利与机\n会，这个道理早已深入人心，不存在什么异议。患者的福祉高于一\n切，这是每位医疗工作者笃行的最高信条。尽管这些原则得到了几\n乎所有人的拥护，但是它们并未击穿层出不穷的偏见和冷漠一几\n百年来的压制和精英权力把这一切刻进了大众心理的深处。想清楚\n一件事是一回事，注意它是另一回事。\n如果只是在抽象层面想通一个向题，我们的思想就没有做到足\n够通透。只是单纯在脑海中建构概念，这样的思考是贫乏无物的。\n这种脱节的认识无法与我们从生活中获得的经验充分接轨，因此，\n它无法改变我们的行为，甚至无法改变我们内心深处的想法。那\n么，如何让思想走出“大脑”，走进“心灵”，并付诸行动？一切的\n根源在于密切关注。我们必须更多地关注世界，留心他人。\n想做到专心一致，就必须关注它的社会维度。这一点非常重\n要。我们不能只在乎这个世界对我们来说是什么样的，还要注意它\n对别人而言是什么样的。因此，在思考类似种族主义、厌女倾向或\n者患者倡导组织等问题时，我们必须特别留意他人的感受和证词，\n尤其要关注那些受其影响最深刻、最剧烈的人。\n纵观哲学史，尤其是（但不限于）西方哲学史，这种需要并未\n得到一贯的、充分的认可。直到近些年，为数不少的哲学家才",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 11557,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "狱中札记",
+       "chapter": "第三部分　第三章　哲学研究",
+       "book_id": "464a5d944002",
+       "chapter_idx": 2,
+       "author": "安东尼奥·葛兰西",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一节哲学研究作为参考的一些初步观点下面这种流布甚广的偏见必须加以革除：哲学是一种奇怪而艰难的东西，因为它是由特定领域内的专家或专业的和系统的哲学家所从事的专门的智识活动。人人都是哲学家。为证明此观点，首先必须对人所固有的“自发哲学”的界限和特征加以界定。这种哲学包含在： 1.语言本身中，语言不只是与内容无涉的语法上的字，语言是既定的观念和概念之总体； 2.“常识”和“健全的见识”；3.大众的宗教，从而也包含在信仰、迷信、意见、看待事物的方式和行动方式的整个体系里，它们被以“民俗”的名目捆扎为一体。 在首先证明人人都是哲学家：虽然是有其自己的方式并且是不自觉地（因为即使在任何--种智识活动的最细微表现里，在 ①葛兰西赋子这两个名间的意",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "规训与惩罚",
+       "chapter": "第三章 全景敞视主义",
+       "book_id": "960c47f35066",
+       "chapter_idx": 6,
+       "author": "米歇尔·福柯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "”的目的。由于有了这种新的限制，刽子手这种痛苦的直接制造者被一个技术人员大军所取代。他们包括监狱看守、医生、牧师、精神病专家、心理学家、教育学家等。他们接近犯人，高唱法律所需要的赞歌。他们反复断言，肉体和痛苦不是法律惩罚行动的最终目标。今天，医生会照顾死刑犯，直至最后一刻。他们作为慈善事业的代表和痛苦的安慰者与那些执行死刑的人共同工作。这是很值得玩味的。在即将行刑之际，犯人被注射镇静剂。这是一个司法保持克制的乌托邦：夺走犯人的生命，但不让他有所感觉；剥夺囚犯的全部权利，但不造成痛苦；施加刑罚，但没有任何肉体痛苦。诉诸心理一药理学和各种心理“阻断物”——哪怕是暂时的——是这种“非肉体”刑罚的一个合乎逻辑的结果。 现代处决仪式证实了这一",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "狱中札记",
+       "chapter": "第二部分　第二章　政治随笔",
+       "book_id": "464a5d944002",
+       "chapter_idx": 1,
+       "author": "安东尼奥·葛兰西",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "达到白热化，抛杀可以播毁统师的“神奇领导品质”的批判意识和无情讽刺（就像布郎热冒险的情形）。①但是此类的应急行为从性质上判断，不可能产生长期和根本作用。它几乎在各个方面都适于复辟和重建，却不适于建立新的国家和新的民族和社会结构（正如马基雅弗利的《君主论》中讨论的问题一样，复辟的主题只是《君主论》的修辞要素，它与意大利发源于罗马帝国并注定要恢复古罗马秩序和权威这一文学主题有关）②。它具有守成的性质，不适合独到的创造。它潜在的假设就是：现存的集体意志变得松邂无力，它经历了危险、急迫却算不上终极毁灭性的衰落，可以不必从零开始创造新的集体意志，只需对集体意志进行再度加强和巩固，并把它导向具体和合理的目标，但是具体性和合理的程度还没有经过普遍",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "学术的进展",
+       "chapter": "第二卷 献给国王陛下",
+       "book_id": "d5c8b95c2fb0",
+       "chapter_idx": 3,
+       "author": "弗朗西斯·培根",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "。隆下有一句至理名言：“对于所有的习惯和先例，要考察它们当初出现的时代，如果那个时代的人们软弱无知，这些惯例就会逐渐失去权威，被人们怀疑。”现代大学的惯例和规定都是从遥远的古代演化来的，更应当受到第二次的检验。这里我可以举一二个明显面熟悉的例子来说明。有一种问题自古已然，并且很普遍，我也只能把它们称作错误，那就是大学的学者在时机未成熟的时候过早开始教授逻辑学和修辞学，实际上这些学科更适合毕业生而不是儿童和新生。因为公正地说，这两门学科是科学中最重要的学科，是艺术中的艺术。其中的一种教人如何判断，另一种教人学会修饰。它们是教人陈述和布置内容的规则和指导，如果学习者脑中空空如也，没有储存任何内容，还没有积蓄西塞罗所谓的“原料和变化”的时",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "生活的哲学",
+       "chapter": "尾声 思考死亡，就是思考人生",
+       "book_id": "406efc92bfd4",
+       "chapter_idx": 15,
+       "author": "朱尔斯·埃文斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "健康有好处”。古代哲学，如西塞罗所说，训练我们去做我们自己的医生，自我跟踪技术把权力交到了我们手中。我们不需要简单地信任专家：我们都能成为我们自己自我提高方面的专家。 斯多葛哲学与体育运动 斯多葛派经常把哲学比喻成为奥运会而训练。神让你遭受不幸，就像拳击教练送给你一个陪练，看你的训练有了多大进步，你在身体、头脑和灵魂上提高了多少。如果你在现代生活中寻找这种斯多葛派的态度，除了服务业，你最有可能找到它的地方就是在体育界。历史学家达林·麦克马洪曾经说，现在体育教练以一种奇怪的方式，在学校里填补了以前被哲学家和牧师占据的位置。他说：“在学校里唯一教授价值观的人好像就是体育教练了。”（实际上，对体育道德的研究是学院哲学中正在兴起的领域。）比",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "生活的哲学",
+       "chapter": "附录三 让理性放假，在音乐里活！",
+       "book_id": "406efc92bfd4",
+       "chapter_idx": 18,
+       "author": "朱尔斯·埃文斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "受了伤；所以你要弄清你什么地方比较薄弱，这样你可以给予它最强的保护。”其次，当你感到怒气正在降临时，休息一下，如愤怒控制专家所说的“愤怒最好的解药是等待”；塞内加写道：“让它引起的最初的激情变得越来越弱直到消失，覆盖了心灵的浓雾消退。”再次，试着微笑而非皱眉：“放松面部表情，让我们的声音更柔和，脚步更缓慢；逐渐地，外部特征改变了内在的情绪。” 还有需要解决的长期的结构性问题。其中一些问题是社会和行为方面的。社会心理学家探讨“社会传染”——我们会从周围的人那里学来好习惯和坏习惯。塞内加说过类似的话：“恶习偷偷地走来，并迅速传给身边的人。由此，就像在瘟疫时不要坐在感染了瘟疫、受到疾病折磨的人的尸体的周围一样……在选择朋友时，我们一定要注",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 7,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 24.603,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 7.5,
+     "ev": "assistant_commentary",
+     "chars": 87
+    },
+    {
+     "t": 7.5,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 7.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_gd0JVOOrTj5ybKOm1Usi8694"
+    },
+    {
+     "t": 7.7,
+     "ev": "tool_start",
+     "name": "concept_trace",
+     "call_id": "call_01_Sxw21hAMt9pOOlWqjqzA5808"
+    },
+    {
+     "t": 7.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_shHjjX4bX9HpnTtJQTud3756"
+    },
+    {
+     "t": 10.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.28,
+     "result_chars": 1120,
+     "result_head": "{\"query\": \"证言 知识 权威 相信他人\", \"results\": [{\"book_id\": \"464a5d944002\", \"book_title\": \"狱中札记\", \"author\": \"安东尼奥·葛兰西\", \"chapter_idx\": 2, \"chapter_title\": \"第三部分　第三章　哲学研究"
+    },
+    {
+     "t": 10.2,
+     "ev": "tool",
+     "name": "concept_trace",
+     "status": "success",
+     "duration_s": 2.29,
+     "result_chars": 6583,
+     "result_head": "{\"concept\": \"证言\", \"hits\": 90, \"matched_books\": 49, \"timeline\": [{\"book\": \"论法的精神\", \"book_id\": \"eef5ec46714f\", \"author\": \"孟德斯鸠\", \"chapter\": \"第二十八章　法国公民法的起源与沿革\", \""
+    },
+    {
+     "t": 10.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.298,
+     "result_chars": 5016,
+     "result_head": "{\"query\": \"专家 权威 意见 判断 分工\", \"results\": [{\"book_id\": \"960c47f35066\", \"book_title\": \"规训与惩罚\", \"author\": \"米歇尔·福柯\", \"chapter_idx\": 6, \"chapter_title\": \"第三章 全景敞视主义\", "
+    },
+    {
+     "t": 11.6,
+     "ev": "assistant_commentary",
+     "chars": 25
+    },
+    {
+     "t": 11.6,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 11.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_UxsL5KPxp09Cqf0HEgc85864"
+    },
+    {
+     "t": 11.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5290,
+     "result_head": "{\"book_id\": \"a9a41388cecc\", \"book_title\": \"哲学思维：清晰思考的12条关键原则\", \"chapter_idx\": 1, \"title\": \"第一章集中注意力\", \"citation_label\": \"【《哲学思维：清晰思考的12条关键原则》·第一章集中注意力】\", \"text\""
+    },
+    {
+     "t": 24.7,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 893
+  }
+ ],
+ "total_wall_s": 95.8,
+ "status": "COMPLETED"
+}

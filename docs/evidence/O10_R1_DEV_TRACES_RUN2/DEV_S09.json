@@ -1,0 +1,146 @@
+{
+ "case_id": "DEV_S09",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "「数字 3 有多重？」这样的问题为什么让人觉得奇怪？请用「范畴错误」这个概念解释这种奇怪感从何而来，再举一个类似例子。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_kg6ueN4dXbRND70i91OE5265"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_KLuVphJ2UmtZ9w06JAZ93805"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_vMPS0J3ivhkCRQQcaGQo6775",
+   "args": {
+    "query": "赖尔 心的概念 大学 学院"
+   },
+   "result_head": "{'results': [{'book_id': '4a4a200536bd', 'book_title': '西方哲学史（第9版）', 'author': '撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽', 'chapter_idx': 24, 'chapter_title': '第二十章 晚近的哲学', 'citatio"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_1dVmYEC9gZLZ7KfXPw1M1819"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_2R9jnhnCdja0FkrEcwr67676",
+   "args": {
+    "query": "机器中的幽灵 范畴错误 大学"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "赖尔《心的概念》中\"范畴错误\"的原始定义与所举例子（大学/学院、平均数等）的原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2013,
+ "final_answer": "范畴错误（category-mistake）这个概念，正是用来诊断你所说的那种\"别扭感\"的。它最经典的表述来自赖尔（Gilbert Ryle）1949 年的《心的概念》——不过需要先说明：下面我能核验到的文本证据来自斯通普夫的《西方哲学史》对赖尔的转述，而非赖尔原著本身的直接引文。\n\n## 一、奇怪感不是\"说错了\"，而是\"问得根本不着调\"\n\n先看这个问题的气质。「数字 3 有多重？」并不像「3 是偶数」那样是一个**假命题**——后者为假，但人们完全明白它在说什么，也知道怎么去验证。而「3 有多重」让人卡住的地方在于：它似乎连\"该怎样才算回答它\"都没交代清楚。我们不会回答说\"3 重 0 克\"，也不会说\"3 重 5 克\"，我们只会说\"这个问题本身就不对劲\"。\n\n赖尔把这类错误命名为\"范畴错误\"，并给出如下界定：\n\n> 这是一种独特的错误，他称之为\"范畴错误\"（category-mistake）。这个大错误在于把心理生活的事实表述为好像它们属于同一个逻辑范畴似的，而实际上，它们属于相当不同的分离的逻辑范畴。\n\n【《西方哲学史（第9版）》·第二十章 晚近的哲学】\n\n把这段话里的\"心理生活的事实\"换成我们的例子，逻辑是一样的：**\"重量\"这个概念属于物理物体的范畴——可称量、占据空间、服从物理规律；而\"数字 3\"属于抽象对象（数学对象）的范畴。**「3 有多重」之所以别扭，是因为它把一个只适用于前一个范畴的谓词（\"有多重\"），硬套到了后一个范畴的对象（\"3\"）身上。这不是在陈述一个假话，而是**误用了概念的逻辑类型**——它混淆了\"3 这类东西\"和\"石头、苹果这类东西\"在语言中各自被允许扮演的角色。\n\n## 二、这种错误的典型结构：把\"整体\"当成\"又一个同级的部件\"\n\n赖尔举过两个著名例子，都体现了这种结构。第一个是假想中一个初次访问牛津的外国人：\n\n> 访问者被带着参观博物馆、科学实验室和一些学院。看了这些地方后，访问者问，\"可这所大学在什么地方呢？\"\n\n【《西方哲学史（第9版）》·第二十章 晚近的哲学】\n\n这位访客的错误在于，他假定\"大学\"是**与各个学院、实验室同级、并列的另一个实体**，是\"构成部分所组成的类中一个同等的成员\"。可实际上，大学并不是这些建筑之外的又一处地方——它就是这些构成部分协调运作的方式本身。类似地，赖尔还举了看阅兵式的孩子：他依次看到了步兵营、炮队、空中分队，却一直在问\"那个'师'什么时候才出现\"，而没意识到他眼前看到的这些**就已经是**\"师\"了。\n\n这里的关键是：范畴错误的共同结构，是**把某个只在逻辑上\"高一层级\"的东西，误当成同一层级中的一个普通成员**。\n\n## 三、一个类似的例子\n\n顺着这个结构，我自己再拟一个类比（以下是仿照赖尔例子的设想，并非他的原文）：一个人参观完一栋房子，看过客厅、卧室、厨房和屋顶，然后认真地追问，那这栋房子究竟住在哪一间里。他默认房子是某一间房，是和客厅、卧室并列的另一间。可房子根本不是其中某一间，它是所有这些房间组织起来的那整个结构。这和前面大学在哪里的错误同源，也和数字 3 有多重的问题一样：问题本身预设了对对象范畴的错误安置。\n\n他默认\"房子\"是某一间房，是和客厅、卧室**并列**的一个房间。可\"房子\"根本不是其中某一间，它是所有这些房间组织起来的那整个结构。这和\"大学在哪里\"是同一个错误，也和「3 有多重」同源：**问题本身预设了对对象范畴的错误安置**。\n\n再随手可举的日常版：问\"**嫉妒是什么颜色**\"，或者\"**星期二离这里多远**\"——不会有人答\"两米\"或\"深蓝色\"，因为颜色和距离各属于知觉物和空间的范畴，而\"嫉妒\"\"星期二\"并不在那个范畴里。\n\n## 四、一个辨析：它不是\"无意义的废话\"，而是\"待定的命题\"\n\n值得补一句哲学上的细致区分（下面是我的分析，非赖尔原话）。普通人与哲学家的分歧常在这里：有人会说「3 有多重」\"无意义\"。但更审慎的说法是——赖尔的范畴错误概念提示我们，这类句子**并非语词乱堆的噪音**，它在语法上完全通顺，我们甚至能想象它的意思（仿佛真有某个\"重\"的数字）；它的麻烦在于**无从判断真假**，因为它悄没声地把一个概念用到了它逻辑上不该去的地方。\n\n这也是为什么范畴错误比普通的事实错误更\"隐蔽\"、也更值得警惕：说错一个事实（\"3 是偶数\"），很容易被纠正；而错置一个范畴（\"3 有多重\"），则往往连\"该往哪里纠正\"都不明显。赖尔正是用这个诊断，去攻击笛卡尔式的\"机器中的幽灵\"教条——他认为心灵并不像\"另一个房间里的东西\"那样，是与身体**并列**的又一种实体；把它这么看，就是犯了一个高级版本的\"大学在哪里\"。而这，也告诉了我们范畴错误为什么在哲学史上如此重要：它常常不是无知造成的，而是**能熟练使用概念的人，在抽象思维中把概念放进了它们并不隶属的范畴**。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 2,
+  "verified_exact": 2,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "赖尔《心的概念》中\"范畴错误\"的原始定义与所举例子（大学/学院、平均数等）的原文措辞",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:34:43",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "赖尔《心的概念》中\"范畴错误\"的原始定义与所举例子（大学/学院、平均数等）的原文措辞"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:34:46"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 58001,
+   "output_tokens": 3920,
+   "total_tokens": 61921
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 8185,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11702,
+     "output_tokens": 754,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17041,
+     "output_tokens": 400,
+     "tool_chars_added": 9087
+    },
+    {
+     "round": 3,
+     "input_tokens": 15653,
+     "output_tokens": 2065,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 4,
+     "input_tokens": 13605,
+     "output_tokens": 701,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 58001,
+  "output_tokens": 3920,
+  "total_tokens": 61921
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 29.2
+}

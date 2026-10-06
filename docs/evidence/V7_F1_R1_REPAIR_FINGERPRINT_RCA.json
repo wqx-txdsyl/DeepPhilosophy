@@ -1,0 +1,63 @@
+{
+ "V7_F1_R1_REPAIR_FINGERPRINT_RCA": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V7_F1_REPAIR_TRANSITION_RCA_TASK.md（R1 修正指令见 Reviewer V7-F1 PATCH_REQUIRED 回复）",
+ "BASE_SHA": "8f5bc71a7f19c8f48fa7cf800f159c86021cac10",
+ "SCOPE": "DOCS_ONLY",
+ "PRIOR_ARTIFACT_PRESERVED": "docs/evidence/V7_F1_REPAIR_FINGERPRINT_RCA.json 保留为历史审计记录, 未覆盖",
+ "V7_MEASUREMENT_UNCHANGED": true,
+ "V7_SCHOLARLY_GATE_REMAINS_PASS": true,
+ "V7_DELIVERY_GATE_REMAINS_FAIL": true,
+ "TRANSITION_STATUS": {
+  "status": "CONFIRMED（维持, 不再扩大解释）",
+  "mechanical_facts": {
+   "V7-04": "INITIAL 7 指纹 → R1 FULL_REWRITE 引入 2 指纹 → R2 LOCAL_PATCH 精确解决该 2 个 → terminal 0 指纹/PASS/published",
+   "V7-06": "INITIAL 11 issue（7 唯一指纹）→ R1 LOCAL_PATCH 引入 2 指纹 → R2 LOCAL_PATCH 精确解决该 2 个 → terminal 0 指纹/PASS/published",
+   "同构性": "两案 R2.resolved 与 R1.introduced 集合精确相等; 两案终态干净且发布"
+  },
+  "NEW_FINGERPRINT": "CONFIRMED",
+  "TRANSIENT_FINGERPRINT": "CONFIRMED",
+  "boundary": "fingerprint novelty 不得自动写成 semantic novelty（§2）"
+ },
+ "SEMANTIC_CLASSIFICATION": {
+  "SEMANTIC_NOVELTY": "NOT_RECOVERABLE_FROM_V7_ARCHIVE（逐轮 issue_code/locator/evidence_ref/candidate 未被 runner 持久化; 指纹为单向哈希不可逆）",
+  "SAME_ISSUE_REKEYED": "UNRESOLVED（无法排除: repair 改写文本位置可能改变 normalized locator 而产生新指纹）",
+  "LOCATOR_SHIFT_ONLY": "UNRESOLVED（同上）",
+  "ISSUE_CODE_RELABEL": "UNRESOLVED",
+  "VALIDATOR_NONDETERMINISM": "NOT_DEMONSTRATED（R2 pre-repair 态精确复现同哈希, 确定性复检一致）",
+  "prior_4_of_4_GENUINELY_NEW_conclusion": "撤回（证据不支持该确定性结论）"
+ },
+ "CONTRACT_STATUS": {
+  "SET_DIFFERENCE_TELEMETRY_INTENT": "CONFIRMED（H2D_CLOSURE_TASK §5: before={A,B} after={B,C} → introduced={C}, 集合差遥测意图明确）",
+  "FROZEN_IMPLEMENTATION_ANY_INTRODUCED": "CONFIRMED（o7e_production_calibration.py:120 repair_new_fatal = any(Rk.introduced), V7 freeze 前已冻结）",
+  "FROZEN_FINAL_GATE_ZERO_TOLERANCE": "CONFIRMED（冻结 final gate 要求 REPAIR_CREATES_NEW_FATAL_ERROR=0）",
+  "HISTORICAL_INTENT_ANY_INTRODUCED_AUTO_FATAL": "NOT_ESTABLISHED",
+  "historical_search_evidence": "全库检索 docs/tasks + backend: REPAIR_CREATES_NEW_FATAL_ERROR 的全部历史出现均为「指标名 + 期望值 0」的门列表条目（PF-RP5/V4_F1/SCHOLARLY_POLICY/RP2/V4-V7 qualification 任务书）, 无一处定义计数语义（任意新指纹 vs 新 fatal 类 issue）; H2D §5 授权的是集合差遥测本身, 其后 Hard Gate 列表未纳入该指标——两环之间缺「any introduced == fatal hard-fail」的明确历史文本",
+  "METRIC_IMPLEMENTATION_MATCHES_INTENDED_CONTRACT": "UNRESOLVED",
+  "METRIC_NAME_ONLY_MISNOMER": "UNRESOLVED",
+  "MEASUREMENT_SEMANTIC_BUG": "UNRESOLVED",
+  "no_reverse_engineering": "未依据 V7 结果反推新定义; V7 verdict 永久不变"
+ },
+ "ROOT_CAUSE_STATUS": {
+  "DELIVERY_FAIL_MECHANISM": "TRANSIENT_INTRODUCED_FINGERPRINTS（CONFIRMED——足以解释冻结 V7 gate 为何 FAIL）",
+  "SEMANTIC_ROOT_CAUSE": "NOT_RECOVERABLE_FROM_V7_ARCHIVE",
+  "per_rca_discipline": "缺失逐轮语义证据时不裁定 repair policy / Local Patch / Full Rewrite 为产品根因——六类产品根因裁定全部撤回为 UNRESOLVED（证据不足以区分「真新语义错误」与「同问题重键」）"
+ },
+ "SCHOLARLY_ACCOUNTING_STATUS": {
+  "canonical_kept": {
+   "REPAIR_TRIGGERED": 9,
+   "REPAIR_CONVERGED": 8,
+   "REPAIR_CONVERGENCE": 0.889,
+   "FINAL_PUBLICATION_RATE": 0.917,
+   "SCHOLARLY_SOURCE_FETCH_CASES": 5,
+   "SCHOLARLY_FETCH_RESULT_COUNT": 19,
+   "SCHOLARLY_CONTENT_EVIDENCE_COUNT": 15
+  },
+  "raw_tool_event_count": {
+   "SEARCH_TOOL_CALLS": 72,
+   "READ_TOOL_CALLS": 19,
+   "SCHOLARLY_TRACE_CALLS": 91
+  },
+  "extraction_rule": "raw 72/19/91 为 committed frozen docs/evidence/V7_FINAL_HOLDOUT_RUN.json 中 type=\"tool\" 事件的机械计数（确定性规则: 事件 type=\"tool\" 且 name∈{search_scholarship, get_scholarly_source}）",
+  "no_conflation": "FETCH_RESULT_RECORDS=19（fetch 返回的 record 条数）与 READ_TOOL_CALLS（工具调用次数）是两种口径, 不得互混; 上一版回执的 29 即混采产物"
+ }
+}

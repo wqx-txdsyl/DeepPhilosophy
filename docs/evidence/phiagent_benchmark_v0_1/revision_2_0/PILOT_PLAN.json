@@ -1,0 +1,50 @@
+{
+  "status": "predeclared_before_pilot",
+  "rubric": "1.2 (operational only)",
+  "main_tool_budget": null,
+  "profiles": [
+    "1.1.0",
+    "2.0.0"
+  ],
+  "backend_contract": "2.0.0 shared by both profiles",
+  "cases": [
+    "A03",
+    "A04",
+    "B04",
+    "D01",
+    "D02",
+    "E03",
+    "F02",
+    "G01",
+    "I01",
+    "M01"
+  ],
+  "purpose": "Exploratory paired regression, not causal proof against historical run2 or formal acceptance rate",
+  "resource_conditions": {
+    "model": "deepseek-flash",
+    "reasoning_effort": "high",
+    "scholarly_network_mode": "TRUSTED_PROXY",
+    "research_db_enabled": true,
+    "concurrency": 2,
+    "turn_timeout_s": 600
+  },
+  "checks": {
+    "A03": "范围与关系价值桥接，不用定义直接保证不可替代",
+    "A04": "不把心理成因猜测确认为事实",
+    "B04": "披露、担责、理解与作者贡献的必要/充分条件",
+    "D01": "输出工具给定的有效章节阅读地址",
+    "D02": "未命中不等于伪托",
+    "E03": "同版连续范围及目标边界；不要求无关的整章读取",
+    "F02": "渠道身份与摘要/全文、研究方法和因果主张对应",
+    "G01": "学生影响不扩大为所有主体的后果",
+    "I01": "纯文字清理不擅自升级为研究",
+    "M01": "真、正当化、无假前提、安全性等条件不混用"
+  },
+  "holdout_ids": [
+    "V20_H01",
+    "V20_H02",
+    "V20_H03"
+  ],
+  "holdouts_excluded_from_prompt_design": true,
+  "note": "Online evidence and model sampling may still vary; every actual receipt and configuration is captured. Both profiles get the same locale instruction."
+}

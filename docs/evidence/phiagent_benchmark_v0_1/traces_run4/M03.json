@@ -1,0 +1,919 @@
+{
+ "case_id": "M03",
+ "category": "M",
+ "prompt": "如果未来机器能百分之百预测我的选择，我还自由吗？请先接受预测准确这个假设，不要靠说机器算不准回避。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "如果未来机器能百分之百预测我的选择，我还自由吗？请先接受预测准确这个假设，不要靠说机器算不准回避。",
+   "wall_s": 56.5,
+   "ttft_s": 49.4,
+   "public_notes": [],
+   "provider_reasoning": "The user asks a classic compatibilism/hard determinism question: if a machine could predict my choices with 100% accuracy, am I still free? They explicitly demand I accept the accuracy assumption and not dodge by saying machines can't compute it.\n\nThis is a conceptual/philosophical question. I should give a substantive answer. I should probably use tools: search local corpus for relevant texts (compatibilism, Frankfurt cases, \"could have done otherwise\", Hume's liberty and necessity, Kant, etc.). Also scholarship.\n\nLet me think about what the real philosophical structure is.\n\nKey distinction: the question conflates two things:\n1. Predictability (epistemic) — whether someone/something can know my choice in advance.\n2. Freedom (metaphysical/practical) — whether the choice is mine, whether I have the capacity to act according to my will, whether I could have done otherwise.\n\nThe crucial logical point: a prediction being accurate is one thing; what makes it accurate is another. If the machine predicts based on my psychological dispositions/character/reasons, then the prediction is accurate *because* it's my choice — it tracks the causal determinants of my choosing. A perfect predictor doesn't bypass my deliberation; it must model my deliberation. So the prediction's accuracy is downstream of the fact that I actually will deliberate and decide that way. In that case accuracy doesn't add any new constraint on my freedom — it just reports it.\n\nBut there's a stronger worry: if there is a fact about my future choice before I deliberate, then my deliberation seems to be a kind of show, and \"I could have done otherwise\" seems false. This is the real philosophical bite. But note: determinism already gives you that (if determinism is true, there's a fact about my future). The machine only makes it epistemically available. So the machine doesn't change the metaphysics; it changes the epistemology.\n\nSo the honest answer structure:\n\n1. Accept assumption: 100% accurate prediction, given. Fine.\n\n2. But: what is the machine predicting, and on what basis? This matters. Three scenarios:\n   a. Machine predicts by modeling my reasons/deliberation (perfect psychology + perfect physics). Then the prediction's accuracy is explained by, not contrary to, my agency. It's like a perfect biographer who knows me better than I know myself. Knowing my choice in advance doesn't make it not mine.\n   b. Machine predicts by some external mechanism that fixes my choice without going through my deliberation (e.g., a brain-writing device). Then it's not prediction, it's manipulation/control. Here I'm not free — but the unfreedom comes from causal intervention, not from the prediction. Prediction itself is epistemically idle.\n   c. The prediction is accurate regardless of what I do — this is the strange \"if I chose otherwise, prediction still right\" scenario, which is self-undermining... but actually the standard framing: if the machine's prediction is based on the state of the world and the world causes my choice, then \"I could choose otherwise\" would require the world's earlier state to differ. Under determinism, I couldn't.\n\n3. Key point: two things being correlated perfectly does not mean one causes the other, and knowing X beforehand doesn't make X unfree. The classic point: the fact that a perfect physicist could compute my handwriting in advance isn't what makes it mine. Also: the threat to freedom comes from determination, not from prediction. And famously: 100% accurate prediction and determinism aren't identical — one can imagine a predictor that works without determinism (infallible oracle), and determinism can hold without any predictor existing.\n\n4. The genuine dilemma: does \"free\" mean (i) I could have done otherwise (libertarian), or (ii) my action flows from my own will/desires, no external coercion (compatibilist/Hume, Frankfurt), or (iii) I have the causal power to originate (Kant, agent causation)?\n\nUnder (i) — libertarian freedom — the 100% prediction (if grounded in a deterministic basis) undermines it: if it was knowable with certainty in advance, that suggests it was already settled, so \"could have done otherwise\" in the categorical sense is false. That's the real bite.\n\nUnder (ii) — compatibilist freedom — prediction is irrelevant. What matters: did I act on my own desires, without constraint? A perfect prediction of my choice is consistent with my choosing freely — in fact it presupposes that I am a stable deliberating agent. Hume: liberty = power to act according to the determinations of the will; necessity = the constant conjunction/connection. Hume explicitly says liberty and necessity coexist. The prediction is just the epistemic side of causal regularity.\n\nUnder (iii) — Kant's \"can\" — if my choice is noumenal and free, no empirical prediction could capture it; so a 100% accurate empirical prediction would be a reductio against Kant's transcendental freedom. This is where the prediction is genuinely a problem.\n\n5. A sharper dialectical point: there is something odd about the user's setup. \"百分之百预测我的选择\" — is the machine predicting, or is it deciding for me? If the prediction is guaranteed 100% *because the machine will also intervene to make it so*, that's control. If it's just tracking, then the prediction is a symptom of my being the kind of creature I am. And note the epistemic asymmetry: I can still be surprised by myself. The prediction being right doesn't mean I didn't weigh reasons. In fact for the prediction to be right, my weighing must have gone a certain way.\n\nActually there's a nice point: the machine's prediction must be about *me deliberating*. If I know the machine predicts X, and I have a contrarian streak, then a 100% accurate prediction must already have anticipated my contrarian response. This shows: the prediction must incorporate my full first-person deliberation, including my responses to knowing the prediction. So the prediction is not a rival to my agency; it's a description of it. If I \"defy\" it, the prediction would have said so. This is the \"self-consuming\" nature of prediction when the predicted system knows the prediction. (Interesting: a machine that predicts and reveals predictions is tricky — the system is a fixed point. But it's logically coherent under determinism if the agent's response function is deterministic.)\n\n6. What actually follows for the user:\n- If your question is \"does perfect predictability logically entail I'm unfree?\" → No, not by itself. Predictability is epistemic; freedom is about the relation between the act and your will/causal history. Need the further premise that the prediction's ground is a deterministic cause external to your deliberation.\n- If your question is \"given determinism (which makes 100% prediction possible), am I free?\" → that's the real debate, and it hinges on what you mean by free. Compatibilists say yes, libertarians and hard determinists say no. The machine adds nothing to that debate except vividness.\n- The one thing that *would* make you unfree is if the predictor's accuracy were explained by bypassing your deliberation — i.e., the machine reads and controls, or writes, rather than reads.\n\nLet me also address: \"还自由吗\" — there's a distinction between freedom as a property of actions (particular choices free) and freedom as a global status of a person. Also freedom *from* vs freedom *to*.\n\nI should also mention the Frankfurt/Strawson point: what matters morally is whether you're a proper target of reactive attitudes. If the machine merely predicts, you remain responsible.\n\nLet me use the tools to ground this. I'll search the local library for:\n- Hume on liberty and necessity (Enquiry/ Treatise)\n- Frankfurt \"could have done otherwise\" / \"Alternate possibilities and moral responsibility\"\n- Kant on freedom / third antinomy\n- Maybe Dennett, or \"Elbow Room\"\n- Laplace's demon\n\nLet me do searches in parallel.\n\nI'll search: \"休谟 自由与必然\", \"意志自由\", \"可供选择的可能性\", \"拉普拉斯妖\", \"决定论 自由\".\n\nLet me start with search_books queries and also maybe websearch for contemporary scholarship. Let me be efficient. First round: search_books for 休谟 自由与必然; search_books 决定论 自由意志; search_books 康德 自由; search_books 可供取舍的可能性 / 法兰克福.\n\nLet me run parallel searches.\n\nActually the tool descriptions warn about being judicious. But this is a genuinely big question deserving grounding. Let me do a first batch.\n\nLet me plan the answer as a written piece with sources. I'll gather enough then write.\n\nLet me call: search_books(query=\"自由与必然\", author=\"休谟\"), search_books(query=\"自由意志 决定论\"), search_books(query=\"康德 自由\"), search_books(query=\"可供选择的可能性 道德责任\"). Plus maybe concept_trace for \"自由意志\".\n\nI'll do it.Let me read some key texts. Hume's Enquiry Concerning Human Understanding section VIII \"Of Liberty and Necessity\" — do we have it? Let me check the library for Hume's works. The catalogue shows 人性论 and 自然宗教对话录. Let me search for 人类理解研究 / 人类理智研究.\n\nAlso let me look at Nagel's chapter 6 自由意志 in 你的第一本哲学书 — that's directly on point. And 哲学家们都干了些什么 chapter 20 决定论 (popular but might have Laplace).\n\nLet me also search for \"拉普拉斯\" and \"可预测性与自由并非不相容\" (Mill in 哲学导论). And search scholarship for contemporary work on perfect prediction and freedom.\n\nLet me do a batch:\n- search_books(query=\"拉普拉斯\")\n- get_chapter for Nagel book ch 8\n- search_books author 休谟 query \"人类理解研究\"\n- search_scholarship for \"perfect predictor free will\"\n\nActually let me be efficient: I'll read Nagel's chapter and search for Laplace + Mill passage context, plus scholarship.\n\nLet me run parallel.Nagel's chapter 6 is good and directly on point. Let me also try to get Mill's passage context in 哲学导论 (book c13b139d1db3 chapter 94), which explicitly says \"可预测性与自由并非不相容\". That's a primary-ish source (Mill's System of Logic). Let me read it.\n\nAlso let me get the 哲学家们都干了些什么 chapter 20 (决定论) — popular but has Laplace demon possibly. Actually let me check 哲学导论 chapter 94 and maybe surrounding chapters (6.3 决定论, and there might be a chapter on \"自由与决定论\" with Frankfurt).\n\nLet me also try to find Hume's Enquiry section VIII. The library only has 人性论 and 自然宗教对话录 for Hume. 人性论 Book 2 part 3 has \"论意志与直接情感\" including \"自由与必然\" section. Let me search within 人性论 for \"自由\" specifically.\n\nLet me read 哲学导论 ch 94, and search for \"自由与必然\" in 人性论 focus.\n\nActually, I have enough for a strong answer. But let me get Mill's exact text and maybe a section from 大问题 on freedom/determinism. Let me do a couple more reads.\n\nLet me read:\n1. get_chapter c13b139d1db3 ch 94 (Mill on causation and necessity, includes predictability/free)\n2. search_books(\"自由与必然\", book_id 178e7d06d42d) — Hume Treatise 2.3.1-2\n\nLet me run these.I have good material. Nagel's chapter 6 gives the strongest point: the dilemma cuts both ways — even if not determined, it's unclear how I \"do\" it. And the compatibilist response: cause of the right kind.\n\nLet me also try to get Hume's actual Enquiry text. The library has 人性论 (Treatise) and 自然宗教对话录. Let me check if there's 人类理解研究 in the library generally. Let me search list_books author 休谟.\n\nActually, I have enough. But let me try one thing: search for \"自由\" within 人性论 to find the section on liberty and necessity (Treatise 2.3.1-2). The searches returned only 6 chapters examined for that book. Hmm, \"book_id\" search said 6 chapter entries examined — that suggests the book has few indexed chapters, maybe the 4 volumes are separate. Let me get_book_detail for 178e7d06d42d to see chapters.\n\nActually, it may not be necessary. I have Nagel (excellent), Mill via Solomon's 哲学导论 (which quotes/summarizes Mill's System of Logic), and the compare_views scaffold.\n\nLet me do one more check: see if the library has Hume's Enquiry, and check 大问题 chapter on freedom for determinism material. Also maybe check for Frankfurt. Let me do a quick list_books(author=\"休谟\") and search_books(\"决定论 自由 相容论\").\n\nActually let me just do the list_books for 休谟 and also search for a keyword to see if there's a book on free will with Frankfurt cases. Let me be efficient and just do list_books.\n\nI think I have enough. Let me also verify the Mill quote about predictability. The passage says \"根据各种各样的原因（包括\"性格\"或个性），人类行动如同任何其他事件一样，都是可预测的。不过，可预测性与自由并非不相容\" — this is Solomon's paraphrase/summary of Mill, in 哲学导论. I should attribute correctly: it's Robert Solomon's textbook summarizing Mill. Good — I must not present it as Mill's own words.\n\nLet me do one final quick search to see whether the library has Hume's Enquiry (人类理解研究 / 人类理智研究) to cite the \"自由与必然\" section directly. And check 大问题 for determinism chapter.\n\nLet me call list_books(author=\"休谟\") and search_books(\"决定论 自由 相容论 责任\").I have enough. Note the library has only 人性论 and 自然宗教对话录 for Hume — no Enquiry. So I cannot cite Hume's \"Of Liberty and Necessity\" from Enquiry directly; I can cite Solomon's textbook summary of Hume and Mill, plus Nagel's primary text.\n\nNow let me construct the answer.\n\nStructure:\n1. 直接回答：预测准确这个事实本身不会让你的选择变得不自由；能取消自由的是别的东西——即这个准确率是怎么来的。所以要分两步走：先分辨\"准确\"的来源，再看\"自由\"指什么。\n\n2. 关键区分：可预测性（认识论）≠ 被决定/被强制（形而上学）。100%准确预测是一个关于\"谁知道\"的事实；自由是一个关于\"这个动作与我的意志、我的因果史是什么关系\"的事实。二者不同层次，不能直接推出。\n\n3. 三种情形（接受预测准确，问它的根据是什么）：\n   a. 机器通过完整模拟你的推理、欲望、性格来算 —— 那么它的准确恰恰依赖于你确实会那样权衡、那样决定。预测不是绕过你的审议，而是把审议算准了。就像一封信寄出前就被准确预言了内容，写信的人还是你。这种情形下，预测是自由的副产品，不是自由的对手。\n   b. 机器通过在你之外动手脚（植入、操控、写脑）让结果发生 —— 那么你不是自由；但不自由来自干涉，不来自预测。要说清：这里\"预测\"其实已是\"制造\"。\n   c. 机器根据宇宙初始条件+物理定律推算（拉普拉斯式）—— 这才是真正有杀伤力的情形。但它的杀伤力不来自\"有个东西知道\",而来自一个前提：你的选择早已被在你出生前的状态和定律唯一确定。也就是决定论。机器只是决定论的显示器。若决定论成立，那么没有机器你也\"不自由\"（在某种自由观下）；机器只是让这件事变得可见。所以机器在此不增加任何东西。\n\n4. 于是问题被逼回：你说的\"自由\"是哪一个？\n   - 自由(1) 能做别的（libertarian/alternative possibilities）：如果预测的根据是决定论，那么你事实上不能做别的——这一支确实被击中了。但注意：击中它的是决定论，不是预测。\n   - 自由(2) 出于自己的意愿、不受强制（compatibilist，休谟/密尔）：预测无关紧要。自由=按自己的性格和欲望行动。有人拿枪逼你，不是自由；你自己按性格选择，是自由，即便这个选择可被计算。所罗门在《哲学导论》中把密尔的意思概括为\"可预测性与自由并非不相容\"。休谟更在这条线上把自由与必然调和。\n   - 自由(3) 作为先验的自我开始（康德）：任何经验层面的100%预测原则上抓不到本体界的意志；但如果你的选择完全落在现象界因果内，那么按康德，先验自由就没有位置。这一支里，预测确实是一个威胁——但威胁的方式是：它证明了你的选择完全在经验序列中，从而（在康德框架里）取消了另一界的余地。\n\n5. 我最想让你看到的一点（Nagel式的对称打击）：以为\"如果机器算不准我就自由了\"是不成立的。Nagel在《你的第一本哲学书》第六章里说得很清楚：如果决定论为真，先前的条件要为你的行为负责；如果决定论为假，就没什么东西要负责了——\"这看上去是死路一条\"。也就是说，仅仅\"没有被事先决定\"并不等于自由：一个不由任何东西决定的选择，是一个\"自己发生\"的事件，你如何\"做\"它反而成了谜。所以你要的自由，恰恰需要一个特定的原因结构：是你的欲望、信念、性格在起作用，而不是别人拿枪、也不是纯粹的随机。这支持这样一个结论：自由与\"有原因\"相容，与\"有某种原因\"不相容。\n\n6. 面对\"知道预测之后\"的自反问题：如果机器把预测告诉你，你偏要反着来呢？——如果它真的100%，它的预测必然已经把你\"看到预测后的逆反\"算进去了。这说明：预测要成立，必须把你当作一个第一人称的、会对信息作出反应的审议者来建模；它描述的是你的能动性，而非取消它。（当然，若这种\"逆反\"本身也是被决定的，那就回到第4点。）\n\n7. 收束：所以对你的问题，诚实的回答分两层：\n   - \"单凭这个事实\"——不，自由不因此被取消。准确率高只说明你的选择有规律/有原因，不说明有人替你做了它。\n   - 但如果这个100%的根据是决定论（你出生前的状态+定律已经唯一固定了你的选择），那么在最严格的那种\"我能做别的\"意义上有一种自由确实没了；而这不是机器造成的，是那个前提造成的。机器只是让\"你早已被确定\"这件事变得没法再假装不知道。\n   - 而如果你把自由理解为\"按自己的意愿行事、为此负责\"，那么可预测不但不取消自由，还需要以它为前提：只有行为出于你的性格和欲望，它才既可以被预测，又可以归给你。\n\n8. 一点实践含义：真正威胁你自由的，不是\"被算准\"，而是\"被算准的原因里没有你\"——即操纵、洗脑、成瘾、胁迫。这给你一个可操作的标准：问\"这个准确率是靠读懂我，还是靠绕过我？\"\n\nI should also mention that the question whether determinism is true is separate — maybe briefly note Nagel's point that quantum indeterminacy doesn't by itself rescue freedom.\n\nI should be careful about one thing: the user says \"先接受预测准确这个假设，不要靠说机器算不准回避。\" I accept it. But I should note that accepting \"the prediction is 100% accurate\" is not the same as accepting \"the world is deterministic\" — a logical point worth making, since a 100% accurate oracle could in principle exist in an indeterministic world (e.g., via a mechanism that... hmm, actually can it? If the world is indeterministic, can any predictor be infallible? There's a logical argument: if the prediction is fixed before the choice, and the choice is genuinely undetermined given the prediction basis, then there's a possible world... Actually the standard point: infallible foreknowledge vs. indeterminism is a live issue in philosophy of religion (foreknowledge and free will). I should be careful not to overclaim. I can say: 预测100%准确 != 决定论为真; 二者是不同的命题，前者是认识论的，后者是形而上学/物理的。But whether they can come apart is itself disputed. I'll phrase carefully: they are distinct claims, and conflating them is a common slip. Actually let me present it modestly: 通常使100%预测成为可能的根据是决定论，但\"有一个100%准确的预测\"和\"决定论为真\"是两条不同的命题，不能直接等同——前者说\"有一个东西预先知道\",后者说\"结果被先前状态唯一固定\"。若决定论为真，则原则上可有一个全知者据此预言；反之，一个100%准确的预言是否必须预设决定论，本身有争论（神学里的\"预知与自由意志\"之争就是一例）。\n\nGood — that's a legitimate, hedged point.\n\nNow, the format. The user asked a philosophical question requiring analysis. A prose answer, reasonably structured with headers maybe. Keep it direct and not bloated. Maybe 800-1200 characters... no, more like a well-structured essay of medium length. Let me aim for something substantive but tight.\n\nI should include citations with the reader_url for verified quotes. Let me cite:\n- Nagel, 《你的第一本哲学书》第六章 自由意志, reader_url https://deepphilosophy.top/reader/b2fbc225f414?ch=8\n- 所罗门《哲学导论》6.3 对密尔与休谟的概括 — https://deepphilosophy.top/reader/c13b139d1db3?ch=94 — careful: this is Solomon's textbook, secondary. Attribute as such.\n- 大问题 第七章 自由 — for the point that both extremes are troubling (escape from freedom). Maybe not needed.\n\nAlso note: I should distinguish 霍布斯/霍尔巴赫 determinism quote is via 织梦人 (secondary). Skip.\n\nLet me write the answer now. I'll write it in Chinese, structured with clear reasoning. Avoid being too long. Use headers sparingly.\n\nLet me draft.\n\n---\n\n先接住你的条件：机器100%算准，我不拿\"算不准\"来躲。但接受这个条件之后，还要看清一件事——**\"算得准\"是关于谁知道的事实，\"自由\"是关于这个动作和你是什么关系的事实。** 这是两个层次的问题，不能直接换算。所以我要先问：这个100%是**怎么**来的。\n\n然后三种来源。\n\nI'll write it well.\n\nOne more consideration: end with a crisp summary answer to \"我还自由吗\". Good.\n\nLet me write.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "自由与必然",
+      "author": "休谟"
+     },
+     "status": "success",
+     "duration_seconds": 0.02,
+     "result_full": "{\"query\": \"自由与必然\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"的广延的部分则是例外，这是马上就可以理解的。而且在这里我们觉察到不可能陷入任何太大的错误。在所有其他情形中，我们必须稍微自由地确定比例，或者必须在更加人为的方式下进行决定。我已经说过，尽管就普遍性和精确性而言，几何学或者我们 用来确定形的比例的技术都远远超过感觉和想象的粗略的判.断，但它绝没有达到完全的确切性和精确性。几何学最初的原理仍然是由对象的一般现象而来的，而且当我们考察自然所能容许的极小的微粒时，那种现象就绝不能给我们提供任何保证。我们的观念似乎可以完全保证：没有两条直线能有一条共同的线段。但是，如果我们研究一下这些观念，我们就会发现，它们总是预设了两条直线的一个可感知的倾斜度，而且如果这两条直线形成的角极其微小的时候，我们\", \"score\": 167, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 13, \"chapter_title\": \"第十一篇\", \"citation_label\": \"【《自然宗教对话录》·第十一篇】\", \"snippet\": \"地生活着似乎显然是可能的。那么为什么要使动物有痛苦这种感受呢？假若动物能脱离痛苦一个钟头，他们就尽可以永远享受免除痛苦的自由；而且，为了创造痛苦的感觉，就需要对它们的器官做一个特殊的设计，好像为它们创造视、听或其他任何的感觉 一样。难道我们就可以毫无理由地揣测，这样一个设计是必要的吗？难道我们可以把这个揣测作根据，就如以最可靠的真理作根据一样吗？但是如果没有第二个条件，即是，世界是由一般规律管制的，那么痛苦的感受力不会就单独地产生痛苦的；而这对于一个很完善的存在根本是不必要的。这是真的：假如方物皆为特殊的意志所管制，自然的过程就会永远在破裂中，也没有人在日常生活中能够应用他的理性了。但是难道不可能有另外的特殊的意志来矫正这个缺点吗？\", \"score\": 135, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 13, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一篇\", \"citation_label\": \"【《自然宗教对话录》·第一篇】\", \"snippet\": \"究到教士策略来解释这样一种合理的方策。当然，只要看到任何一套原则足以证实真正的宗教，并可用以击破无神论者、放肆派以及各派自由思想者的强辩，这便是推定这套原则是真的并认为应该加以采纳的最坚强的理由了。\", \"score\": 131, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 3, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第一章 论观念，它们的起源、组合、联系、抽象等】\", \"snippet\": \"是立刻引起了我的注意。①在某种意义上，我在此使用的印象和观念这两个术语与通常的含义并不相同。我希望我能有这样使用该术语的自由。洛克先生曾误用过“观念”一词，使它表示我们的全部知觉。我现在就是要恢复这一词的本义。至于印象这一术语，我并没有将其表示为那些生动的知觉产生于心灵时的方式，它仅仅指知觉本身；无论在英语中或是在我所知道的其他任何语言中对这些知觉都没有专有的名称。 在经过一个更加精确的观察后，我发现我被最初的现象带离得太远了。我必须利用简单知觉和复合知觉的区分来限制这样的一般论断，即“我们所有的观念和印象都是类似的”。我观察到，我们许多复合的观念从未有过与之相对应的印象，许多复合的印象也未曾精确地复制在观念中。我自己就可以想象新耶\", \"score\": 94, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 3, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 1, \"chapter_title\": \"中译本序言\", \"citation_label\": \"【《自然宗教对话录》·中译本序言】\", \"snippet\": \"说：第一是对人类理性方面的害处，其次是对于人类道德方面的害处。对于人类理性方面的害处，起码有三种。第一，近代基督教是室息自由的。近代基督教是一个非常 专横，排厅异己的宗教，它扼杀了自由、道德和知识，阻碍了人类的进步。“道德、知识、爱好自由，这些品德招来了宗教审判官的致命的惩罚；当这些品德被排厅之后，社会便陷人了最可耻的无知、腐败和桔”（《宗教的自然历史》及《论文集》）。近代基督教的第二大害是使人自卑。近代基督教把上帝看成远远高超于人类之上，使人在上帝面前显得十分卑小，只能悔、忍受和卑躬屈膝。第三，近代基督教阻止了理性的发展。在基督教统治之下，理性和哲学只是宗教的工具，只能为宗教的教义服役，而对于教义本身则不许表示任何疑问，更不必说提\", \"score\": 88, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 1, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}], \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "concept_trace",
+     "args": {
+      "concept": "自由意志"
+     },
+     "status": "success",
+     "duration_seconds": 1.861,
+     "result_full": "{\"concept\": \"自由意志\", \"hits\": 620, \"matched_books\": 162, \"timeline\": [{\"book\": \"神学大全　第一集　第6卷\", \"book_id\": \"f52ed83b99d9\", \"author\": \"托马斯·阿奎那\", \"chapter\": \"问题83 论自由意志\", \"chapter_idx\": 8, \"citation_label\": \"【《神学大全　第一集　第6卷》·问题83 论自由意志】\", \"snippet\": \"现在我们考察自由意志。 在这个问题上，有4个要点需要探究： (1)人是否具有自由意志？ （2）何谓自由意志？是一种能力、一个活动，抑或一种习性？ （3）如果它是一种能力，它是欲望的，还是认识的？ （4）如果它是欲望的，它同意志是同一种能力，还是不同的能力？ 第1条人是否具有自由意志？ 我们现在着手讨论第1条。 异议：人似乎并不具有自由意志（liberiarbitri）。 理据1：因为凡是具有自由意志的主体都能够做他意欲做的事情。但是，人并不能够做他所意欲的事情，因为《罗马书》第7章第19节中写道：“我所愿意的善，我反不作；我所不愿意的恶，我倒去作。”所以，人是没有自由意志的。 理据2：再者，凡是具有自由意志的主体都具有意欲或不意 欲\", \"matched_chapters\": 10, \"read_args\": {\"book_id\": \"f52ed83b99d9\", \"chapter_idx\": 8, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"book_id\": \"0f00c3a90243\", \"author\": \"杰克·鲍温\", \"chapter\": \"第九章 自由意志\", \"chapter_idx\": 16, \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第九章 自由意志】\", \"snippet\": \"个小小的优点：他连想都不去想，他是自由的。 ——克莱伦斯·丹诺（Clarence Darrow） “你听上去似乎并不相信自由意志。”比尔·皮尔格林说。 “要不是花了这么多的时间来研究地球人，”特尔夫迈道仁说，“我就会对‘自由意志’的含义一无所知。我在宇宙中造访过三十一个有居住者的星球，研究过关于一百多个星球的报告，只有地球上有自由意志的说法。” ——库尔特·冯内古特，《五号屠宰场》（Slaughterhouse Five） 我们在这儿了，我的朋友 [1] 和我。我想，他现在是我的朋友了——我们共度了这么多时光，如果我还不把他看作朋友，未免显得有些可笑。他带我去吃冰激凌作为午餐。有些奇怪的是，他用冰激凌来招待我——去吃冰激凌是种正常的\", \"matched_chapters\": 9, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 16, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"认识世界：古代与中世纪哲学\", \"book_id\": \"c97cb4e6161a\", \"author\": \"理查德·大卫·普莱希特\", \"chapter\": \"爱留根纳，或自由意志【426】\", \"chapter_idx\": 84, \"citation_label\": \"【《认识世界：古代与中世纪哲学》·爱留根纳，或自由意志【426】】\", \"snippet\": \"人类世界的特征，我们不能将之投射到上帝身上。因此并不是上帝决定救赎，而是人自身——并且是通过他的生活方式。因此上帝赋予人自由意志。因为如果一个人不具有自由意志，那么他根本上就没有意志，而是类似于被远程控制着的。然而很明显，人不是这样的，所以他是自由的。如果一个人的行为正直、诚信、正派，那么他就接近上帝，反之，如果他的行为是不道德的且“有罪的”，那么他就远离了上帝。可以想想普罗提诺，他认为恶就是善的缺席。爱留根纳设想的地狱也与此相似。地狱并非一个充满烈火、折磨和受刑者的洞穴，而是单纯被看作不幸的远离上帝之地。 爱留根纳850年为自由意志所作的辩护，对于那样一个我们根本不相信会产生这样一种思想的时代来说，是一个令人印象深刻的文本。对于可\", \"matched_chapters\": 5, \"read_args\": {\"book_id\": \"c97cb4e6161a\", \"chapter_idx\": 84, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"哲学的快乐：干瘪的思考vs.激情的生活\", \"book_id\": \"86759652897c\", \"author\": \"罗伯特·所罗门\", \"chapter\": \"谴责受害者：“自由意志”的解决方案\", \"chapter_idx\": 29, \"citation_label\": \"【《哲学的快乐：干瘪的思考vs.激情的生活》·谴责受害者：“自由意志”的解决方案】\", \"snippet\": \"。因此，大祸或许是惩罚，而非仅仅是意外。这可以说是“上帝的行为”一词最直白的惩罚性意义。根据奥古斯丁的说法，我们自己的“自由意志”才是恶的原因，是对恶的解释；上帝不可怪罪。接下来的这种神学和哲学困惑，比如上帝知道我们会犯错却任其发生，那么他是否要为此负责这样的问题，我们在此不必追究。这样的争论尽管没那么直接，但仅仅是再次指出了我们怪罪上帝而不愿“毫无诉求”面对困难的倾向而已。 如今，归罪的做法之所以如此吸引人，在于这样一个事实：我们的灾难和悲剧极少是自然灾害或上帝的行为。统计学者若要指明某个事件很罕见，就会说像“被雷电击中”或“死于蜂叮”一样少见。与我们自己的人为灾难相比，自然灾害日益少见。这些显然或至少可以说是我们自己所为的结果，\", \"matched_chapters\": 7, \"read_args\": {\"book_id\": \"86759652897c\", \"chapter_idx\": 29, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"你的第一本哲学书\", \"book_id\": \"b2fbc225f414\", \"author\": \"托马斯·内格尔\", \"chapter\": \"第六章 自由意志\", \"chapter_idx\": 8, \"citation_label\": \"【《你的第一本哲学书》·第六章 自由意志】\", \"snippet\": \"于基本粒子而言，决定论是不适用的。例如，在给定的条件下，电子的运动是不确定的。也许决定论对于人的行为也是不适用的，这就给自由意志和责任留下了余地。如果说人的行为，至少是其中一部分，并非是事先就被决定好的，那又如何呢？如果说直到你做出选择为止，你是选桃子还是选蛋糕仍是一种开放的可能性，那又如何呢？这样的话，无论此前发生了些什么事，你都能够选择其中任何一种，即使你事实上选择了蛋糕，你当时还是能够选择桃子。 但是这对于自由意志来说就足够了吗？当你说“我本可以吃一只桃子”的时候，你的意思仅仅是说，选择并没有被事先决定吗？不只如此，这里还有更多的意思。你相信是你通过做出选择，决定了自己将要做什么。这一选择并非事先被决定，但是也不是自己发生的。\", \"matched_chapters\": 3, \"read_args\": {\"book_id\": \"b2fbc225f414\", \"chapter_idx\": 8, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"否定的辩证法\", \"book_id\": \"d3bebffb6a05\", \"author\": \"西奥多·阿多诺\", \"chapter\": \"第一章 自由：实践理性总批判\", \"chapter_idx\": 7, \"citation_label\": \"【《否定的辩证法》·第一章 自由：实践理性总批判】\", \"snippet\": \"目标的第一性。经验遗到痛厅，因为它们与明确指定给它们的符号相抵触：它们所造成的困难被唯一归咎于松散的、前科学的术语。有无自由意志问题的意义十分重大，犹如技术术语无力反对要求它们说明它们的意思的必要性一样。由于司法和惩罚的过程一一以及在整个暂学传统中所请的道德或伦理学的可能性一取决于对这一问题的回答，所以我们的理智需要不充许我们把这个朴素的问题说成是“假问题”。自以为是的思想的纯洁性为思想提供了贫乏的、人为的满足。然而，语义学的批判是不能被漫不经心地打发掉的。如果不想得到不真实的回答，那么问题的迫切性便不能强制做出回答；甚至那种可能错误的需要，不管它多么令人绝望，也同样不能指出回答的方向。我们不必反思目前讨论的论题，判断它们存在还是不\", \"matched_chapters\": 2, \"read_args\": {\"book_id\": \"d3bebffb6a05\", \"chapter_idx\": 7, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"上帝之城\", \"book_id\": \"bcc83fdfca5e\", \"author\": \"奥古斯丁\", \"chapter\": \"中译本序\", \"chapter_idx\": 0, \"citation_label\": \"【《上帝之城》·中译本序】\", \"snippet\": \"裴拉坞主义( Pelagan- ism) 进行了长期的论战。针对前者的分裂行为，他坚持大公教会的权威与统一;针对后者夸大自由意志的作用，他强调人的原罪，上帝的恩典和救赎预定论。罗马城遭劫以后，他写下了《上帝之城》驳斥异教徒的责难，为基督教的前途辩护。他还把自己原先所推崇的修道生活方式纳人到教会之中，在主教住宅内建立了融教会生活与修道生活为一体的修道院，成为当时北非基督教的中心，并成为后来发展于欧洲的奥古斯丁修道会的前身。 三、奥古斯丁的著作与版本 奥古斯丁的著作卷 I快浩繁。据他自己晚年在《订正录} (Retrac- tation) 一书中的回忆，奥古斯丁一生共撰写著作 232 部，还有数百封 (篇)书信和布道文。我们在这里仅作简要\", \"matched_chapters\": 10, \"read_args\": {\"book_id\": \"bcc83fdfca5e\", \"chapter_idx\": 0, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"自然与快乐\", \"book_id\": \"221f09d04944\", \"author\": \"伊壁鸠鲁\", \"chapter\": \"第二卷 原子的运动与性质\", \"chapter_idx\": 13, \"citation_label\": \"【《自然与快乐》·第二卷 原子的运动与性质】\", \"snippet\": \"生，如果始基也不通过偏斜而开始新的运动以打破这一命运的铁律，使原因不再无穷地跟着另一个原因，那么大地上的生物怎么可能有其自由意志呢？这一自由意志又如何能挣脱命运的锁链，使我们能够趋向快乐所指引的地方，而且可以不在固定的时间和地点、而是随着自己的心意偏转自己的运动？毫无疑问，在这些场合里，始发者都是各自的自由意志；运动从意志出发，然后输往全身和四肢。①还有，难道你没看见，当门栏在既定时刻被打开时，赛马尽管充满急切的力量，却突然间无法依从心灵的渴求而奔出去？因为整个躯体的 ①原子的“偏斜”既可以解释笔直下降的众原子如何相撞结合和形成万物，又可以解释“自由意志”，所以是伊壁鸠鲁体系中的重要一环，但是在伊壁鸠鲁现存著作中不见提到。后人如西塞\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"221f09d04944\", \"chapter_idx\": 13, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"沉默的言语\", \"book_id\": \"4471baa4bb81\", \"author\": \"雅克·朗西埃\", \"chapter\": \"第八章 风格之书\", \"chapter_idx\": 9, \"citation_label\": \"【《沉默的言语》·第八章 风格之书】\", \"snippet\": \"联外，再无其他关联，没有脱离“观念“而对“事物”产生的理解，即脱离事物可见环境的显现。风格在取消一切物质材料时， 显现为自由意志。而这种至高无上的自由很快与其对立面同化。“看事物的绝对方法”，不是随便从什么角度，按照事物的意志去安装一块大小合适、变形或染色的玻璃所采用的方法。相反，它是在事物的“绝对性”中，看到事物所应该呈现的样子的方式。 “绝对的”意味着解除的。事物在这种“看的方式”中解除了什么？我们可以给出明确的答案：定义了再现体裁并支配着适当 “风格”的特征和行为之间关联的形态。事实上，支配再现虚构的得体系统并不仅仅涉及公主、将军或是牧师，这些人在表达感情或是适应某种境遇时的方法。得体系统和真实性系统基于确定的思路，即何种情形\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"4471baa4bb81\", \"chapter_idx\": 9, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"法哲学原理\", \"book_id\": \"17c85f942c78\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter\": \"黑格尔著《法哲学原理》一书评述\", \"chapter_idx\": 1, \"citation_label\": \"【《法哲学原理》·黑格尔著《法哲学原理》一书评述】\", \"snippet\": \"，亦即不是意志。既然人人都有意志，那么人人都有自由，也就人人都有其伴意志自由以俱来的权利。按照黑格尔自己的说法，法就是“自由意志的定在” [23] （“定在”这里作实现或体现解）。这种不经过矛盾斗争，人人都一般地、自在地享有的权利就叫做“抽象的法”。“法”字在这里主要应作“权利”解，因为德文原字Recht，具有法、权利、正当三个不同的意思。这里“抽象的法”主要是抽象的权利的意思。 抽象法或形式的法有如下的特点：（一）因为抽象法基于人的意志自由，所以它的命令是：“ 成为一个人， 并尊敬他人为人 。” [24] （二）在抽象法中，“人格中的特殊性尚未作为自由而存在，所以关于特殊性的一切东西〔如我的特殊利益，我的意志的特殊动机、见解和意图\", \"matched_chapters\": 6, \"read_args\": {\"book_id\": \"17c85f942c78\", \"chapter_idx\": 1, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}], \"scanned_chapters\": 12435, \"note\": \"仅统计可在原文逐字确认的词项出现；这是按书聚合的分布，不等于概念起源或历史演变。需阅读上下文核实用法，异译词需另行检索。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "自由意志 决定论 预测"
+     },
+     "status": "success",
+     "duration_seconds": 1.885,
+     "result_full": "{\"query\": \"自由意志 决定论 预测\", \"results\": [{\"book_id\": \"2733906ea3f6\", \"book_title\": \"哲学家们都干了些什么\", \"author\": \"林欣浩\", \"chapter_idx\": 20, \"chapter_title\": \"二十、决定论\", \"citation_label\": \"【《哲学家们都干了些什么》·二十、决定论】\", \"snippet\": \"一切。 能预测未来，这听上去挺美妙的，怎么可怕了呢？ 可怕的地方就在于，一旦我们接受了最严格的决定论，那就意味着人类没有自由意志了。因为我们的意识是由组成我们身体的物质决定的，而组成我们身体的物质又由物理定律决定。所以，我们头脑中的每一个念头，在前一秒钟已经被决定好了。如果我们这么一环一环地回溯回去，那么我们一生中的一切所思所想，我这本书中的每一个字、您看到这本书在头脑中迸发出的每一个念头，其实都是在一百多亿年前的宇宙大爆炸那一瞬间就决定好了的。且不说这想法很诡异了吧，关键是，那人生还有什么意思啊？ 既然一切都是决定好的，那我们为什么还要努力奋斗？为什么还要劳动？人生还有什么意义？人类只是一个被操控的木偶，活着听从因果律摆布，死后化\", \"score\": 228, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2733906ea3f6\", \"chapter_idx\": 20, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 16, \"chapter_title\": \"第九章 自由意志\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第九章 自由意志】\", \"snippet\": \"都摇着我，爸妈讲着一些温和亲切的话。 “你爸爸某天在一本杂志上看到了这个方法。有点笨吧，但看来的确可以哄好你。” 极端的决定论（Hard Determinism） （不存在自由意志） 这种理论所持的立场是，所有的人类行为都是由人类所不能控制的外在力量所决定的。它与自由意志的观点相对立。霍尔巴赫男爵（Baron d'Holbach）将这一立场总结如下： “［人］的出生由不得自己的意愿；其身体组织完全不由自主；其想法产生于无意识；他的习惯无非是那些养成其习惯的各种力量之造物；他不断地为各种原因所修整，这些原因无论明显与否，都是他绝对无法控制的……然而，尽管他必然要戴上这重重的枷锁，他还要自命是一个自由的主体。” “你从哪儿弄来的这些录像\", \"score\": 223, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 16, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c13b139d1db3\", \"book_title\": \"哲学导论\", \"author\": \"罗伯特·所罗门\", \"chapter_idx\": 94, \"chapter_title\": \"6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性\", \"citation_label\": \"【《哲学导论》·6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性】\", \"snippet\": \"体行为中与性格产生冲突时，能够克服性格。因此，老实说，惟有具有坚定美德的人，才是完全自由的。 在这一部分，密尔游走于“强决定论”与非决定论这两个棘手的选择之间。他以接受决定论以及一切人类行动都是“必然的和不可避免的”这一观念开始，并给出了它们的原因。但是，他接着却继续说，这些原因本身就在人类的控制下，我们能够改变事件的原因，甚至通过一定的步骤改变我们自己的性格。但这丝毫不是要否定决定论，也不是要否定我们在一个重要的意义上在进行控制、拥有“自由意志”。根据各种各样的原因（包括“性格”或个性），人类行动如同任何其他事件一样，都是可预测的。不过，可预测性与自由并非不相容，因为根据密尔的说法，自由无非就是按照自己的性格、欲望和愿望行动。既然\", \"score\": 221, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c13b139d1db3\", \"chapter_idx\": 94, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"67d0b7e3c795\", \"book_title\": \"开放社会及其敌人\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 14, \"chapter_title\": \"第十三章 马克思的社会学决定论\", \"citation_label\": \"【《开放社会及其敌人》·第十三章 马克思的社会学决定论】\", \"snippet\": \"思主义的方法论时，并没有必要加入有关决定论的形而上学问题的争论。因为不论这些形而上学争论的结果如何，例如，量子理论关于“自由意志”方面，我想要说的是，事情早就解决了。没有哪种决定论，不论它被表述为自然界的齐一性原理，还是被表述为普遍的因果规律，能够再被作为科学方法的必要假定来考虑。因为物理学——一切学科中最先进的科学——不仅表明，没有这种假定，它照样能够从事研究，而且还表明，在某种程度上，它还同这些前提有矛盾。对一门能够进行预测的学科而言，决定论并不是不可缺少的前提条件。因此，科学方法不能被说成支持采取严格的决定论。没有这一假定，科学也能具有严格的科学性。当然，马克思不能因为坚持了相反的观点就应受到责难，因为他那时的最优秀的科学家都\", \"score\": 203, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"67d0b7e3c795\", \"chapter_idx\": 14, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 10, \"chapter_title\": \"第七章 自由\", \"citation_label\": \"【《大问题》·第七章 自由】\", \"snippet\": \"方面，我们还渴望自由（卢梭写道：“人生而自由，却又无往不在枷锁之中。”）。因此，我们应当区分内在自由（或我们与生俱来的“自由意志”）和外在自由（即我们必须为之奋斗的自由）。而第二种看法则认为自由是可怕的，我们唯恐避之不及。有时一个人不得不做出会影响一生的抉择，比如挑选一所大学、择取终身伴侣、决定是否参军等，这往往会让人感到痛苦甚至恐惧。所以，当别的什么人替我们做了选择，或者干脆让“命运”来替我们选择的时候，我们（或至少是一部分人）会感到如释重负。例如，存在主义哲学家让-保罗·萨特以及心理学家埃里希·弗洛姆认为，我们都试图“逃离自由”，因为我们发觉自由实在是太痛苦了。我们退回到对权威的无条件服从，陷入了萨特所说的“不诚”状态。伯格曼举\", \"score\": 200, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 10, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 33, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "可供选择的可能性 道德责任"
+     },
+     "status": "success",
+     "duration_seconds": 2.135,
+     "result_full": "{\"query\": \"可供选择的可能性 道德责任\", \"results\": [{\"book_id\": \"25a9108773e5\", \"book_title\": \"自我：与齐格蒙特·鲍曼对谈（将熟悉变为陌生）\", \"author\": \"齐格蒙特·鲍曼\", \"chapter_idx\": 11, \"chapter_title\": \"幸福与道德 良好生活：脱掉太紧的鞋意味着什么\", \"citation_label\": \"【《自我：与齐格蒙特·鲍曼对谈（将熟悉变为陌生）》·幸福与道德 良好生活：脱掉太紧的鞋意味着什么】\", \"snippet\": \"哈 夫 纳： 责任概念在您的思考中扮演重要角色。你谈到“为责任而负的责任”。您的意思是？ 鲍 曼： 我们所做的一切都会对别人的生活产生影响。我们不愿意去想这个。我所说的“为责任负责”就是在道德上承认这个被客观地赋予的责任。 哈 夫 纳： 这是否意味着，在我们所有的决定中，我们都要面对对错、善恶的选择？ 鲍 曼： 甚至在知道何为善恶之前，在与他人相遇的那一刻，我们就面临这个选择了。我们不可逃避地在存在上就是道德的存在，承担着对我们的人类同胞负责的责任。这个选择使我们陷入一种矛盾的境地。道德的生活是一种持续不确定的生活。要道德就意味着要为自己的责任负责。 哈 夫 纳： 现代性应对这种矛盾心理的方式，与之前的方式有什么不同？ 鲍 曼： 在\", \"score\": 0.5584, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"25a9108773e5\", \"chapter_idx\": 11, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.454}, {\"book_id\": \"e0b0b534b86e\", \"book_title\": \"幸福的底层逻辑：关于人生的7堂哲学课\", \"author\": \"刘小播\", \"chapter_idx\": 28, \"chapter_title\": \"没有道德，世界会怎样？\", \"citation_label\": \"【《幸福的底层逻辑：关于人生的7堂哲学课》·没有道德，世界会怎样？】\", \"snippet\": \"居家的小孩，为什么是你而不是小狗来承担责任呢？ 当我们说是否“需要”承担责任的时候，这里的责任其实分为两种： 法律责任和道德责任。法律责任关注的是客观的因果关系，而道德责任关注的是自由意志。这个怎么理解呢？ 疯子失去理智伤害了其他人，你在被胁迫的情况下伤害了其他人，小狗咬伤了邻居家的小孩，在这些情况下，做出伤害的主体都不具有自由意志，或者说他们的自由意志受到某些限制。因此，我们倾向于认为，这样的行为并非出于主观动机和意图，所以这些行为的主体不应该承担道德责任，比如小狗咬伤了人，我们不会说，这是一只不道德的小狗。 但没有自由意志并不意味着就完全不需要对行为的结果负责，当然这个在法律上还有很多争议。很多罪犯找医生给自己开某种精神疾病的确\", \"score\": 0.5453, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e0b0b534b86e\", \"chapter_idx\": 28, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.239}, {\"book_id\": \"e0b0b534b86e\", \"book_title\": \"幸福的底层逻辑：关于人生的7堂哲学课\", \"author\": \"刘小播\", \"chapter_idx\": 5, \"chapter_title\": \"人的四种欲望\", \"citation_label\": \"【《幸福的底层逻辑：关于人生的7堂哲学课》·人的四种欲望】\", \"snippet\": \"每个人的大脑里都有无数的观念，但我们是如何利用这些观念进行选择和判断的呢？我们来看一个例子。 假如你现在很饿，而路边刚好有个包子摊，你可以趁店主不注意的情况下偷偷去“拿”两个包子填饱肚子，但你多半不会这么做，因为你是一个有道德感的人。你在心里权衡了一下，觉得未经同意就去拿别人的东西是不道德的，所以你不会这么做。在这个场景里，是道德感约束了你的行为，但问题是，为什么道德感会约束你的行为呢？可能很多人并没有细想过这个问题。 从根本上说，我们所有的行为都是一种选择或判断，你选择不去随便拿别人的东西，哪怕你很饿。你在“填饱肚子”和“遵守道德”之间选择了后者，你把与两者相关的很多观念放到大脑里，飞速进行了对比和判断，并做出了选择。而选择的依据\", \"score\": 0.5392, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e0b0b534b86e\", \"chapter_idx\": 5, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.139}, {\"book_id\": \"b8210487d306\", \"book_title\": \"清醒思考的艺术\", \"author\": \"罗尔夫·多贝里\", \"chapter_idx\": 45, \"chapter_title\": \"45 不作为偏误 为什么你不是答案就是问题\", \"citation_label\": \"【《清醒思考的艺术》·45 不作为偏误 为什么你不是答案就是问题】\", \"snippet\": \"45 不作为偏误 为什么你不是答案就是问题 有两名登山者。第一个人掉进了一个冰川缝隙里，你本来可以帮助他、营救他，但你没有这么做，结果他死了。你将第二个人主动推进冰川缝隙，不久后第二个人也死了。这两种行为哪种更严重呢？理性地看，这两种行为同样应该遭到谴责，无论是放弃不救还是主动谋杀——两者的结果都是死亡。但某种感觉告诉我们，放弃不救不如后者严重。这种思维错误人们称为不作为偏误。不作为偏误总是出现在无论放弃还是行动都会带来损害的地方。在这种情况下大多数人都会选择放弃，因为这样引起的损害主观看来更无害。 假设你是国家药品监督管理局局长，面临着是否要批准将一种药品用于垂死病人的决定。这种药品的副作用很强，它会当场杀死20%的病人，但能短期\", \"score\": 0.5387, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b8210487d306\", \"chapter_idx\": 45, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.131}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "b2fbc225f414",
+      "chapter_idx": 8,
+      "focus": "自由意志"
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"b2fbc225f414\", \"book_title\": \"你的第一本哲学书\", \"chapter_idx\": 8, \"title\": \"第六章 自由意志\", \"citation_label\": \"【《你的第一本哲学书》·第六章 自由意志】\", \"text\": \"。这样我们就没有理由认为，他们应该为自己的行为负责了。\\n假如有人到你家参加你开的派对，却暗中偷了你珍藏的古典音乐唱片，你知道是谁干的之后，一定对他非常恼火。但是，如果你相信他的这一行为是被他的本性和当时的情况所事先决定的，并且相信他所做的一切事，包括塑造他人格的幼年行为，都是被更早的条件所事先决定的，那么你还能认为他应该对他的低劣行径负责吗？在此，如果把他的行为看成是一种自然灾难，好像你的唱片是被白蚁蛀坏了一样，似乎更为合理。\\n人们在这一点上意见不一。一些人认为，如果决定论是对的，那么因为某人的行为而去夸奖或责备他，就是毫无理由的，正如因为天上下雨，而去夸奖或责备雨水一样荒诞。另一些人认为，即使人的行为是不可避免的，扬善斥恶的做法仍然是有意义的。无论如何，就算一个人被事先决定要做坏事，这也并不意味着他所做的就不是坏事了。如果他偷了你的唱片，这就显示出他这个人既自私又虚伪，无论他的行为是否被事先决定，都是如此。进一步来说，如果我们不去惩罚他，甚至不去责备他，难保他下次不会再犯。\\n另一方面，如果我们认为他的行为是被事先决定的，而仍然要责罚他，这就像是因为一条狗咬了地毯而去惩罚它。这并不意味着我们认为他应该对他所做的负责，我们只是试图以此来改变他将来的行为。我个人认为，因为一个人做了他绝不可能不做的事而去惩罚他，这是没有意义的（当然，按照决定论，我会这么想也是事先被决定的）。\\n如果决定论是正确的，我们就必须面对这些问题。但是也许它并不是正确的。现在许多科学家认为，对于基本粒子而言，决定论是不适用的。例如，在给定的条件下，电子的运动是不确定的。也许决定论对于人的行为也是不适用的，这就给自由意志和责任留下了余地。如果说人的行为，至少是其中一部分，并非是事先就被决定好的，那又如何呢？如果说直到你做出选择为止，你是选桃子还是选蛋糕仍是一种开放的可能性，那又如何呢？这样的话，无论此前发生了些什么事，你都能够选择其中任何一种，即使你事实上选择了蛋糕，你当时还是能够选择桃子。\\n但是这对于自由意志来说就足够了吗？当你说“我本可以吃一只桃子”的时候，你的意思仅仅是说，选择并没有被事先决定吗？不只如此，这里还有更多的意思。你相信是你通过做出选择，决定了自己将要做什么。这一选择并非事先被决定，但是也不是自己发生的。你选择了它，并且你也能够选择别的。但是这又意味着什么？\\n这个问题看起来很有意思：我们都知道“做”某事的意思是什么。但是问题在于，如果说你的行为并未被你的欲望、信念和人格及其他东西所事先决定，它看起来就是某件自己发生的事情，没法给出什么解释。在这种情况下，你如何能够“做”它？\\n一些人认为，这个问题没有答案。自由行为是世界上的一种基本特性，不能够再加以分解。某件事情不需要原因而发生，和一个行为不需要原因而被人做出，二者间有着微妙的不同。这种不同我们大家即使解释不清楚，却也都知道。\\n某些人会满足于此，但是其他人会觉得，用“无法解释”来解释这种“我本可以吃一只桃子”的意义，还是颇为可疑。到目前为止，看起来决定论是对“责任”的一大威胁。但是现在看来，即使我们的选择并非事先已被决定，我们以何种方式能够做我们实际上所没有做的事情，仍然很难理解。两种选择在事先皆有可能，但是除非是“我”决定选其中某个，否则我仍然不需要对这种选择负责，正如如果它是被在我之外的原因所决定的，我不需要为此负责一样。因为，如果没有东西决定它，我又如何能够决定？\\n看起来，无论我们的行为是不是被决定的，我们都不必为此负责，这种可能性实在是令人担忧。如果决定论是正确的，先前的条件就该为我们的行为负责，如果决定论是错误的，就没什么东西要负责了。这看上去是死路一条。\\n但是还有一种可能的观点，与我们所说的大部分内容完全相反。一些人认为，谈论行为的责任必须要求我们的行为是被决定的，而非自由选择的。这一主张的理由如下：如果一个行为是你所做的，那么它就是被你身上的某些东西所引起的。例如，当你选择巧克力蛋糕的时候，这不是一件自己发生的事情，而是你所做的，因为是你更想要吃蛋糕而不是桃子。因为你想要吃蛋糕的欲望比想要避免增肥的欲望强烈，结果就使得你选择了蛋糕。在其他一些行为中，对行为的心理学解释要更为复杂，但是总是有一个解释，否则这个行为就不是你所做的了。这一解释看起来意味着你的行为最终仍然是被事先决定的。如果它并不是被任何东西所决定的，那么就只是一个无法解释的事件，是突然发生的，而不是你的选择。\\n根据这种观点，因果决定本身并不对自由的观念构成威胁，仅仅是某些特定种类的原因才与自由相悖。如果你去拿蛋糕是因为有人拿枪逼着你这么做，那么这当然不是一个自由的选择。但是自由的行为并不需要排除掉一切决定性的原因，只要这种原因是一种心理上的自愿就可以了。\\n我个人并不同意这种观点。一想到我的一切所作所为都是被周围环境和心理条件所决定的，我就感到自己像是掉入了陷阱之中；如果我想到别人的行为也是被事先决定的，我又觉得他们像是一群傀儡。要让他们为自己的行为负责，就好像要一条狗、一只猫，甚至一部电梯为其活动负责一样毫无意义。\\n另外，如果我们的行为不是被决定的，我也不太清楚为自己的行为负责的观念究竟意义何在。如果说我身上没有任何东西决定我的选择，那么说我决定了我的选择又是什么意思呢？因此，“我本可以吃一只桃子，而非蛋糕”这种感觉可能在哲学上只是一种幻觉，无论选择是否被决定，它都是错误的。\\n如果你要避免这种结论的话，就需要解释两点：第一，当你说自己能够做某些与实际所做的不同的事情的时候，你的意思是什么？第二，如果你的确有这种“能力”，那么这种能力在这个因果联系的世界中又处于什么位置呢？\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2811, \"excerpt_end\": 5143, \"chapter_text_length\": 5143, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 11, \"focus_found\": true, \"focus_terms_matched\": [\"自由意志\"], \"focus_terms_found_in_chapter\": [\"自由意志\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"自由意志\", \"offset\": 3511, \"read_args\": {\"book_id\": \"b2fbc225f414\", \"chapter_idx\": 8, \"offset\": 3311, \"focus\": \"自由意志\"}}, {\"term\": \"自由意志\", \"offset\": 3659, \"read_args\": {\"book_id\": \"b2fbc225f414\", \"chapter_idx\": 8, \"offset\": 3459, \"focus\": \"自由意志\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"d73c5172663712e01b77bb17776d33d881498d2729b50037e1b6ff8cb2162bec\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/b2fbc225f414?ch=8\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2811, 5143]], \"covered_characters\": 2332, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "休谟",
+      "query": "意志 自由 必然 因果"
+     },
+     "status": "success",
+     "duration_seconds": 0.017,
+     "result_full": "{\"query\": \"意志 自由 必然 因果\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"每一个观念都有同样的作用。在这种情况下，自然谨慎地处理着，而且看起来小心地避免了两个极端的不方便之处。如果单单是印象影响意志，那么我们一生中的每一时刻都将遭受到最大的灾难；因为即使我们预知了灾难的来临，自然也不会提供给我们任何可以推动我们去躲避灾难的行动的原则。另一方面，如果每一个观念都影响我们的行动，那么我们的状况将得不到更多的改善。因为人们的思想是如此的摇摆和活跃，以至每一事物、特别是善和恶的想象总是游荡在心灵中；并且如果心灵为每一个这样闲散的概念所驱使，它就决不会享受到片刻的安宁和平静。因此，自然已经选择了一条中间路线，既不赋予善恶观念以激起意志的能力，也不完全将它们的这种影响排除在外。尽管一个无聊的虚构没有功效，然而我们通过\", \"score\": 180, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"意志 自由 必然 因果\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第一章 论观念，它们的起源、组合、联系、抽象等】\", \"snippet\": \"移到与之类似的另一个观念，而且单是这种性质就能够成为想象的充分联系和联结的原则。同样明显的是，由于感管在改变它们的对象时必然是有规律地改变它们，并且认为它们是相互毗邻的，所以想象也必定因为长期的习惯而获得了同样的思维方法，并在构思它的对象时依次经过空间和时间的各个部分。至于由因果关系导致的联系，今后我们还会有机会予以彻底的研究，因此我们在这里就不详加论述。注意到这一点就足够 了：在想象中，没有任何关系能比因果关系在观念的对象之间产生更稳固的联系，并且使一个观念更容易回想起另一个观念。为了了解这些关系的全部范围，我们必须考虑到，不仅当一个对象与另一个对象是直接的类似，或与之接近，或是其他原因时，而且当两者之间插人第三者，而这第三个对象\", \"score\": 173, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 3, \"focus\": \"意志 自由 必然 因果\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 13, \"chapter_title\": \"第十一篇\", \"citation_label\": \"【《自然宗教对话录》·第十一篇】\", \"snippet\": \"规律管制的，那么痛苦的感受力不会就单独地产生痛苦的；而这对于一个很完善的存在根本是不必要的。这是真的：假如方物皆为特殊的意志所管制，自然的过程就会永远在破裂中，也没有人在日常生活中能够应用他的理性了。但是难道不可能有另外的特殊的意志来矫正这个缺点吗？简言之，难道不可能由神来了结各处发现的一切的恶；并且不用任何准备或因果的悠长的进程，就创造出一切的善吗？此外，我们必须注意，根据目前的世界的法则，自然的过程，虽则被假设为十分有规则的，但呈现于我们面前的却并非如此，有许多事件是不稳定的，许多事件是不合我们的期望的。健康与疾病，宁静与风暴，以及无数其他偶然事件，它们的原因不明而且变动不定，对于个人幸福及公众社会的繁荣，都有极大的影响；的确，\", \"score\": 172, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 13, \"focus\": \"意志 自由 必然 因果\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "perfect predictor 100% accuracy free will compatibilism predictability",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 0.962,
+     "result_full": "{\"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"results\": [{\"source_record_id\": \"doi:10.1093/acprof:oso/9780190611200.003.0004\", \"title\": \"Compatibilism and the Free Will Defense\", \"authors\": [\"Michael Almeida\"], \"year\": 2017, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will and Classical Theism\", \"doi\": \"10.1093/acprof:oso/9780190611200.003.0004\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137316066_4\", \"title\": \"Compatibilism, Sourcehood, and Manipulation Arguments\", \"authors\": [\"Helen Beebee\"], \"year\": 2013, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1057/9781137316066_4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137316066.0007\", \"title\": \"Compatibilism, Sourcehood, and Manipulation Arguments\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1057/9781137316066.0007\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137316066.0006\", \"title\": \"Compatibilism and the Consequence Argument\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1057/9781137316066.0006\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1017/upo9781844653232.007\", \"title\": \"Compatibilism II: the two-language view\", \"authors\": [], \"year\": 2000, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1017/upo9781844653232.007\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.5040/9781666984309.ch-1\", \"title\": \"Determinism and Compatibilism Redux\", \"authors\": [], \"year\": 2023, \"publication_type\": \"OTHER\", \"venue\": \"Akratic Compatibilism and All Too Human Psychology\", \"doi\": \"10.5040/9781666984309.ch-1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "拉普拉斯妖 预知 未来"
+     },
+     "status": "empty",
+     "duration_seconds": 1.613,
+     "result_full": "{\"query\": \"拉普拉斯妖 预知 未来\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 94,
+      "focus": "可预测性与自由"
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"c13b139d1db3\", \"book_title\": \"哲学导论\", \"chapter_idx\": 94, \"title\": \"6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性\", \"citation_label\": \"【《哲学导论》·6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性】\", \"text\": \"的结果。如果我们根本不愿塑造我们的性格，那么去想如何塑造我们的性格就毫无意义。但是，我们不应因认为这样的造就不可行而阻止这样一种愿望，一旦我们有这样的愿望，我们就应该知道，这个作品不是不可取消的，因而并不是无法改变的，这一点极其重要。\\n确实，如果仔细加以考察，我们就会发现，只要我们愿意就能塑造我们自己的性格这种感觉，本身就是我们意识到的道德自由感。一个有道德自由感的人，就会觉得他的习惯或他的诱惑并不是他的主人，相反，他是他的这些习惯或诱惑的主人。一个人，哪怕屈从于这些习惯或诱惑，也知道他能够抵制它们。一旦他打算完全摆脱它们，就没有什么愿望比他知道自己能够如此的感觉更强烈。当然，为了使我们完全意识到自由，我们就应该成功地塑造我们迄今为止打算塑造的性格，这一点是必须的。因为，如果空有愿望却未能实现，在那一程度上，我们对自己的性格就不具有能力，我们就不是自由的。或者，我们起码必须感觉到我们的愿望足够强烈——如果它还不够强烈到改变我们的性格——它在具体行为中与性格产生冲突时，能够克服性格。因此，老实说，惟有具有坚定美德的人，才是完全自由的。\\n在这一部分，密尔游走于“强决定论”与非决定论这两个棘手的选择之间。他以接受决定论以及一切人类行动都是“必然的和不可避免的”这一观念开始，并给出了它们的原因。但是，他接着却继续说，这些原因本身就在人类的控制下，我们能够改变事件的原因，甚至通过一定的步骤改变我们自己的性格。但这丝毫不是要否定决定论，也不是要否定我们在一个重要的意义上在进行控制、拥有“自由意志”。根据各种各样的原因（包括“性格”或个性），人类行动如同任何其他事件一样，都是可预测的。不过，可预测性与自由并非不相容，因为根据密尔的说法，自由无非就是按照自己的性格、欲望和愿望行动。既然这些就是我们行动的原因，那就意味着，密尔能够同时为决定论和自由辩护。\\n大卫•休谟也是一位“弱决定论者”，而且他也主张，“自由与必然性”的协调一致可以在如下事实中找到，即一个人的行动“产生于一个人的性格或性情”。为了给弱决定论辩护，休谟论证说，我们不能认为自由行动是毫无原因的偶然机遇，因为这有违我们的共同假设：每一事件都必定有其原因。而且，这样的自由观也是不一致的：自由意志的提倡者想要确保我们能够使人们对其行动负责，但是，如果人们的行动仅仅是偶然机遇，是他们无法控制的偶然机遇，那我们当然无法让他们负责。相反，我们颂赞或谴责的行动正是行动之人的性格所决定的行动。\\n不过，休谟虽然为一种弱决定论立场辩护，但是，在某种意义上，休谟根本不是一位决定论者。回顾一下第３章，在那里，休谟认为因果性是一种虚构，而我们寻找原因的倾向不过是一种习惯。因此，他能够论证说，恰如我们永远无法理性地证成一个具体事件有一个原因，我们也永远无法充分地证成人类行动有其原因。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2932, \"excerpt_end\": 4103, \"chapter_text_length\": 4103, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 132, \"focus_found\": true, \"focus_terms_matched\": [\"可预测性与自由\"], \"focus_terms_found_in_chapter\": [\"可预测性与自由\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"可预测性与自由\", \"offset\": 3632, \"read_args\": {\"book_id\": \"c13b139d1db3\", \"chapter_idx\": 94, \"offset\": 3432, \"focus\": \"可预测性与自由\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"957dee86fd69b89fa3345209d9977909eb9e731cea4325a616c43854fe8c4e46\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/c13b139d1db3?ch=94\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2932, 4103]], \"covered_characters\": 1171, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "自由与必然",
+      "book_id": "178e7d06d42d"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"query\": \"自由与必然\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"的广延的部分则是例外，这是马上就可以理解的。而且在这里我们觉察到不可能陷入任何太大的错误。在所有其他情形中，我们必须稍微自由地确定比例，或者必须在更加人为的方式下进行决定。我已经说过，尽管就普遍性和精确性而言，几何学或者我们 用来确定形的比例的技术都远远超过感觉和想象的粗略的判.断，但它绝没有达到完全的确切性和精确性。几何学最初的原理仍然是由对象的一般现象而来的，而且当我们考察自然所能容许的极小的微粒时，那种现象就绝不能给我们提供任何保证。我们的观念似乎可以完全保证：没有两条直线能有一条共同的线段。但是，如果我们研究一下这些观念，我们就会发现，它们总是预设了两条直线的一个可感知的倾斜度，而且如果这两条直线形成的角极其微小的时候，我们\", \"score\": 167, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第一章 论观念，它们的起源、组合、联系、抽象等】\", \"snippet\": \"是立刻引起了我的注意。①在某种意义上，我在此使用的印象和观念这两个术语与通常的含义并不相同。我希望我能有这样使用该术语的自由。洛克先生曾误用过“观念”一词，使它表示我们的全部知觉。我现在就是要恢复这一词的本义。至于印象这一术语，我并没有将其表示为那些生动的知觉产生于心灵时的方式，它仅仅指知觉本身；无论在英语中或是在我所知道的其他任何语言中对这些知觉都没有专有的名称。 在经过一个更加精确的观察后，我发现我被最初的现象带离得太远了。我必须利用简单知觉和复合知觉的区分来限制这样的一般论断，即“我们所有的观念和印象都是类似的”。我观察到，我们许多复合的观念从未有过与之相对应的印象，许多复合的印象也未曾精确地复制在观念中。我自己就可以想象新耶\", \"score\": 94, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 3, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 2, \"chapter_title\": \"导论\", \"citation_label\": \"【《人性论（全4册）》·导论】\", \"snippet\": \"其他民族虽然在诗歌方面的确可以和我们相媲美，在其他一些令人偷悦的艺术方面超越我们，但是理性和哲学的进步却只能归功于宽容和自由的国度。我们不仅不应该认为关于人的科学这一晚近的进步为我们国家增添的荣誉要少于自然哲学所增添的，而倒应该认为这门科学的较迟发展是更为荣耀的事情，因为这门科学具有更大的重要性，而且必须进行这样一番改革。因为对我而言，这一点是很显然的，那就是既然心灵的本质和外在物体的本质同样不为我们所知，因此，若非借助于仔细和精确的实验，并借此观察心灵在不同的环境和情形中产生的那些特殊的结果，我们也必定同样不可能对心灵的能力和性质形成任何概念。我们虽然应该把实验进行到底，并将那些从最简单和最少的原因中产生的一切结果阐释清楚，从而努\", \"score\": 83, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 2, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}], \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 6}, \"search_scope\": {\"author\": null, \"book_id\": \"178e7d06d42d\"}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "compare_views",
+     "args": {
+      "a": "休谟（相容论）",
+      "b": "康德（先验自由）",
+      "focus": "百分百预测我的选择是否取消我的自由"
+     },
+     "status": "success",
+     "duration_seconds": 9.813,
+     "result_full": "{\"kind\": \"comparison_scaffold\", \"summary\": \"休谟（相容论） vs 康德（先验自由） 的比较脚手架: 4 条比较轴线 + 双方候选主张; 最终判断由主 Agent 综合\", \"confidence\": 0.65, \"shared_problem\": \"若一个选择可被因果律或规律百分百预测，选择者是否仍自由？二者都需在自然必然性与自由之间给出不取消道德责任的说明。\", \"comparison_axes\": [{\"axis\": \"自由的定义\", \"side_a\": \"自由=行动不受外在强制、按自身欲望与意愿行事，可与因果决定并存。\", \"side_b\": \"自由=先验理念，意志能自行开始因果序列，不受现象界因果完全规定。\", \"why_it_matters\": \"定义不同直接决定'可预测'是否等于'不自由'。\"}, {\"axis\": \"可预测性的地位\", \"side_a\": \"可预测只表明行为有稳定原因，不表明受强制，故不取消自由。\", \"side_b\": \"若预测基于现象界因果，则属自然必然性领域，不能等同于先验自由。\", \"why_it_matters\": \"焦点问题在此维度上被直接裁决或重新划界。\"}, {\"axis\": \"道德责任归属\", \"side_a\": \"责任取决于行为是否出自行动者意愿，而非是否可被预测。\", \"side_b\": \"责任要求先验自由作为道德法则可能性的根据，否则实践理性无根基。\", \"why_it_matters\": \"决定自由之争是否必须为责任保留空间。\"}, {\"axis\": \"理论层次\", \"side_a\": \"在经验与心理学层面讨论自由，属自然主义说明。\", \"side_b\": \"区分现象与本体，自由属理智界，不可由经验预测证实或否证。\", \"why_it_matters\": \"避免把认识论可预测性直接扩为本体论不自由。\"}], \"side_a_claims\": [{\"claim\": \"百分百预测仅显示行为有原因，不等于行动者被外在强迫，故相容论下自由未被取消。\", \"basis\": \"休谟式相容论通说：自由与必然相容，自由指按意愿行动；待核查原典定位。\", \"strength\": \"与日常责任实践和因果说明兼容，无需设定本体界。\"}, {\"claim\": \"道德 praise/blame 可依行动者性格与意愿归因，即使其选择可被规律预测。\", \"basis\": \"reasoning：归因看意愿来源，不看预测可能性；待核查休谟《人性论》《人类理解研究》。\", \"strength\": \"保留责任实践，避免自由成为例外因果。\"}], \"side_b_claims\": [{\"claim\": \"若一切选择都被现象界因果百分百规定，则无先验自由，道德法则失去实践根据。\", \"basis\": \"康德式论证：自由是道德法则的存在根据；待核查《纯粹理性批判》《实践理性批判》。\", \"strength\": \"为道德责任提供强根据，区分自然与自由。\"}, {\"claim\": \"先验自由不可由经验预测证实或否证，故预测不构成对自由的取消。\", \"basis\": \"reasoning：现象/本体区分使自由属理智界；待核查康德二律背反与第三组冲突。\", \"strength\": \"限制经验预测的管辖范围，保护实践理性。\"}], \"strongest_divergence\": \"分歧在层次：休谟在经验层面把可预测与自由调和；康德在超验层面主张若现象界因果完全规定则无先验自由，但自由不可由经验预测触及。二者非简单正反方，而是对'自由'一词的领域划界不同。\", \"evidence_needs\": [\"休谟《人类理解研究》论自由与必然\", \"休谟《人性论》论必然与自由\", \"康德《纯粹理性批判》第三组二律背反\", \"康德《实践理性批判》自由与道德法则\"], \"candidate_consequences\": [\"若接受休谟式相容论，可预测性不威胁自由，责任归因可自然化。\", \"若接受康德式先验自由，经验预测与道德自由分属两界，责任需本体论根据。\"], \"side\": \"休谟（相容论）\", \"side_a\": \"休谟（相容论）\", \"side_b\": \"康德（先验自由）\", \"citations\": [{\"book\": \"黑格尔作品集（套装共14册）\", \"chapter\": \"B．从历史演绎出艺术的真正概念\", \"book_id\": \"bbac1be0bb4b\", \"chapter_idx\": 183, \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"snippet\": \"1．康德哲学 康德哲学不仅早就感觉到这种统一观点的需要，而且对这观点有明确的认识，把它阐明了出来。一般地说，康德无论是对于理智，还是对于意志，都把自相融贯的合理性，自由，以及自己认识自己为无限的那种自意识看作基础。尽管康德哲学还有些缺陷，这种对理性本身绝对性的认识——这是近代哲学的转折点——这种绝对出发点，却是应该承认而不容批驳的。但是因为康德依旧把主观思维与客观事物之间的对立以及意志的抽象的普遍性与意志的感性的特殊性之间的对立看成是固\"}, {\"book\": \"苏菲的哲学课\", \"chapter\": \"推荐阅读\", \"book_id\": \"4b4d8792d7c9\", \"chapter_idx\": 34, \"author\": \"多米尼克·贾尼科\", \"snippet\": \"推荐阅读 加斯东·巴什拉：《科学精神的形成》 亨利·柏格森：《笑》 奥古斯特·孔德：《论实证精神》 伏尔泰：《天真汉》 康德：《纯粹理性批判》序言一、二 尼采：《查拉图斯特拉如是说》《悲剧的诞生》 柏拉图：《会饮篇》《理想国》《大希庇阿斯篇》 叔本华：《人生智慧箴言》《争论的艺术》\"}], \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"结构化中间产物——主 Agent 须结合证据契约与用户问题二次综合后作答, 不得直接照搬为最终对比表\", \"catalogue_matches\": {\"side_a\": [], \"side_b\": []}, \"reading_note\": \"书目匹配只证明库中有这些原著；比较工具的候选主张仍需用 get_book_detail/get_chapter 核对双方原文。\"}"
+    },
+    {
+     "name": "list_books",
+     "args": {
+      "author": "休谟"
+     },
+     "status": "success",
+     "duration_seconds": 0.002,
+     "result_full": "{\"books\": [{\"id\": \"178e7d06d42d\", \"title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"rank\": 45.1, \"summary\": \"《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和因果关系的基础之上。休谟提出了著名的“印象与观念”区分，认为所有复杂观念都可以还原为简单的感觉印象，从而彻底贯彻了经验主义\"}, {\"id\": \"9c9e77918c07\", \"title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"rank\": 43.2, \"summary\": \"《自然宗教对话录》是休谟晚年最重要的哲学著作之一，采用对话录的形式，通过三位人物——怀疑论者斐洛、自然神论者克里安提斯和正统神学家德梅亚——之间的辩论，深入探讨了宗教的理性基础问题。休谟在书中系统批判了“设计论证”，即认为从自然界的秩序可以证明上帝存在的观点。他通过斐洛之口指出，宇宙的秩序可能源于偶\"}], \"total\": 2, \"offset\": 0, \"has_more\": false, \"next_offset\": null}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "决定论 与自由 相容 责任",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.429,
+     "result_full": "{\"query\": \"决定论 与自由 相容 责任\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 4, \"chapter_title\": \"第一章 哲学问题\", \"citation_label\": \"【《大问题》·第一章 哲学问题】\", \"snippet\": \"像量子力学这样的一些现代科学分支建立在关于实在的概率模型之上，从而并没有预设决定论，所以就认为我们不再有任何理由认为科学与自由意志不相容了。 在决定论者看来，我们是超出我们控制能力之外的力量的受害者；而在自由意志论者看来，我们总是要对自己的行为承担责任的。从这两种观点的争论中，哲学的一些最重要的差别出现了。 15.自由总是一件好事吗？ 假定有这样一个社会，那里的人们必须遵照一个统治者的命令去行动，但他们遵守起来很快乐，而且整个社会运行平稳，完全没有那些困扰现代社会的许多问题，比如犯罪、失业、经济匮乏等。唯一的问题在于没有人（可能除了统治者以外）是自由的。在那里没有言论自由或出版自由，每一个人都在同一种宗教里被培养长大，而且任何形式的\", \"score\": 235, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 4, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"d3bebffb6a05\", \"book_title\": \"否定的辩证法\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 7, \"chapter_title\": \"第一章 自由：实践理性总批判\", \"citation_label\": \"【《否定的辩证法》·第一章 自由：实践理性总批判】\", \"snippet\": \"过是一种世界观的安慰。科学家正是由此确定了他们的方向一一听从情趣，而且，人们可以不无担心地说听从他们自身心理的动力结构。与自由和决定论的复杂关系的联系被托付给非理性的心愿，这种非理性在教条的普遍性和非最终的、或多或少经验的个别决定因素之间来回摇摆。最终，一个人关于这种复杂关系的立场开始取决于他的政治信条，或取决于他碰巧认识到的权力。关于自由和决定论的信念听起来像是古代的，仿佛是从革命的资产阶级的早期开始的。但自由还没有得到实现就成了陈旧的一一这不是一种应被接受的命定性，而是必须用抵制力来澄清的命定性。自由的观念之所以失去它对人民的支配力，一个并非不重要的理由是：自由的观念从一开始就被非常抽象地和主观地对待，以致客观的社会趋势发现很容\", \"score\": 180, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d3bebffb6a05\", \"chapter_idx\": 7, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 10, \"chapter_title\": \"第七章 自由\", \"citation_label\": \"【《大问题》·第七章 自由】\", \"snippet\": \"rs所编的《自由与意志》（Freedom and the Will,St.Martin’s,1963）。关于科学、决定论与自由意志之间的联系的有价值的讨论，参见Sidney Hook所编的《现代科学背景下的决定论与自由》（Determinism and Freedom in the Age of Modern Science,Collier,1961）中的各篇文章。Herbert Morris编辑的《自由与责任》（Freedom and Responsibility,Stanford University Press,1961）收集了关于自由的法律和道德考虑的许多优秀文章。弗里特约夫·伯格曼的颇具争议的研究著作是《自由论》（On B\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 10, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"87bfe5b27ca1\", \"book_title\": \"交往行为理论\", \"author\": \"尤尔根·哈贝马斯\", \"chapter_idx\": 4, \"chapter_title\": \"二、马克斯·韦伯的合理化理论\", \"citation_label\": \"【《交往行为理论》·二、马克斯·韦伯的合理化理论】\", \"snippet\": \"进化论的批判。批判的焦点可以用上文的关键词来加以明确。在这里，我将从反方向来清理历史哲学的上述基本假设：批判的焦点是进化决定论，道德自然主义以及发展理论的普遍主义和理性主义。进化决定论（Evolution narer Determinismus）：从兰克（L.v.Ranke）和萨维尼（F.K.Savigny）开始，精神科学就在历史学派内部逐步形成了，而且一直伴随着方法论的反思【21]。这些方法论的反思最迟到狄尔泰就已经发展成熟，即发展成为一种历史主义（Historismus）。历史主义批判既针对辨证的历史理论和社会理论，也针对进化主义的历史理论和社会理论。我们这里主要关注的是这场争论的结果，亦即否定为自然主义文化寻找发展规律的做法。\", \"score\": 177, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"87bfe5b27ca1\", \"chapter_idx\": 4, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"dd75d637a2ad\", \"book_title\": \"托马斯•霍布斯\", \"author\": \"托马斯·霍布斯\", \"chapter_idx\": 2, \"chapter_title\": \"通过相互立约创建国家\", \"citation_label\": \"【《托马斯•霍布斯》·通过相互立约创建国家】\", \"snippet\": \"义的范围。事实上，马蒂尼奇认为“他的大部分观点都是标准的16世纪和17世纪宗教改革的观点”。例如，马蒂尼奇认为，霍布斯的决定论让约翰·布拉姆霍尔如此恼怒，但它其实与同时代的加尔文主义者提倡的预定论非常相似。马蒂尼奇认为，霍布斯的计划是要保卫基督教，而非做个无神论者。马蒂尼奇声称，霍布斯认识到新科学对基督教所构成的威胁，并且为了保护宗教，霍布斯试图将其与唯物论和机械论的世界观调和起来。马蒂尼奇还认为，霍布斯试图保卫基督教，防止其落人那些通过表明基督徒并没有《圣经》上的凭据以抵抗其主权者从而妄图操纵基督教的人之手。他的批评者们的无神论指责反映了霍布斯的计划注定要失败，面霍布斯的唯物主义无意间破坏了基督教。正如杰弗里·柯林斯（Jeffre\", \"score\": 173, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd75d637a2ad\", \"chapter_idx\": 2, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 16, \"chapter_title\": \"第九章 自由意志\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第九章 自由意志】\", \"snippet\": \"都摇着我，爸妈讲着一些温和亲切的话。 “你爸爸某天在一本杂志上看到了这个方法。有点笨吧，但看来的确可以哄好你。” 极端的决定论（Hard Determinism） （不存在自由意志） 这种理论所持的立场是，所有的人类行为都是由人类所不能控制的外在力量所决定的。它与自由意志的观点相对立。霍尔巴赫男爵（Baron d'Holbach）将这一立场总结如下： “［人］的出生由不得自己的意愿；其身体组织完全不由自主；其想法产生于无意识；他的习惯无非是那些养成其习惯的各种力量之造物；他不断地为各种原因所修整，这些原因无论明显与否，都是他绝对无法控制的……然而，尽管他必然要戴上这重重的枷锁，他还要自命是一个自由的主体。” “你从哪儿弄来的这些录像\", \"score\": 171, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 16, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 15, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 12.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_rZGIOt8YnM6IhDoouEHy0738"
+    },
+    {
+     "t": 12.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_cYloV2axUgvqHJrzn2AV9491"
+    },
+    {
+     "t": 12.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_99hLsjHnaq8Wk5162gSu4778"
+    },
+    {
+     "t": 12.7,
+     "phase": "start",
+     "name": "concept_trace",
+     "call_id": "call_03_O9wzwDX9XCF4urTIuJ9Y2824"
+    },
+    {
+     "t": 12.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "自由与必然",
+      "author": "休谟"
+     },
+     "status": "success",
+     "duration_seconds": 0.02,
+     "result_full": "{\"query\": \"自由与必然\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"的广延的部分则是例外，这是马上就可以理解的。而且在这里我们觉察到不可能陷入任何太大的错误。在所有其他情形中，我们必须稍微自由地确定比例，或者必须在更加人为的方式下进行决定。我已经说过，尽管就普遍性和精确性而言，几何学或者我们 用来确定形的比例的技术都远远超过感觉和想象的粗略的判.断，但它绝没有达到完全的确切性和精确性。几何学最初的原理仍然是由对象的一般现象而来的，而且当我们考察自然所能容许的极小的微粒时，那种现象就绝不能给我们提供任何保证。我们的观念似乎可以完全保证：没有两条直线能有一条共同的线段。但是，如果我们研究一下这些观念，我们就会发现，它们总是预设了两条直线的一个可感知的倾斜度，而且如果这两条直线形成的角极其微小的时候，我们\", \"score\": 167, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 13, \"chapter_title\": \"第十一篇\", \"citation_label\": \"【《自然宗教对话录》·第十一篇】\", \"snippet\": \"地生活着似乎显然是可能的。那么为什么要使动物有痛苦这种感受呢？假若动物能脱离痛苦一个钟头，他们就尽可以永远享受免除痛苦的自由；而且，为了创造痛苦的感觉，就需要对它们的器官做一个特殊的设计，好像为它们创造视、听或其他任何的感觉 一样。难道我们就可以毫无理由地揣测，这样一个设计是必要的吗？难道我们可以把这个揣测作根据，就如以最可靠的真理作根据一样吗？但是如果没有第二个条件，即是，世界是由一般规律管制的，那么痛苦的感受力不会就单独地产生痛苦的；而这对于一个很完善的存在根本是不必要的。这是真的：假如方物皆为特殊的意志所管制，自然的过程就会永远在破裂中，也没有人在日常生活中能够应用他的理性了。但是难道不可能有另外的特殊的意志来矫正这个缺点吗？\", \"score\": 135, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 13, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一篇\", \"citation_label\": \"【《自然宗教对话录》·第一篇】\", \"snippet\": \"究到教士策略来解释这样一种合理的方策。当然，只要看到任何一套原则足以证实真正的宗教，并可用以击破无神论者、放肆派以及各派自由思想者的强辩，这便是推定这套原则是真的并认为应该加以采纳的最坚强的理由了。\", \"score\": 131, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 3, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第一章 论观念，它们的起源、组合、联系、抽象等】\", \"snippet\": \"是立刻引起了我的注意。①在某种意义上，我在此使用的印象和观念这两个术语与通常的含义并不相同。我希望我能有这样使用该术语的自由。洛克先生曾误用过“观念”一词，使它表示我们的全部知觉。我现在就是要恢复这一词的本义。至于印象这一术语，我并没有将其表示为那些生动的知觉产生于心灵时的方式，它仅仅指知觉本身；无论在英语中或是在我所知道的其他任何语言中对这些知觉都没有专有的名称。 在经过一个更加精确的观察后，我发现我被最初的现象带离得太远了。我必须利用简单知觉和复合知觉的区分来限制这样的一般论断，即“我们所有的观念和印象都是类似的”。我观察到，我们许多复合的观念从未有过与之相对应的印象，许多复合的印象也未曾精确地复制在观念中。我自己就可以想象新耶\", \"score\": 94, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 3, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 1, \"chapter_title\": \"中译本序言\", \"citation_label\": \"【《自然宗教对话录》·中译本序言】\", \"snippet\": \"说：第一是对人类理性方面的害处，其次是对于人类道德方面的害处。对于人类理性方面的害处，起码有三种。第一，近代基督教是室息自由的。近代基督教是一个非常 专横，排厅异己的宗教，它扼杀了自由、道德和知识，阻碍了人类的进步。“道德、知识、爱好自由，这些品德招来了宗教审判官的致命的惩罚；当这些品德被排厅之后，社会便陷人了最可耻的无知、腐败和桔”（《宗教的自然历史》及《论文集》）。近代基督教的第二大害是使人自卑。近代基督教把上帝看成远远高超于人类之上，使人在上帝面前显得十分卑小，只能悔、忍受和卑躬屈膝。第三，近代基督教阻止了理性的发展。在基督教统治之下，理性和哲学只是宗教的工具，只能为宗教的教义服役，而对于教义本身则不许表示任何疑问，更不必说提\", \"score\": 88, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 1, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}], \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 14.6,
+     "phase": "result_orphan",
+     "name": "concept_trace",
+     "args": {
+      "concept": "自由意志"
+     },
+     "status": "success",
+     "duration_seconds": 1.861,
+     "result_full": "{\"concept\": \"自由意志\", \"hits\": 620, \"matched_books\": 162, \"timeline\": [{\"book\": \"神学大全　第一集　第6卷\", \"book_id\": \"f52ed83b99d9\", \"author\": \"托马斯·阿奎那\", \"chapter\": \"问题83 论自由意志\", \"chapter_idx\": 8, \"citation_label\": \"【《神学大全　第一集　第6卷》·问题83 论自由意志】\", \"snippet\": \"现在我们考察自由意志。 在这个问题上，有4个要点需要探究： (1)人是否具有自由意志？ （2）何谓自由意志？是一种能力、一个活动，抑或一种习性？ （3）如果它是一种能力，它是欲望的，还是认识的？ （4）如果它是欲望的，它同意志是同一种能力，还是不同的能力？ 第1条人是否具有自由意志？ 我们现在着手讨论第1条。 异议：人似乎并不具有自由意志（liberiarbitri）。 理据1：因为凡是具有自由意志的主体都能够做他意欲做的事情。但是，人并不能够做他所意欲的事情，因为《罗马书》第7章第19节中写道：“我所愿意的善，我反不作；我所不愿意的恶，我倒去作。”所以，人是没有自由意志的。 理据2：再者，凡是具有自由意志的主体都具有意欲或不意 欲\", \"matched_chapters\": 10, \"read_args\": {\"book_id\": \"f52ed83b99d9\", \"chapter_idx\": 8, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"book_id\": \"0f00c3a90243\", \"author\": \"杰克·鲍温\", \"chapter\": \"第九章 自由意志\", \"chapter_idx\": 16, \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第九章 自由意志】\", \"snippet\": \"个小小的优点：他连想都不去想，他是自由的。 ——克莱伦斯·丹诺（Clarence Darrow） “你听上去似乎并不相信自由意志。”比尔·皮尔格林说。 “要不是花了这么多的时间来研究地球人，”特尔夫迈道仁说，“我就会对‘自由意志’的含义一无所知。我在宇宙中造访过三十一个有居住者的星球，研究过关于一百多个星球的报告，只有地球上有自由意志的说法。” ——库尔特·冯内古特，《五号屠宰场》（Slaughterhouse Five） 我们在这儿了，我的朋友 [1] 和我。我想，他现在是我的朋友了——我们共度了这么多时光，如果我还不把他看作朋友，未免显得有些可笑。他带我去吃冰激凌作为午餐。有些奇怪的是，他用冰激凌来招待我——去吃冰激凌是种正常的\", \"matched_chapters\": 9, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 16, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"认识世界：古代与中世纪哲学\", \"book_id\": \"c97cb4e6161a\", \"author\": \"理查德·大卫·普莱希特\", \"chapter\": \"爱留根纳，或自由意志【426】\", \"chapter_idx\": 84, \"citation_label\": \"【《认识世界：古代与中世纪哲学》·爱留根纳，或自由意志【426】】\", \"snippet\": \"人类世界的特征，我们不能将之投射到上帝身上。因此并不是上帝决定救赎，而是人自身——并且是通过他的生活方式。因此上帝赋予人自由意志。因为如果一个人不具有自由意志，那么他根本上就没有意志，而是类似于被远程控制着的。然而很明显，人不是这样的，所以他是自由的。如果一个人的行为正直、诚信、正派，那么他就接近上帝，反之，如果他的行为是不道德的且“有罪的”，那么他就远离了上帝。可以想想普罗提诺，他认为恶就是善的缺席。爱留根纳设想的地狱也与此相似。地狱并非一个充满烈火、折磨和受刑者的洞穴，而是单纯被看作不幸的远离上帝之地。 爱留根纳850年为自由意志所作的辩护，对于那样一个我们根本不相信会产生这样一种思想的时代来说，是一个令人印象深刻的文本。对于可\", \"matched_chapters\": 5, \"read_args\": {\"book_id\": \"c97cb4e6161a\", \"chapter_idx\": 84, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"哲学的快乐：干瘪的思考vs.激情的生活\", \"book_id\": \"86759652897c\", \"author\": \"罗伯特·所罗门\", \"chapter\": \"谴责受害者：“自由意志”的解决方案\", \"chapter_idx\": 29, \"citation_label\": \"【《哲学的快乐：干瘪的思考vs.激情的生活》·谴责受害者：“自由意志”的解决方案】\", \"snippet\": \"。因此，大祸或许是惩罚，而非仅仅是意外。这可以说是“上帝的行为”一词最直白的惩罚性意义。根据奥古斯丁的说法，我们自己的“自由意志”才是恶的原因，是对恶的解释；上帝不可怪罪。接下来的这种神学和哲学困惑，比如上帝知道我们会犯错却任其发生，那么他是否要为此负责这样的问题，我们在此不必追究。这样的争论尽管没那么直接，但仅仅是再次指出了我们怪罪上帝而不愿“毫无诉求”面对困难的倾向而已。 如今，归罪的做法之所以如此吸引人，在于这样一个事实：我们的灾难和悲剧极少是自然灾害或上帝的行为。统计学者若要指明某个事件很罕见，就会说像“被雷电击中”或“死于蜂叮”一样少见。与我们自己的人为灾难相比，自然灾害日益少见。这些显然或至少可以说是我们自己所为的结果，\", \"matched_chapters\": 7, \"read_args\": {\"book_id\": \"86759652897c\", \"chapter_idx\": 29, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"你的第一本哲学书\", \"book_id\": \"b2fbc225f414\", \"author\": \"托马斯·内格尔\", \"chapter\": \"第六章 自由意志\", \"chapter_idx\": 8, \"citation_label\": \"【《你的第一本哲学书》·第六章 自由意志】\", \"snippet\": \"于基本粒子而言，决定论是不适用的。例如，在给定的条件下，电子的运动是不确定的。也许决定论对于人的行为也是不适用的，这就给自由意志和责任留下了余地。如果说人的行为，至少是其中一部分，并非是事先就被决定好的，那又如何呢？如果说直到你做出选择为止，你是选桃子还是选蛋糕仍是一种开放的可能性，那又如何呢？这样的话，无论此前发生了些什么事，你都能够选择其中任何一种，即使你事实上选择了蛋糕，你当时还是能够选择桃子。 但是这对于自由意志来说就足够了吗？当你说“我本可以吃一只桃子”的时候，你的意思仅仅是说，选择并没有被事先决定吗？不只如此，这里还有更多的意思。你相信是你通过做出选择，决定了自己将要做什么。这一选择并非事先被决定，但是也不是自己发生的。\", \"matched_chapters\": 3, \"read_args\": {\"book_id\": \"b2fbc225f414\", \"chapter_idx\": 8, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"否定的辩证法\", \"book_id\": \"d3bebffb6a05\", \"author\": \"西奥多·阿多诺\", \"chapter\": \"第一章 自由：实践理性总批判\", \"chapter_idx\": 7, \"citation_label\": \"【《否定的辩证法》·第一章 自由：实践理性总批判】\", \"snippet\": \"目标的第一性。经验遗到痛厅，因为它们与明确指定给它们的符号相抵触：它们所造成的困难被唯一归咎于松散的、前科学的术语。有无自由意志问题的意义十分重大，犹如技术术语无力反对要求它们说明它们的意思的必要性一样。由于司法和惩罚的过程一一以及在整个暂学传统中所请的道德或伦理学的可能性一取决于对这一问题的回答，所以我们的理智需要不充许我们把这个朴素的问题说成是“假问题”。自以为是的思想的纯洁性为思想提供了贫乏的、人为的满足。然而，语义学的批判是不能被漫不经心地打发掉的。如果不想得到不真实的回答，那么问题的迫切性便不能强制做出回答；甚至那种可能错误的需要，不管它多么令人绝望，也同样不能指出回答的方向。我们不必反思目前讨论的论题，判断它们存在还是不\", \"matched_chapters\": 2, \"read_args\": {\"book_id\": \"d3bebffb6a05\", \"chapter_idx\": 7, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"上帝之城\", \"book_id\": \"bcc83fdfca5e\", \"author\": \"奥古斯丁\", \"chapter\": \"中译本序\", \"chapter_idx\": 0, \"citation_label\": \"【《上帝之城》·中译本序】\", \"snippet\": \"裴拉坞主义( Pelagan- ism) 进行了长期的论战。针对前者的分裂行为，他坚持大公教会的权威与统一;针对后者夸大自由意志的作用，他强调人的原罪，上帝的恩典和救赎预定论。罗马城遭劫以后，他写下了《上帝之城》驳斥异教徒的责难，为基督教的前途辩护。他还把自己原先所推崇的修道生活方式纳人到教会之中，在主教住宅内建立了融教会生活与修道生活为一体的修道院，成为当时北非基督教的中心，并成为后来发展于欧洲的奥古斯丁修道会的前身。 三、奥古斯丁的著作与版本 奥古斯丁的著作卷 I快浩繁。据他自己晚年在《订正录} (Retrac- tation) 一书中的回忆，奥古斯丁一生共撰写著作 232 部，还有数百封 (篇)书信和布道文。我们在这里仅作简要\", \"matched_chapters\": 10, \"read_args\": {\"book_id\": \"bcc83fdfca5e\", \"chapter_idx\": 0, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"自然与快乐\", \"book_id\": \"221f09d04944\", \"author\": \"伊壁鸠鲁\", \"chapter\": \"第二卷 原子的运动与性质\", \"chapter_idx\": 13, \"citation_label\": \"【《自然与快乐》·第二卷 原子的运动与性质】\", \"snippet\": \"生，如果始基也不通过偏斜而开始新的运动以打破这一命运的铁律，使原因不再无穷地跟着另一个原因，那么大地上的生物怎么可能有其自由意志呢？这一自由意志又如何能挣脱命运的锁链，使我们能够趋向快乐所指引的地方，而且可以不在固定的时间和地点、而是随着自己的心意偏转自己的运动？毫无疑问，在这些场合里，始发者都是各自的自由意志；运动从意志出发，然后输往全身和四肢。①还有，难道你没看见，当门栏在既定时刻被打开时，赛马尽管充满急切的力量，却突然间无法依从心灵的渴求而奔出去？因为整个躯体的 ①原子的“偏斜”既可以解释笔直下降的众原子如何相撞结合和形成万物，又可以解释“自由意志”，所以是伊壁鸠鲁体系中的重要一环，但是在伊壁鸠鲁现存著作中不见提到。后人如西塞\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"221f09d04944\", \"chapter_idx\": 13, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"沉默的言语\", \"book_id\": \"4471baa4bb81\", \"author\": \"雅克·朗西埃\", \"chapter\": \"第八章 风格之书\", \"chapter_idx\": 9, \"citation_label\": \"【《沉默的言语》·第八章 风格之书】\", \"snippet\": \"联外，再无其他关联，没有脱离“观念“而对“事物”产生的理解，即脱离事物可见环境的显现。风格在取消一切物质材料时， 显现为自由意志。而这种至高无上的自由很快与其对立面同化。“看事物的绝对方法”，不是随便从什么角度，按照事物的意志去安装一块大小合适、变形或染色的玻璃所采用的方法。相反，它是在事物的“绝对性”中，看到事物所应该呈现的样子的方式。 “绝对的”意味着解除的。事物在这种“看的方式”中解除了什么？我们可以给出明确的答案：定义了再现体裁并支配着适当 “风格”的特征和行为之间关联的形态。事实上，支配再现虚构的得体系统并不仅仅涉及公主、将军或是牧师，这些人在表达感情或是适应某种境遇时的方法。得体系统和真实性系统基于确定的思路，即何种情形\", \"matched_chapters\": 1, \"read_args\": {\"book_id\": \"4471baa4bb81\", \"chapter_idx\": 9, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}, {\"book\": \"法哲学原理\", \"book_id\": \"17c85f942c78\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter\": \"黑格尔著《法哲学原理》一书评述\", \"chapter_idx\": 1, \"citation_label\": \"【《法哲学原理》·黑格尔著《法哲学原理》一书评述】\", \"snippet\": \"，亦即不是意志。既然人人都有意志，那么人人都有自由，也就人人都有其伴意志自由以俱来的权利。按照黑格尔自己的说法，法就是“自由意志的定在” [23] （“定在”这里作实现或体现解）。这种不经过矛盾斗争，人人都一般地、自在地享有的权利就叫做“抽象的法”。“法”字在这里主要应作“权利”解，因为德文原字Recht，具有法、权利、正当三个不同的意思。这里“抽象的法”主要是抽象的权利的意思。 抽象法或形式的法有如下的特点：（一）因为抽象法基于人的意志自由，所以它的命令是：“ 成为一个人， 并尊敬他人为人 。” [24] （二）在抽象法中，“人格中的特殊性尚未作为自由而存在，所以关于特殊性的一切东西〔如我的特殊利益，我的意志的特殊动机、见解和意图\", \"matched_chapters\": 6, \"read_args\": {\"book_id\": \"17c85f942c78\", \"chapter_idx\": 1, \"focus\": \"自由意志\"}, \"match_type\": \"exact_passage\", \"needs_read\": true}], \"scanned_chapters\": 12435, \"note\": \"仅统计可在原文逐字确认的词项出现；这是按书聚合的分布，不等于概念起源或历史演变。需阅读上下文核实用法，异译词需另行检索。\"}"
+    },
+    {
+     "t": 14.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "自由意志 决定论 预测"
+     },
+     "status": "success",
+     "duration_seconds": 1.885,
+     "result_full": "{\"query\": \"自由意志 决定论 预测\", \"results\": [{\"book_id\": \"2733906ea3f6\", \"book_title\": \"哲学家们都干了些什么\", \"author\": \"林欣浩\", \"chapter_idx\": 20, \"chapter_title\": \"二十、决定论\", \"citation_label\": \"【《哲学家们都干了些什么》·二十、决定论】\", \"snippet\": \"一切。 能预测未来，这听上去挺美妙的，怎么可怕了呢？ 可怕的地方就在于，一旦我们接受了最严格的决定论，那就意味着人类没有自由意志了。因为我们的意识是由组成我们身体的物质决定的，而组成我们身体的物质又由物理定律决定。所以，我们头脑中的每一个念头，在前一秒钟已经被决定好了。如果我们这么一环一环地回溯回去，那么我们一生中的一切所思所想，我这本书中的每一个字、您看到这本书在头脑中迸发出的每一个念头，其实都是在一百多亿年前的宇宙大爆炸那一瞬间就决定好了的。且不说这想法很诡异了吧，关键是，那人生还有什么意思啊？ 既然一切都是决定好的，那我们为什么还要努力奋斗？为什么还要劳动？人生还有什么意义？人类只是一个被操控的木偶，活着听从因果律摆布，死后化\", \"score\": 228, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2733906ea3f6\", \"chapter_idx\": 20, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 16, \"chapter_title\": \"第九章 自由意志\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第九章 自由意志】\", \"snippet\": \"都摇着我，爸妈讲着一些温和亲切的话。 “你爸爸某天在一本杂志上看到了这个方法。有点笨吧，但看来的确可以哄好你。” 极端的决定论（Hard Determinism） （不存在自由意志） 这种理论所持的立场是，所有的人类行为都是由人类所不能控制的外在力量所决定的。它与自由意志的观点相对立。霍尔巴赫男爵（Baron d'Holbach）将这一立场总结如下： “［人］的出生由不得自己的意愿；其身体组织完全不由自主；其想法产生于无意识；他的习惯无非是那些养成其习惯的各种力量之造物；他不断地为各种原因所修整，这些原因无论明显与否，都是他绝对无法控制的……然而，尽管他必然要戴上这重重的枷锁，他还要自命是一个自由的主体。” “你从哪儿弄来的这些录像\", \"score\": 223, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 16, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c13b139d1db3\", \"book_title\": \"哲学导论\", \"author\": \"罗伯特·所罗门\", \"chapter_idx\": 94, \"chapter_title\": \"6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性\", \"citation_label\": \"【《哲学导论》·6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性】\", \"snippet\": \"体行为中与性格产生冲突时，能够克服性格。因此，老实说，惟有具有坚定美德的人，才是完全自由的。 在这一部分，密尔游走于“强决定论”与非决定论这两个棘手的选择之间。他以接受决定论以及一切人类行动都是“必然的和不可避免的”这一观念开始，并给出了它们的原因。但是，他接着却继续说，这些原因本身就在人类的控制下，我们能够改变事件的原因，甚至通过一定的步骤改变我们自己的性格。但这丝毫不是要否定决定论，也不是要否定我们在一个重要的意义上在进行控制、拥有“自由意志”。根据各种各样的原因（包括“性格”或个性），人类行动如同任何其他事件一样，都是可预测的。不过，可预测性与自由并非不相容，因为根据密尔的说法，自由无非就是按照自己的性格、欲望和愿望行动。既然\", \"score\": 221, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c13b139d1db3\", \"chapter_idx\": 94, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"67d0b7e3c795\", \"book_title\": \"开放社会及其敌人\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 14, \"chapter_title\": \"第十三章 马克思的社会学决定论\", \"citation_label\": \"【《开放社会及其敌人》·第十三章 马克思的社会学决定论】\", \"snippet\": \"思主义的方法论时，并没有必要加入有关决定论的形而上学问题的争论。因为不论这些形而上学争论的结果如何，例如，量子理论关于“自由意志”方面，我想要说的是，事情早就解决了。没有哪种决定论，不论它被表述为自然界的齐一性原理，还是被表述为普遍的因果规律，能够再被作为科学方法的必要假定来考虑。因为物理学——一切学科中最先进的科学——不仅表明，没有这种假定，它照样能够从事研究，而且还表明，在某种程度上，它还同这些前提有矛盾。对一门能够进行预测的学科而言，决定论并不是不可缺少的前提条件。因此，科学方法不能被说成支持采取严格的决定论。没有这一假定，科学也能具有严格的科学性。当然，马克思不能因为坚持了相反的观点就应受到责难，因为他那时的最优秀的科学家都\", \"score\": 203, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"67d0b7e3c795\", \"chapter_idx\": 14, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 10, \"chapter_title\": \"第七章 自由\", \"citation_label\": \"【《大问题》·第七章 自由】\", \"snippet\": \"方面，我们还渴望自由（卢梭写道：“人生而自由，却又无往不在枷锁之中。”）。因此，我们应当区分内在自由（或我们与生俱来的“自由意志”）和外在自由（即我们必须为之奋斗的自由）。而第二种看法则认为自由是可怕的，我们唯恐避之不及。有时一个人不得不做出会影响一生的抉择，比如挑选一所大学、择取终身伴侣、决定是否参军等，这往往会让人感到痛苦甚至恐惧。所以，当别的什么人替我们做了选择，或者干脆让“命运”来替我们选择的时候，我们（或至少是一部分人）会感到如释重负。例如，存在主义哲学家让-保罗·萨特以及心理学家埃里希·弗洛姆认为，我们都试图“逃离自由”，因为我们发觉自由实在是太痛苦了。我们退回到对权威的无条件服从，陷入了萨特所说的“不诚”状态。伯格曼举\", \"score\": 200, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 10, \"focus\": \"自由意志 决定论 预测\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 33, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 14.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "可供选择的可能性 道德责任"
+     },
+     "status": "success",
+     "duration_seconds": 2.135,
+     "result_full": "{\"query\": \"可供选择的可能性 道德责任\", \"results\": [{\"book_id\": \"25a9108773e5\", \"book_title\": \"自我：与齐格蒙特·鲍曼对谈（将熟悉变为陌生）\", \"author\": \"齐格蒙特·鲍曼\", \"chapter_idx\": 11, \"chapter_title\": \"幸福与道德 良好生活：脱掉太紧的鞋意味着什么\", \"citation_label\": \"【《自我：与齐格蒙特·鲍曼对谈（将熟悉变为陌生）》·幸福与道德 良好生活：脱掉太紧的鞋意味着什么】\", \"snippet\": \"哈 夫 纳： 责任概念在您的思考中扮演重要角色。你谈到“为责任而负的责任”。您的意思是？ 鲍 曼： 我们所做的一切都会对别人的生活产生影响。我们不愿意去想这个。我所说的“为责任负责”就是在道德上承认这个被客观地赋予的责任。 哈 夫 纳： 这是否意味着，在我们所有的决定中，我们都要面对对错、善恶的选择？ 鲍 曼： 甚至在知道何为善恶之前，在与他人相遇的那一刻，我们就面临这个选择了。我们不可逃避地在存在上就是道德的存在，承担着对我们的人类同胞负责的责任。这个选择使我们陷入一种矛盾的境地。道德的生活是一种持续不确定的生活。要道德就意味着要为自己的责任负责。 哈 夫 纳： 现代性应对这种矛盾心理的方式，与之前的方式有什么不同？ 鲍 曼： 在\", \"score\": 0.5584, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"25a9108773e5\", \"chapter_idx\": 11, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.454}, {\"book_id\": \"e0b0b534b86e\", \"book_title\": \"幸福的底层逻辑：关于人生的7堂哲学课\", \"author\": \"刘小播\", \"chapter_idx\": 28, \"chapter_title\": \"没有道德，世界会怎样？\", \"citation_label\": \"【《幸福的底层逻辑：关于人生的7堂哲学课》·没有道德，世界会怎样？】\", \"snippet\": \"居家的小孩，为什么是你而不是小狗来承担责任呢？ 当我们说是否“需要”承担责任的时候，这里的责任其实分为两种： 法律责任和道德责任。法律责任关注的是客观的因果关系，而道德责任关注的是自由意志。这个怎么理解呢？ 疯子失去理智伤害了其他人，你在被胁迫的情况下伤害了其他人，小狗咬伤了邻居家的小孩，在这些情况下，做出伤害的主体都不具有自由意志，或者说他们的自由意志受到某些限制。因此，我们倾向于认为，这样的行为并非出于主观动机和意图，所以这些行为的主体不应该承担道德责任，比如小狗咬伤了人，我们不会说，这是一只不道德的小狗。 但没有自由意志并不意味着就完全不需要对行为的结果负责，当然这个在法律上还有很多争议。很多罪犯找医生给自己开某种精神疾病的确\", \"score\": 0.5453, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e0b0b534b86e\", \"chapter_idx\": 28, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.239}, {\"book_id\": \"e0b0b534b86e\", \"book_title\": \"幸福的底层逻辑：关于人生的7堂哲学课\", \"author\": \"刘小播\", \"chapter_idx\": 5, \"chapter_title\": \"人的四种欲望\", \"citation_label\": \"【《幸福的底层逻辑：关于人生的7堂哲学课》·人的四种欲望】\", \"snippet\": \"每个人的大脑里都有无数的观念，但我们是如何利用这些观念进行选择和判断的呢？我们来看一个例子。 假如你现在很饿，而路边刚好有个包子摊，你可以趁店主不注意的情况下偷偷去“拿”两个包子填饱肚子，但你多半不会这么做，因为你是一个有道德感的人。你在心里权衡了一下，觉得未经同意就去拿别人的东西是不道德的，所以你不会这么做。在这个场景里，是道德感约束了你的行为，但问题是，为什么道德感会约束你的行为呢？可能很多人并没有细想过这个问题。 从根本上说，我们所有的行为都是一种选择或判断，你选择不去随便拿别人的东西，哪怕你很饿。你在“填饱肚子”和“遵守道德”之间选择了后者，你把与两者相关的很多观念放到大脑里，飞速进行了对比和判断，并做出了选择。而选择的依据\", \"score\": 0.5392, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e0b0b534b86e\", \"chapter_idx\": 5, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.139}, {\"book_id\": \"b8210487d306\", \"book_title\": \"清醒思考的艺术\", \"author\": \"罗尔夫·多贝里\", \"chapter_idx\": 45, \"chapter_title\": \"45 不作为偏误 为什么你不是答案就是问题\", \"citation_label\": \"【《清醒思考的艺术》·45 不作为偏误 为什么你不是答案就是问题】\", \"snippet\": \"45 不作为偏误 为什么你不是答案就是问题 有两名登山者。第一个人掉进了一个冰川缝隙里，你本来可以帮助他、营救他，但你没有这么做，结果他死了。你将第二个人主动推进冰川缝隙，不久后第二个人也死了。这两种行为哪种更严重呢？理性地看，这两种行为同样应该遭到谴责，无论是放弃不救还是主动谋杀——两者的结果都是死亡。但某种感觉告诉我们，放弃不救不如后者严重。这种思维错误人们称为不作为偏误。不作为偏误总是出现在无论放弃还是行动都会带来损害的地方。在这种情况下大多数人都会选择放弃，因为这样引起的损害主观看来更无害。 假设你是国家药品监督管理局局长，面临着是否要批准将一种药品用于垂死病人的决定。这种药品的副作用很强，它会当场杀死20%的病人，但能短期\", \"score\": 0.5387, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b8210487d306\", \"chapter_idx\": 45, \"focus\": \"可供选择的可能性 道德责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.131}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 16.8,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_1a9hIHFUR94EqkySnPKt6239"
+    },
+    {
+     "t": 16.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_SnhHFSwHj4MuhW9X8J9R4457"
+    },
+    {
+     "t": 17.0,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_02_PZ0iFaSkB2kk8iRw0A640232"
+    },
+    {
+     "t": 17.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_03_xSKqtxA86MZzYIC3LVAl3522"
+    },
+    {
+     "t": 17.3,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "b2fbc225f414",
+      "chapter_idx": 8,
+      "focus": "自由意志"
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"b2fbc225f414\", \"book_title\": \"你的第一本哲学书\", \"chapter_idx\": 8, \"title\": \"第六章 自由意志\", \"citation_label\": \"【《你的第一本哲学书》·第六章 自由意志】\", \"text\": \"。这样我们就没有理由认为，他们应该为自己的行为负责了。\\n假如有人到你家参加你开的派对，却暗中偷了你珍藏的古典音乐唱片，你知道是谁干的之后，一定对他非常恼火。但是，如果你相信他的这一行为是被他的本性和当时的情况所事先决定的，并且相信他所做的一切事，包括塑造他人格的幼年行为，都是被更早的条件所事先决定的，那么你还能认为他应该对他的低劣行径负责吗？在此，如果把他的行为看成是一种自然灾难，好像你的唱片是被白蚁蛀坏了一样，似乎更为合理。\\n人们在这一点上意见不一。一些人认为，如果决定论是对的，那么因为某人的行为而去夸奖或责备他，就是毫无理由的，正如因为天上下雨，而去夸奖或责备雨水一样荒诞。另一些人认为，即使人的行为是不可避免的，扬善斥恶的做法仍然是有意义的。无论如何，就算一个人被事先决定要做坏事，这也并不意味着他所做的就不是坏事了。如果他偷了你的唱片，这就显示出他这个人既自私又虚伪，无论他的行为是否被事先决定，都是如此。进一步来说，如果我们不去惩罚他，甚至不去责备他，难保他下次不会再犯。\\n另一方面，如果我们认为他的行为是被事先决定的，而仍然要责罚他，这就像是因为一条狗咬了地毯而去惩罚它。这并不意味着我们认为他应该对他所做的负责，我们只是试图以此来改变他将来的行为。我个人认为，因为一个人做了他绝不可能不做的事而去惩罚他，这是没有意义的（当然，按照决定论，我会这么想也是事先被决定的）。\\n如果决定论是正确的，我们就必须面对这些问题。但是也许它并不是正确的。现在许多科学家认为，对于基本粒子而言，决定论是不适用的。例如，在给定的条件下，电子的运动是不确定的。也许决定论对于人的行为也是不适用的，这就给自由意志和责任留下了余地。如果说人的行为，至少是其中一部分，并非是事先就被决定好的，那又如何呢？如果说直到你做出选择为止，你是选桃子还是选蛋糕仍是一种开放的可能性，那又如何呢？这样的话，无论此前发生了些什么事，你都能够选择其中任何一种，即使你事实上选择了蛋糕，你当时还是能够选择桃子。\\n但是这对于自由意志来说就足够了吗？当你说“我本可以吃一只桃子”的时候，你的意思仅仅是说，选择并没有被事先决定吗？不只如此，这里还有更多的意思。你相信是你通过做出选择，决定了自己将要做什么。这一选择并非事先被决定，但是也不是自己发生的。你选择了它，并且你也能够选择别的。但是这又意味着什么？\\n这个问题看起来很有意思：我们都知道“做”某事的意思是什么。但是问题在于，如果说你的行为并未被你的欲望、信念和人格及其他东西所事先决定，它看起来就是某件自己发生的事情，没法给出什么解释。在这种情况下，你如何能够“做”它？\\n一些人认为，这个问题没有答案。自由行为是世界上的一种基本特性，不能够再加以分解。某件事情不需要原因而发生，和一个行为不需要原因而被人做出，二者间有着微妙的不同。这种不同我们大家即使解释不清楚，却也都知道。\\n某些人会满足于此，但是其他人会觉得，用“无法解释”来解释这种“我本可以吃一只桃子”的意义，还是颇为可疑。到目前为止，看起来决定论是对“责任”的一大威胁。但是现在看来，即使我们的选择并非事先已被决定，我们以何种方式能够做我们实际上所没有做的事情，仍然很难理解。两种选择在事先皆有可能，但是除非是“我”决定选其中某个，否则我仍然不需要对这种选择负责，正如如果它是被在我之外的原因所决定的，我不需要为此负责一样。因为，如果没有东西决定它，我又如何能够决定？\\n看起来，无论我们的行为是不是被决定的，我们都不必为此负责，这种可能性实在是令人担忧。如果决定论是正确的，先前的条件就该为我们的行为负责，如果决定论是错误的，就没什么东西要负责了。这看上去是死路一条。\\n但是还有一种可能的观点，与我们所说的大部分内容完全相反。一些人认为，谈论行为的责任必须要求我们的行为是被决定的，而非自由选择的。这一主张的理由如下：如果一个行为是你所做的，那么它就是被你身上的某些东西所引起的。例如，当你选择巧克力蛋糕的时候，这不是一件自己发生的事情，而是你所做的，因为是你更想要吃蛋糕而不是桃子。因为你想要吃蛋糕的欲望比想要避免增肥的欲望强烈，结果就使得你选择了蛋糕。在其他一些行为中，对行为的心理学解释要更为复杂，但是总是有一个解释，否则这个行为就不是你所做的了。这一解释看起来意味着你的行为最终仍然是被事先决定的。如果它并不是被任何东西所决定的，那么就只是一个无法解释的事件，是突然发生的，而不是你的选择。\\n根据这种观点，因果决定本身并不对自由的观念构成威胁，仅仅是某些特定种类的原因才与自由相悖。如果你去拿蛋糕是因为有人拿枪逼着你这么做，那么这当然不是一个自由的选择。但是自由的行为并不需要排除掉一切决定性的原因，只要这种原因是一种心理上的自愿就可以了。\\n我个人并不同意这种观点。一想到我的一切所作所为都是被周围环境和心理条件所决定的，我就感到自己像是掉入了陷阱之中；如果我想到别人的行为也是被事先决定的，我又觉得他们像是一群傀儡。要让他们为自己的行为负责，就好像要一条狗、一只猫，甚至一部电梯为其活动负责一样毫无意义。\\n另外，如果我们的行为不是被决定的，我也不太清楚为自己的行为负责的观念究竟意义何在。如果说我身上没有任何东西决定我的选择，那么说我决定了我的选择又是什么意思呢？因此，“我本可以吃一只桃子，而非蛋糕”这种感觉可能在哲学上只是一种幻觉，无论选择是否被决定，它都是错误的。\\n如果你要避免这种结论的话，就需要解释两点：第一，当你说自己能够做某些与实际所做的不同的事情的时候，你的意思是什么？第二，如果你的确有这种“能力”，那么这种能力在这个因果联系的世界中又处于什么位置呢？\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2811, \"excerpt_end\": 5143, \"chapter_text_length\": 5143, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 11, \"focus_found\": true, \"focus_terms_matched\": [\"自由意志\"], \"focus_terms_found_in_chapter\": [\"自由意志\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"自由意志\", \"offset\": 3511, \"read_args\": {\"book_id\": \"b2fbc225f414\", \"chapter_idx\": 8, \"offset\": 3311, \"focus\": \"自由意志\"}}, {\"term\": \"自由意志\", \"offset\": 3659, \"read_args\": {\"book_id\": \"b2fbc225f414\", \"chapter_idx\": 8, \"offset\": 3459, \"focus\": \"自由意志\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"d73c5172663712e01b77bb17776d33d881498d2729b50037e1b6ff8cb2162bec\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/b2fbc225f414?ch=8\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2811, 5143]], \"covered_characters\": 2332, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 17.3,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "author": "休谟",
+      "query": "意志 自由 必然 因果"
+     },
+     "status": "success",
+     "duration_seconds": 0.017,
+     "result_full": "{\"query\": \"意志 自由 必然 因果\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"每一个观念都有同样的作用。在这种情况下，自然谨慎地处理着，而且看起来小心地避免了两个极端的不方便之处。如果单单是印象影响意志，那么我们一生中的每一时刻都将遭受到最大的灾难；因为即使我们预知了灾难的来临，自然也不会提供给我们任何可以推动我们去躲避灾难的行动的原则。另一方面，如果每一个观念都影响我们的行动，那么我们的状况将得不到更多的改善。因为人们的思想是如此的摇摆和活跃，以至每一事物、特别是善和恶的想象总是游荡在心灵中；并且如果心灵为每一个这样闲散的概念所驱使，它就决不会享受到片刻的安宁和平静。因此，自然已经选择了一条中间路线，既不赋予善恶观念以激起意志的能力，也不完全将它们的这种影响排除在外。尽管一个无聊的虚构没有功效，然而我们通过\", \"score\": 180, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"意志 自由 必然 因果\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第一章 论观念，它们的起源、组合、联系、抽象等】\", \"snippet\": \"移到与之类似的另一个观念，而且单是这种性质就能够成为想象的充分联系和联结的原则。同样明显的是，由于感管在改变它们的对象时必然是有规律地改变它们，并且认为它们是相互毗邻的，所以想象也必定因为长期的习惯而获得了同样的思维方法，并在构思它的对象时依次经过空间和时间的各个部分。至于由因果关系导致的联系，今后我们还会有机会予以彻底的研究，因此我们在这里就不详加论述。注意到这一点就足够 了：在想象中，没有任何关系能比因果关系在观念的对象之间产生更稳固的联系，并且使一个观念更容易回想起另一个观念。为了了解这些关系的全部范围，我们必须考虑到，不仅当一个对象与另一个对象是直接的类似，或与之接近，或是其他原因时，而且当两者之间插人第三者，而这第三个对象\", \"score\": 173, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 3, \"focus\": \"意志 自由 必然 因果\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 13, \"chapter_title\": \"第十一篇\", \"citation_label\": \"【《自然宗教对话录》·第十一篇】\", \"snippet\": \"规律管制的，那么痛苦的感受力不会就单独地产生痛苦的；而这对于一个很完善的存在根本是不必要的。这是真的：假如方物皆为特殊的意志所管制，自然的过程就会永远在破裂中，也没有人在日常生活中能够应用他的理性了。但是难道不可能有另外的特殊的意志来矫正这个缺点吗？简言之，难道不可能由神来了结各处发现的一切的恶；并且不用任何准备或因果的悠长的进程，就创造出一切的善吗？此外，我们必须注意，根据目前的世界的法则，自然的过程，虽则被假设为十分有规则的，但呈现于我们面前的却并非如此，有许多事件是不稳定的，许多事件是不合我们的期望的。健康与疾病，宁静与风暴，以及无数其他偶然事件，它们的原因不明而且变动不定，对于个人幸福及公众社会的繁荣，都有极大的影响；的确，\", \"score\": 172, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 13, \"focus\": \"意志 自由 必然 因果\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 18.3,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "perfect predictor 100% accuracy free will compatibilism predictability",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 0.962,
+     "result_full": "{\"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"results\": [{\"source_record_id\": \"doi:10.1093/acprof:oso/9780190611200.003.0004\", \"title\": \"Compatibilism and the Free Will Defense\", \"authors\": [\"Michael Almeida\"], \"year\": 2017, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will and Classical Theism\", \"doi\": \"10.1093/acprof:oso/9780190611200.003.0004\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137316066_4\", \"title\": \"Compatibilism, Sourcehood, and Manipulation Arguments\", \"authors\": [\"Helen Beebee\"], \"year\": 2013, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1057/9781137316066_4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137316066.0007\", \"title\": \"Compatibilism, Sourcehood, and Manipulation Arguments\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1057/9781137316066.0007\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137316066.0006\", \"title\": \"Compatibilism and the Consequence Argument\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1057/9781137316066.0006\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1017/upo9781844653232.007\", \"title\": \"Compatibilism II: the two-language view\", \"authors\": [], \"year\": 2000, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Free Will\", \"doi\": \"10.1017/upo9781844653232.007\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.5040/9781666984309.ch-1\", \"title\": \"Determinism and Compatibilism Redux\", \"authors\": [], \"year\": 2023, \"publication_type\": \"OTHER\", \"venue\": \"Akratic Compatibilism and All Too Human Psychology\", \"doi\": \"10.5040/9781666984309.ch-1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 18.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "拉普拉斯妖 预知 未来"
+     },
+     "status": "empty",
+     "duration_seconds": 1.613,
+     "result_full": "{\"query\": \"拉普拉斯妖 预知 未来\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 21.4,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_9Lxbm0Hidbv6FsXriaQp8038"
+    },
+    {
+     "t": 21.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_OkzjDvH2WOVb3eAmiVhk6546"
+    },
+    {
+     "t": 21.8,
+     "phase": "start",
+     "name": "compare_views",
+     "call_id": "call_02_ukTpvzLBk3Wd7EjFdqB14008"
+    },
+    {
+     "t": 22.0,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 94,
+      "focus": "可预测性与自由"
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"c13b139d1db3\", \"book_title\": \"哲学导论\", \"chapter_idx\": 94, \"title\": \"6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性\", \"citation_label\": \"【《哲学导论》·6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性】\", \"text\": \"的结果。如果我们根本不愿塑造我们的性格，那么去想如何塑造我们的性格就毫无意义。但是，我们不应因认为这样的造就不可行而阻止这样一种愿望，一旦我们有这样的愿望，我们就应该知道，这个作品不是不可取消的，因而并不是无法改变的，这一点极其重要。\\n确实，如果仔细加以考察，我们就会发现，只要我们愿意就能塑造我们自己的性格这种感觉，本身就是我们意识到的道德自由感。一个有道德自由感的人，就会觉得他的习惯或他的诱惑并不是他的主人，相反，他是他的这些习惯或诱惑的主人。一个人，哪怕屈从于这些习惯或诱惑，也知道他能够抵制它们。一旦他打算完全摆脱它们，就没有什么愿望比他知道自己能够如此的感觉更强烈。当然，为了使我们完全意识到自由，我们就应该成功地塑造我们迄今为止打算塑造的性格，这一点是必须的。因为，如果空有愿望却未能实现，在那一程度上，我们对自己的性格就不具有能力，我们就不是自由的。或者，我们起码必须感觉到我们的愿望足够强烈——如果它还不够强烈到改变我们的性格——它在具体行为中与性格产生冲突时，能够克服性格。因此，老实说，惟有具有坚定美德的人，才是完全自由的。\\n在这一部分，密尔游走于“强决定论”与非决定论这两个棘手的选择之间。他以接受决定论以及一切人类行动都是“必然的和不可避免的”这一观念开始，并给出了它们的原因。但是，他接着却继续说，这些原因本身就在人类的控制下，我们能够改变事件的原因，甚至通过一定的步骤改变我们自己的性格。但这丝毫不是要否定决定论，也不是要否定我们在一个重要的意义上在进行控制、拥有“自由意志”。根据各种各样的原因（包括“性格”或个性），人类行动如同任何其他事件一样，都是可预测的。不过，可预测性与自由并非不相容，因为根据密尔的说法，自由无非就是按照自己的性格、欲望和愿望行动。既然这些就是我们行动的原因，那就意味着，密尔能够同时为决定论和自由辩护。\\n大卫•休谟也是一位“弱决定论者”，而且他也主张，“自由与必然性”的协调一致可以在如下事实中找到，即一个人的行动“产生于一个人的性格或性情”。为了给弱决定论辩护，休谟论证说，我们不能认为自由行动是毫无原因的偶然机遇，因为这有违我们的共同假设：每一事件都必定有其原因。而且，这样的自由观也是不一致的：自由意志的提倡者想要确保我们能够使人们对其行动负责，但是，如果人们的行动仅仅是偶然机遇，是他们无法控制的偶然机遇，那我们当然无法让他们负责。相反，我们颂赞或谴责的行动正是行动之人的性格所决定的行动。\\n不过，休谟虽然为一种弱决定论立场辩护，但是，在某种意义上，休谟根本不是一位决定论者。回顾一下第３章，在那里，休谟认为因果性是一种虚构，而我们寻找原因的倾向不过是一种习惯。因此，他能够论证说，恰如我们永远无法理性地证成一个具体事件有一个原因，我们也永远无法充分地证成人类行动有其原因。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2932, \"excerpt_end\": 4103, \"chapter_text_length\": 4103, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 132, \"focus_found\": true, \"focus_terms_matched\": [\"可预测性与自由\"], \"focus_terms_found_in_chapter\": [\"可预测性与自由\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"可预测性与自由\", \"offset\": 3632, \"read_args\": {\"book_id\": \"c13b139d1db3\", \"chapter_idx\": 94, \"offset\": 3432, \"focus\": \"可预测性与自由\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"957dee86fd69b89fa3345209d9977909eb9e731cea4325a616c43854fe8c4e46\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/c13b139d1db3?ch=94\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2932, 4103]], \"covered_characters\": 1171, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 22.0,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "自由与必然",
+      "book_id": "178e7d06d42d"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"query\": \"自由与必然\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"的广延的部分则是例外，这是马上就可以理解的。而且在这里我们觉察到不可能陷入任何太大的错误。在所有其他情形中，我们必须稍微自由地确定比例，或者必须在更加人为的方式下进行决定。我已经说过，尽管就普遍性和精确性而言，几何学或者我们 用来确定形的比例的技术都远远超过感觉和想象的粗略的判.断，但它绝没有达到完全的确切性和精确性。几何学最初的原理仍然是由对象的一般现象而来的，而且当我们考察自然所能容许的极小的微粒时，那种现象就绝不能给我们提供任何保证。我们的观念似乎可以完全保证：没有两条直线能有一条共同的线段。但是，如果我们研究一下这些观念，我们就会发现，它们总是预设了两条直线的一个可感知的倾斜度，而且如果这两条直线形成的角极其微小的时候，我们\", \"score\": 167, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 第一章 论观念，它们的起源、组合、联系、抽象等\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第一章 论观念，它们的起源、组合、联系、抽象等】\", \"snippet\": \"是立刻引起了我的注意。①在某种意义上，我在此使用的印象和观念这两个术语与通常的含义并不相同。我希望我能有这样使用该术语的自由。洛克先生曾误用过“观念”一词，使它表示我们的全部知觉。我现在就是要恢复这一词的本义。至于印象这一术语，我并没有将其表示为那些生动的知觉产生于心灵时的方式，它仅仅指知觉本身；无论在英语中或是在我所知道的其他任何语言中对这些知觉都没有专有的名称。 在经过一个更加精确的观察后，我发现我被最初的现象带离得太远了。我必须利用简单知觉和复合知觉的区分来限制这样的一般论断，即“我们所有的观念和印象都是类似的”。我观察到，我们许多复合的观念从未有过与之相对应的印象，许多复合的印象也未曾精确地复制在观念中。我自己就可以想象新耶\", \"score\": 94, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 3, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 2, \"chapter_title\": \"导论\", \"citation_label\": \"【《人性论（全4册）》·导论】\", \"snippet\": \"其他民族虽然在诗歌方面的确可以和我们相媲美，在其他一些令人偷悦的艺术方面超越我们，但是理性和哲学的进步却只能归功于宽容和自由的国度。我们不仅不应该认为关于人的科学这一晚近的进步为我们国家增添的荣誉要少于自然哲学所增添的，而倒应该认为这门科学的较迟发展是更为荣耀的事情，因为这门科学具有更大的重要性，而且必须进行这样一番改革。因为对我而言，这一点是很显然的，那就是既然心灵的本质和外在物体的本质同样不为我们所知，因此，若非借助于仔细和精确的实验，并借此观察心灵在不同的环境和情形中产生的那些特殊的结果，我们也必定同样不可能对心灵的能力和性质形成任何概念。我们虽然应该把实验进行到底，并将那些从最简单和最少的原因中产生的一切结果阐释清楚，从而努\", \"score\": 83, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 2, \"focus\": \"自由 必然\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"自由与必然\", \"query_terms\": [\"自由\", \"必然\"]}], \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 6}, \"search_scope\": {\"author\": null, \"book_id\": \"178e7d06d42d\"}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 31.8,
+     "phase": "result_orphan",
+     "name": "compare_views",
+     "args": {
+      "a": "休谟（相容论）",
+      "b": "康德（先验自由）",
+      "focus": "百分百预测我的选择是否取消我的自由"
+     },
+     "status": "success",
+     "duration_seconds": 9.813,
+     "result_full": "{\"kind\": \"comparison_scaffold\", \"summary\": \"休谟（相容论） vs 康德（先验自由） 的比较脚手架: 4 条比较轴线 + 双方候选主张; 最终判断由主 Agent 综合\", \"confidence\": 0.65, \"shared_problem\": \"若一个选择可被因果律或规律百分百预测，选择者是否仍自由？二者都需在自然必然性与自由之间给出不取消道德责任的说明。\", \"comparison_axes\": [{\"axis\": \"自由的定义\", \"side_a\": \"自由=行动不受外在强制、按自身欲望与意愿行事，可与因果决定并存。\", \"side_b\": \"自由=先验理念，意志能自行开始因果序列，不受现象界因果完全规定。\", \"why_it_matters\": \"定义不同直接决定'可预测'是否等于'不自由'。\"}, {\"axis\": \"可预测性的地位\", \"side_a\": \"可预测只表明行为有稳定原因，不表明受强制，故不取消自由。\", \"side_b\": \"若预测基于现象界因果，则属自然必然性领域，不能等同于先验自由。\", \"why_it_matters\": \"焦点问题在此维度上被直接裁决或重新划界。\"}, {\"axis\": \"道德责任归属\", \"side_a\": \"责任取决于行为是否出自行动者意愿，而非是否可被预测。\", \"side_b\": \"责任要求先验自由作为道德法则可能性的根据，否则实践理性无根基。\", \"why_it_matters\": \"决定自由之争是否必须为责任保留空间。\"}, {\"axis\": \"理论层次\", \"side_a\": \"在经验与心理学层面讨论自由，属自然主义说明。\", \"side_b\": \"区分现象与本体，自由属理智界，不可由经验预测证实或否证。\", \"why_it_matters\": \"避免把认识论可预测性直接扩为本体论不自由。\"}], \"side_a_claims\": [{\"claim\": \"百分百预测仅显示行为有原因，不等于行动者被外在强迫，故相容论下自由未被取消。\", \"basis\": \"休谟式相容论通说：自由与必然相容，自由指按意愿行动；待核查原典定位。\", \"strength\": \"与日常责任实践和因果说明兼容，无需设定本体界。\"}, {\"claim\": \"道德 praise/blame 可依行动者性格与意愿归因，即使其选择可被规律预测。\", \"basis\": \"reasoning：归因看意愿来源，不看预测可能性；待核查休谟《人性论》《人类理解研究》。\", \"strength\": \"保留责任实践，避免自由成为例外因果。\"}], \"side_b_claims\": [{\"claim\": \"若一切选择都被现象界因果百分百规定，则无先验自由，道德法则失去实践根据。\", \"basis\": \"康德式论证：自由是道德法则的存在根据；待核查《纯粹理性批判》《实践理性批判》。\", \"strength\": \"为道德责任提供强根据，区分自然与自由。\"}, {\"claim\": \"先验自由不可由经验预测证实或否证，故预测不构成对自由的取消。\", \"basis\": \"reasoning：现象/本体区分使自由属理智界；待核查康德二律背反与第三组冲突。\", \"strength\": \"限制经验预测的管辖范围，保护实践理性。\"}], \"strongest_divergence\": \"分歧在层次：休谟在经验层面把可预测与自由调和；康德在超验层面主张若现象界因果完全规定则无先验自由，但自由不可由经验预测触及。二者非简单正反方，而是对'自由'一词的领域划界不同。\", \"evidence_needs\": [\"休谟《人类理解研究》论自由与必然\", \"休谟《人性论》论必然与自由\", \"康德《纯粹理性批判》第三组二律背反\", \"康德《实践理性批判》自由与道德法则\"], \"candidate_consequences\": [\"若接受休谟式相容论，可预测性不威胁自由，责任归因可自然化。\", \"若接受康德式先验自由，经验预测与道德自由分属两界，责任需本体论根据。\"], \"side\": \"休谟（相容论）\", \"side_a\": \"休谟（相容论）\", \"side_b\": \"康德（先验自由）\", \"citations\": [{\"book\": \"黑格尔作品集（套装共14册）\", \"chapter\": \"B．从历史演绎出艺术的真正概念\", \"book_id\": \"bbac1be0bb4b\", \"chapter_idx\": 183, \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"snippet\": \"1．康德哲学 康德哲学不仅早就感觉到这种统一观点的需要，而且对这观点有明确的认识，把它阐明了出来。一般地说，康德无论是对于理智，还是对于意志，都把自相融贯的合理性，自由，以及自己认识自己为无限的那种自意识看作基础。尽管康德哲学还有些缺陷，这种对理性本身绝对性的认识——这是近代哲学的转折点——这种绝对出发点，却是应该承认而不容批驳的。但是因为康德依旧把主观思维与客观事物之间的对立以及意志的抽象的普遍性与意志的感性的特殊性之间的对立看成是固\"}, {\"book\": \"苏菲的哲学课\", \"chapter\": \"推荐阅读\", \"book_id\": \"4b4d8792d7c9\", \"chapter_idx\": 34, \"author\": \"多米尼克·贾尼科\", \"snippet\": \"推荐阅读 加斯东·巴什拉：《科学精神的形成》 亨利·柏格森：《笑》 奥古斯特·孔德：《论实证精神》 伏尔泰：《天真汉》 康德：《纯粹理性批判》序言一、二 尼采：《查拉图斯特拉如是说》《悲剧的诞生》 柏拉图：《会饮篇》《理想国》《大希庇阿斯篇》 叔本华：《人生智慧箴言》《争论的艺术》\"}], \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"结构化中间产物——主 Agent 须结合证据契约与用户问题二次综合后作答, 不得直接照搬为最终对比表\", \"catalogue_matches\": {\"side_a\": [], \"side_b\": []}, \"reading_note\": \"书目匹配只证明库中有这些原著；比较工具的候选主张仍需用 get_book_detail/get_chapter 核对双方原文。\"}"
+    },
+    {
+     "t": 35.4,
+     "phase": "start",
+     "name": "list_books",
+     "call_id": "call_00_eyxrDtB1k1X8OySQsF0D2221"
+    },
+    {
+     "t": 35.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_Lw8MvisTAfGRRh3t9GTZ7700"
+    },
+    {
+     "t": 35.6,
+     "phase": "result_orphan",
+     "name": "list_books",
+     "args": {
+      "author": "休谟"
+     },
+     "status": "success",
+     "duration_seconds": 0.002,
+     "result_full": "{\"books\": [{\"id\": \"178e7d06d42d\", \"title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"rank\": 45.1, \"summary\": \"《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和因果关系的基础之上。休谟提出了著名的“印象与观念”区分，认为所有复杂观念都可以还原为简单的感觉印象，从而彻底贯彻了经验主义\"}, {\"id\": \"9c9e77918c07\", \"title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"rank\": 43.2, \"summary\": \"《自然宗教对话录》是休谟晚年最重要的哲学著作之一，采用对话录的形式，通过三位人物——怀疑论者斐洛、自然神论者克里安提斯和正统神学家德梅亚——之间的辩论，深入探讨了宗教的理性基础问题。休谟在书中系统批判了“设计论证”，即认为从自然界的秩序可以证明上帝存在的观点。他通过斐洛之口指出，宇宙的秩序可能源于偶\"}], \"total\": 2, \"offset\": 0, \"has_more\": false, \"next_offset\": null}"
+    },
+    {
+     "t": 37.0,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "决定论 与自由 相容 责任",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.429,
+     "result_full": "{\"query\": \"决定论 与自由 相容 责任\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 4, \"chapter_title\": \"第一章 哲学问题\", \"citation_label\": \"【《大问题》·第一章 哲学问题】\", \"snippet\": \"像量子力学这样的一些现代科学分支建立在关于实在的概率模型之上，从而并没有预设决定论，所以就认为我们不再有任何理由认为科学与自由意志不相容了。 在决定论者看来，我们是超出我们控制能力之外的力量的受害者；而在自由意志论者看来，我们总是要对自己的行为承担责任的。从这两种观点的争论中，哲学的一些最重要的差别出现了。 15.自由总是一件好事吗？ 假定有这样一个社会，那里的人们必须遵照一个统治者的命令去行动，但他们遵守起来很快乐，而且整个社会运行平稳，完全没有那些困扰现代社会的许多问题，比如犯罪、失业、经济匮乏等。唯一的问题在于没有人（可能除了统治者以外）是自由的。在那里没有言论自由或出版自由，每一个人都在同一种宗教里被培养长大，而且任何形式的\", \"score\": 235, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 4, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"d3bebffb6a05\", \"book_title\": \"否定的辩证法\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 7, \"chapter_title\": \"第一章 自由：实践理性总批判\", \"citation_label\": \"【《否定的辩证法》·第一章 自由：实践理性总批判】\", \"snippet\": \"过是一种世界观的安慰。科学家正是由此确定了他们的方向一一听从情趣，而且，人们可以不无担心地说听从他们自身心理的动力结构。与自由和决定论的复杂关系的联系被托付给非理性的心愿，这种非理性在教条的普遍性和非最终的、或多或少经验的个别决定因素之间来回摇摆。最终，一个人关于这种复杂关系的立场开始取决于他的政治信条，或取决于他碰巧认识到的权力。关于自由和决定论的信念听起来像是古代的，仿佛是从革命的资产阶级的早期开始的。但自由还没有得到实现就成了陈旧的一一这不是一种应被接受的命定性，而是必须用抵制力来澄清的命定性。自由的观念之所以失去它对人民的支配力，一个并非不重要的理由是：自由的观念从一开始就被非常抽象地和主观地对待，以致客观的社会趋势发现很容\", \"score\": 180, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d3bebffb6a05\", \"chapter_idx\": 7, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 10, \"chapter_title\": \"第七章 自由\", \"citation_label\": \"【《大问题》·第七章 自由】\", \"snippet\": \"rs所编的《自由与意志》（Freedom and the Will,St.Martin’s,1963）。关于科学、决定论与自由意志之间的联系的有价值的讨论，参见Sidney Hook所编的《现代科学背景下的决定论与自由》（Determinism and Freedom in the Age of Modern Science,Collier,1961）中的各篇文章。Herbert Morris编辑的《自由与责任》（Freedom and Responsibility,Stanford University Press,1961）收集了关于自由的法律和道德考虑的许多优秀文章。弗里特约夫·伯格曼的颇具争议的研究著作是《自由论》（On B\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 10, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"87bfe5b27ca1\", \"book_title\": \"交往行为理论\", \"author\": \"尤尔根·哈贝马斯\", \"chapter_idx\": 4, \"chapter_title\": \"二、马克斯·韦伯的合理化理论\", \"citation_label\": \"【《交往行为理论》·二、马克斯·韦伯的合理化理论】\", \"snippet\": \"进化论的批判。批判的焦点可以用上文的关键词来加以明确。在这里，我将从反方向来清理历史哲学的上述基本假设：批判的焦点是进化决定论，道德自然主义以及发展理论的普遍主义和理性主义。进化决定论（Evolution narer Determinismus）：从兰克（L.v.Ranke）和萨维尼（F.K.Savigny）开始，精神科学就在历史学派内部逐步形成了，而且一直伴随着方法论的反思【21]。这些方法论的反思最迟到狄尔泰就已经发展成熟，即发展成为一种历史主义（Historismus）。历史主义批判既针对辨证的历史理论和社会理论，也针对进化主义的历史理论和社会理论。我们这里主要关注的是这场争论的结果，亦即否定为自然主义文化寻找发展规律的做法。\", \"score\": 177, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"87bfe5b27ca1\", \"chapter_idx\": 4, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"dd75d637a2ad\", \"book_title\": \"托马斯•霍布斯\", \"author\": \"托马斯·霍布斯\", \"chapter_idx\": 2, \"chapter_title\": \"通过相互立约创建国家\", \"citation_label\": \"【《托马斯•霍布斯》·通过相互立约创建国家】\", \"snippet\": \"义的范围。事实上，马蒂尼奇认为“他的大部分观点都是标准的16世纪和17世纪宗教改革的观点”。例如，马蒂尼奇认为，霍布斯的决定论让约翰·布拉姆霍尔如此恼怒，但它其实与同时代的加尔文主义者提倡的预定论非常相似。马蒂尼奇认为，霍布斯的计划是要保卫基督教，而非做个无神论者。马蒂尼奇声称，霍布斯认识到新科学对基督教所构成的威胁，并且为了保护宗教，霍布斯试图将其与唯物论和机械论的世界观调和起来。马蒂尼奇还认为，霍布斯试图保卫基督教，防止其落人那些通过表明基督徒并没有《圣经》上的凭据以抵抗其主权者从而妄图操纵基督教的人之手。他的批评者们的无神论指责反映了霍布斯的计划注定要失败，面霍布斯的唯物主义无意间破坏了基督教。正如杰弗里·柯林斯（Jeffre\", \"score\": 173, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd75d637a2ad\", \"chapter_idx\": 2, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 16, \"chapter_title\": \"第九章 自由意志\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第九章 自由意志】\", \"snippet\": \"都摇着我，爸妈讲着一些温和亲切的话。 “你爸爸某天在一本杂志上看到了这个方法。有点笨吧，但看来的确可以哄好你。” 极端的决定论（Hard Determinism） （不存在自由意志） 这种理论所持的立场是，所有的人类行为都是由人类所不能控制的外在力量所决定的。它与自由意志的观点相对立。霍尔巴赫男爵（Baron d'Holbach）将这一立场总结如下： “［人］的出生由不得自己的意愿；其身体组织完全不由自主；其想法产生于无意识；他的习惯无非是那些养成其习惯的各种力量之造物；他不断地为各种原因所修整，这些原因无论明显与否，都是他绝对无法控制的……然而，尽管他必然要戴上这重重的枷锁，他还要自命是一个自由的主体。” “你从哪儿弄来的这些录像\", \"score\": 171, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 16, \"focus\": \"决定论 与自由 相容 责任\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 15, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    }
+   ],
+   "answer": "先把你的条件接住：机器百分百算准，我不拿\"它其实算不准\"来躲。但接受这个条件之后，有一件事必须立刻拆开——**\"被算准\"是关于谁预先知道的事实，\"自由\"是关于这个动作跟你是什么关系的事实。** 这是两个层次的问题，不能直接换算。所以真正要紧的不是\"准不准\"，而是这个准**是怎么来的**。\n\n## 一、先问准确率的来源，它有三种\n\n**情形A：机器靠完整模拟你的斟酌、欲望、性格来推算。**\n那么它的准，恰恰是因为你真的会那样权衡、那样决定。预测没有绕过你的审议，它是**把你的审议算对了**。这种情况下一封信在被寄出前就被准确预言了内容，写信的人还是你。此时预测是自由的副产品，不是自由的对手。\n\n**情形B：机器靠在你之外动手脚（植入念头、改写脑状态）让结果发生。**\n那你的确不自由——但不自由来自**干涉**，不来自预测。严格说这里它已经不是\"预测\"，而是\"制造\"。\n\n**情形C：机器根据宇宙初始状态＋物理定律一路推下来（拉普拉斯式）。**\n这才是真有杀伤力的那一种。但注意它的杀伤力**不来自\"有个东西知道\"**，而来自一个更早的前提：你的选择在你出生之前就被唯一确定了。也就是决定论。机器只是决定论的显示器——若决定论成立，没有机器你在这个意义上也已经\"不自由\"了；机器做的事只是让你没法再假装不知道。**机器本身没有增加任何东西。**\n\n## 二、于是问题被逼回：你说的\"自由\"是哪一个\n\n- **自由①＝\"能做出别的选择\"**：若预测的根据是决定论，那你事实上不能——这一支确实被击中。但击中它的是决定论，不是预测。\n- **自由②＝\"出于自己的意愿、不受强制\"**（休谟、密尔的路线）：预测无关紧要。有人拿枪逼你不是自由；你按自己的性格和欲望行事就是自由，即便这一步可被计算。所罗门在《哲学导论》里把密尔的意思概括为\"可预测性与自由并非不相容……自由无非就是按照自己的性格、欲望和愿望行动\"[《哲学导论》·6.3](https://deepphilosophy.top/reader/c13b139d1db3?ch=94)。休谟更早就在这条线上把\"自由与必然\"调和起来。\n- **自由③＝\"先验的自我开端\"**（康德路线）：任何经验层面的百分百预测原则上抓不到本体界的意志；但反过来，如果你的选择被证明**完全落在现象界因果链里**，那先验自由就没有位置了。\n\n## 三、最该看到的一点：光\"没被预先决定\"并不给你自由\n\n这里有个对称的打击，内格尔讲得最清楚：如果决定论为真，先前的条件该为你的行为负责；如果决定论为假，\"就没什么东西要负责了。这看上去是死路一条\"[《你的第一本哲学书》·第六章](https://deepphilosophy.top/reader/b2fbc225f414?ch=8)。一个不由任何东西决定的选择，是一个\"自己发生\"的事件——你如何\"做\"它反而成了谜；它跟\"机器在外面对你动手脚\"一样，不像是你的。\n\n所以关键不是\"有没有原因\"，而是\"是**哪一种**原因\"。**自由与\"有原因\"相容，与\"有某种原因\"不相容。**你要的从来不是无原因，而是那个原因是你的欲望、信念、性格在起作用。\n\n顺带一个自反检验：如果机器把预测告诉你，你偏要反着来呢？若它真有一百，那它的预测必然已经把你\"看到预测后的逆反\"算进去了。这说明它要成立，就得把你当作一个会对信息作出反应的第一人称审议者来建模——它描述的是你的能动性，不是取消它。\n\n（另外提醒一句：**\"存在一个100%准确的预测\"和\"决定论为真\"是两条不同的命题。**前者说有个东西预先知道，后者说结果被先前状态唯一固定。日常最容易犯的错就是把这两句当同一句。）\n\n## 回到你的问题\n\n分两层，我不含糊：\n\n1. **单凭这个事实**——不，自由不因此被取消。算得准只说明你的选择有规律、有原因，不说明有人替你做了它。\n2. **但如果这个100%的根据是决定论**（你出生前的状态＋定律已经唯一固定了你的选择），那么在\"我能做别的\"这个最严格的意义上，有一种自由确实没了。而这不是机器造成的，是那个前提造成的。\n3. **如果你把自由理解为\"按自己的意愿行事、并为此负责\"**，那可预测不但不取消自由，反而要以它为前提：正因为行为出于你的性格与欲望，它才既可被预测、又可归给你。\n\n最后给你一个可操作的标准。真正威胁你自由的，不是\"被算准\"，而是\"被算准的原因里没有你\"。所以面对任何\"有人比你自己更懂你\"的场景，该问的是：**这个准确率是靠读懂我，还是靠绕过我？**靠读懂的，你仍是自己选择的主人；靠绕过的，自由的问题根本不在预测，而在控制。",
+   "answer_chars": 1920,
+   "done_content": "先把你的条件接住：机器百分百算准，我不拿\"它其实算不准\"来躲。但接受这个条件之后，有一件事必须立刻拆开——**\"被算准\"是关于谁预先知道的事实，\"自由\"是关于这个动作跟你是什么关系的事实。** 这是两个层次的问题，不能直接换算。所以真正要紧的不是\"准不准\"，而是这个准**是怎么来的**。\n\n## 一、先问准确率的来源，它有三种\n\n**情形A：机器靠完整模拟你的斟酌、欲望、性格来推算。**\n那么它的准，恰恰是因为你真的会那样权衡、那样决定。预测没有绕过你的审议，它是**把你的审议算对了**。这种情况下一封信在被寄出前就被准确预言了内容，写信的人还是你。此时预测是自由的副产品，不是自由的对手。\n\n**情形B：机器靠在你之外动手脚（植入念头、改写脑状态）让结果发生。**\n那你的确不自由——但不自由来自**干涉**，不来自预测。严格说这里它已经不是\"预测\"，而是\"制造\"。\n\n**情形C：机器根据宇宙初始状态＋物理定律一路推下来（拉普拉斯式）。**\n这才是真有杀伤力的那一种。但注意它的杀伤力**不来自\"有个东西知道\"**，而来自一个更早的前提：你的选择在你出生之前就被唯一确定了。也就是决定论。机器只是决定论的显示器——若决定论成立，没有机器你在这个意义上也已经\"不自由\"了；机器做的事只是让你没法再假装不知道。**机器本身没有增加任何东西。**\n\n## 二、于是问题被逼回：你说的\"自由\"是哪一个\n\n- **自由①＝\"能做出别的选择\"**：若预测的根据是决定论，那你事实上不能——这一支确实被击中。但击中它的是决定论，不是预测。\n- **自由②＝\"出于自己的意愿、不受强制\"**（休谟、密尔的路线）：预测无关紧要。有人拿枪逼你不是自由；你按自己的性格和欲望行事就是自由，即便这一步可被计算。所罗门在《哲学导论》里把密尔的意思概括为\"可预测性与自由并非不相容……自由无非就是按照自己的性格、欲望和愿望行动\"[《哲学导论》·6.3](https://deepphilosophy.top/reader/c13b139d1db3?ch=94)。休谟更早就在这条线上把\"自由与必然\"调和起来。\n- **自由③＝\"先验的自我开端\"**（康德路线）：任何经验层面的百分百预测原则上抓不到本体界的意志；但反过来，如果你的选择被证明**完全落在现象界因果链里**，那先验自由就没有位置了。\n\n## 三、最该看到的一点：光\"没被预先决定\"并不给你自由\n\n这里有个对称的打击，内格尔讲得最清楚：如果决定论为真，先前的条件该为你的行为负责；如果决定论为假，\"就没什么东西要负责了。这看上去是死路一条\"[《你的第一本哲学书》·第六章](https://deepphilosophy.top/reader/b2fbc225f414?ch=8)。一个不由任何东西决定的选择，是一个\"自己发生\"的事件——你如何\"做\"它反而成了谜；它跟\"机器在外面对你动手脚\"一样，不像是你的。\n\n所以关键不是\"有没有原因\"，而是\"是**哪一种**原因\"。**自由与\"有原因\"相容，与\"有某种原因\"不相容。**你要的从来不是无原因，而是那个原因是你的欲望、信念、性格在起作用。\n\n顺带一个自反检验：如果机器把预测告诉你，你偏要反着来呢？若它真有一百，那它的预测必然已经把你\"看到预测后的逆反\"算进去了。这说明它要成立，就得把你当作一个会对信息作出反应的第一人称审议者来建模——它描述的是你的能动性，不是取消它。\n\n（另外提醒一句：**\"存在一个100%准确的预测\"和\"决定论为真\"是两条不同的命题。**前者说有个东西预先知道，后者说结果被先前状态唯一固定。日常最容易犯的错就是把这两句当同一句。）\n\n## 回到你的问题\n\n分两层，我不含糊：\n\n1. **单凭这个事实**——不，自由不因此被取消。算得准只说明你的选择有规律、有原因，不说明有人替你做了它。\n2. **但如果这个100%的根据是决定论**（你出生前的状态＋定律已经唯一固定了你的选择），那么在\"我能做别的\"这个最严格的意义上，有一种自由确实没了。而这不是机器造成的，是那个前提造成的。\n3. **如果你把自由理解为\"按自己的意愿行事、并为此负责\"**，那可预测不但不取消自由，反而要以它为前提：正因为行为出于你的性格与欲望，它才既可被预测、又可归给你。\n\n最后给你一个可操作的标准。真正威胁你自由的，不是\"被算准\"，而是\"被算准的原因里没有你\"。所以面对任何\"有人比你自己更懂你\"的场景，该问的是：**这个准确率是靠读懂我，还是靠绕过我？**靠读懂的，你仍是自己选择的主人；靠绕过的，自由的问题根本不在预测，而在控制。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_8",
+     "book": "哲学导论",
+     "chapter": "6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性",
+     "book_id": "c13b139d1db3",
+     "chapter_idx": 94,
+     "author": "罗伯特·所罗门",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_25"
+     ],
+     "excerpt": "的结果。如果我们根本不愿塑造我们的性格，那么去想如何塑造我们的性格就毫无意义。但是，我们不应因认为这样的造就不可行而阻止这样一种愿望，一旦我们有这样的愿望，我们就应该知道，这个作品不是不可取消的，因而并不是无法改变的，这一点极其重要。\n确实，如果仔细加以考察，我们就会发现，只要我们愿意就能塑造我们自己的性格这种感觉，本身就是我们意识到的道德自由感。一个有道德自由感的人，就会觉得他的习惯或他的诱惑并不是他的主人，相反，他是他的这些习惯或诱惑的主人。一个人，哪怕屈从于这些习惯或诱惑，也知道他能够抵制它们。一旦他打算完全摆脱它们，就没有什么愿望比他知道自己能够如此的感觉更强烈。当然，为了使我们完全意识到自由，我们就应该成功地塑造我们迄今为止打算塑造的性格，这一点是必须的。因为，如果空有愿望却未能实现，在那一程度上，我们对自己的性格就不具有能力，我们就不是自由的。或者，我们起码必须感觉到我们的愿望足够强烈——如果它还不够强烈到改变我们的性格——它在具体行为中与性格产生冲突时，能够克服性格。因此，老实说，惟有具有坚定美德的人，才是完全自由的。\n在这一部分，密尔游走于“强决定论”与非决定论这两个棘手的选择之间。他以接受决定论以及一切人类行动都是“必然的和不可避免的”这一观念开始，并给出了它们的原因。但是，他接着却继续说，这些原因本身就在人类的控制下，我们能够改变事件的原因，甚至通过一定的步骤改",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 4103,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_15",
+     "book": "你的第一本哲学书",
+     "chapter": "第六章 自由意志",
+     "book_id": "b2fbc225f414",
+     "chapter_idx": 8,
+     "author": "托马斯·内格尔",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_32"
+     ],
+     "excerpt": "？\n看起来，无论我们的行为是不是被决定的，我们都不必为此负责，这种可能性实在是令人担忧。如果决定论是正确的，先前的条件就该为我们的行为负责，如果决定论是错误的，就没什么东西要负责了。这看上去是死路一条。\n但是还有一种可能的观点，与我们所说的大部分内容完全相反。一些人认为，谈论行为的责任必须要求我们的行为是被决定的，而非自由选择的。这一主张的理由如下：如果一个行为是你所做的，那么它就是被你身上的某些东西所引起的。例如，当你选择巧克力蛋糕的时候，这不是一件自己发生的事情，而是你所做的，因为是你更想要吃蛋糕而不是桃子。因为你想要吃蛋糕的欲望比想要避免增肥的欲望强烈，结果就使得你选择了蛋糕。在其他一些行为中，对行为的心理学解释要更为复杂，但是总是有一个解释，否则这个行为就不是你所做的了。这一解释看起来意味着你的行为最终仍然是被事先决定的。如果它并不是被任何东西所决定的，那么就只是一个无法解释的事件，是突然发生的，而不是你的选择。\n根据这种观点，因果决定本身并不对自由的观念构成威胁，仅仅是某些特定种类的原因才与自由相悖。如果你去拿蛋糕是因为有人拿枪逼着你这么做，那么这当然不是一个自由的选择。但是自由的行为并不需要排除掉一切决定性的原因，只要这种原因是一种心理上的自愿就可以了。\n我个人并不同意这种观点。一想到我的一切所作所为都是被周围环境和心理条件所决定的，我就感到自己像是掉入了陷阱之中；如果",
+     "quoted_passages": [
+      "就没什么东西要负责了。这看上去是死路一条"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 5143,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 20,
+    "display_citations": 2,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "哲学导论",
+       "chapter": "6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性",
+       "book_id": "c13b139d1db3",
+       "chapter_idx": 94,
+       "author": "罗伯特·所罗门",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "的结果。如果我们根本不愿塑造我们的性格，那么去想如何塑造我们的性格就毫无意义。但是，我们不应因认为这样的造就不可行而阻止这样一种愿望，一旦我们有这样的愿望，我们就应该知道，这个作品不是不可取消的，因而并不是无法改变的，这一点极其重要。\n确实，如果仔细加以考察，我们就会发现，只要我们愿意就能塑造我们自己的性格这种感觉，本身就是我们意识到的道德自由感。一个有道德自由感的人，就会觉得他的习惯或他的诱惑并不是他的主人，相反，他是他的这些习惯或诱惑的主人。一个人，哪怕屈从于这些习惯或诱惑，也知道他能够抵制它们。一旦他打算完全摆脱它们，就没有什么愿望比他知道自己能够如此的感觉更强烈。当然，为了使我们完全意识到自由，我们就应该成功地塑造我们迄今为止打算塑造的性格，这一点是必须的。因为，如果空有愿望却未能实现，在那一程度上，我们对自己的性格就不具有能力，我们就不是自由的。或者，我们起码必须感觉到我们的愿望足够强烈——如果它还不够强烈到改变我们的性格——它在具体行为中与性格产生冲突时，能够克服性格。因此，老实说，惟有具有坚定美德的人，才是完全自由的。\n在这一部分，密尔游走于“强决定论”与非决定论这两个棘手的选择之间。他以接受决定论以及一切人类行动都是“必然的和不可避免的”这一观念开始，并给出了它们的原因。但是，他接着却继续说，这些原因本身就在人类的控制下，我们能够改变事件的原因，甚至通过一定的步骤改",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 4103,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "你的第一本哲学书",
+       "chapter": "第六章 自由意志",
+       "book_id": "b2fbc225f414",
+       "chapter_idx": 8,
+       "author": "托马斯·内格尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "？\n看起来，无论我们的行为是不是被决定的，我们都不必为此负责，这种可能性实在是令人担忧。如果决定论是正确的，先前的条件就该为我们的行为负责，如果决定论是错误的，就没什么东西要负责了。这看上去是死路一条。\n但是还有一种可能的观点，与我们所说的大部分内容完全相反。一些人认为，谈论行为的责任必须要求我们的行为是被决定的，而非自由选择的。这一主张的理由如下：如果一个行为是你所做的，那么它就是被你身上的某些东西所引起的。例如，当你选择巧克力蛋糕的时候，这不是一件自己发生的事情，而是你所做的，因为是你更想要吃蛋糕而不是桃子。因为你想要吃蛋糕的欲望比想要避免增肥的欲望强烈，结果就使得你选择了蛋糕。在其他一些行为中，对行为的心理学解释要更为复杂，但是总是有一个解释，否则这个行为就不是你所做的了。这一解释看起来意味着你的行为最终仍然是被事先决定的。如果它并不是被任何东西所决定的，那么就只是一个无法解释的事件，是突然发生的，而不是你的选择。\n根据这种观点，因果决定本身并不对自由的观念构成威胁，仅仅是某些特定种类的原因才与自由相悖。如果你去拿蛋糕是因为有人拿枪逼着你这么做，那么这当然不是一个自由的选择。但是自由的行为并不需要排除掉一切决定性的原因，只要这种原因是一种心理上的自愿就可以了。\n我个人并不同意这种观点。一想到我的一切所作所为都是被周围环境和心理条件所决定的，我就感到自己像是掉入了陷阱之中；如果",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 5143,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "人性论（全4册）",
+       "chapter": "第一卷 第三章 论知识和或然性",
+       "book_id": "178e7d06d42d",
+       "chapter_idx": 5,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的广延的部分则是例外，这是马上就可以理解的。而且在这里我们觉察到不可能陷入任何太大的错误。在所有其他情形中，我们必须稍微自由地确定比例，或者必须在更加人为的方式下进行决定。我已经说过，尽管就普遍性和精确性而言，几何学或者我们 用来确定形的比例的技术都远远超过感觉和想象的粗略的判.断，但它绝没有达到完全的确切性和精确性。几何学最初的原理仍然是由对象的一般现象而来的，而且当我们考察自然所能容许的极小的微粒时，那种现象就绝不能给我们提供任何保证。我们的观念似乎可以完全保证：没有两条直线能有一条共同的线段。但是，如果我们研究一下这些观念，我们就会发现，它们总是预设了两条直线的一个可感知的倾斜度，而且如果这两条直线形成的角极其微小的时候，我们",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "自然宗教对话录",
+       "chapter": "第十一篇",
+       "book_id": "9c9e77918c07",
+       "chapter_idx": 13,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "规律管制的，那么痛苦的感受力不会就单独地产生痛苦的；而这对于一个很完善的存在根本是不必要的。这是真的：假如方物皆为特殊的意志所管制，自然的过程就会永远在破裂中，也没有人在日常生活中能够应用他的理性了。但是难道不可能有另外的特殊的意志来矫正这个缺点吗？简言之，难道不可能由神来了结各处发现的一切的恶；并且不用任何准备或因果的悠长的进程，就创造出一切的善吗？此外，我们必须注意，根据目前的世界的法则，自然的过程，虽则被假设为十分有规则的，但呈现于我们面前的却并非如此，有许多事件是不稳定的，许多事件是不合我们的期望的。健康与疾病，宁静与风暴，以及无数其他偶然事件，它们的原因不明而且变动不定，对于个人幸福及公众社会的繁荣，都有极大的影响；的确，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "自然宗教对话录",
+       "chapter": "第一篇",
+       "book_id": "9c9e77918c07",
+       "chapter_idx": 3,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "究到教士策略来解释这样一种合理的方策。当然，只要看到任何一套原则足以证实真正的宗教，并可用以击破无神论者、放肆派以及各派自由思想者的强辩，这便是推定这套原则是真的并认为应该加以采纳的最坚强的理由了。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "人性论（全4册）",
+       "chapter": "第一卷 第一章 论观念，它们的起源、组合、联系、抽象等",
+       "book_id": "178e7d06d42d",
+       "chapter_idx": 3,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "是立刻引起了我的注意。①在某种意义上，我在此使用的印象和观念这两个术语与通常的含义并不相同。我希望我能有这样使用该术语的自由。洛克先生曾误用过“观念”一词，使它表示我们的全部知觉。我现在就是要恢复这一词的本义。至于印象这一术语，我并没有将其表示为那些生动的知觉产生于心灵时的方式，它仅仅指知觉本身；无论在英语中或是在我所知道的其他任何语言中对这些知觉都没有专有的名称。 在经过一个更加精确的观察后，我发现我被最初的现象带离得太远了。我必须利用简单知觉和复合知觉的区分来限制这样的一般论断，即“我们所有的观念和印象都是类似的”。我观察到，我们许多复合的观念从未有过与之相对应的印象，许多复合的印象也未曾精确地复制在观念中。我自己就可以想象新耶",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "自然宗教对话录",
+       "chapter": "中译本序言",
+       "book_id": "9c9e77918c07",
+       "chapter_idx": 1,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "说：第一是对人类理性方面的害处，其次是对于人类道德方面的害处。对于人类理性方面的害处，起码有三种。第一，近代基督教是室息自由的。近代基督教是一个非常 专横，排厅异己的宗教，它扼杀了自由、道德和知识，阻碍了人类的进步。“道德、知识、爱好自由，这些品德招来了宗教审判官的致命的惩罚；当这些品德被排厅之后，社会便陷人了最可耻的无知、腐败和桔”（《宗教的自然历史》及《论文集》）。近代基督教的第二大害是使人自卑。近代基督教把上帝看成远远高超于人类之上，使人在上帝面前显得十分卑小，只能悔、忍受和卑躬屈膝。第三，近代基督教阻止了理性的发展。在基督教统治之下，理性和哲学只是宗教的工具，只能为宗教的教义服役，而对于教义本身则不许表示任何疑问，更不必说提",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学家们都干了些什么",
+       "chapter": "二十、决定论",
+       "book_id": "2733906ea3f6",
+       "chapter_idx": 20,
+       "author": "林欣浩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一切。 能预测未来，这听上去挺美妙的，怎么可怕了呢？ 可怕的地方就在于，一旦我们接受了最严格的决定论，那就意味着人类没有自由意志了。因为我们的意识是由组成我们身体的物质决定的，而组成我们身体的物质又由物理定律决定。所以，我们头脑中的每一个念头，在前一秒钟已经被决定好了。如果我们这么一环一环地回溯回去，那么我们一生中的一切所思所想，我这本书中的每一个字、您看到这本书在头脑中迸发出的每一个念头，其实都是在一百多亿年前的宇宙大爆炸那一瞬间就决定好了的。且不说这想法很诡异了吧，关键是，那人生还有什么意思啊？ 既然一切都是决定好的，那我们为什么还要努力奋斗？为什么还要劳动？人生还有什么意义？人类只是一个被操控的木偶，活着听从因果律摆布，死后化",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "织梦人——一个男孩穿越现实的哲学之旅",
+       "chapter": "第九章 自由意志",
+       "book_id": "0f00c3a90243",
+       "chapter_idx": 16,
+       "author": "杰克·鲍温",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "都摇着我，爸妈讲着一些温和亲切的话。 “你爸爸某天在一本杂志上看到了这个方法。有点笨吧，但看来的确可以哄好你。” 极端的决定论（Hard Determinism） （不存在自由意志） 这种理论所持的立场是，所有的人类行为都是由人类所不能控制的外在力量所决定的。它与自由意志的观点相对立。霍尔巴赫男爵（Baron d'Holbach）将这一立场总结如下： “［人］的出生由不得自己的意愿；其身体组织完全不由自主；其想法产生于无意识；他的习惯无非是那些养成其习惯的各种力量之造物；他不断地为各种原因所修整，这些原因无论明显与否，都是他绝对无法控制的……然而，尽管他必然要戴上这重重的枷锁，他还要自命是一个自由的主体。” “你从哪儿弄来的这些录像",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "开放社会及其敌人",
+       "chapter": "第十三章 马克思的社会学决定论",
+       "book_id": "67d0b7e3c795",
+       "chapter_idx": 14,
+       "author": "卡尔·波普尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "思主义的方法论时，并没有必要加入有关决定论的形而上学问题的争论。因为不论这些形而上学争论的结果如何，例如，量子理论关于“自由意志”方面，我想要说的是，事情早就解决了。没有哪种决定论，不论它被表述为自然界的齐一性原理，还是被表述为普遍的因果规律，能够再被作为科学方法的必要假定来考虑。因为物理学——一切学科中最先进的科学——不仅表明，没有这种假定，它照样能够从事研究，而且还表明，在某种程度上，它还同这些前提有矛盾。对一门能够进行预测的学科而言，决定论并不是不可缺少的前提条件。因此，科学方法不能被说成支持采取严格的决定论。没有这一假定，科学也能具有严格的科学性。当然，马克思不能因为坚持了相反的观点就应受到责难，因为他那时的最优秀的科学家都",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "大问题",
+       "chapter": "第七章 自由",
+       "book_id": "2cbf90eb6f69",
+       "chapter_idx": 10,
+       "author": "罗伯特•所罗门",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "rs所编的《自由与意志》（Freedom and the Will,St.Martin’s,1963）。关于科学、决定论与自由意志之间的联系的有价值的讨论，参见Sidney Hook所编的《现代科学背景下的决定论与自由》（Determinism and Freedom in the Age of Modern Science,Collier,1961）中的各篇文章。Herbert Morris编辑的《自由与责任》（Freedom and Responsibility,Stanford University Press,1961）收集了关于自由的法律和道德考虑的许多优秀文章。弗里特约夫·伯格曼的颇具争议的研究著作是《自由论》（On B",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "自我：与齐格蒙特·鲍曼对谈（将熟悉变为陌生）",
+       "chapter": "幸福与道德 良好生活：脱掉太紧的鞋意味着什么",
+       "book_id": "25a9108773e5",
+       "chapter_idx": 11,
+       "author": "齐格蒙特·鲍曼",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "哈 夫 纳： 责任概念在您的思考中扮演重要角色。你谈到“为责任而负的责任”。您的意思是？ 鲍 曼： 我们所做的一切都会对别人的生活产生影响。我们不愿意去想这个。我所说的“为责任负责”就是在道德上承认这个被客观地赋予的责任。 哈 夫 纳： 这是否意味着，在我们所有的决定中，我们都要面对对错、善恶的选择？ 鲍 曼： 甚至在知道何为善恶之前，在与他人相遇的那一刻，我们就面临这个选择了。我们不可逃避地在存在上就是道德的存在，承担着对我们的人类同胞负责的责任。这个选择使我们陷入一种矛盾的境地。道德的生活是一种持续不确定的生活。要道德就意味着要为自己的责任负责。 哈 夫 纳： 现代性应对这种矛盾心理的方式，与之前的方式有什么不同？ 鲍 曼： 在",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "幸福的底层逻辑：关于人生的7堂哲学课",
+       "chapter": "没有道德，世界会怎样？",
+       "book_id": "e0b0b534b86e",
+       "chapter_idx": 28,
+       "author": "刘小播",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "居家的小孩，为什么是你而不是小狗来承担责任呢？ 当我们说是否“需要”承担责任的时候，这里的责任其实分为两种： 法律责任和道德责任。法律责任关注的是客观的因果关系，而道德责任关注的是自由意志。这个怎么理解呢？ 疯子失去理智伤害了其他人，你在被胁迫的情况下伤害了其他人，小狗咬伤了邻居家的小孩，在这些情况下，做出伤害的主体都不具有自由意志，或者说他们的自由意志受到某些限制。因此，我们倾向于认为，这样的行为并非出于主观动机和意图，所以这些行为的主体不应该承担道德责任，比如小狗咬伤了人，我们不会说，这是一只不道德的小狗。 但没有自由意志并不意味着就完全不需要对行为的结果负责，当然这个在法律上还有很多争议。很多罪犯找医生给自己开某种精神疾病的确",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "幸福的底层逻辑：关于人生的7堂哲学课",
+       "chapter": "人的四种欲望",
+       "book_id": "e0b0b534b86e",
+       "chapter_idx": 5,
+       "author": "刘小播",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "每个人的大脑里都有无数的观念，但我们是如何利用这些观念进行选择和判断的呢？我们来看一个例子。 假如你现在很饿，而路边刚好有个包子摊，你可以趁店主不注意的情况下偷偷去“拿”两个包子填饱肚子，但你多半不会这么做，因为你是一个有道德感的人。你在心里权衡了一下，觉得未经同意就去拿别人的东西是不道德的，所以你不会这么做。在这个场景里，是道德感约束了你的行为，但问题是，为什么道德感会约束你的行为呢？可能很多人并没有细想过这个问题。 从根本上说，我们所有的行为都是一种选择或判断，你选择不去随便拿别人的东西，哪怕你很饿。你在“填饱肚子”和“遵守道德”之间选择了后者，你把与两者相关的很多观念放到大脑里，飞速进行了对比和判断，并做出了选择。而选择的依据",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "清醒思考的艺术",
+       "chapter": "45 不作为偏误 为什么你不是答案就是问题",
+       "book_id": "b8210487d306",
+       "chapter_idx": 45,
+       "author": "罗尔夫·多贝里",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "45 不作为偏误 为什么你不是答案就是问题 有两名登山者。第一个人掉进了一个冰川缝隙里，你本来可以帮助他、营救他，但你没有这么做，结果他死了。你将第二个人主动推进冰川缝隙，不久后第二个人也死了。这两种行为哪种更严重呢？理性地看，这两种行为同样应该遭到谴责，无论是放弃不救还是主动谋杀——两者的结果都是死亡。但某种感觉告诉我们，放弃不救不如后者严重。这种思维错误人们称为不作为偏误。不作为偏误总是出现在无论放弃还是行动都会带来损害的地方。在这种情况下大多数人都会选择放弃，因为这样引起的损害主观看来更无害。 假设你是国家药品监督管理局局长，面临着是否要批准将一种药品用于垂死病人的决定。这种药品的副作用很强，它会当场杀死20%的病人，但能短期",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "人性论（全4册）",
+       "chapter": "导论",
+       "book_id": "178e7d06d42d",
+       "chapter_idx": 2,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "其他民族虽然在诗歌方面的确可以和我们相媲美，在其他一些令人偷悦的艺术方面超越我们，但是理性和哲学的进步却只能归功于宽容和自由的国度。我们不仅不应该认为关于人的科学这一晚近的进步为我们国家增添的荣誉要少于自然哲学所增添的，而倒应该认为这门科学的较迟发展是更为荣耀的事情，因为这门科学具有更大的重要性，而且必须进行这样一番改革。因为对我而言，这一点是很显然的，那就是既然心灵的本质和外在物体的本质同样不为我们所知，因此，若非借助于仔细和精确的实验，并借此观察心灵在不同的环境和情形中产生的那些特殊的结果，我们也必定同样不可能对心灵的能力和性质形成任何概念。我们虽然应该把实验进行到底，并将那些从最简单和最少的原因中产生的一切结果阐释清楚，从而努",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "大问题",
+       "chapter": "第一章 哲学问题",
+       "book_id": "2cbf90eb6f69",
+       "chapter_idx": 4,
+       "author": "罗伯特•所罗门",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "像量子力学这样的一些现代科学分支建立在关于实在的概率模型之上，从而并没有预设决定论，所以就认为我们不再有任何理由认为科学与自由意志不相容了。 在决定论者看来，我们是超出我们控制能力之外的力量的受害者；而在自由意志论者看来，我们总是要对自己的行为承担责任的。从这两种观点的争论中，哲学的一些最重要的差别出现了。 15.自由总是一件好事吗？ 假定有这样一个社会，那里的人们必须遵照一个统治者的命令去行动，但他们遵守起来很快乐，而且整个社会运行平稳，完全没有那些困扰现代社会的许多问题，比如犯罪、失业、经济匮乏等。唯一的问题在于没有人（可能除了统治者以外）是自由的。在那里没有言论自由或出版自由，每一个人都在同一种宗教里被培养长大，而且任何形式的",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "否定的辩证法",
+       "chapter": "第一章 自由：实践理性总批判",
+       "book_id": "d3bebffb6a05",
+       "chapter_idx": 7,
+       "author": "西奥多·阿多诺",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "过是一种世界观的安慰。科学家正是由此确定了他们的方向一一听从情趣，而且，人们可以不无担心地说听从他们自身心理的动力结构。与自由和决定论的复杂关系的联系被托付给非理性的心愿，这种非理性在教条的普遍性和非最终的、或多或少经验的个别决定因素之间来回摇摆。最终，一个人关于这种复杂关系的立场开始取决于他的政治信条，或取决于他碰巧认识到的权力。关于自由和决定论的信念听起来像是古代的，仿佛是从革命的资产阶级的早期开始的。但自由还没有得到实现就成了陈旧的一一这不是一种应被接受的命定性，而是必须用抵制力来澄清的命定性。自由的观念之所以失去它对人民的支配力，一个并非不重要的理由是：自由的观念从一开始就被非常抽象地和主观地对待，以致客观的社会趋势发现很容",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "交往行为理论",
+       "chapter": "二、马克斯·韦伯的合理化理论",
+       "book_id": "87bfe5b27ca1",
+       "chapter_idx": 4,
+       "author": "尤尔根·哈贝马斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "进化论的批判。批判的焦点可以用上文的关键词来加以明确。在这里，我将从反方向来清理历史哲学的上述基本假设：批判的焦点是进化决定论，道德自然主义以及发展理论的普遍主义和理性主义。进化决定论（Evolution narer Determinismus）：从兰克（L.v.Ranke）和萨维尼（F.K.Savigny）开始，精神科学就在历史学派内部逐步形成了，而且一直伴随着方法论的反思【21]。这些方法论的反思最迟到狄尔泰就已经发展成熟，即发展成为一种历史主义（Historismus）。历史主义批判既针对辨证的历史理论和社会理论，也针对进化主义的历史理论和社会理论。我们这里主要关注的是这场争论的结果，亦即否定为自然主义文化寻找发展规律的做法。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "托马斯•霍布斯",
+       "chapter": "通过相互立约创建国家",
+       "book_id": "dd75d637a2ad",
+       "chapter_idx": 2,
+       "author": "托马斯·霍布斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "义的范围。事实上，马蒂尼奇认为“他的大部分观点都是标准的16世纪和17世纪宗教改革的观点”。例如，马蒂尼奇认为，霍布斯的决定论让约翰·布拉姆霍尔如此恼怒，但它其实与同时代的加尔文主义者提倡的预定论非常相似。马蒂尼奇认为，霍布斯的计划是要保卫基督教，而非做个无神论者。马蒂尼奇声称，霍布斯认识到新科学对基督教所构成的威胁，并且为了保护宗教，霍布斯试图将其与唯物论和机械论的世界观调和起来。马蒂尼奇还认为，霍布斯试图保卫基督教，防止其落人那些通过表明基督徒并没有《圣经》上的凭据以抵抗其主权者从而妄图操纵基督教的人之手。他的批评者们的无神论指责反映了霍布斯的计划注定要失败，面霍布斯的唯物主义无意间破坏了基督教。正如杰弗里·柯林斯（Jeffre",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 20,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 54.815,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 12.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_rZGIOt8YnM6IhDoouEHy0738"
+    },
+    {
+     "t": 12.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_cYloV2axUgvqHJrzn2AV9491"
+    },
+    {
+     "t": 12.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_99hLsjHnaq8Wk5162gSu4778"
+    },
+    {
+     "t": 12.7,
+     "ev": "tool_start",
+     "name": "concept_trace",
+     "call_id": "call_03_O9wzwDX9XCF4urTIuJ9Y2824"
+    },
+    {
+     "t": 12.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.02,
+     "result_chars": 4633,
+     "result_head": "{\"query\": \"自由与必然\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"c"
+    },
+    {
+     "t": 14.6,
+     "ev": "tool",
+     "name": "concept_trace",
+     "status": "success",
+     "duration_s": 1.861,
+     "result_chars": 6674,
+     "result_head": "{\"concept\": \"自由意志\", \"hits\": 620, \"matched_books\": 162, \"timeline\": [{\"book\": \"神学大全　第一集　第6卷\", \"book_id\": \"f52ed83b99d9\", \"author\": \"托马斯·阿奎那\", \"chapter\": \"问题83 论自"
+    },
+    {
+     "t": 14.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.885,
+     "result_chars": 4257,
+     "result_head": "{\"query\": \"自由意志 决定论 预测\", \"results\": [{\"book_id\": \"2733906ea3f6\", \"book_title\": \"哲学家们都干了些什么\", \"author\": \"林欣浩\", \"chapter_idx\": 20, \"chapter_title\": \"二十、决定论\", \"cit"
+    },
+    {
+     "t": 14.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.135,
+     "result_chars": 3708,
+     "result_head": "{\"query\": \"可供选择的可能性 道德责任\", \"results\": [{\"book_id\": \"25a9108773e5\", \"book_title\": \"自我：与齐格蒙特·鲍曼对谈（将熟悉变为陌生）\", \"author\": \"齐格蒙特·鲍曼\", \"chapter_idx\": 11, \"chapter_titl"
+    },
+    {
+     "t": 16.8,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_1a9hIHFUR94EqkySnPKt6239"
+    },
+    {
+     "t": 16.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_SnhHFSwHj4MuhW9X8J9R4457"
+    },
+    {
+     "t": 17.0,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_02_PZ0iFaSkB2kk8iRw0A640232"
+    },
+    {
+     "t": 17.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_xSKqtxA86MZzYIC3LVAl3522"
+    },
+    {
+     "t": 17.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 3887,
+     "result_head": "{\"book_id\": \"b2fbc225f414\", \"book_title\": \"你的第一本哲学书\", \"chapter_idx\": 8, \"title\": \"第六章 自由意志\", \"citation_label\": \"【《你的第一本哲学书》·第六章 自由意志】\", \"text\": \"。这样我们就没有理由认为，他们"
+    },
+    {
+     "t": 17.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.017,
+     "result_chars": 3098,
+     "result_head": "{\"query\": \"意志 自由 必然 因果\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然"
+    },
+    {
+     "t": 18.3,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 0.962,
+     "result_chars": 4573,
+     "result_head": "{\"query\": \"perfect predictor 100% accuracy free will compatibilism predictability\", \"results\": [{\"source_record_id\": \"doi:10.1093/acprof:oso/9780190611200.003.0"
+    },
+    {
+     "t": 18.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.613,
+     "result_chars": 334,
+     "result_head": "{\"query\": \"拉普拉斯妖 预知 未来\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_sco"
+    },
+    {
+     "t": 21.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_9Lxbm0Hidbv6FsXriaQp8038"
+    },
+    {
+     "t": 21.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_OkzjDvH2WOVb3eAmiVhk6546"
+    },
+    {
+     "t": 21.8,
+     "ev": "tool_start",
+     "name": "compare_views",
+     "call_id": "call_02_ukTpvzLBk3Wd7EjFdqB14008"
+    },
+    {
+     "t": 22.0,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 2637,
+     "result_head": "{\"book_id\": \"c13b139d1db3\", \"book_title\": \"哲学导论\", \"chapter_idx\": 94, \"title\": \"6.3 决定论 约翰•斯图亚特•密尔，论因果关系与必然性\", \"citation_label\": \"【《哲学导论》·6.3 决定论 约翰•斯图亚特•密尔，论因果关"
+    },
+    {
+     "t": 22.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.013,
+     "result_chars": 3024,
+     "result_head": "{\"query\": \"自由与必然\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"c"
+    },
+    {
+     "t": 31.8,
+     "ev": "tool",
+     "name": "compare_views",
+     "status": "success",
+     "duration_s": 9.813,
+     "result_chars": 2684,
+     "result_head": "{\"kind\": \"comparison_scaffold\", \"summary\": \"休谟（相容论） vs 康德（先验自由） 的比较脚手架: 4 条比较轴线 + 双方候选主张; 最终判断由主 Agent 综合\", \"confidence\": 0.65, \"shared_problem\": \"若一个选择可被因果律或规律"
+    },
+    {
+     "t": 35.4,
+     "ev": "tool_start",
+     "name": "list_books",
+     "call_id": "call_00_eyxrDtB1k1X8OySQsF0D2221"
+    },
+    {
+     "t": 35.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_Lw8MvisTAfGRRh3t9GTZ7700"
+    },
+    {
+     "t": 35.6,
+     "ev": "tool",
+     "name": "list_books",
+     "status": "success",
+     "duration_s": 0.002,
+     "result_chars": 593,
+     "result_head": "{\"books\": [{\"id\": \"178e7d06d42d\", \"title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"region\": \"西方\", \"rank\": 45.1, \"summary\": \"《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程"
+    },
+    {
+     "t": 37.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.429,
+     "result_chars": 5005,
+     "result_head": "{\"query\": \"决定论 与自由 相容 责任\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 4, \"chapter_title\": \"第一章 哲学问题\", \"cit"
+    },
+    {
+     "t": 54.9,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1135
+  }
+ ],
+ "total_wall_s": 56.5,
+ "status": "COMPLETED"
+}

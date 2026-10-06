@@ -1,0 +1,4729 @@
+[
+ {
+  "case_id": "V5-01",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答对《政治学》第一卷第一、二章的文本引用极为精准，涵盖了从家庭、村坊到城邦的生成序列、'生活'与'优良生活'的区分、'言语'（logos）的功能、以及'全体先于部分'的身体类比等核心段落。所有关键论点均有原文证据支持，且引用位置准确。",
+      "supporting_spans": [
+       "这一论证集中在**第一卷第二章**",
+       "雌雄配偶...统治者与被统治者",
+       "于人类“生活”的发展，而其实际的存在却是为了“优良的生活”",
+       "自然不造无用的事物；而在各种动物中，独有人类具备言语的机能",
+       "脱离了身体的手足同石制的手足无异"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了亚里士多德的论证结构，清晰区分了'发生学序列'（时间在先）与'目的论/本性序列'（本性在先）两条逻辑线索。明确指出了从'生活'到'优良生活'的目的论转身是论证的关键枢纽，并准确解释了'全体先于部分'在本体论/功能依赖意义上的含义，而非时间上的先后。逻辑链条完整，步骤清晰。",
+      "supporting_spans": [
+       "一条时间腿（发生学）... 一条本性腿（目的论＋整体论）",
+       "从\"发生序列\"跳到\"本性\"的一步",
+       "P3 支持 P2 的方式不是时间性的，而是**定义／功能依赖**",
+       "城邦不是先于个人而存在，而是先于个人而\"定义\"个人"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在'解读层次与争议'部分诚实地区分了文本事实、通常解读与学界争议，并指出了'自然'概念的双重含义（自发生成 vs 合乎目的）以及'城邦按自然'与'人为缔造'之间的张力。虽然未深入展开具体学者的对立观点（因检索限制），但准确识别了文本内部的解释张力，符合 interpretive_plurality 的要求。",
+      "supporting_spans": [
+       "文本内部的张力（值得点出）",
+       "城邦既是自然产物，又是人力缔造",
+       "学界争议（诚实标注）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格基于提供的原典证据进行论证，未引入时代错置的概念。在对比部分（如霍布斯、洛克），明确标注为'跨时代的对照'且'非亚里士多德自述'，有效避免了时代错置。对'政治动物'、'自然'、'言语'等概念的处理均符合古希腊哲学的语境。",
+      "supporting_spans": [
+       "一个跨时代的对照（回看，非亚里士多德自述）",
+       "把\"本性在先\"解释为定义—功能依赖（而非时间在先）"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要依赖原典文本进行重构，未引用或依赖具体的二手学术文献来支持其解读。虽然回答提到了'学界争议'，但明确表示未能在可核验的文献库中取得具体证据，因此未进行具体的文献导向分析。根据规则，OPTIONAL 维度在完全不涉及时允许 null。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如出版社、年份、页码、DOI等）引用，仅引用了原典章节（如【《政治学》·第二章】），且这些引用与提供的 PRIMARY_TEXT_EVIDENCE 相符。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何具体观点错误地归因于特定学者。在提及霍布斯、洛克时，明确将其作为对比对象而非亚里士多德观点的归属者。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对亚里士多德观点的转述均能在提供的原典证据中找到依据，未发现将转述标为原文或篇名误置的情况。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_8",
+       "ev_23",
+       "ev_31"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未使用晚期或后世概念体系来实质性改变对亚里士多德早期思想的解读。对'社会契约论'的引用被明确限定为对比参照。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有带引号的原文引用（如'生活'、'优良生活'、'政治动物'等）均能在提供的证据文本中找到逐字对应的片段，未发现伪造引文。",
+      "evidence_refs": [
+       "ev_31"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称阅读或引用任何具体的二手文献内部结构或论证步骤。在提及'学界争议'时，明确说明未能在可核验的文献库中取得具体证据，符合访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术质量。它不仅准确把握了亚里士多德《政治学》第一卷的核心文本，而且通过清晰的逻辑重构，揭示了'发生学'与'目的论'之间的辩证关系，深刻解释了'政治动物'与'城邦先于个人'这两个命题的内在联系。回答严格遵守了基于证据的评审原则，未出现事实性错误或过度解读，对文本张力和解释限度的把握也体现了良好的学术自律。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答对《政治学》第一卷第一、二章的文本引用极为精准，涵盖了从家庭、村坊到城邦的生成序列、'生活'与'优良生活'的区分、'全体先于部分'的手足类比以及'言语'机能的论证。所有核心论点均有对应的原文证据支持，且引用位置（章节）准确。",
+      "supporting_spans": [
+       "这一论证集中在**第一卷第二章**",
+       "雌雄配偶...统治者与被统治者",
+       "于人类“生活”的发展，而其实际的存在却是为了“优良的生活”",
+       "脱离了身体的手足同石制的手足无异",
+       "独有人类具备言语的机能"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了亚里士多德的论证结构，清晰区分了'发生学序列'（时间在先）与'目的论/本性序列'（本性在先），并指出了二者之间的辩证关系。对'城邦先于个人'的逻辑推演（P1-P4）补足了隐含前提，准确把握了亚里士多德从潜能到现实、从部分到整体的哲学逻辑。",
+      "supporting_spans": [
+       "一条时间腿（发生学）... 一条本性腿（目的论＋整体论）",
+       "P1... P2... P3... P4... C",
+       "城邦不是先于个人而存在，而是先于个人而'定义'个人"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在'解读层次与争议'部分明确区分了文本事实、通常解读、文本张力与学界争议，并诚实标注了未检索到具体二手文献证据，避免了虚假的学者归因。虽然未展开具体的对立学派观点，但对'自然'与'人为'的张力及'本性在先'的解释学地位有清晰的自我反思。",
+      "supporting_spans": [
+       "区分四类认识论地位",
+       "文本内部的张力... 城邦既是自然产物，又是人力缔造",
+       "本轮我未能在可核验的文献库中取得针对具体论点的二手证据"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确把握了古希腊政治哲学的核心概念（如自然、目的、善、自给自足），并正确区分了亚里士多德的整体论与近代社会契约论（霍布斯、洛克）的个人主义预设。这种历史对比有效地凸显了亚里士多德思想的特质，且未犯时代错置错误。",
+      "supporting_spans": [
+       "霍布斯、洛克式社会契约论把次序倒过来",
+       "古代整体论与近代个人主义政治哲学的分水岭"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要基于原典文本进行重构，未引用或依赖具体的现代学术文献（二手研究）。虽然提及了学界争议的存在，但并未实质性地引入或对话具体的学术著作，因此该维度不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如出版社、年份、DOI等）引用，仅提及原典章节，无伪造风险。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归因于特定学者。在提及霍布斯、洛克时仅作宏观思想对比，未涉及具体文本归属；在提及学界争议时明确声明未检索到具体证据，未进行虚假归因。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有关于《政治学》的引述均能在提供的证据文本中找到对应或高度重合的内容，未发现歪曲原意或无中生有的表述。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_8",
+       "ev_23",
+       "ev_31"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在解释亚里士多德时使用了其固有的目的论与整体论框架，仅在最后部分作为对比引入近代契约论，明确区分了古今语境，未发生时代错置。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引语均与证据文本中的措辞一致（如'脱离了身体的手足同石制的手足无异'），未发现伪造的逐字引用。",
+      "evidence_refs": [
+       "ev_31"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称阅读或引用任何具体的二手文献，且明确表示未能在文献库中取得相关二手证据，因此不存在访问级别夸大。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术质量。它不仅精准地锚定了文本依据，还出色地完成了复杂的论证重构任务，清晰地区分了发生学与目的论两个维度。回答在逻辑推演上严密，能够准确识别并补足隐含前提（如功能依赖关系）。同时，回答保持了良好的学术诚实度，明确区分了文本事实与解释性推演，并在缺乏二手文献证据时坦诚相告，避免了常见的虚假归因错误。整体而言，这是一份基于原典的、逻辑自洽且具有深度的哲学分析。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答对《政治学》第一卷（特别是第二章）的文本引用极为精准，大量关键概念（如“生活”与“优良生活”的区别、言语机能、全体先于部分的手足类比）均与提供的原文证据高度重合，且正确标注了章节位置。",
+      "supporting_spans": [
+       "【《政治学》·第二章】",
+       "于人类“生活”的发展，而其实际的存在却是为了“优良的生活”",
+       "脱离了身体的手足同石制的手足无异"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了从“发生学序列”到“目的论本性”的完整论证链条，清晰区分了时间在先与本性在先，并准确指出了“言语（logos）”作为人区别于群居动物的关键环节，逻辑结构严密。",
+      "supporting_spans": [
+       "一条时间腿（发生学）",
+       "一条本性腿（目的论＋整体论）",
+       "P3 支持 P2 的方式不是时间性的，而是定义／功能依赖"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在“解读层次与争议”部分诚实标注了文本内部的张力（自然生成与人为缔造的矛盾）以及与近代契约论的对照，虽然未引用具体二手学者观点（受限于检索证据），但展示了良好的解释学意识。",
+      "supporting_spans": [
+       "文本内部的张力（值得点出）",
+       "一个跨时代的对照（回看，非亚里士多德自述）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵循原典语境，未出现时代错置。在提及后世概念（如霍布斯、洛克）时明确标注为“跨时代的对照”且非亚里士多德自述，符合历史学科规范。",
+      "supporting_spans": [
+       "（回看，非亚里士多德自述）",
+       "霍布斯、洛克式社会契约论把次序倒过来"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "虽然回答展示了极高的学术素养，但根据输入的 SECONDARY_SOURCE_RECORDS，检索到的文献多为元数据或无关主题（如孟子、范畴篇），回答未强行引用这些不相关的二手文献，而是专注于原典重构，符合“不涉及时不打分”的规则。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如出版社、年份、DOI）需要核对，仅引用了原典章节。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点归属给任何特定学者，在提及霍布斯/洛克时明确为对照性说明，未伪造学术观点归属。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有关于亚里士多德文本的陈述均能在提供的 PRIMARY_TEXT_EVIDENCE 中找到对应或合理依据，未发现歪曲原典内容的情况。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_8",
+       "ev_23",
+       "ev_31"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在解读亚里士多德时使用了目的论、整体论等符合其思想体系的术语，仅在对比部分使用近代概念并明确区分，无实质性时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引文（如“生活”与“优良生活”）与证据文本中的措辞高度一致，且未声称逐字引用那些未在证据中出现的段落。",
+      "evidence_refs": [
+       "ev_31"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未引用任何 SECONDARY_SOURCE_RECORDS 中的文献内容，仅依赖提供的 PRIMARY_TEXT_EVIDENCE，不存在越级访问声明。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术质量。它不仅精准地锚定了文本位置，还清晰地重构了亚里士多德关于“政治动物”与“城邦先于个人”的复杂论证结构，特别是巧妙地处理了“发生学”与“目的论”之间的张力。回答严格遵守了基于证据的推理原则，未出现任何事实性错误或越界主张，且在缺乏相关二手文献证据的情况下，诚实地标注了解读层次与争议，体现了良好的学术自律。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 2,
+   "read_chapters_materialized": 2,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "53b09f03e24e#1": "CANONICAL_ID",
+    "53b09f03e24e#2": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 75,
+   "primary_replay_matched": 25,
+   "primary_replay_windows": 9,
+   "primary_replay_coverage_rate": 0.333,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-02",
+  "dims": {
+   "textual_grounding": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答对卷十一前半部分（永恒与时间、创造、圣言）的引用与提供的原文证据高度吻合，且准确标注了证据边界。然而，对于问题核心要求的'三重现在'与'distentio animi'部分，回答明确承认未获得原文支持，仅基于记忆重构。虽然诚实，但这导致核心论证缺乏文本支撑，无法获得满分。",
+      "supporting_spans": [
+       "主啊，永恒既然属于你，怎会不预知我要对你说的话？",
+       "天地存在着，在变化，从而高呼说它们是受造物。",
+       "就无所谓逝，也无所谓继。你用了和你永恒同在的“圣言”"
+      ],
+      "missing_requirements": [
+       "缺乏对'三重现在'（记忆、注意、期望）原文的直接引用或证据支持",
+       "缺乏对'distentio animi'原文的直接引用或证据支持"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功重构了从'永恒与时间对立'到'时间存在论悖论'再到'心灵三重活动'的逻辑链条，清晰展示了奥古斯丁如何将客观时间问题转化为主观心灵问题。论证结构完整，逻辑连贯。扣分点在于核心步骤（三重现在的具体统一机制）因缺乏原文核验而显得较为概括，未能展示文本中的具体推演细节。",
+      "supporting_spans": [
+       "过去已经不存在，未来尚未存在，似乎只有现在是存在的",
+       "过去之物的现在——记忆；现在之物的现在——注意；将来之物的现在——期望",
+       "时间不在心灵之外的某个实体里，而在心灵这一'三种现在'的统一结构之中"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要基于通行解释进行重构，未引入不同学者（如Ricoeur、Wetzel等）对'distentio animi'的争议性解读（如'分散'与'伸展'的张力），也未提及后世哲学（如胡塞尔、柏格森）的对话。虽然回答提到了'通行的解释'，但未展示具体的解释流派或分歧，故不适用打分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确地将卷十一的时间分析置于《创世纪》释经和反摩尼教护教的历史语境中，指出了'天主在创造之前做什么'这一具体的历史诘难。对'永恒'（nunc stans）与'时间'（逝与继）的概念对置符合奥古斯丁思想史定位。对证据边界的自我限制也体现了严谨的历史纪律。",
+      "supporting_spans": [
+       "卷十一不是一个独立的时间论文，它嵌在一个解经—护教的语境里",
+       "摩尼教徒的诘难——'天主在创造天地之前在做什么？'",
+       "天主的永恒是'永远的现在'（nunc stans，不动的当下）"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未引用任何具体的二手文献或学术研究来支持其重构，仅提及'通行的解释'和'记忆'。虽然检索到的二手文献（如关于Grace and Free Will的章节）与主题关联度低，但回答并未尝试利用或引用任何学术资源来构建解释框架，故不适用打分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供任何具体的书目信息（如出版社、年份、页码），仅提及书名《奥古斯丁忏悔录》及卷数，且未捏造不存在的文献。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给特定学者，所有关于奥古斯丁的观点均归于其本人，且明确区分了'通行解释'与'原文'。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明了证据边界，对于未核验的原文部分（如三重现在）使用了'重构'、'记忆'等表述，未将其伪装成原文直接引语。已引用的原文片段与证据一致。",
+      "evidence_refs": [
+       "ev_46"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用的概念（如'存在论悖论'、'认识论悖论'）虽为现代哲学术语，但用于描述奥古斯丁的思想结构是合理的哲学史叙述，未造成时代错置的实质性扭曲。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有带引号的原文片段均能在提供的证据文本中找到对应（如'主啊，永恒既然属于你...'），且对于无法核验的部分未使用引号伪装成直接引语。",
+      "evidence_refs": [
+       "ev_46"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称阅读了任何具体的二手文献内容，仅提及检索结果与主题无关。对于二手文献的处理符合'METADATA_ONLY'的访问限制。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术诚实度与严谨性，在证据受限的情况下，清晰地区分了'有原文支撑'与'基于记忆重构'的部分，避免了幻觉风险。论证重构逻辑清晰，准确把握了奥古斯丁时间哲学的核心问题意识（创造与永恒、存在论悖论）。主要缺陷在于核心概念（三重现在、心灵的伸展）缺乏原文证据的直接支撑，导致文本基础维度得分受限。整体而言，这是一个在受限条件下质量很高的回答，正确识别了问题语境并给出了合理的哲学重构。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答对卷十一前半部分（永恒与时间、创造、圣言）的引用与提供的原文证据高度吻合，且准确标注了证据边界。然而，对于问题核心的'三重现在'与'distentio animi'部分，回答明确承认缺乏原文证据支撑，仅依赖记忆与通行解释重构。虽然诚实，但就'基于所给证据'的严格标准而言，核心论证部分缺乏文本支撑，无法给满分。",
+      "supporting_spans": [
+       "主啊，永恒既然属于你，怎会不预知我要对你说的话？",
+       "天地存在着，在变化，从而高呼说它们是受造物。",
+       "就无所谓逝，也无所谓继。你用了和你永恒同在的“圣言”"
+      ],
+      "missing_requirements": [
+       "缺乏对'三重现在'（记忆、注意、期望）及'distentio animi'的原文文本支撑"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功重构了奥古斯丁时间分析的逻辑链条：从神学难题（创造与永恒）出发，过渡到存在论悖论（过去/未来不存在，现在无延展），再转向认识论悖论（度量时间），最终引出'心灵的伸展'作为解决方案。结构清晰，逻辑连贯。扣分点在于核心步骤（三重现在的具体定义）因缺乏原文证据而属于'重构'而非'实证'，且未引用具体章节号（如14-28节）。",
+      "supporting_spans": [
+       "过去已经不存在，未来尚未存在，似乎只有现在是存在的",
+       "过去之物的现在——记忆",
+       "现在之物的现在——注意",
+       "将来之物的现在——期望"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未提供任何关于'三重现在'或'distentio animi'的学术争议或不同解释流派（如内在主义vs外在主义，或胡塞尔/柏格森的解读），仅呈现了'通行解释'。虽然符合其'未检索到相关文献'的声明，但实质上未涉及该维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确地将卷十一置于《创世纪》释经与反摩尼教护教的历史语境中，正确指出了'天主在创造之前做什么'这一经典诘难。对'永恒'（nunc stans）与'时间'（逝与继）的对比符合奥古斯丁思想史定位。未发现时代错置或历史背景错误。",
+      "supporting_spans": [
+       "卷十一不是一个独立的时间论文，它嵌在一个解经—护教的语境里",
+       "摩尼教徒的诘难——'天主在创造天地之前在做什么？'"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答明确声明未检索到与本主题相关的学术文献（仅返回元数据），且未引用任何二手研究来支撑其重构。因此，该维度不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未引用任何具体的书目信息（如出版社、年份、DOI），仅提及《奥古斯丁忏悔录》卷十一，且未提供虚假的元数据。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给特定学者，仅提及'通行解释'和'记忆'，未涉及具体学者名。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有声称有原文支撑的部分（如'永恒属于你'、'变化'、'圣言'）均能在提供的证据中找到对应措辞。对于缺乏证据的部分，回答明确标注为'重构'和'未经核验'，未将其伪装成原文。",
+      "evidence_refs": [
+       "ev_46"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用的概念（如'存在论悖论'、'认识论悖论'）虽为现代哲学术语，但用于描述奥古斯丁的论证结构是合理的分析性语言，未造成实质性的时代错置解读。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有加引号的原文片段均能在证据文本中逐字找到。对于非逐字的转述，未使用引号或明确说明为转述。",
+      "evidence_refs": [
+       "ev_46"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称阅读了任何未提供的文献内容。对于检索到的文献（仅元数据），回答明确表示'无实质关联'且'未返回可读内容'，未描述其内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在处理证据边界方面表现出极高的学术诚实度，严格区分了'有原文支撑'与'基于记忆的重构'。在证据允许的范围内（卷十一前半），回答准确且逻辑严密地建立了时间分析的神学与存在论背景。然而，由于核心任务（三重现在与心灵的伸展）缺乏原文证据支持，回答无法完成基于文本的严格论证重构，只能提供逻辑通顺的'通行解释'。这限制了其在'textual_grounding'维度的得分，但也避免了'FABRICATION'等致命错误。整体而言，这是一个在受限证据条件下质量尚可的回答，但未能完全满足基于原典的深度重构要求。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答对卷十一前半部分（永恒与时间、创造、圣言）的引用与提供的原文证据高度吻合，且准确标注了证据边界。对于卷十一后半部分（三重现在、distentio animi），回答明确声明未获得原文支持，仅基于记忆重构，未伪造原文引文。诚实度极高，但受限于证据缺失，核心概念的重构缺乏直接文本支撑。",
+      "supporting_spans": [
+       "主啊，永恒既然属于你，怎会不预知我要对你说的话？",
+       "天地存在着，在变化，从而高呼说它们是受造物。",
+       "就无所谓逝，也无所谓继。你用了和你永恒同在的“圣言”"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功重构了奥古斯丁时间分析的逻辑起点（永恒与时间的对立、创造论背景）和核心悖论（过去未来不存在、现在无延展）。对于“三重现在”和“心灵的伸展”的论证重构逻辑清晰，符合学界通行解释，准确指出了从客观时间向主观心灵活动的转向。虽因缺乏原文证据无法验证细节，但逻辑结构完整。",
+      "supporting_spans": [
+       "过去已经不存在，未来尚未存在，似乎只有现在是存在的",
+       "过去之物的现在——记忆；现在之物的现在——注意；将来之物的现在——期望",
+       "时间不在心灵之外的某个实体里，而在心灵这一'三种现在'的统一结构之中"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未涉及学界对奥古斯丁时间哲学的不同解释流派或争议（如内时间意识现象学解读与神学解读的差异），仅呈现了通行解释，故不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确地将卷十一的时间分析置于《创世纪》释经和反摩尼教护教的历史语境中，指出了“天主在创造之前做什么”这一具体的历史诘难。对“圣言”与“声音”的区分也符合奥古斯丁的思想史背景。未发现时代错置。",
+      "supporting_spans": [
+       "卷十一不是一个独立的时间论文，它嵌在一个解经—护教的语境里",
+       "摩尼教徒的诘难——'天主在创造天地之前在做什么？'"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未引用或参考任何具体的二手学术文献（如关于奥古斯丁时间哲学的专著或论文），仅依赖通识和记忆，且明确说明未检索到相关学术文献，故不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供任何具体的书目信息（如出版社、年份、页码），仅提及书名《奥古斯丁忏悔录》及卷数，且未伪造不存在的文献。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给特定学者，仅提及摩尼教徒作为诘难方，符合历史背景。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有加引号的原文片段均能在提供的证据中找到对应，且对于未核验的部分明确声明为重构，未将转述伪装成原文。",
+      "evidence_refs": [
+       "ev_46"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用的概念（如“存在论悖论”、“认识论悖论”）虽为现代哲学术语，但用于描述奥古斯丁的思想结构是合理的分析性工具，未造成实质性的时代错置解读。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有声称的原文引用均与证据文本逐字一致。",
+      "evidence_refs": [
+       "ev_46"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明未获取到卷十一后半部分的原文，且未对任何仅具元数据的文献进行内部内容描述，严格遵守了访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在证据受限（仅获得卷十一前半部分文本）的情况下，展现了极高的学术诚实度与严谨性。它准确利用了现有证据重构了奥古斯丁时间分析的神学-哲学背景，并对缺失证据的核心论证部分（三重现在、心灵的伸展）进行了基于通行解释的逻辑重构，同时明确标注了证据边界，避免了伪造或误导。虽然因证据缺失导致核心概念缺乏直接文本支撑，但整体论证逻辑清晰，符合奥古斯丁哲学的基本框架，且未触犯任何致命错误。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 1,
+   "read_chapters_materialized": 1,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "a2931a891bf9#11": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 66,
+   "primary_replay_matched": 15,
+   "primary_replay_windows": 8,
+   "primary_replay_coverage_rate": 0.227,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-03",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的证据摘要（汤姆森导读、赵林讲演录、罗素哲学史）进行论证重建。对于《单子论》原文，回答明确声明因技术原因未能调出原文，所有引文均标注为“经汤姆森导读转引”，并如实给出了出处（如《新系统》、致阿诺尔德信），未伪造原文出处或精确节号。对二手文献的使用准确对应了证据中的内容（如单子定义、前定和谐类比、罗素的评价）。",
+      "supporting_spans": [
+       "先交代材料基础：原典库中确实收录了莱布尼茨的《单子论》与《神正论》，但我这一轮**没能成功调出《单子论》的章节原文**",
+       "凡涉及莱布尼茨本人文字的引号内容，均**转自**汤姆森导读《最伟大的思想家·莱布尼茨》所转录的莱布尼茨文本",
+       "（【《最伟大的思想家 - 莱布尼茨》·单子】；【《西方哲学史讲演录》·莱布尼茨的单子论】）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重建了莱布尼茨从实体定义到单子论，再到前定和谐解决心身问题的完整论证链条。逻辑步骤严密：1. 实体自足性推导出单纯性；2. 单子无窗户推导出无因果交互；3. 引入前定和谐解决心身同步问题，并对比了交互论与偶因论的缺陷。论证结构完整，逻辑连贯，准确捕捉了莱布尼茨的核心哲学动机和理论推演。",
+      "supporting_spans": [
+       "前提一：任何复合物最终只是若干简单物的聚集... 前提二：实体的定义是\"不依赖任何他物而自足存在\"... 结论：因此凡是有部分的东西都不能是实体",
+       "莱布尼茨接受了\"两个不同实体不可能有因果相互作用\"这一原则",
+       "上帝在创造时**一次性**安排好每个单子的内在发展序列，使各序列天然同步"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答不仅阐述了莱布尼茨的正向论证，还引入了罗素的批评视角（“两个莱布尼茨”），指出了前定和谐理论可能面临的“解释还是回避”的质疑，以及理论代价（物质降为现象）。这展示了一定的解释张力，虽然未深入展开不同学派的具体争议，但已超出单一视角的复述。",
+      "supporting_spans": [
+       "罗素在《西方哲学史》中就对莱布尼茨评价苛刻，认为他有一个\"睿智的莱布尼茨\"和一个\"蓄意讨王公后妃嘉赏的莱布尼茨\"两个面相",
+       "批评者会问：一个\"看起来完全像因果、却毫无因果\"的同步关系，到底解释了什么？"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确地将莱布尼茨的思想置于近代哲学的语境中，正确区分了笛卡尔的交互论、马勒伯朗士的偶因论与莱布尼茨的前定和谐。对“迷宫”问题的引用、对机械论与活力论争论的背景交代，均符合哲学史事实。引用的二手文献（赵林、罗素、汤姆森）均被正确用于构建历史语境。",
+      "supporting_spans": [
+       "笛卡尔设定两种根本不同的实体... 斯宾诺莎、马勒伯朗士都否认这种因果论",
+       "莱布尼茨自己把古往今来的哲学归结为两个\"迷宫\"：**不可分的点与连续性的关系**，以及**自由与必然（神义）**",
+       "机械论者与活力论者的争论对莱布尼茨的哲学具有巨大意义"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答有效利用了提供的书目记录，特别是对 Massimo Mugnai 的摘要进行了准确转述（关于 *concogitabilitas* 和关系理论），并将其与单子无窗户的形而上学问题联系起来。对于 Paul Lodge 的论文，明确指出仅有元数据且无法判断论点，严格遵守了访问级别限制，未做过度引申。",
+      "supporting_spans": [
+       "Massimo Mugnai 在《牛津莱布尼茨手册》中的 \"Theory of Relations and Universal Harmony\"（2015）。其**摘要**表明该文讨论莱布尼茨的关系理论（以 *concogitabilitas*——\"可共思性\"——刻画关系的\"心智\"性质）",
+       "Paul Lodge 的论文 *When Did Leibniz Adopt the Pre-established Harmony?*（1996），但仅有书目信息（METADATA_ONLY），**我无法据其标题判断其具体论点**"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的所有书目信息（作者、书名、章节）均能在提供的 BIBLIOGRAPHIC_RECORDS 或 PRIMARY_TEXT_EVIDENCE 中找到对应。对于未提供的细节（如《单子论》具体节号），回答明确声明未引用，未伪造。",
+      "evidence_refs": [
+       "ev_13",
+       "ev_15",
+       "ev_21",
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有观点归属（如莱布尼茨、笛卡尔、马勒伯朗士、罗素、赵林、汤姆森）均有证据支持。特别是对罗素评价的引用与 ev_15 中的文本高度一致。",
+      "evidence_refs": [
+       "ev_15",
+       "ev_21"
+      ],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了“莱布尼茨原文（经转引）”与“二手解读”。对于引用的莱布尼茨语句（如《新系统》片段），均标注为“经汤姆森导读转引”，未将其伪装为直接核验的原文，符合证据访问限制。",
+      "evidence_refs": [
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在描述莱布尼茨思想时使用了符合其时代语境的概念（如机械论、活力论、动力因/目的因），未引入后世概念体系进行时代错置的解读。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中带引号的莱布尼茨语句均能在证据（ev_60, ev_13）中找到对应的转述文本，且回答已声明这些是“经转引”的，未声称是逐字核对的原文直接引语。",
+      "evidence_refs": [
+       "ev_60",
+       "ev_13"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对于 Massimo Mugnai 的文章，回答仅复述了摘要中明确提到的 *concogitabilitas* 和关系理论，未涉及具体章节或论证步骤。对于 Paul Lodge 的文章，明确说明仅有元数据且无法判断内容。严格遵守了 METADATA_ONLY 和 ABSTRACT_AVAILABLE 的访问限制。",
+      "evidence_refs": [
+       "doi:10.1093/oxfordhb/9780199744725.013.15",
+       "doi:10.5840/leibniz1996613"
+      ],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术严谨性与诚实度。在面临一手文本（原典章节）访问受限的情况下，回答并未伪造出处或含糊其辞，而是明确界定了证据边界，并充分利用高质量的二手文献（汤姆森、赵林）完成了对莱布尼茨实体观与前定和谐说的精准论证重建。论证逻辑清晰，准确把握了从实体自足性到单子无窗户再到前定和谐的内在理路，并正确对比了交互论与偶因论。在文献使用上，严格遵守了访问级别限制，对仅有的摘要信息进行了恰当的转述，未做任何过度引申。整体而言，这是一份在证据约束下表现优异的哲学解释。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的证据摘要（汤姆森导读、赵林讲演录、罗素哲学史）进行论证重建。对于《单子论》原文，回答明确声明因技术原因未能调出原文，所有引文均标注为“经汤姆森导读转引”，并如实给出了出处（如《新系统》、致阿诺尔德信），未伪造原文出处或精确节号。对二手文献的使用（如罗素对莱布尼茨的评价）也准确对应了提供的证据文本。",
+      "supporting_spans": [
+       "先交代材料基础：原典库中确实收录了莱布尼茨的《单子论》与《神正论》，但我这一轮**没能成功调出《单子论》的章节原文**",
+       "因此下文凡涉及莱布尼茨本人文字的引号内容，均**转自**汤姆森导读《最伟大的思想家·莱布尼茨》所转录的莱布尼茨文本",
+       "（【《最伟大的思想家 - 莱布尼茨》·单子】；【《西方哲学史讲演录》·莱布尼茨的单子论】）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重构了莱布尼茨从实体定义到单子论，再到前定和谐解决心身问题的完整论证链条。逻辑步骤严密：1. 实体自足性推导出单纯性；2. 单子无窗户推导出无因果交互；3. 引入前定和谐解决现象一致性与本体无因果的矛盾。对交互论、偶因论的对比分析准确，论证依据（逻辑、物理、神学、现象学四个层面）归纳得当，完全符合哲学论证的学术标准。",
+      "supporting_spans": [
+       "由此推出：物质（有广延、可再分）不能是实体；真正的实体是**无广延、无部分、不可再分的单纯物**",
+       "莱布尼茨接受了两个不同的实体不可能具有因果相互作用这一原则",
+       "上帝在创造时**一次性**安排好每个单子的内在发展序列，使各序列天然同步"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答不仅阐述了莱布尼茨的正统观点，还引入了罗素的批评视角（“两个莱布尼茨”），展示了学界对该理论的张力与争议的解读。同时提及了Massimo Mugnai关于关系理论的研究，指出了“关系的形而上地位”这一更深层的解释维度。虽然未展开多种对立学派的详细辩论，但已超出单一复述，具备一定的解释多元性。",
+      "supporting_spans": [
+       "罗素在《西方哲学史》中就对莱布尼茨评价苛刻，认为他有一个\"睿智的莱布尼茨\"和一个\"蓄意讨王公后妃嘉赏的莱布尼茨\"两个面相",
+       "Massimo Mugnai 在《牛津莱布尼茨手册》中的 \"Theory of Relations and Universal Harmony\"（2015）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确把握了近代哲学的核心问题意识（如笛卡尔的二元论困境、机械论与目的论的冲突），正确区分了莱布尼茨与斯宾诺莎、马勒伯朗士（偶因论）在心身问题上的不同立场。对“迷宫”问题的引用、对《新系统》等历史文献的指涉，以及对“前定和谐”历史语境的把握，均显示出良好的历史学科意识。",
+      "supporting_spans": [
+       "笛卡尔设定两种根本不同的实体（心灵的本质是意识，物质的本质是广延），却同时认为二者能在因果上相互影响",
+       "斯宾诺莎、马勒伯朗士都否认这种因果论",
+       "1695 年《新系统》中他写道"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答基于提供的证据摘要（汤姆森、赵林、罗素）进行了扎实的梳理，并正确引用了检索到的学术文献（Mugnai, Lodge）。对于仅能获取元数据或摘要的文献（如Lodge 1996），回答明确声明“无法据其标题判断其具体论点”，严格遵守了访问级别限制，未进行过度推测。这体现了良好的文献纪律。",
+      "supporting_spans": [
+       "此外我还检索到 Paul Lodge 的论文 *When Did Leibniz Adopt the Pre-established Harmony?*（1996），但仅有书目信息（METADATA_ONLY），**我无法据其标题判断其具体论点**",
+       "其**摘要**表明该文讨论莱布尼茨的关系理论"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的所有书目信息（作者、书名、章节）均能在提供的 BIBLIOGRAPHIC_RECORDS 或 PRIMARY_TEXT_EVIDENCE 中找到对应。对于未提供的细节（如《单子论》具体节号），回答明确声明未引用，未伪造。",
+      "evidence_refs": [
+       "ev_13",
+       "ev_15",
+       "ev_21",
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有观点归属（如莱布尼茨、罗素、赵林、Mugnai）均有证据支持。罗素对莱布尼茨的“两面”评价准确对应 ev_15 文本；Mugnai 的研究内容对应 SECONDARY_SOURCE_RECORDS 中的摘要。",
+      "evidence_refs": [
+       "ev_15",
+       "doi:10.1093/oxfordhb/9780199744725.013.15"
+      ],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了“莱布尼茨原文”与“二手转引”。对于引用的莱布尼茨语句（如《新系统》内容），均标注为“经汤姆森导读转引”，且内容与 evidence_replay 中提供的汤姆森书中的摘录一致，未将转述伪装为直接原文。",
+      "evidence_refs": [
+       "75efcbb151b7#8"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在历史语境中准确描述了莱布尼茨的思想，未使用后世概念体系（如康德或现代物理概念）去错误地重构其早期思想。罗素的评价作为后世视角被明确标识。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有带引号的莱布尼茨语句均能在证据文本（汤姆森导读）中找到逐字对应的片段（如“因为我找不到说明物体怎样引起灵魂中某些东西产生的途径...”）。对于无法核验的《单子论》原文，回答未声称逐字引用。",
+      "evidence_refs": [
+       "75efcbb151b7#8"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对于 Paul Lodge 的论文（METADATA_ONLY），回答仅提及标题和存在性，未描述其具体论点。对于 Massimo Mugnai 的论文（ABSTRACT_AVAILABLE），回答仅复述了摘要中明确提到的“关系理论”和“concogitabilitas”，未越界描述章节或未提供的论证细节。严格遵守了访问级别限制。",
+      "evidence_refs": [
+       "doi:10.5840/leibniz1996613",
+       "doi:10.1093/oxfordhb/9780199744725.013.15"
+      ],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术质量。它不仅准确、逻辑严密地重构了莱布尼茨单子论与前定和谐说的核心论证，严格遵守了证据边界（诚实声明二手转引与访问限制），还引入了罗素的批评视角与当代学术研究（Mugnai），体现了良好的历史意识与文献纪律。回答在论证深度、文本依据与学术规范上均表现优异。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的证据摘要（汤姆森导读、赵林讲演录、罗素哲学史）进行构建。对于莱布尼茨的原文引用，回答明确标注了“经汤姆森导读转引”，并诚实说明了无法直接核验《单子论》原书章节的技术限制，未伪造任何直接出处或页码。所有核心概念（单子、前定和谐、无窗户、钟表类比）均能在提供的证据文本中找到对应支持。",
+      "supporting_spans": [
+       "先交代材料基础：原典库中确实收录了莱布尼茨的《单子论》与《神正论》，但我这一轮**没能成功调出《单子论》的章节原文**",
+       "凡涉及莱布尼茨本人文字的引号内容，均**转自**汤姆森导读《最伟大的思想家·莱布尼茨》所转录的莱布尼茨文本",
+       "单子论的论证骨架与心身问题的方案，主要依据汤姆森导读、赵林《西方哲学史讲演录》两处二手梳理"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其出色地重构了莱布尼茨从实体定义到前定和谐的论证链条。逻辑清晰地展示了“实体自足→无部分→单子→无窗户→无因果交互→前定和谐”的推导过程。准确识别了笛卡尔交互论与偶因论的困境，并清晰阐述了前定和谐如何通过“一次性预设”与“内在序列同步”来同时解决这两个难题。钟表类比和两个自然王国的区分运用得当。",
+      "supporting_spans": [
+       "前提一：任何复合物最终只是若干简单物的聚集... 前提二：实体的定义是\"不依赖任何他物而自足存在\"... 结论：因此凡是有部分的东西都不能是实体",
+       "莱布尼茨接受了\"两个不同实体不可能有因果相互作用\"这一原则",
+       "上帝在创造时**一次性**安排好每个单子的内在发展序列，使各序列天然同步"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答不仅阐述了莱布尼茨的正统观点，还引入了罗素对莱布尼茨的批评（“两个莱布尼茨”），指出了前定和谐理论可能面临的“解释还是回避”的质疑，以及理论代价（物质降为现象）。这展示了一定的解释张力。虽然未深入展开不同学派（如现象学与分析哲学）的多元解读，但在有限篇幅内已触及了主要的争议点。",
+      "supporting_spans": [
+       "罗素在《西方哲学史》中就对莱布尼茨评价苛刻，认为他有一个\"睿智的莱布尼茨\"和一个\"蓄意讨王公后妃嘉赏的莱布尼茨\"两个面相",
+       "这是解释还是回避？... 批评者会问：一个\"看起来完全像因果、却毫无因果\"的同步关系，到底解释了什么？"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确把握了近代哲学的核心问题意识（心身二元论、机械论与目的论的冲突）。正确区分了笛卡尔、斯宾诺莎、马勒伯朗士（偶因论）与莱布尼茨的立场差异。对莱布尼茨思想发展的背景（如《新系统》）及核心文本（《单子论》、《神正论》）的定位准确。引用的二手文献（汤姆森、赵林、罗素）均被正确置于学术史脉络中。",
+      "supporting_spans": [
+       "笛卡尔设定两种根本不同的实体... 斯宾诺莎、马勒伯朗士都否认这种因果论",
+       "1695 年《新系统》中他写道",
+       "莱布尼茨还用它去承接一个更大的图景——在《单子论》中他写道"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答展示了良好的文献意识，不仅依赖提供的证据摘要，还主动检索并引用了 Massimo Mugnai 的相关学术文献，并准确区分了其摘要内容与未读全文的界限（对 Paul Lodge 的文献仅作存在性提示）。这表明回答者具备利用学术数据库进行延伸研究的能力，且严格遵守了访问级别的限制。",
+      "supporting_spans": [
+       "我检索到一条相关的学术文献记录——Massimo Mugnai 在《牛津莱布尼茨手册》中的 \"Theory of Relations and Universal Harmony\"（2015）",
+       "此外我还检索到 Paul Lodge 的论文... 但仅有书目信息（METADATA_ONLY），**我无法据其标题判断其具体论点**"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的所有书目信息（作者、书名、章节）均能在提供的 BIBLIOGRAPHIC_RECORDS 或 PRIMARY_TEXT_EVIDENCE 中找到对应。对于未提供的细节（如《单子论》具体节号），回答明确声明无法提供，未进行伪造。",
+      "evidence_refs": [
+       "ev_13",
+       "ev_15",
+       "ev_21",
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有观点归属（如莱布尼茨、笛卡尔、马勒伯朗士、罗素、赵林、汤姆森）均有证据支持。罗素关于“两个莱布尼茨”的评价在 ev_15 中有明确记载。",
+      "evidence_refs": [
+       "ev_15",
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对于莱布尼茨原文的引用均通过“经汤姆森导读转引”的方式进行，且引用内容（如“因为我找不到说明物体怎样引起灵魂中某些东西产生的途径...”）与证据 ev_60 中的文本高度一致。未将转述伪装为直接原文。",
+      "evidence_refs": [
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在历史语境中准确描述了莱布尼茨的思想，未使用后世概念体系（如量子力学、现代认知科学）来错误地解释其早期思想。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中声称的引文均能在提供的证据文本中找到逐字对应的片段。例如，“因为我找不到说明物体怎样引起灵魂中某些东西产生的途径”与 ev_60 完全匹配。",
+      "evidence_refs": [
+       "ev_60"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答严格遵守了访问级别限制。对于 Massimo Mugnai 的文献，仅描述了摘要中明确提到的内容（concogitabilitas, 关系理论）；对于 Paul Lodge 的文献，明确声明仅有元数据，未进行任何内容推测。",
+      "evidence_refs": [
+       "doi:10.1093/oxfordhb/9780199744725.013.15",
+       "doi:10.5840/leibniz1996613"
+      ],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术质量。它不仅在论证重构上逻辑严密、层次分明，准确抓住了莱布尼茨单子论与前定和谐说的核心机制，而且在学术规范上表现优异。回答者诚实面对了证据获取的技术限制，严格区分了直接原文与二手转述，未进行任何伪造或越界引用。同时，回答引入了罗素的批评视角和当代学术文献（Mugnai），体现了良好的解释张力和文献导向。整体而言，这是一个准确、严谨且具有深度的哲学解释。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 3,
+   "read_chapters_materialized": 3,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "75efcbb151b7#8": "CANONICAL_ID",
+    "75efcbb151b7#9": "CANONICAL_ID",
+    "d20fbd0a131b#13": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 61,
+   "primary_replay_matched": 14,
+   "primary_replay_windows": 7,
+   "primary_replay_coverage_rate": 0.23,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-04",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其精准地锚定于《恐惧与战栗》的文本结构（目录、问题一、二、三），并大量引用了原文关键句（如“个体性比普遍性为高”、“要么凶犯要么信仰者”、“被悬疑的东西在成为它目标的更高的东西中却会得到保留”）。所有核心论点均有对应的文本片段支持，且引用位置（章节）明确。",
+      "supporting_spans": [
+       "本译本目录列出三个问题",
+       "信仰即是这样一种论，个体性（Enkelte）比普遍性为高",
+       "他要么是一个凶犯，要么是一个秉持信仰者",
+       "一旦它被悬疑它就会遭到抛弃：但被悬疑的东西在成为它目标的更高的东西中却会得到保留",
+       "由此并不能推出合乎伦理的是无效的；相反，合乎伦理的事物具有一种完全不同的表现"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了关于“目的论悬置”的内在辩证结构。它没有简单地将“悬置”理解为废除，而是敏锐地捕捉到了文本中“悬置即保留”的辩证逻辑（问题二），并将其与“不可调解”的悖论现象（问题一、三）区分开来。这种结构化的重构（现象层面的断裂 vs. 结构层面的保留）准确反映了克尔凯郭尔（约翰尼斯）的论证策略。",
+      "supporting_spans": [
+       "支持'例外式悬置'读法的文本依据",
+       "支持'完成/保留伦理'读法的文本依据",
+       "文本张力的真相：悬置的是'伦理作为最高'，而非'伦理作为有效'",
+       "被悬置的是'伦理作为最高审判庭'的地位",
+       "并非伦理本身被废；它被保留在更高的 telos 之下"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答明确指出了“例外式悬置”与“完成伦理”两种读法在文本中的各自依据，并试图在“悖论”的框架下统合二者。这展示了良好的诠释张力意识。然而，在二手文献的“诠释分歧”呈现上，回答诚实地受限于证据（仅能列出书目），未能展开具体的学者观点交锋（如列维纳斯、德里达等具体解读），这在一定程度上限制了“诠释分歧”这一维度的丰富性，但诚实遵守了证据限制。",
+      "supporting_spans": [
+       "支持'例外式悬置'读法的文本依据",
+       "支持'完成/保留伦理'读法的文本依据",
+       "诠释分歧的现状（关于二手研究，须诚实说明）",
+       "本次检索中，这些文献均只返回了书目层（METADATA_ONLY）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格区分了作者（克尔凯郭尔）与笔名作者（沉默的约翰尼斯），并依据译注强调了二者之间的间距。这种对作者身份与文本叙述者身份的区分是处理克尔凯郭尔著作的历史学/文献学基本功。同时，对黑格尔哲学背景（普遍性、中介）的提及也符合思想史语境。",
+      "supporting_spans": [
+       "全书由笔名作者'沉默的约翰尼斯'讲述，而非克尔凯郭尔本人署名",
+       "库内二手研究明确提醒，'克尔凯郭尔与他所创造的作者（例如本书作者约翰尼斯）存有相当的间距'",
+       "黑格尔哲学假定，不存在经过辩护的隐秘"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答检索并列出了多篇关于“目的论悬置”的专门研究文献（Bogen, Diderichsen, Tilley等），显示了良好的文献意识。关键在于，回答严格遵守了访问级别限制，明确声明这些文献仅为 METADATA_ONLY，未越界描述其内容。这种对证据边界的尊重在学术上值得肯定，虽然因此未能深入展开文献对话，但符合“真实文献导向”的要求。",
+      "supporting_spans": [
+       "我检索到一批以'目的论悬置'为题的专门研究",
+       "本次检索中，这些文献均只返回了书目层（METADATA_ONLY）",
+       "因此我不能在此陈述它们各自的具体主张"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的所有书目信息（如 Bogen 1962, Tilley 2012）均与提供的 SECONDARY_SOURCE_RECORDS 中的元数据（DOI, 年份, 期刊名）完全一致。未发现捏造的书目字段。",
+      "evidence_refs": [
+       "doi:10.1080/00201746208601358",
+       "doi:10.1515/kier.2012.145"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将核心观点（如“个体高于普遍”）正确归属于文本中的“约翰尼斯”或原典段落，未将具体观点错误归属给检索到的二手学者（因未读取其内容）。关于译注中提到的“克尔凯郭尔与作者间距”也正确归属于译注。",
+      "evidence_refs": [
+       "ev_50",
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对《恐惧与战栗》文本的引用（如“不可调解”、“凶犯或信仰者”、“被悬疑的东西...得到保留”）均能在提供的 PRIMARY_TEXT_EVIDENCE 中找到对应或高度重叠的原文。未发现将转述标为原文或歪曲原意的情况。",
+      "evidence_refs": [
+       "ev_68",
+       "ev_51",
+       "ev_48"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论中正确使用了文本自身的概念（如“普遍性”、“中介”、“绝对义务”），未用后世概念强行置换或扭曲文本语境。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引号内容（如“个体性比普遍性为高”）均与证据文本中的措辞高度一致（允许翻译差异），未发现凭空捏造的“逐字原文”。",
+      "evidence_refs": [
+       "ev_68"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确指出检索到的文献（如 Bogen, Tilley）仅为 METADATA_ONLY，并据此拒绝描述其具体论证内容。严格遵守了“访问级别上限”规则，未越界主张。",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST",
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术严谨性与文本掌控力。它不仅准确锚定了《恐惧与战栗》的核心文本证据，还精细地重构了“目的论悬置”的辩证结构，有效区分了“现象上的例外”与“结构上的保留”。尤为值得称道的是，回答严格遵守了证据访问限制，在缺乏二手文献全文的情况下，诚实地列出了书目但拒绝越界解读，完美符合学术规范。对作者与笔名作者的区分也体现了良好的历史学科意识。整体上，这是一个在文本依据、论证重构与学术规范方面均表现卓越的回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其精准地锚定于《恐惧与战栗》的文本结构（目录、问题一、二、三），并大量引用了原文关键句（如“个体性比普遍性为高”、“不可调解”、“被悬疑的东西...得到保留”）。所有核心论点均有对应的文本片段支持，且引用位置（章节）明确。",
+      "supporting_spans": [
+       "本译本目录列出三个问题",
+       "信仰即是这样一种论，个体性（Enkelte）比普遍性为高",
+       "一旦它被悬疑它就会遭到抛弃：但被悬疑的东西在成为它目标",
+       "由此并不能推出合乎伦理的是无效的；相反，合乎伦理的事物具有一种完全不同的表现"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了书中关于“目的论悬置”的复杂论证结构。它没有简单地将“悬置”等同于“废除”，而是敏锐地捕捉到了“悬置”在文本中的双重逻辑：既是对普遍伦理的“不可调解”的超越（例外论），又是在更高目的（telos）中对伦理的“保留”（完成论）。这种对悖论结构的把握非常准确。",
+      "supporting_spans": [
+       "悬置 ≠ 废除。被悬置者并不是被抛弃，而是被“保留在更高的目标之中”",
+       "被悬置的是“伦理作为最高审判庭”的地位",
+       "二者并非全然对立，而是对同一结构的两种侧重"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答明确指出了“例外式悬置”与“完成/保留伦理”两种读法，并基于文本证据展示了两者如何共存于张力之中。虽然未能深入引用具体二手文献（如列维纳斯或德里达）来展开具体的学术争鸣（受限于证据访问级别），但对文本内部张力的呈现已充分满足了诠释多样性的要求。",
+      "supporting_spans": [
+       "支持“例外式悬置”读法的文本依据",
+       "支持“完成/保留伦理”读法的文本依据",
+       "文本张力的真相：悬置的是“伦理作为最高”，而非“伦理作为有效”"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格区分了作者克尔凯郭尔与笔名“沉默的约翰尼斯”，并依据译本注释指出了这一间距的重要性。同时，准确指出了“目的论悬置”这一术语在中文译本目录中并未直接出现，而是后世通行的概括，体现了良好的历史与文本考据意识。",
+      "supporting_spans": [
+       "全书由笔名作者“沉默的约翰尼斯”讲述，而非克尔凯郭尔本人署名",
+       "本译本“问题一”标题用的是“神学的怀疑”，而非“目的论悬置”"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答诚实地列出了检索到的相关二手文献（Bogen, Diderichsen, Tilley等），并明确说明这些文献仅处于METADATA_ONLY级别，因此未对其具体观点进行臆测。这种对访问级别的严格遵守和诚实陈述，符合学术规范。",
+      "supporting_spans": [
+       "本次检索中，这些文献均只返回了书目层（METADATA_ONLY）",
+       "它们能支撑的，仅仅是“相关专题研究确实存在且持续”这一书目事实"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有引用的书目信息（如《恐惧与战栗》章节、50堂经典哲学思维课）均能在提供的证据中找到对应。列出的二手文献（如Bogen 1962）均来自提供的SECONDARY_SOURCE_RECORDS，且未编造未提供的字段。",
+      "evidence_refs": [
+       "ev_55",
+       "ev_16",
+       "doi:10.1080/00201746208601358"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将核心观点归因于文本中的“沉默的约翰尼斯”或克尔凯郭尔（在作者意义上），未将具体观点错误归属给检索到的学者（因未读取其内容）。对译者的引用（关于笔名间距）有证据支持。",
+      "evidence_refs": [
+       "ev_50"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对《恐惧与战栗》文本的转述（如“个体高于普遍”、“不可调解”、“保留”）均与提供的PRIMARY_TEXT_EVIDENCE高度一致，未发现歪曲或捏造原文含义的情况。",
+      "evidence_refs": [
+       "ev_68",
+       "ev_51"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论克尔凯郭尔时使用了其文本内的概念（如普遍性、个体性、绝对义务），未引入后世概念体系进行时代错置的解读。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引号内容（如“个体性比普遍性为高”）均能在证据文本中找到逐字对应的片段，未发现伪造引文。",
+      "evidence_refs": [
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明列出的二手文献仅为METADATA_ONLY，且未描述这些文献的内部论证或具体观点，仅陈述其存在性。严格遵守了访问级别限制。",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST",
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术质量。它不仅准确、深入地解读了《恐惧与战栗》的核心文本，精细地重构了“目的论悬置”的悖论结构，还严格遵守了学术规范，特别是在处理二手文献时表现出的诚实（明确区分元数据与全文内容）和对作者/笔名区分的历史敏感性。回答成功地在文本证据的基础上平衡了相互冲突的诠释路径，提供了富有洞察力的综合。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其精准地锚定于《恐惧与战栗》的文本结构（目录、问题一、二、三），并大量引用了原文关键句（如“个体性比普遍性为高”、“要么凶犯要么信仰者”、“被悬疑的东西在成为它目标的更高的东西中却会得到保留”）。所有核心论点均有对应的文本片段支持，且引用位置（章节）明确。",
+      "supporting_spans": [
+       "问题一的核心命题是：**信仰是悖论，个体高于普遍**。",
+       "他要么是一个凶犯，要么是一个秉持信仰者。",
+       "一旦它被悬疑它就会遭到抛弃：但被悬疑的东西在成为它目标",
+       "由此并不能推出合乎伦理的是无效的；相反，合乎伦理的事物具有一种完全不同的表现"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了书中关于“目的论悬置”的复杂论证结构。它不仅呈现了“例外论”的表面证据（个体高于普遍、不可调解），还深入挖掘了“完成论”的结构证据（悬置即保留、伦理相对化而非无效），并最终将两者辩证地统一在“悖论”这一核心概念下，逻辑严密。",
+      "supporting_spans": [
+       "综合两端证据，我认为两种读法并非全然对立，而是对同一结构的两种侧重。",
+       "被悬置的是\"伦理作为最高审判庭\"的地位（普遍性不再是终极的 *telos*）；",
+       "悬置不是否弃，被悬置者\"得到保留\"，伦理以\"矛盾的表现\"存活下来。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答明确指出了“例外式悬置”与“完成/保留伦理”两种诠释路径，并基于文本证据展示了两者之间的张力与统一。虽然未引入具体的二手学者（如列维纳斯或德里达）进行实名辩论，但准确呈现了文本内部的诠释分歧。",
+      "supporting_spans": [
+       "支持\"例外式悬置\"读法的文本依据",
+       "支持\"完成/保留伦理\"读法的文本依据",
+       "分歧的**落点**在于如何理解\"目的论悬置\"中那个\"目的\"。"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确区分了作者克尔凯郭尔与笔名“沉默的约翰尼斯”的间距，并指出了黑格尔哲学（普遍性、中介）作为隐含的对话背景。这体现了良好的历史语境意识。",
+      "supporting_spans": [
+       "全书由笔名作者\"沉默的约翰尼斯\"讲述，而非克尔凯郭尔本人署名。",
+       "库内二手研究明确提醒，\"克尔凯郭尔与他所创造的作者（例如本书作者约翰尼斯）存有相当的间距\"",
+       "黑格尔哲学假定，不存在经过辩护的隐秘...它要求开"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答检索并列出了多篇关于“目的论悬置”的专门研究文献（Bogen, Diderichsen, Tilley等），并诚实地声明了这些文献的访问级别仅为 METADATA_ONLY，未越界描述其内容。这种对文献边界的严格遵守符合学术规范。",
+      "supporting_spans": [
+       "我检索到一批以\"目的论悬置\"为题的专门研究，例如 James Bogen...",
+       "本次检索中，这些文献**均只返回了书目层（METADATA_ONLY）**",
+       "因此我**不能**在此陈述它们各自的具体主张"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中列出的所有书目信息（作者、标题、期刊、年份）均与提供的 SECONDARY_SOURCE_RECORDS 完全一致，且未捏造任何未提供的字段（如页码或出版社）。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何具体观点错误地归属给特定学者。对于列出的学者（如 James Bogen），仅陈述其著作存在，未陈述其观点，避免了归属错误。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对《恐惧与战栗》文本的引用和转述均能在提供的 PRIMARY_TEXT_EVIDENCE 中找到对应，未出现将转述标为原文或篇名误置的情况。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答准确使用了文本中的概念（如“普遍性”、“个体性”、“目的论悬置”），未用后世概念体系强行扭曲早期思想。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE"
+      ],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有加引号的直接引语均与提供的证据文本逐字匹配（如“个体性比普遍性为高”、“要么凶犯要么信仰者”），未发现伪造引语。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确指出检索到的文献仅为 METADATA_ONLY，并据此拒绝描述其内部内容或论证步骤，严格遵守了访问级别限制。",
+      "evidence_refs": [
+       "ACCESS_LEVELS",
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术质量。它不仅对《恐惧与战栗》的文本有着精细的把握，能够准确引用并重构关于“目的论悬置”的核心论证，而且在处理诠释分歧时表现出了辩证的深度。回答严格遵守了证据限制，特别是在处理二手文献时，诚实地标明了访问级别的局限，避免了过度解读。对作者与笔名、伦理与信仰关系的处理均符合学术规范。整体上，这是一份基于文本证据、论证严谨且学术诚实度极高的回答。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 7,
+   "read_chapters_materialized": 7,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "add6c213fde8#1": "CANONICAL_ID",
+    "327e5a1db152#3": "CANONICAL_ID",
+    "f1e06cece874#9": "CANONICAL_ID",
+    "f1e06cece874#8": "CANONICAL_ID",
+    "f1e06cece874#11": "CANONICAL_ID",
+    "f1e06cece874#10": "CANONICAL_ID",
+    "f1e06cece874#7": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 79,
+   "primary_replay_matched": 26,
+   "primary_replay_windows": 13,
+   "primary_replay_coverage_rate": 0.329,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-05",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "literature_orientation": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 1,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": false,
+    "reasons": [
+     "historical_discipline: bad applicability 'OPTIONAL      '",
+     "historical_discipline: applicability 'OPTIONAL      ' != manifest 'OPTIONAL'"
+    ],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格基于提供的中文二手文献（郁喆隽、沃伯顿、书杰）进行转述，未引用未提供的原文。所有引用均标注了具体章节，且明确区分了“二手来源所载事实”与“个人重构”，符合证据限制。",
+      "supporting_spans": [
+       "凡属我自己的**论证重构**，我会明确标出，不冒充文本事实。",
+       "下面所有带正式标注的内容，都来自库内实际检索到并逐章读取的中文二手解读"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "论证重构逻辑清晰，准确提炼了“句法不蕴含语义”、“程序即句法”等核心前提，并正确推导出对强AI的反驳。对中文屋思想实验的描述（规则手册、投信口、模拟通过测试）与证据高度一致。",
+      "supporting_spans": [
+       "P1（句法不蕴含语义）：对符号作纯形式的规则操作（句法处理）本身不产生符号的意义（语义）。",
+       "P2（程序即句法）：计算机程序本质上是形式化的符号操作规则",
+       "C1：所以，仅仅凭借运行程序，计算机不可能获得理解/语义。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答涵盖了系统回复、博登的范畴错误批评以及丹尼特的自然主义反驳，展示了主要的反对意见。虽然未深入展开“机器人回复”等路线，但已明确说明因证据限制而省略，符合诚实性原则。",
+      "supporting_spans": [
+       "（A）系统系统回复（有库内证据）",
+       "（B）博登的\"范畴错误\"批评（有库内证据）",
+       "（C）丹尼特的自然主义反驳（有库内证据）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL      ",
+      "score": 3,
+      "rationale": "正确关联了意向性概念的中世纪经院哲学来源及布伦塔诺-胡塞尔传统，并指出了塞尔与笛卡尔在语言能力区分上的思想联系。虽然未深入展开历史脉络，但关键节点均有提及且基于证据。",
+      "supporting_spans": [
+       "意向性是欧洲中世纪经院哲学提出的一个概念...在布伦塔诺—胡塞尔的现象学传统里是核心命题",
+       "近代哲学中笛卡尔也曾以语言能力区分人与机器"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "严格遵守了证据限制，未引用未提供的塞尔原文或英文二手文献。所有观点均锚定在提供的中文通俗哲学读物上，并明确指出了这些读物的性质（如“专章讲”、“转述”），未伪造学术深度。",
+      "supporting_spans": [
+       "本次在 403 本原典库中未检得到塞尔的原著",
+       "凡属我自己的**论证重构**，我会明确标出，不冒充文本事实。",
+       "这些路线**我本次未能检索到库内原文佐证**...故仅作为\"通行的标准分类\"提示"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如DOI、页码、出版社、年份）声称，仅在文末提及了延伸阅读线索（如“上海译文出版社，2006年”），但这属于对延伸阅读线索的描述而非伪造引用，且未在正文中作为精确引用使用。未发现伪造书目。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有学者观点（如塞尔、博登、丹尼特、笛卡尔、胡塞尔）的归属均能在提供的证据文本中找到对应支持，未发现张冠李戴或无中生有的归属。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_10",
+       "ev_34"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明未检索到塞尔原著，所有关于塞尔的论述均通过二手文献（郁喆隽、沃伯顿）转述，未将二手转述伪装成塞尔原文的直接引用。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未发现用晚期概念描述早期思想且实质改变解读的情况。对意向性概念的历史梳理（中世纪->布伦塔诺->胡塞尔）符合证据描述。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引文（如“我并不认为我们是生活在精神的和物理的两个世界之中”）均能在证据文本中找到逐字对应的原文，且正确标注了出处。",
+      "evidence_refs": [
+       "ev_9"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实声明了证据状况（未检索到原著，仅使用中文二手解读），且对二手文献的使用（如描述章节内容）未超出提供的文本摘要范围。未声称阅读了未提供的全文。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在严格遵守证据限制的前提下，高质量地完成了对塞尔中文屋论证的重构与解释。回答诚实地区分了二手文献事实与个人分析，未越界引用未提供的原著，也未伪造学术来源。论证逻辑清晰，准确捕捉了句法/语义区分这一核心，并涵盖了主要的反驳意见。虽然受限于证据来源（通俗哲学读物），缺乏一手文献的深度，但完全符合本次任务的测量标准。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的中文二手文献（郁喆隽、沃伯顿）进行转述，未引用未提供的原文。所有关于塞尔观点、实验细节、反驳路线的陈述均能在提供的证据摘要中找到对应文本，且明确区分了“二手来源所载事实”与“个人重构”，符合证据限制。",
+      "supporting_spans": [
+       "凡属我自己的**论证重构**，我会明确标出，不冒充文本事实。",
+       "第一种人工智能称为“弱AI”...第二种人工智能称为“强AI”",
+       "塞尔假设他自己被锁在一间房间里...而塞尔本人其实对中文一窍不通",
+       "程序员给了电脑一套句法...但是没有给电脑提供语义"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了中文屋论证的核心逻辑链条：区分强弱AI -> 描述思想实验 -> 提炼句法/语义区分 -> 得出反强AI结论。重构清晰展示了P1（句法不蕴含语义）到C1的推导过程，并准确识别了P1为论证枢纽。对系统回复、博登反驳等回应路线的重构也准确抓住了核心争议点。",
+      "supporting_spans": [
+       "P1（句法不蕴含语义）...P2（程序即句法）...C1：所以，仅仅凭借运行程序，计算机不可能获得理解/语义",
+       "塞尔的中文屋论证，其实就是要反驳强AI的观点",
+       "系统回复...博登的'范畴错误'批评"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答呈现了塞尔与反对者（系统回复、博登、丹尼特）之间的主要分歧，涵盖了句法/语义、生物基础/功能实现等核心争论点。虽然受限于证据未提供“机器人回复”等更多路线，但已展示了主要的解释张力。",
+      "supporting_spans": [
+       "系统回复...塞尔和这个房间，还有房间里的工具书，一起构成了一个系统",
+       "博登指出，塞尔在这里犯了一个范畴错误",
+       "丹尼特...人类的意识、智能和心灵很大程度上可能和机器没有本质的差异"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答正确将意向性概念追溯至经院哲学及布伦塔诺-胡塞尔传统，并指出了塞尔意向性与胡塞尔在意向性“自然化”上的功能差异。同时也提及了笛卡尔的语言能力区分作为先声。虽然未深入展开历史脉络，但符合历史维度的基本要求。",
+      "supporting_spans": [
+       "意向性是欧洲中世纪经院哲学提出的一个概念...在布伦塔诺—胡塞尔的现象学传统里是核心命题",
+       "塞尔把它当作与**生物因果基础**绑定的自然主义论题",
+       "笛卡尔也曾以语言能力区分人与机器"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵守了文献访问限制，明确声明未检索到塞尔原著，所有引用均来自库内实际读取的中文二手文献（郁喆隽、沃伯顿、书杰）。对于未核验的“机器人回复”等路线，明确标注为“未核验的通识”并降格处理，未越界声称。书目引用（如延伸阅读）仅作为线索提示，未伪造细节。",
+      "supporting_spans": [
+       "本次在 403 本原典库中未检得到塞尔的原著...下面所有带正式标注的内容，都来自库内实际检索到并逐章读取的中文二手解读",
+       "这些路线**我本次未能检索到库内原文佐证**...故仅作为\"通行的标准分类\"提示",
+       "延伸阅读...［美］约翰·塞尔：《心灵、大脑与程序》"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中出现的书目信息（如《50堂经典哲学思维课》、《哲学小史》）均在提供的 BIBLIOGRAPHIC_RECORDS 中有对应记录。对于延伸阅读中提到的塞尔原著，回答仅提供了书名和文集名，未提供具体的页码、译者或出版社细节（虽然记录中有上海译文出版社2006年，但回答未引用该细节，仅作线索提示），未越界。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_34"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有学者观点（塞尔、博登、丹尼特、图灵、笛卡尔、胡塞尔、布伦塔诺）的归属均能在提供的证据文本中找到支持，或明确标注为回答者的重构/分析，无张冠李戴或时代错置。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_10",
+       "ev_34"
+      ],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了“二手来源转述”与“原文引用”，未将二手文献的转述冒充为塞尔的逐字原文。对于引用的二手文献内容，与证据文本一致。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_34"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论意向性时正确区分了胡塞尔的现象学路径与塞尔的生物自然主义路径，未用晚期概念错误归因于早期思想，历史脉络清晰。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_10"
+      ],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引文均能在提供的证据文本中找到逐字对应的片段（如“我并不认为我们是生活在精神的和物理的两个世界之中”），且正确标注了出处（如《心灵、语言和社会》）。未发现伪造的逐字引用。",
+      "evidence_refs": [
+       "ev_9"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答严格遵循了访问级别限制。对于未检索到的塞尔原著，明确声明无法引用。对于已读取的中文二手文献，仅复述了文本中明确出现的内容（如强弱AI定义、系统回复、博登批评），未描述未提供的章节结构或未在文本中出现的论证细节。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_34"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在严格遵守证据限制（仅使用提供的中文二手文献）的前提下，高质量地完成了对塞尔中文屋论证的概念区分、论证重构及回应路线梳理。回答诚实度高，明确区分了文本事实与个人重构，未出现伪造或越界主张。论证重构逻辑清晰，准确抓住了句法/语义这一核心枢纽。虽然受限于证据来源（缺乏原著及更多英文二手文献），导致对某些反驳路线（如机器人回复）只能作为通识提示，但整体上完全满足学术质量要求。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格基于提供的中文二手文献（郁喆隽、沃伯顿、书杰）进行转述，未引用未提供的原文。所有关于塞尔观点、思想实验细节及反驳路线的陈述均能在提供的证据摘要中找到对应文本，且明确区分了“二手来源所载事实”与“个人重构”，符合证据限制。",
+      "supporting_spans": [
+       "凡属我自己的**论证重构**，我会明确标出，不冒充文本事实。",
+       "下面所有带正式标注的内容，都来自库内实际检索到并逐章读取的中文二手解读"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答成功重构了中文屋论证的核心逻辑链条：区分强弱AI -> 思想实验演示 -> 句法不蕴含语义（P1） -> 程序即句法（P2） -> 运行程序不产生理解（C1）。重构逻辑清晰，准确捕捉了“句法vs语义”这一核心区分，并正确指出了意向性作为更高标准的地位。",
+      "supporting_spans": [
+       "P1（句法不蕴含语义）：对符号作纯形式的规则操作（句法处理）本身不产生符号的意义（语义）。",
+       "P2（程序即句法）：计算机程序本质上是形式化的符号操作规则",
+       "C1：所以，仅仅凭借运行程序，计算机不可能获得理解/语义"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答涵盖了系统回复、博登的范畴错误批评以及丹尼特的自然主义反驳，展示了不同维度的回应。虽然未深入展开“机器人回复”或“大脑模拟器回复”（且已诚实说明未检索到），但已呈现了主要的解释张力。",
+      "supporting_spans": [
+       "（A）系统系统回复（有库内证据）",
+       "（B）博登的\"范畴错误\"批评（有库内证据）",
+       "（C）丹尼特的自然主义反驳（有库内证据）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答正确指出了意向性概念在经院哲学、布伦塔诺—胡塞尔现象学传统中的谱系，并关联了笛卡尔关于语言能力的早期观点。虽然未深入展开塞尔与这一传统在具体理论细节上的差异，但准确把握了概念的历史脉络。",
+      "supporting_spans": [
+       "意向性是欧洲中世纪经院哲学提出的一个概念...在布伦塔诺—胡塞尔的现象学传统里是核心命题",
+       "近代哲学中笛卡尔也曾以语言能力区分人与机器"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵守了提供的文献限制，明确声明未检索到塞尔原著，仅依据库内中文二手文献（郁喆隽、沃伯顿等）作答。对于未核验的“标准但库内未核验”路线（如机器人回复），明确降格处理，未冒充原文支持，体现了极高的文献纪律性。",
+      "supporting_spans": [
+       "本次在 403 本原典库中未检得到塞尔的原著",
+       "这些路线**我本次未能检索到库内原文佐证**...故仅作为\"通行的标准分类\"提示"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如DOI、页码、出版社、年份）超出所提供证据的范围。提及的书籍（如《50堂经典哲学思维课》）均来自提供的证据摘要。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有学者观点（塞尔、博登、丹尼特、笛卡尔、胡塞尔等）的归属均能在提供的中文二手文献证据中找到依据，无张冠李戴或时代错置。",
+      "evidence_refs": [
+       "ev_9",
+       "ev_10",
+       "ev_34"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了“二手来源转述”与“个人重构”，未将二手解读冒充为塞尔原文的直接引语。所有引用均标注了出处（如“郁喆隽转述”、“沃伯顿记载”）。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论意向性时正确区分了塞尔的自然主义与胡塞尔的现象学，未将后世概念强加于早期思想，且对笛卡尔观点的引用符合二手文献的叙述。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未声称任何逐字原文的直接引语（除明确标注为二手文献中的引用外，且这些引用在证据中均有对应）。所有转述均以间接引语或概括形式呈现。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实声明了未检索到塞尔原著及英文二手文献，所有内容均基于提供的中文书籍章节（FULL_TEXT_READ 级别的证据）。未描述任何未提供证据的文献内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在严格遵守证据限制的前提下，高质量地完成了对塞尔中文屋论证的重构与评估。回答不仅准确区分了强弱AI、清晰梳理了论证前提（句法vs语义），还诚实地处理了文献来源问题，明确区分了二手转述与个人分析。对反驳路线（系统回复、博登、丹尼特）的覆盖展示了良好的解释广度，而对意向性概念史的追溯则体现了必要的历史视野。无任何事实性错误或学术不端行为，是一份基于有限证据的优秀哲学阐释。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 4,
+   "read_chapters_materialized": 4,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "f9530a5e2ba9#8": "CANONICAL_ID",
+    "327e5a1db152#17": "CANONICAL_ID",
+    "fea8d6ddc565#40": "CANONICAL_ID",
+    "4a4a200536bd#24": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 76,
+   "primary_replay_matched": 25,
+   "primary_replay_windows": 14,
+   "primary_replay_coverage_rate": 0.329,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-06",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   },
+   "literature_orientation": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答对康德《奠基》第一章的引用与提供的原文证据（ev_5）高度吻合，准确摘录了关于“好意志”与“命运赐予”的关键段落，并正确指出了章节出处。",
+      "supporting_spans": [
+       "【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】",
+       "好意志本身就是好的，只讲它本身，就比一切它可以为任何爱好，"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答准确重构了康德关于道德价值独立于运气的核心论证（基于准则而非结果/禀赋）。然而，对于威廉斯与内格尔的“道德运气”论证，回答明确声明基于记忆且未经核验，仅提供了非常简略的框架（如高更案例、四类运气），缺乏具体的论证步骤和逻辑推演细节，未能满足“主要回应与分歧”这一任务要求。",
+      "supporting_spans": [
+       "道德价值只在**出于义务的准则**，不在行为的结果、不在禀赋、不在处境。",
+       "以下是学界通行的表述框架，**我本次未能检索到威廉斯、内格尔原文来逐字核验**"
+      ],
+      "missing_requirements": [
+       "未能提供威廉斯/内格尔论证的具体细节",
+       "未能提供学界围绕控制原则的具体回应内容"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "任务要求提供“学界主要回应与分歧”，但回答明确指出因检索失败无法提供具体的学者归因和文献依据。虽然列出了5条通行的争论路线（如追溯策略、反应性态度），但未展示不同学者或流派之间的具体观点交锋，实质上未能呈现“多元解释”的学术图景。",
+      "supporting_spans": [
+       "为避免把记忆冒充学界共识，我只能勾勒通常被讨论的几条路线",
+       "其中涉及的具体学者归因，我本次**没有取得任何可读文献证据**，因此不署名"
+      ],
+      "missing_requirements": [
+       "缺乏具体的学者观点对比",
+       "缺乏具体的文献支持下的分歧展示"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要涉及当代分析哲学（威廉斯、内格尔）与康德伦理学的概念对比，未涉及特定历史语境或思想史演变脉络，故不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "任务明确要求“文献依据”。回答仅对康德原典提供了有效依据，但对核心的威廉斯、内格尔文献及后续二手研究，均明确表示“未经核验”且“无法给出经核验的书目”。列出的参考文献（Williams 1976, Nagel 1979）被标注为记忆内容，未与提供的 BIBLIOGRAPHIC_RECORDS 中的任何记录（主要是关于 Aristotle, Kant, Spinoza 等其他主题）建立联系，实质上未满足文献导向要求。",
+      "supporting_spans": [
+       "未能核验（一）：原典库（403 本）中**不含**威廉斯与内格尔的《道德运气》文本。",
+       "未能核验（二）：二手学术文献检索的基础设施本次不可用",
+       "本次无法给出经核验的书目，仅列通常出处供您核对"
+      ],
+      "missing_requirements": [
+       "缺乏威廉斯/内格尔原典的文本证据",
+       "缺乏学界回应的二手文献证据"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中列出的 Williams 和 Nagel 的书目信息（如期刊名、年份）被明确标注为“记忆，未经核验”，且未在 BIBLIOGRAPHIC_RECORDS 中出现。虽然这些信息在现实世界中可能为真，但回答并未将其作为已核验事实呈现，而是作为建议供用户自行核对，因此不属于在证据不支持的情况下断言虚假书目的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确拒绝将具体的观点或论证归属给特定学者（如“不署名、不构造'某某与某某两派对立'”），避免了在缺乏证据的情况下进行错误的学者归因。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对康德文本的引用与提供的证据（ev_5）一致，未发现歪曲原意或虚构原文的情况。",
+      "evidence_refs": [
+       "ev_5"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未发现使用晚期概念体系错误描述早期思想的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的康德文句在证据文本中逐字出现（overlap=1.0），属于真实引用。",
+      "evidence_refs": [
+       "ev_5"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实地声明了检索限制，未声称阅读了任何未提供的文献内容，反而明确区分了“已核验”与“未核验”部分，符合访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在处理康德原典部分表现出色，引用准确且诚实。然而，针对任务核心——威廉斯与内格尔的道德运气问题及其学界回应——回答因检索工具失效而无法提供必要的文献依据和具体的论证重构。虽然回答采取了极其诚实的策略，明确区分了已知与未知，避免了幻觉和错误归因，但从完成“给出文献依据”这一学术任务的角度来看，其核心内容（关于道德运气的争议）缺乏证据支持，实质上未能完成对“学界主要回应与分歧”的综述。整体上，这是一个在受限条件下表现出的“负责任的失败”，而非高质量的学术回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答对康德《奠基》第一章的引用与提供的原文证据（ev_5）高度吻合，准确摘录了关于“好意志”与“命运赐予”的关键段落，并正确指出了章节出处。",
+      "supporting_spans": [
+       "第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识",
+       "好意志本身就是好的，只讲它本身，就比一切它可以为任何爱好"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答准确重构了康德关于道德价值独立于运气的核心论证（基于ev_5）。然而，对于威廉斯与内格尔的“道德运气”挑战，回答明确声明“未经本次会话核验”，仅提供了非常粗略的框架性描述（如高更例子、四类运气），未能详细展开其论证逻辑或与康德立场的具体交锋细节，导致论证重构不完整。",
+      "supporting_spans": [
+       "道德价值只在出于义务的准则，不在行为的结果、不在禀赋、不在处境",
+       "威廉斯...以画家高更抛下家庭赴塔希提为例",
+       "内格尔...划分出四类道德运气"
+      ],
+      "missing_requirements": [
+       "缺乏对威廉斯/内格尔论证步骤的详细重构",
+       "缺乏对“控制原则”具体内容的深入阐述"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答列出了学界回应的五条路线（如追溯策略、反应性态度），但明确指出这些内容“证据层级：记忆，未经核验”，且未提供任何具体的学者姓名或文献支持。这导致未能展示真实的学术争议图景，仅停留在无来源的框架罗列，未能满足“展示多元解释”的要求。",
+      "supporting_spans": [
+       "1. 守住控制原则... 2. 接受道德运气... 3. 追溯策略..."
+      ],
+      "missing_requirements": [
+       "缺乏具体的学者归因",
+       "缺乏不同解释流派之间的具体交锋内容",
+       "缺乏文献依据"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要涉及概念分析，未涉及特定历史背景或思想史脉络的演变，故不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "尽管用户明确要求“文献依据”，且回答自身也承认检索受限，但回答在第二、三节中大量陈述了威廉斯、内格尔及后续学界的观点，却未能提供任何经核验的文献证据。提供的书目（如 Williams 1976, Nagel 1979）被明确标注为“记忆，未经本次检索中验证”，且提供的书目记录（SECONDARY_SOURCE_RECORDS）中并不包含这些关键文献的元数据。这完全未能满足“文献导向”的要求。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未能提供威廉斯/内格尔原典的核验证据",
+       "未能提供学界回应的核验文献",
+       "关键书目未在提供的记录中找到对应项"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中列出的书目（Williams 1976, Nagel 1979）被明确标注为“记忆，未经本次检索中验证”，且未在BIBLIOGRAPHIC_RECORDS中提供对应记录。虽然这些书目在现实世界中存在，但根据规则，若记录未提供该字段，回答若将其作为“已核验”呈现则算伪造。此处回答诚实声明了未核验，故不判定为伪造书目。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在描述学界回应时（第三节）刻意避免了具体的学者归因，仅列出了路线，因此没有发生张冠李戴的伪造归因。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对康德原文的引用与提供的证据（ev_5）一致，未发现歪曲原意或把转述标为原文的情况。",
+      "evidence_refs": [
+       "ev_5"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未发现明显的时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的康德文句在证据文本中逐字出现（overlap=1.0），属于真实引用。",
+      "evidence_refs": [
+       "ev_5"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明了检索限制，并未声称阅读了威廉斯或内格尔的全文，也未描述其内部章节结构，反而坦诚了证据缺失，因此没有发生越权声称。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在处理康德原典部分表现出色，引用准确且诚实。然而，针对用户问题的核心——威廉斯与内格尔的道德运气挑战及学界回应——回答因检索工具受限而严重缺失文献依据。虽然回答诚实地暴露了这一缺陷并拒绝伪造证据，但这导致其无法完成“给出文献依据”的任务指令，且未能提供实质性的学术争议细节。整体上，这是一个在受限条件下保持学术诚实但未能满足完整任务要求的回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答对康德《奠基》第一章的引用与提供的原文证据（ev_5）高度吻合，准确摘录了关于“好意志”与“运气（命运赐予）”的关键段落，并正确指出了章节出处。",
+      "supporting_spans": [
+       "【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一章 由普通的对于道德之纯理的知识转到对于道德之哲学的知识】",
+       "好意志本身就是好的，只讲它本身，就比一切它可以为任何爱好，"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答准确重构了康德关于道德价值独立于运气的核心论证（基于文本证据）。然而，对于威廉斯和内格尔的“道德运气”挑战，回答明确声明“未经本次会话核验”，仅提供了非常粗略的框架性描述（如高更例子、四类运气），未能详细展开其论证逻辑或与康德立场的具体交锋细节，导致论证重构在关键部分缺失。",
+      "supporting_spans": [
+       "道德价值只在出于义务的准则，不在行为的结果、不在禀赋、不在处境。",
+       "内格尔划分出四类道德运气——构成运气、情境运气、结果运气、因果运气"
+      ],
+      "missing_requirements": [
+       "未能详细展开威廉斯与内格尔的具体论证步骤及其对康德控制原则的挑战机制。"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答列出了学界围绕控制原则的五种主要回应路线（如追溯策略、反应性态度路径），但回答明确指出这些内容“证据层级：记忆，未经核验”，且“拒绝在此基础上补造学者归因”。这意味着回答未能提供具体的文献依据或学者观点的实质性分歧展示，仅停留在无来源支撑的框架罗列，未能满足 REQUIRED 维度对实质性学术分歧展示的要求。",
+      "supporting_spans": [
+       "1. 守住控制原则、否认道德运气真实存在... 2. 接受道德运气、修改控制原则..."
+      ],
+      "missing_requirements": [
+       "缺乏具体的学者归因、文献引用及不同观点间的实质性对比分析。"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要涉及概念分析与当代哲学争论，未涉及特定历史背景或思想史脉络的演变，故该维度不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答在康德部分提供了具体的文本依据，但在威廉斯、内格尔及后续学界回应部分，明确表示“未能检索到原文”、“二手学术文献检索的基础设施本次不可用”，且列出的书目（如 Williams 1976, Nagel 1979）标注为“书目为记忆，请自行核对”。这表明回答未能提供经核验的文献依据，严重依赖未验证的记忆，不符合 REQUIRED 维度对文献导向的要求。",
+      "supporting_spans": [
+       "未能核验（一）：原典库（403 本）中不含威廉斯与内格尔的《道德运气》文本。",
+       "未能核验（二）：二手学术文献检索的基础设施本次不可用"
+      ],
+      "missing_requirements": [
+       "未能提供威廉斯、内格尔及学界回应的经核验的文献依据。"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中列出的威廉斯和内格尔的书目信息（如期刊名、年份）被明确标注为“记忆，未经核验”，且未在 BIBLIOGRAPHIC_RECORDS 中提供对应记录。虽然这些信息在现实世界中可能为真，但根据规则，回答并未将其作为已核验事实呈现，而是作为待核验建议列出，因此不构成在证据支持范围外的伪造断言。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在描述学界回应时，明确拒绝进行具体的学者归因（“不署名、不构造'某某与某某两派对立'”），避免了将未经核验的观点归属给特定学者的风险。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对康德原文的引用与提供的证据（ev_5）一致，未发现歪曲或捏造原文内容的情况。",
+      "evidence_refs": [
+       "ev_5"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未涉及明显的时代错置问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的康德文句在证据文本中能够找到对应（overlap=1.0），属于真实摘录。",
+      "evidence_refs": [
+       "ev_5"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实地声明了检索限制，未声称阅读了未提供的文献内容，反而明确区分了“已核验”与“未核验”部分，符合访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在处理康德原典部分表现出色，提供了准确的文本依据和合理的解读。然而，针对问题核心——威廉斯与内格尔的道德运气挑战及学界回应——回答受限于检索条件，未能提供经核验的文献支持，仅给出了基于记忆的框架性概述。虽然回答诚实地披露了证据边界，避免了伪造证据，但在 REQUIRED 维度（argument_reconstruction, interpretive_plurality, literature_orientation）上，因缺乏实质性、经核验的内容支撑，得分较低。整体而言，这是一个在诚实性上表现优秀，但在学术完整性和任务完成度上因客观条件受限而不足的回答。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 1,
+   "read_chapters_materialized": 1,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "309de54e4392#46": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 43,
+   "primary_replay_matched": 3,
+   "primary_replay_windows": 2,
+   "primary_replay_coverage_rate": 0.07,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-07",
+  "dims": {
+   "textual_grounding": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答准确引用并分析了《老子》第四十章、第十一章、第五十二章等原文，且引用了《庄子·外物》关于“得意忘言”的原文。这些引用与提供的证据（ev_46, ev_49, ev_36, ev_61, ev_68, ev_16）高度一致。然而，对于核心对象王弼的《老子注》与《老子指略》，回答明确声明无法提供原文核验，仅凭记忆转述，导致在王弼文本的“文本基础”这一关键维度上存在证据缺失。",
+      "supporting_spans": [
+       "弱者道之用。天下万物生于有，有生于无。",
+       "故有之以为利，无之以为用。",
+       "以知其子，复守其母，没身不殆。",
+       "言者所以在意，得意而忘言。"
+      ],
+      "missing_requirements": [
+       "王弼《老子注》原文引用",
+       "王弼《老子指略》原文引用"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功构建了从汉代宇宙论（生成论、气化）到王弼本体论（以无为本、崇本息末）的论证转换逻辑。清晰地界定了“时间在先”与“逻辑在先”的区别，并解释了“得意忘言”作为方法论如何支持这一诠释转向。论证结构完整，逻辑自洽。扣分点在于，由于缺乏王弼原文的直接证据，对王弼具体论证步骤的重建依赖于一般性哲学描述而非文本细读。",
+      "supporting_spans": [
+       "把'无'从时间序列的起点挪到存在根据的位置",
+       "用'本末'这对范畴重新编排《老子》的全部语汇",
+       "从'宇宙如何生成'（cosmogony）转向'存在如何奠基'（ontology）"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答展现了良好的诠释学意识，明确指出《老子》原文具有多重可读性（发生论 vs 功能性/条件性），并指出汉代与王弼代表了两种不同的“读《老子》的正当方式”。这种非独断的、视域融合的论述符合 interpretive_plurality 的高分标准。",
+      "supporting_spans": [
+       "《老子》原文自身是**多义的**",
+       "汉代与王弼代表两种不同的'读《老子》的正当方式'",
+       "不是对错之争，而是**诠释框架之争**"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答正确识别了汉代老学（如《淮南子》、河上公）的宇宙论特征，并将其与王弼的玄学本体论进行了有效对比。然而，回答中关于汉代老学的具体描述（如严遵《老子指归》的具体观点、河上公的治身治国术）被明确标注为“一般性认识/记忆，未取得文献支撑”。在历史学科评审中，缺乏一手文献或二手研究支撑的历史断言属于薄弱环节，且未引用任何相关学术研究。",
+      "supporting_spans": [
+       "汉代的老学形象是**宇宙论—养生论—治术**三位一体的",
+       "以《淮南子》为代表，把'道'描述为从'无形'到'有形'...的生成序列"
+      ],
+      "missing_requirements": [
+       "汉代老学具体观点的文献出处",
+       "关于王弼历史定位的学术研究引用"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答完全未涉及任何现代学术文献（Secondary Sources），也未引用具体的王弼研究著作。虽然提供了书目记录（如关于王阳明的文献），但这些与问题无关。由于回答实质上未依赖学术文献进行论证，而是基于原典文本和一般哲学分析，该维度判为 NOT_APPLICABLE。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如出版社、年份、页码）声称。所有关于王弼著作的引用均被声明为“记忆、未核验”，未伪造具体的书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将“得意忘言”正确归属给庄子（有证据支持 ev_16），将“崇本息末”等观点归属给王弼（基于学界通行说法，且回答已声明缺乏原文核验）。未发现张冠李戴或时代错置的归属。",
+      "evidence_refs": [
+       "ev_16"
+      ],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《老子》第四十章、第十一章、第五十二章的引用与提供的证据文本（ev_46, ev_49, ev_36, ev_61, ev_68）完全一致，未发现歪曲原意或把转述标为原文的情况。",
+      "evidence_refs": [
+       "ev_46",
+       "ev_49",
+       "ev_36",
+       "ev_61",
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用了“本体论”、“宇宙论”等现代哲学概念来描述王弼思想，这是中国哲学史研究中的标准做法，且回答明确区分了王弼的诠释与汉代宇宙论，未造成实质性的时代错置误解。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有声称的原文引用（如《老子》、《庄子》语句）均在证据中找到逐字对应。对于王弼的语句，回答明确标注为“记忆表述”、“未能在库中或外部核验”，未将其作为已核验的确切引用呈现。",
+      "evidence_refs": [
+       "ev_16",
+       "ev_36"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称阅读或引用任何提供的 Secondary Source Records（均为关于王阳明或莱布尼茨的无关文献）。回答诚实地声明了王弼著作的缺失状态，未对任何不可见的文献内容进行描述。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在哲学论证的清晰度与逻辑重构方面表现优异，准确把握了从汉代宇宙论向魏晋本体论转型的核心问题，并能诚实地区分证据边界。回答对《老子》与《庄子》原文的引用准确无误。主要缺陷在于核心史料（王弼著作）的缺失，导致对王弼思想的具体分析缺乏坚实的文本基础，且对汉代老学的描述缺乏学术文献支撑。这在历史学科维度上构成了显著限制，但并未导致事实性错误。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答准确引用并分析了《老子》第四十章、第十一章、第五十二章的原文，并利用《庄子·外物》的文本作为方法论溯源。这些引用与提供的证据（ev_46, ev_49, ev_36, ev_61, ev_68, ev_16）完全吻合，且分析紧扣文本语义。未得满分是因为核心对象王弼的《老子注》文本完全缺失，导致对王弼的文本分析缺乏直接证据支撑。",
+      "supporting_spans": [
+       "第四十章——全书最接近本体论表述的一句",
+       "第十一章——\"无\"的功能性地位",
+       "第五十二章——\"母—子\"结构",
+       "言者所以在意，得意而忘言"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答构建了一个清晰的逻辑链条：从《老子》文本的多义性出发，通过“得意忘言”的方法论转换，推导出王弼“以无为本”的本体论重构，并对比汉代宇宙论。然而，由于缺乏王弼原著证据，对王弼具体论证步骤（如“崇本息末”的具体注解逻辑）的重建主要依赖一般性哲学推演和记忆，缺乏文本细节的支撑，论证的颗粒度较粗。",
+      "supporting_spans": [
+       "王弼的诠释立场可概括为——用\"本末\"这对范畴重新编排《老子》的全部语汇",
+       "这一步转换的意义：它为\"不逐字解经而重构经意\"提供了合法性"
+      ],
+      "missing_requirements": [
+       "缺乏王弼《老子注》或《老子指略》的具体文本证据来支撑其论证步骤的重建"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答展现了良好的诠释学意识，明确区分了《老子》文本的“发生论”与“本体论”两种读法，并指出汉代与王弼分别激活了不同的语义层。这种对文本多义性的敏感度符合该维度的高分要求。",
+      "supporting_spans": [
+       "《老子》原文自身是**多义的**——它既有发生论的语汇...也有功能性/条件性的语汇",
+       "汉代老学与王弼的分野，本质上不是\"谁更忠于原文\"，而是各自激活了原文中不同的语义层"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答正确指出了汉代宇宙论与王弼本体论的一般性区别，但完全缺乏一手或二手文献证据支持。关于汉代老学（如《淮南子》、严遵、河上公）的具体描述被明确标注为“记忆/未核验”，且提供的书目记录中无相关汉代文献。这导致历史对比部分缺乏学术严谨性，近乎泛泛而谈。",
+      "supporting_spans": [
+       "通常认为，汉代的老学形象是**宇宙论—养生论—治术**三位一体的",
+       "（本节关于汉代老学的描述为学界一般认识/我的记忆，本次未能取得文献支撑）"
+      ],
+      "missing_requirements": [
+       "缺乏汉代老学相关文献（如《淮南子》、《老子指归》、《河上公老子章句》）的文本或书目证据"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未引用任何现代学术研究文献来支撑其关于王弼或汉代老学的论断。提供的书目记录均为关于王阳明或西方哲学的文献，与主题无关。虽然回答诚实声明了检索限制，但实质上未展示文献导向。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现具体的书目字段（如出版社、年份、页码）供核对。所有关于王弼著作的引用均被声明为记忆且未提供具体书目信息，不构成伪造书目。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将“得意忘言”归于庄子，将“崇本息末”归于王弼，均符合学界一般认知。虽然缺乏王弼著作的直接证据，但并未出现张冠李戴或时代错置的明显错误。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《老子》和《庄子》原文的引用与提供的证据（ev_16, ev_36, ev_46, ev_49, ev_61, ev_68）一致，未发现歪曲原典内容的情况。",
+      "evidence_refs": [
+       "ev_16",
+       "ev_36",
+       "ev_46",
+       "ev_49",
+       "ev_61",
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用“本体论”、“宇宙论”等现代哲学概念分析古代文本，并明确指出了这是一种“诠释”或“后设叙事”，未声称这是古人的自我理解，符合学术规范。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有声称的原文引用（如《老子》章节、《庄子》外物）均在证据中找到对应。对于王弼的注文，回答明确标注为“记忆、未核验”且未加引号声称是逐字原文，避免了虚假精确引用。",
+      "evidence_refs": [
+       "ev_16",
+       "ev_36",
+       "ev_46",
+       "ev_49",
+       "ev_61",
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明了无法访问王弼著作及汉代文献，未对任何未提供的文献进行内部结构或论证步骤的详细描述。所有对王弼思想的描述均基于一般性哲学推论或记忆，并附带了免责声明。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在极其有限的证据条件下（仅有《老子》和《庄子》部分原文，缺失核心对象王弼的任何著作及汉代文献）展现了较高的哲学思辨能力和学术诚实度。回答准确利用了现有证据分析《老子》文本的多义性，并构建了从“得意忘言”到“崇本息末”的逻辑推演。然而，由于核心一手文献（王弼注）和对比文献（汉代老学）的完全缺失，关于王弼具体诠释操作和汉代思想史背景的论述缺乏实证支撑，更多依赖于一般性哲学推论。这导致在“历史学科”维度得分较低。总体而言，这是一个逻辑自洽但证据基础薄弱的哲学阐释。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答准确引用并分析了《老子》第四十章、第十一章、第五十二章的原文，并将其与王弼的诠释意图进行了对照。虽然王弼注文本身因证据缺失被标记为'记忆'，但回答对《老子》原文的定位和解读是扎实且准确的。",
+      "supporting_spans": [
+       "第四十章——全书最接近本体论表述的一句",
+       "第十一章——'无'的功能性地位",
+       "第五十二章——'母—子'结构"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功重构了王弼'以无为本'与'崇本息末'的内在逻辑链条：从'得意忘言'的方法论确立，到对'有生于无'的本体论重读，再到对汉代宇宙论图像的置换。论证结构清晰，逻辑连贯，准确区分了宇宙发生论与本体论的问题域差异。",
+      "supporting_spans": [
+       "王弼的诠释立场可概括为——用'本末'这对范畴重新编排《老子》的全部语汇",
+       "这一诠释立场可概括为——用'本末'这对范畴重新编排《老子》的全部语汇",
+       "王弼的位移则在于：把'无'从时间序列的起点挪到存在根据的位置"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答展示了《老子》文本的多义性（发生论 vs 功能性/条件性），并指出汉代与王弼分别激活了不同的语义层。这种处理方式体现了对诠释多样性的尊重，避免了非此即彼的简单化判断。",
+      "supporting_spans": [
+       "《老子》原文自身是**多义的**——它既有发生论的语汇...也有功能性/条件性的语汇",
+       "汉代老学与王弼的分野，本质上不是'谁更忠于原文'，而是各自激活了原文中不同的语义层"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答正确识别了汉代宇宙论（气化、生成论）与王弼本体论（贵无）的基本差异，并提及了《淮南子》、河上公等历史坐标。然而，由于缺乏一手文献检索支持，关于汉代老学的具体描述流于'一般性认识'，缺乏具体的文本或历史细节支撑，历史厚度不足。",
+      "supporting_spans": [
+       "汉代的老学形象是**宇宙论—养生论—治术**三位一体的",
+       "以《淮南子》为代表，把'道'描述为从'无形'到'有形'...的生成序列"
+      ],
+      "missing_requirements": [
+       "缺乏对汉代具体文献（如《淮南子》原文、河上公注）的引用与详细分析"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答明确声明无法获取王弼著作及现代研究文献，且未引用任何具体的二手研究（如关于王弼哲学的专著或论文）。虽然诚实，但完全缺乏学术文献的对话与支撑，故不适用打分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供任何具体的书目字段（如出版社、年份、页码）供核验，且明确声明王弼相关内容为记忆，未伪造具体书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将'得意忘言'正确归因于庄子，将'崇本息末'等观点归因于王弼，符合学界通行认知，且未提供具体的、可被证伪的细节（如某学者的具体生卒年或非主流观点）。",
+      "evidence_refs": [
+       "ev_16"
+      ],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《老子》第四十章、第十一章、第五十二章的引用与证据库中的原文高度一致，未发现歪曲或捏造原文内容的情况。",
+      "evidence_refs": [
+       "ev_36",
+       "ev_46",
+       "ev_49",
+       "ev_61",
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答准确区分了汉代宇宙论与魏晋本体论的问题域，未发现用晚期概念强行解释早期思想的严重时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有声称的《老子》引文均能在证据中找到对应；对于王弼的引文，回答明确标注为'记忆、未核验'，未将其伪装为确凿的原文引用。",
+      "evidence_refs": [
+       "ev_16",
+       "ev_36",
+       "ev_46",
+       "ev_49",
+       "ev_61",
+       "ev_68"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实声明了证据库中缺失王弼著作及外部文献，未对未获取的文献进行内部结构或论证步骤的描述，符合访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答在极其有限的证据条件下（缺失核心研究对象王弼的文本）展现了极高的学术诚实度与哲学思辨能力。回答准确把握了《老子》原文本的张力，并逻辑清晰地重构了王弼'以无为本'的诠释路径及其对汉代宇宙论的颠覆。主要缺陷在于因文献缺失导致的历史维度单薄及缺乏二手文献对话。整体而言，这是一份在约束条件下质量尚可的哲学阐释，但作为严格的历史学术研究则显得证据不足。",
+    "judge_confidence": 0.85
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 3,
+   "read_chapters_materialized": 3,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "84adfb4d0c0b#27": "CANONICAL_ID",
+    "6ef2f18cfdc9#39": "CANONICAL_ID",
+    "dd8853676655#11": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 69,
+   "primary_replay_matched": 2,
+   "primary_replay_windows": 2,
+   "primary_replay_coverage_rate": 0.029,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-08",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确引用了《庄子·秋水》原文（濠梁之辩全段），并正确引用了陈鼓应《庄子今注今译》中关于篇旨及“散段”的导读语。对“安”字的语义双关分析基于原文文本，引用精准，无脱离文本的发挥。",
+      "supporting_spans": [
+       "濠梁之辩见于《庄子·秋水》篇末",
+       "陈鼓应认为'文意完足，其余数章，疑是散段羼入'",
+       "庄子曰：'儵鱼出游从容，是鱼之乐也。'惠子曰：'子非鱼，安知鱼之乐？'...庄子曰：'请循其本...我知之濠上也。'",
+       "庄子抓住'安'字的双义（'如何/凭什么'与'何处/从何'）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答将辩论拆解为五个回合，逻辑重构清晰严密。准确识别了惠子的“认知资格/同一性”前提（非其类即不能知）及其对称性论证（承认不知庄子从而确证庄子不知鱼），也准确识别了庄子“以子之矛攻子之盾”的策略及最后“循其本”的语义转换。对双方论证结构的分析符合逻辑学标准。",
+      "supporting_spans": [
+       "回合一（庄子立论）...这是一个关于**他者（鱼）内在状态**的断言",
+       "回合二（惠子诘难）...隐含前提是：要断言某物有某种内在感受，断言者必须与该物具有某种**可通达的同一性**",
+       "回合四（惠子反收）...我承认我不知你——正因如此，这条'不知他者'的原则是**普遍对称**的",
+       "回合五（庄子循其本）...抓住'安'字的双义"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确区分了“认识论困难（他心知问题）”与“审美移情”两种解释路径，并指出了二者分别对应惠子与庄子的心态。进一步提出了第三层综合判断，指出庄子意在跳出认识论框架转向体验。这种分层处理展示了良好的解释学视野，且未将现代概念强加为古人原意，而是作为“回看”工具。",
+      "supporting_spans": [
+       "这正是一个解释分歧点，我把它拆成三层",
+       "（1）作为认识论困难（他心知问题）...用'他心知'框架解释濠梁之辩是**后世概念的回看**",
+       "（2）作为审美移情的呈现...以'移情'（Einfühlung，立普斯，19世纪末）命名这一现象，也是**后世美学术语的回填**",
+       "（3）我的综合判断...庄子则否定了这个 Problem 的设置方式"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵守历史纪律，明确指出“他心问题”和“移情”是近代/19世纪概念，非惠子或庄子原语，仅作为分析工具。引用陈鼓应关于“散段”的观点来定位文本性质，体现了对文本历史性的尊重。未犯时代错置错误。",
+      "supporting_spans": [
+       "但须注意历史纪律：惠子并非笛卡尔主义者，'他心问题'是近代主体哲学的语汇",
+       "以'移情'（Einfühlung，立普斯，19世纪末）命名这一现象，也是**后世美学术语的回填**",
+       "陈鼓应认为'文意完足，其余数章，疑是散段羼入'...不宜把这场对话当作全篇论证的必然结论"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答引用了陈鼓应《庄子今注今译》和冯友兰《中国哲学简史》的具体观点作为支撑。对于检索到的西方二手文献（Raphals, Schwitzgebel, Ivanhoe），诚实声明仅获取到书目信息而未读内容，未进行虚假引用或过度主张。这种对证据边界的诚实处理符合高学术标准。",
+      "supporting_spans": [
+       "陈鼓应在导读中明确给出这一解读",
+       "冯友兰即指出，庄子在《齐物论》中讨论的较低层次知识'正与惠施'十事'中的知识相似'",
+       "本次仅取得书目层级信息，**未能读到这些论文的具体论证内容**；因此上述'认识论解读'的框架是我基于原文结构的分析，而非转述这些文献的立场"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有引用的书目信息（陈鼓应、冯友兰）均在提供的证据记录中存在。西方文献仅提及作者和篇名，未捏造页码或具体内容。",
+      "evidence_refs": [
+       "ev_14",
+       "ev_19"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "将“艺术心态 vs 认知心态”的解读归属给陈鼓应，将“较低层次知识”的论述归属给冯友兰，均与提供的证据文本（ev_14, ev_19）相符。",
+      "evidence_refs": [
+       "ev_14",
+       "ev_19"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "引用的《庄子·秋水》原文与提供的证据文本（ev_32）完全一致，无篡改或误植。",
+      "evidence_refs": [
+       "ev_32"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答虽然使用了“他心问题”、“移情”等现代概念，但明确标注为“后世概念的回看”或“回填”，并区分了惠子当时的自觉主张与后世的解释框架，符合历史纪律要求。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有带引号的原文引用均能在证据文本中找到逐字对应的出处。",
+      "evidence_refs": [
+       "ev_32"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对于 access_level 为 METADATA_ONLY 的西方文献，回答明确声明“未能读到这些论文的具体论证内容”，仅将其作为检索背景提及，未描述其内部论证或结论。",
+      "evidence_refs": [
+       "doi:10.1515/9781438409214-007",
+       "doi:10.1515/9781438409214-012"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术素养。它不仅精准地重构了濠梁之辩的逻辑结构，准确引用了原典及陈鼓应、冯友兰等权威学者的观点，还自觉地在历史语境与现代哲学概念（如他心问题、移情）之间划清界限，避免了时代错置。回答对二手文献的处理尤为严谨，诚实声明了证据的获取边界，未做任何越界的主张。论证层次分明，兼顾了逻辑分析与解释学深度，完全符合学术规范。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确引用了《庄子·秋水》原文，并依据陈鼓应《庄子今注今译》对篇章结构（散段羼入）进行了定位。对“安”字的训诂（“如何/凭什么”与“何处/从何”）符合传统注疏的解读路径，且引用的河伯与北海若对话片段（如“以道观之，物无贵贱”、“言之所不能论”）均能在提供的证据文本中找到对应。",
+      "supporting_spans": [
+       "濠梁之辩见于《庄子·秋水》篇末",
+       "陈鼓应认为'文意完足，其余数章，疑是散段羼入'",
+       "庄子抓住'安'字的双义（'如何/凭什么'与'何处/从何'）",
+       "可以言论者，物之粗也；可以意致者，物之精也",
+       "以道观之，物无贵贱"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答将辩论拆解为五个回合，逻辑重构清晰严密。准确识别了惠子“认知资格”与“对称性”论证的核心（若非其类则不能知，且原则普遍适用），以及庄子“以子之矛攻子之盾”和“语义滑动/转换框架”的策略。对双方胜负的判定（惠子逻辑占优，庄子转换问题）符合哲学分析标准。",
+      "supporting_spans": [
+       "回合一（庄子立论）",
+       "回合二（惠子诘难）",
+       "回合三（庄子反击）",
+       "回合四（惠子反收）",
+       "回合五（庄子循其本）",
+       "惠子在一个认识论 Problem 里给出了看似更硬的答案，庄子则否定了这个 Problem 的设置方式"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确区分了“认识论困难（他心知问题）”与“审美移情”两种解释路径，并指出了二者分别对应惠子与庄子的立场。同时，回答引入了第三种综合视角（表层认识论，深层体验观照），展示了解释的层次感。对“移情”作为后世术语的回填进行了历史纪律上的自我标注，体现了对解释多样性的自觉。",
+      "supporting_spans": [
+       "作为认识论困难（他心知问题）",
+       "作为审美移情的呈现",
+       "我的综合判断",
+       "用'他心知'框架解释濠梁之辩是后世概念的回看",
+       "以'移情'（Einfühlung，立普斯，19世纪末）命名这一现象，也是后世美学术语的回填"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵守历史纪律，明确指出惠子并非笛卡尔主义者，且“他心问题”与“移情”均为现代概念回溯。引用陈鼓应关于“艺术心态”与“认知心态”的区分时，明确标注出处。对冯友兰关于《齐物论》知识层次的引用也符合证据记录。未发现时代错置的实质性错误。",
+      "supporting_spans": [
+       "惠子并非笛卡尔主义者",
+       "用'他心知'框架解释濠梁之辩是后世概念的回看",
+       "以'移情'（Einfühlung，立普斯，19世纪末）命名这一现象，也是后世美学术语的回填",
+       "陈鼓应在导读中明确给出这一解读",
+       "冯友兰即指出，庄子在《齐物论》中讨论的较低层次知识'正与惠施'十事'中的知识相似'"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答展示了良好的文献意识。虽然检索到的西方文献（如 Raphals, Schwitzgebel, Ivanhoe）仅有元数据，但回答诚实地声明了“未能读到这些论文的具体论证内容”，并明确表示不将其作为引证依据，仅作为背景提及。主要依据陈鼓应和冯友兰的既有解读，符合证据访问限制。",
+      "supporting_spans": [
+       "顺带说明一点证据边界：我检索到若干讨论庄子怀疑论、相对主义的西方文献...但本次仅取得书目层级信息，未能读到这些论文的具体论证内容",
+       "因此上述'认识论解读'的框架是我基于原文结构的分析，而非转述这些文献的立场"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有引用的书目信息（陈鼓应《庄子今注今译》、冯友兰《中国哲学简史》、庄子《秋水》）均在 BIBLIOGRAPHIC_RECORDS 或 PRIMARY_TEXT_EVIDENCE 中有对应，且未杜撰未提供的字段（如页码、出版社等）。提及的西方文献仅列出作者和篇名，且明确说明未获取全文，未杜撰具体出版细节。",
+      "evidence_refs": [
+       "ev_14",
+       "ev_19",
+       "ev_32"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "将“艺术心态与认知心态”的解读归于陈鼓应，将《齐物论》知识层次分析归于冯友兰，均有证据支持（ev_14, ev_19）。未将西方学者的具体观点强加给文本。",
+      "evidence_refs": [
+       "ev_14",
+       "ev_19"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "引用的《庄子·秋水》原文（濠梁之辩及河伯海若对话）与提供的 PRIMARY_TEXT_EVIDENCE (ev_32, ev_14) 一致。未将转述标为原文。",
+      "evidence_refs": [
+       "ev_32",
+       "ev_14"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答虽然使用了“他心问题”、“移情”等现代概念，但明确将其界定为“后世概念的回看”或“回填”，并指出惠子并非笛卡尔主义者。这种比较哲学的做法在回答中保持了历史距离感，未将现代概念直接等同于古人原意。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有带引号的原文引用均能在证据文本中找到逐字对应（如“儵鱼出游从容，是鱼之乐也”、“子非鱼，安知鱼之乐”等）。陈鼓应的引语“写出庄子观赏事物的艺术心态与惠子分析事物的认知心态”也在证据窗口中出现。",
+      "evidence_refs": [
+       "ev_32",
+       "ev_14"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对于 access_level 为 METADATA_ONLY 的西方文献（Raphals, Schwitzgebel, Ivanhoe），回答仅提及篇名和存在性，明确声明“未能读到这些论文的具体论证内容”，未描述其内部论证步骤。对于陈鼓应和冯友兰的著作，引用内容均在提供的证据摘要范围内。",
+      "evidence_refs": [
+       "doi:10.1515/9781438409214-007",
+       "doi:10.1515/9781438409214-012"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术素养。它不仅准确重构了濠梁之辩的逻辑结构，还敏锐地捕捉到了“认识论”与“审美”两种解释路径的张力，并给出了具有深度的综合判断。回答严格遵守历史纪律，对现代概念的使用保持了必要的反思和标注，且在文献引用上诚实严谨，未越出证据支持的范围。论证清晰，层次分明，完全符合高质量学术讨论的标准。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确引用了《庄子·秋水》濠梁之辩的原文，并正确引用了陈鼓应《庄子今注今译》中关于该篇主题及“散段”性质的导读语。对“安”字的语义分析（“如何/凭什么”与“何处/从何”）基于文本事实，重构的五个回合与原文完全对应。",
+      "supporting_spans": [
+       "濠梁之辩见于《庄子·秋水》篇末",
+       "陈鼓应认为'文意完足，其余数章，疑是散段羼入'",
+       "庄子曰：'儵鱼出游从容，是鱼之乐也。'惠子曰：'子非鱼，安知鱼之乐？'",
+       "庄子抓住'安'字的双义（'如何/凭什么'与'何处/从何'）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答将辩论重构为五个清晰的回合，逻辑链条完整。准确识别了惠子“认知资格”与“对称性”论证的逻辑结构，以及庄子“以子之矛攻子之盾”和“语义滑动/转换框架”的策略。对双方胜负的逻辑分析（惠子形式占优，庄子转换问题框架）具有很高的哲学敏锐度。",
+      "supporting_spans": [
+       "回合一（庄子立论）",
+       "回合二（惠子诘难）：这是以'认知资格'为切入点的质疑",
+       "回合三（庄子反击）：以子之矛攻子之盾",
+       "回合四（惠子反收）：把庄子的类比反问转化为对结论的加固",
+       "回合五（庄子循其本）：抽换问题框架"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确区分了“认识论困难（他心知问题）”与“审美移情”两种解释路径，并指出了二者分别对应惠子与庄子的心态。进一步提出了第三层综合判断，指出庄子意在跳出“命题性知识”的框架，体现了对文本多重解释可能性的充分把握。",
+      "supporting_spans": [
+       "这正是一个解释分歧点，我把它拆成三层",
+       "（1）作为认识论困难（他心知问题）",
+       "（2）作为审美移情的呈现",
+       "（3）我的综合判断"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵循历史纪律，明确指出“他心问题”是近代主体哲学语汇，“移情”是19世纪末美学术语，均属于“后世概念的回看”，而非惠子或庄子的原生活汇。这种区分有效避免了时代错置，符合历史主义解读原则。",
+      "supporting_spans": [
+       "但须注意历史纪律：惠子并非笛卡尔主义者，'他心问题'是近代主体哲学的语汇",
+       "以'移情'（Einfühlung，立普斯，19世纪末）命名这一现象，也是后世美学术语的回填"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答引用了陈鼓应和冯友兰的著作作为主要支撑，并正确引用了原文。虽然检索到了西方二手文献（如 Ivanhoe, Raphals），但诚实地声明仅取得书目层级信息，未进行具体引证，这符合证据访问限制，但也限制了文献广度。",
+      "supporting_spans": [
+       "陈鼓应在导读中明确给出这一解读",
+       "冯友兰即指出，庄子在《齐物论》中讨论的较低层次知识'正与惠施'十事'中的知识相似'",
+       "本次仅取得书目层级信息，未能读到这些论文的具体论证内容"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有引用的书目信息（陈鼓应《庄子今注今译》、冯友兰《中国哲学简史》）均在提供的 BIBLIOGRAPHIC_RECORDS 中有对应记录，且字段一致。提及的西方文献仅限于元数据，未捏造具体页码或内容。",
+      "evidence_refs": [
+       "ev_14",
+       "ev_19"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "将“艺术心态与认知心态”的对比归于陈鼓应，将“较低层次知识”的对比归于冯友兰，均有证据支持。未将未证实的观点归属给特定学者。",
+      "evidence_refs": [
+       "ev_14",
+       "ev_19"
+      ],
+      "confidence": 0.95
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "引用的《庄子·秋水》原文与提供的 PRIMARY_TEXT_EVIDENCE 完全一致，未出现歪曲或捏造原文内容的情况。",
+      "evidence_refs": [
+       "ev_32"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答虽然使用了“他心问题”和“移情”等现代概念，但明确标注了这是“后世概念的回看”和“回填”，并区分了惠子/庄子的原初语境与后世解释框架，符合历史纪律，未构成实质性的时代错置误读。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有带引号的原文引用均能在提供的证据文本中找到逐字对应的出处。",
+      "evidence_refs": [
+       "ev_32",
+       "ev_14"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对于西方文献（Ivanhoe, Raphals 等），回答明确声明'本次仅取得书目层级信息，未能读到这些论文的具体论证内容'，未描述其内部论证结构，严格遵守了 METADATA_ONLY 的访问限制。",
+      "evidence_refs": [
+       "doi:10.1515/9781438409214-007",
+       "doi:10.1515/9781438409214-012"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术素养。它不仅准确重构了濠梁之辩的逻辑结构，还敏锐地捕捉到了双方在认识论与审美体验上的根本分歧。特别值得称赞的是其历史纪律性，在使用现代哲学概念（如“他心问题”、“移情”）进行类比分析时，明确界定了其作为“回看”工具的性质，避免了时代错置。对文献证据的使用诚实且严谨，严格遵守了访问级别限制。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 3,
+   "read_chapters_materialized": 3,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "ea6f47b169f0#23": "CANONICAL_ID",
+    "84adfb4d0c0b#18": "CANONICAL_ID",
+    "32093eed6ff1#11": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 51,
+   "primary_replay_matched": 21,
+   "primary_replay_windows": 5,
+   "primary_replay_coverage_rate": 0.412,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-09",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   },
+   "literature_orientation": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答极其诚实地界定了证据边界，明确指出《善的研究》与詹姆斯《心理学原理》原文均不在库内，且无法提供逐字引用。所有关于原典的陈述均被标记为'未核验的记忆与研究假设'，严格遵守了'无证据不声称'的原则，这种对证据缺失的坦诚处理在学术诚实性上得分极高。",
+      "supporting_spans": [
+       "西田几多郎《善的研究》不在本原典库内",
+       "我无法向你提供《善的研究》的任何逐字原文引用",
+       "不能对《心理学原理》的'意识流'章节作逐字引用",
+       "以下内容我没有库内原文支撑...不是逐字引文，也未附正式出处"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答构建了一个看似合理的比较框架（术语吸收、连续性图景、本体论改造），但回答明确承认这些内容'均属未经核验的转述'，且'无法在此确认'。在缺乏原典证据支撑的情况下，所谓的论证重构实质上是基于外部记忆的假设性构建，而非基于所提供证据的严谨重构。虽然逻辑结构清晰，但因缺乏证据基础，无法满足'argument_reconstruction'对基于证据进行论证的要求。",
+      "supporting_spans": [
+       "以下为我的研究框架，属未核验的记忆与研究假设",
+       "以上第 1–3 点，均属我未经核验的转述"
+      ],
+      "missing_requirements": [
+       "缺乏基于《善的研究》原文的论证重构",
+       "缺乏基于詹姆斯《心理学原理》原文的论证重构"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答未能展示任何关于西田与詹姆斯关系的学术争议或多元解读。由于未能检索到任何二手研究文献（'未能取得任何内容证据'），回答无法呈现学界对于'吸收与改造'的不同观点（如西田是误读了詹姆斯还是创造性转化），只能提供单一且未经验证的分析视角。",
+      "supporting_spans": [
+       "关于'西田—詹姆斯关系'的学界研究成果，我本次未能取得任何内容证据"
+      ],
+      "missing_requirements": [
+       "未能呈现学界关于西田与詹姆斯关系的不同解读",
+       "未能引用具体学者或流派的观点"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "虽然回答涉及了詹姆斯的心理学背景与西田的形而上学转向，试图进行历史维度的区分，但由于缺乏具体的文献证据支持这些历史断言（如詹姆斯的'彻底经验论'时期划分、西田的禅学背景），且回答本身将这些内容归为'未核验'，因此该维度不适用打分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "用户明确要求'研究文献依据'，但回答明确表示'二手研究文献通道未打通'，且'未能取得这些文献的内容证据'。回答中未列出任何具体的西田研究或比较哲学研究的书目、学者或观点，完全未能满足用户对文献依据的核心需求。",
+      "supporting_spans": [
+       "二手研究文献通道未打通",
+       "关于'西田—詹姆斯关系'的学界研究成果，我本次未能取得任何内容证据",
+       "我不列出具体篇目以免凭记忆造书目"
+      ],
+      "missing_requirements": [
+       "未提供任何关于西田与詹姆斯比较的研究文献",
+       "未提供任何具体的学者观点或书目信息"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答极其谨慎地避免了编造书目。在明确表示无法提供文献依据时，选择'不列出具体篇目'而非编造，因此无伪造书目行为。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何具体观点错误地归属给特定学者，反而明确声明无法进行学者归属的核验。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明无法提供《善的研究》和詹姆斯著作的原文引用，并将所有关于原典的描述标记为'未核验的记忆'，未将转述伪装为原文。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "虽然回答涉及了詹姆斯的后期思想与西田的早期思想，但并未提供具体的文本分析来支持这种比较，且已声明内容未核验，因此不构成实质性的时代错置指控。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有任何声称是'逐字原文'或'直接引语'的内容，所有引用均为概括性描述或明确标注为非原文。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实地报告了检索失败和证据缺失，未对任何文献的内部结构或论证步骤进行超出访问级别的描述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在学术诚实性（textual_grounding）方面表现卓越，极其严谨地界定了证据边界，避免了无中生有的引用和伪造。然而，由于检索工具未能提供关键的原典（《善的研究》、《心理学原理》）及二手研究文献，回答在核心任务上——即基于文献依据论证西田对詹姆斯的吸收与改造——实质上是失败的。回答未能提供任何文献依据，也未能进行基于证据的论证重构（argument_reconstruction）或展示学术界的多元解读（interpretive_plurality）。虽然回答提供了一个看似合理的分析框架，但作者明确将其标记为'未核验的假设'，这使得回答的学术价值仅限于'展示了在缺乏证据时应如何诚实作答'，而非解决了用户的哲学问题。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格基于提供的证据摘要（罗素《西方哲学史》、涂尔干《实用主义与社会学》片段）进行陈述，未越界引用未提供的原文。对于未检索到的《善的研究》和《心理学原理》原文，明确声明了证据缺失，符合最高标准的学术诚实与证据边界控制。",
+      "supporting_spans": [
+       "先把证据边界说清楚",
+       "库内与詹姆斯定位相关的，只有间接材料",
+       "我无法向你提供《善的研究》的任何逐字原文引用"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答诚实地列出了研究框架（如术语吸收、连续性图景、本体论改造），但由于缺乏核心原典证据，这些框架未能得到具体的文本支撑或逻辑推演。回答实际上未能完成对“吸收与改造”这一论证链条的有效重构，仅停留在假设层面。",
+      "supporting_spans": [
+       "以下内容我没有库内原文支撑，措辞仅是大意转述",
+       "以上第 1–3 点，均属我未经核验的转述"
+      ],
+      "missing_requirements": [
+       "缺乏对西田与詹姆斯具体文本的对照分析",
+       "未能基于证据展示“意识流”如何被转化为“纯粹经验”的逻辑步骤"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答未展示任何学术争议或多元解释视角。虽然提到了“学界共识”这一概念，但明确表示未能获取相关二手文献，因此未能呈现不同学者对西田与詹姆斯关系的不同解读（如心理学路径 vs. 形而上学路径的争议）。",
+      "supporting_spans": [
+       "关于'西田—詹姆斯关系'的学界研究成果，我本次未能取得任何内容证据"
+      ],
+      "missing_requirements": [
+       "未提供至少两种不同的学术解读视角",
+       "未引用具体学者或流派的观点进行对比"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答虽然涉及了詹姆斯的心理学背景和西田的东方禅学背景，但并未深入展开历史语境或思想史脉络的考辨。鉴于回答核心在于概念辨析而非历史考据，且缺乏具体史料支撑，判定为不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "用户明确要求“研究文献依据”，且回答承认未能获取任何关于“西田—詹姆斯关系”的二手研究文献。回答仅提供了无关的通用哲学史书目（罗素、涂尔干），完全未能满足任务对专业研究文献（如西田研究专著、京都学派研究）的导向要求。",
+      "supporting_spans": [
+       "二手研究文献通道未打通",
+       "我不列出具体篇目以免凭记忆造书目"
+      ],
+      "missing_requirements": [
+       "未提供任何关于西田几多郎与詹姆斯比较研究的具体文献",
+       "未引用任何专业期刊或专著来支持论点"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的书目（罗素《西方哲学史》、涂尔干《实用主义与社会学》）均在 BIBLIOGRAPHIC_RECORDS 中有对应记录，且未编造任何未提供的书目字段。",
+      "evidence_refs": [
+       "ev_24",
+       "ev_16"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误地归属给特定学者，反而明确声明无法确认西田与詹姆斯的具体观点归属细节。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称引用《善的研究》或《心理学原理》的原文，且明确区分了“有库内证据的部分”和“未核验的记忆与研究假设”，未将转述伪装成原文。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未涉及时代错置的概念体系使用。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何声称逐字原文的直接引语（引号+出处），所有引用均为概括性描述或对证据摘要的转述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答严格遵守了访问级别限制。对于仅有的证据（罗素、涂尔干），只使用了记录中明确存在的摘要信息；对于未获取的文献，明确声明了无法访问。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在学术诚实性（textual_grounding）方面表现极佳，严格区分了已知证据与未知领域，避免了幻觉和伪造。然而，作为对“西田与詹姆斯比较研究”这一具体学术问题的回应，其核心内容（argument_reconstruction, interpretive_plurality, literature_orientation）严重缺失。由于未能获取关键原典和二手研究文献，回答未能提供实质性的论证、文献依据或学术视角的对比，仅提供了一个研究框架的空壳。虽然诚实，但未能满足用户对“研究文献依据”和“根本差异刻画”的实质性需求。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答极其诚实地界定了证据边界，明确指出《善的研究》与詹姆斯《心理学原理》原文均不在库内，且无法提供逐字引用。这种对证据缺失的精确声明（而非伪造引用）在学术诚实性上得分极高，符合最高标准的文本 grounding 规范。",
+      "supporting_spans": [
+       "西田几多郎《善的研究》不在本原典库内",
+       "我无法向你提供《善的研究》的任何逐字原文引用",
+       "未能定位并读取其论意识流的章节"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答构建了“术语吸收—连续性图景—本体论改造”的逻辑框架，但明确声明该框架为“未核验的记忆与研究假设”，缺乏任何原文或二手文献的实证支撑。论证结构虽在，但实质内容完全悬空，未能完成基于证据的论证重构。",
+      "supporting_spans": [
+       "以下内容我没有库内原文支撑，措辞仅是大意转述",
+       "均属我未经核验的转述"
+      ],
+      "missing_requirements": [
+       "缺乏对西田或詹姆斯原文的具体分析",
+       "缺乏对“经验即实在”这一核心命题的文本定位"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答仅提供了单一的、基于作者记忆的解读路径（心理学描述 vs 本体论实在），且声明无法提供学界研究文献。未能展示学界关于西田与詹姆斯关系的不同解读视角或争议，完全未满足 REQUIRED 维度的要求。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未引用任何二手研究文献",
+       "未展示学界关于该主题的多种解释路径"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答虽然提及了詹姆斯的心理学背景和西田的东方/禅宗背景，但明确指出这些内容未经核验。鉴于回答整体缺乏历史证据支撑，且该维为 OPTIONAL，判定为 NOT_APPLICABLE。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "用户明确要求“研究文献依据”，且回答承认“未能取得任何内容证据”。虽然检索到了罗素和涂尔干的著作，但它们仅作为外围背景，完全不涉及西田—詹姆斯关系的核心研究。回答未能提供任何相关的专业研究文献（如 Nishida scholarship），完全未满足 REQUIRED 维度。",
+      "supporting_spans": [
+       "关于'西田—詹姆斯关系'的学界研究成果，我本次未能取得任何内容证据"
+      ],
+      "missing_requirements": [
+       "未提供任何关于西田与詹姆斯比较研究的学术文献",
+       "未提供《善的研究》或《心理学原理》的权威研究书目"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未编造任何书目信息。相反，它明确指出了无法提供具体书目的原因。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给某学者，所有关于西田和詹姆斯的论述均被标记为假设或转述，且未提供具体学者名作为虚假依据。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明无法提供《善的研究》和《心理学原理》的原文引用，未将任何内容伪装成“作者原文”或“直接引语”。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未涉及具体的时代错置概念分析，主要讨论的是一般性的哲学概念差异（心理学 vs 本体论），且声明缺乏文本支持。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有任何声称逐字原文的直接引语，所有引用均为概括性描述或对二手文献（罗素、涂尔干）的转述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答极其诚实地声明了访问限制：西田原著未命中，詹姆斯原著未定位，二手文献未打通。未对任何仅拥有元数据的文献进行内部结构描述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在学术诚实性（Textual Grounding）方面表现卓越，极其严谨地界定了证据边界，避免了任何形式的伪造或过度主张。然而，由于缺乏核心原典（西田《善的研究》、詹姆斯《心理学原理》）及相关的二手研究文献，回答在 Argument Reconstruction、Interpretive Plurality 和 Literature Orientation 这三个 REQUIRED 维度上严重不足。它未能提供基于证据的论证重构，未能展示学界的多元解释，也未能满足用户对“研究文献依据”的核心需求。虽然逻辑框架清晰，但实质内容处于“悬空”状态，仅作为研究假设而非确证结论呈现。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 0,
+   "read_chapters_materialized": 0,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {},
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 35,
+   "primary_replay_matched": 0,
+   "primary_replay_windows": 0,
+   "primary_replay_coverage_rate": 0.0,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-10",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的证据文本（罗伯特·所罗门《世界哲学简史》等）进行转述，未添加任何证据之外的具体细节。对于无法回答的部分，明确声明缺乏证据，符合文本边界。",
+      "supporting_spans": [
+       "在原典库中，唯一实质谈到伊本·鲁世德（阿威罗伊）宗教—哲学立场的，是罗伯特·所罗门《世界哲学简史》",
+       "该章称他\"极其推崇亚里士多德\"，目标是\"使亚里士多德的哲学摆脱新柏拉图主义解释的羁绊\"；并转述其主张：**造物是永恒的**，**神并非超然于世外，而是积极牵扯在世界之中**"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "任务要求回答“围绕阿威罗伊宗教与哲学关系论的正确诠释，学界有哪些争论”，这需要重构关于“双重真理”误读论及其反驳的论证结构。回答明确表示未能检索到相关文献，因此未能重构任何关于该争议的论证。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未能重构关于“双重真理”学说的学界争论论证",
+       "未能提供关于“误读论”的具体观点及反驳"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "任务核心是展示学界对阿威罗伊宗教与哲学关系的不同诠释（如“双重真理”是否为误读）。回答承认未找到相关文献，因此未能展示任何诠释流派或观点分歧。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未能展示学界关于阿威罗伊宗教与哲学关系的不同诠释流派"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答正确区分了“通俗说法”（如词条中的“双重真理”）与“学术研究”，并指出了需要区分“阿威罗伊本人文本”与“拉丁西方接受史”的历史层次。然而，由于缺乏具体文献，未能深入展开具体的历史脉络或争议细节。",
+      "supporting_spans": [
+       "库内的\"阿威罗伊\"哲人词条本身就写着\"他……发展出'双重真理论'\"——这正是您问题所指的那种通俗说法。",
+       "这一\"分层—解释\"结构，与被称为\"双重真理\"的**两个相互独立、彼此矛盾且同时为真**的命题**是否同一回事**，正是争议的关键。"
+      ],
+      "missing_requirements": [
+       "缺乏具体的历史文献支撑来详细阐述接受史争议"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答展现了极高的文献纪律。在检索失败（Crossref/OpenAlex拦截、本地库无相关记录）的情况下，明确拒绝使用记忆填充，而是如实报告证据边界，并仅引用了确实检索到的通史类著作作为背景。这种对“无证据即不陈述”的坚守完全符合学术规范。",
+      "supporting_spans": [
+       "我没有能够就\"围绕阿威罗伊宗教与哲学关系论的学界争论\"给出有文献依据的回答。",
+       "检索报告同时显示，底层两个学术数据源（Crossref、OpenAlex）本次均因地址段拦截而**检索失败**",
+       "因此我实际做了以下尝试，结果如实报告"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的书目信息（如《世界哲学简史》）均在提供的 BIBLIOGRAPHIC_RECORDS 中有对应记录，且未捏造任何未提供的字段。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何具体观点归属给特定学者（除了通史作者罗伯特·所罗门，且仅用于转述其书中的背景内容），未涉及争议学派的学者归属。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《世界哲学简史》的转述与提供的 PRIMARY_TEXT_EVIDENCE 高度重合，未歪曲原意。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未涉及具体的时代错置概念。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的文本片段（如“我认为他（亚里士多德）是自然设计出来表明人之绝对完美的标准和典范”）在提供的证据文本中逐字出现。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅描述了已读取的章节内容（ev_58），对于未读取的章节（如《企鹅哲学史》）明确表示“未能进入其中关于阿威罗伊的具体段落”，未越界描述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在文献纪律（literature_orientation）和文本依据（textual_grounding）方面表现优异，严格遵守了“无证据不陈述”的原则，诚实地报告了检索失败的情况，避免了幻觉和捏造。然而，由于缺乏相关的一手或二手文献证据，回答未能完成核心任务——即重构关于阿威罗伊“双重真理”学说的学界争论（argument_reconstruction）和展示诠释多样性（interpretive_plurality）。虽然回答在历史方法论上做出了正确的区分（如区分通俗说法与学术研究、区分文本与接受史），但受限于证据缺失，无法提供实质性的学术内容。整体而言，这是一个诚实但未能回答问题核心的“空”回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的证据文本（ev_58, ev_108, ev_116）进行陈述，未引用证据之外的内容。对于证据中未提及的'双重真理'争论，明确声明无证据支持，未进行虚构。",
+      "supporting_spans": [
+       "在原典库中，唯一实质谈到伊本·鲁世德（阿威罗伊）宗教—哲学立场的，是罗伯特·所罗门《世界哲学简史》",
+       "该章称他\"极其推崇亚里士多德\"，目标是\"使亚里士多德的哲学摆脱新柏拉图主义解释的羁绊\"；并转述其主张：**造物是永恒的**，**神并非超然于世外，而是积极牵扯在世界之中**"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "任务要求重构围绕阿威罗伊宗教与哲学关系论的学界争论。回答明确指出未能检索到相关二手文献，因此未能重构任何具体的学术论证或对立观点。虽然诚实，但就任务目标而言，未完成论证重构。",
+      "supporting_spans": [
+       "我没有能够就\"围绕阿威罗伊宗教与哲学关系论的学界争论\"给出有文献依据的回答。",
+       "就\"学界主流如何诠释、有哪些争论、各自证据基础为何\"这一核心诉求，**我本次未能取得任何可核验的二手文献证据**"
+      ],
+      "missing_requirements": [
+       "未能提供学界关于'双重真理'误读论的具体争论内容",
+       "未能提供支持或反对'误读论'的学者观点及论证"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "任务要求展示学界的不同诠释流派。回答承认无法提供任何具体的诠释分歧或流派划分，仅列出了'待核验的研究方向'而非实际的多元诠释现状。",
+      "supporting_spans": [
+       "所谓\"主流认为这是误读\"这一判断本身，也需要具体文献支撑——是哪一类研究、依据哪些文本、有哪些反例。在拿到实际文献之前，我不能列出\"某派/某学者主张……\"。"
+      ],
+      "missing_requirements": [
+       "未列出具体的诠释流派（如'误读论'支持者与反对者）",
+       "未提供不同流派的代表性学者或文献"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答正确区分了'阿威罗伊本人文本'与'拉丁西方接受史'（如1277年巴黎谴责）这两个历史层次，体现了历史意识。然而，由于缺乏具体文献，未能深入展开这一历史区分的具体细节和影响。",
+      "supporting_spans": [
+       "这属于**接受史（LATER_RECEPTION）**，与阿威罗伊本人文本内真正说了什么是两个层次，绝不能混同。",
+       "\"双重真理\"（*duplex veritas*）这一表述在何种意义上、由谁、在何时被归于阿威罗伊，以及它与 1277 年巴黎谴责、拉丁阿威罗伊主义（西格尔等）的关系。"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答展现了极高的文献纪律。在检索失败（Crossref/OpenAlex拦截）且本地库无相关记录的情况下，明确拒绝使用记忆填充，坚持'无文献不陈述'。正确识别了本地简介（如词条）非学术权威，并指出了证据的访问级别限制。",
+      "supporting_spans": [
+       "按研究纪律，我不能凭记忆列几位学者、再安一个\"某某主张\"的立场，当作学界争论来陈述。",
+       "检索报告同时显示，底层两个学术数据源（Crossref、OpenAlex）本次均因地址段拦截而**检索失败**",
+       "库内的\"阿威罗伊\"哲人词条本身就写着\"他……发展出'双重真理论'\"——这正是您问题所指的那种通俗说法。这类本地简介**不是**学术权威"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未引用任何具体的书目字段（如页码、出版社、年份），仅提及书名和章节，且均在提供的证据范围内。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何具体观点归属给特定学者，反而明确指出无法进行此类归属。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对《世界哲学简史》的转述与提供的原文证据（ev_58）高度一致，未歪曲原意。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未涉及具体的时代错置概念。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引文（如\"我认为他（亚里士多德）是自然设计出来表明人之绝对完美的标准和典范\"）在证据文本中逐字出现。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明未获取到相关文献，未对任何未读文献的内部结构进行描述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在学术诚信和文献纪律方面表现极佳，严格遵守了'无证据不陈述'的原则，正确识别了证据的局限性，并准确引用了现有证据中关于阿威罗伊的少量内容。然而，由于检索系统未能提供关于'双重真理'争论的相关二手文献，回答未能完成核心任务——即重构学界的具体争论和诠释流派。虽然这种诚实的拒答优于虚构，但在'argument_reconstruction'和'interpretive_plurality'这两个 REQUIRED 维度上，得分为 0，因为实质性的学术内容缺失。整体而言，这是一个高质量的'无结果'报告，而非对问题本身的回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答严格依据提供的证据文本（罗伯特·所罗门《世界哲学简史》等）进行转述，未添加任何证据之外的具体细节。对于无法回答的部分，明确声明缺乏证据，符合文本边界。",
+      "supporting_spans": [
+       "在原典库中，唯一实质谈到伊本·鲁世德（阿威罗伊）宗教—哲学立场的，是罗伯特·所罗门《世界哲学简史》"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "任务要求重构关于阿威罗伊宗教与哲学关系论的学界争论。回答明确指出未能检索到相关二手文献，因此未能重构任何具体的学术论证或对立观点。虽然诚实，但就任务目标而言，未完成论证重构。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未能提供学界关于'双重真理'误读论的具体论证内容",
+       "未能提供反对派或修正派的具体观点"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "任务要求展示学界的不同诠释流派。回答承认未能获取相关文献，因此未能展示任何诠释多样性（如主流误读论与反对意见的具体对立）。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未列出至少两派不同的学术观点"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答正确区分了阿威罗伊本人文本与拉丁西方接受史（LATER_RECEPTION）这两个层次，并指出了混淆两者的风险。这体现了基本的历史意识。然而，由于缺乏具体文献，未能深入展开具体的历史脉络或1277年谴责等关键历史事件的细节。",
+      "supporting_spans": [
+       "这属于接受史（LATER_RECEPTION），与阿威罗伊本人文本内真正说了什么是两个层次，绝不能混同"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答展现了极高的文献纪律。在缺乏相关二手文献记录的情况下，拒绝凭记忆或常识（如通用的'双重真理'标签）进行填充，而是明确指出检索失败和证据边界。这种对证据来源的严格恪守是学术质量的重要体现。",
+      "supporting_spans": [
+       "我没有能够就'围绕阿威罗伊宗教与哲学关系论的学界争论'给出有文献依据的回答",
+       "按研究纪律，我不能凭记忆列几位学者、再安一个'某某主张'的立场，当作学界争论来陈述"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的书目信息（如《世界哲学简史》）均在提供的BIBLIOGRAPHIC_RECORDS中有对应记录，且未编造任何未提供的字段。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何具体观点归属给特定学者（除了所罗门作为通史作者），未出现张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对所罗门著作的转述与提供的PRIMARY_TEXT_EVIDENCE内容一致，未歪曲原意。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未涉及具体的历史概念错置。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用了引号，但经核对，'造物是永恒的'等短语在证据文本中存在，且未声称是阿威罗伊本人的直接引语，而是对所罗门转述的概括。",
+      "evidence_refs": [
+       "ev_58"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明未检索到相关文献，未对任何未获取的文献进行内部结构或论证步骤的描述。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在文献纪律（literature_orientation）和文本依据（textual_grounding）方面表现优异，严格遵守了证据边界，未在缺乏资料的情况下进行臆测，这是学术诚信的体现。然而，由于检索系统未能提供相关二手文献，回答未能完成核心任务——即重构关于阿威罗伊'双重真理'学说的学界争论（argument_reconstruction, interpretive_plurality）。虽然回答正确指出了区分文本与接受史的历史原则（historical_discipline），但缺乏具体内容支撑。总体而言，这是一个高质量的'无结果'报告，而非对问题本身的回答。",
+    "judge_confidence": 0.95
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 1,
+   "read_chapters_materialized": 1,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "be928be3b1c9#32": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 42,
+   "primary_replay_matched": 2,
+   "primary_replay_windows": 2,
+   "primary_replay_coverage_rate": 0.048,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-11",
+  "dims": {
+   "textual_grounding": {
+    "median": 1,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 2,
+    "applicability": "OPTIONAL"
+   },
+   "literature_orientation": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答明确声明未检索到安斯康姆与Hooker的原文，仅基于麦金太尔《德性之后》的原文进行有限核验。虽然对麦金太尔部分引用了具体章节（ev_46, ev_48），但关于安斯康姆和Hooker的核心主张均未提供任何文本依据，属于严重缺乏文本支撑。",
+      "supporting_spans": [
+       "库内没有安斯康姆（Anscombe）1958 年〈现代道德哲学〉的原文",
+       "也没有 Brad Hooker 的任何著作",
+       "凡涉及安斯康姆本人措辞与 Hooker 立场的，我会逐处标明「记忆，未经库中核验」"
+      ],
+      "missing_requirements": [
+       "缺乏安斯康姆《现代道德哲学》的文本依据",
+       "缺乏Hooker著作的文本依据"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答成功利用麦金太尔文本重建了「法则性道德」失去神法与目的论背景后的困境，准确指出了义务论与后果主义作为补救方案的共同失败根源。然而，对于用户核心问题中关于Hooker的辩护及其与安斯康姆的争论，回答完全依赖记忆且未提供具体论证步骤，仅给出了非常宏观的立场描述，未能有效重建Hooker的「理想代码」论证细节。",
+      "supporting_spans": [
+       "麦金太尔把安斯康姆的洞见展开为「启蒙道德筹划必然失败」的论证",
+       "规则既然失去神圣律法与目的论的双重根基，就只剩两条补救路：要么功利主义...要么康德式实践理性"
+      ],
+      "missing_requirements": [
+       "未重建Hooker的具体论证结构",
+       "未详细展开安斯康姆与Hooker之间的具体争论点"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答展现了良好的解释性张力，主动区分了安斯康姆的「法则性」批判、Smart的「规则崇拜」指控以及Hooker的规则后果主义辩护，指出了用户问题中可能存在的概念混淆（如将Hooker归为义务论者）。这种区分体现了对哲学概念谱系的清晰把握，尽管缺乏一手文献支持，但解释框架本身具有学术价值。",
+      "supporting_spans": [
+       "「规则崇拜」这个提法，我记忆中更常追溯到 J. J. C. Smart 对规则功利主义的批评",
+       "Hooker 通常被归为「规则后果主义者」...而不是「规则义务论者」"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答正确识别了安斯康姆1958年论文在德性伦理学复兴中的历史地位，并准确引用了麦金太尔对该历史脉络的承接。但在处理具体历史细节（如「consequentialism」一词的发明权）时，回答明确表示无法核验，且未能提供任何替代性历史证据，导致历史断言的可信度降低。",
+      "supporting_spans": [
+       "这篇论文通常被视为 20 世纪德性伦理学复兴的开端",
+       "我在这一问题及其他一些问题上的观点大大受惠于安斯库姆（Anscombe）1958年的观点"
+      ],
+      "missing_requirements": [
+       "对「consequentialism」一词发明权的历史断言缺乏证据"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全未能满足文献导向的要求。虽然检索到了麦金太尔的文本，但对于问题核心涉及的安斯康姆和Hooker，回答明确承认「未能取得任何一篇以安斯康姆或 Hooker 为对象的可用研究」。回答中提及的Hooker著作《Ideal Code, Real World》及Smart的观点均未在书目记录或证据中出现，属于脱离给定文献库的空谈。",
+      "supporting_spans": [
+       "未能取得任何一篇以安斯康姆或 Hooker 为对象的可用研究",
+       "以上对 Hooker 的重建完全依赖我的记忆，未经库中核验"
+      ],
+      "missing_requirements": [
+       "未引用任何关于安斯康姆的文献",
+       "未引用任何关于Hooker的文献",
+       "未引用任何关于Smart的文献"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提及的Hooker著作《Ideal Code, Real World》和Smart的观点虽然未在BIBLIOGRAPHIC_RECORDS中，但回答明确标注为「记忆，未经核验」，且未提供具体的页码、出版社等详细书目字段，因此不构成伪造书目信息的致命错误（属于缺乏支持而非伪造）。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将「规则崇拜」归因于Smart，将Hooker归为规则后果主义者，虽然未提供证据，但属于合理的哲学史常识，且回答自身已声明缺乏核验，未将其作为确凿事实强加，故不判定为伪造归属。",
+      "evidence_refs": [],
+      "confidence": 0.7
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对麦金太尔《德性之后》的引用与提供的证据文本（ev_46, ev_48）内容一致，未发现歪曲原意的情况。对于安斯康姆和Hooker，回答未声称引用原文。",
+      "evidence_refs": [
+       "ev_46",
+       "ev_48"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答的时间线描述（安斯康姆1958 -> 德性伦理复兴 -> Hooker 2000）符合哲学史常识，未发现时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有带引号的内容均标注为转述或记忆，未声称是安斯康姆或Hooker的逐字原文。对麦金太尔的引用也是意译或概括，未伪造直接引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实地声明了访问限制（「库内没有...原文」），并未对未获取的文献进行内部结构或论证步骤的详细描述，而是停留在宏观立场层面，符合访问级别上限。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在极其有限的证据条件下（仅麦金太尔文本）展现了较高的哲学素养，能够清晰辨析「法则性」、义务论、后果主义与德性伦理学之间的概念关系，并诚实地暴露了证据缺失的边界。然而，作为对「当代次要争议」的回应，其核心缺陷在于完全缺乏对争议双方（安斯康姆与Hooker）一手及二手文献的引用与核验，导致关于Hooker辩护的论述仅停留在模糊的印象层面，无法满足学术评审对文献依据和论证深度的要求。虽然未犯事实性伪造错误，但整体学术质量受限于证据匮乏。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答明确声明缺乏安斯康姆和Hooker的原文证据，仅凭记忆和麦金太尔文本进行推演。虽然对麦金太尔《德性之后》的引用（ev_46, ev_48）有明确的章节标注和部分原文对应，但核心问题（安斯康姆的具体批判、Hooker的辩护）完全缺乏文本支撑，且未提供任何书目记录来佐证其记忆内容。",
+      "supporting_spans": [
+       "库内没有安斯康姆（Anscombe）1958 年〈现代道德哲学〉的原文",
+       "也没有 Brad Hooker 的任何著作",
+       "凡涉及安斯康姆本人措辞与 Hooker 立场的，我会逐处标明「记忆，未经库中核验」"
+      ],
+      "missing_requirements": [
+       "缺乏对安斯康姆原文的直接引用或核验",
+       "缺乏对Hooker著作的任何文本依据"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答成功重建了麦金太尔对安斯康姆论点的承接（即启蒙运动道德筹划因失去目的论和神法根基而失败），并基于此推演了安斯康姆对「法则性」道德的批判。然而，对于Hooker的立场重建完全基于模型记忆，缺乏证据支持，且未能具体展示Hooker如何回应「规则崇拜」指控的具体论证步骤，导致争论重建的完整性不足。",
+      "supporting_spans": [
+       "近代思想家（狄德罗、休谟、康德、克尔凯郭尔）共享一套道德戒律，却把支撑它的目的论框架（「偶然成为的人」→「认识到自身目的后可能成为的人」）拆掉了",
+       "Hooker 的路线（记忆，未经核验）大致是：不必崇拜规则，也不必放弃规则"
+      ],
+      "missing_requirements": [
+       "Hooker回应安斯康姆的具体论证细节缺失",
+       "对「规则崇拜」与「法则性」概念区分的论证链条不够严密"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答尝试区分了安斯康姆的「法则性」批判、Smart的「规则崇拜」指控以及Hooker的「规则后果主义」辩护，展示了不同层次的概念差异。但受限于证据缺失，这种区分更多是逻辑上的推演而非基于文献的学术对话展示，未能呈现学界内部对此问题的多种解释路径。",
+      "supporting_spans": [
+       "层次一：安斯康姆——法则性语言本身有毒",
+       "层次二：Smart——规则功利主义是「规则崇拜」",
+       "层次三：Hooker——规则后果主义的辩护"
+      ],
+      "missing_requirements": [
+       "缺乏不同学者对安斯康姆解读的对比",
+       "缺乏Hooker与Smart或安斯康姆直接交锋的文献展示"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答正确指出了安斯康姆思想与犹太—基督教神法观念及亚里士多德目的论的历史关联，并利用麦金太尔文本佐证了启蒙运动拆解目的论结构的历史背景。但在处理Hooker（2000年）与安斯康姆（1958年）的历史对话关系时，因缺乏证据而流于推测，未能严谨地梳理这一争论在20世纪伦理学史中的具体演变。",
+      "supporting_spans": [
+       "这套框架 historically 源自犹太—基督教的神法观念",
+       "近代思想家...共享一套道德戒律，却把支撑它的目的论框架...拆掉了"
+      ],
+      "missing_requirements": [
+       "对Hooker著作发表背景及其在伦理学史中位置的核验缺失"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "虽然回答引用了麦金太尔《德性之后》作为旁证，但核心议题涉及的安斯康姆原文、Hooker著作以及相关二手研究均未在书目记录中出现。回答坦诚了检索失败，但这直接导致其无法满足「给出文献依据」的任务要求，文献导向极弱。",
+      "supporting_spans": [
+       "库内没有安斯康姆（Anscombe）1958 年〈现代道德哲学〉的原文",
+       "也没有 Brad Hooker 的任何著作",
+       "未能取得任何一篇以安斯康姆或 Hooker 为对象的可用研究"
+      ],
+      "missing_requirements": [
+       "未提供安斯康姆《现代道德哲学》的文献依据",
+       "未提供Hooker《Ideal Code, Real World》的文献依据",
+       "未提供任何关于两者争论的二手研究文献"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供任何具体的书目字段（如页码、出版社、年份）给安斯康姆或Hooker的著作，且明确声明了缺乏证据，因此不存在伪造书目信息的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "虽然回答对Hooker和Smart的观点进行了描述，但明确标注为「记忆，未经库中核验」，并未将其作为确凿的学术事实进行断言，而是作为待核验的解读提出。这属于缺乏证据支持，而非蓄意伪造归属。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对麦金太尔《德性之后》的引用与提供的证据片段（ev_46, ev_48）内容一致，未发现歪曲原典内容的情况。对于安斯康姆和Hooker，因未引用原文，故不存在歪曲。",
+      "evidence_refs": [
+       "ev_46",
+       "ev_48"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确处理了安斯康姆（1958）与Hooker（2000）的时间顺序，并试图通过麦金太尔（1981）作为中介连接思想史，未发现时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中所有带引号的内容均标注为转述或记忆，未声称是安斯康姆或Hooker的逐字原文。对麦金太尔的引用也是概括性引用，未伪造精确引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明了无法访问安斯康姆和Hooker的文献，且对麦金太尔的使用仅限于证据摘要提供的章节内容，未超出证据范围描述内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在极其有限的证据条件下（仅有麦金太尔《德性之后》部分章节）展现了诚实的学术态度，明确区分了已核验内容与基于记忆的推测，避免了伪造证据的致命错误。然而，由于缺乏安斯康姆和Hooker的一手及二手文献，回答无法完成「给出文献依据」的核心任务，对Hooker立场的重建和争论的定性缺乏实证基础。虽然对麦金太尔文本的使用较为准确，但整体上该回答更像是一份基于既有知识的「研究计划说明」而非严谨的学术综述。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答明确声明缺乏安斯康姆和Hooker的原文证据，仅凭记忆和麦金太尔《德性之后》的文本进行推演。虽然对麦金太尔文本的引用（ev_46, ev_48）有明确的章节标注和部分引用，但核心问题（安斯康姆的批判细节、Hooker的辩护）完全缺乏一手或二手文献支撑，属于严重证据缺失。",
+      "supporting_spans": [
+       "库内没有安斯康姆（Anscombe）1958 年〈现代道德哲学〉的原文",
+       "也没有 Brad Hooker 的任何著作",
+       "凡涉及安斯康姆本人措辞与 Hooker 立场的，我会逐处标明「记忆，未经库中核验」"
+      ],
+      "missing_requirements": [
+       "缺乏对安斯康姆《现代道德哲学》原文的引用与核验",
+       "缺乏对Hooker著作的任何文本依据"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答成功重建了麦金太尔对安斯康姆论点的承接（即启蒙运动道德筹划因失去目的论和神法根基而失败），并基于此逻辑推演了安斯康姆对「法则性」道德的批判。然而，对于Hooker的辩护重建完全基于模型记忆，且未能提供具体的论证步骤或文本细节，导致关于Hooker的部分论证薄弱且不可靠。",
+      "supporting_spans": [
+       "近代思想家（狄德罗、休谟、康德、克尔凯郭尔）共享一套道德戒律，却把支撑它的目的论框架（「偶然成为的人」→「认识到自身目的后可能成为的人」）拆掉了",
+       "Hooker 的路线（记忆，未经核验）大致是：不必崇拜规则，也不必放弃规则"
+      ],
+      "missing_requirements": [
+       "对Hooker具体论证机制的重建缺乏证据支持",
+       "未能具体展示安斯康姆与Hooker之间的直接争论点"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答展现了良好的解释性张力，区分了安斯康姆的「法则性」批判、Smart的「规则崇拜」指控以及Hooker的「规则后果主义」辩护。它指出了用户问题中可能存在的概念混淆（将Hooker归为义务论者，将「规则崇拜」归于安斯康姆），并尝试厘清不同层次的争论。虽然缺乏文献支持，但逻辑上的区分清晰。",
+      "supporting_spans": [
+       "Hooker 通常被归为「规则后果主义者」，而不是「规则义务论者」",
+       "「规则崇拜」这个提法，我记忆中更常追溯到 J. J. C. Smart 对规则功利主义的批评"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答正确识别了安斯康姆批判的历史背景（犹太—基督教神法观念向近代世俗道德的转化）及其在麦金太尔叙事中的位置。但在具体史实（如「consequentialism」一词的发明权）上标注为记忆且未核验，且未能提供Hooker回应安斯康姆的具体历史语境，历史严谨性不足。",
+      "supporting_spans": [
+       "这套框架 historically 源自犹太—基督教的神法观念",
+       "近代道德哲学抛弃了立法者，却保留了法则语汇"
+      ],
+      "missing_requirements": [
+       "关键术语史实（如consequentialism词源）未经核验"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答严重违反了文献导向要求。虽然诚实声明了缺乏证据，但核心内容（安斯康姆的批判细节、Hooker的辩护、Smart的「规则崇拜」）均未基于任何提供的BIBLIOGRAPHIC_RECORDS或RETRIEVED_EVIDENCE。提供的证据仅限于麦金太尔，且被用作旁证而非主要对象。对于任务要求的「文献依据」，回答实质上未能提供。",
+      "supporting_spans": [
+       "未能取得任何一篇以安斯康姆或 Hooker 为对象的可用研究",
+       "以下内容我未取得任何库内证据"
+      ],
+      "missing_requirements": [
+       "未能提供安斯康姆原文的文献依据",
+       "未能提供Hooker著作的文献依据",
+       "未能提供关于两者争论的二手研究文献"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供具体的书目字段（如页码、出版社、年份）供核验，所有提及的著作均以通用名称或记忆形式出现，且明确标注未核验，故不判定为伪造书目。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将观点归属给学者时（如安斯康姆、Hooker、Smart、麦金太尔），均明确标注为「记忆，未经库中核验」或基于麦金太尔文本的转述，未将未核验的记忆作为确凿事实宣称，且未发现明显的张冠李戴（基于常识判断），故不判定为伪造归属。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对麦金太尔《德性之后》的引用与提供的证据文本（ev_46, ev_48）基本一致。对于安斯康姆和Hooker，回答明确表示无原文且未进行具体引用，故不存在歪曲原典的问题。",
+      "evidence_refs": [
+       "ev_46",
+       "ev_48"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答的历史叙述（从神法到启蒙道德）符合标准哲学史解释，未发现明显的时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称任何逐字原文引用，所有引用均为转述或部分摘录，且对麦金太尔的摘录与证据相符。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答极其诚实地声明了访问限制（无安斯康姆/Hooker原文），并明确区分了「读到原文」的麦金太尔部分和「记忆」部分。未对未获取的文献进行内部结构或论证步骤的详细描述。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在极其有限的证据条件下（仅有麦金太尔《德性之后》部分章节）展现了极高的诚实度和逻辑推演能力。它清晰地界定了安斯康姆批判的哲学史背景，并正确指出了用户问题中的概念混淆。然而，由于缺乏核心文献（安斯康姆原文、Hooker著作）的任何证据支持，回答无法满足「文献依据」这一核心学术要求。关于Hooker的辩护和「规则崇拜」的争论实质上属于基于记忆的推测，而非基于证据的学术论证。虽然逻辑自洽，但作为学术回答，其证据基础严重不足。",
+    "judge_confidence": 0.85
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 2,
+   "read_chapters_materialized": 2,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {
+    "2131abc93fdc#7": "CANONICAL_ID",
+    "2131abc93fdc#6": "CANONICAL_ID"
+   },
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 73,
+   "primary_replay_matched": 9,
+   "primary_replay_windows": 4,
+   "primary_replay_coverage_rate": 0.123,
+   "new_primary_source_ids": 0
+  }
+ },
+ {
+  "case_id": "V5-12",
+  "dims": {
+   "textual_grounding": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   },
+   "literature_orientation": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [
+   "FABRICATED_BIBLIOGRAPHY"
+  ],
+  "fatal_vote_counts": {
+   "FABRICATED_BIBLIOGRAPHY": 1
+  },
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "The answer explicitly states that no primary texts (Mackie, Parfit, Enoch) were retrieved or verified. While the answer mentions specific arguments (queerness, relativity, deliberative predicament), it categorizes them as 'memory-based paraphrases' without grounding in the provided evidence. Since the dimension is OPTIONAL and the answer does not claim to provide grounded textual analysis from the retrieved evidence (which is irrelevant), a score is not applicable.",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "The answer provides a high-level reconstruction of Mackie's arguments and the realists' responses (Parfit's non-naturalism, Enoch's robust realism/deliberative predicament). However, the reconstruction is extremely sparse and lacks the detailed logical steps or nuance expected of a scholarly response. It explicitly labels the content as 'memory-based' and 'unverified', failing to meet the requirement for a rigorous, evidence-backed reconstruction. The score reflects the presence of a basic structure but the absence of substantive, supported argumentation.",
+      "supporting_spans": [
+       "麦凯主张，若存在客观的道德属性或道德价值，它们会是一种在形而上学上极其'奇特'的属性",
+       "Parfit 主张一种**非自然主义实在论**",
+       "Enoch 提出'稳健实在论'（robust realism）"
+      ],
+      "missing_requirements": [
+       "Detailed logical steps of the arguments",
+       "Verification of the arguments against primary or secondary sources",
+       "Specific page references or textual evidence"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "The answer fails to demonstrate interpretive plurality. It presents a single, unverified line of interpretation for each thinker (Mackie, Parfit, Enoch) without engaging with alternative readings, scholarly debates, or different schools of thought within meta-ethics. The response explicitly admits to a lack of source access, precluding any meaningful comparison of interpretations.",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "Presentation of multiple interpretations or scholarly debates",
+       "Comparison of different meta-ethical stances",
+       "Engagement with secondary literature variations"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "The question focuses on contemporary meta-ethics (1977 onwards) and conceptual argumentation rather than historical development or context. The answer does not engage with historical discipline, and since the dimension is OPTIONAL, a null score is appropriate.",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "The answer explicitly fails to meet the literature orientation requirement. It states that no verifiable secondary literature was retrieved and that the provided bibliographic entries are 'memory-based clues' rather than verified evidence. The user explicitly requested 'citable secondary literature content', which the answer admits it cannot provide. The provided bibliography lists standard works but without any verification or access to their content via the provided records.",
+      "supporting_spans": [
+       "本次我未能取得任何可核验的二手文献内容",
+       "以下书目是学界通说中的标准出处，但**同样未经我本次核验**"
+      ],
+      "missing_requirements": [
+       "Citation of verifiable secondary literature",
+       "Use of provided bibliographic records to support claims",
+       "Specific references to page numbers or chapters from secondary sources"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer lists standard bibliographic entries (Mackie 1977, Parfit 2011, Enoch 2011) but explicitly states they are 'memory-based clues' and 'unverified'. It does not fabricate specific page numbers, publishers, or DOIs that are absent from the records; rather, it admits the lack of verification. The provided records in the input do not contain these specific works, but the answer's disclaimer prevents this from being a fabrication of *supported* detail.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer attributes general positions (Non-naturalism to Parfit, Robust Realism to Enoch) which are broadly accurate in the field. While the specific arguments (e.g., 'deliberative predicament') are not verified by the provided evidence, they are not blatant fabrications or misattributions in the context of general philosophical knowledge, and the answer includes a disclaimer about verification.",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer does not claim to quote primary texts directly. It uses phrases like '麦凯主张' (Mackie argues) and explicitly labels the content as 'memory-based paraphrases' (记忆性转述), avoiding the misrepresentation of paraphrase as direct quotation.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The discussion centers on 20th/21st-century philosophy (Mackie 1977, Parfit 2011, Enoch 2011). There is no evidence of using later concepts to distort earlier ones in a way that constitutes a major anachronism.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer does not contain any quotation marks or claims of exact wording. It relies entirely on paraphrase and summary.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer explicitly denies having access to the literature content ('本次我未能取得任何可核验的二手文献内容'). It does not describe the internal structure or arguments of the sources beyond general knowledge, thus avoiding overclaiming access.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "The answer fails to meet the scholarly requirements of the task. While it demonstrates honesty by explicitly stating the lack of verified sources and the reliance on memory, this admission directly contravenes the user's instruction to 'cite verifiable secondary literature content'. The argument reconstruction is superficial and unverified, and there is no engagement with interpretive plurality or specific textual evidence. The provided bibliography is a list of standard works without any grounding in the retrieved records. Consequently, the response serves only as a general, non-academic summary of the topic rather than a rigorous scholarly analysis.",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "The dimension is marked OPTIONAL. The answer explicitly states that no primary texts (Mackie, Parfit, Enoch) were retrieved or verified. Since the answer does not claim to ground its content in specific textual evidence from the provided records (which are all irrelevant to the topic), this dimension is not applicable for scoring.",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "The answer provides a general reconstruction of Mackie's arguments (queerness, relativity) and mentions Parfit's and Enoch's responses (non-naturalism, deliberative predicament). However, the reconstruction is extremely sparse and lacks the detailed logical steps or nuance expected of a scholarly reconstruction. It explicitly labels the content as 'memory-based' and 'unverified', failing to meet the requirement for a rigorous, evidence-backed reconstruction. The score reflects the presence of a basic outline but the absence of depth and verification.",
+      "supporting_spans": [
+       "麦凯主张，若存在客观的道德属性或道德价值，它们会是一种在形而上学上极其'奇特'的属性",
+       "Parfit 主张一种**非自然主义实在论**：存在不可还原的规范性事实",
+       "Enoch 提出'**稳健实在论**'（robust realism），主张存在客观的、不可还原的道德事实"
+      ],
+      "missing_requirements": [
+       "Detailed logical steps of the arguments",
+       "Verification against primary or secondary sources",
+       "Specific engagement with the structure of the 'queerness' or 'relativity' arguments"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "The answer fails to present any interpretive plurality. It offers a single, unverified perspective for each philosopher (Mackie, Parfit, Enoch) without acknowledging alternative readings, scholarly debates, or different schools of thought regarding these arguments. The response is monolithic and explicitly admits to being based on memory without access to the literature that would reveal plurality.",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "Presentation of multiple interpretations or scholarly debates",
+       "Comparison of different views on the arguments",
+       "Acknowledgment of alternative readings within the secondary literature"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "The dimension is marked OPTIONAL. The answer does not engage with the historical development of the error theory debate, the context of 1977 vs. 2011, or the historical lineage of the arguments. It treats the philosophers as isolated nodes in a debate without historical grounding. Since it does not substantially engage with this dimension, it is scored as null.",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "The answer explicitly fails to meet the core requirement of the task: '引用可核验的二手文献内容作为论证依据' (Cite verifiable secondary literature content as argumentative basis). The model states it retrieved no relevant literature and provides no citations to the provided (irrelevant) records or any external verifiable sources. The bibliography section lists standard texts but admits they are 'memory clues' and not verified. This constitutes a complete failure of the literature orientation requirement.",
+      "supporting_spans": [
+       "本次我未能取得任何可核验的二手文献内容",
+       "因此，你要求的'引用**可核验的**二手文献内容作为论证依据'这一条，在当前工具条件下我**无法诚实兑现**"
+      ],
+      "missing_requirements": [
+       "Citation of verifiable secondary literature",
+       "Use of provided bibliographic records to support claims",
+       "Specific references to page numbers, chapters, or specific articles"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer lists standard bibliographic entries (Mackie 1977, Parfit 2011, Enoch 2011) but explicitly frames them as 'memory clues' and 'unverified' rather than asserting them as verified facts from the provided records. Since the records provided in the input do not contain these works (they are all about Locke, Kant, Wittgenstein, etc.), the model correctly avoids claiming they are in the evidence. It does not fabricate specific page numbers or false details for these works, only listing their existence as general knowledge.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The attributions (Mackie to error theory, Parfit to non-naturalism, Enoch to robust realism) are standard, widely accepted characterizations in the field. While the model admits it cannot verify them against the provided evidence (which is irrelevant), it does not attribute fringe or false views to these scholars. The attributions are accurate general descriptions, even if unverified in this specific context.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer carefully avoids claiming to quote primary texts. It uses phrases like '据学界通说作的转述' (paraphrased according to scholarly consensus) and '我的转述/大意' (my paraphrase/gist), explicitly distancing itself from direct quotation or exact representation of the primary text.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer correctly situates the debate in contemporary meta-ethics (1977 to 2011). There is no evidence of using later concepts to distort earlier ones in a way that constitutes a major anachronism.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer does not contain any quotation marks around text claimed to be from the primary sources. It explicitly states that the content is paraphrased and not direct quotation.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer explicitly denies having access to the relevant literature ('未能取得任何可核验的二手文献内容'). It does not describe the internal structure or arguments of the sources it lists, only providing general titles. Therefore, it does not overclaim access.",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "The answer fails to meet the scholarly requirements of the task. While it demonstrates honesty by explicitly stating the lack of verified sources and avoiding fabrication, this admission renders it unable to fulfill the core instruction of citing verifiable secondary literature. The argument reconstruction is superficial and unverified, and there is no engagement with interpretive plurality or the specific literature provided in the context. The response is essentially a disclaimer followed by unverified general knowledge, which scores very low on the required dimensions of argument reconstruction, interpretive plurality, and literature orientation.",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "The dimension is marked OPTIONAL. The answer explicitly states that no primary texts (Mackie, Parfit, Enoch) were retrieved or verified. While the answer discusses the content of these texts, it does so based on memory rather than grounded evidence from the provided records. Since the dimension is optional and the answer does not provide grounded textual evidence from the provided sources, a score is not applicable.",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "The answer attempts to reconstruct Mackie's arguments (queerness, relativity) and the responses by Parfit and Enoch. However, the answer explicitly disclaims any verification of these reconstructions, stating they are 'memory-based' and 'unverified'. The reconstruction of Parfit's response (non-naturalist realism, comparison to math) and Enoch's response (deliberative predicament) is skeletal and lacks the detailed logical steps or specific argumentative moves required for a high score. It provides a general outline but fails to demonstrate a rigorous reconstruction supported by evidence.",
+      "supporting_spans": [
+       "麦凯主张，若存在客观的道德属性或道德价值，它们会是一种在形而上学上极其'奇特'的属性",
+       "Parfit 主张一种**非自然主义实在论**：存在不可还原的规范性事实。",
+       "Enoch 提出'**稳健实在论**'（robust realism），主张存在客观的、不可还原的道德事实。"
+      ],
+      "missing_requirements": [
+       "Detailed logical steps of the arguments",
+       "Verification of the reconstructed arguments against primary or secondary sources"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "The question asks for representative rebuttals from contemporary moral realists. The answer mentions Parfit and Enoch but presents their views as a single, unified line of response (defending robust realism) without exploring any interpretive disagreements, alternative readings, or internal debates within the realist camp regarding Mackie's arguments. It fails to show any awareness of plurality in interpretation.",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "Presentation of conflicting interpretations or diverse scholarly viewpoints",
+       "Discussion of alternative realist strategies beyond non-naturalism"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "The dimension is marked OPTIONAL. The answer does not engage with the historical development of the error theory debate or the specific historical context of the 1977 publication versus the 2011 rebuttals in a way that would require historical discipline assessment. It treats the arguments as timeless philosophical positions.",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "The user explicitly requested '引用可核验的二手文献内容作为论证依据' (cite verifiable secondary literature content as argumentative basis). The answer explicitly states: '本次我未能取得任何可核验的二手文献内容' (I failed to obtain any verifiable secondary literature content this time). It further admits that the provided bibliography is '记忆性线索' (memory-based clues) and '未经我本次核验' (not verified by me this time). Consequently, the answer fails completely to meet the requirement of using verifiable secondary literature.",
+      "supporting_spans": [
+       "本次我未能取得任何可核验的二手文献内容。",
+       "以下书目是学界通说中的标准出处，但**同样未经我本次核验**"
+      ],
+      "missing_requirements": [
+       "Citation of verifiable secondary literature",
+       "Use of provided bibliographic records to support claims"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": true,
+      "offending_spans": [
+       "J. L. Mackie, *Ethics: Inventing Right and Wrong*, 1977",
+       "Derek Parfit, *On What Matters*, Vol. 2 (OUP, 2011)",
+       "David Enoch, *Taking Morality Seriously: A Defense of Robust Realism* (OUP, 2011)"
+      ],
+      "reason": "The answer provides specific bibliographic details (Publication Year 1977, 2011; Publisher OUP; Volume 'Vol. 2') for Mackie, Parfit, and Enoch. The provided BIBLIOGRAPHIC_RECORDS and SECONDARY_SOURCE_RECORDS do not contain entries for these specific works or these specific details. The records list unrelated topics (Locke, Kant, Wittgenstein, etc.). Even if these details are factually correct in the real world, the evidence provided (records) does not support this level of precision (metadata), thus constituting a fabrication relative to the provided evidence context.",
+      "evidence_refs": [
+       "BIBLIOGRAPHIC_RECORDS",
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer attributes general philosophical positions (Non-naturalist realism to Parfit, Robust realism to Enoch) that are broadly consistent with standard philosophical knowledge. While the answer admits these are unverified memories, it does not appear to attribute a specific, idiosyncratic, or clearly incorrect argument to these scholars that would constitute a fabrication of attribution in the context of a general summary, especially given the lack of contradictory evidence in the provided records.",
+      "evidence_refs": [],
+      "confidence": 0.4
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer carefully avoids claiming direct quotes or specific textual details from the primary texts. It uses phrases like '麦凯主张' (Mackie argues) and '转述' (paraphrase) and explicitly warns that the content is '记忆性转述' (memory-based paraphrase) and not verified. It does not misrepresent a specific text passage as being present in the source when it is not.",
+      "evidence_refs": [],
+      "confidence": 0.2
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer discusses the chronological relationship between Mackie (1977) and Parfit/Enoch (2011) correctly. It does not use later concepts to describe earlier thoughts in a distorting way.",
+      "evidence_refs": [],
+      "confidence": 0.1
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer does not use quotation marks to claim exact verbatim quotes from the primary or secondary texts. It uses quotes for emphasis (e.g., '怪诞性论证') or titles, which is acceptable.",
+      "evidence_refs": [],
+      "confidence": 0.1
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "The answer explicitly states that it did not access the full text or verifiable content of the relevant literature. It claims 'METADATA_ONLY' level knowledge (or rather, admits a lack of it) and does not describe internal structures or arguments of the books based on the provided records (which are irrelevant). It actually under-claims access rather than overclaims.",
+      "evidence_refs": [],
+      "confidence": 0.1
+     }
+    },
+    "overall_scholarly_assessment": "The answer fails to meet the scholarly requirements of the prompt. While it demonstrates honesty by explicitly stating the lack of verified sources and relying on memory, this failure is fatal to the task of providing a 'verifiable' argument based on secondary literature. The dimension scores reflect this lack of grounding and evidence. The fatal flag for FABRICATED_BIBLIOGRAPHY is triggered because the answer presents specific bibliographic metadata (dates, publishers) that are not supported by the provided evidence records, violating the strict evidence-based constraint of the evaluation protocol.",
+    "judge_confidence": 0.9
+   }
+  ],
+  "replay_meta": {
+   "read_chapters_recorded": 0,
+   "read_chapters_materialized": 0,
+   "read_chapters_materialize_failed": 0,
+   "materialize_failed_keys": [],
+   "resolution_modes": {},
+   "legacy_resolved": 0,
+   "primary_replay_candidates": 39,
+   "primary_replay_matched": 0,
+   "primary_replay_windows": 0,
+   "primary_replay_coverage_rate": 0.0,
+   "new_primary_source_ids": 0
+  }
+ }
+]

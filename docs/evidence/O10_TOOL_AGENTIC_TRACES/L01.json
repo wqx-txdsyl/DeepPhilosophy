@@ -1,0 +1,854 @@
+{
+ "case_id": "L01",
+ "section": "L",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": 4,
+ "question": "请逐字核对《论语》“学而不思则罔，思而不学则殆”一句并给出所在篇名。核对到原文即可收口，不必补充其他材料。",
+ "injection": null,
+ "QUESTION": "请逐字核对《论语》“学而不思则罔，思而不学则殆”一句并给出所在篇名。核对到原文即可收口，不必补充其他材料。",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记这次核验的证据需求，然后在原典库中定位该句。",
+  "核对对象是一部《论语》，而首轮命中只见于所罗门《哲学导论》的转引（未标篇名），尚未触及《论语》原典本身。我需要先确认库中是否收录《论语》，再定位该句所在篇章。",
+  "已定位到《论语》原典（book_id d9272a80942a）,\"为政篇\"（chapter_idx 3）为疑似出处。我去读该篇原文，确认措辞与位置。",
+  "我的核心证据缺口——《论语》原典中该句的逐字措辞与篇名定位——仍未闭合，前几次调用只定位到二手转引与书目，未读到原典正文。我需要就此处申请一次延展检索。",
+  "预算延展已获准，我现在读取《论语》为政篇正文，逐字核对措辞。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置",
+ "TOOL_SELECTED": [
+  "search_books",
+  "list_books",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "学而不思则罔 思而不学则殆"
+   },
+   {
+    "query": "论语 为政 学而不思"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "孔子"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "学而不思则罔 思而不学则殆"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 47, 'chapter_title': '德经·第四十八章', 'citation_label': '【《道德经》·德经·第四十八章】', 'snippet': '德经·第四十八章 为学日益，为道日损。损之又损，"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "孔子"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语 为政 学而不思"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'c13b139d1db3', 'book_title': '哲学导论', 'author': '罗伯特·所罗门', 'chapter_idx': 39, 'chapter_title': '1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》', 'citation_label': '【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 "
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 3, 'title': '为政篇', 'book_title': '论语', 'citation_label': '【《论语》·为政篇】', 'text': '子曰：“为政以德，譬如北辰，居其所而众星共之。”\\n子曰：“《诗》三百，一言以蔽之，曰：‘思无邪’。”\\n子曰：“道之以政，齐之以刑，民免而无耻。道之以德"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 47, 'chapter_title': '德经·第四十八章', 'citation_label': '【《道德经》·德经·第四十八章】', 'snippet': '德经·第四十八章 为学日益，为道日损。损之又损，"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'c13b139d1db3', 'book_title': '哲学导论', 'author': '罗伯特·所罗门', 'chapter_idx': 39, 'chapter_title': '1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》', 'citation_label': '【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 "
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'd9272a80942a', 'chapter_idx': 3, 'title': '为政篇', 'book_title': '论语', 'citation_label': '【《论语》·为政篇】', 'text': '子曰：“为政以德，譬如北辰，居其所而众星共之。”\\n子曰：“《诗》三百，一言以蔽之，曰：‘思无邪’。”\\n子曰：“道之以政，齐之以刑，民免而无耻。道之以德"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "逐字核对已完成，结果如下。\n\n该句确见于《论语·为政篇》，原文作：\n\n> 子曰：“学而不思则罔，思而不学则殆。”\n\n【《论语》· 为政篇】\n\n核对说明：你提供的八字句子在原文中逐字一致，无措辞差异；区别仅在于整句原文冠有\"子且前后以引号包于对话形式之中；就上下文位置而言，该句在《为政篇》中夹在论君子与小人之别的一章与论异端之害的一章之间。君子周而不比，小人比而不周\"之后、\"攻乎异端，斯害也已\"之前。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记这次核验的证据需求，然后在原典库中定位该句。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》\"学而不思则罔，思而不学则殆\"一句的逐字原文与所在篇名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "学而不思则罔 思而不学则殆"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 47, 'chapter_title': '德经·第四十八章', 'citation_label': '【《道德经》·德经·第四十八章】', 'snippet': '德经·第四十八章 为学日益，为道日损。损之又损，"
+  },
+  {
+   "kind": "note",
+   "content": "核对对象是一部《论语》，而首轮命中只见于所罗门《哲学导论》的转引（未标篇名），尚未触及《论语》原典本身。我需要先确认库中是否收录《论语》，再定位该句所在篇章。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "孔子"
+   },
+   "result_head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "论语 为政 学而不思"
+   },
+   "result_head": "{'results': [{'book_id': 'c13b139d1db3', 'book_title': '哲学导论', 'author': '罗伯特·所罗门', 'chapter_idx': 39, 'chapter_title': '1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》', 'citation_label': '【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 "
+  },
+  {
+   "kind": "note",
+   "content": "已定位到《论语》原典（book_id d9272a80942a）,\"为政篇\"（chapter_idx 3）为疑似出处。我去读该篇原文，确认措辞与位置。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "我的核心证据缺口——《论语》原典中该句的逐字措辞与篇名定位——仍未闭合，前几次调用只定位到二手转引与书目，未读到原典正文。我需要就此处申请一次延展检索。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求逐字核对原文并给出篇名, 而现有证据仅来自所罗门《哲学导论》的转引与《论语》书目信息, 尚未读取《论语》原典正文, 逐字措辞与篇名无法确认, 缺口未补",
+    "unresolved_evidence_gap": "《论语》为政篇中该句的逐字原文与所在篇章确认"
+   }
+  },
+  {
+   "kind": "note",
+   "content": "预算延展已获准，我现在读取《论语》为政篇正文，逐字核对措辞。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 3, 'title': '为政篇', 'book_title': '论语', 'citation_label': '【《论语》·为政篇】', 'text': '子曰：“为政以德，譬如北辰，居其所而众星共之。”\\n子曰：“《诗》三百，一言以蔽之，曰：‘思无邪’。”\\n子曰：“道之以政，齐之以刑，民免而无耻。道之以德"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》\"学而不思则罔，思而不学则殆\"一句的逐字原文与所在篇名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求逐字核对原文并给出篇名, 而现有证据仅来自所罗门《哲学导论》的转引与《论语》书目信息, 尚未读取《论语》原典正文, 逐字措辞与篇名无法确认, 缺口未补",
+    "unresolved_evidence_gap": "《论语》为政篇中该句的逐字原文与所在篇章确认"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:17:58",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《论语》\"学而不思则罔，思而不学则殆\"一句的逐字原文与所在篇名",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:18:05",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:18:05",
+    "reason": "用户明确要求逐字核对原文并给出篇名, 而现有证据仅来自所罗门《哲学导论》的转引与《论语》书目信息, 尚未读取《论语》原典正文, 逐字措辞与篇名无法确认, 缺口未补",
+    "unresolved_gap": "《论语》为政篇中该句的逐字原文与所在篇章确认"
+   }
+  ],
+  "retrieval_executed": 4,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:03"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 100186,
+   "output_tokens": 2575,
+   "total_tokens": 102761
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 6,
+   "compacted_chars_saved": 10069,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12088,
+     "output_tokens": 291,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15198,
+     "output_tokens": 417,
+     "tool_chars_added": 5159
+    },
+    {
+     "round": 3,
+     "input_tokens": 15688,
+     "output_tokens": 139,
+     "tool_chars_added": 4273
+    },
+    {
+     "round": 4,
+     "input_tokens": 13719,
+     "output_tokens": 398,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 5,
+     "input_tokens": 15133,
+     "output_tokens": 170,
+     "tool_chars_added": 2109
+    },
+    {
+     "round": 6,
+     "input_tokens": 15395,
+     "output_tokens": 389,
+     "tool_chars_added": 1492
+    },
+    {
+     "round": 7,
+     "input_tokens": 12965,
+     "output_tokens": 771,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 2,
+  "verified_exact": 2,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 201,
+ "token_usage": {
+  "input_tokens": 100186,
+  "output_tokens": 2575,
+  "total_tokens": 102761
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 16.7,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》\"学而不思则罔，思而不学则殆\"一句的逐字原文与所在篇名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《论语》\"学而不思则罔，思而不学则殆\"一句的逐字原文与所在篇名）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引用与逐字",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "学而不思则罔 思而不学则殆"
+   },
+   "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 47, 'chapter_title': '德经·第四十八章', 'citation_label': '【《道德经》·德经·第四十八章】', 'snippet': '德经·第四十八章 为学日益，为道日损。损之又损，",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "孔子"
+   },
+   "result_summary": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语 为政 学而不思"
+   },
+   "result_summary": "{'results': [{'book_id': 'c13b139d1db3', 'book_title': '哲学导论', 'author': '罗伯特·所罗门', 'chapter_idx': 39, 'chapter_title': '1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》', 'citation_label': '【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 ",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求逐字核对原文并给出篇名, 而现有证据仅来自所罗门《哲学导论》的转引与《论语》书目信息, 尚未读取《论语》原典正文, 逐字措辞与篇名无法确认, 缺口未补",
+    "unresolved_evidence_gap": "《论语》为政篇中该句的逐字原文与所在篇章确认"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 已定位《论语》原典(book_id d9272a80942a)与疑似出处\"为政篇\", 但尚未读取该篇正文以逐字核对\"学而不思则罔，思而不学则殆\"的措辞与位置）。soft 检索预算=3 次。（PRIMARY 闭环: search",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "result_summary": "{'book_id': 'd9272a80942a', 'chapter_idx': 3, 'title': '为政篇', 'book_title': '论语', 'citation_label': '【《论语》·为政篇】', 'text': '子曰：“为政以德，譬如北辰，居其所而众星共之。”\\n子曰：“《诗》三百，一言以蔽之，曰：‘思无邪’。”\\n子曰：“道之以政，齐之以刑，民免而无耻。道之以德",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "学而不思则罔 思而不学则殆"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 47,
+      "chapter_title": "德经·第四十八章",
+      "citation_label": "【《道德经》·德经·第四十八章】",
+      "snippet": "德经·第四十八章 为学日益，为道日损。损之又损，以至於无为。无为而无不为。取天下常以无事，及其有事，不足以取天下。",
+      "score": 0.519
+     },
+     {
+      "book_id": "c13b139d1db3",
+      "book_title": "哲学导论",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 39,
+      "chapter_title": "1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》",
+      "citation_label": "【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》】",
+      "snippet": "子曰：“学而不思则罔，思而不学则殆。” 子曰：“吾未见好德如好色者也。” 子曰：“吾未见刚者。”或对曰：“申枨。”子曰：“枨也欲，焉得刚？” 孔子的“思”乃是仁人藉以安定“内在自我”的一种关注形式。因此，君子之思所涉并非沉思，而是对义务的恰当关注，在那里，“义务”本质上被理解为一种社会性的礼。孔子的“中庸学说”指引“君子”要永远避免极端。“中庸”乃礼之道。因此，孔子的格言所系，常常是以古之“仁人”设立的榜样为典范，描述何谓恰当的衣、食、",
+      "score": 0.504
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 23,
+      "chapter_title": "第二十四章",
+      "citation_label": "【《道德经》·第二十四章】",
+      "snippet": "企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜者不长。其在道也，曰余食赘形，物或恶之，故有道者不处。",
+      "score": 0.495
+     },
+     {
+      "book_id": "d0c5ade4fcbd",
+      "book_title": "叔本华哲学经典（套装共5册）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 36,
+      "chapter_title": "读书与书籍",
+      "citation_label": "【《叔本华哲学经典（套装共5册）》·读书与书籍】",
+      "snippet": "一 愚昧无知如果伴随着富豪巨贾，更加贬低了人的身价。穷人忙于操作，无暇读书也无暇思想，沦为无知，不足为怪。富人则不然，我们常见其中的无知者，恣情纵欲，醉生梦死，类似禽兽。他们本可做极有价值的事情，可惜不能善用财富和闲暇。 二 我们读书时，是别人在代替我们思想，我们只不过重复他的思想活动的过程而已，犹如儿童启蒙习字时，用笔按照教师以铅笔所写的笔画依样画葫芦一般。我们的思想活动在读书时被免除了一大部分。因此，我们暂不自行思索而拿书来读时，会",
+      "score": 0.491
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 8,
+      "chapter_title": "第七章",
+      "citation_label": "【《中庸》·第七章】",
+      "snippet": "子曰：“人皆曰‘予知’，驱而纳诸罟擭陷阱之中，而莫之知辟也。人皆曰‘予知’，择乎中庸，而不能期月守也。”",
+      "score": 0.483
+     },
+     {
+      "book_id": "23026c516292",
+      "book_title": "三十六计",
+      "author": "佚名",
+      "chapter_idx": 27,
+      "chapter_title": "假痴不癫",
+      "citation_label": "【《三十六计》·假痴不癫】",
+      "snippet": "宁伪作不知不为，不伪作假知妄为。静不露机，云雷屯也。",
+      "score": 0.481
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 5,
+      "chapter_title": "第四章",
+      "citation_label": "【《中庸》·第四章】",
+      "snippet": "子曰：“道之不行也，我知之矣：知者过之；愚者不及也。道之不明也，我知之矣：贤者过之；不肖者不及也。” “人莫不饮食也。鲜能知味也。”",
+      "score": 0.48
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 12,
+      "chapter_title": "第十一章",
+      "citation_label": "【《中庸》·第十一章】",
+      "snippet": "子曰：“素隐行怪，后世有述焉：吾弗为之矣。 君子遵道而行，半途而废：吾弗能已矣。 君子依乎中庸，遁世不见知，而不悔。唯圣者能之。”",
+      "score": 0.471
+     },
+     {
+      "book_id": "d0c5ade4fcbd",
+      "book_title": "叔本华哲学经典（套装共5册）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 35,
+      "chapter_title": "关于思考",
+      "citation_label": "【《叔本华哲学经典（套装共5册）》·关于思考】",
+      "snippet": "不管藏书多么丰富的图书馆，假如不加整顿、杂乱无章的话，它给我们的利益，还不如那些规模小、藏书少，但整理得条理井然、分类清楚的图书馆。同理，不管你胸中的知识如何渊博，如若不能反复思考、咀嚼消化，它的价值远逊于那些所知不多但能予以深思熟虑的知识。我们若将所学的知识消化吸收，变为己有，并且能够充分应用发挥的话，就必须经过思考的过程，把自己的知识在诸方面相结合，或是把你的真理和其他真理互相比较。当然，我们所能“深思熟虑”的东西，范围狭窄得很，它",
+      "score": 0.467
+     },
+     {
+      "book_id": "909e887aac01",
+      "book_title": "王阳明全集：简体注释版",
+      "author": "王阳明",
+      "chapter_idx": 45,
+      "chapter_title": "说",
+      "citation_label": "【《王阳明全集：简体注释版》·说】",
+      "snippet": "梁仲用默斋说 （辛未） 仲用识高而气豪，既举进士，锐然有志天下之务。一旦责其志曰：“於呼！予乃太早。乌有己之弗治而能治人者！”于是专心为己之学，深思其气质之偏 [1] ，而病其言之易也，以“默”名庵，过予而请其方。予亦天下之多言人也，岂足以知默之道！然予尝自验之，气浮则多言，志轻则多言。气浮者耀于外，志轻者放其中。予请诵古之训而仲用自取之。 夫默有四伪：疑而不知问，蔽而不知辩，冥然以自罔，谓之默之愚；以不言 人者，谓之默之狡；虑人之觇其",
+      "score": 0.467
+     },
+     {
+      "book_id": "4e213cf57480",
+      "book_title": "呻吟语",
+      "author": "吕坤",
+      "chapter_idx": 8,
+      "chapter_title": "问学",
+      "citation_label": "【《呻吟语》·问学】",
+      "snippet": "学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审问明辨也。故当其时，道学大明，如拨云披雾，白日青天，无纤毫障蔽。讲学须要如此，无坚自是之心，恶人相直也。 熟思审处，此四字德业之首务；锐意极力，此四字德业之要务；有渐无已，此四字德业之成务；深忧过计，此四字德业之终务。 静是个见道的妙诀，只在静处潜观，六合中动的机括都解破。若见了，还有个妙诀以守之，只是一，一是大根本，运这一却要因的通变。 学者只该说下学，更不消说",
+      "score": 0.466
+     },
+     {
+      "book_id": "1f6fe151032b",
+      "book_title": "鬼谷子",
+      "author": "鬼谷子",
+      "chapter_idx": 13,
+      "chapter_title": "养志法灵龟",
+      "citation_label": "【《鬼谷子》·养志法灵龟】",
+      "snippet": "养志者，心气之思不达也。有所欲，志存而思之。志者，欲之使也。 欲多则心散，心散则志衰，志衰则思不达。故心气一则欲不徨，欲不徨则志意不衰，志意不衰则思理达矣。理达则和通，和通则乱气不烦于胸中，故内以养志，外以知人。养志则心通矣，知人则识分明矣。将欲用之于人，必先知其养气志。知人气盛衰，而养其志气，察其所安，以知其所能。 志不养，则心气不固；心气不固，则思虑不达；思虑不达，则志意不实。志意不实，则应对不猛；应对不猛，则志失而心气虚；志失而心",
+      "score": 0.464
+     },
+     {
+      "book_id": "23026c516292",
+      "book_title": "三十六计",
+      "author": "佚名",
+      "chapter_idx": 6,
+      "chapter_title": "声东击西",
+      "citation_label": "【《三十六计》·声东击西】",
+      "snippet": "敌志乱萃，不虞。坤下兑上之象，利其不自主而取之。",
+      "score": 0.458
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 32,
+      "chapter_title": "第三十三章",
+      "citation_label": "【《道德经》·第三十三章】",
+      "snippet": "知人者智，自知者明。胜人者有力，自胜者强。知足者富。强行者有志。不失其所者久。死而不亡者寿。",
+      "score": 0.457
+     },
+     {
+      "book_id": "4c5aaf145298",
+      "book_title": "大学章句集注",
+      "author": "朱熹",
+      "chapter_idx": 2,
+      "chapter_title": "第一章",
+      "citation_label": "【《大学章句集注》·第一章】",
+      "snippet": "大学之道，在明明德，在亲民，在止于至善。 知止而后有定，定而后能静，静而后能安，安而后能虑，虑而后能得。物有本末，事有终始。知所先后，则近道矣。 古之欲明明德于天下者，先治其国；欲治其国者，先齐其家；欲齐其家者，先修其身；欲修其身者，先正其心；欲正其心者，先诚其意；欲诚其意者，先致其知。致知在格物。物格而后知至，知至而后意诚，意诚而后心正，心正而后身修，身修而后家齐，家齐而后国治，国治而后天下平。自天子以至于庶人，壹是皆以修身为本。 其",
+      "score": 0.457
+     }
+    ],
+    "query": "学而不思则罔 思而不学则殆",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "孔子"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "d9272a80942a",
+      "title": "论语",
+      "author": "孔子",
+      "region": "东方",
+      "rank": 45.8,
+      "summary": "《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不欲，勿施于人”，并倡导“克己复礼为仁”。在政治方面，他提出“为政以德”，主张德治与礼治，反对苛政。在教育上"
+     }
+    ],
+    "total": 1
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语 为政 学而不思"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "c13b139d1db3",
+      "book_title": "哲学导论",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 39,
+      "chapter_title": "1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》",
+      "citation_label": "【《哲学导论》·1.3 东方的终极实在：印度、波斯和中国 孔子，《论语》】",
+      "snippet": "子曰：“学而不思则罔，思而不学则殆。” 子曰：“吾未见好德如好色者也。” 子曰：“吾未见刚者。”或对曰：“申枨。”子曰：“枨也欲，焉得刚？” 孔子的“思”乃是仁人藉以安定“内在自我”的一种关注形式。因此，君子之思所涉并非沉思，而是对义务的恰当关注，在那里，“义务”本质上被理解为一种社会性的礼。孔子的“中庸学说”指引“君子”要永远避免极端。“中庸”乃礼之道。因此，孔子的格言所系，常常是以古之“仁人”设立的榜样为典范，描述何谓恰当的衣、食、",
+      "score": 0.553
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 665,
+      "chapter_title": "为政第二",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·为政第二】",
+      "snippet": "孔子不谈政治 第一篇《学而》是讲个人做学问的内在修养，接着下来第二篇《为政》则是讲学问的外用。 不过提到为政，有一点要注意：我们常发现在一些著作中，许多人认为《为政》是孔子的“政治思想”，或者用现代的语汇来说，称之为“政治哲学”。在我个人研究的结果，认为这个说法是不对的。孔子很少提到完整观念的“政治”，孔子只说“为政”，这点我们要特别注意。站在学术的立场，态度要非常严谨。我们常说一句话：“在法律面前，人人平等，要服真理。”做学问的立场，",
+      "score": 0.545
+     },
+     {
+      "book_id": "4c5aaf145298",
+      "book_title": "大学章句集注",
+      "author": "朱熹",
+      "chapter_idx": 6,
+      "chapter_title": "第五章",
+      "citation_label": "【《大学章句集注》·第五章】",
+      "snippet": "子曰：“听讼，吾犹人也。必也使无讼乎！”无情者不得尽其辞。大畏民志，此谓知本。 此谓知本，此谓知之至也。",
+      "score": 0.524
+     },
+     {
+      "book_id": "d9272a80942a",
+      "book_title": "论语",
+      "author": "孔子",
+      "chapter_idx": 3,
+      "chapter_title": "为政篇",
+      "citation_label": "【《论语》·为政篇】",
+      "snippet": "子曰：“为政以德，譬如北辰，居其所而众星共之。” 子曰：“《诗》三百，一言以蔽之，曰：‘思无邪’。” 子曰：“道之以政，齐之以刑，民免而无耻。道之以德，齐之以礼，有耻且格。” 子曰：“吾十有五，而志于学，三十而立，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲，不逾矩。” 孟懿子问孝，子曰：“无违。”樊迟御，子告之曰：“孟孙问孝于我，我对曰‘无违’。”樊迟曰：“何谓也？”子曰：“生，事之以礼；死，葬之以礼，祭之以礼。” 孟武伯问孝",
+      "score": 0.503
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 12,
+      "chapter_title": "第十一章",
+      "citation_label": "【《中庸》·第十一章】",
+      "snippet": "子曰：“素隐行怪，后世有述焉：吾弗为之矣。 君子遵道而行，半途而废：吾弗能已矣。 君子依乎中庸，遁世不见知，而不悔。唯圣者能之。”",
+      "score": 0.499
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 47,
+      "chapter_title": "德经·第四十八章",
+      "citation_label": "【《道德经》·德经·第四十八章】",
+      "snippet": "德经·第四十八章 为学日益，为道日损。损之又损，以至於无为。无为而无不为。取天下常以无事，及其有事，不足以取天下。",
+      "score": 0.494
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 7,
+      "chapter_title": "第六章",
+      "citation_label": "【《中庸》·第六章】",
+      "snippet": "子曰：“舜其大知也与！舜好问而好察迩言。隐恶而扬善。执其两端，用其中于民。其斯以为舜乎！”",
+      "score": 0.492
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 21,
+      "chapter_title": "第二十章",
+      "citation_label": "【《中庸》·第二十章】",
+      "snippet": "哀公问政。 子曰：“文武之政，布在方策。其人存，则其政举；其人亡，则其政息。 人道敏政，地道敏树。夫政也者，蒲卢也。 故为政在人。取人以身。修身以道。修道以仁。 仁者，人也，亲亲为大。义者，宜也，尊贤为大。亲亲之杀，尊贤之等，礼所生也。 在下位，不获乎上，民不可得而治矣。 故君子，不可以不修身。思修身，不可以不事亲。思事亲，不可以不知人。思知人，不可以不知天。 天下之达道五，所以行之者三，曰：君臣也、父子也、夫妇也、昆弟也、朋友之交也。",
+      "score": 0.491
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 29,
+      "chapter_title": "第二十八章",
+      "citation_label": "【《中庸》·第二十八章】",
+      "snippet": "子曰：“愚而好自用，贱而好自专。生乎今之世，反古之道。如此者灾及其身者也。” 非天子不议礼，不制度，不考文。 今天下，车同轨，书同文，行同伦。 虽有其位，苟无其德，不敢作礼乐焉。虽有其德，苟无其位，亦不敢作礼乐焉。 子曰：“吾说夏礼，杞不足徵也。吾学殷礼，有宋存焉。吾学周礼，今用之。吾从周。”",
+      "score": 0.488
+     },
+     {
+      "book_id": "eabb3ba3c423",
+      "book_title": "文心雕龙",
+      "author": "刘勰",
+      "chapter_idx": 19,
+      "chapter_title": "论说",
+      "citation_label": "【《文心雕龙》·论说】",
+      "snippet": "圣哲彝训曰经，述经叙理曰论。论者，伦也；伦理无爽，则圣意不坠。昔仲尼微言，门人追记，故抑其经目，称为《论语》。盖群论立名，始于兹矣。自《论语》以前，经无“论”字。《六韬》二论，后人追题乎！ 详观论体，条流多品∶陈政则与议说合契，释经则与传注参体，辨史则与赞评齐行，铨文则与叙引共纪。故议者宜言，说者说语，传者转师，注者主解，赞者明意，评者平理，序者次事，引者胤辞：八名区分，一揆宗论。论也者，弥纶群言，而研精一理者也。 是以庄周《齐物》，以",
+      "score": 0.482
+     },
+     {
+      "book_id": "4e213cf57480",
+      "book_title": "呻吟语",
+      "author": "吕坤",
+      "chapter_idx": 8,
+      "chapter_title": "问学",
+      "citation_label": "【《呻吟语》·问学】",
+      "snippet": "学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审问明辨也。故当其时，道学大明，如拨云披雾，白日青天，无纤毫障蔽。讲学须要如此，无坚自是之心，恶人相直也。 熟思审处，此四字德业之首务；锐意极力，此四字德业之要务；有渐无已，此四字德业之成务；深忧过计，此四字德业之终务。 静是个见道的妙诀，只在静处潜观，六合中动的机括都解破。若见了，还有个妙诀以守之，只是一，一是大根本，运这一却要因的通变。 学者只该说下学，更不消说",
+      "score": 0.482
+     },
+     {
+      "book_id": "6ec167f8492b",
+      "book_title": "韩非子",
+      "author": "韩非",
+      "chapter_idx": 42,
+      "chapter_title": "问辩",
+      "citation_label": "【《韩非子》·问辩】",
+      "snippet": "或问曰：“辩安生乎？” 对曰：“生于上之不明也。” 问者曰：“上之不明因生辩也，何哉？” 对曰：“明主之国，令者，言最贵者也；法者，事最适者也。言无二贵，法不两适，故言行而不轨于法令者必禁。若其无法令而可以接诈、应变、生利、揣事者，上必采其言而责其实。言当，则有大利；不当，则有重罪。是以愚者畏罪而不敢言，智者无以讼。此所以无辩之故也。乱世则不然：主有令，而民以文学非之；官府有法，民以私行矫之。人主顾渐其法令而尊学者之智行，此世之所以多文",
+      "score": 0.482
+     },
+     {
+      "book_id": "909e887aac01",
+      "book_title": "王阳明全集：简体注释版",
+      "author": "王阳明",
+      "chapter_idx": 45,
+      "chapter_title": "说",
+      "citation_label": "【《王阳明全集：简体注释版》·说】",
+      "snippet": "梁仲用默斋说 （辛未） 仲用识高而气豪，既举进士，锐然有志天下之务。一旦责其志曰：“於呼！予乃太早。乌有己之弗治而能治人者！”于是专心为己之学，深思其气质之偏 [1] ，而病其言之易也，以“默”名庵，过予而请其方。予亦天下之多言人也，岂足以知默之道！然予尝自验之，气浮则多言，志轻则多言。气浮者耀于外，志轻者放其中。予请诵古之训而仲用自取之。 夫默有四伪：疑而不知问，蔽而不知辩，冥然以自罔，谓之默之愚；以不言 人者，谓之默之狡；虑人之觇其",
+      "score": 0.478
+     },
+     {
+      "book_id": "d9272a80942a",
+      "book_title": "论语",
+      "author": "孔子",
+      "chapter_idx": 2,
+      "chapter_title": "学而篇",
+      "citation_label": "【《论语》·学而篇】",
+      "snippet": "子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？” 有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” ",
+      "score": 0.477
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 2,
+      "chapter_title": "第三章",
+      "citation_label": "【《道德经》·第三章】",
+      "snippet": "不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱。是以圣人之治，虚其心，实其腹；弱其志，强其骨。常使民无知无欲。使夫知者不敢为也。为无为，则无不治。",
+      "score": 0.476
+     }
+    ],
+    "query": "论语 为政 学而不思",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3
+   },
+   "result_full": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 3,
+    "title": "为政篇",
+    "book_title": "论语",
+    "citation_label": "【《论语》·为政篇】",
+    "text": "子曰：“为政以德，譬如北辰，居其所而众星共之。”\n子曰：“《诗》三百，一言以蔽之，曰：‘思无邪’。”\n子曰：“道之以政，齐之以刑，民免而无耻。道之以德，齐之以礼，有耻且格。”\n子曰：“吾十有五，而志于学，三十而立，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲，不逾矩。”\n孟懿子问孝，子曰：“无违。”樊迟御，子告之曰：“孟孙问孝于我，我对曰‘无违’。”樊迟曰：“何谓也？”子曰：“生，事之以礼；死，葬之以礼，祭之以礼。”\n孟武伯问孝。子曰：“父母唯其疾之忧。”\n子游问孝。子曰：“今之孝者，是谓能养。至于犬马，皆能有养；不敬，何以别乎？”\n子夏问孝。子曰：“色难。有事，弟子服其劳；有酒食，先生馔，曾是以为孝乎？”\n子曰：“吾与回言终日，不违，如愚。退而省其私，亦足以发，回也不愚。”\n子曰：“视其所以，观其所由，察其所安，人焉廋哉？人焉廋哉？”\n子曰：“温故而知新，可以为师矣。”\n子曰：“君子不器。”\n子贡问君子。子曰：“先行其言而后从之。”\n子曰：“君子周而不比，小人比而不周。”\n子曰：“学而不思则罔，思而不学则殆。”\n子曰：“攻乎异端，斯害也已！”\n子曰：“由，诲女，知之乎！知之为知之，不知为不知，是知也。”\n子张学干禄。子曰：“多闻阙疑，慎言其余，则寡尤；多见阙殆，慎行其余，则寡悔。言寡尤，行寡悔，禄在其中矣。”\n哀公问曰：“何为则民服？”孔子对曰：“举直错诸枉，则民服；举枉错诸直，则民不服。”\n季康子问：“使民敬、忠以劝，如之何？”子曰：“临之以庄，则敬；孝慈，则忠；举善而教不能，则劝。”\n或谓孔子曰：“子奚不为政？”子曰：“《书》云：‘孝乎惟孝，友于兄弟，施于有政。’是亦为政，奚其为为政？”\n子曰：“人而无信，不知其可也。大车无輗，小车无軏，其何以行之哉？”\n子张问：“十世可知也？”子曰：“殷因于夏礼，所损益，可知也；周因于殷礼，所损益，可知也。其或继周者，虽百世，可知也。”\n子曰：“非其鬼而祭之，谄也；见义不为，无勇也。”",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "孔子",
+      "canonical_title": "论语",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  }
+ ],
+ "retrieval_calls_executed": 4
+}

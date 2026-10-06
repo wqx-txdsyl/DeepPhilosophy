@@ -1,0 +1,662 @@
+{
+ "case_id": "E05",
+ "category": "E",
+ "prompt": "检索工具说库中有《道德形而上学》，但正文读取结果为空。能否直接引用它论仁爱义务？请说明下一步。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ea2c286bf70083c01972e5fe127761da94d298e6",
+  "git_dirty_files": 48,
+  "started": "2026-10-02T10:28:45+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 从 .t1pre-bak 恢复（run1 时根值为 null 导致 82 次学术调用全灭; null 原样留档 .null-bak-20261002）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "检索工具说库中有《道德形而上学》，但正文读取结果为空。能否直接引用它论仁爱义务？请说明下一步。",
+   "wall_s": 23.8,
+   "ttft_s": 1.4,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "839c4cf0a15d4c28b35e861b27c20bcd:1:note:0",
+     "content": "我先实际核查一下库里的情况，再给结论。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "839c4cf0a15d4c28b35e861b27c20bcd:2:note:0",
+     "content": "库里确实命中，但形态可能和你以为的不一样。我再验证两点：这本书的结构，以及\"仁爱义务\"的原文是否真的能读到。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "839c4cf0a15d4c28b35e861b27c20bcd:3:note:0",
+     "content": "库里的情况和你的假设有偏差。现在关键是验证\"正文读取为空\"到底发生在哪一层——我实际读一下那章正文。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "839c4cf0a15d4c28b35e861b27c20bcd:4:note:0",
+     "content": "正文完全可读，问题出在\"书\"的层级。我再读一下\"仁爱/爱的义务\"那段的上下文，确认引用边界。"
+    }
+   ],
+   "provider_reasoning": "The user is asking about a specific situation: their search tool says the library contains \"《道德形而上学》\" (Metaphysics of Morals), but reading the text returns empty. They want to know whether they can directly cite it regarding duties of love (仁爱义务), and want next steps.\n\nThis is a real research/problem question. I should actually investigate. Let me search the library.\n\nLet me search for the book. Note: 《道德形而上学》 could be Kant's Die Metaphysik der Sitten. But also there's \"道德形而上学基础\" (Groundwork). Let me check.\n\nLet me do searches.So the library does contain 《道德形而上学》 as a chapter (chapter 29) within 《康德文集》(book_id 390398aff8d0) and also within 《康德著作集（套装10册）》(book_id 309de54e4392). It's not a standalone book — it's a chapter/section inside an author's collected works. The catalogue_matches is empty because it's not a separate book entry.\n\nNow the user says \"正文读取结果为空\" — reading the body text returns empty. Let me actually try to read chapter 29 of 390398aff8d0 and see. And also search for 仁爱义务 (duties of love) — in Kant's Doctrine of Virtue, there's the duty of love (Liebespflicht) toward other human beings: beneficence (Wohltätigkeit), gratitude, sympathy. Let me search for it.\n\nLet me do parallel calls: get_book_detail on 390398aff8d0 to look at chapters index, and search for 仁爱.So the book 《康德文集》(390398aff8d0) has 91 chapters, all readable (unreadable_chapter_indices empty, readable true). And chapter 29 is \"道德形而上学\".\n\nNow let me actually try to read chapter 29 to see if the body text is retrievable. Also search within book 390398aff8d0 for \"仁爱义务\" / \"爱的义务\". In Kant's Doctrine of Virtue (Tugendlehre), §23-24 deal with \"Liebespflichten\" — 爱的义务. The Chinese translation might use \"仁爱\" or \"爱\". Let me search within the book for \"爱的义务\" and \"仁爱\".\n\nLet me try get_chapter on 390398aff8d0 chapter 29, and also verify_quote for the 仁爱 passage.\n\nActually first let me read chapter 29.Excellent. Chapter 29 does have readable text (204,394 characters), and the search \"爱的义务\" hit chapter 29 with the passage about duty of love: \"3.人类之爱 爱是感知的事情，不是意愿的事情... 因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae）...\"\n\nSo the body text is readable. The user's claim that \"正文读取结果为空\" — perhaps they read at a certain offset which was empty, or they tried a standalone book title that doesn't exist as a separate entry (catalogue_matches empty for \"道德形而上学\" as a query — indeed the first search returned catalogue_match_count: 0). That's the key: 《道德形而上学》 is not a separate book in the library; it's chapter 29 within 《康德文集》. If you query the book title as a book_id, the detail lookup fails / returns nothing, which could look like \"正文为空.\"\n\nLet me verify the exact passage by reading around the focus location, to give the user the accurate quote. Let me read the chapter at offset around the \"人类之爱\" section. The focus_locations for \"爱的义务\" — let me read that. Use read_args from the search: book_id 390398aff8d0, chapter_idx 29, focus \"爱的义务\".\n\nAlso I should verify_quote to provide a quote. Let me read the relevant section.\n\nLet me call get_chapter with focus 爱的义务 and verify_quote for a candidate quote.\n\nActually the search snippet already gives text. But I should read the surrounding context to be careful about what the passage says — it's an important and often-misread passage (Kant says \"爱是感知的事情...一种爱的义务是胡说八道\" then says 善意 can be a duty). Let me read around offset. Let me use read_args with focus \"爱的义务\".Now I have solid evidence. Let me summarize.\n\nKey findings:\n1. 《道德形而上学》在本地不是一本独立书，而是《康德文集》(book_id 390398aff8d0) 的第29章（chapter_idx 29），全章约 204,394 字符，可读。目录里也有第47章\"一般道德形而上学的划分\"。\n2. 所以如果你按\"《道德形而上学》\"当作书名去查书目（catalogue_matches），第一次检索 catalogue_match_count = 0 —— 因为它是章，不是书目条目。若把书名当 book_id 传，就会失败/空，看起来像\"正文为空\"。\n3. 但正文实际上读得到，而且\"仁爱义务\"相关内容确实在：chapter 29 中\"3.人类之爱\"一节，原文说\"爱是感知的事情，不是意愿的事情……因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae）作为一种行为可以服从于义务法则。\"以及\"尽我们的能力向他人行善是义务\"，\"你应当爱你的邻人如你自己\"的解释。\n4. verify_quote 逐字命中\"一种爱的义务是胡说八道\"（match_count 1，exact）。\n\n所以对用户的问题：\n- \"能否直接引用它论仁爱义务？\" 答案：可以引用，但必须改变引用方式：不能把《道德形而上学》当独立书名引用；要引《康德文集》第29章（书ID 390398aff8d0，chapter_idx 29）。并且要理解这段原文的立场可能与\"仁爱义务\"这个短语直接冲突——康德本人恰恰否认\"爱的义务\"（作为情感）的存在，只承认\"善意/行善\"作为义务。所以如果要论证\"仁爱义务\"，需要小心：康德的观点是\"爱\"不能是义务，但\"善意的行为\"（行善）可以是义务。这是一个关键的概念区分，引用时不能用康德的文本支持\"我们有义务去爱\"这种说法。\n\n- \"请说明下一步\"：\n  1. 换定位方式：把书名当章名/在文集内定位，用 get_book_detail 确认 chapter_idx，然后 get_chapter。\n  2. 如果确实需要《道德形而上学》全本，注意本地版本是文集里的节选/章节版，不是单行本；要核对完整性（chapter 29 是否覆盖《法权论》+《德性论》全部）。\n  3. 引用前核对上下文与译者/版本。\n  4. 需要确认\"仁爱义务\"这个中文译法对应德文 Liebespflicht 的哪一处，可再在德性论部分定位（第176344、164331 等位置还有\"爱的义务\"出现）。\n\nWait, I should be careful about the \"正文读取为空\" claim. I actually got text. So the reason for empty result is likely one of:\n(a) they searched by book title expecting a standalone book, and book lookup returned nothing (catalogue_match_count 0);\n(b) they were at an offset/chapter that was empty;\n(c) transient tool failure.\n\nI should note that tool failure ≠ no material, and that I actually got text.\n\nAlso, I should mention the distinction between 书目 and 章节: The library organizes 《道德形而上学》 as chapters inside 《康德文集》 and 《康德著作集（套装10册）》 (book_id 309de54e4392, which also has 道德形而上学总导言 chapter 26).\n\nNow, one important caution: this passage — is it in 《德性论》(Tugendlehre / 伦理学) part of 《道德形而上学》? The section \"3.人类之爱\" with \"十三、在讨论一种纯粹的德性论时的道德形而上学普遍原理\" nearby, and \"一般道德形而上学的划分\" (chapter 47). Yes, \"人类之爱\" as one of \"对他人之爱\" duties is in the 德性论. Actually \"3. 人类之爱\" — hmm, this appears as a section. In Kant's Tugendlehre, the elements of ethics concerning duties to others: 爱 (love) and 敬重 (respect), with love divided into Wohltätigkeit (beneficence), Dankbarkeit (gratitude), Sympathie (sympathy). The text here lists \"1. ... 2. ... 3.人类之爱 4.敬重\". Actually seems like a list about 良知 then 人类之爱 then 敬重. Hmm the numbering \"1.\" \"2.\" relates to something. Regardless, I should be careful not to over-claim which part.\n\nI'll keep it factual: the passage is at chapter 29 内的\"3.人类之爱\"小节.\n\nLet me also note the answer to \"can I directly cite it for 论仁爱义务\": \n- 能引，但要满足三个条件：定位到章、核对是《道德形而上学》哪一半（法权论/德性论）、并且不能把\"仁爱义务\"的说法当成康德本人的主张。\n- 特别注意文本本身是个陷阱：康德在此说\"爱的义务是胡说八道\"，他承认的是\"善意/行善作为行为\"能服从义务法则。所以如果你要论证\"仁爱是一种义务\"，这段原文恰恰是反对把\"爱（情感）\"当义务的最强材料，需要做概念区分：Liebespflicht 在他那里 = 行善义务（Wohltätigkeit），不是\"产生爱的情感的义务\"。\n\nThat's a genuinely useful philosophical point.\n\nLet me also give the next steps concretely:\n1. 用 get_book_detail(390398aff8d0) 定位 chapter_idx（已得 29）。\n2. 用 get_chapter 带 focus 读该章；本章 20 万字符，需按 focus_locations 分段读。\n3. 若需德性论中\"对他人之爱的义务\"（行善/感谢/同情），继续在 chapter 29 内 offset 164131、176144 附近读。\n4. 引用时标注为《康德文集》第29章\"道德形而上学\"，并注明是文集收录版，非独立单行本；若需权威单行本请对照科学院版或汉译单行本。\n5. 若要确认\"仁爱义务\"这个译名，可在《康德著作集（套装10册）》(309de54e4392) 里对照另一译本。\n\nActually, should I check if 309de54e4392 also has the 仁爱 passage, to compare translations? That might be useful but the user just asked whether they can cite and next step. I've done enough verification. But offering the cross-version check as a next step is good.\n\nLet me write the answer concisely in Chinese.\n\nFormat: moderate length, headers maybe. Keep it focused.\n\nLet me be careful about one thing: the first search's catalogue_match_count was 0 while the second (author-filtered) returned 8 catalogue matches for 康德. Actually the \"catalogue_matches\" in the second search returned all 康德 books (metadata matches), not specifically 道德形而上学. So the key point: searching \"道德形而上学\" as a title yields 0 catalogue matches → because no book titled 《道德形而上学》 exists; it's a chapter title.\n\nGood. Now write.\n\nI'll structure:\n1. 核查结果：不是\"没有正文\"\n2. 为什么你会读到空\n3. 这段原文本身说什么（引用边界）\n4. 下一步（具体操作）\n\nLet me include the verified quote with citation label.",
+   "tool_calls_full": [
+    {
+     "name": "list_books",
+     "args": {
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"books\": [{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 48.8, \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，他的著作集涵盖了其批判哲学体系的全部核心内容，包括《纯粹理性批判》、《实践理性批判》和《判断力批判》三大批判。康德在《纯粹理性批判》中探讨了人类知识的界限，提出了先验感性论和先验逻辑，试图调和理性主义与经验主义。在《实践理性批判》中，他阐述了道德律\"}, {\"id\": \"10e1874c2255\", \"title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 48.0, \"summary\": \"《康德三大批判合集（上下）》是康德（1724-1804年）的批判性哲学著作。以宏伟的体系性和深刻的思辨性，从康德到黑格尔将西方形而上学推向极致。德国古典哲学是现代哲学所有重要流派的思想源头。三大批判分别为《纯粹理性批判》《实践理性批判》和《判断力批判》，构成了康德批判哲学的完整体系。在认识论领域，康\"}, {\"id\": \"eca1899561c4\", \"title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 48.0, \"summary\": \"《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分，系统阐述了人类认识能力的界限和条件。康德提出“物自体”与“现象”的区分，认为我们只能认识现象，而不能认识物自体。他通过“先验范畴”和\"}, {\"id\": \"8c0c6955c793\", \"title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 47.6, \"summary\": \"《纯粹理性批判》是康德批判哲学体系的奠基之作，核心主题在于考察人类理性的界限与能力。康德通过“先天综合判断”概念，调和了理性主义与经验主义，提出“人为自然立法”的哥白尼式革命。该书深刻揭示了现象与物自体的区分，论证了时空与范畴的先验性，为科学知识奠定基础，同时为信仰与自由留出空间，开创了德国古典哲学\"}, {\"id\": \"390398aff8d0\", \"title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 47.2, \"summary\": \"康德文集涵盖其三大批判及重要论文，构建了先验唯心论体系。《纯粹理性批判》考察人类认识能力，提出先天综合判断如何可能，区分现象与物自体，限制知识以给信仰留地盘。《实践理性批判》确立道德律的至上性，强调自由意志与绝对命令。《判断力批判》连接自然与自由，探讨审美与目的论。康德还提出“人为自然立法”与“人是\"}, {\"id\": \"f08c1ead3164\", \"title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 46.9, \"summary\": \"康德的《判断力批判》是其批判哲学体系的收官之作，旨在弥合《纯粹理性批判》所探讨的自然必然性领域与《实践理性批判》所关涉的道德自由领域之间的鸿沟。全书分为“审美判断力批判”与“目的论判断力批判”两大部分。在美学部分，康德提出了“无目的的合目的性”这一核心命题，认为审美判断既非纯粹的认识判断，也非纯粹的\"}, {\"id\": \"aacc867ec43c\", \"title\": \"康德《实践理性批判》句读\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 45.7, \"summary\": \"本书是对康德《实践理性批判》的逐句解读与深度剖析，旨在为读者提供一条清晰理解康德道德哲学的路径。康德在《实践理性批判》中确立了纯粹实践理性的法则，即道德律，并论证了自由意志与道德律的内在同一性：自由是道德律的存在理由，道德律是自由的认知理由。全书系统阐释了“绝对命令”作为道德最高原则的普遍必然性，强\"}, {\"id\": \"e29d0f5e550c\", \"title\": \"自然科学的形而上学基础\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 41.1, \"summary\": \"伊曼努尔·康德的《自然科学的形而上学基础》是一部为牛顿物理学提供先验哲学根基的重要著作。康德在此书中试图回答一个根本问题：“纯粹自然科学何以可能？”他通过将时空、因果等范畴确立为知性先天赋予自然界的法则，论证了科学知识具有普遍必然性。这一思路延续了他在《纯粹理性批判》中的核心思想，即不是知识必须符合\"}], \"total\": 8, \"offset\": 0, \"has_more\": false, \"next_offset\": null}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "道德形而上学"
+     },
+     "status": "success",
+     "duration_seconds": 1.101,
+     "result_full": "{\"query\": \"道德形而上学\", \"results\": [{\"book_id\": \"f15e7fd89491\", \"book_title\": \"从《理想国》到《正义论》\", \"author\": \"奈杰尔·沃伯顿\", \"chapter_idx\": 13, \"chapter_title\": \"康德：《道德形而上学基础》\", \"citation_label\": \"【《从《理想国》到《正义论》》·康德：《道德形而上学基础》】\", \"snippet\": \"道德是客观的：它不是口味或者文化的问题，而是平等地运用于所有理性的事物。伊曼努尔·康德（Immanuel Kant）的《道德形而上学基础》（Groundwork of the Metaphysics Morals）的要点是让这些哲学命题可信，方法是建立“道德的最高原则”，也就是康德所谓的“绝对命令”（categorical imperative）。本书是一个关于康德的复杂详细的道德哲学的简短导言。作为一本“以责任为基础的”或者说是“道义论的”道德理论的简洁读本，《道德形而上学基础》的内容经受住了时间的考验。 善良的意志 世界上唯一不需要验证就可以判定为善的东西就是善良的意志。康德说这句话的意思是，好的意图绝对是好的，无条件地好。其他\", \"score\": 74, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f15e7fd89491\", \"chapter_idx\": 13, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"道德形而上学的奠基 科学院版编者导言 保罗·门采尔（Paul Menzer） 关于促使康德撰写《道德形而上学的奠基》的理由，他自己在这部作品的前言中是以如下的话来表达的： 我决意日后提供一部《道德形而上学》，如今我让这本《奠基》先发表。尽管除了一种纯粹实践理性的批判之外，道德形而上学真正说来没有别的基础，就像对于形而上学来说，已经提供的纯粹思辨理性的批判是基础一样。然而一方面，前一种批判并不像后一种批判那样极为重要，因为在道德领域里，人类理性甚至在最普通的知性那里也能够轻而易举地达到重大的正确性和详尽性，与此相反，它在理论的、但却纯粹的应用中却完全是辩证的；另一方面，为了一种纯粹实践理性的批判，我要求：如果它要被完成，就必须能够同时\", \"score\": 73, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"道德形而上学 科学院版编者导言 保罗·纳托尔普 关于《道德形而上学》的产生史，人们认为材料绝大多数已在《实践理性批判》的导言中（《康德全集》，第Ⅴ卷，489页以下 [1] ）汇聚。由此得出，这部著作的计划虽然一直回溯到60年代，但其实施却一再推迟，因为一部奠基性的纯粹（理论的和实践的）理性批判这个更重要的任务必须先完成。但是，在完成了两部批判之后，新产生的《判断力批判》的计划，其相对快的实施，就完全占用了哲学家后来时间（直到1790年）的工作。终于，该轮到完成久已准备好和应许过的《道德形而上学》了。我们也听到，有人确信无疑地期待它在1791年的博览会出现（基塞维特尔致康德，1791年6月14日 [2] ）。但是，还在此后的两年里，康\", \"score\": 73, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 47, \"chapter_title\": \"一般道德形而上学的划分\", \"citation_label\": \"【《康德文集》·一般道德形而上学的划分】\", \"snippet\": \"一般道德形而上学的划分 一 一切义务，要么是法权义务（officia iuris），亦即对这样一些义务来说，一种外在的立法是可能的；要么是德性义务（officia virtutis s.ethica［德性的或者伦理的义务］），对这样一些义务来说，一种外在的立法是不可能的。——但是，后一些义务之所以不能隶属于外在的立法，只是因为它们关涉一个目的，这个目的（或者拥有这个目的）同时也是义务；而预先设定一个目的，这不可能通过任何外在的立法来办到（因为这是心灵的一个内在行为）；虽然可能要求一些导致它的外在行动，但毕竟主体并不使它们成为自己的目的。 但是，道德论（道德）为什么通常（尤其被西塞罗 [1] ）冠以义务论，而不也冠以法权论的名称呢？因\", \"score\": 71, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 47, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学总导言\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·道德形而上学总导言】\", \"snippet\": \"道德形而上学总导言 (1) 道德形而上学总分类 一、一般地作为义务体系的 (2) 道德形而上学分类 （一）一切义务，或者是权利的义务，即 法律上的义务 ；或者是善德的义务，即 伦理上的义务 。法律义务是指那些由外在立法机关可能规定的义务；伦理义务是上述立法机关所不可能规定的义务。后者为什么不能作为外部立法机关的对象，那是因为它们牵联到一个目的或者最后的目标，这个目的本身同时包含在这些义务之中，于是，对每个个人来说，对此目的负有义务。但是，任何外部立法，无法使得任何人去接受一种特定的意图，或者，能够决定他去追求某种宗旨，因为这种决定或追求取决于一种内在的条件或者他心灵自身的活动。可是，那些导致这种内心条件的外部行为是可以被控制的，但这\", \"score\": 70, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 26, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 107, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "390398aff8d0",
+      "focus": "道德形而上学"
+     },
+     "status": "success",
+     "duration_seconds": 0.058,
+     "result_full": "{\"id\": \"390398aff8d0\", \"title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"康德文集涵盖其三大批判及重要论文，构建了先验唯心论体系。《纯粹理性批判》考察人类认识能力，提出先天综合判断如何可能，区分现象与物自体，限制知识以给信仰留地盘。《实践理性批判》确立道德律的至上性，强调自由意志与绝对命令。《判断力批判》连接自然与自由，探讨审美与目的论。康德还提出“人为自然立法”与“人是目的”的启蒙口号，其哲学成为现代性的基石，深刻影响后世哲学、伦理学与美学。\", \"rank\": 47.2, \"chapterCount\": 91, \"declared_chapter_count\": 91, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 91, \"readable\": true, \"chapters\": [{\"index\": 26, \"title\": \"道德形而上学的奠基\"}, {\"index\": 29, \"title\": \"道德形而上学\"}, {\"index\": 47, \"title\": \"一般道德形而上学的划分\"}], \"matched_chapters\": 3, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "仁爱",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.099,
+     "result_full": "{\"query\": \"仁爱\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 37, \"chapter_title\": \"论俗语：这在理论上可能是正确的，但不适用于实践\", \"citation_label\": \"【《康德文集》·论俗语：这在理论上可能是正确的，但不适用于实践】\", \"snippet\": \"权），这种自由是能够按照一种可能的普遍法律与每个人的自由共存的。——若一个政府，建立在就像一个父亲对于子女那样对于人民的仁爱的原则之上，也就是说，是一个父亲的政府（imperium paternale），因此，臣民们在这里像不能分辨什么对自己真正有利或者有害的子女，被迫仅仅采取被动的态度，以便对于他们应当如何得到幸福，仅仅期待国家元首的判断，而对于国家元首也愿意这样做，则仅仅期待他的善意；这样一个政府，就是能想得出的最大的专制主义（这种宪政取消臣民的一切自由，他们在这种情况下根本没有任何法权）。惟一能够为能有法权的人们且与统治者的仁爱相关来设想的政府，不是一个父亲的政府，而是一个祖国的政府（imperium non paternal\", \"score\": 42, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 37, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 54, \"chapter_title\": \"论俗语：这在理论上可能是正确的，但不适用于实践\", \"citation_label\": \"【《康德文集》·论俗语：这在理论上可能是正确的，但不适用于实践】\", \"snippet\": \"权），这种自由是能够按照一种可能的普遍法律与每个人的自由共存的。——若一个政府，建立在就像一个父亲对于子女那样对于人民的仁爱的原则之上，也就是说，是一个父亲的政府（imperium paternale），因此，臣民们在这里像不能分辨什么对自己真正有利或者有害的子女，被迫仅仅采取被动的态度，以便对于他们应当如何得到幸福，仅仅期待国家元首的判断，而对于国家元首也愿意这样做，则仅仅期待他的善意；这样一个政府，就是能想得出的最大的专制主义（这种宪政取消臣民的一切自由，他们在这种情况下根本没有任何法权）。惟一能够为能有法权的人们且与统治者的仁爱相关来设想的政府，不是一个父亲的政府，而是一个祖国的政府（imperium non paternal\", \"score\": 42, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 54, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 30, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"就不是出自有德性的意图，因为这样一种意图不可能鼓励你们为这个盲目的诱惑而去牺牲一种更高的责任。与此相反，如果对人类的普遍仁爱成了你们在任何时候都使自己的行为服从的原则，那么，对困苦者的爱在这种情况下依然存在，但它如今却从一种更高的立场出发被置于同你们的全部义务的正确关系之中了。普遍的仁爱是同情其不幸的根据，但同时也是正义的根据，按照正义的规定，你们现在必须放弃这一行为。一旦这种情感上升到其应有的普遍性，它也就是崇高的，但也更为冷漠。因为要我们的胸怀澎湃着对每一个人的温情脉脉的同情，对每一件他人的困苦都陷入伤痛，这是不可能的事情，若不然，有德性的人就会像赫拉克利特那样痛苦得不停地淌着同情的泪水，尽管有一切这样的善心，却无非是成为一个软\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 30, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 67, \"chapter_title\": \"关于美感和崇高感的考察\", \"citation_label\": \"【《康德文集》·关于美感和崇高感的考察】\", \"snippet\": \"就不是出自有德性的意图，因为这样一种意图不可能鼓励你们为这个盲目的诱惑而去牺牲一种更高的责任。与此相反，如果对人类的普遍仁爱成了你们在任何时候都使自己的行为服从的原则，那么，对困苦者的爱在这种情况下依然存在，但它如今却从一种更高的立场出发被置于同你们的全部义务的正确关系之中了。普遍的仁爱是同情其不幸的根据，但同时也是正义的根据，按照正义的规定，你们现在必须放弃这一行为。一旦这种情感上升到其应有的普遍性，它也就是崇高的，但也更为冷漠。因为要我们的胸怀澎湃着对每一个人的温情脉脉的同情，对每一件他人的困苦都陷入伤痛，这是不可能的事情，若不然，有德性的人就会像赫拉克利特那样痛苦得不停地淌着同情的泪水，尽管有一切这样的善心，却无非是成为一个软\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 67, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"中的技巧和勤奋具有一种市场价格；机智、活跃的想象力和情绪具有一种情感价格；与此相反，出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念，也就是说，在于意志的准则，即使成果不利于这些准则，它们也仍然要以这种方式在行为中显露自己。这些行为也不需要任何一种主观的气质或者趣味的推荐，让人以直接的认可和满意去看待它们；它们也不需要对它们的直接癖好或者情感。它们把实施它们的意志呈现为一种直接敬重的对象；对此，所需要的只是理性，以便责成意志、而不是哄骗意志去实施这些行为。对于义务来说，后者\", \"score\": 40, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 17, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 29,
+      "focus": "仁爱"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"text\": \"，亦复如是。可是，由于这个力学的概念还以纯粹数学（例如几何学）中的一个纯然形式的概念为基础，所以，理性所关心的是：为了法的概念的构造，为知性尽可能多地提供先天直观。——直（rectum）作为直线，一方面与曲线相对立，另一方面与斜线相对立。前者是一条具有如下性质的线的内在性状，即在两个已知的点之间只能有一条唯一的直线，但后者就是两条相交的或相切的线的状况，具有如此性质的也只能有一条唯一的（垂直）线，这条线倾向于一边并不多于另一边，而且它把两边的空间均分，按照这种类比，甚至法权论也要（以数学的精确性）知道每一个人被规定属于他自己的东西，这在德性论中是不可以指望的，德性论不能拒绝给例外以某种空间（latitudinem）。——但是，不用涉入伦理学领域，就存在着两种要求作出法权裁决，但却不可能找出裁决人的情况，它们仿佛是属于伊壁鸠鲁的intermundia［星际空间］。——我们首先必须把这些情况从真正的、我们马上就要讨论的法权论中清理出去，以免它们的摇摆不定的原则对真正法权论的坚实原理产生影响。\\n附录 论有歧义的法权（Ius aequivocum）\\n任何狭义的法（Ius strictum）都结合有强制的权限。不过，人们还想到一种广义的法权（ius latum），在那里，强制的权限不可能由任何法则来规定。——这些真正的或者所谓的法权有两种：公道和紧急法权；其中前者假定一种没有强制的法权，后者假定一种没有法权的强制，而人们也不难察觉，这种歧义真正说来乃是基于，存在着一个受怀疑的法权的各种情况，推举不出任何法官对它们作出裁断。\\n一、公道\\n公道（客观地看）绝不是只向他人的伦理义务（他人的善意和仁爱）提出要求的一个根据，相反，从这一根据出发要求某种东西的人，乃是基于他的法权，只不过他缺乏对于法官来说所必需的条件，根据这些条件，法官就能够规定，此人的要求有多少或者以何种方式能被满足。一个商业公司关注利益的平等，某人尽管如此在其中却比别的成员做事更多，但由于事故而比别的成员损失更多，按照公道，他可以向公司要求比仅仅与其他成员平分秋色更多的东西。然而根据真正的（严格的）法权，由于即便人们在他的事例中设想一位法官，这个法官也没有任何确定的提示（data［材料］）来澄清按照合同他应当得到多少，所以他的要求就会被驳回。一个家丁，被付给他直到年终才发的工资，而给的却是在这段时间内贬值了的货币，他用这笔钱已经办不到当初签合同时可以办到的事情了，数值虽然相同，但货币价值却不同，所以，他就不能根据自己的法权来保证自己不因此而受损失，而是只能呼唤公道来作根据（一个不可能被听到的沉默的神灵），因为对此合同中没有任何规定，但一个法官不可能根据未规定的条件来作出判决。\\n由此也得出：（在他人关于自己的法权的争论中的）一个公道法庭自身就包含着一个矛盾。只有在涉及法官自己的法权的地方，在他能够凭自己的人格处置的事情上，他才可以并且应当倾听公道的呼声，例如，当王室自己承担他人在其效力时所蒙受的、并且恳求王室予以补偿的损失时，尽管按照严格的法权，王室可以借口他们是自担风险地承受这些损失的，而拒绝这种要求。\\n这样，公道的格言（dictum）虽然是“最严格的法权是最大的不法”（summum ius summa iniuria），但是这种灾祸却不可能沿着法权途径来消除，虽然这涉及法权要求，因为这种要求只适用于良知法庭（forum poli［上天的法庭］），相反，任何法权问题都必须诉诸公民法权（forum soli［地上的法庭］）。\\n二、紧急法权（Ius necessitatis）\\n这种想当然的法权 [1] 应当是一个权限，即在我自己有丧命危险的情况下剥夺另一个丝毫没有加害我的人的生命。很显然，这里必定包含着法权论的一种自相矛盾——因为这里说的不是一个不正当地袭击我的生命的人，对这样的人，我可以通过剥夺他的生命而先发制人（ius inculpatae tutelae［正当防卫的法权］），节制（moderamen）的劝告甚至不属于法权，而只属于伦理学，相反，这里说的是允许对一个不曾对我实施任何暴力的人实施暴力。\\n很明显，这种主张不应当客观地、按照一个法则会规定的东西来理解，而只能主观地、按照法庭上会作出的判决去理解。也就是说，不可能存在这样的刑法，它判处这样一个人死刑：在船沉时此人和另外一个人一起在同样的危险中漂浮，他为了自己活命而把那个人从其曾经赖以活命的木板上推开。因为，法律所威胁的惩罚毕竟不可能比这个人丧命的惩罚更大。于是，这样一种刑法根本不可能具有预期的作用；因为以一个尚不确定的灾祸（由法官判决而来的死亡）来威胁，不可能胜过对确定的灾难（亦即淹死）的恐惧。所以，暴力的自我保存的行为绝不应当被评判为无可指摘的（inculpabile），而只能被评判为无法惩罚的（imopunibile），而且这种主观的免于惩罚由于一种奇特的混淆，被法权学者们看做一种客观的免于惩罚（合法性）。\\n紧急法权的格言是：“事急无法”（necessitas non habet legem）。尽管如此，却不可能存在任何紧急状况使得不正当的事情成为合法的。\\n可以看出，在两种法权评判（根据公道法权和根据紧急法权）中，歧义（aequivocatio）来源于法权实施的主观根据和客观根据（面对理性和面对法庭）的混淆。因为这样一来，某人有充分的理由认为对自己而言正当的东西，在一个法庭面前就得不到证实，而他本人必然评判为不正当的事，倒能够获得同一个法庭的谅解，因为法权的概念在这两个场合并不是在同一个意义上使用的。\\n注释\\n[1] 参见《论俗语：这在理论上可能是正确的，但不适用于实践》（第Ⅱ节的结论）［参见《康德著作全集》，第8卷，303~304页。——译者注］。——科学院版编者注\\n法权论的划分\\n一、法权义务的一般划分\\n人们完全可以按照乌尔皮安 [1] 的方法进行划分，只要我们给他的公式加上一层虽然他自己可能没有思考清楚、但这些公式却允许从中引申出来或者添加进去的意思。这些公式如下：\\n1.做一个正派的人（honeste vive［正派地活着］）。法权上的正派（honestas iuridica）在于：在和他人的关系中维护自己作为一个人的价值的那种价值，这种义务是由如下命题来表述的：“不要让你自己成为他人的纯然手段，要对他们来说同时是目的。”在下文中，这项义务将被解释为出自我们自己人格中的人性法权的责任（Lex iusti［正当的法则］）。\\n2.不要对任何人做不正当的事（neminem laede［不要伤害任何人］），此外，你也应当摆脱与他人的一切干系，必须避免一切社交（Lex iuridica［司法的法则］）。\\n3.进入（如果你无法避免社交）与他人的社交，在其中要能够维护每个人他自己的东西（suum c\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 26458, \"excerpt_end\": 29258, \"chapter_text_length\": 204394, \"has_more\": true, \"next_offset\": 29258, \"has_previous\": true, \"previous_offset\": 23658, \"focus_found\": true, \"focus_terms_matched\": [\"仁爱\"], \"focus_terms_found_in_chapter\": [\"仁爱\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"仁爱\", \"offset\": 27158, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 26958, \"focus\": \"仁爱\"}}], \"reader_coordinate_valid\": true}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "爱的义务",
+      "book_id": "390398aff8d0"
+     },
+     "status": "success",
+     "duration_seconds": 0.021,
+     "result_full": "{\"query\": \"爱的义务\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"3.人类之爱 爱是感知的事情，不是意愿的事情，而且我能够爱，不是因为我愿意，但更不是因为我应当（被强制去爱）。因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae［善意的爱］）作为一种行为可以服从于义务法则。但是，人们常常把一种对他人无私的善意也（尽管不是本义的）叫做爱；不错，在善意所涉及的不是他人的幸福，而是使自己的所有目的完全并且自由地顺从于另一个（哪怕是一个超人的）存在者的目的的地方，人们说的是同时对我们而言是义务的爱。但是，一切义务都是强迫，是一种强制，哪怕它是按照一个法则的自我强制。不过，人们出于强制而做的事，并不是由于爱而这么做的。 尽我们的能力向他人行善是义务，不论爱不爱他们，即便人们不得不作\", \"score\": 43, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"爱的义务\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"因为它尽管有不同的限制，但却是从原则导出的；它不可能是一个普遍的法则，因为它既不包含对自己的义务的根据，也不包含对他人的爱的义务的根据（因为有些人会乐于同意，只要他可以免除施惠于他人，他人也无须施惠于他），最后也不包含相互之间的应有义务的根据；因为罪犯会从这一根据出发对要惩罚他的法官提出抗辩，等等。 [14] 我在这里可以免于举例来说明这一原则，因为最初说明定言命令式及其公式的所有例子，在这里都可以用于这一目的。 [15] 目的论把自然视为一个目的王国，道德学则把一个可能的目的王国视为一个自然王国。在前者，目的王国是用来说明存在着的东西的一个理论理念。在后者，目的王国是一个实践理念，用来实现，而且恰恰是依据这个理念来实现并不存在、但\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"爱的义务\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 79, \"chapter_title\": \"自然地理学\", \"citation_label\": \"【《康德文集》·自然地理学】\", \"snippet\": \"此邻居们已经能够预先发现并且向当局告发。与此相反，在拉普兰，儿子用一条鹿筋勒死自己在狩猎时受伤的父亲，则被视为一种杰出的爱的义务，因此父亲也总是把它托付给自己最疼爱的儿子。 3.政治地理学。如果一个公民社会的第一原理是一个普遍的法律以及在违反法律时不可抗拒的强制力，但法律同样与土地和居民的性状相关，那么，政治地理学就同样属于此列，因为它完全是根据自然地理学的。倘若在俄罗斯江河都向南流，这就会对整个国家都极为有利，但它们却都只是流向北冰洋。在波斯，较长时间有两位君主，其一驻扎在伊斯帕汗，另一驻扎在坎大哈。他们不能彼此征服，因为阻止他们的是横亘在中间的克尔曼荒漠，它比有些海还要大。 4.商业地理学。如果地球上的一个国家富产另一个国家必然\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 79, \"focus\": \"爱的义务\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 91}, \"search_scope\": {\"author\": null, \"book_id\": \"390398aff8d0\"}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 29,
+      "focus": "爱的义务"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"text\": \"就会等于是说：对自己有义务承认义务。因为良知就是在一个法则的任何事例中都告诫人有作出赦免或者宣判的义务的实践理性。因此，良知的关系不是与一个客体的关系，而是仅仅与主体的关系（通过其行为激发道德情感）；因而是一种必然发生的事实，并不是责任和义务。因此如果人们说：这个人没有良知，则人们说的是：他没把良知的呼声当回事。因为如果他真的没有良知，他也就不会把自己归为合乎义务的，或者指责自己是违背义务的，因而也根本不可能设想自己有义务具有良知。\\n在此，我还不打算讨论良知的种种划分，只是提醒注意从上述引证中得出的东西，也就是说，一个会犯错误的良知是胡说八道。因为在某种东西是不是义务的客观判断中，人们有时很可能出错；但在我是否为了作出那种判断已经把它与我的实践理性（在此是判决的理性）进行了比较的主观判断中，我不可能出错，因为那样的话，我在实践上就根本不会作出判断；在这种情况下就既没有错也没有对。无良知不是缺乏良知，而是不把良知的判断放在心上的癖好。但是，如果有人意识到已经是在按照良知行动的，那么，就罪过或者无辜而言，就不能再要求他任何东西。他的责任仅仅是对自己关于什么是义务或者不是义务的知性进行启蒙；不过，一旦他开始这样做或者已经做了，良知就不由自主地和不可避免地要说话。因此，按照良知去行动，本身不可能是义务，因为若不然，就还必须有一个第二良知，来意识到前者的行为。\\n义务在这里只是培养自己的良知，磨砺对内在法官的呼声的注意力，并运用一切手段（因此只是间接的义务）来倾听良知。\\n3.人类之爱\\n爱是感知的事情，不是意愿的事情，而且我能够爱，不是因为我愿意，但更不是因为我应当（被强制去爱）。因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae［善意的爱］）作为一种行为可以服从于义务法则。但是，人们常常把一种对他人无私的善意也（尽管不是本义的）叫做爱；不错，在善意所涉及的不是他人的幸福，而是使自己的所有目的完全并且自由地顺从于另一个（哪怕是一个超人的）存在者的目的的地方，人们说的是同时对我们而言是义务的爱。但是，一切义务都是强迫，是一种强制，哪怕它是按照一个法则的自我强制。不过，人们出于强制而做的事，并不是由于爱而这么做的。\\n尽我们的能力向他人行善是义务，不论爱不爱他们，即便人们不得不作出忧伤的说明：“真可惜，我们的族类并不适合于在人们更仔细了解它时，可以认为它特别值得爱”，也丝毫无损于这种义务的重要性。——仇视人在任何时候都是可恨的，哪怕它没有实际的攻击而仅仅在于对人的完全抛弃（分裂主义的厌恶人类）。因为善意始终还是一种义务，哪怕是对于仇视人类者，人们当然不可能爱这种人，但毕竟可以向他表示善意。\\n但是，憎恶人身上的恶习，既不是义务也不是违背义务的，而是对恶习的一种纯然厌恶感，意志对这种情感并没有一些影响，或者反过来这种情感对意志也没有一些影响。行善是义务。经常履行这种义务，并且实现了自己的行善意图的人，最后就真的爱上了那个他曾经对之行善的人。所以，如果这叫做你应当爱你的邻人如你自己，那么，它就并不叫做你要直接地（首先）去爱并且借助这种爱（然后）行善，而是叫做对你的邻人行善，并且这种行善将在你心中造成人类之爱（作为一般行善偏好的能力）！\\n因此，惟有对满意的爱（amor complacentiae）才会是直接的。但是，对这种爱（作为一种与一个对象的实存的表象直接结合的愉快），亦即不得不被迫对此感到愉快，这是一个矛盾。\\n4.敬重\\n敬重（reverentia）同样是某种纯然主观的东西，一种独特的情感，不是关于一个有义务去造就和促成的对象的一个判断。因为义务作为义务来看，只有通过我们对它持有的敬重才能被表现出来。因此，有义务去敬重就会等于是说让人有义务去有义务。——据此，如果说人有自重的义务，那么，这种说法就是不正确的，而毋宁是必须说：人心中的法则迫使他不可避免地敬重他自己的本质，而这种情感（它是一种独特的情感）就是某些义务，亦即某些能够与对自己本身的义务共存的行动的一个根据；而不是说：人有敬重自己的义务；因为人必须对内心的法则本身持有敬重，哪怕只是为了可以设想一种一般的义务。\\n十三、在讨论一种纯粹的德性论时的道德形而上学普遍原理\\n第一，对于一个义务来说，也只能找出承担义务的一个惟一的根据，如果对此作出两个或者更多的证明，那么，这就是一个可靠的标志，说明人们要么还根本没有一个有效的证明，要么也存在着多个并且不同的义务，人们却把它们视为一个。\\n因为一切道德的证明作为哲学的证明，都只能借助于一种出自概念的理性认识来进行，而不是像数学提供的证明那样是通过概念的构造来进行的；后者允许对同一个命题有多种证明，因为在先天直观中对一个客体的性状可以有多种规定，它们都回溯到同一个根据。——例如，如果对于诚实的义务来说，首先要从谎言对他人造成的损害出发作出一个证明，但然后也要从一个说谎者的卑鄙和对自我敬重的侵犯出发作出一个证明，那么，在前一个证明中得到证明的就是一种善意的义务，而不是一种诚实的义务，因而不是人们要求证明的这种义务，而是另一种义务。——但是，涉及对同一个命题的多种证明，人们沾沾自喜于根据的数量将弥补单独采用任何一个根据而在分量上的欠缺，那么，这就是一种非哲学的托辞，因为它表露出欺诈和不真诚。——因为把不同的不充分的根据并列起来，并不使一个根据弥补另一个根据的不足而达到确定性，甚至连或然性也不能达到。它们必须作为根据和后果而在一个序列中一直前进直至充足的根据，并且也只能以这种方式进行证明。——而尽管如此，这却是说服艺术的惯用技巧。\\n第二，德性与恶习的区别绝不能在遵循某些准则的程度中去寻找，而是必须仅仅在这些准则特殊的质（与法则的关系）中去寻找。换句话说，（亚里士多德的）受到称赞的原理，即把德性设定为两种恶习之间的中道，是错误的。 [7] 例如，假设好的家政就是两种恶习，亦即浪费与吝啬之间的中道，那么，它作为德性就不能被表现为通过上述两种恶习的第一种的逐渐减少（节省）而产生的，也不能被表现为通过顺从第二种恶习的人的开支增加而产生的，就好像它们按照相反的方向在好的家政中相遇似的；相反，这两种恶习的每一种都有其自己与别的准则必然相抵触的准则。\\n同样，而且出自同样的理由，没有任何恶习一般而言能够用对某些意图的实施大于其合目的性来解释（e.g.Prodigalitas est excessus in consumendis opibus［例如，浪费就是消费财物过度］），或者用对某些意图的实施小于恰如其分来解释（e.g.Avaritia est defectus etc.［例如，吝啬就是消费财物不足］）。因为既然由此根本没有规定程度，而行为是否合乎义务，一切都取决于这个程度，所以，这就不能用于作解释。\\n第三，伦理义务必须\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 144286, \"excerpt_end\": 147086, \"chapter_text_length\": 204394, \"has_more\": true, \"next_offset\": 147086, \"has_previous\": true, \"previous_offset\": 141486, \"focus_found\": true, \"focus_terms_matched\": [\"爱的义务\"], \"focus_terms_found_in_chapter\": [\"爱的义务\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"爱的义务\", \"offset\": 144986, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 144786, \"focus\": \"爱的义务\"}}, {\"term\": \"爱的义务\", \"offset\": 164331, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 164131, \"focus\": \"爱的义务\"}}, {\"term\": \"爱的义务\", \"offset\": 176344, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 176144, \"focus\": \"爱的义务\"}}], \"reader_coordinate_valid\": true}"
+    },
+    {
+     "name": "verify_quote",
+     "args": {
+      "book_id": "390398aff8d0",
+      "quote": "一种爱的义务是胡说八道"
+     },
+     "status": "success",
+     "duration_seconds": 0.293,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"quote\": \"一种爱的义务是胡说八道\", \"found\": true, \"match_count\": 1, \"matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"matched_text\": \"一种爱的义务是胡说八道\", \"match_start\": 144984, \"match_end\": 144995, \"match_mode\": \"exact\", \"text\": \"蒙；不过，一旦他开始这样做或者已经做了，良知就不由自主地和不可避免地要说话。因此，按照良知去行动，本身不可能是义务，因为若不然，就还必须有一个第二良知，来意识到前者的行为。\\n义务在这里只是培养自己的良知，磨砺对内在法官的呼声的注意力，并运用一切手段（因此只是间接的义务）来倾听良知。\\n3.人类之爱\\n爱是感知的事情，不是意愿的事情，而且我能够爱，不是因为我愿意，但更不是因为我应当（被强制去爱）。因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae［善意的爱］）作为一种行为可以服从于义务法则。但是，人们常常把一种对他人无私的善意也（尽管不是本义的）叫做爱；不错，在善意所涉及的不是他人的幸福，而是使自己的所有目的完全并且自由地顺从于另一个（哪怕是一个超人的）存在者的目的的地方，人们说的是同时对我们而言是义务的爱。但是，一切义务都是强迫，是一种强制，哪怕它是按照一个法则的自我强制。不过，人们出于强制而做的事，并不是由于爱而这么做的。\\n尽我们的能力向他人行善是义务，不论爱不爱\", \"excerpt_start\": 144784, \"excerpt_end\": 145235, \"chapter_text_length\": 204394, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"reader_coordinate_valid\": true, \"evidence_scope\": \"verified_quote_context\"}], \"matches_omitted\": 0, \"coverage\": {\"scope\": \"present_local_chapter_files\", \"unit\": \"本库文本单元，可含序言和目录，不等于传统篇章数\", \"searched_chapters\": 91, \"unreadable_indices\": [], \"declared_chapters\": 91, \"directory_consistent\": true}, \"note\": \"仅核对本库现有版本，不作语义近似替代。whitespace_only只忽略排版空白，matched_text保留实际原文。程序扫描报告的范围，但模型只读到了matches.text给出的上下文。命中不自动证明说话者就是作者；请区分正文、对话角色与译注。未命中不能排除标点、异写、译本或未收录部分，也不支持未经核验的词源或年代断言。\"}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 1.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_jvivHRgTZ76uq1MJiGkM0003"
+    },
+    {
+     "t": 1.6,
+     "phase": "result",
+     "name": "list_books",
+     "call_id": "call_01_irPCHSofp9XzNZMaXixP5063",
+     "status": "success",
+     "duration_seconds": 0.004
+    },
+    {
+     "t": 2.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "道德形而上学"
+     },
+     "status": "success",
+     "duration_seconds": 1.101,
+     "result_full": "{\"query\": \"道德形而上学\", \"results\": [{\"book_id\": \"f15e7fd89491\", \"book_title\": \"从《理想国》到《正义论》\", \"author\": \"奈杰尔·沃伯顿\", \"chapter_idx\": 13, \"chapter_title\": \"康德：《道德形而上学基础》\", \"citation_label\": \"【《从《理想国》到《正义论》》·康德：《道德形而上学基础》】\", \"snippet\": \"道德是客观的：它不是口味或者文化的问题，而是平等地运用于所有理性的事物。伊曼努尔·康德（Immanuel Kant）的《道德形而上学基础》（Groundwork of the Metaphysics Morals）的要点是让这些哲学命题可信，方法是建立“道德的最高原则”，也就是康德所谓的“绝对命令”（categorical imperative）。本书是一个关于康德的复杂详细的道德哲学的简短导言。作为一本“以责任为基础的”或者说是“道义论的”道德理论的简洁读本，《道德形而上学基础》的内容经受住了时间的考验。 善良的意志 世界上唯一不需要验证就可以判定为善的东西就是善良的意志。康德说这句话的意思是，好的意图绝对是好的，无条件地好。其他\", \"score\": 74, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f15e7fd89491\", \"chapter_idx\": 13, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"道德形而上学的奠基 科学院版编者导言 保罗·门采尔（Paul Menzer） 关于促使康德撰写《道德形而上学的奠基》的理由，他自己在这部作品的前言中是以如下的话来表达的： 我决意日后提供一部《道德形而上学》，如今我让这本《奠基》先发表。尽管除了一种纯粹实践理性的批判之外，道德形而上学真正说来没有别的基础，就像对于形而上学来说，已经提供的纯粹思辨理性的批判是基础一样。然而一方面，前一种批判并不像后一种批判那样极为重要，因为在道德领域里，人类理性甚至在最普通的知性那里也能够轻而易举地达到重大的正确性和详尽性，与此相反，它在理论的、但却纯粹的应用中却完全是辩证的；另一方面，为了一种纯粹实践理性的批判，我要求：如果它要被完成，就必须能够同时\", \"score\": 73, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"道德形而上学 科学院版编者导言 保罗·纳托尔普 关于《道德形而上学》的产生史，人们认为材料绝大多数已在《实践理性批判》的导言中（《康德全集》，第Ⅴ卷，489页以下 [1] ）汇聚。由此得出，这部著作的计划虽然一直回溯到60年代，但其实施却一再推迟，因为一部奠基性的纯粹（理论的和实践的）理性批判这个更重要的任务必须先完成。但是，在完成了两部批判之后，新产生的《判断力批判》的计划，其相对快的实施，就完全占用了哲学家后来时间（直到1790年）的工作。终于，该轮到完成久已准备好和应许过的《道德形而上学》了。我们也听到，有人确信无疑地期待它在1791年的博览会出现（基塞维特尔致康德，1791年6月14日 [2] ）。但是，还在此后的两年里，康\", \"score\": 73, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 47, \"chapter_title\": \"一般道德形而上学的划分\", \"citation_label\": \"【《康德文集》·一般道德形而上学的划分】\", \"snippet\": \"一般道德形而上学的划分 一 一切义务，要么是法权义务（officia iuris），亦即对这样一些义务来说，一种外在的立法是可能的；要么是德性义务（officia virtutis s.ethica［德性的或者伦理的义务］），对这样一些义务来说，一种外在的立法是不可能的。——但是，后一些义务之所以不能隶属于外在的立法，只是因为它们关涉一个目的，这个目的（或者拥有这个目的）同时也是义务；而预先设定一个目的，这不可能通过任何外在的立法来办到（因为这是心灵的一个内在行为）；虽然可能要求一些导致它的外在行动，但毕竟主体并不使它们成为自己的目的。 但是，道德论（道德）为什么通常（尤其被西塞罗 [1] ）冠以义务论，而不也冠以法权论的名称呢？因\", \"score\": 71, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 47, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学总导言\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·道德形而上学总导言】\", \"snippet\": \"道德形而上学总导言 (1) 道德形而上学总分类 一、一般地作为义务体系的 (2) 道德形而上学分类 （一）一切义务，或者是权利的义务，即 法律上的义务 ；或者是善德的义务，即 伦理上的义务 。法律义务是指那些由外在立法机关可能规定的义务；伦理义务是上述立法机关所不可能规定的义务。后者为什么不能作为外部立法机关的对象，那是因为它们牵联到一个目的或者最后的目标，这个目的本身同时包含在这些义务之中，于是，对每个个人来说，对此目的负有义务。但是，任何外部立法，无法使得任何人去接受一种特定的意图，或者，能够决定他去追求某种宗旨，因为这种决定或追求取决于一种内在的条件或者他心灵自身的活动。可是，那些导致这种内心条件的外部行为是可以被控制的，但这\", \"score\": 70, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 26, \"focus\": \"道德形而上学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 107, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 4.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_d3oqETeLth402JrMSOpD1829"
+    },
+    {
+     "t": 4.5,
+     "phase": "result",
+     "name": "get_book_detail",
+     "call_id": "call_01_OTk8MtC7YbuQaYUIlC4x9693",
+     "status": "success",
+     "duration_seconds": 0.058
+    },
+    {
+     "t": 4.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "仁爱",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.099,
+     "result_full": "{\"query\": \"仁爱\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 37, \"chapter_title\": \"论俗语：这在理论上可能是正确的，但不适用于实践\", \"citation_label\": \"【《康德文集》·论俗语：这在理论上可能是正确的，但不适用于实践】\", \"snippet\": \"权），这种自由是能够按照一种可能的普遍法律与每个人的自由共存的。——若一个政府，建立在就像一个父亲对于子女那样对于人民的仁爱的原则之上，也就是说，是一个父亲的政府（imperium paternale），因此，臣民们在这里像不能分辨什么对自己真正有利或者有害的子女，被迫仅仅采取被动的态度，以便对于他们应当如何得到幸福，仅仅期待国家元首的判断，而对于国家元首也愿意这样做，则仅仅期待他的善意；这样一个政府，就是能想得出的最大的专制主义（这种宪政取消臣民的一切自由，他们在这种情况下根本没有任何法权）。惟一能够为能有法权的人们且与统治者的仁爱相关来设想的政府，不是一个父亲的政府，而是一个祖国的政府（imperium non paternal\", \"score\": 42, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 37, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 54, \"chapter_title\": \"论俗语：这在理论上可能是正确的，但不适用于实践\", \"citation_label\": \"【《康德文集》·论俗语：这在理论上可能是正确的，但不适用于实践】\", \"snippet\": \"权），这种自由是能够按照一种可能的普遍法律与每个人的自由共存的。——若一个政府，建立在就像一个父亲对于子女那样对于人民的仁爱的原则之上，也就是说，是一个父亲的政府（imperium paternale），因此，臣民们在这里像不能分辨什么对自己真正有利或者有害的子女，被迫仅仅采取被动的态度，以便对于他们应当如何得到幸福，仅仅期待国家元首的判断，而对于国家元首也愿意这样做，则仅仅期待他的善意；这样一个政府，就是能想得出的最大的专制主义（这种宪政取消臣民的一切自由，他们在这种情况下根本没有任何法权）。惟一能够为能有法权的人们且与统治者的仁爱相关来设想的政府，不是一个父亲的政府，而是一个祖国的政府（imperium non paternal\", \"score\": 42, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 54, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 30, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"就不是出自有德性的意图，因为这样一种意图不可能鼓励你们为这个盲目的诱惑而去牺牲一种更高的责任。与此相反，如果对人类的普遍仁爱成了你们在任何时候都使自己的行为服从的原则，那么，对困苦者的爱在这种情况下依然存在，但它如今却从一种更高的立场出发被置于同你们的全部义务的正确关系之中了。普遍的仁爱是同情其不幸的根据，但同时也是正义的根据，按照正义的规定，你们现在必须放弃这一行为。一旦这种情感上升到其应有的普遍性，它也就是崇高的，但也更为冷漠。因为要我们的胸怀澎湃着对每一个人的温情脉脉的同情，对每一件他人的困苦都陷入伤痛，这是不可能的事情，若不然，有德性的人就会像赫拉克利特那样痛苦得不停地淌着同情的泪水，尽管有一切这样的善心，却无非是成为一个软\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 30, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 67, \"chapter_title\": \"关于美感和崇高感的考察\", \"citation_label\": \"【《康德文集》·关于美感和崇高感的考察】\", \"snippet\": \"就不是出自有德性的意图，因为这样一种意图不可能鼓励你们为这个盲目的诱惑而去牺牲一种更高的责任。与此相反，如果对人类的普遍仁爱成了你们在任何时候都使自己的行为服从的原则，那么，对困苦者的爱在这种情况下依然存在，但它如今却从一种更高的立场出发被置于同你们的全部义务的正确关系之中了。普遍的仁爱是同情其不幸的根据，但同时也是正义的根据，按照正义的规定，你们现在必须放弃这一行为。一旦这种情感上升到其应有的普遍性，它也就是崇高的，但也更为冷漠。因为要我们的胸怀澎湃着对每一个人的温情脉脉的同情，对每一件他人的困苦都陷入伤痛，这是不可能的事情，若不然，有德性的人就会像赫拉克利特那样痛苦得不停地淌着同情的泪水，尽管有一切这样的善心，却无非是成为一个软\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 67, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"中的技巧和勤奋具有一种市场价格；机智、活跃的想象力和情绪具有一种情感价格；与此相反，出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念，也就是说，在于意志的准则，即使成果不利于这些准则，它们也仍然要以这种方式在行为中显露自己。这些行为也不需要任何一种主观的气质或者趣味的推荐，让人以直接的认可和满意去看待它们；它们也不需要对它们的直接癖好或者情感。它们把实施它们的意志呈现为一种直接敬重的对象；对此，所需要的只是理性，以便责成意志、而不是哄骗意志去实施这些行为。对于义务来说，后者\", \"score\": 40, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"仁爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 17, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 6.6,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_mfA0BnSr4WPgoMhcqJI72819"
+    },
+    {
+     "t": 6.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_rKY3nTSQBZPMWIo6voLT5698"
+    },
+    {
+     "t": 6.7,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 29,
+      "focus": "仁爱"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"text\": \"，亦复如是。可是，由于这个力学的概念还以纯粹数学（例如几何学）中的一个纯然形式的概念为基础，所以，理性所关心的是：为了法的概念的构造，为知性尽可能多地提供先天直观。——直（rectum）作为直线，一方面与曲线相对立，另一方面与斜线相对立。前者是一条具有如下性质的线的内在性状，即在两个已知的点之间只能有一条唯一的直线，但后者就是两条相交的或相切的线的状况，具有如此性质的也只能有一条唯一的（垂直）线，这条线倾向于一边并不多于另一边，而且它把两边的空间均分，按照这种类比，甚至法权论也要（以数学的精确性）知道每一个人被规定属于他自己的东西，这在德性论中是不可以指望的，德性论不能拒绝给例外以某种空间（latitudinem）。——但是，不用涉入伦理学领域，就存在着两种要求作出法权裁决，但却不可能找出裁决人的情况，它们仿佛是属于伊壁鸠鲁的intermundia［星际空间］。——我们首先必须把这些情况从真正的、我们马上就要讨论的法权论中清理出去，以免它们的摇摆不定的原则对真正法权论的坚实原理产生影响。\\n附录 论有歧义的法权（Ius aequivocum）\\n任何狭义的法（Ius strictum）都结合有强制的权限。不过，人们还想到一种广义的法权（ius latum），在那里，强制的权限不可能由任何法则来规定。——这些真正的或者所谓的法权有两种：公道和紧急法权；其中前者假定一种没有强制的法权，后者假定一种没有法权的强制，而人们也不难察觉，这种歧义真正说来乃是基于，存在着一个受怀疑的法权的各种情况，推举不出任何法官对它们作出裁断。\\n一、公道\\n公道（客观地看）绝不是只向他人的伦理义务（他人的善意和仁爱）提出要求的一个根据，相反，从这一根据出发要求某种东西的人，乃是基于他的法权，只不过他缺乏对于法官来说所必需的条件，根据这些条件，法官就能够规定，此人的要求有多少或者以何种方式能被满足。一个商业公司关注利益的平等，某人尽管如此在其中却比别的成员做事更多，但由于事故而比别的成员损失更多，按照公道，他可以向公司要求比仅仅与其他成员平分秋色更多的东西。然而根据真正的（严格的）法权，由于即便人们在他的事例中设想一位法官，这个法官也没有任何确定的提示（data［材料］）来澄清按照合同他应当得到多少，所以他的要求就会被驳回。一个家丁，被付给他直到年终才发的工资，而给的却是在这段时间内贬值了的货币，他用这笔钱已经办不到当初签合同时可以办到的事情了，数值虽然相同，但货币价值却不同，所以，他就不能根据自己的法权来保证自己不因此而受损失，而是只能呼唤公道来作根据（一个不可能被听到的沉默的神灵），因为对此合同中没有任何规定，但一个法官不可能根据未规定的条件来作出判决。\\n由此也得出：（在他人关于自己的法权的争论中的）一个公道法庭自身就包含着一个矛盾。只有在涉及法官自己的法权的地方，在他能够凭自己的人格处置的事情上，他才可以并且应当倾听公道的呼声，例如，当王室自己承担他人在其效力时所蒙受的、并且恳求王室予以补偿的损失时，尽管按照严格的法权，王室可以借口他们是自担风险地承受这些损失的，而拒绝这种要求。\\n这样，公道的格言（dictum）虽然是“最严格的法权是最大的不法”（summum ius summa iniuria），但是这种灾祸却不可能沿着法权途径来消除，虽然这涉及法权要求，因为这种要求只适用于良知法庭（forum poli［上天的法庭］），相反，任何法权问题都必须诉诸公民法权（forum soli［地上的法庭］）。\\n二、紧急法权（Ius necessitatis）\\n这种想当然的法权 [1] 应当是一个权限，即在我自己有丧命危险的情况下剥夺另一个丝毫没有加害我的人的生命。很显然，这里必定包含着法权论的一种自相矛盾——因为这里说的不是一个不正当地袭击我的生命的人，对这样的人，我可以通过剥夺他的生命而先发制人（ius inculpatae tutelae［正当防卫的法权］），节制（moderamen）的劝告甚至不属于法权，而只属于伦理学，相反，这里说的是允许对一个不曾对我实施任何暴力的人实施暴力。\\n很明显，这种主张不应当客观地、按照一个法则会规定的东西来理解，而只能主观地、按照法庭上会作出的判决去理解。也就是说，不可能存在这样的刑法，它判处这样一个人死刑：在船沉时此人和另外一个人一起在同样的危险中漂浮，他为了自己活命而把那个人从其曾经赖以活命的木板上推开。因为，法律所威胁的惩罚毕竟不可能比这个人丧命的惩罚更大。于是，这样一种刑法根本不可能具有预期的作用；因为以一个尚不确定的灾祸（由法官判决而来的死亡）来威胁，不可能胜过对确定的灾难（亦即淹死）的恐惧。所以，暴力的自我保存的行为绝不应当被评判为无可指摘的（inculpabile），而只能被评判为无法惩罚的（imopunibile），而且这种主观的免于惩罚由于一种奇特的混淆，被法权学者们看做一种客观的免于惩罚（合法性）。\\n紧急法权的格言是：“事急无法”（necessitas non habet legem）。尽管如此，却不可能存在任何紧急状况使得不正当的事情成为合法的。\\n可以看出，在两种法权评判（根据公道法权和根据紧急法权）中，歧义（aequivocatio）来源于法权实施的主观根据和客观根据（面对理性和面对法庭）的混淆。因为这样一来，某人有充分的理由认为对自己而言正当的东西，在一个法庭面前就得不到证实，而他本人必然评判为不正当的事，倒能够获得同一个法庭的谅解，因为法权的概念在这两个场合并不是在同一个意义上使用的。\\n注释\\n[1] 参见《论俗语：这在理论上可能是正确的，但不适用于实践》（第Ⅱ节的结论）［参见《康德著作全集》，第8卷，303~304页。——译者注］。——科学院版编者注\\n法权论的划分\\n一、法权义务的一般划分\\n人们完全可以按照乌尔皮安 [1] 的方法进行划分，只要我们给他的公式加上一层虽然他自己可能没有思考清楚、但这些公式却允许从中引申出来或者添加进去的意思。这些公式如下：\\n1.做一个正派的人（honeste vive［正派地活着］）。法权上的正派（honestas iuridica）在于：在和他人的关系中维护自己作为一个人的价值的那种价值，这种义务是由如下命题来表述的：“不要让你自己成为他人的纯然手段，要对他们来说同时是目的。”在下文中，这项义务将被解释为出自我们自己人格中的人性法权的责任（Lex iusti［正当的法则］）。\\n2.不要对任何人做不正当的事（neminem laede［不要伤害任何人］），此外，你也应当摆脱与他人的一切干系，必须避免一切社交（Lex iuridica［司法的法则］）。\\n3.进入（如果你无法避免社交）与他人的社交，在其中要能够维护每个人他自己的东西（suum c\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 26458, \"excerpt_end\": 29258, \"chapter_text_length\": 204394, \"has_more\": true, \"next_offset\": 29258, \"has_previous\": true, \"previous_offset\": 23658, \"focus_found\": true, \"focus_terms_matched\": [\"仁爱\"], \"focus_terms_found_in_chapter\": [\"仁爱\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"仁爱\", \"offset\": 27158, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 26958, \"focus\": \"仁爱\"}}], \"reader_coordinate_valid\": true}"
+    },
+    {
+     "t": 6.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "爱的义务",
+      "book_id": "390398aff8d0"
+     },
+     "status": "success",
+     "duration_seconds": 0.021,
+     "result_full": "{\"query\": \"爱的义务\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"3.人类之爱 爱是感知的事情，不是意愿的事情，而且我能够爱，不是因为我愿意，但更不是因为我应当（被强制去爱）。因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae［善意的爱］）作为一种行为可以服从于义务法则。但是，人们常常把一种对他人无私的善意也（尽管不是本义的）叫做爱；不错，在善意所涉及的不是他人的幸福，而是使自己的所有目的完全并且自由地顺从于另一个（哪怕是一个超人的）存在者的目的的地方，人们说的是同时对我们而言是义务的爱。但是，一切义务都是强迫，是一种强制，哪怕它是按照一个法则的自我强制。不过，人们出于强制而做的事，并不是由于爱而这么做的。 尽我们的能力向他人行善是义务，不论爱不爱他们，即便人们不得不作\", \"score\": 43, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"爱的义务\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"因为它尽管有不同的限制，但却是从原则导出的；它不可能是一个普遍的法则，因为它既不包含对自己的义务的根据，也不包含对他人的爱的义务的根据（因为有些人会乐于同意，只要他可以免除施惠于他人，他人也无须施惠于他），最后也不包含相互之间的应有义务的根据；因为罪犯会从这一根据出发对要惩罚他的法官提出抗辩，等等。 [14] 我在这里可以免于举例来说明这一原则，因为最初说明定言命令式及其公式的所有例子，在这里都可以用于这一目的。 [15] 目的论把自然视为一个目的王国，道德学则把一个可能的目的王国视为一个自然王国。在前者，目的王国是用来说明存在着的东西的一个理论理念。在后者，目的王国是一个实践理念，用来实现，而且恰恰是依据这个理念来实现并不存在、但\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"爱的义务\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 79, \"chapter_title\": \"自然地理学\", \"citation_label\": \"【《康德文集》·自然地理学】\", \"snippet\": \"此邻居们已经能够预先发现并且向当局告发。与此相反，在拉普兰，儿子用一条鹿筋勒死自己在狩猎时受伤的父亲，则被视为一种杰出的爱的义务，因此父亲也总是把它托付给自己最疼爱的儿子。 3.政治地理学。如果一个公民社会的第一原理是一个普遍的法律以及在违反法律时不可抗拒的强制力，但法律同样与土地和居民的性状相关，那么，政治地理学就同样属于此列，因为它完全是根据自然地理学的。倘若在俄罗斯江河都向南流，这就会对整个国家都极为有利，但它们却都只是流向北冰洋。在波斯，较长时间有两位君主，其一驻扎在伊斯帕汗，另一驻扎在坎大哈。他们不能彼此征服，因为阻止他们的是横亘在中间的克尔曼荒漠，它比有些海还要大。 4.商业地理学。如果地球上的一个国家富产另一个国家必然\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 79, \"focus\": \"爱的义务\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 91}, \"search_scope\": {\"author\": null, \"book_id\": \"390398aff8d0\"}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 9.3,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_wyAkeCvCKl79pH9hUD2N7672"
+    },
+    {
+     "t": 9.5,
+     "phase": "start",
+     "name": "verify_quote",
+     "call_id": "call_01_zHo8D1TsSbGAlNY1cT6i6500"
+    },
+    {
+     "t": 9.6,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 29,
+      "focus": "爱的义务"
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"text\": \"就会等于是说：对自己有义务承认义务。因为良知就是在一个法则的任何事例中都告诫人有作出赦免或者宣判的义务的实践理性。因此，良知的关系不是与一个客体的关系，而是仅仅与主体的关系（通过其行为激发道德情感）；因而是一种必然发生的事实，并不是责任和义务。因此如果人们说：这个人没有良知，则人们说的是：他没把良知的呼声当回事。因为如果他真的没有良知，他也就不会把自己归为合乎义务的，或者指责自己是违背义务的，因而也根本不可能设想自己有义务具有良知。\\n在此，我还不打算讨论良知的种种划分，只是提醒注意从上述引证中得出的东西，也就是说，一个会犯错误的良知是胡说八道。因为在某种东西是不是义务的客观判断中，人们有时很可能出错；但在我是否为了作出那种判断已经把它与我的实践理性（在此是判决的理性）进行了比较的主观判断中，我不可能出错，因为那样的话，我在实践上就根本不会作出判断；在这种情况下就既没有错也没有对。无良知不是缺乏良知，而是不把良知的判断放在心上的癖好。但是，如果有人意识到已经是在按照良知行动的，那么，就罪过或者无辜而言，就不能再要求他任何东西。他的责任仅仅是对自己关于什么是义务或者不是义务的知性进行启蒙；不过，一旦他开始这样做或者已经做了，良知就不由自主地和不可避免地要说话。因此，按照良知去行动，本身不可能是义务，因为若不然，就还必须有一个第二良知，来意识到前者的行为。\\n义务在这里只是培养自己的良知，磨砺对内在法官的呼声的注意力，并运用一切手段（因此只是间接的义务）来倾听良知。\\n3.人类之爱\\n爱是感知的事情，不是意愿的事情，而且我能够爱，不是因为我愿意，但更不是因为我应当（被强制去爱）。因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae［善意的爱］）作为一种行为可以服从于义务法则。但是，人们常常把一种对他人无私的善意也（尽管不是本义的）叫做爱；不错，在善意所涉及的不是他人的幸福，而是使自己的所有目的完全并且自由地顺从于另一个（哪怕是一个超人的）存在者的目的的地方，人们说的是同时对我们而言是义务的爱。但是，一切义务都是强迫，是一种强制，哪怕它是按照一个法则的自我强制。不过，人们出于强制而做的事，并不是由于爱而这么做的。\\n尽我们的能力向他人行善是义务，不论爱不爱他们，即便人们不得不作出忧伤的说明：“真可惜，我们的族类并不适合于在人们更仔细了解它时，可以认为它特别值得爱”，也丝毫无损于这种义务的重要性。——仇视人在任何时候都是可恨的，哪怕它没有实际的攻击而仅仅在于对人的完全抛弃（分裂主义的厌恶人类）。因为善意始终还是一种义务，哪怕是对于仇视人类者，人们当然不可能爱这种人，但毕竟可以向他表示善意。\\n但是，憎恶人身上的恶习，既不是义务也不是违背义务的，而是对恶习的一种纯然厌恶感，意志对这种情感并没有一些影响，或者反过来这种情感对意志也没有一些影响。行善是义务。经常履行这种义务，并且实现了自己的行善意图的人，最后就真的爱上了那个他曾经对之行善的人。所以，如果这叫做你应当爱你的邻人如你自己，那么，它就并不叫做你要直接地（首先）去爱并且借助这种爱（然后）行善，而是叫做对你的邻人行善，并且这种行善将在你心中造成人类之爱（作为一般行善偏好的能力）！\\n因此，惟有对满意的爱（amor complacentiae）才会是直接的。但是，对这种爱（作为一种与一个对象的实存的表象直接结合的愉快），亦即不得不被迫对此感到愉快，这是一个矛盾。\\n4.敬重\\n敬重（reverentia）同样是某种纯然主观的东西，一种独特的情感，不是关于一个有义务去造就和促成的对象的一个判断。因为义务作为义务来看，只有通过我们对它持有的敬重才能被表现出来。因此，有义务去敬重就会等于是说让人有义务去有义务。——据此，如果说人有自重的义务，那么，这种说法就是不正确的，而毋宁是必须说：人心中的法则迫使他不可避免地敬重他自己的本质，而这种情感（它是一种独特的情感）就是某些义务，亦即某些能够与对自己本身的义务共存的行动的一个根据；而不是说：人有敬重自己的义务；因为人必须对内心的法则本身持有敬重，哪怕只是为了可以设想一种一般的义务。\\n十三、在讨论一种纯粹的德性论时的道德形而上学普遍原理\\n第一，对于一个义务来说，也只能找出承担义务的一个惟一的根据，如果对此作出两个或者更多的证明，那么，这就是一个可靠的标志，说明人们要么还根本没有一个有效的证明，要么也存在着多个并且不同的义务，人们却把它们视为一个。\\n因为一切道德的证明作为哲学的证明，都只能借助于一种出自概念的理性认识来进行，而不是像数学提供的证明那样是通过概念的构造来进行的；后者允许对同一个命题有多种证明，因为在先天直观中对一个客体的性状可以有多种规定，它们都回溯到同一个根据。——例如，如果对于诚实的义务来说，首先要从谎言对他人造成的损害出发作出一个证明，但然后也要从一个说谎者的卑鄙和对自我敬重的侵犯出发作出一个证明，那么，在前一个证明中得到证明的就是一种善意的义务，而不是一种诚实的义务，因而不是人们要求证明的这种义务，而是另一种义务。——但是，涉及对同一个命题的多种证明，人们沾沾自喜于根据的数量将弥补单独采用任何一个根据而在分量上的欠缺，那么，这就是一种非哲学的托辞，因为它表露出欺诈和不真诚。——因为把不同的不充分的根据并列起来，并不使一个根据弥补另一个根据的不足而达到确定性，甚至连或然性也不能达到。它们必须作为根据和后果而在一个序列中一直前进直至充足的根据，并且也只能以这种方式进行证明。——而尽管如此，这却是说服艺术的惯用技巧。\\n第二，德性与恶习的区别绝不能在遵循某些准则的程度中去寻找，而是必须仅仅在这些准则特殊的质（与法则的关系）中去寻找。换句话说，（亚里士多德的）受到称赞的原理，即把德性设定为两种恶习之间的中道，是错误的。 [7] 例如，假设好的家政就是两种恶习，亦即浪费与吝啬之间的中道，那么，它作为德性就不能被表现为通过上述两种恶习的第一种的逐渐减少（节省）而产生的，也不能被表现为通过顺从第二种恶习的人的开支增加而产生的，就好像它们按照相反的方向在好的家政中相遇似的；相反，这两种恶习的每一种都有其自己与别的准则必然相抵触的准则。\\n同样，而且出自同样的理由，没有任何恶习一般而言能够用对某些意图的实施大于其合目的性来解释（e.g.Prodigalitas est excessus in consumendis opibus［例如，浪费就是消费财物过度］），或者用对某些意图的实施小于恰如其分来解释（e.g.Avaritia est defectus etc.［例如，吝啬就是消费财物不足］）。因为既然由此根本没有规定程度，而行为是否合乎义务，一切都取决于这个程度，所以，这就不能用于作解释。\\n第三，伦理义务必须\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 144286, \"excerpt_end\": 147086, \"chapter_text_length\": 204394, \"has_more\": true, \"next_offset\": 147086, \"has_previous\": true, \"previous_offset\": 141486, \"focus_found\": true, \"focus_terms_matched\": [\"爱的义务\"], \"focus_terms_found_in_chapter\": [\"爱的义务\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"爱的义务\", \"offset\": 144986, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 144786, \"focus\": \"爱的义务\"}}, {\"term\": \"爱的义务\", \"offset\": 164331, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 164131, \"focus\": \"爱的义务\"}}, {\"term\": \"爱的义务\", \"offset\": 176344, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"offset\": 176144, \"focus\": \"爱的义务\"}}], \"reader_coordinate_valid\": true}"
+    },
+    {
+     "t": 9.9,
+     "phase": "result_orphan",
+     "name": "verify_quote",
+     "args": {
+      "book_id": "390398aff8d0",
+      "quote": "一种爱的义务是胡说八道"
+     },
+     "status": "success",
+     "duration_seconds": 0.293,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"quote\": \"一种爱的义务是胡说八道\", \"found\": true, \"match_count\": 1, \"matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"matched_text\": \"一种爱的义务是胡说八道\", \"match_start\": 144984, \"match_end\": 144995, \"match_mode\": \"exact\", \"text\": \"蒙；不过，一旦他开始这样做或者已经做了，良知就不由自主地和不可避免地要说话。因此，按照良知去行动，本身不可能是义务，因为若不然，就还必须有一个第二良知，来意识到前者的行为。\\n义务在这里只是培养自己的良知，磨砺对内在法官的呼声的注意力，并运用一切手段（因此只是间接的义务）来倾听良知。\\n3.人类之爱\\n爱是感知的事情，不是意愿的事情，而且我能够爱，不是因为我愿意，但更不是因为我应当（被强制去爱）。因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae［善意的爱］）作为一种行为可以服从于义务法则。但是，人们常常把一种对他人无私的善意也（尽管不是本义的）叫做爱；不错，在善意所涉及的不是他人的幸福，而是使自己的所有目的完全并且自由地顺从于另一个（哪怕是一个超人的）存在者的目的的地方，人们说的是同时对我们而言是义务的爱。但是，一切义务都是强迫，是一种强制，哪怕它是按照一个法则的自我强制。不过，人们出于强制而做的事，并不是由于爱而这么做的。\\n尽我们的能力向他人行善是义务，不论爱不爱\", \"excerpt_start\": 144784, \"excerpt_end\": 145235, \"chapter_text_length\": 204394, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"reader_coordinate_valid\": true, \"evidence_scope\": \"verified_quote_context\"}], \"matches_omitted\": 0, \"coverage\": {\"scope\": \"present_local_chapter_files\", \"unit\": \"本库文本单元，可含序言和目录，不等于传统篇章数\", \"searched_chapters\": 91, \"unreadable_indices\": [], \"declared_chapters\": 91, \"directory_consistent\": true}, \"note\": \"仅核对本库现有版本，不作语义近似替代。whitespace_only只忽略排版空白，matched_text保留实际原文。程序扫描报告的范围，但模型只读到了matches.text给出的上下文。命中不自动证明说话者就是作者；请区分正文、对话角色与译注。未命中不能排除标点、异写、译本或未收录部分，也不支持未经核验的词源或年代断言。\"}"
+    }
+   ],
+   "answer": "核查完了。结论是：**正文没有丢失，能读到，而且\"仁爱/爱的义务\"这段原文就在库里的。**\"空\"出在\"书\"这一层，不在\"文本\"这一层。\n\n## 实际核查到的\n\n- 库里**没有**一本独立题名为《道德形而上学》的书。以\"道德形而上学\"检索书名，书目命中 0。\n- 它实际是两套文集里的**章节**：\n  - 《康德文集》（book_id `390398aff8d0`）第 **29** 章\"道德形而上学\"，全章约 **204,394** 字符，`readable: true`，`unreadable_chapter_indices` 为空；同书第 47 章为\"一般道德形而上学的划分\"，第 26 章为\"道德形而上学的奠基\"。\n  - 《康德著作集（套装10册）》（book_id `309de54e4392`）第 26 章\"道德形而上学总导言\"。\n\n我按章读取第 29 章，拿到了真实正文；并在其中逐字核验到命中：\n\n> \"……因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae）作为一种行为可以服从于义务法则。\"【《康德文集》·道德形而上学，第29章\"3.人类之爱\"】\n\n（`verify_quote` 精确匹配 1 处；该小节还接着说\"尽我们的能力向他人行善是义务，不论爱不爱他们\"，并对\"你应当爱你的邻人如你自己\"作了重释。）\n\n## 为什么你会读到\"空\"\n\n大概率是**把章节当作独立书名去取全文**了：书名检索无书目条目 → 按书名传 book_id 取正文 → 返回空。这看起来像\"无正文\"，其实是定位层级错了。另一种可能是恰好读到了该章分页边界外的偏移。工具失败/定位失败**不等于**材料不存在——这次是后者。\n\n## 能不能直接引用？能，但有两个前提\n\n**1. 引用格式必须改。**不能写成\"康德《道德形而上学》（某出版社）\"当作单行本；应标为文集收录的章节：《康德文集》第29章\"道德形而上学\"，book_id `390398aff8d0`。同时要说明这是文集中的收录版，不是独立校勘本。\n\n**2. 更要紧的是原文立场和你\"论仁爱义务\"的用法可能相反。**康德在这一节明确否认\"爱（作为情感）\"能成为义务——所以\"仁爱义务\"若指\"有义务去爱\"，这段文本恰恰是**最有力的反方材料**，不是支持材料。他承认的是：**行善/善意作为一种行为**可以服从义务法则，即义务落在\"行善\"（Wohltätigkeit 类）而非\"产生爱的情感\"上。引用时若不做这个区分，会直接把自己的论点建立在被引者的否定之上。\n\n## 下一步（按顺序）\n\n1. 定位：`get_book_detail(\"390398aff8d0\", focus=\"道德形而上学\")` 拿 `chapter_idx`（29）。\n2. 读全：`get_chapter(390398aff8d0, 29, focus=...)`。该章 20 万字符，需按返回的 `focus_locations` 分段续读；\"爱的义务\"另有两处落在 offset 164131、176144 附近，可一并读，才能确认德性论里\"对他人之爱的义务\"（行善/感谢/同情）的完整表述。\n3. 判归属：确认你引的段落属《道德形而上学》的**法权论还是德性论**portion，别把法权论\"公道\"段里的\"仁爱\"（那是另一个用法）混进来。\n4. 若要引\"仁爱义务\"这个译名，对照另一译本：`get_chapter(\"309de54e4392\", ...)` 比勘德性论对应段落，避免单一译名造成的偏差。\n5. 落到论文：把结论写成\"康德否认情感意义的爱的义务，但承认行善义务\"，再据此讨论你想主张的\"仁爱义务\"是否需要重新定义——这才是这段原文能真正支撑的论证方向。\n\n要不要我直接接着把德性论中\"对他人之爱的义务\"整段（行善/感谢/同情三分）读出来，给你一份可核验的引用清单？",
+   "answer_chars": 1626,
+   "done_content": "核查完了。结论是：**正文没有丢失，能读到，而且\"仁爱/爱的义务\"这段原文就在库里的。**\"空\"出在\"书\"这一层，不在\"文本\"这一层。\n\n## 实际核查到的\n\n- 库里**没有**一本独立题名为《道德形而上学》的书。以\"道德形而上学\"检索书名，书目命中 0。\n- 它实际是两套文集里的**章节**：\n  - 《康德文集》（book_id `390398aff8d0`）第 **29** 章\"道德形而上学\"，全章约 **204,394** 字符，`readable: true`，`unreadable_chapter_indices` 为空；同书第 47 章为\"一般道德形而上学的划分\"，第 26 章为\"道德形而上学的奠基\"。\n  - 《康德著作集（套装10册）》（book_id `309de54e4392`）第 26 章\"道德形而上学总导言\"。\n\n我按章读取第 29 章，拿到了真实正文；并在其中逐字核验到命中：\n\n> \"……因此，一种爱的义务是胡说八道。不过，善意（amor benevolentiae）作为一种行为可以服从于义务法则。\"【《康德文集》·道德形而上学，第29章\"3.人类之爱\"】\n\n（`verify_quote` 精确匹配 1 处；该小节还接着说\"尽我们的能力向他人行善是义务，不论爱不爱他们\"，并对\"你应当爱你的邻人如你自己\"作了重释。）\n\n## 为什么你会读到\"空\"\n\n大概率是**把章节当作独立书名去取全文**了：书名检索无书目条目 → 按书名传 book_id 取正文 → 返回空。这看起来像\"无正文\"，其实是定位层级错了。另一种可能是恰好读到了该章分页边界外的偏移。工具失败/定位失败**不等于**材料不存在——这次是后者。\n\n## 能不能直接引用？能，但有两个前提\n\n**1. 引用格式必须改。**不能写成\"康德《道德形而上学》（某出版社）\"当作单行本；应标为文集收录的章节：《康德文集》第29章\"道德形而上学\"，book_id `390398aff8d0`。同时要说明这是文集中的收录版，不是独立校勘本。\n\n**2. 更要紧的是原文立场和你\"论仁爱义务\"的用法可能相反。**康德在这一节明确否认\"爱（作为情感）\"能成为义务——所以\"仁爱义务\"若指\"有义务去爱\"，这段文本恰恰是**最有力的反方材料**，不是支持材料。他承认的是：**行善/善意作为一种行为**可以服从义务法则，即义务落在\"行善\"（Wohltätigkeit 类）而非\"产生爱的情感\"上。引用时若不做这个区分，会直接把自己的论点建立在被引者的否定之上。\n\n## 下一步（按顺序）\n\n1. 定位：`get_book_detail(\"390398aff8d0\", focus=\"道德形而上学\")` 拿 `chapter_idx`（29）。\n2. 读全：`get_chapter(390398aff8d0, 29, focus=...)`。该章 20 万字符，需按返回的 `focus_locations` 分段续读；\"爱的义务\"另有两处落在 offset 164131、176144 附近，可一并读，才能确认德性论里\"对他人之爱的义务\"（行善/感谢/同情）的完整表述。\n3. 判归属：确认你引的段落属《道德形而上学》的**法权论还是德性论**portion，别把法权论\"公道\"段里的\"仁爱\"（那是另一个用法）混进来。\n4. 若要引\"仁爱义务\"这个译名，对照另一译本：`get_chapter(\"309de54e4392\", ...)` 比勘德性论对应段落，避免单一译名造成的偏差。\n5. 落到论文：把结论写成\"康德否认情感意义的爱的义务，但承认行善义务\"，再据此讨论你想主张的\"仁爱义务\"是否需要重新定义——这才是这段原文能真正支撑的论证方向。\n\n要不要我直接接着把德性论中\"对他人之爱的义务\"整段（行善/感谢/同情三分）读出来，给你一份可核验的引用清单？",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_2",
+     "book": "康德文集",
+     "chapter": "道德形而上学的奠基",
+     "book_id": "390398aff8d0",
+     "chapter_idx": 26,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_7"
+     ],
+     "excerpt": "道德形而上学的奠基 科学院版编者导言 保罗·门采尔（Paul Menzer） 关于促使康德撰写《道德形而上学的奠基》的理由，他自己在这部作品的前言中是以如下的话来表达的： 我决意日后提供一部《道德形而上学》，如今我让这本《奠基》先发表。尽管除了一种纯粹实践理性的批判之外，道德形而上学真正说来没有别的基础，就像对于形而上学来说，已经提供的纯粹思辨理性的批判是基础一样。然而一方面，前一种批判并不像后一种批判那样极为重要，因为在道德领域里，人",
+     "quoted_passages": [],
+     "access_level": "SEARCH_EXCERPT"
+    },
+    {
+     "evidence_id": "ev_3",
+     "book": "康德文集",
+     "chapter": "道德形而上学",
+     "book_id": "390398aff8d0",
+     "chapter_idx": 29,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_13"
+     ],
+     "excerpt": "务共存的行动的一个根据；而不是说：人有敬重自己的义务；因为人必须对内心的法则本身持有敬重，哪怕只是为了可以设想一种一般的义务。\n十三、在讨论一种纯粹的德性论时的道德形而上学普遍原理\n第一，对于一个义务来说，也只能找出承担义务的一个惟一的根据，如果对此作出两个或者更多的证明，那么，这就是一个可靠的标志，说明人们要么还根本没有一个有效的证明，要么也存在着多个并且不同的义务，人们却把它们视为一个。\n因为一切道德的证明作为哲学的证明，都只能借助于一种出自概念的理性认识来进行，而不是像数学提供的证明那样是通过概念的构造来进行的；后者允许对同一个命题有多种证明，因为在先天直观中对一个客体的性状可以有多种规定，它们都回溯到同一个根据。——例如，如果对于诚实的义务来说，首先要从谎言对他人造成的损害出发作出一个证明，但然后也要从一个说谎者的卑鄙和对自我敬重的侵犯出发作出一个证明，那么，在前一个证明中得到证明的就是一种善意的义务，而不是一种诚实的义务，因而不是人们要求证明的这种义务，而是另一种义务。——但是，涉及对同一个命题的多种证明，人们沾沾自喜于根据的数量将弥补单独采用任何一个根据而在分量上的欠缺，那么，这就是一种非哲学的托辞，因为它表露出欺诈和不真诚。——因为把不同的不充分的根据并列起来，并不使一个根据弥补另一个根据的不足而达到确定性，甚至连或然性也不能达到。它们必须作为根据和后果而在一个序列中",
+     "quoted_passages": [
+      "道德形而上学",
+      "3.人类之爱",
+      "尽我们的能力向他人行善是义务，不论爱不爱他们",
+      "你应当爱你的邻人如你自己"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 204394,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_4",
+     "book": "康德文集",
+     "chapter": "一般道德形而上学的划分",
+     "book_id": "390398aff8d0",
+     "chapter_idx": 47,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_7"
+     ],
+     "excerpt": "一般道德形而上学的划分 一 一切义务，要么是法权义务（officia iuris），亦即对这样一些义务来说，一种外在的立法是可能的；要么是德性义务（officia virtutis s.ethica［德性的或者伦理的义务］），对这样一些义务来说，一种外在的立法是不可能的。——但是，后一些义务之所以不能隶属于外在的立法，只是因为它们关涉一个目的，这个目的（或者拥有这个目的）同时也是义务；而预先设定一个目的，这不可能通过任何外在的立法来办到",
+     "quoted_passages": [],
+     "access_level": "SEARCH_EXCERPT"
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 10,
+    "display_citations": 3,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 29,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "务共存的行动的一个根据；而不是说：人有敬重自己的义务；因为人必须对内心的法则本身持有敬重，哪怕只是为了可以设想一种一般的义务。\n十三、在讨论一种纯粹的德性论时的道德形而上学普遍原理\n第一，对于一个义务来说，也只能找出承担义务的一个惟一的根据，如果对此作出两个或者更多的证明，那么，这就是一个可靠的标志，说明人们要么还根本没有一个有效的证明，要么也存在着多个并且不同的义务，人们却把它们视为一个。\n因为一切道德的证明作为哲学的证明，都只能借助于一种出自概念的理性认识来进行，而不是像数学提供的证明那样是通过概念的构造来进行的；后者允许对同一个命题有多种证明，因为在先天直观中对一个客体的性状可以有多种规定，它们都回溯到同一个根据。——例如，如果对于诚实的义务来说，首先要从谎言对他人造成的损害出发作出一个证明，但然后也要从一个说谎者的卑鄙和对自我敬重的侵犯出发作出一个证明，那么，在前一个证明中得到证明的就是一种善意的义务，而不是一种诚实的义务，因而不是人们要求证明的这种义务，而是另一种义务。——但是，涉及对同一个命题的多种证明，人们沾沾自喜于根据的数量将弥补单独采用任何一个根据而在分量上的欠缺，那么，这就是一种非哲学的托辞，因为它表露出欺诈和不真诚。——因为把不同的不充分的根据并列起来，并不使一个根据弥补另一个根据的不足而达到确定性，甚至连或然性也不能达到。它们必须作为根据和后果而在一个序列中",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 204394,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学的奠基",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 26,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "因为它尽管有不同的限制，但却是从原则导出的；它不可能是一个普遍的法则，因为它既不包含对自己的义务的根据，也不包含对他人的爱的义务的根据（因为有些人会乐于同意，只要他可以免除施惠于他人，他人也无须施惠于他），最后也不包含相互之间的应有义务的根据；因为罪犯会从这一根据出发对要惩罚他的法官提出抗辩，等等。 [14] 我在这里可以免于举例来说明这一原则，因为最初说明定言命令式及其公式的所有例子，在这里都可以用于这一目的。 [15] 目的论把自然视为一个目的王国，道德学则把一个可能的目的王国视为一个自然王国。在前者，目的王国是用来说明存在着的东西的一个理论理念。在后者，目的王国是一个实践理念，用来实现，而且恰恰是依据这个理念来实现并不存在、但",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "一般道德形而上学的划分",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 47,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "一般道德形而上学的划分 一 一切义务，要么是法权义务（officia iuris），亦即对这样一些义务来说，一种外在的立法是可能的；要么是德性义务（officia virtutis s.ethica［德性的或者伦理的义务］），对这样一些义务来说，一种外在的立法是不可能的。——但是，后一些义务之所以不能隶属于外在的立法，只是因为它们关涉一个目的，这个目的（或者拥有这个目的）同时也是义务；而预先设定一个目的，这不可能通过任何外在的立法来办到（因为这是心灵的一个内在行为）；虽然可能要求一些导致它的外在行动，但毕竟主体并不使它们成为自己的目的。 但是，道德论（道德）为什么通常（尤其被西塞罗 [1] ）冠以义务论，而不也冠以法权论的名称呢？因",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "从《理想国》到《正义论》",
+       "chapter": "康德：《道德形而上学基础》",
+       "book_id": "f15e7fd89491",
+       "chapter_idx": 13,
+       "author": "奈杰尔·沃伯顿",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "道德是客观的：它不是口味或者文化的问题，而是平等地运用于所有理性的事物。伊曼努尔·康德（Immanuel Kant）的《道德形而上学基础》（Groundwork of the Metaphysics Morals）的要点是让这些哲学命题可信，方法是建立“道德的最高原则”，也就是康德所谓的“绝对命令”（categorical imperative）。本书是一个关于康德的复杂详细的道德哲学的简短导言。作为一本“以责任为基础的”或者说是“道义论的”道德理论的简洁读本，《道德形而上学基础》的内容经受住了时间的考验。 善良的意志 世界上唯一不需要验证就可以判定为善的东西就是善良的意志。康德说这句话的意思是，好的意图绝对是好的，无条件地好。其他",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "道德形而上学总导言",
+       "book_id": "309de54e4392",
+       "chapter_idx": 26,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "道德形而上学总导言 (1) 道德形而上学总分类 一、一般地作为义务体系的 (2) 道德形而上学分类 （一）一切义务，或者是权利的义务，即 法律上的义务 ；或者是善德的义务，即 伦理上的义务 。法律义务是指那些由外在立法机关可能规定的义务；伦理义务是上述立法机关所不可能规定的义务。后者为什么不能作为外部立法机关的对象，那是因为它们牵联到一个目的或者最后的目标，这个目的本身同时包含在这些义务之中，于是，对每个个人来说，对此目的负有义务。但是，任何外部立法，无法使得任何人去接受一种特定的意图，或者，能够决定他去追求某种宗旨，因为这种决定或追求取决于一种内在的条件或者他心灵自身的活动。可是，那些导致这种内心条件的外部行为是可以被控制的，但这",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "论俗语：这在理论上可能是正确的，但不适用于实践",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 37,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "权），这种自由是能够按照一种可能的普遍法律与每个人的自由共存的。——若一个政府，建立在就像一个父亲对于子女那样对于人民的仁爱的原则之上，也就是说，是一个父亲的政府（imperium paternale），因此，臣民们在这里像不能分辨什么对自己真正有利或者有害的子女，被迫仅仅采取被动的态度，以便对于他们应当如何得到幸福，仅仅期待国家元首的判断，而对于国家元首也愿意这样做，则仅仅期待他的善意；这样一个政府，就是能想得出的最大的专制主义（这种宪政取消臣民的一切自由，他们在这种情况下根本没有任何法权）。惟一能够为能有法权的人们且与统治者的仁爱相关来设想的政府，不是一个父亲的政府，而是一个祖国的政府（imperium non paternal",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "论俗语：这在理论上可能是正确的，但不适用于实践",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 54,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "权），这种自由是能够按照一种可能的普遍法律与每个人的自由共存的。——若一个政府，建立在就像一个父亲对于子女那样对于人民的仁爱的原则之上，也就是说，是一个父亲的政府（imperium paternale），因此，臣民们在这里像不能分辨什么对自己真正有利或者有害的子女，被迫仅仅采取被动的态度，以便对于他们应当如何得到幸福，仅仅期待国家元首的判断，而对于国家元首也愿意这样做，则仅仅期待他的善意；这样一个政府，就是能想得出的最大的专制主义（这种宪政取消臣民的一切自由，他们在这种情况下根本没有任何法权）。惟一能够为能有法权的人们且与统治者的仁爱相关来设想的政府，不是一个父亲的政府，而是一个祖国的政府（imperium non paternal",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "相关论述",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 30,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "就不是出自有德性的意图，因为这样一种意图不可能鼓励你们为这个盲目的诱惑而去牺牲一种更高的责任。与此相反，如果对人类的普遍仁爱成了你们在任何时候都使自己的行为服从的原则，那么，对困苦者的爱在这种情况下依然存在，但它如今却从一种更高的立场出发被置于同你们的全部义务的正确关系之中了。普遍的仁爱是同情其不幸的根据，但同时也是正义的根据，按照正义的规定，你们现在必须放弃这一行为。一旦这种情感上升到其应有的普遍性，它也就是崇高的，但也更为冷漠。因为要我们的胸怀澎湃着对每一个人的温情脉脉的同情，对每一件他人的困苦都陷入伤痛，这是不可能的事情，若不然，有德性的人就会像赫拉克利特那样痛苦得不停地淌着同情的泪水，尽管有一切这样的善心，却无非是成为一个软",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "关于美感和崇高感的考察",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 67,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "就不是出自有德性的意图，因为这样一种意图不可能鼓励你们为这个盲目的诱惑而去牺牲一种更高的责任。与此相反，如果对人类的普遍仁爱成了你们在任何时候都使自己的行为服从的原则，那么，对困苦者的爱在这种情况下依然存在，但它如今却从一种更高的立场出发被置于同你们的全部义务的正确关系之中了。普遍的仁爱是同情其不幸的根据，但同时也是正义的根据，按照正义的规定，你们现在必须放弃这一行为。一旦这种情感上升到其应有的普遍性，它也就是崇高的，但也更为冷漠。因为要我们的胸怀澎湃着对每一个人的温情脉脉的同情，对每一件他人的困苦都陷入伤痛，这是不可能的事情，若不然，有德性的人就会像赫拉克利特那样痛苦得不停地淌着同情的泪水，尽管有一切这样的善心，却无非是成为一个软",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "自然地理学",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 79,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "此邻居们已经能够预先发现并且向当局告发。与此相反，在拉普兰，儿子用一条鹿筋勒死自己在狩猎时受伤的父亲，则被视为一种杰出的爱的义务，因此父亲也总是把它托付给自己最疼爱的儿子。 3.政治地理学。如果一个公民社会的第一原理是一个普遍的法律以及在违反法律时不可抗拒的强制力，但法律同样与土地和居民的性状相关，那么，政治地理学就同样属于此列，因为它完全是根据自然地理学的。倘若在俄罗斯江河都向南流，这就会对整个国家都极为有利，但它们却都只是流向北冰洋。在波斯，较长时间有两位君主，其一驻扎在伊斯帕汗，另一驻扎在坎大哈。他们不能彼此征服，因为阻止他们的是横亘在中间的克尔曼荒漠，它比有些海还要大。 4.商业地理学。如果地球上的一个国家富产另一个国家必然",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 10,
+     "quote_checks": [
+      {
+       "book_id": "390398aff8d0",
+       "book_title": "康德文集",
+       "quote": "一种爱的义务是胡说八道",
+       "found": true,
+       "match_count": 1,
+       "coverage": {
+        "scope": "present_local_chapter_files",
+        "unit": "本库文本单元，可含序言和目录，不等于传统篇章数",
+        "searched_chapters": 91,
+        "unreadable_indices": [],
+        "declared_chapters": 91,
+        "directory_consistent": true
+       }
+      }
+     ]
+    }
+   },
+   "safety": null,
+   "suggestions_status": "unavailable",
+   "finish_reason": "stop",
+   "engine_duration_s": 23.776,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.0,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 1.5,
+     "ev": "assistant_commentary",
+     "chars": 19
+    },
+    {
+     "t": 1.5,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 1.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_jvivHRgTZ76uq1MJiGkM0003"
+    },
+    {
+     "t": 1.6,
+     "ev": "tool_start",
+     "name": "list_books",
+     "call_id": "call_01_irPCHSofp9XzNZMaXixP5063"
+    },
+    {
+     "t": 1.6,
+     "ev": "tool",
+     "name": "list_books",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 2185,
+     "result_head": "{\"books\": [{\"id\": \"309de54e4392\", \"title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"rank\": 48.8, \"summary\": \"伊曼努尔·康德是西方哲学史上最具影响力的思想家之一，"
+    },
+    {
+     "t": 2.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.101,
+     "result_chars": 4210,
+     "result_head": "{\"query\": \"道德形而上学\", \"results\": [{\"book_id\": \"f15e7fd89491\", \"book_title\": \"从《理想国》到《正义论》\", \"author\": \"奈杰尔·沃伯顿\", \"chapter_idx\": 13, \"chapter_title\": \"康德：《道德形而上学基础"
+    },
+    {
+     "t": 4.5,
+     "ev": "assistant_commentary",
+     "chars": 54
+    },
+    {
+     "t": 4.5,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 4.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_d3oqETeLth402JrMSOpD1829"
+    },
+    {
+     "t": 4.5,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_01_OTk8MtC7YbuQaYUIlC4x9693"
+    },
+    {
+     "t": 4.7,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.058,
+     "result_chars": 702,
+     "result_head": "{\"id\": \"390398aff8d0\", \"title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"康德文集涵盖其三大批判及重要论文，构建了先验唯心论体系。《纯粹理性批判》考察人类认识能力，提出先天综"
+    },
+    {
+     "t": 4.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.099,
+     "result_chars": 5238,
+     "result_head": "{\"query\": \"仁爱\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 37, \"chapter_title\": \"论俗语：这在理论上可能是正确的，但不适用于实践\""
+    },
+    {
+     "t": 6.6,
+     "ev": "assistant_commentary",
+     "chars": 50
+    },
+    {
+     "t": 6.6,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 6.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_mfA0BnSr4WPgoMhcqJI72819"
+    },
+    {
+     "t": 6.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_rKY3nTSQBZPMWIo6voLT5698"
+    },
+    {
+     "t": 6.7,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.01,
+     "result_chars": 3636,
+     "result_head": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"text\": \"，亦复如是。可是，由于这个力学的概念还以纯粹数学（例"
+    },
+    {
+     "t": 6.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.021,
+     "result_chars": 2804,
+     "result_head": "{\"query\": \"爱的义务\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_lab"
+    },
+    {
+     "t": 9.3,
+     "ev": "assistant_commentary",
+     "chars": 46
+    },
+    {
+     "t": 9.3,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 9.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_wyAkeCvCKl79pH9hUD2N7672"
+    },
+    {
+     "t": 9.5,
+     "ev": "tool_start",
+     "name": "verify_quote",
+     "call_id": "call_01_zHo8D1TsSbGAlNY1cT6i6500"
+    },
+    {
+     "t": 9.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.01,
+     "result_chars": 3910,
+     "result_head": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 29, \"title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"text\": \"就会等于是说：对自己有义务承认义务。因为良知就是在一"
+    },
+    {
+     "t": 9.9,
+     "ev": "tool",
+     "name": "verify_quote",
+     "status": "success",
+     "duration_s": 0.293,
+     "result_chars": 1467,
+     "result_head": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"quote\": \"一种爱的义务是胡说八道\", \"found\": true, \"match_count\": 1, \"matches\": [{\"book_id\": \"390398aff8d0\", \"book_title\":"
+    },
+    {
+     "t": 23.8,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1065
+  }
+ ],
+ "total_wall_s": 23.8,
+ "status": "COMPLETED"
+}

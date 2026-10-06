@@ -1,0 +1,212 @@
+{
+ "case_id": "DEV_G03",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "哲学界如何研究「非同一性问题」（non-identity problem）？请给出代表性学者、论文与主要对立立场。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_xL4Decm6RiEwZOxx7Izg8812"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_wZqv0QuacJ5r50ZSJz999578"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_EyGhTB8K18UKzOEOuHtq7890",
+   "args": {
+    "query": "非同一性问题 未来世代",
+    "limit": 10
+   },
+   "result_head": "{'results': [{'book_id': 'c13b139d1db3', 'book_title': '哲学导论', 'author': '罗伯特·所罗门', 'chapter_idx': 75, 'chapter_title': '4.4 唯一自我？任一自我？个人“本质”概念的探析 概要与结论', 'cita"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_7d0yxJGFXLzhwjo7JFLh1388",
+   "args": {
+    "query": "Parfit non-identity",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Parfit non-identity', 'results': [{'source_record_id': 'doi:10.1017/cbo9781139174503.014', 'title': 'Personal identity and the unity of agency: A Kan"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_WH5qBLQY4h3xfWEPktxU3586"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_b2yGNdPoolTAqGowbSlw2780"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_XpmrodfUQBFcGI1PGMLR9644"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_03_ZVe15cvVmbabZ52lsYkD4688",
+   "args": {
+    "source_record_id": "doi:10.1111/j.1467-8519.1995.tb00361.x",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1111/j.1467-8519.1995.tb00361.x', 'bibliographic_record': {'source_record_id': 'doi:10.1111/j.1467-8519.1995.tb00361.x', 'title': '"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_ovVnyKb1kLcDG7jvhsQc7471",
+   "args": {
+    "query": "Boonin non-identity ethics future people",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "非同一性问题的代表性学者、关键论文与主要对立立场的真实文献证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "读取 Parfit/Heyd/Brock 三条可读来源的内容证据，以支撑对各方立场的归因",
+    "gap_filled": false,
+    "budget_extension_reason": "已定位到三条直接相关的可读来源（Parfit 原典章节、Heyd 2014、Brock 1995），必须读取其摘要/正文才能做内容性归因，读取量超出原 soft 预算",
+    "unresolved_evidence_gap": "对立立场一侧（质疑非同一性问题之道德分量或提出替代方案）的可读文献证据"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2373,
+ "final_answer": "基于这一轮的检索证据，我按「问题结构 → 核心对立轴线 → 代表性文献 → 未决问题」来回答。\n\n---\n\n## 一、这个\"问题\"到底是什么结构\n\n「非同一性问题」是 Derek Parfit 在《Reasons and Persons》（1984，该章单列为 \"The Non-Identity Problem\"）中系统提出的。它的构造机制是：**一个人的身份取决于他具体是哪一个精卵结合、在哪一时刻被怀上的**。因此，当我们做出的某种选择（生育时间、是否治疗、环境政策）改变了未来某个人的受孕条件时，我们并没有\"使那个人更差\"——我们只是让**另一个不同的人**得以存在。\n\n检索到的该章摘要显示，Parfit 这一章考察的正是\"身份如何依赖于受孕时刻\"，并把未来世代的情形区分为若干类型（同一批人、数目相同但为不同个体、数目不同的人），提出的关键案例是：一个年轻女孩生下孩子，这个孩子的生活质量可能低于她若晚些生育所能带来的孩子，但**没有任何人因此被变得更差**（因为换成晚生，这个孩子根本不会存在）。该章结尾追问：这种\"没人被伤害却似乎仍是错的\"情形，是否具有道德意义。\n\n这就是问题的要害：它不只是一个应用伦理难题，而是**一个对常识道德理论的结构性反驳**——它表明\"某行为错，当且仅当它使某个确定的个人境况变差\"这条看似无害的原则（学界称 **person-affecting view／影响人格观**），在面对未来世代与生殖选择时会得出反直觉的结论。\n\n## 二、核心对立轴线（这决定了整个研究格局）\n\n哲学界围绕它的研究，基本都锚定在一条轴线上：**影响人格观 vs. 非人格主义（impersonal）价值**，以及两者之间是否存在可行的中间地带。\n\n- **一端：影响人格观**——道德评价必须落到\"对某个具体个人的好或坏\"上。坚持这一端就得出\"非同一性案例中无所谓伤害，因而无所谓错\"的结论。\n- **另一端：非人格主义**——存在无人格的善（总福利、避免苦难本身），不依赖\"谁被伤害\"。\n- **中间路线**：试图设计一种既不放弃\"对个人的关切\"、又能覆盖非同一性案例的原则。\n\n我检索到的 David Heyd 的论文 \"Parfit on the Non-identity Problem, Again\"（2014）表明：Parfit 后期把非同一性问题从价值理论转移到一种 Scanlon 式的\"行动理由\"理论中，试图构造一个介于纯粹非人格主义与狭窄影响人格观之间的中间立场（Heyd 称之为\"general person\"式方案）；而 Heyd 该文的核心主张是**这一中间项目失败**——他认为我们最终只能在人格主义与非人格主义之间做非此即彼的选择。这条记录正是\"中间路线是否可行\"这一争论的一个直接样本。\n\n在应用侧，我检索到 Dan W. Brock 的 \"The Non-Identity Problem and Genetic Harms – The Case of Wrongful Handicaps\"（*Bioethics*, 1995）。其摘要复述了 Parfit 式困难的典型形态：**当伤害只能通过阻止该个体存在来避免，且该个体即便带有残疾仍可拥有值得过的人生时，使他以这种状态存在并没有使他更差，因而似乎并未对他不公**；而 Brock 的立场是，一个**非影响人格式的原则**（要求避免痛苦、保障一定程度的机会）能恰当解释这类案件，并且其优势恰在于它**不蕴含**那个残疾人受到过不公对待。\n\n## 三、研究这个问题的一般进路（学界做法）\n\n综合上述证据，可以归纳出三层通行做法：\n\n1. **概念澄清层**：分析\"伤害\"\"更坏\"\"身份\"\"同一人\"这些概念——问题之所以棘手，全靠这些概念的含义。\n2. **规范理论层**：在影响人格观、非人格主义与中间方案之间定位（这正是 Heyd 与 Parfit 后期工作的战场）。\n3. **应用层**：错误生命／错误残疾诉讼、遗传筛查、气候与人口政策、代际正义（Brock 属此列）。\n\n## 四、诚实标注的证据边界\n\n- 上面三份文献（Parfit 1986 章、Heyd 2014、Brock 1995）是我本轮**实际检索到书目并读到其摘要**的证据，对其立场的描述建立在摘要内容之上；我没有读到它们的全文，因此涉及论证内部细节的部分我只能给到摘要支持的限度。\n- 我**记忆中**还有若干以该问题为核心的作者与专著（例如 David Boonin 关于非同一性问题的专著、Rivka Weinberg 关于生育风险与代际伦理的工作、Melinda Roberts 关于未来人身份的研究）——但**这些书目我本轮未能在文献库中核验到**（记忆，未经核验）。若要把它作为\"代表性学者名单\"使用，需要另行检索确认。\n- 因此\"主要对立立场\"这一栏，我能以核验证据支撑的是：**影响人格观 / 非人格主义 / 中间方案（是否可行存在争议，Heyd 判其失败、Brock 提供了另一种非影响人格式解法）** 这条轴线；更细的阵营划分不宜在此凭记忆展开。\n\n## 五、若你要继续深入，建议的检索方向\n\n与其记人名，不如沿轴线定位：检索 **\"person-affecting view\"** 与 **\"impersonal value future generations\"** 两组的争论文献，再检索 **\"wrongful life / wrongful handicap\"** 一脉的应用伦理研究——这两条线各自会把你引向该问题的理论侧与应用侧。若需要，我可以下一轮按这两条线做定向文献检索，把可读来源读到位后再给你一份带证据分级的清单。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "读取 Parfit/Heyd/Brock 三条可读来源的内容证据，以支撑对各方立场的归因",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:44:19",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "非同一性问题的代表性学者、关键论文与主要对立立场的真实文献证据"
+   },
+   {
+    "ts": "2026-09-13 11:44:34",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "读取 Parfit/Heyd/Brock 三条可读来源的内容证据，以支撑对各方立场的归因",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:44:34",
+    "reason": "已定位到三条直接相关的可读来源（Parfit 原典章节、Heyd 2014、Brock 1995），必须读取其摘要/正文才能做内容性归因，读取量超出原 soft 预算",
+    "unresolved_gap": "对立立场一侧（质疑非同一性问题之道德分量或提出替代方案）的可读文献证据"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:44:42"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 77376,
+   "output_tokens": 6180,
+   "total_tokens": 83556
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 8,
+   "compacted_chars_saved": 17062,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11693,
+     "output_tokens": 650,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16106,
+     "output_tokens": 955,
+     "tool_chars_added": 9054
+    },
+    {
+     "round": 3,
+     "input_tokens": 15047,
+     "output_tokens": 1111,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 4,
+     "input_tokens": 17366,
+     "output_tokens": 1155,
+     "tool_chars_added": 7454
+    },
+    {
+     "round": 5,
+     "input_tokens": 17164,
+     "output_tokens": 2309,
+     "tool_chars_added": 245
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 77376,
+  "output_tokens": 6180,
+  "total_tokens": 83556
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 47.3
+}

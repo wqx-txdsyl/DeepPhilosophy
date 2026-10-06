@@ -1,0 +1,535 @@
+{
+ "case_id": "B04",
+ "category": "B",
+ "prompt": "学校最近允许论文使用 AI，但要求披露。只要注明用了 AI，这篇论文还算我的吗？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ea2c286bf70083c01972e5fe127761da94d298e6",
+  "git_dirty_files": 48,
+  "started": "2026-10-02T10:28:45+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 从 .t1pre-bak 恢复（run1 时根值为 null 导致 82 次学术调用全灭; null 原样留档 .null-bak-20261002）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "学校最近允许论文使用 AI，但要求披露。只要注明用了 AI，这篇论文还算我的吗？",
+   "wall_s": 60.3,
+   "ttft_s": 55.7,
+   "public_notes": [],
+   "provider_reasoning": "The user asks a genuinely philosophical question about authorship and AI disclosure. Let me think about what's philosophically at stake.\n\nThe question: \"学校最近允许论文使用 AI，但要求披露。只要注明用了 AI，这篇论文还算我的吗？\" — \"My school now allows AI use in papers but requires disclosure. If I just note that I used AI, is this paper still mine?\"\n\nThis is a question about authorship, attribution, responsibility, academic integrity. There's a conflation in the question: \"disclosure\" is being treated as a sufficient condition for authorship. The school's rule is a procedural/institutional rule (disclose → permitted), but the user is asking a conceptual/normative question (disclose → is it still mine?). These are different questions. That's the key philosophical move: the disclosure requirement is about institutional permission and accountability, not a theory of authorship. Satisfying a disclosure rule doesn't itself establish authorship.\n\nI should think about what authorship consists in. Several candidate criteria:\n1. Origination / causal production — did you produce the content?\n2. Intentional design / conception — did you conceive of the argument, structure?\n3. Responsibility / accountability — can you defend, answer for, correct the claims?\n4. Ownership / credit — institutional reward, degree requirement.\n\nThe interesting point: \"注明用了 AI\" answers the accountability/disclosure question but the \"还算我的吗\" question is about authorship. Who bears responsibility is separable from who generated the text.\n\nAlso there's a distinction between necessary and sufficient. Disclosure may be necessary for the paper to be acceptable without misconduct, but not sufficient for it to be \"yours.\"\n\nAlso there's the question: what did the AI do? If AI generated the argument and you lightly edited, the paper is arguably not \"yours\" in the origination sense even if disclosed. If AI was a brainstorming tool or grammar check, it plainly is yours. So the answer depends on degree and role — the disclosure doesn't change the underlying relation.\n\nThere's also a valuable point: responsibility=ownership. Even if AI wrote parts, if you can defend and stand behind them, academic responsibility is yours. But \"yours\" in the sense of intellectual contribution is different.\n\nLet me consider whether to use tools. This is a conceptual question. The instructions say to use tools where evidence helps. The question is about academic authorship norms — institutions like COPE, ICMJE, university policies. These are real-world policy matters that could affect the answer. The instruction: \"现实政策、职业规范、法律或最新研究若会影响回答，先联网核查适用的可靠来源\". Academic authorship norms for AI — this is a real policy area (ICMJE, COPE have positions on AI authorship). Also the user's school has a specific rule; I don't know the specifics.\n\nHmm, but the core of the question is philosophical. However, I should ground the claim about \"disclosure is about accountability not authorship\" in actual authorship norms. Let me search the web for authoritative sources on AI authorship in academic contexts (ICMJE, COPE, university policies).\n\nLet me do a web search. Also maybe search the philosophy library for relevant texts on authorship, responsibility, authenticity (e.g., Sartre on bad faith / authenticity, or Foucault's \"What is an Author?\"). Foucault's \"What is an Author?\" is highly relevant — it distinguishes the author-function from the individual producer, and questions the \"author\" as source of meaning. That's a strong philosophical resource: the author is a function, not simply the originator. Also Barthes \"Death of the Author.\" And Sartre on responsibility and authenticity.\n\nAlso there's the question of \"authorship as ownership\" — Locke's labor theory of property applied to intellectual work.\n\nLet me also consider verification/authenticity concerns: academic work is partly about demonstrating learning and skill. If the AI did the thinking, the assessment no longer measures what it's meant to measure. This is an institutional/instrumental point.\n\nLet me search scholarship and books. Let me be efficient but thorough.\n\nI'll run several tool calls in parallel:\n- websearch on ICMJE/COPE AI authorship policy\n- search_books for Foucault \"What is an Author\" / authorship\n- search_scholarship for AI authorship academic integrity\n\nActually the library may not have Foucault's \"What is an Author\". Let me search.\n\nLet me start.\n\nLet me think about what the strongest answer structure would be:\n\nThe question conflates two things. \"允许使用+披露\" is a rule of permission and accountability. \"还算我的吗\" is a question about authorship. Disclosure is a necessary condition for the paper to be legitimately submitted, but it is not sufficient to make the paper yours, and it's not even the thing that determines ownership. What determines authorship is the relation you bear to the intellectual content: whether you conceived, structured, argued, and can defend it. So disclosure is orthogonal-ish to authorship: you can disclose and still be the author (if AI was a tool), or disclose and arguably not be the author in the full sense (if AI generated the substance).\n\nBut I want to be careful not to overstate. Let me give a differentiated answer:\n\nThree senses of \"mine\":\n1. Institutional/regulatory: \"mine\" = legitimately submitted under my name, not misconduct. Disclosure does make it \"yours\" in this sense — you may put your name on it without committing fraud, because you've been honest about the process. This is the sense the school cares about.\n2. Causal/origination: did I produce the content? Disclosure changes nothing here. This depends on what the AI actually did.\n3. Responsibility/accountability: can I answer for the claims? This is transferable to you by adoption — if you take ownership of the claims, can defend them, that's a robust sense in which it's yours.\n\nThe key insight: The disclosure requirement is a *condition of permission*, and it's designed precisely because the institution does NOT assume that disclosure settles authorship — it settles honesty. The school is saying \"you may use AI if you're transparent,\" which is compatible with the paper being partly not your intellectual work. So \"只要注明\" doesn't automatically restore authorship; it removes the fraud problem but leaves the contribution question.\n\nThen what actually makes it \"yours\"? I'd propose: authorship is a claim you can be held to. The test isn't \"who typed/generated the words\" but \"who can be the responsible author — who understands, defends, corrects, and is answerable for the whole.\" On that test, you can be the author of an AI-assisted (even AI-drafted) paper if you have genuinely mastered and can stand behind its content, in the same way a supervisor or co-author can adopt a claim. But you cannot be its author in the origination sense if the argument was never yours.\n\nAlso, there's a self-knowledge angle (Socratic/Sartrean): the honest question is whether the paper would have been possible without you — whether you could defend it. And bad faith: hiding behind \"I disclosed it\" while the work isn't yours is a form of bad faith.\n\nLet me also note the boundary conditions: if the AI did the discovery/argument and you just disclosed, then even disclosed, the paper risks failing what underlies the requirement — the demonstration of your learning. And if the school's rule says \"AI may not generate substantive content,\" then disclosure of that might not even render it permissible. So I need the user's actual policy — I don't know it. I should be careful.\n\nActually I should clarify the user's policy rather than assume. But I can still answer the conceptual question while flagging the empirical dependence.\n\nHmm, but there's a subtlety: the user says \"学校最近允许论文使用 AI，但要求披露。\" — permits use, requires disclosure. So disclosure is the operative rule. Good.\n\nLet me gather evidence. I'll do web searches on ICMJE / COPE AI authorship, and search the library for Foucault \"What is an Author\".\n\nLet me run parallel calls.\n\nActually, let me be judicious. The core answer is conceptual. But grounding in real authorship policy strengthens it and the instructions push for it. Let me do a few searches.\n\nLet me call:\n1. websearch(\"ICMJE AI authorship ChatGPT disclosure 2024\")\n2. websearch(\"COPE position AI authors academic integrity disclosure\")\n3. search_books(\"What is an Author Foucault author function\")\n4. search_scholarship(\"AI authorship academic integrity ChatGPT\")\n\nLet me go.Let me read the most relevant scholarly source and one authoritative policy source. The Bozkurt paper \"GenAI et al.: Cocreation, Authorship, Ownership...\" looks directly on point. And I should read an authoritative AI authorship policy — let me try the ICMJE or COPE page. The websearch results didn't give clean snippets. Let me read the COPE position statements page and maybe get the abstract of the Bozkurt paper.\n\nActually let me be efficient. The philosophical core doesn't depend heavily on these. But let me get the Bozkurt abstract and try reading a COPE page.\n\nLet me call get_scholarly_source on the Bozkurt paper, and websearch/read a COPE page.\n\nActually, let me read the eric.ed.gov PDF snippet about ICMJE — it says \"AI tools should not be designated as authors or co-authors on research papers, but their use should be acknowledged.\" That's a good confirmation of the key point: AI can't be an author, so the human must be, but acknowledgment is separate from authorship.\n\nLet me get the Bozkurt abstract and try to read the COPE guidance.The abstract of Bozkurt confirms: the paper examines \"organic versus synthetic\" paradox, authorship/ownership, transparent reporting, and calls for new mechanisms since disclosure alone may be insufficient. Good — \"translucent reporting to uphold academic integrity\" and \"need for new mechanisms to identify generative AI use\" supports the point that disclosure doesn't settle authorship.\n\nNow let me try to get an authoritative policy statement about AI and authorship. Let me try the eric.ed.gov PDF or read the COPE page via a different URL. Let me try reading the ERIC PDF snippet and search for the ICMJE recommendation text.\n\nActually, let me try reading the ukrio.org Good Authorship Practice PDF and the ICMJE.\n\nLet me do a focused websearch for the exact ICMJE recommendation wording.\n\nActually the eric.ed.gov result already gives a citation-snippet: \"AI tools should not be designated as authors or co-authors on research papers, but their use should be acknowledged in the appro[...]\". That's likely quoting ICMJE. Let me try to read that PDF to confirm.\n\nLet me try reading the ERIC PDF.\n\nHmm, the URL has \"#4#3\" fragment which is odd. Let me just try reading it.\n\nLet me also search for the exact ICMJE statement.The web search results give citation snippets but I couldn't read the full text. Let me try reading the IJME survey article which sounds like it directly summarizes COPE/ICMJE positions. That would be a good readable source.\n\nLet me read https://ijme.tums.ac.ir/article-1-6939-en.html.\n\nActually, the key confirmed fact from the provider citation: ICMJE says AI tools should not be designated as authors, but their use should be acknowledged. And COPE says AI tools can't be authors / must be disclosed. These are consistent enough. Let me try to read the IJME survey to get a solid grounded statement.\n\nLet me try.Let me try another readable source. The medrxiv preprint said \"Guidelines on GAI usage for authors and/or reviewers ... Committee on Publication Ethics\". Or the core.ac.uk PDF. Let me try the scielo.br PDF which discusses ICMJE limitation.\n\nActually, I have enough from the provider citation to state the ICMJE position carefully: the eric.ed.gov provider citation snippet confirms \"AI tools should not be designated as authors or co-authors on research papers, but their use should be acknowledged.\" And the ukrio.org snippet: \"It is a serious breach of research integrity for authors to intentionally pass off AI-written work as their own without proper [...]\" disclosure.\n\nLet me try to read one clean page to be safe. Let me try the medrxiv PDF or a simpler one. Let me try reading the scielo PDF.\n\nHmm, this could go on. Let me try one more: the libraryguides.vu.edu.au Publication page, which likely summarizes.\n\nActually, I should be careful about spending too much. I have enough: I can cite the ICMJE principle via the provider citation, and be honest that I read a snippet, not the full page. But the instruction says content attribution requires actually reading. Let me try to read a page that renders.\n\nLet me try the jstage one, or the VU library guide.Now I have solid grounding. Key evidence:\n\n1. COPE position (via VU Library Guide, quoting COPE Council): \"AI tools cannot meet the requirements for authorship as they cannot take responsibility for the submitted work.\" And crucially: \"It means that you (and any co-authors) are solely responsible for the content of a submitted article, including any content generated by an AI tool that may be incorrect, biased, or of unknown provenance. You (and any co-authors) are liable for any breach of publication (or research) ethics. All named authors must disclose to each other if they have used Assistive or Generative AI...\"\n\n2. ICMJE (via Food Safety journal, jstage, based on ICMJE Recommendations): \"Food Safety does not allow AI to be listed as an author or co-author. AI cannot be responsible for the accuracy, integrity, and originality of the work, thus they do not meet the ICMJE's criteria for authorship. Authors who use AI should describe ... how they used it. Nonetheless ... Authors are fully responsible for any material submitted whether it is prepared with the use of AI tools or not.\"\n\nThis is excellent — it substantiates the key structural point: authorship is grounded in *responsibility/accountability*, not in *generation*. The reason AI can't be an author is precisely that it can't take responsibility. So the human is the author in the responsibility sense regardless of whether AI generated parts — but only if the human actually discharges that responsibility (knows, checks, defends).\n\nSo my answer can be: the institutional norms themselves define authorship as responsibility-taking. This reframes the user's question. Disclosure is a separate requirement (transparency), not what confers authorship. What confers authorship is taking responsibility for the whole — which is something you do, not something the disclosure does for you.\n\nNow the philosophical structure:\n\nThe question conflates two distinct things:\n- Disclosure = a rule about transparency / permission. Satisfying it removes the fraud problem.\n- Authorship = a relation of responsibility and intellectual contribution.\n\nDisclosure is neither necessary nor sufficient for authorship in the conceptual sense. Actually, is disclosure necessary for authorship? For academic submission yes (institutionally). But the deeper point: disclosure is not *what makes* it yours.\n\n\"只要注明用了 AI，这篇论文还算我的吗？\"\n\nTwo sub-questions hidden:\n(a) Is it legitimately mine (may I put my name on it without deception)? → Yes, disclosure answers this. The paper can legitimately bear your name.\n(b) Is it intellectually mine in the strong sense — did the thinking come from me? → Disclosure does nothing here. Depends on what the AI did.\n\nKey philosophical move: authorship in academia is not primarily about origination (who produced the words), but about *accountability* — you are the one who can be held answerable for the claims. This is exactly why institutions say AI can't be an author: it can't be responsible. And the flip side: you're answerable for AI content you include, even if it's wrong. So \"yours\" = \"you're on the hook for it.\"\n\nBut — and this is important — taking responsibility is not a mere formality. It has content: you must be able to understand, verify, defend, and correct the whole. If you can't defend a passage because you don't understand it, then you're a nominal author, not a real one — the responsibility is hollow. So the test: could you defend this paper in a viva, trace each argument, correct it? If yes, it's yours in the robust sense even if AI drafted parts (like a supervisor adopting a student's insight, or a co-author). If no, disclosure has made it *permitted*, not *yours*.\n\nAlso there's the \"what did AI do\" spectrum:\n- brainstorming / grammar / formatting / translating → clearly your paper; authorship unaffected.\n- AI drafted sections you then substantively reworked → still yours if you own the argument.\n- AI generated the thesis/argument and you lightly edited → disclosure keeps you out of misconduct, but the intellectual authorship is thin; the paper may fail its purpose (demonstrating your learning).\n\nAnd a critical boundary: the school's rule may permit \"use\" but there's a question of what counts as \"use\" vs. \"AI wrote it.\" Some policies permit assistance but prohibit AI writing the substantive content; disclosure then doesn't make prohibited use permissible — it just records it. So the user should check what the policy actually permits, not just assumes disclosure covers everything. This depends on the actual policy text, which I don't have. I should flag this.\n\nAlso: a bad-faith risk — using \"I disclosed it\" as a way to offload the anxiety of not having done the work. But I shouldn't moralize too much; I should keep it analytical.\n\nAlso the Sartrean/authenticity angle is optional; the responsibility framing is enough and it's grounded in real norms. I might lightly touch that \"authorship is a claim you stake and answer for\" — a performative/commissive act. Ownership is not a property that disclosure transfers; it's something you exercise.\n\nLet me also distinguish: \"还算我的吗\" — \"mine\" could mean:\n1. 归属/署名权 (attribution): can my name be on it? \n2. 著作权/版权 (copyright): legal — but note AI-generated content may not be copyrightable; but academic papers, the human author typically holds rights.\n3. 智识贡献 (intellectual credit): did I contribute the ideas?\n4. 责任 (accountability): am I answerable?\n\nActually the legal copyright dimension is interesting but maybe a side note. Copyright: purely AI-generated content may lack human authorship for copyright in some jurisdictions (US Copyright Office). But the user cares about the academic \"mine,\" not copyright. I could mention briefly.\n\nLet me structure the answer:\n\n1. Reframe: The question hides a conflation. \"披露\" answers \"是否合规/是否诚实\", not \"是否是你的\". \n2. What authorship actually is (in academic norms): responsibility, not origination. Cite COPE/ICMJE: AI can't be author because it can't take responsibility; therefore the human is the responsible author — and answerable even for AI errors. So \"your paper\" = \"you're answerable for the whole.\"\n3. So what does disclosure do? It's necessary for legitimacy but not sufficient for authorship. Two independent questions: permitted? and yours?\n4. The real determinant: what the AI did + whether you can discharge responsibility. Give the spectrum. The test: can you defend/trace/correct every claim? \n5. Answer: \n   - If AI was a tool and you own the argument → yes, yours; disclosure is honest bookkeeping.\n   - If AI did the thinking → disclosure makes it licit but doesn't make it yours in the strong sense; and the paper may not serve its purpose.\n   - The phrase \"只要注明\" should be \"not only 注明\" — disclosure is the floor, not the test.\n6. Boundary/caveat: check what your school's policy actually permits (assist vs. generation); disclosure doesn't legalize a prohibited use. And the deepest sense of \"mine\" is performative — you make it yours by being able to stand behind it.\n\nLength: This deserves a substantial but focused answer. Maybe 600-900 words in Chinese. Let me write it well, with clear structure.\n\nLet me think about whether to include the copyright nuance. Brief mention in a sentence is fine as a distinction of senses of \"mine.\"\n\nLet me also be careful: I should present the COPE/ICMJE point as evidence for the *conceptual structure*, but note that these are publishing-ethics norms, not exactly a student's school policy. Still, they reveal how the concept \"author\" is understood.\n\nOne more nuance: \"AI tools cannot meet the requirements for authorship as they cannot take responsibility\" — this actually supports that authorship requirement is *responsibility-bearing*, which the human supplies. So a human who uses AI heavily but takes full responsibility can still be \"the author\" institutionally. The disclosure is about not deceiving readers about *how* it was made — an independent good (transparency). So disclosure and authorship are logically independent axes.\n\nI like framing it as two axes:\n- Axis 1: 你的责任承担程度 (能否为全文负责)\n- Axis 2: 披露是否到位 (诚实/合规)\nAuthorship (robust) lives on axis 1; disclosure lives on axis 2. You want to be high on both, but they don't substitute.\n\nGood. Let me write.\n\nI'll write in Chinese. Use clear headings. Keep it tight.\n\nLet me draft:\n\n---\n\n先把问题拆开。你这句里其实藏了两个不同的问题，而\"注明用了 AI\"只回答了其中一个。\n\n问题一（合规/诚实）：我这样做，学校允不允许？会不会算抄袭？\n问题二（作者身份）：这篇论文，在\"是我的作品\"这个意义上，还是我的吗？\n\n\"披露\"是冲着问题一去的。它是透明性要求，作用是\"不留欺骗\"——让读者和评审知道哪些内容经过 AI。它把\"冒充\"这个污点去掉了。但去污点不等于给你颁发作者身份。这两件事是可以分开的：\n\n- 你可以如实披露，论文也确实是你的（AI 只当工具用）。\n- 你也可以如实披露，但论文在\"智识贡献\"意义上已经很薄（AI 干了主体工作）。\n两个都披露了，两种结论却不同。所以\"只要注明\"这个\"只要\"是站不住的——注明不是判定归属的那把尺子。\n\n那么，判定作者身份的那把尺子是什么？这里学术规范其实说得很清楚，而且理由值得注意。\n\nCOPE（出版伦理委员会）的立场是：AI 工具不能取得作者身份，理由是\"它们无法为提交的作品承担责任……它们不是法律实体，无法声明利益冲突的有无，也无法管理版权和许可协议\"。ICMJE 的说法一样：AI 不能被列为作者或共同作者，因为它\"无法为作品的准确性、完整性和原创性负责\"，因此不满足作者的判定标准。而作者\"应对所提交的一切材料负全责，无论这些材料是否借助 AI 工具准备\"。\n\n把这段换个方向读，就得到对你有用的结论：学术意义上的\"作者\"，核心不是\"谁产出了字句\"，而是\"谁为整篇负责\"。AI 不能当作者，不是因为它写得不好，而是因为它不能被追责。反过来，你之所以仍然是作者，不是因为字是你敲的（很多字可能不是），而是因为你——也只能是你——是那个被追责的人。\n\n这一点对 AI 时代特别关键：即使某段是 AI 生成的、而且是错的、有偏见的、来源不明的，规范上责任仍在署名者身上。所以\"是我的吗\"最实在的一个答案就是：\"是你的，因为出了问题要你兜着。\"\n\n但请接着往下看——承担责任不是签个字那么简单，它有内容：你得读得懂、查得实、辩得住、改得了。这才是分水岭：\n\n- 如果 AI 帮你头脑风暴、改语法、查格式、做翻译、当检索助手，你原本的论证还在你手里 → 这基本就是你的论文，注明只是如实记账。\n- 如果 AI 起草了段落、你做了实质重写并真正吃透 → 仍然可以是你的，就像导师采纳并背书一个学生的想法、共同作者接管一段草稿一样。\n- 如果 AI 生成了论点、结构和论证，你只做了轻度润色 → 披露让你免于\"学术不端\"，但没有让这些思想变成你的。你拿到的是署名，不是作者身份。\n\n一个可操作的检验（也是很多老师和答辩会用的）：你能不能在不看原文的情况下，把每一段的核心主张、它依赖的理由、可能的反驳、以及哪里最弱讲清楚？能不能当场纠正一处错误？能，则无论 AI 参与多少，你都担得起这份责任，它就是你的；不能，那么你只是在用自己的名字为一个你并不掌握的东西背书——披露没有改变这一点。\n\n还有两件要分清的事：\n\n第一，必要与充分。在你学校的具体规定下，披露很可能是\"可以提交\"的必要条件；但必要不等于充分，它不构成\"是你的\"的充分条件。\n\n第二，\"允许使用\"和\"允许生成\"是两回事。你学校说\"允许使用、要求披露\"，但\"使用\"具体指什么，得看规定原文：有的是辅助（润色、检索），有的明确禁止实质内容由 AI 生成。如果是后者，那么即使你披露了，一个越界的用法也不会因为\"我说了\"就变得合规——披露只是如实记录，不是赦免。所以第一条现实建议是去读规定原文，而不是从\"要求披露\"倒推\"什么都允许\"。\n\n顺带一句\"我的\"的另一个义项：法律上（版权）又是另一码事。纯 AI 生成、缺少人类创作投入的内容，在若干司法辖区可能根本不受版权保护。但这和学校的学术作者身份是两套判断，别混为一谈，也别指望用版权逻辑解决学术归属问题。\n\n所以回到你那句\"只要注明用了 AI，还算我的吗？\"\n\n- 在校规和诚信层面：注明到位，你通常就可以合法地署名，不会算抄袭——这一层，\"注明\"是够的。\n- 在\"这是我的作品\"的深层意义上：注明既不构成它、也不破坏它；决定权在\"你能不能在智识上为它负责\"。这一层，\"注明\"从来就不是那把尺子。\n\n更准的说法不是\"只要注明\"，而是\"注明只是底线，不是证明\"。把论文变成你的，靠的不是脚注里的那句声明，而是你确实站到了它前面。\n\n---\n\nHmm, this is good. Let me refine length and flow, maybe trim slightly. It's around 1000+ Chinese characters... actually more like 1500. That's fine for a substantial question.\n\nLet me reconsider the phrasing \"站到了它前面\" — nice closing.\n\nI should also make sure I attribute correctly: COPE Council position - Authorship and AI; and ICMJE Recommendations (via Food Safety journal). I'll cite with links.\n\nThe VU library guide page is where I read the COPE quote. The jstage is where I read the ICMJE-based statement. Let me cite those as the sources I read, being honest that the COPE text is quoted in the library guide.\n\nLet me provide links:\n- VU Library Guide: https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\n- Food Safety / ICMJE-based guideline: https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en\n\nGood.\n\nI think I'll present the answer without over-formatting. Use a moderate amount of structure. Let me finalize.\n\nI'll trim a bit and keep the two-axis framing.",
+   "tool_calls_full": [
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI authorship credit responsibility academic integrity ChatGPT"
+     },
+     "status": "success",
+     "duration_seconds": 1.843,
+     "result_full": "{\"query\": \"AI authorship credit responsibility academic integrity ChatGPT\", \"results\": [{\"source_record_id\": \"doi:10.1016/j.ijinfomgt.2023.102642\", \"title\": \"Opinion Paper: “So what if ChatGPT wrote it?” Multidisciplinary perspectives on opportunities, challenges and implications of generative conversational AI for research, practice and policy\", \"authors\": [\"Yogesh Kumar Dwivedi\", \"Nir Kshetri\", \"Laurie Hughes\", \"Emma Louise Slade\", \"Anand Jeyaraj\", \"Arpan Kumar Kar\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Journal of Information Management\", \"doi\": \"10.1016/j.ijinfomgt.2023.102642\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1080/14703297.2023.2190148\", \"title\": \"Chatting and cheating: Ensuring academic integrity in the era of ChatGPT\", \"authors\": [\"Debby Cotton\", \"Peter A. Cotton\", \"J. Reuben Shipway\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Innovations in Education and Teaching International\", \"doi\": \"10.1080/14703297.2023.2190148\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.37074/jalt.2023.6.1.9\", \"title\": \"ChatGPT: Bullshit spewer or the end of traditional assessments in higher education?\", \"authors\": [\"Jürgen Rudolph\", \"Samson Tan\", \"Shannon Tan\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Applied Learning & Teaching\", \"doi\": \"10.37074/jalt.2023.6.1.9\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.15678/eber.2023.110201\", \"title\": \"The dark side of generative artificial intelligence: A critical analysis of controversies and risks of ChatGPT\", \"authors\": [\"Krzysztof Wach\", \"Cong Doanh Duong\", \"Joanna Ejdys\", \"Rūta Kazlauskaitė\", \"Paweł Korzyński\", \"Grzegorz Mazurek\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Entrepreneurial Business and Economics Review\", \"doi\": \"10.15678/eber.2023.110201\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1186/s41239-024-00453-6\", \"title\": \"Generative AI and the future of higher education: a threat to academic integrity or reformation? Evidence from multicultural perspectives\", \"authors\": [\"Abdullahi Yusuf\", \"Nasrin Pervin\", \"‪Marcos Román-González‬\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Journal of Educational Technology in Higher Education\", \"doi\": \"10.1186/s41239-024-00453-6\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.35542/osf.io/mrz8h\", \"title\": \"Chatting and Cheating. Ensuring academic integrity in the era of ChatGPT\", \"authors\": [\"Debby Cotton\", \"Peter B. Cotton\", \"J. Reuben Shipway\"], \"year\": 2023, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.35542/osf.io/mrz8h\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/j.ijinfomgt.2023.102700\", \"title\": \"The ethics of ChatGPT – Exploring the ethical issues of an emerging technology\", \"authors\": [\"Bernd Carsten Stahl\", \"Damian Eke\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Journal of Information Management\", \"doi\": \"10.1016/j.ijinfomgt.2023.102700\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"title\": \"GenAI et al.: Cocreation, Authorship, Ownership, Academic Ethics and Integrity in a Time of Generative AI\", \"authors\": [\"Aras Bozkurt\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Open Praxis\", \"doi\": \"10.55982/openpraxis.16.1.654\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 8, \"READABLE_SOURCE_IDS\": [\"doi:10.1016/j.ijinfomgt.2023.102642\", \"doi:10.1080/14703297.2023.2190148\", \"doi:10.37074/jalt.2023.6.1.9\", \"doi:10.15678/eber.2023.110201\", \"doi:10.1186/s41239-024-00453-6\", \"doi:10.35542/osf.io/mrz8h\", \"doi:10.1016/j.ijinfomgt.2023.102700\", \"doi:10.55982/openpraxis.16.1.654\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"AI authorship credit responsibility academic integrity ChatGPT\", \"status\": \"success\", \"raw_result_count\": 8}, {\"provider\": \"openalex\", \"query\": \"AI authorship credit responsibility academic integrity ChatGPT\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 16}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 8 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "作者是什么 author function 福柯 作者功能"
+     },
+     "status": "empty",
+     "duration_seconds": 3.492,
+     "result_full": "{\"query\": \"作者是什么 author function 福柯 作者功能\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "COPE position statement AI tools authorship research integrity"
+     },
+     "status": "success",
+     "duration_seconds": 4.296,
+     "result_full": "{\"query\": \"COPE position statement AI tools authorship research integrity\", \"results\": [{\"title\": \"COPE position statements\", \"url\": \"https://members.publicationethics.org/cope-position-statements/#main-content\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Press\", \"url\": \"https://publicationethics.org/press#main-content\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"---\", \"url\": \"https://celene.univ-orleans.fr/pluginfile.php/1828250/mod_resource/content/3/Scientific_Writing_2025_research-integrity.pdf#3#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"A *Taylor & Francis* reconhece que ferramentas de IA generativa como ChatGPT, Copilot, Gemini, entre outras, oferecem oportunida...\", \"url\": \"https://zenodo.org/records/18546846/files/293_Melo_INTELIG%C3%8ANCIA%20ARTIFICIAL%20E%20POL%C3%8DTICAS%20EDITORIAIS.v2.pdf?download=1#2#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"It is a serious breach of research integrity for authors to intentionally pass off Al- written work as their own without proper ...\", \"url\": \"https://ukrio.org/wp-content/uploads/Good-Authorship-Practice-1.pdf#3#3\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Generative artificial intelligence and editorial ethics: a roadmap for Health & New Media Research\", \"url\": \"https://hnmr.org/m/journal/view.php?number=98\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"De forma geral, todas as editoras analisadas (Elsevier, Taylor & Francis, Springer Nature, Sage e Wiley) informam que seguem as ...\", \"url\": \"https://zenodo.org/records/17298030/files/293_Melo_INTELIG%C3%8ANCIA%20ARTIFICIAL%20E%20POL%C3%8DTICAS%20EDITORIAIS.pdf?download=1#2#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Library Guides: GenAI in Research: Publication\", \"url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147#s-lg-box-wrapper-26871158#1#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Al-Noor Journal for Legal Studies\", \"url\": \"https://jnls.alnoor.edu.iq/page_1461.html?lang=en\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Penggunaan AI sesuai Standar COPE untuk Dosen\", \"url\": \"http://eprints.umsida.ac.id/16440/1/Penggunaan%20AI%20sesuai%20Standar%20COPE%20untuk%20Dosen.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}], \"source\": \"deepseek\", \"status\": \"success\", \"provider_errors\": [], \"provider_attempts\": [{\"provider\": \"deepseek\", \"status\": \"success\", \"queries\": [\"COPE position statement AI tools authorship research integrity\"], \"result_count\": 10}], \"fetched_at\": 1790908437.895663, \"scope\": \"web_search\", \"usage\": {\"input_tokens\": 3972, \"cache_creation_input_tokens\": 0, \"cache_read_input_tokens\": 384, \"output_tokens\": 661, \"service_tier\": \"standard\", \"server_tool_use\": {\"web_search_requests\": 1}}, \"note\": \"来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。\", \"mode\": \"search\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "ICMJE recommendation AI chatbot authorship disclose academic paper 2024"
+     },
+     "status": "success",
+     "duration_seconds": 5.438,
+     "result_full": "{\"query\": \"ICMJE recommendation AI chatbot authorship disclose academic paper 2024\", \"results\": [{\"title\": \"AI tools should not be designated as authors or co-authors on research papers, but their use should be acknowledged in the appro...\", \"url\": \"https://files.eric.ed.gov/fulltext/EJ1454532.pdf#4#3\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Iranian Journal of Medical Ethics and History of Medicine\", \"url\": \"https://journals.tums.ac.ir/ijme/search.php?sid=1&slc_lang=en&srchterm=Statements%2Fopinions\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"AI 툴의 사용과 출판윤리\", \"url\": \"https://www.kamje.or.kr/func/download_file?file_name=4f0a05c88b4819a981bd5f82c72c641b.pdf&file_path=../uploads/board/bo_workshop/122/&orig_name=1-2_%ec%98%a4%ec%9e%ac%eb%a0%b9_2024_%ec%9d%98%ed%8e%b8%ed%98%91_AI%ed%88%b4%ec%9d%98_%ec%82%ac%ec%9a%a9%ea%b3%bc_%ec%b6%9c%ed%8c%90%ec%9c%a4%eb%a6%ac.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"European Journal of Therapeutics\", \"url\": \"https://eurjther.com/index.php/home/article/download/2109/1603/20804#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Survey of COPE, ICMJE, CIOMS, and WAME Statements/Opinions on the Use of AI in Scientific Publications\", \"url\": \"https://ijme.tums.ac.ir/article-1-6939-en.html?utm_source=contrimetric.com&utm_medium=referral&utm_campaign=contrimetric_widget\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"<table><tr><td></td><td>Pautas para los autores</td><td>Pautas para los revisores</td></tr><tr><td>International Committee of Me...\", \"url\": \"https://revistaemergencias.org/wp-content/uploads/2025/04/EMERGENCIAS-No-2.pdf#46#38\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"https://doi\", \"url\": \"https://eurjther.com/index.php/home/issue/download/91/80#51#41\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Artificial Intelligence Tools in Scholarly Publishing: Guidance for Academic Medicine Authors\", \"url\": \"https://academic.oup.com/academicmedicine/article-pdf/98/8/865/65845013/20230800.0-00001.pdf?__cf_chl_tk=nTYGYDUHd7HNdbJkcDPBLgorEik6Yvy7kMjUb5BTykY-1773169606-1.0.1.1-KImoJSs53GFxIhj04gGIKEYzujJeWLaRNxA7NXNFLNk#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"https://doi\", \"url\": \"https://dialnet.unirioja.es/descarga/articulo/10471155.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Ämnesguider: Publication Ethics: Authorship according to the ICMJE Recommendations\", \"url\": \"https://libguides.hb.se/c.php?g=732186&p=5342407\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}], \"source\": \"deepseek\", \"status\": \"success\", \"provider_errors\": [], \"provider_attempts\": [{\"provider\": \"deepseek\", \"status\": \"success\", \"queries\": [\"ICMJE recommendation AI chatbot authorship disclose academic paper 2024\"], \"result_count\": 10}], \"fetched_at\": 1790908439.0378911, \"scope\": \"web_search\", \"usage\": {\"input_tokens\": 8404, \"cache_creation_input_tokens\": 0, \"cache_read_input_tokens\": 512, \"output_tokens\": 756, \"service_tier\": \"standard\", \"server_tool_use\": {\"web_search_requests\": 1}}, \"note\": \"来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。\", \"mode\": \"search\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.55982/openpraxis.16.1.654",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.099,
+     "result_full": "{\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"title\": \"GenAI et al.: Cocreation, Authorship, Ownership, Academic Ethics and Integrity in a Time of Generative AI\", \"authors\": [\"Aras Bozkurt\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Open Praxis\", \"doi\": \"10.55982/openpraxis.16.1.654\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容\", \"abstract\": {\"text\": \"This paper investigates the complex interplay between generative artificial intelligence (AI) and human intellect in academic writing and publishing. It examines the ‘organic versus synthetic’ paradox, emphasizing the implications of using generative AI tools in educational and academic integrity contexts. The paper critiques the prevalent ‘publish or perish’ culture in academia, highlighting the need for systemic reevaluation due to generative AI’s emerging role in academic writing and reporting. It delves into the legal and ethical challenges of authorship and ownership, especially in relation to copyright laws and AI-generated content. The paper discusses generative AI’s diverse roles and advocates for transparent reporting to uphold academic integrity. Additionally, it calls for a broader examination of generative AI tools and stresses the need for new mechanisms to identify generative AI use and ensure adherence to academic integrity and ethics. The implications of generative AI are also explored, suggesting the need for innovative AI-inclusive strategies in academia. The paper concludes by emphasizing the significance of generative AI in various information-processing domains, highlighting the urgency to adapt and transform academic practices in an era of rapid generative AI-driven change.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"55a4b643d9f7097a76809e6c07b3a371844d05be15d83d490809bcdad36a52fa\"}, \"evidence_origin\": \"ABSTRACT_METADATA\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "url": "https://publicationethics.org/cope-position-statements/ai-author"
+     },
+     "status": "error",
+     "duration_seconds": 0.402,
+     "result_full": "{\"error\": \"WEB_HTTP_ERROR\", \"status_code\": 403, \"message\": \"来源网页未返回可读正文。\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "url": "https://files.eric.ed.gov/fulltext/EJ1454532.pdf",
+      "focus": "AI tools should not be designated as authors"
+     },
+     "status": "error",
+     "duration_seconds": 0.918,
+     "result_full": "{\"error\": \"UNSUPPORTED_WEB_FORMAT\", \"message\": \"这次未能读取网页正文；不要将其当作已读来源。\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "ICMJE \"AI tools should not be designated as authors\" recommendation acknowledge use methods section"
+     },
+     "status": "success",
+     "duration_seconds": 4.722,
+     "result_full": "{\"query\": \"ICMJE \\\"AI tools should not be designated as authors\\\" recommendation acknowledge use methods section\", \"results\": [{\"title\": \"Announcement on Use of AI\", \"url\": \"https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"One of the first limitations on the use of AI tools expressed by organizations representing scientific publishers was the prohib...\", \"url\": \"https://www.scielo.br/j/rbso/a/qqnX9MYtZLkZkN5t7xMznFq/?format=pdf&lang=en#2#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"<table><tr><td colspan=\\\"2\\\">Guidelines on GAI usage for authors and/or reviewers</td></tr><tr><td>Committee on Publication Ethics...\", \"url\": \"https://www.medrxiv.org/content/medrxiv/early/2024/03/20/2024.03.19.24304550/DC1/embed/media-1.pdf?download=true#6#6\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"In the Methods section, detailed descriptions should be provided regarding the use of AI in specific stages of the research stud...\", \"url\": \"https://jms.ump.edu.pl/index.php/JMS/article/download/1571/1204/10807#4#3\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"https://doi\", \"url\": \"https://dialnet.unirioja.es/descarga/articulo/10471155.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"In consonance with the COPE's position statement (https://publicationethics\", \"url\": \"https://core.ac.uk/download/650685488.pdf#17#15\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Saudi Journal of Oral Sciences\", \"url\": \"https://www.ovid.com/jnls/sjed/pdf/10.4103/sjoralsci.sjoralsci_109_25~artificial-intelligence-assistance-in-scholarly-manuscript#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Survey of COPE, ICMJE, CIOMS, and WAME Statements/Opinions on the Use of AI in Scientific Publications\", \"url\": \"https://ijme.tums.ac.ir/article-1-6939-en.html?utm_source=contrimetric.com&utm_medium=referral&utm_campaign=contrimetric_widget\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Uso de inteligencia artificial en la redacción del manuscrito\", \"url\": \"https://www.digemid.minsa.gob.pe/revista/index.php/rcprf/uso_inteligencia_artificial\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Vancouver Citation Style & AI Referencing\", \"url\": \"https://libraries.sta.uwi.edu/msl/images/notice/2026_Vancouver_Flyer.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}], \"source\": \"deepseek\", \"status\": \"success\", \"provider_errors\": [], \"provider_attempts\": [{\"provider\": \"deepseek\", \"status\": \"success\", \"queries\": [\"ICMJE \\\"AI tools should not be designated as authors\\\" recommendation acknowledge use methods section\"], \"result_count\": 10}], \"fetched_at\": 1790908449.4534678, \"scope\": \"web_search\", \"usage\": {\"input_tokens\": 3828, \"cache_creation_input_tokens\": 0, \"cache_read_input_tokens\": 512, \"output_tokens\": 743, \"service_tier\": \"standard\", \"server_tool_use\": {\"web_search_requests\": 1}}, \"note\": \"来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。\", \"mode\": \"search\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "url": "https://ijme.tums.ac.ir/article-1-6939-en.html",
+      "focus": "authorship"
+     },
+     "status": "error",
+     "duration_seconds": 5.47,
+     "result_full": "{\"error\": \"WEB_REDIRECT_LIMIT\", \"message\": \"这次未能读取网页正文；不要将其当作已读来源。\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "url": "https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en"
+     },
+     "status": "success",
+     "duration_seconds": 0.887,
+     "result_full": "{\"mode\": \"read\", \"url\": \"https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en\", \"requested_url\": \"https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en\", \"title\": \"Announcement on Use of AI\", \"text\": \"Journal home\\n\\nAll issues\\n\\nFeatured articles\\n\\nAbout the journal\\n\\nJ-STAGE home\\n\\n/\\n\\nFood Safety\\n\\n/\\n\\nVolume 13 (2025) Issue 1\\n\\n/\\n\\nArticle overview\\n\\n/\\n\\nFull view\\n\\n2025\\n Volume 13\\n Issue 1\\n Pages 22\\n\\nPublished: 2025 Received: - Available on J-STAGE: March 21, 2025 Accepted: - Advance online publication: - Revised: -\\n\\n(compatible with EndNote, Reference Manager, ProCite, RefWorks)\\n\\n(compatible with BibDesk, LaTeX)\\n\\nIn recent years, as significant progress has been made in artificial intelligence (AI)\\n technology, various peer-reviewed journals have been extending the policies on use of AI.\\n Considering this situation, Food Safety felt the need to\\n address concerns about the use of the technologies such as Large Language Models (LLMs),\\n chatbots, or image creators in the writing and reviewing of manuscripts. Food Safety , thus, has compiled a tentative and\\n preliminary guideline for responsible use of AI tools based on the ICMJE Recommendations.\\n Authors and reviewers are expected to refer to this guideline during the manuscript\\n preparation and peer-review process. Guide for Authors for Food\\n Safety will be updated in response to the comments from authors and\\n reviewers, as well as updates on the ICMJE Recommendations and policies of other journals.\\n Please feel free to contact Editorial Office of Food Safety if you have any comments or questions about the guideline.\\n\\nIn consonance with the ICMJE Recommendations 1 ) , Food Safety does not allow AI\\n to be listed as an author or co-author. AI cannot be responsible for the accuracy,\\n integrity, and originality of the work, thus they do not meet the ICMJE’s criteria for\\n authorship 1 ) . Authors who\\n use AI should describe, in both the cover letter and the submitted work in the Materials and\\n Methods section, Acknowledgment or appropriate section if applicable, how they used it.\\n Nonetheless the submission of images created by AI is discouraged. Authors are fully\\n responsible for any material submitted whether it is prepared with the use of AI tools or\\n not. They should be able to assert that there is no plagiarism in their manuscript including\\n text, figures and images.\\n\\nReviewers must maintain the confidentiality of the manuscript as outlined in ICMJE\\n Recommendations 2 ) .\\n\\nThis responsibility prohibits reviewers from uploading manuscript to AI where\\n confidentiality cannot be assured. For other potential use of AI \", \"access_level\": \"WEB_PASSAGE_READ\", \"offset\": 0, \"end_offset\": 2400, \"has_more\": true, \"next_offset\": 2400, \"text_chars\": 2967, \"focus_found\": null, \"document_truncated\": false, \"content_hash\": \"8c3b5822480d6c85acc32c6ca8ef823fcc9af97ff4ce88437d92c3580e9f9538\", \"network_modes\": [\"PUBLIC_DOH_PINNED\"], \"note\": \"已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。\"}"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "url": "https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147",
+      "focus": "authorship"
+     },
+     "status": "success",
+     "duration_seconds": 1.72,
+     "result_full": "{\"mode\": \"read\", \"url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\", \"requested_url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\", \"title\": \"Publication - GenAI in Research - Library Guides at Victoria University\", \"text\": \"nAI in Research: Publication\\n\\nIntroduction\\n\\nUsing GenAI with Integrity\\n\\nGrant funder policies\\n\\nPublication\\n\\nResearch Data & GenAI\\n\\nLiterature Review\\n\\nFurther considerations\\n\\nFurther Resources\\n\\nHelp and Acknowlegement\\n\\nIntroduction: GenAI and Academic Publishing\\n\\n​​​​​​\\n\\nAcademic Journals and their Publisher's have policies that govern the use of GenAI in the publishing environment .\\n\\nThese cover\\n\\nauthorship\\n\\ndisclosure / acknowledgements\\n\\npeer reviewing and editing\\n\\ncopyright\\n\\nIf you want to use GenAI and have your research published, you'll need to familiarise yourself with these policies early on in design stage of your research project .\\n\\nThese policies can differ between publishers and may be updated periodically.\\n\\nYou can access the main academic publisher policies on this guide.\\n\\nAuthorship\\n\\nThe Committee on Publication Ethics (COPE) has taken the position that AI Tools cannot be granted authorship\\n\\n\\\"AI tools cannot meet the requirements for authorship as they cannot take responsibility for the submitted work. As non-legal entities, they cannot assert the presence or absence of conflicts of interest nor manage copyright and license agreements\\\" (COPE Council. COPE position - Authorship and AI - English ).\\n\\nAcademic publishers are usually members of COPE. They uphold the ogranisation's position on matters of publication ethics. You'll find most of the publisher policies included at the bottom of this page [jump link to page] reiterate COPE's statement on authorship.\\n\\nWhy is this statement important?\\n\\nIt means that you (and any co-authors) are solely responsible for the content of a submitted article, including any content generated by an AI tool that may be incorrect, biased, or of unknown provenance.\\n\\nYou (and any co-authors) are liable for any breach of publication (or research) ethics.\\n\\nAll named authors must disclose to each other if they have used Assistive or Generative AI in the drafting or research of a text.\\n\\nIf you have used GenAI in your article, or in the research project informing the article, it must be disclosed (acknowledged) in the text. [link jump to disclose section of the guide]\\n\\nDisclosing GenAI in Publications\\n\\nPublishers often have their own guidelines for authors around the disclosure of GenAI in a journal or book submission, and these can differ across publishers, so you should always check the the GenAI policy or Instructions fo\", \"access_level\": \"WEB_PASSAGE_READ\", \"offset\": 2, \"end_offset\": 2402, \"has_more\": true, \"next_offset\": 2402, \"text_chars\": 7128, \"focus_found\": true, \"document_truncated\": false, \"content_hash\": \"3c1c8bec16cab96fdd2bc2520e2d73fd22d7297a756154f4ae6049b1d1f7afac\", \"network_modes\": [\"PUBLIC_DOH_PINNED\"], \"note\": \"已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。\"}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 10.7,
+     "phase": "start",
+     "name": "websearch",
+     "call_id": "call_00_d9MBmQN9P3VROK8Y2RSk8863"
+    },
+    {
+     "t": 10.8,
+     "phase": "start",
+     "name": "websearch",
+     "call_id": "call_01_ySQgJts5DMOH6NLNeQrK8150"
+    },
+    {
+     "t": 10.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_yW3zDz58JTI3vFutizHZ8017"
+    },
+    {
+     "t": 11.1,
+     "phase": "result",
+     "name": "search_scholarship",
+     "call_id": "call_03_OPLYqitBAX0XyYdkpPp51600",
+     "status": "success",
+     "duration_seconds": 1.843
+    },
+    {
+     "t": 14.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "作者是什么 author function 福柯 作者功能"
+     },
+     "status": "empty",
+     "duration_seconds": 3.492,
+     "result_full": "{\"query\": \"作者是什么 author function 福柯 作者功能\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 15.5,
+     "phase": "result_orphan",
+     "name": "websearch",
+     "args": {
+      "query": "COPE position statement AI tools authorship research integrity"
+     },
+     "status": "success",
+     "duration_seconds": 4.296,
+     "result_full": "{\"query\": \"COPE position statement AI tools authorship research integrity\", \"results\": [{\"title\": \"COPE position statements\", \"url\": \"https://members.publicationethics.org/cope-position-statements/#main-content\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Press\", \"url\": \"https://publicationethics.org/press#main-content\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"---\", \"url\": \"https://celene.univ-orleans.fr/pluginfile.php/1828250/mod_resource/content/3/Scientific_Writing_2025_research-integrity.pdf#3#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"A *Taylor & Francis* reconhece que ferramentas de IA generativa como ChatGPT, Copilot, Gemini, entre outras, oferecem oportunida...\", \"url\": \"https://zenodo.org/records/18546846/files/293_Melo_INTELIG%C3%8ANCIA%20ARTIFICIAL%20E%20POL%C3%8DTICAS%20EDITORIAIS.v2.pdf?download=1#2#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"It is a serious breach of research integrity for authors to intentionally pass off Al- written work as their own without proper ...\", \"url\": \"https://ukrio.org/wp-content/uploads/Good-Authorship-Practice-1.pdf#3#3\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Generative artificial intelligence and editorial ethics: a roadmap for Health & New Media Research\", \"url\": \"https://hnmr.org/m/journal/view.php?number=98\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"De forma geral, todas as editoras analisadas (Elsevier, Taylor & Francis, Springer Nature, Sage e Wiley) informam que seguem as ...\", \"url\": \"https://zenodo.org/records/17298030/files/293_Melo_INTELIG%C3%8ANCIA%20ARTIFICIAL%20E%20POL%C3%8DTICAS%20EDITORIAIS.pdf?download=1#2#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Library Guides: GenAI in Research: Publication\", \"url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147#s-lg-box-wrapper-26871158#1#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Al-Noor Journal for Legal Studies\", \"url\": \"https://jnls.alnoor.edu.iq/page_1461.html?lang=en\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Penggunaan AI sesuai Standar COPE untuk Dosen\", \"url\": \"http://eprints.umsida.ac.id/16440/1/Penggunaan%20AI%20sesuai%20Standar%20COPE%20untuk%20Dosen.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}], \"source\": \"deepseek\", \"status\": \"success\", \"provider_errors\": [], \"provider_attempts\": [{\"provider\": \"deepseek\", \"status\": \"success\", \"queries\": [\"COPE position statement AI tools authorship research integrity\"], \"result_count\": 10}], \"fetched_at\": 1790908437.895663, \"scope\": \"web_search\", \"usage\": {\"input_tokens\": 3972, \"cache_creation_input_tokens\": 0, \"cache_read_input_tokens\": 384, \"output_tokens\": 661, \"service_tier\": \"standard\", \"server_tool_use\": {\"web_search_requests\": 1}}, \"note\": \"来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。\", \"mode\": \"search\"}"
+    },
+    {
+     "t": 16.6,
+     "phase": "result_orphan",
+     "name": "websearch",
+     "args": {
+      "query": "ICMJE recommendation AI chatbot authorship disclose academic paper 2024"
+     },
+     "status": "success",
+     "duration_seconds": 5.438,
+     "result_full": "{\"query\": \"ICMJE recommendation AI chatbot authorship disclose academic paper 2024\", \"results\": [{\"title\": \"AI tools should not be designated as authors or co-authors on research papers, but their use should be acknowledged in the appro...\", \"url\": \"https://files.eric.ed.gov/fulltext/EJ1454532.pdf#4#3\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Iranian Journal of Medical Ethics and History of Medicine\", \"url\": \"https://journals.tums.ac.ir/ijme/search.php?sid=1&slc_lang=en&srchterm=Statements%2Fopinions\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"AI 툴의 사용과 출판윤리\", \"url\": \"https://www.kamje.or.kr/func/download_file?file_name=4f0a05c88b4819a981bd5f82c72c641b.pdf&file_path=../uploads/board/bo_workshop/122/&orig_name=1-2_%ec%98%a4%ec%9e%ac%eb%a0%b9_2024_%ec%9d%98%ed%8e%b8%ed%98%91_AI%ed%88%b4%ec%9d%98_%ec%82%ac%ec%9a%a9%ea%b3%bc_%ec%b6%9c%ed%8c%90%ec%9c%a4%eb%a6%ac.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"European Journal of Therapeutics\", \"url\": \"https://eurjther.com/index.php/home/article/download/2109/1603/20804#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Survey of COPE, ICMJE, CIOMS, and WAME Statements/Opinions on the Use of AI in Scientific Publications\", \"url\": \"https://ijme.tums.ac.ir/article-1-6939-en.html?utm_source=contrimetric.com&utm_medium=referral&utm_campaign=contrimetric_widget\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"<table><tr><td></td><td>Pautas para los autores</td><td>Pautas para los revisores</td></tr><tr><td>International Committee of Me...\", \"url\": \"https://revistaemergencias.org/wp-content/uploads/2025/04/EMERGENCIAS-No-2.pdf#46#38\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"https://doi\", \"url\": \"https://eurjther.com/index.php/home/issue/download/91/80#51#41\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Artificial Intelligence Tools in Scholarly Publishing: Guidance for Academic Medicine Authors\", \"url\": \"https://academic.oup.com/academicmedicine/article-pdf/98/8/865/65845013/20230800.0-00001.pdf?__cf_chl_tk=nTYGYDUHd7HNdbJkcDPBLgorEik6Yvy7kMjUb5BTykY-1773169606-1.0.1.1-KImoJSs53GFxIhj04gGIKEYzujJeWLaRNxA7NXNFLNk#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"https://doi\", \"url\": \"https://dialnet.unirioja.es/descarga/articulo/10471155.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Ämnesguider: Publication Ethics: Authorship according to the ICMJE Recommendations\", \"url\": \"https://libguides.hb.se/c.php?g=732186&p=5342407\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}], \"source\": \"deepseek\", \"status\": \"success\", \"provider_errors\": [], \"provider_attempts\": [{\"provider\": \"deepseek\", \"status\": \"success\", \"queries\": [\"ICMJE recommendation AI chatbot authorship disclose academic paper 2024\"], \"result_count\": 10}], \"fetched_at\": 1790908439.0378911, \"scope\": \"web_search\", \"usage\": {\"input_tokens\": 8404, \"cache_creation_input_tokens\": 0, \"cache_read_input_tokens\": 512, \"output_tokens\": 756, \"service_tier\": \"standard\", \"server_tool_use\": {\"web_search_requests\": 1}}, \"note\": \"来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。\", \"mode\": \"search\"}"
+    },
+    {
+     "t": 18.5,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_ely8wzE52dsLFNPveLR92016"
+    },
+    {
+     "t": 18.7,
+     "phase": "start",
+     "name": "websearch",
+     "call_id": "call_01_aZqvE9lRhh90oDkJqv0m2550"
+    },
+    {
+     "t": 18.9,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.55982/openpraxis.16.1.654",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.099,
+     "result_full": "{\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"title\": \"GenAI et al.: Cocreation, Authorship, Ownership, Academic Ethics and Integrity in a Time of Generative AI\", \"authors\": [\"Aras Bozkurt\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Open Praxis\", \"doi\": \"10.55982/openpraxis.16.1.654\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容\", \"abstract\": {\"text\": \"This paper investigates the complex interplay between generative artificial intelligence (AI) and human intellect in academic writing and publishing. It examines the ‘organic versus synthetic’ paradox, emphasizing the implications of using generative AI tools in educational and academic integrity contexts. The paper critiques the prevalent ‘publish or perish’ culture in academia, highlighting the need for systemic reevaluation due to generative AI’s emerging role in academic writing and reporting. It delves into the legal and ethical challenges of authorship and ownership, especially in relation to copyright laws and AI-generated content. The paper discusses generative AI’s diverse roles and advocates for transparent reporting to uphold academic integrity. Additionally, it calls for a broader examination of generative AI tools and stresses the need for new mechanisms to identify generative AI use and ensure adherence to academic integrity and ethics. The implications of generative AI are also explored, suggesting the need for innovative AI-inclusive strategies in academia. The paper concludes by emphasizing the significance of generative AI in various information-processing domains, highlighting the urgency to adapt and transform academic practices in an era of rapid generative AI-driven change.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"55a4b643d9f7097a76809e6c07b3a371844d05be15d83d490809bcdad36a52fa\"}, \"evidence_origin\": \"ABSTRACT_METADATA\"}"
+    },
+    {
+     "t": 19.2,
+     "phase": "result_orphan",
+     "name": "websearch",
+     "args": {
+      "url": "https://publicationethics.org/cope-position-statements/ai-author"
+     },
+     "status": "error",
+     "duration_seconds": 0.402,
+     "result_full": "{\"error\": \"WEB_HTTP_ERROR\", \"status_code\": 403, \"message\": \"来源网页未返回可读正文。\"}"
+    },
+    {
+     "t": 22.0,
+     "phase": "start",
+     "name": "websearch",
+     "call_id": "call_00_ovcavPMA32B9LALs03sa8915"
+    },
+    {
+     "t": 22.1,
+     "phase": "result",
+     "name": "websearch",
+     "call_id": "call_01_ZfzYhgSaEkBPiZCe8ZKI5478",
+     "status": "error",
+     "duration_seconds": 0.918
+    },
+    {
+     "t": 27.0,
+     "phase": "result_orphan",
+     "name": "websearch",
+     "args": {
+      "query": "ICMJE \"AI tools should not be designated as authors\" recommendation acknowledge use methods section"
+     },
+     "status": "success",
+     "duration_seconds": 4.722,
+     "result_full": "{\"query\": \"ICMJE \\\"AI tools should not be designated as authors\\\" recommendation acknowledge use methods section\", \"results\": [{\"title\": \"Announcement on Use of AI\", \"url\": \"https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"One of the first limitations on the use of AI tools expressed by organizations representing scientific publishers was the prohib...\", \"url\": \"https://www.scielo.br/j/rbso/a/qqnX9MYtZLkZkN5t7xMznFq/?format=pdf&lang=en#2#2\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"<table><tr><td colspan=\\\"2\\\">Guidelines on GAI usage for authors and/or reviewers</td></tr><tr><td>Committee on Publication Ethics...\", \"url\": \"https://www.medrxiv.org/content/medrxiv/early/2024/03/20/2024.03.19.24304550/DC1/embed/media-1.pdf?download=true#6#6\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"In the Methods section, detailed descriptions should be provided regarding the use of AI in specific stages of the research stud...\", \"url\": \"https://jms.ump.edu.pl/index.php/JMS/article/download/1571/1204/10807#4#3\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"https://doi\", \"url\": \"https://dialnet.unirioja.es/descarga/articulo/10471155.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"In consonance with the COPE's position statement (https://publicationethics\", \"url\": \"https://core.ac.uk/download/650685488.pdf#17#15\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Saudi Journal of Oral Sciences\", \"url\": \"https://www.ovid.com/jnls/sjed/pdf/10.4103/sjoralsci.sjoralsci_109_25~artificial-intelligence-assistance-in-scholarly-manuscript#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Survey of COPE, ICMJE, CIOMS, and WAME Statements/Opinions on the Use of AI in Scientific Publications\", \"url\": \"https://ijme.tums.ac.ir/article-1-6939-en.html?utm_source=contrimetric.com&utm_medium=referral&utm_campaign=contrimetric_widget\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Uso de inteligencia artificial en la redacción del manuscrito\", \"url\": \"https://www.digemid.minsa.gob.pe/revista/index.php/rcprf/uso_inteligencia_artificial\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}, {\"title\": \"Vancouver Citation Style & AI Referencing\", \"url\": \"https://libraries.sta.uwi.edu/msl/images/notice/2026_Vancouver_Flyer.pdf#1#1\", \"snippet\": \"\", \"snippet_source\": \"provider_citation\", \"page_age\": null}], \"source\": \"deepseek\", \"status\": \"success\", \"provider_errors\": [], \"provider_attempts\": [{\"provider\": \"deepseek\", \"status\": \"success\", \"queries\": [\"ICMJE \\\"AI tools should not be designated as authors\\\" recommendation acknowledge use methods section\"], \"result_count\": 10}], \"fetched_at\": 1790908449.4534678, \"scope\": \"web_search\", \"usage\": {\"input_tokens\": 3828, \"cache_creation_input_tokens\": 0, \"cache_read_input_tokens\": 512, \"output_tokens\": 743, \"service_tier\": \"standard\", \"server_tool_use\": {\"web_search_requests\": 1}}, \"note\": \"来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。\", \"mode\": \"search\"}"
+    },
+    {
+     "t": 28.4,
+     "phase": "result",
+     "name": "websearch",
+     "call_id": "call_00_1zKywobsYdIgbtapPCCe6687",
+     "status": "error",
+     "duration_seconds": 5.47
+    },
+    {
+     "t": 36.0,
+     "phase": "start",
+     "name": "websearch",
+     "call_id": "call_00_SB3K1RbQYtI6RxRNgMJv6624"
+    },
+    {
+     "t": 36.2,
+     "phase": "result",
+     "name": "websearch",
+     "call_id": "call_01_mG6PHFUpVPny25Ra24Up0871",
+     "status": "success",
+     "duration_seconds": 0.887
+    },
+    {
+     "t": 38.0,
+     "phase": "result_orphan",
+     "name": "websearch",
+     "args": {
+      "url": "https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147",
+      "focus": "authorship"
+     },
+     "status": "success",
+     "duration_seconds": 1.72,
+     "result_full": "{\"mode\": \"read\", \"url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\", \"requested_url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\", \"title\": \"Publication - GenAI in Research - Library Guides at Victoria University\", \"text\": \"nAI in Research: Publication\\n\\nIntroduction\\n\\nUsing GenAI with Integrity\\n\\nGrant funder policies\\n\\nPublication\\n\\nResearch Data & GenAI\\n\\nLiterature Review\\n\\nFurther considerations\\n\\nFurther Resources\\n\\nHelp and Acknowlegement\\n\\nIntroduction: GenAI and Academic Publishing\\n\\n​​​​​​\\n\\nAcademic Journals and their Publisher's have policies that govern the use of GenAI in the publishing environment .\\n\\nThese cover\\n\\nauthorship\\n\\ndisclosure / acknowledgements\\n\\npeer reviewing and editing\\n\\ncopyright\\n\\nIf you want to use GenAI and have your research published, you'll need to familiarise yourself with these policies early on in design stage of your research project .\\n\\nThese policies can differ between publishers and may be updated periodically.\\n\\nYou can access the main academic publisher policies on this guide.\\n\\nAuthorship\\n\\nThe Committee on Publication Ethics (COPE) has taken the position that AI Tools cannot be granted authorship\\n\\n\\\"AI tools cannot meet the requirements for authorship as they cannot take responsibility for the submitted work. As non-legal entities, they cannot assert the presence or absence of conflicts of interest nor manage copyright and license agreements\\\" (COPE Council. COPE position - Authorship and AI - English ).\\n\\nAcademic publishers are usually members of COPE. They uphold the ogranisation's position on matters of publication ethics. You'll find most of the publisher policies included at the bottom of this page [jump link to page] reiterate COPE's statement on authorship.\\n\\nWhy is this statement important?\\n\\nIt means that you (and any co-authors) are solely responsible for the content of a submitted article, including any content generated by an AI tool that may be incorrect, biased, or of unknown provenance.\\n\\nYou (and any co-authors) are liable for any breach of publication (or research) ethics.\\n\\nAll named authors must disclose to each other if they have used Assistive or Generative AI in the drafting or research of a text.\\n\\nIf you have used GenAI in your article, or in the research project informing the article, it must be disclosed (acknowledged) in the text. [link jump to disclose section of the guide]\\n\\nDisclosing GenAI in Publications\\n\\nPublishers often have their own guidelines for authors around the disclosure of GenAI in a journal or book submission, and these can differ across publishers, so you should always check the the GenAI policy or Instructions fo\", \"access_level\": \"WEB_PASSAGE_READ\", \"offset\": 2, \"end_offset\": 2402, \"has_more\": true, \"next_offset\": 2402, \"text_chars\": 7128, \"focus_found\": true, \"document_truncated\": false, \"content_hash\": \"3c1c8bec16cab96fdd2bc2520e2d73fd22d7297a756154f4ae6049b1d1f7afac\", \"network_modes\": [\"PUBLIC_DOH_PINNED\"], \"note\": \"已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。\"}"
+    }
+   ],
+   "answer": "你这句话里其实压着两个不同的问题，而\"注明用了 AI\"只回答了其中一个——这正是关键所在。\n\n**两个问题别混**\n\n- 问题一（合规/诚实）：这样做学校允不允许？算不算抄袭？\n- 问题二（作者身份）：在\"这是我的作品\"这个意义上，它还是我的吗？\n\n\"披露\"是冲着问题一去的。它是一种透明性要求，作用是把\"冒充\"这个污点去掉——让读者知道哪些环节经过 AI。但\"去掉污点\"不等于给你颁发作者身份。这两件事可以分开：你完全可以如实披露、而论文确实是你的（AI 只当工具）；也可以如实披露、而论文在智识贡献意义上已经很薄（主体工作是 AI 干的）。两种情况都披露了，结论却不同。所以那个\"**只要**注明\"是站不住的——注明不是判定归属的那把尺子。\n\n**学术规范里，\"作者\"的尺子是什么**\n\n这里出版伦理的立场很值得注意，理由比结论更有用。COPE（出版伦理委员会）的立场是：AI 工具不能取得作者身份，因为它\"无法为提交的作品承担责任……不是法律实体，无法声明有无利益冲突，也无法管理版权和许可协议\"。ICMJE 一致：AI 不能被列为作者，因为它\"无法为作品的准确性、完整性和原创性负责\"，不满足作者判定标准；而作者\"应对所提交的一切材料负全责，无论是否借助 AI 准备\"（我读到的是转述与据此制定的期刊指南，见文末来源）。\n\n把这段话反过来读，就得到对你有用的结论：学术意义上的作者，核心不是\"谁产出了字句\"，而是\"**谁为整篇负责**\"。AI 不能当作者，不是因为它写得不好，而是因为它不能被追责。反过来，你仍然是作者，不是因为字是你敲的，而是因为你——也只能是你——是那个被追责的人。即使某段是 AI 生成的、而且是错的、有偏见的、来源不明的，责任仍落在署名者身上。所以\"是我的吗\"最实在的一个答案是：**是你的，因为出了问题要你兜着。**\n\n**但担责不是签个字，它有内容**\n\n你得读得懂、查得实、辩得住、改得了。这才是分水岭：\n\n- AI 帮你头脑风暴、改语法、查格式、做翻译、当检索助手，你的论证还在你手里 → 基本就是你的论文，注明只是如实记账。\n- AI 起草段落、你实质重写并真正吃透 → 仍可以是你的，如同导师采纳并背书学生的想法。\n- AI 生成了论点、结构和论证，你只做轻度润色 → 披露让你免于\"学术不端\"，但没有让这些思想变成你的。你拿到的是**署名**，不是**作者身份**。\n\n一个可操作的检验：不看原文，你能不能讲清每一段的核心主张、它依赖的理由、可能的反驳、哪里最弱，并当场纠正一处错误？能，则无论 AI 参与多少，你都担得起这份责任，它就是你的；不能，你只是在用名字为一个你并不掌握的东西背书——披露改变不了这一点。\n\n**两个还要分清的点**\n\n- 必要与充分：在你学校的具体规定下，披露很可能是\"可以提交\"的**必要**条件；但必要不等于充分，它不构成\"是你的\"的充分条件。\n- \"允许使用\"≠\"允许生成\"：规定说\"允许使用、要求披露\"，但\"使用\"指什么，得看原文——有的只是辅助（润色、检索、格式），有的明确禁止实质内容由 AI 生成。若是后者，越界的用法不会因为\"我说了\"就变合规；披露只是如实记录，不是赦免。所以第一条现实建议是去读规定原文，别从\"要求披露\"倒推\"什么都允许\"。\n\n（顺带，\"我的\"还有一个法律义项：纯 AI 生成、缺乏人类创作投入的内容，在若干司法辖区可能根本不受版权保护。这跟学校的学术作者身份是两套判断，别混用，也别指望用版权逻辑解决归属问题。）\n\n**回到你的问题**\n\n- 在规章与诚信层面：注明到位，你通常就能合法署名、不算抄袭——这一层，\"注明\"是够的。\n- 在\"这是我的作品\"的深层意义上：注明既不构成它、也不破坏它；决定权在\"你能不能在智识上为它负责\"。这一层，\"注明\"从来就不是那把尺子。\n\n更准的说法不是\"只要注明\"，而是\"注明只是底线，不是证明\"。让论文成为你的，不靠脚注里那句声明，而靠你确实能站到它前面去。\n\n**来源**（我实际读到的网页片段，非全文）：\n- [COPE 关于 AI 与作者身份的立场（转述于 Victoria University 图书馆指南）](https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147)\n- [Food Safety 期刊依据 ICMJE Recommendations 制定的 AI 使用指南](https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en)\n- Bozkurt, *GenAI et al.: Cocreation, Authorship, Ownership, Academic Ethics and Integrity*(Open Praxis, 2024) — 仅读到摘要，其摘要指出 AI 与学术写作中\"有机 vs 合成\"的作者身份/归属问题及透明报告的必要性。",
+   "answer_chars": 2097,
+   "done_content": "你这句话里其实压着两个不同的问题，而\"注明用了 AI\"只回答了其中一个——这正是关键所在。\n\n**两个问题别混**\n\n- 问题一（合规/诚实）：这样做学校允不允许？算不算抄袭？\n- 问题二（作者身份）：在\"这是我的作品\"这个意义上，它还是我的吗？\n\n\"披露\"是冲着问题一去的。它是一种透明性要求，作用是把\"冒充\"这个污点去掉——让读者知道哪些环节经过 AI。但\"去掉污点\"不等于给你颁发作者身份。这两件事可以分开：你完全可以如实披露、而论文确实是你的（AI 只当工具）；也可以如实披露、而论文在智识贡献意义上已经很薄（主体工作是 AI 干的）。两种情况都披露了，结论却不同。所以那个\"**只要**注明\"是站不住的——注明不是判定归属的那把尺子。\n\n**学术规范里，\"作者\"的尺子是什么**\n\n这里出版伦理的立场很值得注意，理由比结论更有用。COPE（出版伦理委员会）的立场是：AI 工具不能取得作者身份，因为它\"无法为提交的作品承担责任……不是法律实体，无法声明有无利益冲突，也无法管理版权和许可协议\"。ICMJE 一致：AI 不能被列为作者，因为它\"无法为作品的准确性、完整性和原创性负责\"，不满足作者判定标准；而作者\"应对所提交的一切材料负全责，无论是否借助 AI 准备\"（我读到的是转述与据此制定的期刊指南，见文末来源）。\n\n把这段话反过来读，就得到对你有用的结论：学术意义上的作者，核心不是\"谁产出了字句\"，而是\"**谁为整篇负责**\"。AI 不能当作者，不是因为它写得不好，而是因为它不能被追责。反过来，你仍然是作者，不是因为字是你敲的，而是因为你——也只能是你——是那个被追责的人。即使某段是 AI 生成的、而且是错的、有偏见的、来源不明的，责任仍落在署名者身上。所以\"是我的吗\"最实在的一个答案是：**是你的，因为出了问题要你兜着。**\n\n**但担责不是签个字，它有内容**\n\n你得读得懂、查得实、辩得住、改得了。这才是分水岭：\n\n- AI 帮你头脑风暴、改语法、查格式、做翻译、当检索助手，你的论证还在你手里 → 基本就是你的论文，注明只是如实记账。\n- AI 起草段落、你实质重写并真正吃透 → 仍可以是你的，如同导师采纳并背书学生的想法。\n- AI 生成了论点、结构和论证，你只做轻度润色 → 披露让你免于\"学术不端\"，但没有让这些思想变成你的。你拿到的是**署名**，不是**作者身份**。\n\n一个可操作的检验：不看原文，你能不能讲清每一段的核心主张、它依赖的理由、可能的反驳、哪里最弱，并当场纠正一处错误？能，则无论 AI 参与多少，你都担得起这份责任，它就是你的；不能，你只是在用名字为一个你并不掌握的东西背书——披露改变不了这一点。\n\n**两个还要分清的点**\n\n- 必要与充分：在你学校的具体规定下，披露很可能是\"可以提交\"的**必要**条件；但必要不等于充分，它不构成\"是你的\"的充分条件。\n- \"允许使用\"≠\"允许生成\"：规定说\"允许使用、要求披露\"，但\"使用\"指什么，得看原文——有的只是辅助（润色、检索、格式），有的明确禁止实质内容由 AI 生成。若是后者，越界的用法不会因为\"我说了\"就变合规；披露只是如实记录，不是赦免。所以第一条现实建议是去读规定原文，别从\"要求披露\"倒推\"什么都允许\"。\n\n（顺带，\"我的\"还有一个法律义项：纯 AI 生成、缺乏人类创作投入的内容，在若干司法辖区可能根本不受版权保护。这跟学校的学术作者身份是两套判断，别混用，也别指望用版权逻辑解决归属问题。）\n\n**回到你的问题**\n\n- 在规章与诚信层面：注明到位，你通常就能合法署名、不算抄袭——这一层，\"注明\"是够的。\n- 在\"这是我的作品\"的深层意义上：注明既不构成它、也不破坏它；决定权在\"你能不能在智识上为它负责\"。这一层，\"注明\"从来就不是那把尺子。\n\n更准的说法不是\"只要注明\"，而是\"注明只是底线，不是证明\"。让论文成为你的，不靠脚注里那句声明，而靠你确实能站到它前面去。\n\n**来源**（我实际读到的网页片段，非全文）：\n- [COPE 关于 AI 与作者身份的立场（转述于 Victoria University 图书馆指南）](https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147)\n- [Food Safety 期刊依据 ICMJE Recommendations 制定的 AI 使用指南](https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en)\n- Bozkurt, *GenAI et al.: Cocreation, Authorship, Ownership, Academic Ethics and Integrity*(Open Praxis, 2024) — 仅读到摘要，其摘要指出 AI 与学术写作中\"有机 vs 合成\"的作者身份/归属问题及透明报告的必要性。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "web_1ee3af75eb80",
+     "source_type": "web",
+     "used": true,
+     "title": "Publication - GenAI in Research - Library Guides at Victoria University",
+     "url": "https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147",
+     "excerpt": "nAI in Research: Publication\n\nIntroduction\n\nUsing GenAI with Integrity\n\nGrant funder policies\n\nPublication\n\nResearch Data & GenAI\n\nLiterature Review\n\nFurther considerations\n\nFurther Resources\n\nHelp and Acknowlegement\n\nIntroduction: GenAI and Academic Publishing\n\n​​​​​​\n\nAcademic Journals and their Publisher's have policies that govern the use of GenAI in the publishing environment .\n\nThese cover\n\nauthorship\n\ndisclosure / acknowledgements\n\npeer reviewing and editing\n\ncopyright\n\nIf you want to use GenAI and have your research published, you'll need to familiarise yourself with these policies ear",
+     "access_level": "WEB_PASSAGE_READ",
+     "content_hash": "3c1c8bec16cab96fdd2bc2520e2d73fd22d7297a756154f4ae6049b1d1f7afac",
+     "document_truncated": false
+    },
+    {
+     "evidence_id": "web_d2147937a20f",
+     "source_type": "web",
+     "used": true,
+     "title": "Announcement on Use of AI",
+     "url": "https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en",
+     "excerpt": "Journal home\n\nAll issues\n\nFeatured articles\n\nAbout the journal\n\nJ-STAGE home\n\n/\n\nFood Safety\n\n/\n\nVolume 13 (2025) Issue 1\n\n/\n\nArticle overview\n\n/\n\nFull view\n\n2025\n Volume 13\n Issue 1\n Pages 22\n\nPublished: 2025 Received: - Available on J-STAGE: March 21, 2025 Accepted: - Advance online publication: - Revised: -\n\n(compatible with EndNote, Reference Manager, ProCite, RefWorks)\n\n(compatible with BibDesk, LaTeX)\n\nIn recent years, as significant progress has been made in artificial intelligence (AI)\n technology, various peer-reviewed journals have been extending the policies on use of AI.\n Consideri",
+     "access_level": "WEB_PASSAGE_READ",
+     "content_hash": "8c3b5822480d6c85acc32c6ca8ef823fcc9af97ff4ce88437d92c3580e9f9538",
+     "document_truncated": false
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 1,
+    "display_citations": 2,
+    "primary_research": {
+     "status": "empty",
+     "sources": [],
+     "total": 0,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "unavailable",
+   "finish_reason": "stop",
+   "engine_duration_s": 60.283,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.0,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 10.7,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_00_d9MBmQN9P3VROK8Y2RSk8863"
+    },
+    {
+     "t": 10.8,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_01_ySQgJts5DMOH6NLNeQrK8150"
+    },
+    {
+     "t": 10.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_yW3zDz58JTI3vFutizHZ8017"
+    },
+    {
+     "t": 11.1,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_03_OPLYqitBAX0XyYdkpPp51600"
+    },
+    {
+     "t": 13.0,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 1.843,
+     "result_chars": 7094,
+     "result_head": "{\"query\": \"AI authorship credit responsibility academic integrity ChatGPT\", \"results\": [{\"source_record_id\": \"doi:10.1016/j.ijinfomgt.2023.102642\", \"title\": \"Op"
+    },
+    {
+     "t": 14.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 3.492,
+     "result_chars": 352,
+     "result_head": "{\"query\": \"作者是什么 author function 福柯 作者功能\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 1"
+    },
+    {
+     "t": 15.5,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "success",
+     "duration_s": 4.296,
+     "result_chars": 3184,
+     "result_head": "{\"query\": \"COPE position statement AI tools authorship research integrity\", \"results\": [{\"title\": \"COPE position statements\", \"url\": \"https://members.publicatio"
+    },
+    {
+     "t": 16.6,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "success",
+     "duration_s": 5.438,
+     "result_chars": 3460,
+     "result_head": "{\"query\": \"ICMJE recommendation AI chatbot authorship disclose academic paper 2024\", \"results\": [{\"title\": \"AI tools should not be designated as authors or co-a"
+    },
+    {
+     "t": 18.5,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_ely8wzE52dsLFNPveLR92016"
+    },
+    {
+     "t": 18.7,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_01_aZqvE9lRhh90oDkJqv0m2550"
+    },
+    {
+     "t": 18.9,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.099,
+     "result_chars": 2548,
+     "result_head": "{\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.55982/openpraxis.16.1.654\", \"title\": \"GenAI et al."
+    },
+    {
+     "t": 19.2,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "error",
+     "duration_s": 0.402,
+     "result_chars": 74,
+     "result_head": "{\"error\": \"WEB_HTTP_ERROR\", \"status_code\": 403, \"message\": \"来源网页未返回可读正文。\"}"
+    },
+    {
+     "t": 22.0,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_00_ovcavPMA32B9LALs03sa8915"
+    },
+    {
+     "t": 22.1,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_01_ZfzYhgSaEkBPiZCe8ZKI5478"
+    },
+    {
+     "t": 23.2,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "error",
+     "duration_s": 0.918,
+     "result_chars": 72,
+     "result_head": "{\"error\": \"UNSUPPORTED_WEB_FORMAT\", \"message\": \"这次未能读取网页正文；不要将其当作已读来源。\"}"
+    },
+    {
+     "t": 27.0,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "success",
+     "duration_s": 4.722,
+     "result_chars": 3362,
+     "result_head": "{\"query\": \"ICMJE \\\"AI tools should not be designated as authors\\\" recommendation acknowledge use methods section\", \"results\": [{\"title\": \"Announcement on Use of"
+    },
+    {
+     "t": 28.4,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_00_1zKywobsYdIgbtapPCCe6687"
+    },
+    {
+     "t": 33.9,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "error",
+     "duration_s": 5.47,
+     "result_chars": 68,
+     "result_head": "{\"error\": \"WEB_REDIRECT_LIMIT\", \"message\": \"这次未能读取网页正文；不要将其当作已读来源。\"}"
+    },
+    {
+     "t": 36.0,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_00_SB3K1RbQYtI6RxRNgMJv6624"
+    },
+    {
+     "t": 36.2,
+     "ev": "tool_start",
+     "name": "websearch",
+     "call_id": "call_01_mG6PHFUpVPny25Ra24Up0871"
+    },
+    {
+     "t": 37.2,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "success",
+     "duration_s": 0.887,
+     "result_chars": 3100,
+     "result_head": "{\"mode\": \"read\", \"url\": \"https://www.jstage.jst.go.jp/article/foodsafetyfscj/13/1/13_D-25-00010/_html/-char/en\", \"requested_url\": \"https://www.jstage.jst.go.jp/"
+    },
+    {
+     "t": 38.0,
+     "ev": "tool",
+     "name": "websearch",
+     "status": "success",
+     "duration_s": 1.72,
+     "result_chars": 3088,
+     "result_head": "{\"mode\": \"read\", \"url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\", \"requested_url\": \"https://libraryguides.vu.edu.au/c.php?g=974953&p=7100147\","
+    },
+    {
+     "t": 60.3,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1152
+  }
+ ],
+ "total_wall_s": 60.3,
+ "status": "COMPLETED"
+}

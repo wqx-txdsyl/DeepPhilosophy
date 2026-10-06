@@ -1,0 +1,235 @@
+{
+ "case_id": "DEV_G06",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "「道德运气」（moral luck）问题的代表性研究有哪些？威廉斯与内格尔的原始论文之后，学界又有哪些重要推进？请给出文献。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_hUQLm6x3FtGIuYvmP8Lm3014"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_BMpWISQjwQUkFMyhjTXK1573"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_jmtwVG7VPfT53UqPJI2R1155"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_0JDyqKXwke2iJooDMJRi2737"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_kQxVpR7VZ0h7EcdyeizV9493",
+   "result_head": "{'query': 'moral luck contemporary defense', 'results': [], 'READABLE_RESULT_COUNT': 0, 'READABLE_SOURCE_IDS': [], 'providers_queried': ['LOCAL_CURATED', 'cross"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_T8eDZ5WJXZGHZe1kxxwJ6562"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_i2OAAjo6wMEzUabP1pM79972"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_wXdKSKvxrfZXbPJlqFh08564"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_Qw7QdHnP4fuNtBUWVjG85180",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_TNNoRfULaNeVCEDioyjy0990",
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 道德运气后续推进派（否认派 Richards/Enoch-Marmor、深化派 Walker/Zimmerman/Nelkin）的真实文献记录"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_kCFGTqdhEDWrKF8dqQHH7893"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_dydJTbwR9EzpD9UIlWxx3223",
+   "result_head": "{'source_record_id': 'doi:10.5380/sk.v16i2.89794', 'bibliographic_record': {'source_record_id': 'doi:10.5380/sk.v16i2.89794', 'title': 'Bernard Williams, Thomas"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "道德运气问题的代表性原始文献（威廉斯、内格尔）与后续学界推进的真实书目及可读内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "道德运气后续推进派（否认派 Richards/Enoch-Marmor、深化派 Walker/Zimmerman/Nelkin）的真实文献记录，以及已有可读来源的摘要内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求「代表性研究 + 学界重要推进 + 文献」，属于必须给出真实二手文献的综述请求。当前4次检索中2次遭遇通道阻断，仅锁定源头文献书目（且均为 METADATA_ONLY），后续推进的文献一条都未定位，已有3条可读来源的摘要也尚未读取（被预算拦截）。不延展则无法负责任地给出学界推进的文献清单。",
+    "unresolved_evidence_gap": "否认道德运气一派（Richards《Luck and Desert》、Enoch & Marmor《The Case Against Moral Luck》）与深化/辩护一派（Walker、Zimmerman、Nelkin 等）的真实文献存在性与可读内容证据"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2412,
+ "final_answer": "我把话说在前面：这次检索的证据覆盖并不完整。文献库两次通道被阻断，另外两次检索返回为空，所以我**未能稳定地核验到**\"威廉斯—内格尔之后\"那一整条推进文献链的书目。下面我把**本次确实核验到的**与**仅凭记忆、未经本次核验的线索**严格分开，请你据此判断可靠性。\n\n## 一、已核验到的记录（来自本次文献库检索）\n\n**源头文献（书目层，未读到内容）**\n\n- Bernard Williams, *Moral Luck*, Cambridge University Press, 1981（DOI: 10.1017/cbo9781139165860）。库中仅返回书目与题录（METADATA_ONLY），我**没有读到其正文或摘要**，因此只能确认这部著作存在，不能对其内部论证做内容性描述。\n- 内格尔与威廉斯的原始同名论文，我**未能在本次可见的检索输出中稳定定位到条目**，故不在此冒充精确出处。学界通常把二者的原始论文追溯到 1976 年《亚里士多德学会增刊》(*Proceedings of the Aristotelian Society, Supplementary Volume*) 上同期发表的两篇《Moral Luck》——但这属于我的记忆，未经本次核验。\n\n**已读到摘要、可做内容归因的二手研究**\n\n- Julio Esteves, \"Bernard Williams, Thomas Nagel, Immanuel Kant e Moral Luck,\" *Studia Kantiana*, 2023（DOI: 10.5380/sk.v16i2.89794，摘要已读）。作者自述的进路是：从**康德道德哲学视角**对\"道德运气\"概念作批判性考察；先简论威廉斯最初引入该概念的方式，继而逐条考察**内格尔所主张的四种道德运气类型**；其总体结论是——内格尔所呈现的各种道德运气含义，是**在\"行为者/内在的主观视角\"与\"观察者/外在的客观视角\"之间不当交替**的产物，因而**并不属于严格意义上的道德与实践哲学**；文末还简论康德在\"灵魂不朽公设\"（至善概念内）中所使用的一种道德运气含义。\n\n这条摘要恰好可作为你进入\"源头→内格尔四分→康德式反驳\"这一脉络的入口文献。\n\n**仅书目、未读内容**\n\n- 另检索到一篇涉及俄狄浦斯责任与道德运气的文章（DOI: 10.30958/ajha.10-2-1，*Athens Journal of Humanities & Arts*）——我只确认其存在与题录，**未读到内容**，故不作内容性评价。\n\n## 二、后续\"重要推进\"——诚实说明与记忆线索\n\n我必须坦白：关于\"威廉斯、内格尔之后学界有哪些重要推进\"，我这次**尝试了多组关键词（怀疑/否认、当代辩护、desert 与责任等）均未取得结果**——两次是检索通道故障，两次返回空集。因此**我无法给你一份经本次核验的推进文献清单**。\n\n以下是我的一般知识中常被列为\"后续推进\"的文献，但**全部未经本次检索核验**，请一律视为待你自行核实的线索，而非已确认的文献报告：\n\n- **否认/消解道德运气一派**（主张\"道德运气\"自相矛盾或应被排除）：Norvin Richards, *Luck and Desert*（约 1986）；David Enoch & Andrei Marmor, \"The Case Against Moral Luck\"（约 2007）；Judith Jarvis Thomson, \"Morality and Bad Luck\"（约 1989/1993）。\n- **深化/辩护派**（承认运气渗透能动性、进而改造责任概念）：Margaret Urban Walker, \"Moral Luck and the Virtues of Impure Agency\"（约 1991）；Michael Zimmerman 关于\"运气与道德责任\"的工作（约 1987 起）；以及 Martha Nussbaum, *The Fragility of Goodness*（1986）将希腊悲剧中的运气问题重新引入伦理学。\n- **工具性入口**：*Stanford Encyclopedia of Philosophy* 的 \"Moral Luck\" 条目（Dana Nelkin 等撰写），通常能提供最完整的当代分类与文献导航——但我同样未在本次核验中取得它。\n\n内格尔\"四分法\"（结果运气、情境运气、构成运气、因果运气）这一常见说法，也是我的记忆，**本次未读到其原文**，请勿按我已核验的口径使用。\n\n## 三、我能给出的、最可靠的研究入口\n\n基于**只有一条摘要真正读到**这一事实，我谨慎建议你的研究路径：\n\n1. 若只想抓骨架，先读 Esteves 2023（上文已核验其摘要与进路）——它同时串起威廉斯、内格尔四分与康德式质疑。\n2. 要拿到源头原文，需要直接核对 Williams *Moral Luck*(1981) 文集与 Nagel *Mortal Questions*(1979) 第三章，**但这两项我都未能读到内容**，不能替你断言其具体论证。\n3. 后续推进部分，建议你以 *Stanford Encyclopedia of Philosophy* 的综述条目为导航，再循其参考文献回溯——因为本次文献库在这一段上确实没有给我可用的证据。\n\n---\n\n需要说明的是，我**这次没能完成你请求中\"后续推进文献\"的核心部分**。如果你愿意，我可以再换一条检索路径（例如直接以具体学者名或具体书名去定位记录）重试一次，争取把\"否认派/深化派\"那几条从\"记忆线索\"升级为可核验书目——在此之前，请把我上面第二部分当作待验证的假设，而非研究结论。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "道德运气后续推进派（否认派 Richards/Enoch-Marmor、深化派 Walker/Zimmerman/Nelkin）的真实文献记录，以及已有可读来源的摘要内容证据",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:18:29",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "道德运气问题的代表性原始文献（威廉斯、内格尔）与后续学界推进的真实书目及可读内容证据"
+   },
+   {
+    "ts": "2026-09-13 11:18:43",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "道德运气后续推进派（否认派 Richards/Enoch-Marmor、深化派 Walker/Zimmerman/Nelkin）的真实文献记录，以及已有可读来源的摘要内容证据",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:18:43",
+    "reason": "用户明确要求「代表性研究 + 学界重要推进 + 文献」，属于必须给出真实二手文献的综述请求。当前4次检索中2次遭遇通道阻断，仅锁定源头文献书目（且均为 METADATA_ONLY），后续推进的文献一条都未定位，已有3条可读来源的摘要也尚未读取（被预算拦截）。不延展则无法负责任地给出学界推进的文献清单。",
+    "unresolved_gap": "否认道德运气一派（Richards《Luck and Desert》、Enoch & Marmor《The Case Against Moral Luck》）与深化/辩护一派（Walker、Zimmerman、Nelkin 等）的真实文献存在性与可读内容证据"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:18:37"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:18:37"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:18:37"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:18:37"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "NO_NEW_INFORMATION_LOOP",
+    "ts": "2026-09-13 11:18:52"
+   }
+  ],
+  "blocked_codes": [
+   "NO_NEW_INFORMATION_LOOP",
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 76947,
+   "output_tokens": 7796,
+   "total_tokens": 84743
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 10587,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11619,
+     "output_tokens": 668,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15714,
+     "output_tokens": 1343,
+     "tool_chars_added": 10066
+    },
+    {
+     "round": 3,
+     "input_tokens": 14741,
+     "output_tokens": 928,
+     "tool_chars_added": 980
+    },
+    {
+     "round": 4,
+     "input_tokens": 16837,
+     "output_tokens": 1354,
+     "tool_chars_added": 2394
+    },
+    {
+     "round": 5,
+     "input_tokens": 18036,
+     "output_tokens": 3503,
+     "tool_chars_added": 2223
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 76947,
+  "output_tokens": 7796,
+  "total_tokens": 84743
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 52.7
+}

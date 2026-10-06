@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-02",
+  "scope": "single settings entry and complete settings redesign",
+  "sections": [
+    "外观与语言",
+    "对话",
+    "个性化",
+    "长期记忆",
+    "账户",
+    "数据管理"
+  ],
+  "removed_dead_items": [
+    "unwired browser notifications",
+    "reading-context status as a global setting"
+  ],
+  "functional_repairs": [
+    "flatten account profile response without changing identity",
+    "save empty profile fields",
+    "immediate source/tool display preferences",
+    "saved response preferences forwarded to bare agent",
+    "correct password endpoint",
+    "agent conversation tombstones instead of legacy platform history",
+    "device cache cannot erase unsaved history",
+    "confirmed account deletion discards its outbox and cache"
+  ],
+  "backend_tests": {
+    "passed": 37,
+    "real_provider_calls": 0
+  },
+  "frontend_tests": "npm test passed",
+  "frontend_build": "passed with existing large-chunk warning",
+  "browser_checks": [
+    "single sidebar entry for signed-in and guest users",
+    "nickname update without reload",
+    "clear about field",
+    "account language sync",
+    "memory add/remove on isolated fixture",
+    "password mismatch prevented submission",
+    "destructive confirmations and username gate",
+    "draft preserved after closing",
+    "keyboard focus trap",
+    "sign-in dialog above settings",
+    "390px mobile viewport without horizontal overflow",
+    "light and dark themes"
+  ],
+  "screenshots": {
+    "outputs/settings-unified-20261002/desktop.png": "c07528b0d9bbcafa4061c851ae2f1e1a772f1040f6f2ab591bf47ef58ee1716c",
+    "outputs/settings-unified-20261002/mobile.png": "9871c418d5d10ad7ca50e0061efd5b6550f4861ae123516fdbc1008dc6fb3cee"
+  },
+  "fixture_request_count": 35,
+  "production_user_data_mutated_by_qa": false,
+  "main_prompt_template_changed": false,
+  "tool_budget_added": false,
+  "new_model_quality_claim": false,
+  "deployment": {
+    "published_at": "2026-10-02T13:09:53.009879+00:00",
+    "url": "https://agent.deepphilosophy.top/",
+    "assets": [
+      {
+        "path": "/assets/phiagent-icon-DCv4ti-X.png",
+        "status": 200,
+        "sha256": "643692794510b01ba9198360e70fc78bc13cd50a30a69f304e1ae0e5b6242e7e"
+      },
+      {
+        "path": "/assets/phiagent-icon-180-Bc5fQg99.png",
+        "status": 200,
+        "sha256": "94352d56a90a93101e8da073f77158d9e1bbea452044c030db00f5c70d270493"
+      },
+      {
+        "path": "/assets/index-t3IeOdAa.js",
+        "status": 200,
+        "sha256": "ea62f9b2b61300fbba1682906283712fd5f38920645c76a69dfb2287422525c2"
+      },
+      {
+        "path": "/assets/index-B9TdDRHD.css",
+        "status": 200,
+        "sha256": "3c62cbb094122b119fe63012dbd9b1904c3bc6eb84d4e968c5086e6e93bd6568"
+      }
+    ],
+    "health": {
+      "status": "healthy",
+      "version": "0.1.2",
+      "timestamp": "2026-10-02T21:09:52.604443"
+    },
+    "release_version": "0.1.2",
+    "prompt_version": "0.1.1",
+    "tool_budget": null,
+    "git_commit": "ede7b350607a128f0f3003856c73f216905b574e",
+    "sqlite_backup_taken": true,
+    "old_hashed_assets_preserved": true,
+    "model_request_made": false
+  }
+}

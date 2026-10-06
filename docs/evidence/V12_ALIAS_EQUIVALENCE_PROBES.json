@@ -1,0 +1,213 @@
+{
+ "V12_ALIAS_EQUIVALENCE_PROBES": true,
+ "FORBIDDEN_FROM_V12_QUALIFICATION": true,
+ "OLD_ALIAS": "deepseek-v4-flash",
+ "TARGET": "deepseek-flash",
+ "transport": "langchain_deepseek.ChatDeepSeek（与 production 同构造: bind_tools.invoke / extra_body thinking / temp 0.7|0.0 / max_tokens 2000）",
+ "note": "structured/JSON output: production DeepSeek 路径未使用 response_format → 不适用（N/A）",
+ "results": [
+  {
+   "probe_id": "P1_zh_text",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 105,
+   "reasoning_chars": 261,
+   "tool_calls": 0,
+   "latency_s": 2.03,
+   "usage_output_tokens": 243
+  },
+  {
+   "probe_id": "P1_zh_text",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 111,
+   "reasoning_chars": 432,
+   "tool_calls": 0,
+   "latency_s": 3.27,
+   "usage_output_tokens": 350
+  },
+  {
+   "probe_id": "P2_en_text",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 260,
+   "reasoning_chars": 638,
+   "tool_calls": 0,
+   "latency_s": 1.23,
+   "usage_output_tokens": 158
+  },
+  {
+   "probe_id": "P2_en_text",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 298,
+   "reasoning_chars": 447,
+   "tool_calls": 0,
+   "latency_s": 1.21,
+   "usage_output_tokens": 129
+  },
+  {
+   "probe_id": "P3_repair_mode",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 80,
+   "reasoning_chars": 0,
+   "tool_calls": 0,
+   "latency_s": 1.13,
+   "usage_output_tokens": 49
+  },
+  {
+   "probe_id": "P3_repair_mode",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 80,
+   "reasoning_chars": 0,
+   "tool_calls": 0,
+   "latency_s": 1.13,
+   "usage_output_tokens": 49
+  },
+  {
+   "probe_id": "P4_single_tool",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "tool_calls",
+   "output_chars": 14,
+   "reasoning_chars": 87,
+   "tool_calls": 1,
+   "latency_s": 0.64,
+   "usage_output_tokens": 76
+  },
+  {
+   "probe_id": "P4_single_tool",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "tool_calls",
+   "output_chars": 0,
+   "reasoning_chars": 84,
+   "tool_calls": 1,
+   "latency_s": 1.13,
+   "usage_output_tokens": 68
+  },
+  {
+   "probe_id": "P5_multi_tool",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "tool_calls",
+   "output_chars": 12,
+   "reasoning_chars": 172,
+   "tool_calls": 2,
+   "latency_s": 1.61,
+   "usage_output_tokens": 153
+  },
+  {
+   "probe_id": "P5_multi_tool",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "tool_calls",
+   "output_chars": 0,
+   "reasoning_chars": 232,
+   "tool_calls": 2,
+   "latency_s": 1.13,
+   "usage_output_tokens": 168
+  },
+  {
+   "probe_id": "P6_cjk_tool_args",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "tool_calls",
+   "output_chars": 0,
+   "reasoning_chars": 81,
+   "tool_calls": 1,
+   "latency_s": 0.88,
+   "usage_output_tokens": 82
+  },
+  {
+   "probe_id": "P6_cjk_tool_args",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "tool_calls",
+   "output_chars": 7,
+   "reasoning_chars": 114,
+   "tool_calls": 1,
+   "latency_s": 1.11,
+   "usage_output_tokens": 92
+  },
+  {
+   "probe_id": "P7_long_context",
+   "model": "deepseek-v4-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 58,
+   "reasoning_chars": 487,
+   "tool_calls": 0,
+   "latency_s": 2.31,
+   "usage_output_tokens": 304
+  },
+  {
+   "probe_id": "P7_long_context",
+   "model": "deepseek-flash",
+   "success": true,
+   "error_class": null,
+   "finish_reason": "stop",
+   "output_chars": 35,
+   "reasoning_chars": 318,
+   "tool_calls": 0,
+   "latency_s": 1.76,
+   "usage_output_tokens": 196
+  }
+ ],
+ "performance_evidence": {
+  "OLD_ALIAS": {
+   "request_count": 7,
+   "success_count": 7,
+   "median_total_latency": 1.23,
+   "p95_total_latency": 2.31,
+   "median_output_tokens": 153
+  },
+  "TARGET": {
+   "request_count": 7,
+   "success_count": 7,
+   "median_total_latency": 1.13,
+   "p95_total_latency": 3.27,
+   "median_output_tokens": 129
+  },
+  "note": "migration evidence only, 非 qualification gate"
+ },
+ "OBSERVED_PROVIDER_MODEL": {
+  "deepseek-v4-flash": "deepseek-flash",
+  "deepseek-flash": "deepseek-flash"
+ },
+ "acceptance": {
+  "OLD_ALIAS_SUCCESS_COUNT": 7,
+  "TARGET_MODEL_SUCCESS_COUNT": 7,
+  "UNSUPPORTED_PARAMETER_ERRORS": 0,
+  "ADAPTER_PARSE_ERRORS": 0,
+  "TOOL_CALL_SCHEMA_ERRORS": 0,
+  "FINISH_REASON_PARSE_ERRORS": 0,
+  "RESPONSE_ENVELOPE_ERRORS": 0,
+  "tool_args_json_roundtrip": "PASS（全部 tool_calls args 可 JSON round-trip）",
+  "text_nonempty_extractor": "PASS（全部文本 probe 输出非空）",
+  "verbatim_equality_required": false,
+  "allowed_differences_observed": "文本内容/输出 token 数/延迟有差异（合同允许）"
+ },
+ "ALIAS_COMPATIBILITY_GATE": "PASS"
+}

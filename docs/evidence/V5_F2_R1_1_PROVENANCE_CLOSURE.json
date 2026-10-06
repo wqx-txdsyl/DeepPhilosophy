@@ -1,0 +1,234 @@
+{
+ "V5_F2_R1_1_PROVENANCE_CLOSURE": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V5_F2_R1_1_PROVENANCE_CLOSURE_TASK.md",
+ "BASE_SHA": "0f4b04516307beafae58f2922441850a5af9c098",
+ "CONTENT_HEAD": "876d794e225fef982b7da2cc1f459d3163d3c3ca",
+ "CONTENT_COMMIT_CHAIN": [
+  "69dbec6b5 §2/§3/§4/§5 原调用即时快照 + 删除重放 + 回归",
+  "876d794e2 engine 冻结基线前移至 69dbec6b5"
+ ],
+ "ARCHIVE_PARENT": "876d794e225fef982b7da2cc1f459d3163d3c3ca",
+ "PRIOR_EVIDENCE_PRESERVED": "V5_F2_SCHOLARLY_PIPELINE_REPAIR.json / V5_F2_R1_CLOSURE.json 均未覆盖",
+ "ORIGINAL_CALL_CAPTURE": "PASS",
+ "capture_point": "engine_langgraph._scholarly_call_snapshot 在工具真实返回时刻、result_full 剥离与 _promote_access cache 晋升之前生成; 快照随 type=\"tool\" 事件与 tool_log 双通道留存并绑定 tool_call_id",
+ "bounded_fields": {
+  "search_scholarship": [
+   "tool_call_id(事件层绑定)",
+   "args",
+   "returned_source_record_ids",
+   "access_levels",
+   "retrieval_origins",
+   "provider_errors",
+   "offline_mode"
+  ],
+  "get_scholarly_source": [
+   "tool_call_id(事件层绑定)",
+   "args",
+   "source_record_id",
+   "access_before",
+   "access_after",
+   "returned_evidence_level",
+   "content_hash"
+  ]
+ },
+ "no_passages_no_cot": true,
+ "POST_RUN_REPLAY": false,
+ "CACHE_DEPENDENCE": false,
+ "replay_removal": "harness 中 SS.search_scholarship 重放路径与按 SID 反查 READ provenance 已全部删除（§3）",
+ "MUTATION_IMMUNITY": "PASS",
+ "SEARCH_SNAPSHOT_PRE_READ_ACCESS": "PASS",
+ "READ_SNAPSHOT_TRANSITION": "PASS",
+ "mutation_immunity_evidence": {
+  "real_run_pairs": [
+   {
+    "case_id": "DP-01",
+    "sid": "doi:10.1017/s0140525x00005756",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-01",
+    "sid": "doi:10.1093/oso/9780198250579.003.0015",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-01",
+    "sid": "doi:10.1162/106454602321202435",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-01",
+    "sid": "doi:10.1002/9781444344431.ch88",
+    "search_snapshot_access": "METADATA_ONLY",
+    "read_before": "METADATA_ONLY",
+    "read_after": "METADATA_ONLY",
+    "content_evidence_declared": null
+   },
+   {
+    "case_id": "DP-01",
+    "sid": "doi:10.1093/oso/9780198250579.003.0002",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-01",
+    "sid": "doi:10.1002/0470018860.s00159",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-02",
+    "sid": "doi:10.5380/sk.v16i2.89794",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-02",
+    "sid": "doi:10.30958/ajha.10-2-1",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-02",
+    "sid": "doi:10.1163/174552409x402386",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-03",
+    "sid": "doi:10.1111/phil.12333",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-03",
+    "sid": "doi:10.4312/as.2023.11.3.177-202",
+    "search_snapshot_access": "ABSTRACT_AVAILABLE",
+    "read_before": "ABSTRACT_AVAILABLE",
+    "read_after": "ABSTRACT_AVAILABLE",
+    "content_evidence_declared": "ABSTRACT_AVAILABLE"
+   },
+   {
+    "case_id": "DP-03",
+    "sid": "doi:10.2307/2383764",
+    "search_snapshot_access": "METADATA_ONLY",
+    "read_before": "METADATA_ONLY",
+    "read_after": "METADATA_ONLY",
+    "content_evidence_declared": null
+   }
+  ],
+  "reconciled_pairs_total": 37,
+  "invariant": "每对配对 search_snapshot_access == read_before（search 快照保留读取前状态）; read_after 记录晋升后状态",
+  "unit_tests": "test_mutation_immunity_search_snapshot: 原始 result 对象被就地晋升后, 既有 search 快照仍为原 access"
+ },
+ "REPEATED_CALL_IDENTITY": "PASS",
+ "repeated_call_evidence": "每条 scholarly 调用按 tool_call_id 独立建档（本轮 97 次调用 97 份独立快照, 无按 SID/query 合并）; 单元回归: 同输入双快照为独立对象, 互不影响",
+ "unit_tests": "backend/tests/test_o7e_v5f2r11_provenance.py（5 tests: 快照字段/突变免疫/READ 转移/独立身份/非 scholarly 工具不生成）",
+ "F2_R1_REGRESSION": {
+  "probe_manifest_unchanged": true,
+  "runs": [
+   {
+    "published": true,
+    "search_calls": 8,
+    "read_calls": 6,
+    "content_evidence": 5,
+    "final_issue_codes": [],
+    "snapshot_captured_calls": 14
+   },
+   {
+    "published": true,
+    "search_calls": 10,
+    "read_calls": 3,
+    "content_evidence": 3,
+    "final_issue_codes": [],
+    "snapshot_captured_calls": 13
+   },
+   {
+    "published": true,
+    "search_calls": 7,
+    "read_calls": 6,
+    "content_evidence": 4,
+    "final_issue_codes": [],
+    "snapshot_captured_calls": 13
+   },
+   {
+    "published": true,
+    "search_calls": 11,
+    "read_calls": 4,
+    "content_evidence": 2,
+    "final_issue_codes": [],
+    "snapshot_captured_calls": 15
+   },
+   {
+    "published": true,
+    "search_calls": 8,
+    "read_calls": 10,
+    "content_evidence": 3,
+    "final_issue_codes": [],
+    "snapshot_captured_calls": 18
+   },
+   {
+    "published": true,
+    "search_calls": 10,
+    "read_calls": 8,
+    "content_evidence": 7,
+    "final_issue_codes": [],
+    "snapshot_captured_calls": 18
+   }
+  ],
+  "nonce": {
+   "published": true,
+   "search_calls": 4,
+   "read_calls": 0,
+   "content_evidence": 0,
+   "final_issue_codes": [],
+   "snapshot_captured_calls": 4
+  },
+  "published": "7/7",
+  "search": "7/7（含 DP-07 nonce 4 次）",
+  "scholarly_READ": "6/6 regression probes（≥5/6）",
+  "content_evidence": "6/6 regression probes（≥5/6）",
+  "bibliography_issue_count": 0,
+  "aggregate": {
+   "search_calls": 58,
+   "read_calls": 37,
+   "content_evidence_records": 24
+  }
+ },
+ "FULL_TEST_RESULT": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "run_at": "876d794e225fef982b7da2cc1f459d3163d3c3ca",
+  "passed": 843,
+  "failed": 0,
+  "skipped": 0
+ },
+ "FROZEN_UNTOUCHED": "corpus/retrieval/ranking/bibliography guard/scholarly behavioral contract/judge/rubric/threshold/final-gate/quote_bound/evidence_contract/agents/V5 canonical artifacts 零改动; dev probes 内容零修改（仅重跑）",
+ "changed_files_git_diff": [
+  "backend/engine_langgraph.py",
+  "backend/tests/test_o7a_scholarly_evaluator.py",
+  "backend/tests/test_o7e_v5f2r11_provenance.py",
+  "backend/tools/evaluation/o7e_production_calibration.py",
+  "docs/tasks/PHIAGENT_O7E_V5_F2_R1_1_PROVENANCE_CLOSURE_TASK.md"
+ ],
+ "changed_files_git_diff_note": "精确等于 git diff --name-only 0f4b04516307beafae58f2922441850a5af9c098..876d794e225fef982b7da2cc1f459d3163d3c3ca"
+}

@@ -1,0 +1,93 @@
+{
+ "V7_F2_R1_SEMANTIC_OBSERVABILITY_CLOSURE": true,
+ "TASK": "PhiAgent O7-E — V7-F2-R1 Semantic Observability Closure",
+ "REVIEWER": "GPT-5.6 Sol",
+ "REVIEW_CHAT": "chatgpt.com/c/6aa3e455-ae50-83ee-a4af-359574391bb7",
+ "MODEL": "GLM-5.3",
+ "BASE_SHA": "e1b7c8457266e732a748af9546d4a4749a2a79c9",
+ "CONTENT_HEAD": "8a0fb23a2e777d787a0239053766a1bc9a78517d",
+ "ARCHIVE_HEAD": "(this commit)",
+ "supercedes": "docs/evidence/V7_F2_REPAIR_TRANSITION_OBSERVABILITY.json（failed-review artifact, 保留不改写; 其 SEMANTIC_TRANSITION_CLASSIFIER=IMPLEMENTED 声明与当时 pushed tree 不符——classifier 文件从未进入 e1b7c8457, 本轮以真实实现+入库修正）",
+ "prior_artifact_untouched": true,
+ "V7_MEASUREMENT_UNCHANGED": true,
+ "V7_SCHOLARLY_GATE_REMAINS_PASS": true,
+ "V7_DELIVERY_GATE_REMAINS_FAIL": true,
+ "V7_OVERALL_REMAINS_FAIL": true,
+ "SEMANTIC_SNAPSHOT_SCHEMA_COMPLETE": {
+  "status": "IMPLEMENTED",
+  "module": "backend/engine_langgraph.py::_issue_snapshot",
+  "fields": ["round_id", "fingerprint", "issue_code", "semantic_family",
+             "normalized_locator", "evidence_ref", "source_record_id",
+             "citation_or_quote_target_id"],
+  "explicit_null_policy": "validator 不产生的字段（source_record_id/citation_or_quote_target_id）显式 null, 键不得缺失",
+  "bounded": "无 CoT/无候选正文/无 repair prompt/无大段 evidence 正文; normalized_locator ≤200 字符",
+  "per_round_persistence": "engine _val_history 每轮即时写入 issue_details + semantic_transition; runner 经 done.validation.history → run record validation_history",
+  "legacy_fields_kept": "issue_codes + issue_fingerprints（fingerprint set-difference 真源）原样保留"
+ },
+ "SEMANTIC_TRANSITION_CLASSIFIER": {
+  "status": "IMPLEMENTED_AND_COMMITTED",
+  "module": "backend/o7e_semantic_transition.py",
+  "committed_in": "8a0fb23a2e777d787a0239053766a1bc9a78517d",
+  "deterministic": true,
+  "no_llm": true,
+  "labels": ["RESOLVED", "PERSISTED", "GENUINELY_NEW_ISSUE", "SAME_ISSUE_REKEYED",
+             "LOCATOR_SHIFT_ONLY", "ISSUE_CODE_RELABEL", "AMBIGUOUS"],
+  "ambiguously_fail_closed": "弱/不完整语义身份、灰区重叠[0.3,0.5)、等强竞争候选、locator+evidence 双分量变更、null 指纹一律 → AMBIGUOUS, 不猜 GENUINELY_NEW",
+  "legacy_telemetry_unchanged": "classify_history 的 R{k} 集合差与 REPAIR_INTRODUCED_* 字段原样保留; 分类器是新增第二层"
+ },
+ "CLASSIFIER_A_E_TESTS": {
+  "status": "PASS",
+  "file": "backend/tests/test_o7e_semantic_transition.py",
+  "scenario_count": 16,
+  "scenarios": {
+   "A_identical_issue": "PERSISTED ✓",
+   "B_locator_shift_only": "LOCATOR_SHIFT_ONLY ✓",
+   "C_same_target_rekeyed": "SAME_ISSUE_REKEYED ✓",
+   "D_genuinely_new": "GENUINELY_NEW_ISSUE + RESOLVED 记账 ✓",
+   "E_ambiguous": "不完整身份/等强竞争/灰区/双变/null指纹 五路 AMBIGUOUS ✓",
+   "issue_code_relabel": "ISSUE_CODE_RELABEL ✓",
+   "ambiguous_fail_closed": "transition_is_fail_closed + 永不降级 ✓",
+   "schema_contract": "engine._issue_snapshot 8字段+显式null+有界 ✓",
+   "production_path_integration": "真实 LangGraph 图 + 脚本化假 LLM, 逐轮 semantic_transition 持久化断言 ✓"
+  }
+ },
+ "AMBIGUOUS_FAIL_CLOSED": true,
+ "DEV_PROBES": {
+  "flagging": {"DEV_ONLY": true, "QUALIFICATION": false, "FORBIDDEN_FROM_V8": true},
+  "cases": ["V7-04", "V7-06"],
+  "model": "deepseek-v4-flash",
+  "production_path": true,
+  "V7_04_DEV_COUNTS": {"NEW_FINGERPRINT_COUNT": 0, "GENUINELY_NEW_ISSUE_COUNT": 0,
+    "REKEY_COUNT": 0, "LOCATOR_SHIFT_COUNT": 0, "RELABEL_COUNT": 0,
+    "AMBIGUOUS_COUNT": 0},
+  "V7_06_DEV_COUNTS": {"NEW_FINGERPRINT_COUNT": 0, "GENUINELY_NEW_ISSUE_COUNT": 0,
+    "REKEY_COUNT": 0, "LOCATOR_SHIFT_COUNT": 0, "RELABEL_COUNT": 0,
+    "AMBIGUOUS_COUNT": 0},
+  "per_transition_classifier_output": "真实分类输出逐轮持久化于 docs/evidence/V7_F2_R1_DEV_PROBE_RUN.json（无 NEEDS_CLASSIFICATION 占位）",
+  "run_note": "本轮 live 重跑两案例 repair 均一轮全修复（introduced=0）; 与 e1b7c8457 归档轮轮廓存在模型非确定性差异, 如实记录。legacy REPAIR_CREATES_NEW_FATAL_ERROR=0 与 NEW_FINGERPRINT_COUNT=0 一致。"
+ },
+ "V2_HISTORICAL_BOUNDARY_CORRECTED": {
+  "status": "CORRECTED",
+  "file": "docs/evidence/O7E_DELIVERY_METRIC_V2_PROPOSAL.json",
+  "correction": "移除「V7-F1 RCA 确认名称误称」表述; 新增 historical_boundary 块逐字保留 HISTORICAL_INTENT_ANY_INTRODUCED_AUTO_FATAL=NOT_ESTABLISHED / METRIC_IMPLEMENTATION_MATCHES_INTENDED_CONTRACT=UNRESOLVED / METRIC_NAME_ONLY_MISNOMER=UNRESOLVED / MEASUREMENT_SEMANTIC_BUG=UNRESOLVED; 提案侧观察与已决裁定显式分离",
+  "v2_metrics_proposed": ["REPAIR_INTRODUCED_FINGERPRINT_CASES",
+    "REPAIR_INTRODUCED_GENUINELY_NEW_ISSUE_CASES (hard gate, zero tolerance)",
+    "REPAIR_TRANSITION_AMBIGUOUS_CASES (hard gate, fail-closed)"]
+ },
+ "FINAL_GATE_CHANGED": false,
+ "FINAL_GATE_BLOB_SHA": "22ea181ce652276234f59a96d2b5c5f1a66ef2d8",
+ "FROZEN_SCOPE_VERIFIED": ["scholarly corpus/retrieval", "primary retrieval",
+   "bibliography guard", "judge", "production model", "Local Patch strategy / repair strategy",
+   "o7e_final_gate.py"],
+ "changed_files_BASE_to_CONTENT": [
+  "backend/engine_langgraph.py",
+  "backend/o7e_semantic_transition.py (new)",
+  "backend/tests/test_o7e_semantic_transition.py (new)",
+  "backend/tests/test_o7a_scholarly_evaluator.py (freeze 基线机制 commit-SHA→内容哈希)",
+  "backend/tools/evaluation/o7e_rca1_hook_eval.py (additive counts)",
+  "backend/tools/evaluation/o7e_production_calibration.py (additive 透传)"
+ ],
+ "FULL_TEST_SHA": "8a0fb23a2e777d787a0239053766a1bc9a78517d",
+ "FULL_TEST_RESULT": "859 passed, 0 failed (cd backend && ../.venv/bin/python -m pytest tests/ -q)",
+ "ARCHIVE_PARENT_EQUALS_CONTENT_HEAD": true
+}

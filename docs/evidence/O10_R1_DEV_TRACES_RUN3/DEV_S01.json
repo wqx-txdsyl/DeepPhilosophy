@@ -1,0 +1,85 @@
+{
+ "case_id": "DEV_S01",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "「意见」和「论证」有什么区别？请判断下面这句话属于哪一种：「咖啡对健康有益，因为我家人天天喝，他们都很健康。」",
+ "tool_sequence": [
+  {
+   "name": "analyze_argument",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_8oy4psiG4oYLGaIzwLlg4994",
+   "args": {
+    "text": "咖啡对健康有益，因为我家人天天喝，他们都很健康。"
+   },
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_"
+  }
+ ],
+ "declarations": [],
+ "blocked_calls": [],
+ "answer_chars": 1639,
+ "final_answer": "# 「意见」与「论证」：不是两道单选题\n\n先给结论，再解释：这句话**形式上是\"论证\"，但质量上是一个很差的论证**；而\"意见 vs 论证\"这个二选一本身，其实问错了——因为两者根本不在同一个分类轴上。\n\n## 一、它们不是同一维度的对立项\n\n关键澄清：**\"意见\"和\"论证\"回答的是两个不同的问题。**\n\n- **\"意见\"（希腊语 *doxa*，拉丁 *opinio*）回答的是\"这是一个什么地位的主张/认知状态\"**——它是一个判断、一个信念，与\"知识\"相对。依通行解读，柏拉图在《理想国》中把意见放在知识（*episteme*）与无知之间，意见的对象是可感事物、\"既如此又不如此\"的东西；康德在《纯粹理性批判》里也把\"意见（Meinung）\"界定为主观上充分、客观上不充分的判断。（这两处按我的记忆转述，未逐字核验原文。）\n\n- **\"论证\"（argument）回答的是\"这是一个什么结构的言说\"**——它由**前提 + 结论 + 推理**构成，前提为结论提供理由。它的对立面不是\"知识\"，而是**无理由支持的独断、单纯的断言或宣泄**。\n\n所以真正的对立有两组：\n\n| 维度 | 一端 | 另一端 |\n|---|---|---|\n| 认知地位 | 意见（doxa，可错） | 知识（episteme，有辩护的真信念） |\n| 言说结构 | 论证（给出理由） | 单纯断言／独断（不给理由） |\n\n**一个意见可以被论证支持，一个论证也可以表达意见，这两件事毫不冲突。** 正确的问法不是\"它是意见还是论证\"，而是：**它给出了理由吗？理由够强吗？**\n\n## 二、判断这句话\n\n用户断言咖啡对健康有益，理由是家人天天喝咖啡、而他们都很健康。\n\n**它有论证的形式。** 拆开看：\n\n- **结论**：咖啡对健康有益。\n- **前提**：我家人天天喝咖啡，而且他们都很健康。\n- **推理标记**：\"因为\"——它在声称前提支持结论。\n\n因此它**不是纯粹的意见陈述**（纯粹的意见只是说\"我觉得咖啡有益\"，不给理由）。它是一个**论证化的意见**：把意见包装成了一条推理。就\"属于哪一种\"而言，答案落在**\"论证\"**这一侧。\n\n## 三、但这是一个严重有缺陷的论证\n\n它具备论证的**外壳**，却不具备**说服力**。缺陷至少五层：\n\n1. **以偏概全（枚举归纳的滥用）**：从一个极小样本（家人的个例）跳到普遍结论。\n2. **样本偏差**：家人是高度非随机样本——共享基因、饮食、作息。他们代表不了人群。\n3. **选择偏差／幸存者偏差**：只数了\"喝咖啡且健康\"的人，没算\"喝咖啡但不健康\"的，也没算\"不喝咖啡但健康\"的对照组。\n4. **相关 ≠ 因果**：即便\"家人喝咖啡\"与\"家人健康\"真相关，也可能是**共同原因**（同一套好基因、同一套好生活方式）同时导致两者，咖啡未必是原因。\n5. **隐含前提不可靠**：论证暗中假设\"我能观察到的家人可以代表一般人\"\"咖啡是这里的唯一变量\"——这些前提没被说出，且都站不住。\n\n**最薄弱的一步**就是从\"我的家人\"到\"一般人\"的跳跃：前提为真，也推不出结论。这里正好印证一个要点——**论证的强度与结论的真假是两回事**：咖啡是否真的有益，要靠对照研究与统计推断，而不是靠亲戚的健康状况。\n\n## 四、更精确的说法\n\n与其说这句话\"是意见\"或\"是论证\"，不如说：\n\n它是一个以意见为结论、以个人见闻为理由的薄弱论证：形式上有论证的样子，实质上只是给一个意见配上了一层理由的外衣。\n\n这也提示一个日常识别的习惯：看到\"因为\"，别急着当成论证；先问**理由是否真的支持结论**。你说的这段话，恰好提供了一个反例——**有\"因为\"的句子，可能是伪装的论证。**\n\n如果你想，我可以把它重写成一条真正站得住的论证（补上对照组、样本量、混杂变量的处理），或者反过来举一个\"是纯意见、无所谓论证\"的例子，让你看清这条界线。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 39007,
+   "output_tokens": 3731,
+   "total_tokens": 42738
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11753,
+     "output_tokens": 1837,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13755,
+     "output_tokens": 1332,
+     "tool_chars_added": 374
+    },
+    {
+     "round": 3,
+     "input_tokens": 13499,
+     "output_tokens": 562,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 39007,
+  "output_tokens": 3731,
+  "total_tokens": 42738
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 33.3
+}

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 import { useAuth } from '../auth';
 import { useLang } from '../utils/i18n';
 
@@ -13,6 +14,22 @@ export default function AuthModal({ onClose }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const dialog = useRef(null);
+  const closeRef = useRef(onClose); closeRef.current = onClose;
+  useEffect(() => {
+    const previous = document.activeElement;
+    dialog.current?.querySelector('input')?.focus();
+    const onKey = event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeRef.current(); }
+      if (event.key !== 'Tab') return;
+      const items = [...dialog.current.querySelectorAll('input,button:not([disabled])')];
+      if (!dialog.current?.contains(document.activeElement)) { event.preventDefault(); (event.shiftKey ? items.at(-1) : items[0])?.focus(); }
+      else if (event.shiftKey && document.activeElement === items[0]) { event.preventDefault(); items.at(-1)?.focus(); }
+      else if (!event.shiftKey && document.activeElement === items.at(-1)) { event.preventDefault(); items[0]?.focus(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => { window.removeEventListener('keydown', onKey); if (previous?.isConnected) previous.focus?.(); };
+  }, []);
 
   // 后端错误 detail 为中文——EN 模式映射为英文
   const mapErr = (msg) => {
@@ -27,10 +44,10 @@ export default function AuthModal({ onClose }) {
     setError('');
     if (!username.trim() || !password) { setError(t('needUserPwd')); return; }
     setBusy(true);
+    try {
     const d = mode === 'login'
       ? await login(username.trim(), password)
       : await register(username.trim(), password);
-    setBusy(false);
     if (d.success) {
       if (mode === 'register') {
         // 注册成功后自动登录
@@ -43,18 +60,21 @@ export default function AuthModal({ onClose }) {
     } else {
       setError(mapErr(d.error || d.detail) || t('unknownErr'));
     }
+    } catch {
+      setError(lang === 'zh' ? '暂时无法连接账号，请重试。' : 'Cannot connect to the account service. Please retry.');
+    } finally { setBusy(false); }
   };
 
   return (
     <div onClick={onClose}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.35)', zIndex: 1000,
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.35)', zIndex: 1400,
                display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div onClick={e => e.stopPropagation()}
+      <div ref={dialog} role="dialog" aria-modal="true" aria-label={mode === 'login' ? t('signIn') : t('register')} onClick={e => e.stopPropagation()}
         style={{ background: 'var(--card-bg)', borderRadius: 14, width: '100%', maxWidth: 360, padding: '24px 28px',
                  boxShadow: '0 12px 40px rgba(0,0,0,.18)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
           <div style={{ fontSize: 17, fontWeight: 700 }}>{mode === 'login' ? t('signIn') : t('register')}</div>
-          <span onClick={onClose} style={{ cursor: 'pointer', color: 'var(--text-dim)', fontSize: 14 }}>✕</span>
+          <button type="button" className="cw-icon-btn" onClick={onClose} aria-label={lang === 'zh' ? '关闭登录' : 'Close sign in'}><X size={16} /></button>
         </div>
         <div style={{ display: 'flex', gap: 6, marginBottom: 16 }}>
           {['login', 'register'].map(m => (
@@ -67,14 +87,15 @@ export default function AuthModal({ onClose }) {
             </button>
           ))}
         </div>
-        <input value={username} onChange={e => setUsername(e.target.value)} placeholder={t('usernamePh')}
+        <input aria-label={t('username')} autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} placeholder={t('usernamePh')}
           style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)',
-                   fontSize: 14, outline: 'none', marginBottom: 10, boxSizing: 'border-box' }} />
+                   fontSize: 16, outline: 'none', marginBottom: 10, boxSizing: 'border-box' }} />
         <input value={password} onChange={e => setPassword(e.target.value)} type="password"
+          aria-label={lang === 'zh' ? '密码' : 'Password'} autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
           placeholder={t('passwordPh')}
           onKeyDown={e => e.key === 'Enter' && submit()}
           style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)',
-                   fontSize: 14, outline: 'none', marginBottom: 12, boxSizing: 'border-box' }} />
+                   fontSize: 16, outline: 'none', marginBottom: 12, boxSizing: 'border-box' }} />
         {error && <div style={{ color: '#c0392b', fontSize: 12.5, marginBottom: 10 }}>{error}</div>}
         <button onClick={submit} disabled={busy}
           style={{ width: '100%', padding: '10px 0', borderRadius: 8, border: 'none', cursor: 'pointer',

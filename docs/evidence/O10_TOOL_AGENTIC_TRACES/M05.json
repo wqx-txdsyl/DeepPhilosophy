@@ -1,0 +1,1801 @@
+{
+ "case_id": "M05",
+ "section": "M",
+ "expected_class": "WEB",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "查一下“忒修斯之船”在现代讨论中的最新进展。",
+ "injection": {
+  "tool": "websearch",
+  "calls": 99,
+  "result": {
+   "results": [],
+   "query": "忒修斯之船",
+   "note": "联网无结果（Bing 与维基百科均不可达）"
+  }
+ },
+ "QUESTION": "查一下“忒修斯之船”在现代讨论中的最新进展。",
+ "PUBLIC_WORK_NOTE": [
+  "我先梳理一下已知：忒修斯之船是普鲁塔克记载的经典同一性难题，现代讨论通常牵涉\"同一性\"（identity）、\"四维主义与时间部分\"、\"连续性/因果连续\"等。用户明确要\"现代讨论的最新进展\"，这属于必须查真实二手文献的学术需求，我不能凭记忆罗列学界观点。下面先登记研究需求，再检索相关学术文献。",
+  "已检索到多条候选，其中几条有可读摘要值得实读：David Rose 收录于《牛津实验哲学研究》第3卷的\"忒修斯之船\"篇（实验哲学路径）、Christopher Green 论物质构成与法律本体论的\"Theseus, Incorporated\"，以及 2025 年一篇用忒修斯之船探讨脑机接口与人格同一性的新论文。我记得当代讨论还有\"情境主义解\"（Pickup）与四维主义/时间部分路线，但后者只返回了书目元数据，不能据标题推断其论证。下一步：先读取那些有可读证据的摘要，再补一次针对四维主义/时间部分路径的检索。",
+  "预算已到上限，但用户问的是\"最新进展\"，我目前只取得一条实质内容证据（实验哲学路径），四维主义/时间部分、情境主义解、约定论等主流路线还没有可读的证据，缺口未闭合。我申请一次预算延展，专门补\"情境主义解\"与\"四维主义\"路径的可读文献。",
+  "现在我手上有：实验哲学路径（Rose 2020）的实质摘要内容、Green 2011 的应用转向、以及 Pickup 2015 与 Scaltsas 1980 只是\"书目存在\"（不可据标题推断其主张）。还缺两块：Pickup 情境主义解到底主张什么，以及是否有更新（2020年代）的综述把各条路线串起来。下一步做两次定点补证：尝试读取 Pickup 原文，并检索一条近期综述性文献，然后收口作答。"
+ ],
+ "RESEARCH_NEED": "SCHOLARLY",
+ "EVIDENCE_GAP": "忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "get_scholarly_source"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "Ship of Theseus identity over time",
+    "limit": 10
+   },
+   {
+    "query": "Theseus ship puzzle material constitution persistence",
+    "limit": 10
+   },
+   {
+    "limit": 10,
+    "query": "four-dimensionalism temporal parts personal identity persistence puzzle"
+   },
+   {
+    "limit": 10,
+    "query": "Ship of Theseus puzzle situationalist solution"
+   },
+   {
+    "limit": 10,
+    "query": "Ship of Theseus identity persistence review contemporary debate essential properties"
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.17561/tahrj.v25.9773",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+    "source_record_id": "doi:10.1007/s10670-015-9777-3"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Ship of Theseus identity over time",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Ship of Theseus identity over time', 'results': [{'source_record_id': 'doi:10.1332/policypress/9781529205541.003.0001', 'title': 'Philosophy, Identity and the ‘Ship of Theseus’', 'authors':"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Theseus ship puzzle material constitution persistence",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Theseus ship puzzle material constitution persistence', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.2139/ssrn.1949507', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.1949507', 'title': 'Theseus, Incorporated: Philosophy of Mind, Material Constitution, an"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.17561/tahrj.v25.9773",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "four-dimensionalism temporal parts personal identity persistence puzzle"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus puzzle situationalist solution"
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Ship of Theseus puzzle situationalist solution', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David Rose'],"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+    "source_record_id": "doi:10.1007/s10670-015-9777-3"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'bibliographic_record': {'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'title': 'A Situationalist Solution to the Ship of Theseus Puzzle', "
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus identity persistence review contemporary debate essential properties"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Ship of Theseus identity over time', 'results': [{'source_record_id': 'doi:10.1332/policypress/9781529205541.003.0001', 'title': 'Philosophy, Identity and the ‘Ship of Theseus’', 'authors':"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Theseus ship puzzle material constitution persistence', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.2139/ssrn.1949507', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.1949507', 'title': 'Theseus, Incorporated: Philosophy of Mind, Material Constitution, an"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Ship of Theseus puzzle situationalist solution', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David Rose'],"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'bibliographic_record': {'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'title': 'A Situationalist Solution to the Ship of Theseus Puzzle', "
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "坦白说，这次检索我有一个需要先讲清楚的证据边界：我能确认若干真实文献的**存在与书目**，但多数只拿到元数据层（书目/摘要字段），并未实际读取到可用的正文内容。因此下面凡是涉及\"某文献主张了什么\"的地方，我只在**题名/发表处**本身支持的范围内陈述；更细的论证内容我不会替它们编造。\n\n## 检索到的情况\n\n**一、实验哲学转向（目前最\"新\"且证据最实的一条）**\n\n- David Rose, \"The Ship of Theseus Puzzle\", 载 *Oxford Studies in Experimental Philosophy* 第 3 卷（2020）。这条能确认的是：该研究发表于**实验哲学**专辑，即把忒修斯之船从思辨难题转化为一个可做跨文化实证调查的课题（属于\"实验哲学\"这一方法转向下的产物）。至于它具体的被试设计、跨文化结论，我这次未取得可读正文，不能转述其主张。\n\n**二、应用 / 跨域转向**\n\n- Christopher R. Green, \"Theseus, Incorporated: Philosophy of Mind, Material Constitution, and the Ontology of the Criminal Law\"（2011，SSRN 预印本）。从题名可确认的定位是：把\"物质构成\"（material constitution）这一忒修斯之船式难题，移用到**公司法人与刑法本体论**上。\n- 另检索到 Kirstine Szifris, \"Philosophy, Identity and the 'Ship of Theseus'\"（2021）等，把该隐喻用于身份/认同议题（发表处与具体论证我未取得可读内容）。\n\n**三、分析形而上学内部仍在延续的\"解题\"传统**\n\n- Martin Pickup, \"A Situationalist Solution to the Ship of Theseus Puzzle\", *Erkenntnis*（2015）。这条只能报告到**题名层面**：它提出一种\"情境主义\"（situationalist）解决方案——即把\"到底是哪条船\"的判断相对化到具体情境/问题语境。这属于\"相对同一性/约定论\"一类思路，但我**没有读到其正文或摘要**，不确定它具体如何论证、如何回应反驳，请当作\"存在这样一种解\"而非\"我读过它\"。\n\n## 我对此的判断（明确为分析，非文献归因）\n\n把上面的离散条目放进一个框架看，忒修斯之船现代讨论的\"进展\"大致沿三条轴展开——这几点是我自己的梳理，不是对某篇文献的转述：\n\n1. **从\"唯一正确答案\"到\"同一性标准之争\"**：传统追问\"哪条船才是原船\"，现代分析形而上学把它重述为\"持存（persistence）的判据是什么\"——是**质料连续性**（零件逐一同）、**形式/结构连续性**（蓝图、功能不变）、还是**时空-因果连续性**（不间断的存在史）。\n2. **方法转向**：一部分当代工作（如 Rose 那条）不再靠直觉独断，而是用**实验哲学**手段去测普通人及其跨文化差异下的直觉，检验\"直觉即证据\"这一预设本身。\n3. **应用转向**：把难题带进**人格同一性 / 脑机接口 / 法人责任**等场景（如 Green 与近年若干新文献），让它成为\"我们何时该把两个东西当作同一个\"的实践问题。\n\n## 证据边界与下一步\n\n需要如实说明：我**没有**拿到 Pickup 论文的可读正文，也未能取到一份能串联各条路线的当代综述，因此无法向你确认\"2020 年代最新的学界共识/主流立场\"——那需要逐篇实读才能下结论。如果你要我把这块做实，我建议定向精读以下对象（都能定位）：Rose 的实验哲学篇、Pickup 的情境主义解原文，以及一篇晚近综述，读后再给你一份带立场的进展报告。\n\n一句话：**能确认\"现代讨论正朝实验化、应用化与判据多元化的方向走\"；但\"最新进展的具体结论\"我尚未取得可读证据，不代你下判断。**",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先梳理一下已知：忒修斯之船是普鲁塔克记载的经典同一性难题，现代讨论通常牵涉\"同一性\"（identity）、\"四维主义与时间部分\"、\"连续性/因果连续\"等。用户明确要\"现代讨论的最新进展\"，这属于必须查真实二手文献的学术需求，我不能凭记忆罗列学界观点。下面先登记研究需求，再检索相关学术文献。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "现代（20-21世纪）关于\"忒修斯之船/同一性问题\"的真实学术文献：当代主流的解决路径（四维主义/时间部分、属性本质主义、因果连续论、约定论等）及其代表研究",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Ship of Theseus identity over time",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Ship of Theseus identity over time', 'results': [{'source_record_id': 'doi:10.1332/policypress/9781529205541.003.0001', 'title': 'Philosophy, Identity and the ‘Ship of Theseus’', 'authors':"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Theseus ship puzzle material constitution persistence",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Theseus ship puzzle material constitution persistence', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David "
+  },
+  {
+   "kind": "note",
+   "content": "已检索到多条候选，其中几条有可读摘要值得实读：David Rose 收录于《牛津实验哲学研究》第3卷的\"忒修斯之船\"篇（实验哲学路径）、Christopher Green 论物质构成与法律本体论的\"Theseus, Incorporated\"，以及 2025 年一篇用忒修斯之船探讨脑机接口与人格同一性的新论文。我记得当代讨论还有\"情境主义解\"（Pickup）与四维主义/时间部分路线，但后者只返回了书目元数据，不能据标题推断其论证。下一步：先读取那些有可读证据的摘要，再补一次针对四维主义/时间部分路径的检索。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': "
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.2139/ssrn.1949507', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.1949507', 'title': 'Theseus, Incorporated: Philosophy of Mind, Material Constitution, an"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.17561/tahrj.v25.9773",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "args": {
+    "limit": 10,
+    "query": "four-dimensionalism temporal parts personal identity persistence puzzle"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "note",
+   "content": "预算已到上限，但用户问的是\"最新进展\"，我目前只取得一条实质内容证据（实验哲学路径），四维主义/时间部分、情境主义解、约定论等主流路线还没有可读的证据，缺口未闭合。我申请一次预算延展，专门补\"情境主义解\"与\"四维主义\"路径的可读文献。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "budget_extension_reason": "用户明确询问\"现代讨论的最新进展\"，需覆盖当代主流解决路径（四维主义/时间部分、情境主义解、约定论），当前仅取得实验哲学一条内容证据，不足以勾勒\"进展\"全貌",
+    "evidence_gap": "忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "四维主义/时间部分与情境主义解这两条现代主流路径的可读文献证据，用以呈现\"最新进展\"而非单一实验哲学结论"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus puzzle situationalist solution"
+   },
+   "result_head": "{'query': 'Ship of Theseus puzzle situationalist solution', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David Rose'],"
+  },
+  {
+   "kind": "note",
+   "content": "现在我手上有：实验哲学路径（Rose 2020）的实质摘要内容、Green 2011 的应用转向、以及 Pickup 2015 与 Scaltsas 1980 只是\"书目存在\"（不可据标题推断其主张）。还缺两块：Pickup 情境主义解到底主张什么，以及是否有更新（2020年代）的综述把各条路线串起来。下一步做两次定点补证：尝试读取 Pickup 原文，并检索一条近期综述性文献，然后收口作答。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+    "source_record_id": "doi:10.1007/s10670-015-9777-3"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'bibliographic_record': {'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'title': 'A Situationalist Solution to the Ship of Theseus Puzzle', "
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus identity persistence review contemporary debate essential properties"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "现代（20-21世纪）关于\"忒修斯之船/同一性问题\"的真实学术文献：当代主流的解决路径（四维主义/时间部分、属性本质主义、因果连续论、约定论等）及其代表研究",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "用户明确询问\"现代讨论的最新进展\"，需覆盖当代主流解决路径（四维主义/时间部分、情境主义解、约定论），当前仅取得实验哲学一条内容证据，不足以勾勒\"进展\"全貌",
+    "evidence_gap": "忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "四维主义/时间部分与情境主义解这两条现代主流路径的可读文献证据，用以呈现\"最新进展\"而非单一实验哲学结论"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:15:56",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "现代（20-21世纪）关于\"忒修斯之船/同一性问题\"的真实学术文献：当代主流的解决路径（四维主义/时间部分、属性本质主义、因果连续论、约定论等）及其代表研究",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:16:08",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:16:08",
+    "reason": "用户明确询问\"现代讨论的最新进展\"，需覆盖当代主流解决路径（四维主义/时间部分、情境主义解、约定论），当前仅取得实验哲学一条内容证据，不足以勾勒\"进展\"全貌",
+    "unresolved_gap": "四维主义/时间部分与情境主义解这两条现代主流路径的可读文献证据，用以呈现\"最新进展\"而非单一实验哲学结论"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:16:02"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:16:02"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:16:15"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 78638,
+   "output_tokens": 7003,
+   "total_tokens": 85641
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 9,
+   "compacted_chars_saved": 17728,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12063,
+     "output_tokens": 572,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15760,
+     "output_tokens": 892,
+     "tool_chars_added": 9302
+    },
+    {
+     "round": 3,
+     "input_tokens": 15459,
+     "output_tokens": 1012,
+     "tool_chars_added": 5595
+    },
+    {
+     "round": 4,
+     "input_tokens": 18014,
+     "output_tokens": 877,
+     "tool_chars_added": 6174
+    },
+    {
+     "round": 5,
+     "input_tokens": 17342,
+     "output_tokens": 3650,
+     "tool_chars_added": 1201
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1690,
+ "token_usage": {
+  "input_tokens": 78638,
+  "output_tokens": 7003,
+  "total_tokens": 85641
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.3,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "现代（20-21世纪）关于\"忒修斯之船/同一性问题\"的真实学术文献：当代主流的解决路径（四维主义/时间部分、属性本质主义、因果连续论、约定论等）及其代表研究",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 现代（20-21世纪）关于\"忒修斯之船/同一性问题\"的真实学术文献：当代主流的解决路径（四维主义/时间部分、属性本质主义、因果连续论、约定论等）及其代表研究）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Ship of Theseus identity over time",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Ship of Theseus identity over time', 'results': [{'source_record_id': 'doi:10.1332/policypress/9781529205541.003.0001', 'title': 'Philosophy, Identity and the ‘Ship of Theseus’', 'authors':",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1332/policypress/9781529205541.003.0001",
+     "doi:10.17561/tahrj.v25.9773",
+     "doi:10.37514/tpc-b.2022.1381.2.02",
+     "doi:10.2307/jj.12381770.20",
+     "doi:10.46692/9781529205565.002",
+     "doi:10.2139/ssrn.5059611",
+     "doi:10.56687/9781529205565-004",
+     "doi:10.1515/9783110323245.85",
+     "doi:10.2307/j.ctv1rnpjbn.6",
+     "doi:10.22541/au.175494727.72407076/v1"
+    ],
+    "access_levels": {
+     "doi:10.1332/policypress/9781529205541.003.0001": "ABSTRACT_AVAILABLE",
+     "doi:10.17561/tahrj.v25.9773": "ABSTRACT_AVAILABLE",
+     "doi:10.37514/tpc-b.2022.1381.2.02": "METADATA_ONLY",
+     "doi:10.2307/jj.12381770.20": "METADATA_ONLY",
+     "doi:10.46692/9781529205565.002": "METADATA_ONLY",
+     "doi:10.2139/ssrn.5059611": "METADATA_ONLY",
+     "doi:10.56687/9781529205565-004": "METADATA_ONLY",
+     "doi:10.1515/9783110323245.85": "METADATA_ONLY",
+     "doi:10.2307/j.ctv1rnpjbn.6": "METADATA_ONLY",
+     "doi:10.22541/au.175494727.72407076/v1": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Theseus ship puzzle material constitution persistence",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Theseus ship puzzle material constitution persistence', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David ",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oso/9780198852407.003.0007",
+     "doi:10.1332/policypress/9781529205541.003.0001",
+     "doi:10.2139/ssrn.1949507",
+     "doi:10.1007/s10670-015-9777-3",
+     "doi:10.1515/9783110323245.85",
+     "doi:10.2139/ssrn.3399054",
+     "doi:10.1007/978-3-031-54719-5_2",
+     "doi:10.2307/j.ctt155jp5n.26",
+     "doi:10.2307/jj.2353974.28",
+     "doi:10.5840/studneoar2010717"
+    ],
+    "access_levels": {
+     "doi:10.1093/oso/9780198852407.003.0007": "ABSTRACT_AVAILABLE",
+     "doi:10.1332/policypress/9781529205541.003.0001": "ABSTRACT_AVAILABLE",
+     "doi:10.2139/ssrn.1949507": "ABSTRACT_AVAILABLE",
+     "doi:10.1007/s10670-015-9777-3": "METADATA_ONLY",
+     "doi:10.1515/9783110323245.85": "METADATA_ONLY",
+     "doi:10.2139/ssrn.3399054": "METADATA_ONLY",
+     "doi:10.1007/978-3-031-54719-5_2": "METADATA_ONLY",
+     "doi:10.2307/j.ctt155jp5n.26": "METADATA_ONLY",
+     "doi:10.2307/jj.2353974.28": "METADATA_ONLY",
+     "doi:10.5840/studneoar2010717": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.2139/ssrn.1949507', 'bibliographic_record': {'source_record_id': 'doi:10.2139/ssrn.1949507', 'title': 'Theseus, Incorporated: Philosophy of Mind, Material Constitution, an",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.17561/tahrj.v25.9773",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "four-dimensionalism temporal parts personal identity persistence puzzle"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "budget_extension_reason": "用户明确询问\"现代讨论的最新进展\"，需覆盖当代主流解决路径（四维主义/时间部分、情境主义解、约定论），当前仅取得实验哲学一条内容证据，不足以勾勒\"进展\"全貌",
+    "evidence_gap": "忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "四维主义/时间部分与情境主义解这两条现代主流路径的可读文献证据，用以呈现\"最新进展\"而非单一实验哲学结论"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 忒修斯之船当代主流解决方案的可读文献内容证据，尤其是 Pickup 的情境主义解（Erkenntnis 2015）与四维主义/时间部分路径）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内容性归因",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus puzzle situationalist solution"
+   },
+   "result_summary": "{'query': 'Ship of Theseus puzzle situationalist solution', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198852407.003.0007', 'title': 'The Ship of Theseus Puzzle', 'authors': ['David Rose'],",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oso/9780198852407.003.0007",
+     "doi:10.1332/policypress/9781529205541.003.0001",
+     "doi:10.1007/s10670-015-9777-3",
+     "doi:10.2307/3327668",
+     "doi:10.2307/jj.12381770.34",
+     "doi:10.2307/jj.12381770.47",
+     "doi:10.2307/jj.12381770.20",
+     "doi:10.1007/978-3-031-54719-5_2",
+     "doi:10.2307/j.ctt155jp5n.26",
+     "doi:10.2307/jj.2353974.28"
+    ],
+    "access_levels": {
+     "doi:10.1093/oso/9780198852407.003.0007": "ABSTRACT_AVAILABLE",
+     "doi:10.1332/policypress/9781529205541.003.0001": "ABSTRACT_AVAILABLE",
+     "doi:10.1007/s10670-015-9777-3": "METADATA_ONLY",
+     "doi:10.2307/3327668": "METADATA_ONLY",
+     "doi:10.2307/jj.12381770.34": "METADATA_ONLY",
+     "doi:10.2307/jj.12381770.47": "METADATA_ONLY",
+     "doi:10.2307/jj.12381770.20": "METADATA_ONLY",
+     "doi:10.1007/978-3-031-54719-5_2": "METADATA_ONLY",
+     "doi:10.2307/j.ctt155jp5n.26": "METADATA_ONLY",
+     "doi:10.2307/jj.2353974.28": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+    "source_record_id": "doi:10.1007/s10670-015-9777-3"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'bibliographic_record': {'source_record_id': 'doi:10.1007/s10670-015-9777-3', 'title': 'A Situationalist Solution to the Ship of Theseus Puzzle', ",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1007/s10670-015-9777-3",
+    "access_before": "METADATA_ONLY",
+    "access_after": "METADATA_ONLY",
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus identity persistence review contemporary debate essential properties"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Ship of Theseus identity over time",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Ship of Theseus identity over time",
+    "results": [
+     {
+      "source_record_id": "doi:10.1332/policypress/9781529205541.003.0001",
+      "title": "Philosophy, Identity and the ‘Ship of Theseus’",
+      "authors": [
+       "Kirstine Szifris"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Philosophy Behind Bars",
+      "doi": "10.1332/policypress/9781529205541.003.0001",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.17561/tahrj.v25.9773",
+      "title": "BCI, Personal Identity and Autonomy. Ulysses on the Ship of Theseus",
+      "authors": [
+       "Vanesa Morente Parra"
+      ],
+      "year": 2025,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "The Age of Human Rights Journal",
+      "doi": "10.17561/tahrj.v25.9773",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.37514/tpc-b.2022.1381.2.02",
+      "title": "Chapter 2: The Ship of Theseus: Change Over Time in Topics of Technical Communication Research Abstracts",
+      "authors": [
+       "Stephen Carradini"
+      ],
+      "year": 2022,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Assembling Critical Components: A Framework for Sustaining Technical and Professional Communication",
+      "doi": "10.37514/tpc-b.2022.1381.2.02",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.12381770.20",
+      "title": "Over Speakerphone [Solution to the Ship of Theseus Paradox #1;]",
+      "authors": [],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Architect",
+      "doi": "10.2307/jj.12381770.20",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.46692/9781529205565.002",
+      "title": "Philosophy, Identity and the ‘Ship of Theseus’",
+      "authors": [],
+      "year": 2021,
+      "publication_type": "OTHER",
+      "venue": "Philosophy behind Bars",
+      "doi": "10.46692/9781529205565.002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2139/ssrn.5059611",
+      "title": "Revisiting the Ship of Theseus: Identity, Society, and Artificial Intelligence in an Era of Transformation",
+      "authors": [
+       "YOGESHWARAN BALAJI"
+      ],
+      "year": 2025,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.2139/ssrn.5059611",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.56687/9781529205565-004",
+      "title": "Philosophy, Identity and the ‘Ship of Theseus’",
+      "authors": [],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Philosophy Behind Bars",
+      "doi": "10.56687/9781529205565-004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9783110323245.85",
+      "title": "Chapter 6, The Ship of Theseus",
+      "authors": [],
+      "year": 2006,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Persistence Through Time, and Across Possible Worlds",
+      "doi": "10.1515/9783110323245.85",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/j.ctv1rnpjbn.6",
+      "title": "Philosophy, Identity and the ‘Ship of Theseus’",
+      "authors": [],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Philosophy Behind Bars",
+      "doi": "10.2307/j.ctv1rnpjbn.6",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.22541/au.175494727.72407076/v1",
+      "title": "Reassembling Identity: A Multi‑Tier Framework for the Ship of Theseus in Contemporary Bio‑, Zoo‑, Tech‑, and Digital Ethics",
+      "authors": [
+       "Khan Tahsin Abrar"
+      ],
+      "year": 2025,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.22541/au.175494727.72407076/v1",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1332/policypress/9781529205541.003.0001",
+     "doi:10.17561/tahrj.v25.9773"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Theseus ship puzzle material constitution persistence",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Theseus ship puzzle material constitution persistence",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+      "title": "The Ship of Theseus Puzzle",
+      "authors": [
+       "David Rose"
+      ],
+      "year": 2020,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Oxford Studies in Experimental Philosophy Volume 3",
+      "doi": "10.1093/oso/9780198852407.003.0007",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1332/policypress/9781529205541.003.0001",
+      "title": "Philosophy, Identity and the ‘Ship of Theseus’",
+      "authors": [
+       "Kirstine Szifris"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Philosophy Behind Bars",
+      "doi": "10.1332/policypress/9781529205541.003.0001",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2139/ssrn.1949507",
+      "title": "Theseus, Incorporated: Philosophy of Mind, Material Constitution, and the Ontology of the Criminal Law",
+      "authors": [
+       "Christopher R. Green"
+      ],
+      "year": 2011,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.2139/ssrn.1949507",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/s10670-015-9777-3",
+      "title": "A Situationalist Solution to the Ship of Theseus Puzzle",
+      "authors": [
+       "Martin Pickup"
+      ],
+      "year": 2015,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Erkenntnis",
+      "doi": "10.1007/s10670-015-9777-3",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9783110323245.85",
+      "title": "Chapter 6, The Ship of Theseus",
+      "authors": [],
+      "year": 2006,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Persistence Through Time, and Across Possible Worlds",
+      "doi": "10.1515/9783110323245.85",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2139/ssrn.3399054",
+      "title": "The Irish Constitution, a United Ireland, and the Ship of Theseus: Radical Constitutional Change as Constitutional Replacement",
+      "authors": [
+       "David Kenny"
+      ],
+      "year": 2019,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "SSRN Electronic Journal",
+      "doi": "10.2139/ssrn.3399054",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/978-3-031-54719-5_2",
+      "title": "The Ship of Theseus Paradox: Possibilities and Limits of a Trans-/Posthumanist Interpretation",
+      "authors": [
+       "Mattia Geretto"
+      ],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Humans, Angels, And Cyborgs Aboard Theseus' Ship",
+      "doi": "10.1007/978-3-031-54719-5_2",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/j.ctt155jp5n.26",
+      "title": "THE SHIP OF THESEUS",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "A Journey through Philosophy in 101 Anecdotes",
+      "doi": "10.2307/j.ctt155jp5n.26",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.2353974.28",
+      "title": "Ship of Theseus",
+      "authors": [],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Liquid Life",
+      "doi": "10.2307/jj.2353974.28",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5840/studneoar2010717",
+      "title": "Aquinas and the Ship of Theseus: Solving Puzzles about Material Objects",
+      "authors": [
+       "Peter Volek",
+       "University of South Bohemia"
+      ],
+      "year": 2010,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Studia Neoaristotelica",
+      "doi": "10.5840/studneoar2010717",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 3,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oso/9780198852407.003.0007",
+     "doi:10.1332/policypress/9781529205541.003.0001",
+     "doi:10.2139/ssrn.1949507"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.2139/ssrn.1949507",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.2139/ssrn.1949507",
+     "title": "Theseus, Incorporated: Philosophy of Mind, Material Constitution, and the Ontology of the Criminal Law",
+     "authors": [
+      "Christopher R. Green"
+     ],
+     "year": 2011,
+     "publication_type": "OTHER",
+     "venue": null,
+     "doi": "10.2139/ssrn.1949507",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Recent attacks on corporate criminal liability employ reductionistic reasoning familiar to the exclusion problem of mental causation and eliminative solutions to the problem of material constitution. Recent defenses of non-reductive physicalism and other solutions to the problem of material constitution, however, offer a way for the criminal law to make sense of corporate properties that are multiply realizable in the actions of a corporation’s employees. The criminal law is an appropriate vehicle for correcting replacement-of-employees-survivable, reasons-responsive teleological structures that contribute to the commission of crimes by a corporation’s employees. Group psychology has good claim to be a legitimate special science, and the criminal law presupposes higher-order entities and rejects the sort of exclusion principle that would put different-level entities in competition. However, corporate criminal liability should be subject to a good-faith-compliance (“bad apple”) defense that would preclude corporate punishment if a corporation can show that its policies, custom, climate, and culture did not contribute to a crime. Various objections to corporate criminal liability, rooted in various theories of punishment, can be resisted. The criminal law can act against corporate existence, liberty, property, and reputation just as it can act against these interests of individuals. The teleology of a corporate culture can be deterred, embody moral norms, instantiate virtues and vices, and receive communication just as can the mind of a conscious human being. Corporations with changing culture have the functional equivalent of emotions like remorse. Corporate culture lies downstream of presumably-free human actions in a way analogous to the way character traits for which ",
+     "source": "crossref_METADATA",
+     "hash": "2172d19672ceb95eebef3674f00ffae02b1a1498081fa57466fd237864ba19cc"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+     "title": "The Ship of Theseus Puzzle",
+     "authors": [
+      "David Rose"
+     ],
+     "year": 2020,
+     "publication_type": "BOOK_CHAPTER",
+     "venue": "Oxford Studies in Experimental Philosophy Volume 3",
+     "doi": "10.1093/oso/9780198852407.003.0007",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Abstract</jats:title> Does the Ship of Theseus present a genuine puzzle about persistence due to conflicting intuitions based on “continuity of form” and “continuity of matter” pulling in opposite directions? Philosophers are divided. Some claim that it presents a genuine puzzle but disagree over whether there is a solution. Others claim that there is no puzzle at all since the case has an obvious solution. To assess these proposals, a cross-cultural study involving nearly 3,000 people across twenty-two locations, speaking eighteen different languages was conducted. The results speak against the proposal that there is no puzzle at all and against the proposal that there is a puzzle but one that has no solution. Moreover, the results also suggest that there are two criteria—“continuity of form” and “continuity of matter”—that constitute our concept of persistence and these two criteria receive different weightings in settling matters concerning persistence.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "450b39191578b54bda519ac0345138b2e36b659df320eb0387726373580fa913"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Ship of Theseus puzzle situationalist solution"
+   },
+   "result_full": {
+    "query": "Ship of Theseus puzzle situationalist solution",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oso/9780198852407.003.0007",
+      "title": "The Ship of Theseus Puzzle",
+      "authors": [
+       "David Rose"
+      ],
+      "year": 2020,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Oxford Studies in Experimental Philosophy Volume 3",
+      "doi": "10.1093/oso/9780198852407.003.0007",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1332/policypress/9781529205541.003.0001",
+      "title": "Philosophy, Identity and the ‘Ship of Theseus’",
+      "authors": [
+       "Kirstine Szifris"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Philosophy Behind Bars",
+      "doi": "10.1332/policypress/9781529205541.003.0001",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/s10670-015-9777-3",
+      "title": "A Situationalist Solution to the Ship of Theseus Puzzle",
+      "authors": [
+       "Martin Pickup"
+      ],
+      "year": 2015,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Erkenntnis",
+      "doi": "10.1007/s10670-015-9777-3",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/3327668",
+      "title": "The Ship of Theseus",
+      "authors": [
+       "Theodore Scaltsas"
+      ],
+      "year": 1980,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Analysis",
+      "doi": "10.2307/3327668",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.12381770.34",
+      "title": "Sistering [Solution to the Ship of Theseus Paradox #2;]",
+      "authors": [],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Architect",
+      "doi": "10.2307/jj.12381770.34",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.12381770.47",
+      "title": "Memorial Day [Solution to the Ship of Theseus Paradox #3;]",
+      "authors": [],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Architect",
+      "doi": "10.2307/jj.12381770.47",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.12381770.20",
+      "title": "Over Speakerphone [Solution to the Ship of Theseus Paradox #1;]",
+      "authors": [],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Architect",
+      "doi": "10.2307/jj.12381770.20",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/978-3-031-54719-5_2",
+      "title": "The Ship of Theseus Paradox: Possibilities and Limits of a Trans-/Posthumanist Interpretation",
+      "authors": [
+       "Mattia Geretto"
+      ],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Humans, Angels, And Cyborgs Aboard Theseus' Ship",
+      "doi": "10.1007/978-3-031-54719-5_2",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/j.ctt155jp5n.26",
+      "title": "THE SHIP OF THESEUS",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "A Journey through Philosophy in 101 Anecdotes",
+      "doi": "10.2307/j.ctt155jp5n.26",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/jj.2353974.28",
+      "title": "Ship of Theseus",
+      "authors": [],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Liquid Life",
+      "doi": "10.2307/jj.2353974.28",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oso/9780198852407.003.0007",
+     "doi:10.1332/policypress/9781529205541.003.0001"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE",
+    "source_record_id": "doi:10.1007/s10670-015-9777-3"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1007/s10670-015-9777-3",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1007/s10670-015-9777-3",
+     "title": "A Situationalist Solution to the Ship of Theseus Puzzle",
+     "authors": [
+      "Martin Pickup"
+     ],
+     "year": 2015,
+     "publication_type": "JOURNAL_ARTICLE",
+     "venue": "Erkenntnis",
+     "doi": "10.1007/s10670-015-9777-3",
+     "source_category": "UNKNOWN",
+     "access_level": "METADATA_ONLY",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "METADATA_ONLY",
+    "access_level_after": "METADATA_ONLY",
+    "returned_evidence_level": null,
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "无 OA 全文候选; DOI landing page 不构成全文可用",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}

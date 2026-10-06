@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-18",
+  "scope": "Offline real tools_node and agent_node; provider completion replaced with valid synthetic JSON; actual LangChain provider message serialization captured. No model or network calls.",
+  "before_measurement": "Captured before the patch in this task: fresh 4000-char head slices; later 240-char head plus label.",
+  "rows": [
+    {
+      "tool": "analyze_argument",
+      "case": "large_first_delivery",
+      "upstream_chars": 5242,
+      "before_wire_chars": 4000,
+      "before_json_valid": false,
+      "before_critical_fields_retained": false,
+      "after_wire_chars": 5242,
+      "after_json_equals_full_result": true,
+      "wire_keys": [
+        "content",
+        "role",
+        "tool_call_id"
+      ],
+      "before_upstream_chars": 5205
+    },
+    {
+      "tool": "analyze_argument",
+      "case": "short_later_compaction",
+      "upstream_chars": 1092,
+      "before_wire_chars": 292,
+      "before_json_valid": false,
+      "before_critical_fields_retained": false,
+      "after_wire_chars": 1092,
+      "after_json_equals_full_result": true,
+      "wire_keys": [
+        "content",
+        "role",
+        "tool_call_id"
+      ],
+      "before_upstream_chars": 1055
+    },
+    {
+      "tool": "paper_review",
+      "case": "large_first_delivery",
+      "upstream_chars": 5160,
+      "before_wire_chars": 4000,
+      "before_json_valid": false,
+      "before_critical_fields_retained": false,
+      "after_wire_chars": 5160,
+      "after_json_equals_full_result": true,
+      "wire_keys": [
+        "content",
+        "role",
+        "tool_call_id"
+      ],
+      "before_upstream_chars": 5160
+    },
+    {
+      "tool": "paper_review",
+      "case": "short_later_compaction",
+      "upstream_chars": 1010,
+      "before_wire_chars": 288,
+      "before_json_valid": false,
+      "before_critical_fields_retained": false,
+      "after_wire_chars": 1010,
+      "after_json_equals_full_result": true,
+      "wire_keys": [
+        "content",
+        "role",
+        "tool_call_id"
+      ],
+      "before_upstream_chars": 1010
+    }
+  ],
+  "bound_chars": 24000,
+  "oversize": "Whole artifact explicitly omitted as valid JSON; original result kept; public status error with delivery_status incomplete and execution_status preserved.",
+  "tests": {
+    "passed": 317,
+    "command": ".venv/bin/python -m pytest backend/tests/test_deep_tool_context.py backend/tests/test_deep_streaming_delivery.py backend/tests/test_deep_reasoning_tools.py backend/tests/test_deep_result_contracts.py backend/tests/test_deep_research_delivery.py backend/tests/test_deep_tool_llm.py backend/tests/test_phase_a.py backend/tests/test_phase_t.py backend/tests/test_o10_r1_research_discipline.py -q"
+  },
+  "comparison_note": "The initial and post-fix capture used the same synthetic payload values. A parallel root-agent input-boundary fix added 37 characters of upstream metadata to analyze_argument between captures; before_upstream_chars and upstream_chars are recorded separately. Every post-fix serialized object equals its then-current complete upstream result.",
+  "final_transport_regression": {
+    "passed": 79,
+    "seconds": 0.75,
+    "command": ".venv/bin/python -m pytest backend/tests/test_deep_tool_context.py backend/tests/test_deep_streaming_delivery.py -q"
+  }
+}

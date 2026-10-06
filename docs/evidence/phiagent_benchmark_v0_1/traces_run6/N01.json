@@ -1,0 +1,1090 @@
+{
+ "case_id": "N01",
+ "category": "N",
+ "prompt": "一幅画如果是 AI 生成的，知道作者身份后我就觉得它不美了。我是在偏见，还是作者真的影响作品价值？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "60675439c081c8db8150a2196de28c96e354f432",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T14:01:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.5",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "一幅画如果是 AI 生成的，知道作者身份后我就觉得它不美了。我是在偏见，还是作者真的影响作品价值？",
+   "wall_s": 102.3,
+   "ttft_s": 15.0,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "b31642777f744d91bd6d50d85276b1d5:1:note:0",
+     "content": "我先核对一下本地原典里与\"作者身份是否影响审美价值\"直接相关的材料，再给判断。"
+    }
+   ],
+   "provider_reasoning": "The user asks a genuine philosophical question: if a painting is AI-generated, knowing the author identity makes them no longer find it beautiful. Is this prejudice, or does the author really affect the value of a work?\n\nI should probably engage the philosophical resources: aesthetics — authorship, intentionalism, anti-intentionalism (Wimsatt & Beardsley \"intentional fallacy\"), Kant's aesthetics (disinterested pleasure, genius), Hume's standard of taste, Benjamin's \"aura\", Barthes \"death of the author\", Foucault \"What is an Author\". Also contemporary debate on AI art.\n\nLocal library: let me search for relevant texts — 康德《判断力批判》, 本雅明《机械复制时代的艺术作品》, 休谟《论趣味的标准》, 丹托 (艺术界), 克罗齐? Let me check what's available.\n\nI should use tools: search_books for 趣味/天才/本雅明/光晕, get_philosopher maybe. Let me do parallel searches.\n\nLet me plan the answer structure:\n1. Disambiguate the question: it conflates several distinct things — (a) phenomenal experience (the perception of beauty changes), (b) aesthetic judgment, (c) value of the work (artistic value, aesthetic value, achievement value), (d) value of the experience/relation.\n2. Key distinction: aesthetic properties are often not perceptually available (\"non-perceptual\" or \"response-dependent\" aesthetic properties) — e.g., being original, being a genuine achievement, being sincere. Danto's \"is\" of artistic identification; the artworld.\n3. Genuine arguments that authorship matters: achievement/credit-based value (Levinson's \"artistic achievement\" — but note this is about the value of the *artist's achievement*, not necessarily the work's beauty); the \"authenticity/sincerity\" requirement for certain genres (expression theory: Tolstoy, Collingwood — a work is art only if it expresses the artist's emotion); Benjamin's aura/cult value — the \"here and now\" of the original. Kant's genius: fine art requires genius; if AI does it, it's not fine art but mechanical/product. Actually Kant: \"art\" vs \"nature\"; art distinguishes from nature as production by freedom. There's a relevant passage: 康德说艺术不同于自然，\"只有通过自由，即通过以理性为活动基础的意志，才产生出作品，被称为艺术\"。And genius is \"天生的心灵禀赋，通过它自然给艺术制定法规\"。\n4. Counterarguments: intentional fallacy (Wimsatt & Beardsley) — the author's design is not the standard for evaluating the work; Barthes/Foucault — the author function. Also: the \"test\" — swap cases: if you were never told, you'd find it beautiful. That suggests the change is not due to any perceptual property. But: aesthetic properties can be non-perceptual (Danto's thought experiment — the indiscernible red squares / Brillo boxes). That's the crucial point: the AI/no-AI distinction is precisely the kind of \"non-perceptual\" property Danto said matters. But Danto's point was about art-historical context, e.g. \"aboutness\" and interpretation. Does AI origin matter in the same way?\n5. Then: distinguish \"美\" (beauty) from \"艺术价值\" (artistic value) and from \"我从中获得的价值\". If the beauty experience literally vanishes, that's an empirical-psychological fact about the dependence of your aesthetic response on believed provenance. Is that a \"偏见\"? Prejudice = unfounded antecedent judgment. Whether it's unfounded depends on whether there are good reasons. Some reasons are good: (i) the work's value as achievement/expression/communication is defective; (ii) if it purports to be a human-made original and is deceptive, that's a lie — the value lost could be testimonial/institutional. But the \"beauty\" itself — if you judge \"this is not beautiful,\" you need a reason. Kant: aesthetic judgment must be free, disinterested; a judgment determined entirely by a prior concept (AI) risks being a \"interested\"/concept-determined judgment rather than taste.\n6. Also address: the possible confusion between \"it is not beautiful\" and \"I no longer value it\" / \"I no longer enjoy it.\" The honest formulation: \"我不敢再确信自己的感动有对象\" — hmm keep it grounded.\n7. Also relevance: is the AI case special? Consider other provenance-changes: discovering a painting in a gallery was painted by a nun vs. painted as a joke; discovering a \"folk art\" object was made by a famous modernist. Hume's standard of taste; also the \"authenticity\" in music (performance). Also consider Yves Klein / found art / Duchamp: provenance and authorial act carry the value. So provenance does affect art value in many accepted cases. So it isn't automatically a prejudice.\n8. Deeper: the value the author conveys is relational — the work as an act of communication; beauty perception may already include a felt \"someone meant this.\" There's a nice point: your response may include an implicit social relation — the sense of being addressed by someone. When the addressee turns out not to exist, the response loses an object. This is like the \"author\" as a second-person address. Is that fair, or is that projecting? Can also argue: aesthetic pleasure in nature has no author, so authorship isn't necessary for beauty. But you might value it differently — a natural landscape's beauty is not diminished by having no author. So an AI painting is more like a beautiful natural formation or a well-designed machine output. So: consistent answer would be — beauty can survive, but if what you valued was the human address, then the loss is real loss of another value, and your felt \"no longer beautiful\" is a mislabeling. That's a plausible and useful conclusion. But I need to be careful not to be too neat.\n9. Also address the possibility that the prejudice charge is right in a specific sense: if you generalize \"AI can't produce beauty\" that's an a priori claim contradicted by your own prior experience — you experienced beauty before knowing. That earlier experience is evidence. So the premise \"AI output cannot be beautiful\" is falsified by your own case (the experience happened). That's a clean argument: your own experience at t1 is a counterexample to an unconditional claim. But careful: at t1 you experienced it as beautiful under a false belief; the experience occurred, but was it of beauty? Hmm — need to distinguish \"the experience occurred\" from \"the work is beautiful.\" If beauty is response-dependent, and the response changes with belief, then either the property changed with the belief (response-dependence about the work's aesthetic value ⇒ provenance matters) or the belief contaminates. This is a real live philosophical dispute — I should present it as such rather than resolve it.\n10. Also: self-knowledge point — the honest question is what you want: to be right about the painting or to have reliable aesthetic experience. Also \"adaptive preference\"/sour grapes. Also, should I distinguish \"偏见\" from \"偏好\"? Prejudice involves an unfounded negative judgment applied to a class. A preference for human-made works is fine as a preference; the claim \"AI works have no value\" is a judgment needing support.\n\nAlso worth noting: does it matter how much control the human had? \"AI-generated\" is a spectrum: prompt-only, iterative curation, inpainting, training data. Being vague about that hides the real variable. So a step: decompose \"AI 生成\" into the actual variables that could matter: (a) whether a human intentionally made it (agency), (b) whether it expresses/communicates anything, (c) whether it involved skill/effort that grounds credit, (d) whether you were deceived, (e) whether it's original or derivative, (f) whether it has a \"here and now\" (uniqueness). Each of these supports a different conclusion. The neat \"AI vs not\" is a proxy for several distinct things — and once you see which ones actually move you, you can tell prejudice from reason.\n\nAlso mention: the counterexample tests: (i) Nature — beautiful without author; (ii) a painting by a human you later learn was a forgery by a different hand — does beauty vanish? (iii) You learn a beautiful drawing was made by a 5-year-old or an elephant (Elephant art) or a chimpanzee (Congo the chimp) — comparable tests; (iv) Sunsets.\n\nAlso, we should note Hume: taste's standard — sentiment is subjective, but we appeal to a standard; the change in sentiment upon learning provenance is itself a datum about human taste (not necessarily error). Hume would note the delicacy of taste requires removing prejudice. There's a nice Hume line about a \"prejudice\" preventing true judgment. Let me search the library.\n\nAlso Kant's 鉴赏判断 needs 无利害; and Kant explicitly says the judgment of taste is not based on concepts, and doesn't depend on the object's purpose... Also the \"自由美\" vs \"依附美\" (pulchritudo vaga vs adhaerens) — dependent beauty involves a concept of what the thing ought to be. A painting's beauty is arguably \"依附美\" — involving the concept of the kind of thing it is. This is a strong and precise resource: if the work is judged as依附美 (adherent beauty), then the concept of the thing — including what it is (a human-made artwork with a certain purpose/kind) — legitimately enters. Hmm, for Kant adherent beauty involves the concept of the object's perfection/purpose. If the kind \"painting by a human expressing X\" is part of the concept under which we judge, then provenance legitimately matters. That is a good Kant-based argument that the response isn't mere prejudice. I should verify Kant's text locally.\n\nLet me search the local library for: 康德 判断力批判 天才/自由美/依附美; 本雅明 光晕/机械复制; 休谟 论趣味的标准; 丹托 艺术界; 托尔斯泰 艺术论; 科林伍德 艺术原理; 巴特 作者之死; 迪基/古德曼.\n\nLet me run several searches in parallel.\n\nI should be efficient but the question deserves depth. Let me do about 4-6 tool calls in parallel first.Let me read Kant's key sections: 第43-46节 (art vs nature, genius), 第16节 (自由美与依附美). Let's read 康德文集 chapter 65/18 for 天才, and search for 自由美 依附美.\n\nAlso 本雅明's 机械复制时代的艺术作品 — the keyword search failed; let me get the book detail / search inside that book with different keywords like \"韵味\" (the Chinese translation of aura is often \"韵味\" or \"光韵\" in 王才勇/张旭东 translation). Let me search.\n\nAlso search for 依附美 自由美 in Kant.Now let me read key passages:\n1. Kant 判断力批判 chapter 3 (自由美/依附美) — read around focus.\n2. Kant 康德文集 chapter 65 or 18 (天才, 第43-46节) — art vs nature.\n3. Benjamin 机械复制 chapter 3 (原真性/光韵) and chapter 5.\n4. Maybe 阿多诺 美学理论 on 自然美/附加值 — could be useful but maybe skip.\n\nLet me read these in parallel.I have good material. Now let me consider whether to search scholarship for contemporary debate on AI art and authorship/authenticity. The user's question is philosophical; a couple of scholarly sources could help (e.g., on \"authenticity and artistic value\", \"achievement\", \"AI art\"). The question is answerable philosophically without, but the instructions favor checking. Let me do one scholarship search on AI art and authorship/aesthetic value, and maybe one on the \"non-perceptual aesthetic properties\". Keep it to one or two.\n\nAlso, one important thing to check: is there a well-known empirical finding? e.g., studies on \"AI art labeled as AI is judged less valuable\" — there are studies (e.g., \"People devalue generative AI's creative output\"). But careful: I shouldn't assert without reading. Let me do a scholarly search.\n\nAlso perhaps check 丹托 for \"non-perceptual\" properties. Let me search books for 丹托 艺术界/寻常物的嬗变.\n\nLet me run these in parallel: search_scholarship for AI art aesthetic value authorship; search_books for 丹托.Let me read the abstract of the Bara/Ramsey/Cross study (most relevant: AI contextual information shapes moral and aesthetic judgements) and maybe the Wanqi Meng one. These are abstracts — I must be careful: abstract only.\n\nLet me fetch two.I have enough. Now let me think hard about the philosophical structure of the answer.\n\nThe user's question: \"一幅画如果是 AI 生成的，知道作者身份后我就觉得它不美了。我是在偏见，还是作者真的影响作品价值？\"\n\nKey: they present a dichotomy: prejudice vs. author genuinely affects value. I should dissolve the dichotomy while still giving real answers.\n\nCore distinctions I want to make:\n\nA. What exactly changed? Before/after: same picture, same perceptible surface, same causal history (in fact nothing about the object changed), only your belief changed. So the change cannot be caused by a perceptual property of the object. Two possibilities:\n1. The judgment \"it's beautiful\" was in fact already sensitive to non-perceptual facts, and you now have correct information → the change is tracking a real value difference (authorship-dependent aesthetic/artistic value).\n2. The change is a distortion — a class-based prior overriding the perception that's still there. Prejudice in the strict sense: judging by category, not by the individual.\n\nNote: possibility 2 has a distinctive symptom: you can still see it and your eye still responds; only your endorsement of the response changed. If the surface no longer even *looks* different in quality — hmm, often what happens is that you stop enjoying it because you now interpret it differently (you \"see\" it as generic, as pastiche of training data, as calculated to please). That's a shift in perception under a new interpretation — which is normal in art (Arthur Danto: an interpretation is constitutive of the artwork; what you see depends on what you know). So \"I literally cannot unsee it\" is evidence for interpretive dependence, not automatic evidence of prejudice.\n\nB. Key conceptual point: not all aesthetically relevant properties are perceptible. Provenance-type properties (authorship, originality, sincerity, achievement, expression, the \"here and now\") are standardly taken as relevant to the *artistic* value of a work, even though they can't be seen. So the honest framing: does the property \"made by AI\" belong to the class of relevant non-perceptual properties, or is it a mere prejudice?\n\nC. Three places the answer differs — I should distinguish three different \"value\" questions that the user's word \"价值\" conflates:\n1. 美感经验的价值 / the value of the experience itself (a pleasant, absorbing experience).\n2. 作品作为美的对象（审美价值 / beauty）.\n3. 作品作为艺术的价值（成就、表达、意图、原创性、交流）——and 归属/功劳 (credit).\n\nD. Arguments that authorship genuinely matters (not prejudice):\n- Kant's two claims: \n  (i) 第45节: beauty in art requires that we be conscious it is art yet it appear as nature. Hmm — actually this cuts an interesting way: Kant says for art to be beautiful we must know it's art (\"在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然\"), yet its form must appear free of compulsion as if natural. So the knowledge that it IS art is a condition of art beauty. Does \"made by whom/agency\" belong to this? Kant says art presupposes a 意图 (intention), a determinate purpose to produce something. And 第46节: 美的艺术必然是天才的艺术 — natural endowment gives rules to art; genius is the \"natural\" side. Note: 康德's \"天才\" is 自然 via the subject, i.e., nature acting through a person. This is a suggestive resource: an AI-produced image is, in a sense, \"natural\" (a causal product of a machine process, no intention-bearing artist's genius) — Kant's framework makes 美的艺术 require that the rule-giving come from 自然 through a subject's capacities. So an AI image would literally fail Kant's condition of being 美的艺术 — it would be an art-product only in the mechanical sense (机械的艺术) — something produced by a determinate purpose and rules = 机械的艺术 which pleases not as beautiful art.\n  That's a genuinely strong Kantian argument for \"no human genius, no fine art\". But careful: at the same time Kant's account permits a beautiful natural object (自然美) — a flower is beautiful without any artist. So the AI image could be beautiful as nature is beautiful (i.e., as a free play of imagination, subjectively). Kant says \"自然是美的，如果它同时看起来是艺术；而艺术只有当我们意识到它是艺术而在我们看来它毕竟又是自然的时候才被称为美的。\" Interesting — this symmetric formulation means: an AI image, known to be machine output, could still be judged beautiful as we judge nature's beauties, as long as we judge it in mere 评判 (not through a concept of what it ought to be). But — and this is the crux — if our response is destroyed by a concept (the concept \"AI\"), then it's not a pure judgment of taste, it's a judgment determined by a concept. Kant would say: the pleasure of pure taste cannot rest on a concept, and once a concept governs, it's no longer a free judgment of taste. That is close to a diagnosis of \"prejudice\" in Kant's sense: an aesthetic judgment that is partially intellectualized/applied → 依附美 (adherent beauty). But crucially, Kant does NOT say 依附美 is a mistake: he says the disagreement between the one who holds 自由美 and the one who holds 依附美 can be mediated — \"双方都以自己的方式作出了正确的判断\". That's a very valuable, precise point: the user's response need not be an error just because it depends on a concept; it is a different kind of judgment (an applied one). The error would be to claim that the *pure* judgment changed, or to think that everyone should now find it ugly.\n- Benjamin: 光韵 (aura) = 即时即地性/原真性 of the original; 光韵 is bound to 原真性 which mechanical reproduction destroys. AI generation radicalizes this: there's no original at all; the \"unique existence\" — and 本雅明 ties it to tradition/礼仪/权威. So a real tradition of thought says: what withers in the age of mechanical reproduction is the work's aura, and aura is not a negligible add-on — 本雅明 links it to 权威性、传统方面的重要性. So the sense of loss you feel when you learn it's AI is precisely the collapse of a \"here-and-now\" relation: your feeling that a particular human being, at a particular time, made this. Note: 本雅明 wouldn't call this loss simply a personal error; he sees it as a historical transformation, and he's ambivalent (he welcomes the emancipatory side). But he does affirm that something real is lost.\n- Credit/achievement: the value of a painting partly is the achievement — that a person accomplished this; and for expressive works, the manifestation of a person's mind. Collingwood/Tolstoy-style: art is the expression of an emotion, or the communication of feeling; if no one felt it, there's nothing communicated. This supports \"author affects value\" strongly — but only for artistic value as expression, not for beauty of the surface.\n- Deception/trust: if the work was presented in a context that implies human authorship (a gallery, an artist's name), discovering AI is discovering an act of misrepresentation. Your reaction then carries a moral component; you might misidentify a moral disappointment as an aesthetic one. This is a real and common conflation. This is where \"偏见 vs 价值\" needs a third option: your response may be legitimate but about something other than beauty.\n\nE. Arguments that it is (or involves) prejudice:\n- The word \"偏见\" in the strict sense: judging an individual by its class membership, in advance of and contrary to the evidence of the individual. Evidence here: at t1 your actual encounter produced a full aesthetic response. That response is a datum about what the surface can do. The AI fact predicts nothing about the surface. So an inference \"AI ⇒ so it's not beautiful\" cannot be supported by the surface; it's category-based. If your reaction is \"all AI images are worthless kitsch\", that's an a priori generalization of the kind that a single counterexample (your own prior experience, or e.g. a beautiful natural object produced without any author) can refute. In particular: natural beauty is a standing counterexample to the thesis \"beauty requires a human author\"; so \"beauty requires an author\" needs an argument, and if offered, it must be more than a feeling.\n- Also: your t1 reaction was generated under a false belief. Hmm—careful. One might say: at t1 what you enjoyed was partly the thought of a person; the beauty was never purely from the surface. That's actually a serious point against calling the change irrational: if your pleasure at t1 always included an implicit attribution of authorship, then the later collapse is not a new distortion but the revelation that your pleasure was partly authorship-dependent from the beginning. Then the question is whether that dependence was tracking something real. And that's a live dispute — not something I can settle.\n\nF. Consistency test (a good method): ask whether your response is provenance-tracking in general or AI-specific.\n- Consider: you loved a painting, then learn it was painted by a human you despise, or by a forger, or by a chimp, or by a child using a stencil, or that it's a fragment of a large work, or the painter had assistants (Rubens' workshop!). Rubens' studio: many old-master works are largely by assistants — most people's aesthetic response doesn't collapse. Vermeer forgeries by van Meegeren (Han van Meegeren) — many who had admired them did not fall out of love with the pictures, though some did. If your response drops only in the AI case, ask what makes AI different: is it (a) no human agency at all, (b) no human experience behind it, (c) it was made from others' work without consent/credit (a fairness issue), (d) it was cheap to make (effort/achievement), (e) you were misled? Each is a different claim with a different defensibility. This decomposition is the practically useful part: name the variable, then the prejudice charge can be assessed variable by variable.\n\nG. The reframing: The dichotomy \"beauty vs authorship\" is too crude, because aesthetic value is not the only value, and because the \"beauty\" you experienced was by your own report responsive to authorship. Also there's an ambiguity between \"美的\" (the object's aesthetic quality) and \"让我愉悦/值得珍视\" (the relation).\n\nAlso a subtle but important point: There's a difference between:\n- \"它不美了\" as a report about the object (\"this painting is not beautiful\") — a claim with universal purport (Kant: 鉴赏判断要求普遍赞同).\n- \"它不再使我愉悦\" / \"我对它的兴趣消失了\" — a report about your state and your relation to it.\nThe first, if it changes with a non-perceptual fact, is at least in tension with the very idea of a judgment of taste; Kant's point that a judgment of taste makes a claim to universal agreement yet cannot be proved by concepts. If your judgment can be flipped by a mere belief, then either (i) it was never a judgment of taste but a disguised moral/interest judgment, or (ii) the property you were tracking was not just the surface. Kant's own 兴趣 discussion: 对美的兴趣; he says the beautiful in nature is interesting for itself... hmm. I'll keep it simple: I'll say the flip shows that what you were attuned to was never only the surface.\n\nI should also honor the possibility that the answer to \"was it prejudice?\" is \"partly yes, and that's not a verdict on you\": the emotional response being class-based is not necessarily unjustified, but the *inference* to a claim about the object's value needs reasons. And even if it is a prejudice, prejudice in aesthetic response isn't automatically to be eliminated; but you should know which one you have — a preference/taste (我对人类手作的兴趣) vs. a belief (AI 作品没有价值). Preferences don't need justification; beliefs do. That's a clean, crux-level distinction.\n\nH. Also: \"作者真的影响作品价值？\" Answer: Yes, at least in some respects, and this is not an eccentric view: the entire apparatus of art institutions, attribution, authentication, and prices rests on it; Benjamin theorizes it; Kant's account of fine art makes the artist's agency constitutive; and the standard distinction between \"aesthetic value\" and \"artistic value\" is drawn precisely to allow non-perceptual properties (achievement, originality, expression) to count. But: the value it affects is chiefly 艺术价值/成就/表达/交流, and the specific value of \"我不再被它打动\" is a different thing — closer to a relational value (是否有一个心灵在我这边被唤起/呼应). Which means: the interesting possibility is you conflate \"no one is speaking to me\" with \"nothing beautiful here\". A beautiful sunset isn't diminished because no one made it, but a painting's beauty often includes a felt address — I'd argue the \"being addressed by a mind\" is a genuine relational property of the encounter, not an illusion. But it's not identical with the surface's beauty. So the precise description of your experience would be: 不是\"它不美了\"，而是\"我原来以为这里有一个心灵，现在没有了，而我在意的是那个心灵\"。That's a more accurate description, and it changes what follows: you can honestly test the surface again — is the color still excellent? If yes, then the beauty is intact and what died is the address. If you find you can't re-enter it because the \"address\" was constitutive of your aesthetic response (you can't unsee mechanical pastiche), then for you the work's beauty did depend on that property, and then the honest claim is \"for me, beauty in paintings includes being addressed by a human mind\" — a thesis about your taste, defensible or not on its merits.\n\nI. Also mention: there's an interesting asymmetry — AI is a spectrum and the \"author\" question is not binary: prompt-only, curated selection among 200 outputs, inpainted by hand, trained on uncredited artists. Your reaction may actually be tracking different things than you think. And the case of nature suggests the value is not \"human authorship\" per se but \"humanity being present in the making\" — hmm, careful not to over-assert. I'll flag as hypothesis to test: which is it that you're actually missing — 技艺/努力、情感/意图、独一无二性、还是\"我被一个他者回应\" — the specific answers differ.\n\nJ. Self-knowledge / practical upshot: two tests\n1. Test A (遮蔽测试): If you could see the picture without any label, would your eye still respond? Try with a specific work; better: ask someone whose view you respect, who doesn't know. If they say beautiful, it doesn't settle it, but it does show the surface has the power.\n2. Test B (类比测试): choose the class of cases where you would NOT deflate (a 5-year-old's drawing? a Rubens workshop picture? a machine-woven textile? a garden designed by a landscape architect? a beautiful piece of code? a crystalline structure?). Find out whether your principle is coherent — is your rule \"no beauty without a human hand\" or \"no beauty without a mind I can meet\"? The first is refuted by nature; so it must be the second, or a third.\n3. Also test C: which direction does it go — do you also find works *more* beautiful when you learn they were made by someone who suffered / by hand? If yes, your aesthetic response is provenance-sensitive in both directions, and the AI case is not an anomaly but one instance of a general property of your taste. That is coherent, and coherent ≠ prejudice in the bad sense, but it does mean the beauty you find in paintings is of the \"依附美\" kind (Kant), not pure 自由美.\n\nK. Honest bottom line: The dichotomy is false in one respect: it's possible for a response to be both (1) origin-sensitive and legitimate, and (2) at the same time resting on an over-general belief that deserves scrutiny. The specific form of \"偏见\" that is real and worth checking: (a) the a priori claim \"AI 生成的都不美\" (refuted by your own prior experience, and by natural beauty); (b) treating your decline of interest as a fact about the work rather than about your relation to it; (c) the possibility that what actually bothered you is moral (deception/labor/fairness), and that you've mis-registered a moral complaint as an aesthetic verdict — that's a category error worth correcting, because it makes your aesthetic judgment carry a load it can't bear, and it also smears every AI-assisted picture with a verdict that properly belongs only to the deceptive ones.\n\nI should also caution: I've read abstracts, not full studies; and the psychological literature is contested/tentative. I'll mention one relevant abstract honestly with its limits: Bara/Ramsey/Cross 2024 preregistered studies found that factual info about AI backend processes reduced both moral acceptability and aesthetic appeal (in contexts like financial incentive and art status), while an implicit association task did not reliably link human art to positive attributes. Note: this is a preprint/abstract, \"OTHER\" type, not peer-reviewed journal necessarily. And it's about AI context info shaping judgments; it does mean the phenomenon you describe isn't idiosyncratic. But it doesn't establish which judgment is correct — that's a normative question the study can't settle. Good to note.\n\nLet me also double-check that 本雅明's 光韵 concept: read chapter 5 or the definition of 光韵 (\"在一定距离之外但感觉如此贴近之物的独一无二的显现\"). Not necessary. I have what I need: 原真性/即时即地性/光韵/权威性. Enough for citation.\n\nI want to verify quotes I use precisely from what I read:\n1. Kant 判断力批判: \"一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。通过这种区别我们可以调解鉴赏者们关于美的好些纷争\" — yes, in chapter 3 of f08c1ead3164. Also \"一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的。\" Good.\n2. Kant 康德文集 第45节: \"在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然；但是，它的形式中的合目的性毕竟必须显得如此摆脱了任性规则的一切强制，就好像它纯然是自然的一个产品似的。\" And \"自然是美的，如果它同时看起来是艺术；而艺术只有当我们意识到它是艺术而在我们看来它毕竟又是自然的时候才被称为美的。\" And 第46节: \"天才就是给艺术提供规则的才能（自然禀赋）\" ... \"美的艺术必然地必须被视为天才的艺术\". Also \"因此，自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的。\" Good. Note this is 邓晓芒 translation of 康德文集? The 康德文集 chapter 65 with \"第45节\" style resembles 邓晓芒译. Fine — I'll cite 【《康德文集》·第一部分 审美判断力的批判】.\n3. Benjamin: \"原作的即时即地性组成了它的原真性（Echtheit）\" and \"在对艺术作品的机械复制时代凋谢的东西就是艺术品的光韵\" and \"难以成立的就是该东西的权威性，即它在传统方面的重要性\". Chapter 3 of 71f2b160cfc7. Whole chapter read (1429 chars). Good.\n\nAlso note 第43节 about 艺术与自然/自由 — I didn't read it. I'll avoid claiming it. Actually Kant's 第43节 \"艺术与自然\" says art is distinguished from nature as 作品 from 效果, and from science as 能 from 知. I could cite but I didn't read it; better to avoid or to just note Kant 第45-46节.\n\nHmm, but one thing worth checking: Kant on 自然美 vs 艺术美 — 康德 famously says 自然美 is superior to 艺术美 in one respect (自然美 引起直接的兴趣，是 智性的兴趣, shows nature's fitness). Not needed.\n\nNow, do I want to use compare_views or confrontation? Not necessary. The answer should be a well-structured essay-like response, moderate length, with clear crux. Instructions: 交付答复，不停在进度；语气平等；不分点过度? It's fine to use some structure, but I should write it as prose with clear headings or short paragraphs, avoiding bullet-point dump. Given the density, I'll use a few bolded distinctions but keep prose.\n\nLet me think about the deepest crux once more, because the instruction emphasizes depth over breadth and a real answer.\n\nThe crux, I think: The user asks whether the author matters to value as if value were one thing. The real philosophical structure is:\n\n(1) Beauty-as-experienced is not a pure readout of the surface; it is partly constituted by interpretation, and interpretation draws on facts not visible in the object (this is not a weakness of taste, it's how art appreciation works). So \"知道作者后变了\" is not by itself evidence of irrationality — indeed, the ability of knowledge to transform perception is the core of art-historical education.\n(2) But from (1) it does not follow that any provenance-sensitivity is legitimate. The test is whether the property you're tracking is one whose presence/absence makes a difference to what the work can be or do — a plausible answer: does the work speak of/from a mind, does it carry an achievement, does it belong to a tradition in a \"here-and-now\" way.\n(3) In the AI case, there is a genuine candidate for such a property: the picture has no one behind it. If what drew you was \"there is a mind here that saw this way,\" then the disclosure removes the object of that response, and your loss is real, not imaginary. That is the strongest case for \"作者真的影响价值\".\n(4) But the specific claim \"它不美了\" is stronger and usually unwarranted: a beautiful surface can be beautiful with no author (nature). So the well-founded version of your reaction is narrower: not \"no beauty\" but \"no address / no achievement / no original\". And a Kantian point: judgments that hang on a concept are 依附美 — legitimate, but a different kind of judgment, and it can't claim the authority of pure taste (nor can it demand that others must agree). So both your reaction and the counter-reaction of someone who says \"still beautiful\" can be right \"各自以自己的方式\" — that's a precise way to dissolve \"偏见 or 价值\" without wishy-washiness: the dispute is not about the same judgment.\n(5) Where prejudice really enters (three testable forms): an a priori universal claim refuted by your own prior experience and by natural beauty; mistaking a change in your relation for a change in the object; and mis-registering a moral complaint (deception, uncredited training data, effort) as an aesthetic verdict.\n(6) Also possible that at t1 your pleasure already contained the attribution; then the disclosure doesn't create a distortion but reveals the actual structure of your taste. That's not prejudice, it's a discovery about what you care about. And it's your call whether that is worth keeping — but it's not a change in the picture.\n\nOne more useful rigorous point: the \"prejudice\" charge presupposes that there is a fact of the matter about the painting's beauty independent of the response. If one holds a response-dependent view of aesthetic value (beauty = disposition to produce pleasure in qualified observers under suitable conditions), then a change in the observer's belief-state can change the property only if the belief-state is part of \"suitable conditions\". Under standard response-dependence, the observer's *knowledge* is generally not supposed to bias — being better informed is normally taken as the paradigm of a *better* condition. So here's a sharp argument: if you're a response-dependence person, discovering provenance would normally mean you're now in a better position, and the corrected response is the authoritative one — which supports \"the author does affect the value\" (or at least: the post-disclosure response is not the biased one). Conversely if you think beauty is a perceptual property of the surface, the change must be an error — but then you must also deny that art interpretation generally affects aesthetic judgment, which is hard. So both major positions lead to different verdicts, and I should say which is more defensible where. I think the honest verdict: it depends on whether the property you track has a plausible relation to what the work can do; the truth is neither \"the author is irrelevant\" nor \"any provenance sensitivity is fine\".\n\nHmm, careful: the \"response-dependence + better conditions\" argument is one I construct; it's reasonable but I should mark it as an argument to evaluate, not a doctrine. Yes, I'll present it as a reasoning move.\n\nAlso should I address \"AI 生成\" as a spectrum? Yes, briefly — it's the most practically decisive point: the class label \"AI-generated\" bundles at least five independent variables (有无人的意图/选择、有无人类技艺与劳动、有无可归属的成就感、有无被欺骗、有无原创性/来源问题). Your reaction is tracking one or more of these; naming which changes both the diagnosis and what you should do.\n\nOne more: 是否可能用户的反应其实是\"美学的道德主义\"（moralism about art）——即对作品的道德缺陷导致审美评价降低。这是一个真实的争论 (artistic value and moral value: autonomism vs moralism vs ethicism — Gaut, Carroll). AI-related: uncredited labor. I could mention briefly — no need to cite local text; I can just note it as a live debate without claiming a specific author. Actually I should be careful with attribution: \"美学道德主义 vs 自律论\" is standard. I could mention it as a debate position without citing. Better: mention it generically as \"一个还在争的争论（艺术价值是否可能被道德缺陷削弱）\", not attribute names without check. Hmm, I could search to verify quickly — I'll do one quick search to check whether local library has 戈特/卡罗尔 or on 道德主义与自律论. Let me be efficient: it's a minor part. I'll phrase it as an open question without attribution. Actually accuracy-wise, naming no names is safe. I'll do a quick search anyway since it's cheap? I've already spent several calls. I'll do one combined search to be safe on this one point.\n\nActually, I think it's fine to refer to \"这场争论通常被称为艺术自律论与道德主义之争\" without naming authors — that's a description of a debate, which is common knowledge in aesthetics and not contentious. But to be safe I'll frame it as \"有一场仍在进行中的争论\".\n\nLet me now write the answer. Structure:\n\nOpening: 先把问题拆开，\"美不美\"和\"值不值得珍视\"不是一个判断；而且变的不是你眼前的画面。给出三句话的初步答案：作者确实能影响作品的一部分价值；但你感到的那个变化，很可能不是\"美\"这个属性变了；至于算不算偏见，取决于你在追踪哪一个变量——这一点可以逐项查。\n\nSections (use minimal headers, prose):\n1. 变化的位置：对象没变，信念变了\n2. 作者影响的是哪种价值（分三层：美感经验/审美价值/艺术价值-成就-表达-交流；加归属与信任）\n   - 康德两条：艺术美需意识到是艺术；天才=自然通过主体给艺术立规则；所以\"有没有一个主体在背后\"在康德框架里不是无关变量\n   - 本雅明：原真性/即时即地性/光韵/权威性\n   - 所以\"作者影响价值\"不是外行错觉；艺术界的认证、归属、价格都建立在这上面\n3. 但这里有一个真正的问题：非感知属性算不算审美属性\n   - 你的体验的证据力：t1的体验是一个data point\n   - 自然美的反例：美不需要作者 → 所以你的原则不是\"无作者则无美\"，必须收窄为\"无心灵在对我说话/无成就承载\"之类\n   - 康德的自由美/依附美：两种判断各自可以正确；但这意味着你不能替别人断言它丑，也不能把它当纯粹趣味判断\n4. 三种真正的\"偏见\"形态（可检验）\n   - 先验的全称命题（被自己的经验与自然美反驳）\n   - 把自己的关系变化说成对象的属性变化\n   - 把道德不满（欺骗、未署名训练、劳动）误登记为审美判决——这里还要注意：揭露只对\"被伪装成人作\"的那些作品成立，不能一揽子归给所有 AI 参与的作品\n5. 另一种可能：t1 的愉悦本来就包含归属预设 → 那你不是变心，是发现自己的趣味结构\n6. 怎么自己测：三个测试（遮蔽测试、类比测试、方向测试—\"得知作者更苦/更真会更美吗\"）\n7. 结论：不是二选一。有理由的版本是什么，没理由的版本是什么。收尾给出：如果你在意的是\"有一个心灵\"，那就诚实地把它说成关系性的价值损失，而不是审美判决；并且承认这个在意本身是你的趣味的构成，既不需辩护也不免责——它需要在具体作品上被检验，而不是用类别一次结算。\n8. 提到实证研究一句，附限度。\n\nLength: this deserves a substantive answer, maybe 900-1300 Chinese characters... probably more like 1400-1800 given depth. That's fine. Keep it tight, no filler.\n\nI must be careful with: 康德 引文 accuracy. Quote exactly:\n- \"一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断\" ✓ (from f08c1ead3164 ch3). Note the text has \"通过这种区别我们可以调解鉴赏者们关于美的好些纷争\".\n- \"一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的。\" ✓\n- 第46节: \"天才就是给艺术提供规则的才能（自然禀赋）\" ✓; \"美的艺术必然地必须被视为天才的艺术\" ✓; \"自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的。\" ✓\n- 第45节: \"在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然；但是，它的形式中的合目的性毕竟必须显得如此摆脱了任性规则的一切强制，就好像它纯然是自然的一个产品似的。\" ✓\n- 本雅明: \"原作的即时即地性组成了它的原真性（Echtheit）\" ✓; \"在对艺术作品的机械复制时代凋谢的东西就是艺术品的光韵\" ✓; \"难以成立的就是该东西的权威性，即它在传统方面的重要性\" ✓.\n\nNote: I should be honest that Kant's 天才 discussion is about whether AI output counts as 美的艺术 — I'm drawing the inference, which is mine (Kant didn't know about AI). I must mark that: \"把这段用在 AI 上是我的引申，不是康德本人的论断\". Good — important honesty point per instructions (不把自译/引申当作来源原文).\n\nAlso note 依附美/自由美: Kant's distinction is between beauty that presupposes a concept of what the object ought to be (依附美) and free beauty. My application: a painting judged as \"human-made art with a mind behind it\" is closer to 依附美. Is that accurate to Kant? 依附美 in Kant: 美 of a horse, a building, a human — where a concept of purpose/kind governs. Kant says 自然美 is typically 自由美 and 艺术美... hmm, actually Kant's examples of 自由美 are flowers, birdsong, crustaceans, wallpaper designs — things without a concept of what they ought to be. In §16 he says a flower is free natural beauty; and \"美的艺术\" — hmm. Kant doesn't explicitly classify paintings as 依附美, but the point generalizes: if your judgment presupposes a concept of the kind of thing it is (an artwork made by a human mind expressing X), then it belongs on the 依附 side. I'll present this as \"如果你承认你的判断依赖一个概念…那么在康德的框架里它就落在依附美这一侧\" — that's a fair inference, flagged as application. Fine.\n\nAlso I should be careful about the claim \"艺术界的认证、价格都建立在作者身份上\" — that's an observable practice claim, safe enough as general description (forgeries, authentication, van Meegeren). I'll phrase as: 鉴定、归属、市场定价这套制度就建立在这上面.\n\nOne more point about 偏见: distinguish 前见/Hans-Georg Gadamer? 前见 as productive prejudice vs 偏见 as error. Could be a nice addition: 伽达默尔 argues 前见 is a condition of understanding, not merely an error. But I haven't verified local text. I could mention it cautiously as \"有一种传统（解释学）会进一步说……\" Better: I could just allude without attribution, or do a quick check. Let me skip or keep it as a brief unnamed mention? Actually a quick search would give me a solid citation and it's a nice addition: \"前见/成见 理解的条件\". Let me do it — cheap and it sharpens the answer.\n\nLet me search 伽达默尔 前见 权威 传统.\n\nAlso maybe 阿多诺 on 自然美/附加值 — skip.\n\nLet me do one search.The Gadamer material is a commentary (《真理与方法》解读), so I'd mark it as 二手解读, and the quoted passage is a quotation from Burke inside the commentary — careful. The commentary says: \"从启蒙时代理性主义观点来看似乎是理解障碍的前见，现在成了历史实在本身和理解的条件\". I can use this as a secondary-interpretation point, labeled as such. Fine, and honestly labeled: 这是解读类著作的概括，不是伽达默尔原文.\n\nFor the moralism debate, nothing solid. I'll mention it without attribution.\n\nNow write the answer. Chinese, substantive, clear structure, honest about what's my inference vs. source. Medium-long prose with a few headers.\n\nLet me draft.\n\n---\n\n开头：三件事要分开：\"美\"、你对它的兴趣、以及作品作为艺术的价值。你描述的这次变化，画面本身没变（连像素都没变），变的是你关于它来历的信念。所以问题不在\"美会不会隨信念变\"，而在：这一次信念的变化，是在校正一个错误，还是在遮蔽一个你本来能看见的东西。\n\n**1. 作者确实能影响价值——这不是外行错觉**\n\n- Kant 第45/46节: 美的艺术作品必须\"人们必须意识到，它是艺术而不是自然\"，同时形式显得像自然；而且 美的艺术必然是天才的艺术，因为规则必须由自然通过主体的诸能力给出。→ 在康德的框架里，\"背后有没有一个带着诸能力的主体\"不是无关变量，而是构成\"美的艺术\"的条件本身。(标明：这是我的引申，康德不知道 AI)\n- Benjamin: 光韵/原真性/即时即地性，凋谢的是光韵；随之\"难以成立的就是该东西的权威性，即它在传统方面的重要性\"。→ 一个传统明确说这里丢了东西，而且不是装饰性的东西。\n- 制度层面：归属、鉴定、定价、真伪。整套博物馆与市场就靠\"谁做的\"运行。梵·米格伦的伪作被揭穿后对真伪、价格有巨大影响。这里我不引用具体案例? I can mention van Meegeren generically — it's well-known. But careful: I claim \"many who admired them...\" — I shouldn't make empirical claims I can't support. I'll just say 伪作被揭穿会改变归属和价格，这是可观察的实践，而不必谈观众的反应。\n\n**2. 但\"变的是否是美\"是另一个问题；而你自己的经验给了一个反例**\n\n自然美：一朵花、一片晚霞，没有任何作者，你照样说它美。所以\"没有作者就没有美\"是假的——至少作为全称命题是假的。那么你的原则不可能是那个，只能收窄成其中一种：没有心灵在对我说话 / 没有成就 / 没有原真性 / 我被骗了。这几种理由的强度完全不同。\n\n康德的自由美/依附美：你现在的判断依赖一个概念（它是不是人做的、它应是什么），那它落在\"依附美\"那侧，是\"应用的鉴赏判断\"；康德说这种分歧\"可以调解\"，双方\"都以自己的方式作出了正确的判断\"。这给出一个比\"偏见 or 价值\"更准确的结论：你和那个说\"照样美\"的人，可能并不在作同一个判断。代价是你不能再要求别人必须同意你——那正是纯粹鉴赏判断才有的要求。\n\n**3. 偏见的确切位置在哪**\n\n三种可查的形式：\n(a) 全称命题被自己的经验反驳。你 t1 得到的愉悦本身是一个证据：这个表面有力量唤起那个反应。若你现在的判断是\"AI 的一概不美\"，你是在用一个类别去覆盖一个已经发生过的例子。\n(b) 把一个关系的变化说成对象属性的变化。诚实描述应是\"我不再对它有兴趣/我原来以为有一个心灵在，现在没有\"，而不是\"它不美了\"。前者是关于你的，后者是关于它的。\n(c) 把道德不满误登记为审美判决：欺骗（如果它被伪装成人作）、未经署名的训练素材、劳动与署名。这类理由是真的，但它们首先是道德/制度理由，而且只对具体情形成立，不能一揽子归给所有 AI 参与的作品。\n\n**4. 还有一种情况不算偏见，而是发现**\n\n如果你回头看 t1 的体验，发现那时你的愉悦里本来就含着一个隐而未宣的预设——\"这里有一个人的眼睛\"——那么揭露身份并没有制造扭曲，它只是把一直存在的依赖关系显出来。这不是你\"变心\"，是你发现自己的趣味结构：你的审美反应是\"依附美\"型的、关系性的。这不需要辩护，但它需要在具体作品上一件件检验，而不是用类别一次结算。\n\n顺带：这里也解释了为什么\"知道是谁做的会更感动\"（得知作者处境、得知是手作）你不觉得是偏见——因为方向反了。如果向上的溯源敏感是正当的，向下的溯源敏感就不是自动荒谬的；它是在同一根轴上的位移。这条对称性值得你自问。\n\n**5. 三个自测**\n\n- 遮蔽测试：把图藏掉一切标签，只把它和别的画并排；你的眼睛还有没有反应？有，说明美感的对象还在，变的是你愿不愿意背书。\n- 分解测试：\"AI 生成\"这个词里至少捆了五样东西：有无人的选择与意图、有无人类技艺与劳动、有无可归属的成就、有无被欺骗、\"原创性\"与素材来源。找出真正让你熄灭的是哪一项——这一项可能对某些作品成立、对另一些不成立。\n- 附带证据：Bara、Ramsey、Cross 2024 一项预注册研究（我读到的是预印本摘要，不是全文）报告：关于 AI 后台流程的事实信息降低了道德可接受性与审美喜好（在金钱激励与\"艺术地位\"等情境中）；而内隐联想任务未能可靠地把人类艺术与正面属性联在一起。这只能说明你的反应不孤立，不能说明哪一方判断正确——规范问题不是实验能裁决的。\n\n**结论：不是二选一，而是\"哪一种理由\"**\n\n作者影响价值：是，影响的是\"背后有没有一个心灵、有没有一个成就、有没有一段不可复制的时间\"这类价值；这不是外行错误，康德与本雅明各自从一端为它作证。\n\n你的反应算不算偏见：取决于你把它说成什么。说成\"AI 作品在审美上无价值\"——这是未经检验的全称命题，被自然美和你自己的先前经验双重削弱，是偏见。说成\"我要的是一幅画里有一个人，这一点在这里不存在，而我在意它\"——这是关于你的趣味与关系的真实陈述，可能对，可能错，但它在正确的层面上可以被检验和讨论。\n\n真正要小心的不是\"你嫌 AI 作品不美\"，而是让一个类别代替一次观看：把一次具体的失望，结算成一整类东西的判决。而你自己在这件事上的位置也不是固定的——你可以在同一幅画上，把\"美\"和\"有一个人在\"重新分开来看。\n\n---\n\nThat's pretty good. Need to also make sure I answer \"作者真的影响作品价值？\" directly — yes, at the beginning and conclusion.\n\nAlso should I mention that \"知道作者身份\" affects \"美\" because interpretation is constitutive — Danto is not in the library, so I'd mention the general point without attribution: 对艺术品的观看从来不是纯看表面（知道是速写稿、残片、习作、改笔都会改变你看它的方式）——这是常见的、正常的事。That's a safe general observation.\n\nMention the Danto-style \"不可分辨物\" idea generically? A safe way: \"两件视觉上不可分辨的东西，因为来历不同而可以一件是艺术、一件不是\" — this is a famous idea; without a citation, I can present as an argument/thought experiment, not attributed. Fine, I'll mention briefly as a general consideration without attribution.\n\nAlso shorten a little to keep punchy. Let me also add: the \"难度\" of the question — the word 价值 covers 审美价值/艺术价值/市场价值/纪念价值. Good.\n\nI'll write it now. Use headers minimally, keep citations with book titles. Include reading coordinates: 【《判断力批判》·第一卷 审美判断力的分析论】【《康德文集》·第一部分 审美判断力的批判】【《机械复制时代的艺术作品》·3.原真性】.\n\nAlso note the 伽达默尔 point: 前见是理解的条件 — from 《真理与方法》解读 (secondary). I could add a sentence: 诠释学传统里有一个进一步的说法：前见不是理解的障碍，而是理解的条件（这一概括出自一本解读《真理与方法》的著作，不是我读到伽达默尔原文）。This is a nice touch but might add length without much payoff. I'll include one short sentence since it directly addresses \"我是在偏见吗\" — reframing: 前见有生产性。Label as secondary. Yes, include briefly.\n\nFinal formatting: use bold headers and prose paragraphs. Reasonable length.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "趣味的标准 偏见 情感 判断",
+      "author": "休谟",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.039,
+     "result_full": "{\"query\": \"趣味的标准 偏见 情感 判断\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识和或然性\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第三章 论知识和或然性】\", \"snippet\": \"而言，既然我们所有的或然性推理都是建立在观念的活泼性的基础上面的，所以它就同许多被蔑视为想象的产物面遭到拒绝的那些奇想和偏见相类似。根据这种表达，想象这一语词看起来通常有两种不向的意义；尽管对于真正的暂学面言，没有什么比这种不精确更为相反的了。然面，在下面的推理中，我又常常被迫陷人这种不精确中。当我把想象和记忆相对的时候，我意指我们形成微弱观念的那个感官能力；当我将想象和理性相对的时候，我意指相同的感官能力，仅仅排除了我们证实的或者或然的推理；当我不将想象和二者相对，则无论是在更大的或更有限的意义上来理解它都无关紧要，或者至少是根据上下文就足以解释这种意义。 是由看起来相当不足取的原理产生的，而且我们的绝大部分推理，以及我们的全部行\", \"score\": 135, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 5, \"focus\": \"趣味的标准 偏见 情感 判断\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"趣味的标准 偏见 情感 判断\", \"query_terms\": [\"趣味的标准\", \"偏见\", \"情感\", \"判断\"]}, {\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 4, \"chapter_title\": \"第一卷 第二章 论空间和时间观念\", \"citation_label\": \"【《人性论（全4册）》·第一卷 第二章 论空间和时间观念】\", \"snippet\": \"哲学家们往往会贪婪地信奉那些似是而非、与人类原始的和最无偏见的概念相反的论调，并将这一点炫耀成他们学说的优趣性在于能够发现远远超出于通常人们的见解。另一方面，任何能够引起我们的异和钦佩的东西都能给予心灵以满足，使得心灵沉滴于那些使人愉快的情绪中，并且再也不肯相信它的快乐是完全没有根据的。暂学家及他们的弟子的这些偏好就导致了他们那种互相奉承的情形：当哲学家们提出那么多的奇怪和无法解释的观点时，他们的弟子们却非常乐意于相信这些观点。对这种互相奉承的情形，关于无限可分的学说就是最为明显的一个例子，我将通过对这一学说的探究，开始去研究空间和时间观念这一主题。人们普遍承认，心灵的能力是有限的，永远不能获得一个完全和恰当的“无限”概念，即便这一\", \"score\": 127, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"178e7d06d42d\", \"chapter_idx\": 4, \"focus\": \"趣味的标准 偏见 情感 判断\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"趣味的标准 偏见 情感 判断\", \"query_terms\": [\"趣味的标准\", \"偏见\", \"情感\", \"判断\"]}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"chapter_idx\": 6, \"chapter_title\": \"第四篇\", \"citation_label\": \"【《自然宗教对话录》·第四篇】\", \"snippet\": \"自已排列于一定的形式或秩序下；而这种形式或秩序并不能完整地保存片刻，却立刻又变成另外的一种排列。新的意见、新的情绪、新的情感、新的感觉起来了，它们不断地变更心灵上的情况，并且在其中制造出极大的错综性，和可能想象的最迅速的递换。这个怎能和一切真正有神论者们归诸于神的完全不变性和单纯性相容呢？他们说，他用同一行为能察知过去、现在和未来：他的爱和他的恨，他的慈悲和他的公正是同一个作用的发挥；他在空间上的每一点都是完全的存在，在持续上每一瞬的时间也是完全的存在。没有递换、没有变化、没有增加，也没有减少。他的实性中不包含差别或变异的任何影子。此刻他是什么，他过去也向来是如此，将来也永远是如此，没有任何新的判断、意见或作用。他固定在一个单纯的，\", \"score\": 127, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"9c9e77918c07\", \"chapter_idx\": 6, \"focus\": \"趣味的标准 偏见 情感 判断\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"趣味的标准 偏见 情感 判断\", \"query_terms\": [\"趣味的标准\", \"偏见\", \"情感\", \"判断\"]}], \"catalogue_matches\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《人性论（全4册）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"9c9e77918c07\", \"book_title\": \"自然宗教对话录\", \"author\": \"大卫·休谟\", \"citation_label\": \"【《自然宗教对话录》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 21}, \"search_scope\": {\"author\": \"休谟\", \"book_id\": null}, \"method\": \"partial_keyword_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "天才 艺术 自然 自由 鉴赏",
+      "author": "康德",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.078,
+     "result_full": "{\"query\": \"天才 艺术 自然 自由 鉴赏\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"snippet\": \"的话）77由于：如果内心素质中没有任何东西是突出于形成一个无缺点的人所必要的那个比例之上的，那就不可能指望任何人们称之为天才的东西，在天才里大自然似乎偏离了内心诸能力通常的比例关系而只给唯一的一种内心能力以优惠。一康德 第一部分审美判断力批判性的理念中与道德的善联系起来的一切东西的结合，如灵魂的善良或纯洁、或坚强或宁静等等，仿佛在身体的表现（作为内心的效果）中变得明显可见：这就需要那只是想要评判它们、更不用说想要描绘它们的人，在内心中结合着理性的纯粹理念和想象力的巨大威力。这样一个美的理想的正确性表现在：它不充许任何感管刺激混杂进它对客体的愉悦之中，但却可以对这客体抱有巨大的兴趣；而这就证明，按照这样一个尺度所作的评判决不可能是纯粹\", \"score\": 294, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一部分 审美判断力批判\", \"citation_label\": \"【《康德三大批判合集（上下）》·第一部分 审美判断力批判】\", \"snippet\": \"的话）由于：如果内心素质中没有任何东西77是突出于形成一个无缺点的人所必要的那个比例之上的，那就不可能指望任何人们称之为天才的东西，在天才里大自然似乎偏离了内心诸能力通常的比例关系而只给唯一的一种内心能力以优惠。——康德 从第三个契机推出的美的说明美是一个对象的合目的性形式，如果这形式是没有一个目的的表象而在对象身上被知觉到的话。① 第四契机 鉴赏判断按照对对象的愉悦的模态来看的契机 18.什么是一个鉴赏判断的模态 至少是可能的。对于我称之为快适的东西，我就说它在我心中产生了现实的愉快。但对于美的东西我们却想到，它对于愉悦有一种必然的关系。而这里这种必然性具有特殊的类型：不是一个理论的客观必然性，在那里能先天地认识到每个人在我称之为\", \"score\": 276, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"10e1874c2255\", \"chapter_idx\": 12, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 10, \"chapter_title\": \"附录 论康德《判断力批判》的先验人类学建构\", \"citation_label\": \"【《判断力批判》·附录 论康德《判断力批判》的先验人类学建构】\", \"snippet\": \"的经验事实即艺术和艺术史中，寻找鉴赏判断及审美愉快普遍传达的先天条件。前者追溯到人的社会性的“共通感”，后者追溯到个人的天才。 A.共通感康德认为，人的知性已经设定了在一切人心中都有一种共同的“主观的东西”作为它之所以可能的先天条件：既然审美的反思性判断力与认识的规定性判断力一样，都是认识诸能力的协调运用，那么这种主观先天的东西也就是审美愉快的普遍必然性和有效性的条件；反过来，这种认识诸能力在鉴赏里所要求的比例，对于普通认识中的健全知性也是需要的。这种先天条件表现在人身上就是共通感（sensuscommunis），即一个共同感觉的理念（dieIdeeeinesgemeinschafilichenSinnes），它“在自己的反思中（先\", \"score\": 276, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 10, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 18, \"chapter_title\": \"第一部分审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分审美判断力的批判】\", \"snippet\": \"有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。 第4 6节　美的艺术是天才的艺术 天才就是给艺术提供规则的才能（自然禀赋） 。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium） ，通过它自然给艺术提供规则。 不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论） ，人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。 因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现\", \"score\": 274, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 18, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 65, \"chapter_title\": \"第一部分 审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分 审美判断力的批判】\", \"snippet\": \"没有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。 第46节 美的艺术是天才的艺术 天才就是给艺术提供规则的才能（自然禀赋）。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium），通过它自然给艺术提供规则。 不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论），人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。 因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现为可能\", \"score\": 274, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 65, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 33, \"chapter_title\": \"上卷 审美判断力的批判 第一部分 审美判断力的分析\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·上卷 审美判断力的批判 第一部分 审美判断力的分析】\", \"snippet\": \"[9] 确定他的判断是鉴赏判断。——译注 [10] 指客观关系。——译注 [11] Euler，1707—1783，德国天才的数学家。——译注 [12] 指鲍谟伽敦。——译注 [13] 关于语言艺术的鉴赏的范本，必须在一种已不通用的和艰深的语言里去寻找：第一，可以不须遭受变化，这是活的语言不可避免要碰到的，高尚的成了平凡，通常的陈旧了，新造的只通行一短时期；第二，它具有一定的语法，这种语法不因流行风尚而任意转变，但具有它的不变的法则。——原注 [14] 人们将见到，一个完全合规则的脸，画家请他坐着做模特的，通常是无所表现的： 因为这脸不具有特性，亦即较之个性的特殊点更多地表达着种的观念。这种的特性夸张过分，便破坏了标准观念（种的合目\", \"score\": 273, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 33, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《判断力批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 26, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "光晕 灵光 机械复制 此时此地",
+      "author": "本雅明",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.083,
+     "result_full": "{\"query\": \"光晕 灵光 机械复制 此时此地\", \"results\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"5d26edcad281\", \"book_title\": \"单行道\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《单行道》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"679b795a17f8\", \"book_title\": \"发达资本主义时代的抒情诗人\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《发达资本主义时代的抒情诗人》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"5d26edcad281\", \"book_title\": \"单行道\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《单行道》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"679b795a17f8\", \"book_title\": \"发达资本主义时代的抒情诗人\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《发达资本主义时代的抒情诗人》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 127}, \"search_scope\": {\"author\": \"本雅明\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "作者之死 作者 文本 意义",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.404,
+     "result_full": "{\"query\": \"作者之死 作者 文本 意义\", \"results\": [{\"book_id\": \"dd75d637a2ad\", \"book_title\": \"托马斯•霍布斯\", \"author\": \"托马斯·霍布斯\", \"chapter_idx\": 2, \"chapter_title\": \"通过相互立约创建国家\", \"citation_label\": \"【《托马斯•霍布斯》·通过相互立约创建国家】\", \"snippet\": \"）面不是历史。因此，她假定霍布斯的观点通过简单阅读他的文本即可理解。但是，在罗兰·巴特（RolandBarthes）的《作者之死》（TheDeathoftheAuthor）（1977）以及一般的后结构主义者都断言任何文学文本都有多重意义之后，这种方法论的可信度是否还站得住脚？另外，对非历史的观点的痴迷导致她考虑对历史学家来说似乎非常不合时宜的问题。例如，她讨论了温斯顿·史密斯（WinstonSmith）的101室困境，以使阐明霍布斯在《利维坦》中的论点。但是，《利维坦》和《一九八四》（1949）对政府有着同样的基本认识吗？事实上，霍布斯的政治想象力能否理解几百年后乔治·奥威尔讽刺的那种体制呢？显然，霍布斯并没有向奥威尔讲话，他也没有\", \"score\": 242, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd75d637a2ad\", \"chapter_idx\": 2, \"focus\": \"作者之死 作者 文本 意义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a1448e164acc\", \"book_title\": \"别笑，我是正经哲学书\", \"author\": \"富增章成\", \"chapter_idx\": 54, \"chapter_title\": \"用符号来解读世界\", \"citation_label\": \"【《别笑，我是正经哲学书》·用符号来解读世界】\", \"snippet\": \"理论基础是索绪尔的结构语言学，并运用符号学解读世界，使“文本”“书写”“话语”等现代思想基本用语蔚为风行。 巴尔特提出“作者之死”的概念，造成重大影响。一般来说，文学作品多被理解为作者思想的呈现，作品位于作者这个主人的支配之下，读者必须通过作品来了解作者的思想。 但是，巴尔特却主张这观念是近代特有的发想，而且已经过时了。在“作者之死”的概念下留下的，并非“作品”，而是“文本”。文本一旦离开作者之手，经读者的仔细阅读，就会得到深化，文本表现的并非作者内心的真实，新生命通过阅读才被创造出来，所以文本是被加工过的东西。读者才是真正的支配者，经由读者的阅读，文本才能独自迈步前行。 文本有编织物的含义，就好像持续被编织不断扩大的织物一样，而且\", \"score\": 177, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a1448e164acc\", \"chapter_idx\": 54, \"focus\": \"作者之死 作者 文本 意义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "book_id": "71f2b160cfc7",
+      "query": "韵味 本真性 复制 独一无二",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.014,
+     "result_full": "{\"query\": \"韵味 本真性 复制 独一无二\", \"results\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 49}, \"search_scope\": {\"author\": null, \"book_id\": \"71f2b160cfc7\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "自由美 依附美 美的理想",
+      "author": "康德",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.104,
+     "result_full": "{\"query\": \"自由美 依附美 美的理想\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"snippet\": \"东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。 任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱的\", \"score\": 130, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"focus\": \"自由美 依附美 美的理想\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一部分 审美判断力批判\", \"citation_label\": \"【《康德三大批判合集（上下）》·第一部分 审美判断力批判】\", \"snippet\": \"东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。 任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它 的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱\", \"score\": 122, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"10e1874c2255\", \"chapter_idx\": 12, \"focus\": \"自由美 依附美 美的理想\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "赝品 真迹 原作 艺术价值 同一性",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 1.878,
+     "result_full": "{\"query\": \"赝品 真迹 原作 艺术价值 同一性\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 358, \"chapter_title\": \"241\", \"citation_label\": \"【《尼采文集（合集）》·241】\", \"snippet\": \" 作品与艺术家 。——这位艺术家野心勃勃，再无别的：最后，他的作品只不过是一个放大镜，提供给每个人按他的方式来观看。\", \"score\": 0.5344, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 358, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.894}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 26, \"chapter_title\": \"第二稿·Ⅳ\", \"citation_label\": \"【《机械复制时代的艺术作品》·第二稿·Ⅳ】\", \"snippet\": \"一件艺术作品的独一无二性是与它置身于那种传统的联系相一致的。当然，这传统本身是绝对富有生 气的东西，它具有极大的可变性。例如，一尊维纳斯的古雕像，在古希腊和中世纪就处于完全不同的传统联系中。希腊人把维纳斯雕像视为崇拜的对象，而中世纪的牧师则把它视作一尊淫乱的邪神像；但这两种人都以同样的方式触及了这尊雕像的独一无二性，即它的光韵。艺术作品在传统联系中的存在方式最初体现在膜拜中。我们知道，最早的艺术品起源于某种礼仪一起初是巫术礼仪，后来是宗教礼仪。在此，具有决定意义的是艺术作品那种具有光韵的存在方式从未完全与它的礼仪功能分开[\\\"]，换言之，“原真”的艺术作品所具有的独一无二的价值植根于神学，艺术作品在礼仪中获得了其原始的、最初的使用价值\", \"score\": 0.5307, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 26, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.825}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 5, \"chapter_title\": \"5.礼仪与政治\", \"citation_label\": \"【《机械复制时代的艺术作品》·5.礼仪与政治】\", \"snippet\": \"一件艺术作品的独一无二性是与它置身于其中的传统关联相一致的。当然，这传统本身是绝对富有生气的东西，它具有极大的可变性。例如，一尊维纳斯的古雕像，在古希腊和中世纪就处于完全不同的传统关联中。希腊人把维纳斯雕像视为崇拜的对象，而中世纪的牧师则把它视作一尊淫乱的邪神像；但这两种人都以同样的方式触及了这尊雕像的独一无二性，即它的光韵。艺术作品在传统联系中的存在最初体现在膜拜中。我们知道，最早的艺术品起源于某种礼仪一一起初是巫术礼仪，后来是宗教礼仪。在此，具有决定意义的是艺术作品那种闪发光韵的存在方式从未 完全与它的礼仪功能分开，换言之，“原真”的艺术作品所具有的独一无二的价值植根于神学，这个根基尽管辗转流传，但它作为世俗化了的礼仪在对美的崇\", \"score\": 0.5232, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 5, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.684}, {\"book_id\": \"17fda3378628\", \"book_title\": \"美学理论\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 7, \"chapter_title\": \"第五章　艺术美：显形、精神化与直观性\", \"citation_label\": \"【《美学理论》·第五章　艺术美：显形、精神化与直观性】\", \"snippet\": \"一、“附加值”即表象 自然美的组成，在于其显得要说的东西多于其实际所说的东西。如今，艺术背后的理念，是要攫取自然界偶然场景产生的这一“附加值”，所采用的手法就是挪用自然表象和使其得以确定，这便意味着否定其非现实性以及其他一些东西。艺术的人为附加值并不凭借自身确保艺术包含任何形上学的内容。如若我们假定后者是琐碎无效的，这并非意味着艺术品不会设定一种表象的附加值。艺术品之所以成为艺术品，是因为它们产生的那种盈余，这正是其超越性所在。尽管如此，艺术品并非超越性发生的竞技场，这正是它们为何也与超越性分离的原因所在。艺术品中真正的超越性竞技场，是作品诸多契机的整合过程。通过努力争取整一性同时又设法适应整一性，一件艺术品的诸多契机就超越了这些契\", \"score\": 0.5216, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17fda3378628\", \"chapter_idx\": 7, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.653}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 3, \"chapter_title\": \"3.原真性\", \"citation_label\": \"【《机械复制时代的艺术作品》·3.原真性】\", \"snippet\": \"只能由化学或物理分析方法去发掘，面这种分析在复制品中又是无法实现的；至于后一种变化的痕迹则是个传统问题，对其追踪又必须以原作的状况为出发点。原作的即时即地性组成了它的原真性（Echtheit）。对传统的构想依据这原真性，才使即时即地性时至今日作为完全的等同物流传。完全的原真性是技术——当然不仅仅是技术—复制所达不到的。原作在碰到通常被视为品的手工复制品时，就获得了它全部的权成性，而碰到技术复制品时就不是这样了。其原因有二。一是技术复制比手工复制更独立于窄作。比如，在照相摄影中，技术复制可以突出 那些由肉眼不能看见但镜头可以捕捉的原作部分，而且镜头可以挑选其拍摄角度；此外，照相摄影还可以通过放大或慢摄等方法摄下那些肉眼未能看见的形象。\", \"score\": 0.5166, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.559}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 39, \"chapter_title\": \"第二稿·注释\", \"citation_label\": \"【《机械复制时代的艺术作品》·第二稿·注释】\", \"snippet\": \"（1）保罗·瓦莱利（PaulValery，1871一1945），法国象征主义诗人和理论家。一一译者[2]保罗·瓦莱利：《艺术片论集》（Piecessurl'art），巴黎，第105页（《无处不在的征服》）。一一第53页[3]当然，一件艺术品的历史还包括更多的东西，例如《蒙娜·丽莎》（MonaLisa）的历史，就还包括它在17、18、19世纪各种筹木的种类和数量。一第54页[4]正是由于原真性是不可复制的，努力采用某些一一机械一一复制方法，才有助于将原真性加以区分和归类，造就这种区分是艺术品买卖行业的一项重要职责。艺术品买卖行业的兴致明显地在于，把文宇发明前和发明后的各种木刻样版与铜版以及类似于铜版的东西区分开采。可以说，平在原真性以\", \"score\": 0.5113, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 39, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.459}, {\"book_id\": \"17fda3378628\", \"book_title\": \"美学理论\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 10, \"chapter_title\": \"第八章　连贯与意义\", \"citation_label\": \"【《美学理论》·第八章　连贯与意义】\", \"snippet\": \"一、逻辑性 艺术品既不是概念性的，也不是判断性的，但在一定程度上却是逻辑性的。倘若作品没有其逻辑性，作品也就不具有谜语特质。虽然这种逻辑性类似于推论性思想的逻辑特性，但它毕竟不能达到后者的标准。 有许多地方，艺术与逻辑都是重叠的，其中十分直接的地方就是艺术的“结论”形式与其逻辑里的对应形式。在各种时间艺术中，相当习以为常的说法是：某一段“接着”另一段。这不光是一种说法，而且反映出一种经验性因果关系。一物被视为另一物的延续——在时间艺术中如此，在视觉艺术中也是如此。艺术品务必与自身同一，这是其职责所在；这种职责与潜在的固有契约之间的应力，关乎动态平衡的传统理想，都是以三段论原则为先决条件。这就是艺术品的理性特征，一种内在的制约性，没有\", \"score\": 0.5079, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17fda3378628\", \"chapter_idx\": 10, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.396}, {\"book_id\": \"bbac1be0bb4b\", \"book_title\": \"黑格尔作品集（套装共14册）\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 217, \"chapter_title\": \"c）真正的客观性\", \"citation_label\": \"【《黑格尔作品集（套装共14册）》·c）真正的客观性】\", \"snippet\": \"关于这一层，我们可以按照理念的概念，从主体的外现方面来看，把真正的客观性定成这样：使艺术家得到灵感的那种真正的内容（意蕴）不能有丝毫部分仍保留在主体的内心里，而是要完全揭示出来；而揭示的方式又要是这样的：所选内容（意蕴）的普遍的灵魂和实体既很明确，它的个别形象本身也很圆满，而整个表现出来的作品显得有那灵魂和实体灌注在里面。因为最高尚最卓越的东西都不是什么不可言说的东西，认为诗人在作品里所表现的之外，还有远较深刻的东西，那是不正确的。作品就足以见出艺术家的最好的方面和真实的方面；他是什么样人就 是 什么样人，凡是只留在内心里的就还 不是 他。 3．作风、风格和独创性 但是尽管我们应该要求艺术家有上述意义的客观性，表现出来的东西却还是 \", \"score\": 0.5067, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bbac1be0bb4b\", \"chapter_idx\": 217, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.373}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "71f2b160cfc7",
+      "chapter_idx": 3,
+      "focus": "原真性 即时即地性 光韵",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"chapter_idx\": 3, \"title\": \"3.原真性\", \"citation_label\": \"【《机械复制时代的艺术作品》·3.原真性】\", \"text\": \"即使在最完美的艺术复制品中也会缺少一种成分：艺术品的即时即地性，即它在问世地点的独一无\\n二性。但唯有借助于这种独一无二性才构成了历史，艺术品的存在过程就受制于历史。这里面不仅包含了由于时间演替使艺术品在其物理构造方面发生的变化。而且也包含了艺术品可能由所处的不同占有关系而来的变化。前一种变化的痕迹只能由化学或物理分析方法去发掘，面这种分析在复制品中又是无法实现的；至于后一种变化的痕迹则是个传统问题，对其追踪又必须以原作的状况为出发点。原作的即时即地性组成了它的原真性（Echtheit）。对传统的构想依据这原真性，才使即时即地性时至今日作为完全的等同物流传。完全的原真性是技术——当然不仅仅是技术—复制所达不到的。原作在碰到通常被视为品的手工复制品时，就获得了它全部的权成性，而碰到技术复制品时就不是这样了。其原因有二。一是技术复制比手工复制更独立于窄作。比如，在照相摄影中，技术复制可以突出\\n那些由肉眼不能看见但镜头可以捕捉的原作部分，而且镜头可以挑选其拍摄角度；此外，照相摄影还可以通过放大或慢摄等方法摄下那些肉眼未能看见的形象。这是其一。其二，技术复制能把原作的摹本带到原作本身无法达到的境界。首先，不管它是以照片的形式出现，还是以留声机唱片的形式出现，它都使原作能随时为人所欣赏。大教堂挪了位置是为了在艺术爱好者的工作间室能被人观赏；在音乐厅或露天里演奏的合唱作品，在卧室里也能听见。此外，对艺术品的这种改造可能不大会触及艺术的组成成分一但对艺术品的这种改造在任何情况下都使艺术品的即时即地性丧失了。这一点不仅对艺术品来说是这样，而且对例如电影观众眼前闪过的一处风景来说也是这样。因此，通过展示艺术品的过程还触及了一个最敏感的核心问题，即艺术品的原真性问题；这样一种自然对象不会展现这种本质。一件东西\\n的原真性包括它自问世那一刻起可继承的所有东西，包括它实际存在时间的长短以及它曾经存在过的历史证据。由于它的历史证据取决于它实际存在时间的长短，因此，当复制活动中其实际存在时间的长短摆脱了人的控制，它的历史证据就难以确凿了。当然，也仅仅是历史证据；但如此一来难以成立的就是该东西的权威性，即它在传统方面的重要性。人们可以把这些特征概括为光韵概念，并指出，在对艺术作品的机械复制时代凋谢的东西就是艺术品的光韵。这是一个有明显特征的过程，其意义远远超出了艺术领域之外。总而言之，复制技术把所复制的东西从传统领域中解脱了出来。由于它制作了许许多多的复制品，因面它就用众多的复制物取代了独一无二的存在；由于它使复制品能为接受者在其自身的环境中去加以欣赏，因面它就赋予了所复制的对象以现实的活力。这两方面的进程导致了传统的大动荡一—\\n作为人性的现代危机和革新对立面的传统大动荡，它们都与现代社会的群众运动密切相联，其最强大的代理人就是电影。电影的社会意义即使在它最富建设性的形态中一--恰恰在此中并不排除其破坏性、宣泄性的一面，即扫荡文化遗产的传统价值的一面也是可以想见的。这一现象在从克娄巴特拉2和本·霍尔3到弗里德利库斯4和拿破仑的伟大历史电影中表现得最为明显，并不断扩大。阿培尔·冈斯5曾在1927年满怀热情地宣称：“莎士比亚、伦勃朗、贝多芬将拍成电影...所有的传说、所有的神话和志怪故事、所有创立宗教的人和各种宗教本身….·都斯传着在水银灯下的复活，而主人公们则在墓门前你推我揉。\\\"[6]也许他并没有想到这一点，但却发出了广泛地进行扫荡的呼吁声。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1429, \"chapter_text_length\": 1429, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"原真性\", \"即时即地性\", \"光韵\"], \"focus_terms_found_in_chapter\": [\"原真性\", \"即时即地性\", \"光韵\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"原真性\", \"offset\": 232, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 32, \"focus\": \"原真性\"}}, {\"term\": \"原真性\", \"offset\": 255, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 55, \"focus\": \"原真性\"}}, {\"term\": \"原真性\", \"offset\": 284, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 84, \"focus\": \"原真性\"}}, {\"term\": \"即时即地性\", \"offset\": 26, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 0, \"focus\": \"即时即地性\"}}, {\"term\": \"即时即地性\", \"offset\": 222, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 22, \"focus\": \"即时即地性\"}}, {\"term\": \"即时即地性\", \"offset\": 261, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 61, \"focus\": \"即时即地性\"}}, {\"term\": \"光韵\", \"offset\": 924, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 724, \"focus\": \"光韵\"}}, {\"term\": \"光韵\", \"offset\": 957, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"offset\": 757, \"focus\": \"光韵\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"ef36ab8f3578a762784ce7b49eca16800a85d2d1da7ba5c598f805aebe640891\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/71f2b160cfc7?ch=3\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 1429]], \"covered_characters\": 1429, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "f08c1ead3164",
+      "chapter_idx": 3,
+      "focus": "自由美 依附美",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"chapter_idx\": 3, \"title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"text\": \"的。如果现在，在后一种愉悦方面的鉴赏判断被弄得依赖于前一种作为理性判断的愉悦中的目的并因此受到限制，那么这种判断就不再是一个自由的和纯粹的鉴赏判断了。\\n尽管鉴赏由于审美的愉悦和智性的愉悦的这一结合，而在自身得到固定方面，以及它虽然不是普遍的、然而却能就某些合目的地被规定的客体来给它颁定规则这方面有所收获；但这样一些规则因而也不是什么鉴赏规则，而只是\\n①法文：希腊式的。一译者\\n第一部分审美判断力批判鉴赏和理性、即美与善一致的规则，通过这种一致，前者可以被用作后者的意图的工具，以使用这种自身维持并具有主观普遍有效性的内心情调，来给那种只有通过下决心费力才能维持却具有客观普遍有效性的思想境界作铺垫。但真正说来，完善性并不通过美而有所收获，美也并不通过完善性而有所收获；相反，由于当我们把一个对象借以被给予我们的那个表象通过一个概念而与客体（就它应当是什么而言）相比较时，不能避免同时也把这表象与主体中的感觉放在一起作比较，这样，如果这两种内心状态是相协调的，表象力的全部能力才会有收获。\\n一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的。\\n但那样一来，这个判断者尽管由于把该对象评判为自由的美而作出了一个正72确的鉴赏判断，他却仍然会受到另一个把该对象的美只看作依附性的性状（着眼于对象的目的）的人的责备，被指责犯了鉴赏的错误，虽然双方都以自已的方式作出了正确的判断：一个是按照出现在他的感管面前的东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。\\n任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱的、几乎不足以猜度出来的标准，即一个由这些实例所证实了的鉴赏从那个深深隐藏着的一致性根据中发源的标准，这个一致性根据在评判诸对象由以被给予一切人的那些形式时，对一切人都是共同的。\\n17.美的理想\\n所以我们把一些鉴赏作品看作是示范性的：这并不是说，鉴赏似乎可以通过模仿别人而获得。因为鉴赏必须是自己特有的一种能力；凡是模仿一个典范的人，如果他模仿得准确的话，他虽然表现出熟巧，但只有当他能够自己评判这一典范时，他才表现出鉴赏。①但由此得出，最高的典范，即鉴赏的原型，73只是一个理念，每个人必须在自己心里把它产生出来，他必须据此来评判一切作为鉴赏的客体、作为用鉴赏来评判的实例的东西，甚至据此来评判每个人的鉴赏本身。本来，理念意味着一个理性概念，而理想则意味着一个单一存在物、作为符合某个理念的存在物的表象。因此那个鉴赏原型固然是基于理性有关一个最大值的不确定的理念之上的，但毕竟不能通过概念、而只能在个别的描绘中表现出来，它是更能被称之为美的理想的，这类东西我们虽然并不占有它，但却努力在我们心中把它创造出来。但它将只是想象力的一个理想，这正是因为它不是基于概念之上，而是基于描绘之上的；但描绘能力就是想象力。一—那么，我们如何才能达到这样一个美的理想呢？先天地还是经验性地？再如：哪一类的美能够成为一个理想？\\n首先应十分注意的是：要想从中寻求一个理想的那种美，必定不是什么流动的美，而是由一个有关客观合目的性的概念固定了的美，因而必定不属于一个完全纯粹的鉴赏判断的客体，而属于一个部分智性化了的鉴赏判断的客体。\\n这就是说，一个理想应当在评判的何种根据中发生，就必须以何种按照确定概念的理性理念为基础，这理念先天地规定着对象的内在可能性建立于其上的那个目的。美的花朵，美的家具，美的风景，它们的一个理想是不可思维的。74但即使是依附于某个确定概念的美，如一幢美的住房，一棵美的树，一个美的花园等等，也无法对之表现出任何理想；也许是因为这些目的不足以通过它们的概念来规定和固定，因而这种合目的性几乎像在流动的美那里一样的自由的缘故。只有那在自身中拥有自己实存的目的的东西，即人，他通过理性自己规定自己的目的，或是当他必须从外部知觉中章来这些目的时，却能把它们与本质的和普遍的目的放在一起加以对照，并因而也能审美地评判它们与那些\\n①在语言艺术方面鉴赏的典范必须以某种已死的高深语言来撰写：第一，为的是不必遭到改变，这是活着的语言不可避免地要遇到的：高贵的表达变得平庸，常见的表达变得过时，创新的表达则只在短暂的持续中流行；第二，为的是它具有某种不受任何捉弄人的时尚变更所左右、面保有自已不变规则的语法。一康德\\n第一部分审美判断力批判自的的协调一致：因而只有这样的人，才能成为美的一个理想，正如唯有人类在其人格中，作为理智者，才能成为世间一切对象中的完善性的理想一样。\\n但这里应该有两方面：一是审美的规格理念，这是一个单一直观（想象力的直观），它把人的评判尺度表现为一个属于某种特殊动物物种之物的尺度；二是理性理念，它使不能被感性地表象出来的那些人类目的成为人的形象的评判原则，而这些目的是通过作为它们的结果的人的形象而在现象中启示出来的。规格理念必须从经验中取得它用以构造某种特殊种类的动物形象的要素；但在这个形象的建构中，适合于用作该物种的每个个体的审美评判之普遍尺度的最大的合目的性，即那种仿佛是有意为大自然的技巧奠定基础、而只有整体中的类却没有任何个别个体与之符合的肖像，却毕竞只存在于评判者的理念中，但这理念作为审美的[感性的]理念却可以和它的各种比例一起在某75个典型形象中完全具体地被表现出来。为了在某种程度上理解这种情况是如何发生的（因为谁能引诱大自然完全说出它的秘密呢？），我们想尝试作一个心理学的解释。\\n必须注意的是：想象力以一种我们完全不理解的方式，不仅善于偶尔地、哪怕是从久远的时间中唤回那些概念的标记：而且也善于从各种不同的乃至于同一种的数不清的对象中把对象的肖像和形象再生产出来；甚至如果一心想要比较的话，也善于根据各种猜测实际地、哪伯不是充分意识到地仿佛让一个肖像重叠在另一个肖像上，并通过同一种类的多个肖像的重合而得来一个平均值，把它用作一切肖像的共同标准。某人看见过上千的成年男子。如果他现在想要对这个可以进行比较性的估量的标准身材加以判断，那么（在我看来）想象力就会让大量的肖像（也许是所有那些上千的成年男子）相互重叠；并且如果充许我在这里用光学上的表达方式来类比的话，在大多数的肖像合并起来的那个空间中，以及在涂以最强烈的颜色而显示出其位置的那个轮廊之内，就会辨认出那个中等身材，它不论是按照身高还是肩宽都是和最大号及最小号的体形的两个极端界线等距离远的；而这就是一个美男子的体形。\\n（我们也可以机械地得出这一点，如果我们对所有这上千的男子加以测量，把他们的身高和肩宽（以及体胖）各自加在一起，再把总和除以一千的话。只是想象力是凭借对这样一些形象的多\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 19645, \"excerpt_end\": 22645, \"chapter_text_length\": 100177, \"has_more\": true, \"next_offset\": 22645, \"has_previous\": true, \"previous_offset\": 16645, \"focus_found\": true, \"focus_terms_matched\": [\"自由美\", \"依附美\"], \"focus_terms_found_in_chapter\": [\"自由美\", \"依附美\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"自由美\", \"offset\": 20345, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"offset\": 20145, \"focus\": \"自由美\"}}, {\"term\": \"依附美\", \"offset\": 20356, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"offset\": 20156, \"focus\": \"依附美\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"8707306cbfc8970f64b4e28956964f1c9de94968592796163e9a12979eebd65c\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/f08c1ead3164?ch=3\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[19645, 22645]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 65,
+      "focus": "天才就是给艺术提供规则的才能",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 65, \"title\": \"第一部分 审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分 审美判断力的批判】\", \"text\": \"感官感觉为准绳的艺术。\\n第45节 美的艺术是一种就其同时 显得是自然而言的艺术\\n在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然；但是，它的形式中的合目的性毕竟必须显得如此摆脱了任性规则的一切强制，就好像它纯然是自然的一个产品似的。在我们诸般认识能力的毕竟同时又必须是合目的的游戏中的这种自由情感之上，建立起惟一可以普遍传达却并不建立在概念之上的那种愉快。自然是美的，如果它同时看起来是艺术；而艺术只有当我们意识到它是艺术而在我们看来它毕竟又是自然的时候才被称为美的。\\n因为无论是谈到自然美还是谈到艺术美，我们都可以一般地说：美的就是那在纯然评判中（而不是在感官感觉中，也不是通过一个概念）让人喜欢的东西。现在，艺术在任何时候都有一个要产生出某种东西来的确定意图。但是，如果这种东西纯然是应当伴有愉快的感觉（某种纯然主观的东西），那么，这个产品在评判中就会只是借助于感官感觉而让人喜欢的了。如果这意图是针对产生一个确定的客体的，那么，当这意图通过艺术而达到时，客体就会只是通过概念而让人喜欢的。但在这两种场合，艺术都会不是在纯然的评判中，亦即不是作为美的艺术，而是作为机械的艺术让人喜欢的。\\n因此，美的艺术的产品中的合目的性虽然是有意的，但却毕竟不显得是有意的；也就是说，美的艺术必须被视为自然，虽然人们意识到它是艺术。但一个艺术产品显得是自然却是由于，虽然惟有按照规则这个产品才能够成为它应当是的东西，而在与规则的一致中看得出所有的一丝不苟；但却没有刻板，没有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。\\n第46节 美的艺术是天才的艺术\\n天才就是给艺术提供规则的才能（自然禀赋）。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium），通过它自然给艺术提供规则。\\n不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论），人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。\\n因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现为可能的。但是，美的艺术的概念不允许关于其产品的美的判断从某个以一个概念为规定根据，因而以关于这产品如何可能的概念为基础的规则中推导出来。因此，美的艺术不能为自己想出它应当据以完成自己的产品的规则。既然没有先行的规则一个产品就绝不能叫做艺术，所以，自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的。\\n人们由此就看出：1.天才是一种产生出不能为之提供任何确定规则的东西的才能，而不是对于按照某种规则可以学习的东西的技巧禀赋；所以，原创性就必须它的第一属性。2.既然也可能存在原创的胡闹，所以天才的产品必须同时是典范，亦即是示范性的；因此，它们本身不是通过模仿产生的，但却必须对别人来说用于模仿，亦即用做评判的准绳或者规则。3.它是如何完成自己的产品的，它自己也不能描述或者科学地指明，相反，它是作为自然来提供规则的；因此，一个产品的创作者把这产品归功于他的天才，他自己并不知道这方面的理念是如何在他心中出现的，就连随心所欲地或者按照计划地想出这些理念并在使别人能够产生出同样的产品的这样一些规范中把这些理念传达给别人，这也不是他所能控制的（因此，天才这个词也很可能是派生自genius［守护神］，即特有的、对于一个人来说与生俱来的保护和引导的精神，那些原创的理念就源自它的灵感）。4.自然通过天才不是为科学，而是为艺术颁布规则，而且就连这也只是就艺术应当是美的艺术而言的。\\n第47节 对上述关于天才的说明的阐释和证实\\n在这一点上每个人都是一致的，即天才是与模仿的精神完全对立的。既然学习无非就是模仿，所以，机敏好学（接受力）作为机敏好学，这种最大的能力就毕竟不能被视为天才。但是，即便人们自己思想或者创作，而且不仅是把握别人想过的东西，甚至还对于艺术和科学有所发明，这毕竟也还不是真正的根据，以便把这样一个（常常是伟大的）头脑（与那种由于从来不能超出纯然的学习和模仿而叫做蠢才的头脑相对立）称为一个天才，因为恰好这一点也是能够学来的，因而是处在按照规则进行研究和沉思的自然道路之上的，并且与通过勤奋凭借模仿就能够获得的东西没有类的区别。所以，人们完全能够学会牛顿在其《自然哲学原理》这部不朽的著作中所讲述的一切，哪怕发明出这类东西需要一个伟大的头脑；但是，人们却不能学会富有灵气地作诗，哪怕诗艺的一切规范是如此详细，它的典范是如此优秀。原因在于，牛顿可以把它从几何学的最初要素直到他的伟大而深刻的发明所应当采取的一切步骤，都不仅仅向他自己，而且向每个他人完全直观地并为了追随而确定地示范出来；但却没有一个荷马或者维兰德能够指出，其头脑中那些富有幻想而又毕竟同时思想丰富的理念是如何产生出来并会聚到一起的，这是因为他自己也不知道这一点，因而也不能把它教给任何他人。因此在科学中，最伟大的发明者与最辛劳的模仿者和学徒都只有程度上的区别，与此相反，他与自然使其有美的艺术天赋的人却有类的区别。不过，在这里并没有与在其美的艺术才能方面的自然宠儿相比来贬低人类要如此之多地感恩的那些伟大人物。他们与那些配得上号称天才这一荣誉的人相比一个重大的优点恰恰在于，他们的才能适合于知识和依赖于知识的一切利益不断进步的更大的完善性，同样适合于在同样这些知识中教导别人；而对于后者来说，艺术在某个地方就停滞不前了，因为对艺术设立了一个界限，它不能够再超出这个界限，这个界限也许很久以来就已经被达到并且不能再被扩展；此外，这样一种技巧也不能被传达，而是要由自然之手直接授予每个人，因而也与它一起死去，直到自然有朝一日再次同样赋予另一个人，这个人所需要的只是一个榜样，以便让他在自己身上意识到的才能以类似的方式起作用。\\n既然自然禀赋必须给艺术（作为美的艺术）提供规则，那么，这些规则究竟是什么性质的呢？它不能以任何公式撰写出来充当规范；因为若不然，关于美者的判断就是可以按照概念来规定的了；相反，这规则必须从事实中，亦即从产品中抽出，在这产品上，别人可以检验他们自己的才能，不是为了让它充当仿造的典范，而是为了让它充当模仿的典范。至于这一点是如何可能的，却很难解释。艺术家的理念激起他的学徒的类似的理念，如果自然给这个学徒配备上心灵力量的一种类似比例的话。因此，美的艺术的典范是惟一把这艺术带给后来者的引导手段，这种事是不能通过纯然的描述来发生的（尤其是在言语艺术的学科中）；甚至在言语艺术中，也只有在古代的已死的、现在只是作为学术的言说艺术而保留下来的语言中的言说艺术才成为经典的。\\n尽管机械的艺术和美的艺术，前者纯然作为勤奋的和学习的艺术，后者作为天才的艺术，相互之间颇有区别，但却毕竟没有任何美的艺术，其中不是有某种能够按照规则来领会和遵从的机械性东西，因而有某种符合学院规则的东西来构成艺术的本质条件的。因为在这里必须把某种东西设想为目的，若不然，人们就根本不能把自己的产品归于任何艺术；它就会只是偶然的产品。但为了把一个目的确立在作品中，就要求有一定的规则\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 73231, \"excerpt_end\": 76231, \"chapter_text_length\": 115528, \"has_more\": true, \"next_offset\": 76231, \"has_previous\": true, \"previous_offset\": 70231, \"focus_found\": true, \"focus_terms_matched\": [\"天才就是给艺术提供规则的才能\"], \"focus_terms_found_in_chapter\": [\"天才就是给艺术提供规则的才能\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"天才就是给艺术提供规则的才能\", \"offset\": 73931, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 65, \"offset\": 73731, \"focus\": \"天才就是给艺术提供规则的才能\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"195888feceb43c9b9da6b503e8fa8e1fc23cc0a110870d081d6846c36cc69bc2\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/390398aff8d0?ch=65\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[73231, 76231]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "丹托",
+      "limit": 5,
+      "query": "艺术界 解释 不可分辨 艺术与非艺术"
+     },
+     "status": "empty",
+     "duration_seconds": 0.002,
+     "result_full": "{\"query\": \"艺术界 解释 不可分辨 艺术与非艺术\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 0}, \"search_scope\": {\"author\": \"丹托\", \"book_id\": null}, \"method\": \"no_match\", \"note\": \"指定作者或书籍范围内未找到材料；未扩大到其他作者，也未用他人转述替代。请核对实际作者或book_id。\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI-generated art authorship aesthetic value devaluation",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.092,
+     "result_full": "{\"query\": \"AI-generated art authorship aesthetic value devaluation\", \"results\": [{\"source_record_id\": \"doi:10.56397/as.2023.02.11\", \"title\": \"The Impact of Authorship on Aesthetic Appreciation: A Study Comparing Human and AI-Generated Artworks\", \"authors\": [\"Taylor Darewych\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Art and Society\", \"doi\": \"10.56397/as.2023.02.11\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31234/osf.io/f4wpe\", \"title\": \"Computational Power and Subjective Quality of AI-generated Outputs: The Case of Aesthetic Judgement and Positive Emotions in AI-generated Art\", \"authors\": [\"Simone Grassini\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31234/osf.io/f4wpe\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.64229/jx9x0w44\", \"title\": \"The Algorithmic Gaze: Datafication, Authorship, and Aesthetic Value in Post-Digital Art\", \"authors\": [\"Duterte Dima\", \"Zhihao Tan\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Art and Theory\", \"doi\": \"10.64229/jx9x0w44\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31234/osf.io/7tgvw\", \"title\": \"AI Contextual Information Shapes Moral and Aesthetic Judgements of AI-Generated Visual Art\", \"authors\": [\"Ionela Bara\", \"Richard Ramsey\", \"Emily S. Cross\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31234/osf.io/7tgvw\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"title\": \"Reconsidering the Aesthetic Attributes and Value of AI-Generated Art from the Perspective of Qu\", \"authors\": [\"Wanqi Meng\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Lecture Notes in Education, Arts, Management and Social Science\", \"doi\": \"10.18063/lne.v3i10.1128\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781003676423-3\", \"title\": \"Aesthetic Protocols of Popular AI Art\", \"authors\": [\"Lotte Philipsen\"], \"year\": 2025, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"AI Aesthetics\", \"doi\": \"10.4324/9781003676423-3\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 5, \"READABLE_SOURCE_IDS\": [\"doi:10.56397/as.2023.02.11\", \"doi:10.31234/osf.io/f4wpe\", \"doi:10.64229/jx9x0w44\", \"doi:10.31234/osf.io/7tgvw\", \"doi:10.18063/lne.v3i10.1128\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"AI-generated art authorship aesthetic value devaluation\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI-generated art authorship aesthetic value devaluation\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI-generated art authorship aesthetic value devaluation\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.31234/osf.io/7tgvw",
+      "requested_access": "ABSTRACT",
+      "max_chars": 2200
+     },
+     "status": "success",
+     "duration_seconds": 0.12,
+     "result_full": "{\"source_record_id\": \"doi:10.31234/osf.io/7tgvw\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.31234/osf.io/7tgvw\", \"title\": \"AI Contextual Information Shapes Moral and Aesthetic Judgements of AI-Generated Visual Art\", \"authors\": [\"Ionela Bara\", \"Richard Ramsey\", \"Emily S. Cross\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31234/osf.io/7tgvw\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"<p>Throughout history, art creation has been regarded as a uniquely human means to express original ideas, emotions, and experiences. However, as Generative Artificial Intelligence reshapes visual, aesthetic, legal, and economic culture, critical questions arise about the moral and aesthetic implications of AI-generated art. Despite the growing use of AI tools in art, their moral impact remains underexplored. Understanding moral judgments of AI-generated art is essential for assessing AI's impact on art and its alignment with ethical norms. Across three pre-registered experiments combining explicit and implicit paradigms with Bayesian modelling, we examined how information about AI systems influences moral and aesthetic judgments and whether human art is implicitly associated with positive attributes compared to AI-generated art. Experiment 1 revealed that factual information about AI backend processes reduced moral acceptability and aesthetic appeal in contexts such as gaining financial incentives and art status. Experiment 2 showed that additional information about AI art's success had no clear impact on moral judgments. Experiment 3 demonstrated that an implicit association task did not reliably link human art with positive attributes and AI art with negative ones. These findings show that factual information about AI systems shapes judgments, while varying information doses about AI art's success have limited moral impact. Additionally, implicit associations between human-made and AI-generated art are similar. This work enhances understanding of moral and aesthetic perceptions of AI-generated art, emphasizing the importance of examining human—AI interactions in an art context, and their current societal implications.</p>\", \"source\": \"crossref_METADATA\", \"hash\": \"0eba0452dd0854271cf044ceab3ef8d41ca74b8ce692209570952519324dce17\", \"excerpt_start\": 0, \"excerpt_end\": 1754, \"total_characters\": 1754, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"0eba0452dd0854271cf044ceab3ef8d41ca74b8ce692209570952519324dce17\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.18063/lne.v3i10.1128",
+      "requested_access": "ABSTRACT",
+      "max_chars": 2200
+     },
+     "status": "success",
+     "duration_seconds": 0.128,
+     "result_full": "{\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"title\": \"Reconsidering the Aesthetic Attributes and Value of AI-Generated Art from the Perspective of Qu\", \"authors\": [\"Wanqi Meng\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Lecture Notes in Education, Arts, Management and Social Science\", \"doi\": \"10.18063/lne.v3i10.1128\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Drawing on the concept of &amp;ldquo;Qu&amp;rdquo; from traditional Chinese aesthetics, this paper examines the aesthetic generative mechanisms and value attribution of AI-generated art. Grounded in Qu&amp;rsquo;s&amp;nbsp;key characteristics&amp;mdash;non-instrumentality, balanced mediation, the principle of &amp;ldquo;deviating from convention while remaining in accord with aesthetic order,&amp;rdquo; and embodied experience&amp;mdash;this study proposes an alternative framework for understanding AI art. By doing so, it seeks to articulate a middle path that reconciles human subjectivity with technological generativity, thereby fostering a model of human&amp;ndash;technology co-existence within a posthuman context.</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"50a045def2242cb552d4f9ee1d773818fb9d055edc1534b26049f86a35b9a626\", \"excerpt_start\": 0, \"excerpt_end\": 735, \"total_characters\": 735, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"50a045def2242cb552d4f9ee1d773818fb9d055edc1534b26049f86a35b9a626\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "前见 成见 理解的条件 视域",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 3.495,
+     "result_full": "{\"query\": \"前见 成见 理解的条件 视域\", \"results\": [{\"book_id\": \"b43aeb7ccc57\", \"book_title\": \"《真理与方法》解读\", \"author\": \"汉斯-格奥尔格·伽达默尔\", \"chapter_idx\": 4, \"chapter_title\": \"第二章 一种诠释学经验理论的基本特征\", \"citation_label\": \"【《《真理与方法》解读》·第二章 一种诠释学经验理论的基本特征】\", \"snippet\": \"反思：论前见的仿效》的原文可看出，伯克离开那种把前见和错误加以等同的看法如何远：\\\"我足够大胆地承认，不是丢掉我们所有的旧成见，而是珍爱它们到非常程度，我们毫不羞愧地说，我们珍爱它们，正是因为它们是成见。它们愈是压迫多，它们愈是盛行，我们就愈多珍爱它们。”（《反思：论前见的仿效》，引白魏海默的《伽达默尔诠释学：〈真理与方法〉解读》，耶鲁大学出版社1985年版，第171页。） 无论如何，保存与破坏和更新的行为一样，是一种自由的行动。”( 1, 286 )如果我们能以这种方式看到传统最终不能与自由或理性相对立，或许我们将更愿承认传统在历史研究中的作用，而不认为传统总是某种可以随时随地以客观性和方法名义要加以消除的东西。伽达默尔说：“在我们\", \"score\": 17, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b43aeb7ccc57\", \"chapter_idx\": 4, \"focus\": \"前见 成见 理解的条件 视域\"}, \"material_role\": \"COMMENTARY_CANDIDATE\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"b43aeb7ccc57\", \"book_title\": \"《真理与方法》解读\", \"author\": \"汉斯-格奥尔格·伽达默尔\", \"chapter_idx\": 8, \"chapter_title\": \"附录一：诠释学简史\", \"citation_label\": \"【《《真理与方法》解读》·附录一：诠释学简史】\", \"snippet\": \"他间接地达到理解。由此伽达默尔得出一个惊人的结论，从启蒙时代理性主义观点来看似乎是理解障碍的前见，现在成了历史实在本身和理解的条件，因此摒除前见，不管这是否成功，就是摒弃理解。这种情况正如历史学家在理解研究历史时不能摆脱他自己的历史境遇和历史条件一样，如果他要摆脱这些历史要素，那么他就势必摆脱了历史研究本身，因为这些历史要素乃是他得以接近历史的手段。 为了证明前见的合法性，伽达默尔开始怀疑启蒙运动所谓理性与权威的对立。启蒙运动曾区分了两种前见：一种是由于人的威望而来的前见,另一种是由于轻率而来的前见。这种划分显然是基于启蒙运动这样一个前提，即如果我们严格遵照方法论规则使用理性，我们就可以避免任何错 ① 伽达默尔：《真理与方法》，第1\", \"score\": 16, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b43aeb7ccc57\", \"chapter_idx\": 8, \"focus\": \"前见 成见 理解的条件 视域\"}, \"material_role\": \"COMMENTARY_CANDIDATE\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"b43aeb7ccc57\", \"book_title\": \"《真理与方法》解读\", \"author\": \"汉斯-格奥尔格·伽达默尔\", \"chapter_idx\": 9, \"chapter_title\": \"附录二：哲学诠释学的基本特征——伽达默尔《真理与方法》一书梗概\", \"citation_label\": \"【《《真理与方法》解读》·附录二：哲学诠释学的基本特征——伽达默尔《真理与方法》一书梗概】\", \"snippet\": \"前见真正发挥作用，我们才能检验我们的前见。伽达默尔写道：“事实上，我们自己的前见正是通过它冒险行事才真正发挥作用。只有给成见以充分发挥作用的余地，我们才能经验他人对真理的主张，并使他人也有可能充分发挥作用。”②历史客观主义的错误就在于它未认识到这一点，由这里伽达默尔得岀他有名的效果历史原则。 伽达默尔说，当我们摆脱那种有害于理解的历史思维而要求一种更好地进行理解的历史思维时，我们就一定看到这种真正的历史思维必须 ① 伽达默尔：《真理与方法》，第1卷，第304页。 ② 同上。 同时想到它自己的历史性。只有这样，它才不会追求某个历史对象（历史对象乃是我们不断研究的对象）的幽灵，而将学会在对象中认识自己的他者，并因而认识自己和他者，这样—\", \"score\": 13, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b43aeb7ccc57\", \"chapter_idx\": 9, \"focus\": \"前见 成见 理解的条件 视域\"}, \"material_role\": \"COMMENTARY_CANDIDATE\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "审美价值 道德 自律 艺术价值 削弱",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 3.709,
+     "result_full": "{\"query\": \"审美价值 道德 自律 艺术价值 削弱\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 358, \"chapter_title\": \"241\", \"citation_label\": \"【《尼采文集（合集）》·241】\", \"snippet\": \" 作品与艺术家 。——这位艺术家野心勃勃，再无别的：最后，他的作品只不过是一个放大镜，提供给每个人按他的方式来观看。\", \"score\": 0.5929, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 358, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.828}, {\"book_id\": \"17fda3378628\", \"book_title\": \"美学理论\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 7, \"chapter_title\": \"第五章　艺术美：显形、精神化与直观性\", \"citation_label\": \"【《美学理论》·第五章　艺术美：显形、精神化与直观性】\", \"snippet\": \"一、“附加值”即表象 自然美的组成，在于其显得要说的东西多于其实际所说的东西。如今，艺术背后的理念，是要攫取自然界偶然场景产生的这一“附加值”，所采用的手法就是挪用自然表象和使其得以确定，这便意味着否定其非现实性以及其他一些东西。艺术的人为附加值并不凭借自身确保艺术包含任何形上学的内容。如若我们假定后者是琐碎无效的，这并非意味着艺术品不会设定一种表象的附加值。艺术品之所以成为艺术品，是因为它们产生的那种盈余，这正是其超越性所在。尽管如此，艺术品并非超越性发生的竞技场，这正是它们为何也与超越性分离的原因所在。艺术品中真正的超越性竞技场，是作品诸多契机的整合过程。通过努力争取整一性同时又设法适应整一性，一件艺术品的诸多契机就超越了这些契\", \"score\": 0.5779, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17fda3378628\", \"chapter_idx\": 7, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.57}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 362, \"chapter_title\": \"245\", \"citation_label\": \"【《尼采文集（合集）》·245】\", \"snippet\": \" 通过选择来赞美 。——艺术家选择自己的素材：这是他的赞美方式。\", \"score\": 0.5756, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 362, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.53}, {\"book_id\": \"bbac1be0bb4b\", \"book_title\": \"黑格尔作品集（套装共14册）\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 280, \"chapter_title\": \"c）荣誉的恢复\", \"citation_label\": \"【《黑格尔作品集（套装共14册）》·c）荣誉的恢复】\", \"snippet\": \"因此，每一种荣誉的破坏都被看成在本身上具有无限意义的，所以它也只能以无限的方式去补偿。当然，有许多程度不同的侮辱，就有许多程度不同的赔罪；不过我在现在这个题材范围里所说的破坏荣誉或侮辱是指我感觉到自己受侮辱，要求对方赔罪，这也完全是凭主观任意性的，而主观任意性有权利走到肆无忌惮和忿恨的极端。这里所要求的赎罪就须承认施损害者和受损害的我一样，也是一个重荣誉的人。因为我要从旁人那方面得到对我的荣誉的承认，如果我想他承认我的荣誉，我就要把他看成一个重荣誉的人，这就是说，我就要把他（尽管他伤害了我，我仇恨他）看成在人格上也是无限的。 所以荣誉的一般原则的基本定性是：每个人都不应通过自己的行动给旁人以凌驾于自己之上的权利，因此，不管他做了什么\", \"score\": 0.5618, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bbac1be0bb4b\", \"chapter_idx\": 280, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.292}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 202, \"chapter_title\": \"85\", \"citation_label\": \"【《尼采文集（合集）》·85】\", \"snippet\": \" 善与美 。——艺术家不断地 颂扬 ——他们不做其他任何事体——：而且是颂扬所有那些状态和事物，后者享有好名声，能给人机会，或者让人感觉良好或伟大，或者让人感觉陶醉，或者让人感觉快乐，或者让人感觉舒适和智慧。对于人的 幸福 而言，这些 被精选的 事物和状态的价值是确凿的和有定论的，它们是艺术家的客体：艺术家总是在暗中守候，伺机去发现此类东西并且把它们拉入艺术领域之中。我想说：艺术家本身并不是幸福和幸福之物的估价员，但他们总是跻身于这些估价员近旁，怀着极大的好奇心和兴致，希望立即就能利用后者的评估。因为他们除了不耐烦，也具有宣告者的大肺腔和奔跑者的双脚，所以，他们也总是成为第一批颂扬 新的 善的人，而且经常 表现 为这样的人，后者首先\", \"score\": 0.5565, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 202, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.202}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 15.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_JqwAke90c5HkQy4gN93M7071"
+    },
+    {
+     "t": 15.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_92ID43f6APNeJqeZUJCy3064"
+    },
+    {
+     "t": 15.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_xlm6r9N6c4h6IrtGXlO52262"
+    },
+    {
+     "t": 16.0,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_03_VoNhMZkkG1oMFDgZVgnJ2639",
+     "status": "success",
+     "duration_seconds": 0.039
+    },
+    {
+     "t": 16.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "天才 艺术 自然 自由 鉴赏",
+      "author": "康德",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.078,
+     "result_full": "{\"query\": \"天才 艺术 自然 自由 鉴赏\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"snippet\": \"的话）77由于：如果内心素质中没有任何东西是突出于形成一个无缺点的人所必要的那个比例之上的，那就不可能指望任何人们称之为天才的东西，在天才里大自然似乎偏离了内心诸能力通常的比例关系而只给唯一的一种内心能力以优惠。一康德 第一部分审美判断力批判性的理念中与道德的善联系起来的一切东西的结合，如灵魂的善良或纯洁、或坚强或宁静等等，仿佛在身体的表现（作为内心的效果）中变得明显可见：这就需要那只是想要评判它们、更不用说想要描绘它们的人，在内心中结合着理性的纯粹理念和想象力的巨大威力。这样一个美的理想的正确性表现在：它不充许任何感管刺激混杂进它对客体的愉悦之中，但却可以对这客体抱有巨大的兴趣；而这就证明，按照这样一个尺度所作的评判决不可能是纯粹\", \"score\": 294, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一部分 审美判断力批判\", \"citation_label\": \"【《康德三大批判合集（上下）》·第一部分 审美判断力批判】\", \"snippet\": \"的话）由于：如果内心素质中没有任何东西77是突出于形成一个无缺点的人所必要的那个比例之上的，那就不可能指望任何人们称之为天才的东西，在天才里大自然似乎偏离了内心诸能力通常的比例关系而只给唯一的一种内心能力以优惠。——康德 从第三个契机推出的美的说明美是一个对象的合目的性形式，如果这形式是没有一个目的的表象而在对象身上被知觉到的话。① 第四契机 鉴赏判断按照对对象的愉悦的模态来看的契机 18.什么是一个鉴赏判断的模态 至少是可能的。对于我称之为快适的东西，我就说它在我心中产生了现实的愉快。但对于美的东西我们却想到，它对于愉悦有一种必然的关系。而这里这种必然性具有特殊的类型：不是一个理论的客观必然性，在那里能先天地认识到每个人在我称之为\", \"score\": 276, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"10e1874c2255\", \"chapter_idx\": 12, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 10, \"chapter_title\": \"附录 论康德《判断力批判》的先验人类学建构\", \"citation_label\": \"【《判断力批判》·附录 论康德《判断力批判》的先验人类学建构】\", \"snippet\": \"的经验事实即艺术和艺术史中，寻找鉴赏判断及审美愉快普遍传达的先天条件。前者追溯到人的社会性的“共通感”，后者追溯到个人的天才。 A.共通感康德认为，人的知性已经设定了在一切人心中都有一种共同的“主观的东西”作为它之所以可能的先天条件：既然审美的反思性判断力与认识的规定性判断力一样，都是认识诸能力的协调运用，那么这种主观先天的东西也就是审美愉快的普遍必然性和有效性的条件；反过来，这种认识诸能力在鉴赏里所要求的比例，对于普通认识中的健全知性也是需要的。这种先天条件表现在人身上就是共通感（sensuscommunis），即一个共同感觉的理念（dieIdeeeinesgemeinschafilichenSinnes），它“在自己的反思中（先\", \"score\": 276, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 10, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 18, \"chapter_title\": \"第一部分审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分审美判断力的批判】\", \"snippet\": \"有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。 第4 6节　美的艺术是天才的艺术 天才就是给艺术提供规则的才能（自然禀赋） 。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium） ，通过它自然给艺术提供规则。 不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论） ，人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。 因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现\", \"score\": 274, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 18, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 65, \"chapter_title\": \"第一部分 审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分 审美判断力的批判】\", \"snippet\": \"没有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。 第46节 美的艺术是天才的艺术 天才就是给艺术提供规则的才能（自然禀赋）。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium），通过它自然给艺术提供规则。 不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论），人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。 因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现为可能\", \"score\": 274, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 65, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 33, \"chapter_title\": \"上卷 审美判断力的批判 第一部分 审美判断力的分析\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·上卷 审美判断力的批判 第一部分 审美判断力的分析】\", \"snippet\": \"[9] 确定他的判断是鉴赏判断。——译注 [10] 指客观关系。——译注 [11] Euler，1707—1783，德国天才的数学家。——译注 [12] 指鲍谟伽敦。——译注 [13] 关于语言艺术的鉴赏的范本，必须在一种已不通用的和艰深的语言里去寻找：第一，可以不须遭受变化，这是活的语言不可避免要碰到的，高尚的成了平凡，通常的陈旧了，新造的只通行一短时期；第二，它具有一定的语法，这种语法不因流行风尚而任意转变，但具有它的不变的法则。——原注 [14] 人们将见到，一个完全合规则的脸，画家请他坐着做模特的，通常是无所表现的： 因为这脸不具有特性，亦即较之个性的特殊点更多地表达着种的观念。这种的特性夸张过分，便破坏了标准观念（种的合目\", \"score\": 273, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 33, \"focus\": \"天才 艺术 自然 自由 鉴赏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《判断力批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 26, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 16.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "光晕 灵光 机械复制 此时此地",
+      "author": "本雅明",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.083,
+     "result_full": "{\"query\": \"光晕 灵光 机械复制 此时此地\", \"results\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"5d26edcad281\", \"book_title\": \"单行道\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《单行道》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"679b795a17f8\", \"book_title\": \"发达资本主义时代的抒情诗人\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《发达资本主义时代的抒情诗人》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"5d26edcad281\", \"book_title\": \"单行道\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《单行道》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"679b795a17f8\", \"book_title\": \"发达资本主义时代的抒情诗人\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《发达资本主义时代的抒情诗人》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 127}, \"search_scope\": {\"author\": \"本雅明\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 17.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "作者之死 作者 文本 意义",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.404,
+     "result_full": "{\"query\": \"作者之死 作者 文本 意义\", \"results\": [{\"book_id\": \"dd75d637a2ad\", \"book_title\": \"托马斯•霍布斯\", \"author\": \"托马斯·霍布斯\", \"chapter_idx\": 2, \"chapter_title\": \"通过相互立约创建国家\", \"citation_label\": \"【《托马斯•霍布斯》·通过相互立约创建国家】\", \"snippet\": \"）面不是历史。因此，她假定霍布斯的观点通过简单阅读他的文本即可理解。但是，在罗兰·巴特（RolandBarthes）的《作者之死》（TheDeathoftheAuthor）（1977）以及一般的后结构主义者都断言任何文学文本都有多重意义之后，这种方法论的可信度是否还站得住脚？另外，对非历史的观点的痴迷导致她考虑对历史学家来说似乎非常不合时宜的问题。例如，她讨论了温斯顿·史密斯（WinstonSmith）的101室困境，以使阐明霍布斯在《利维坦》中的论点。但是，《利维坦》和《一九八四》（1949）对政府有着同样的基本认识吗？事实上，霍布斯的政治想象力能否理解几百年后乔治·奥威尔讽刺的那种体制呢？显然，霍布斯并没有向奥威尔讲话，他也没有\", \"score\": 242, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd75d637a2ad\", \"chapter_idx\": 2, \"focus\": \"作者之死 作者 文本 意义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a1448e164acc\", \"book_title\": \"别笑，我是正经哲学书\", \"author\": \"富增章成\", \"chapter_idx\": 54, \"chapter_title\": \"用符号来解读世界\", \"citation_label\": \"【《别笑，我是正经哲学书》·用符号来解读世界】\", \"snippet\": \"理论基础是索绪尔的结构语言学，并运用符号学解读世界，使“文本”“书写”“话语”等现代思想基本用语蔚为风行。 巴尔特提出“作者之死”的概念，造成重大影响。一般来说，文学作品多被理解为作者思想的呈现，作品位于作者这个主人的支配之下，读者必须通过作品来了解作者的思想。 但是，巴尔特却主张这观念是近代特有的发想，而且已经过时了。在“作者之死”的概念下留下的，并非“作品”，而是“文本”。文本一旦离开作者之手，经读者的仔细阅读，就会得到深化，文本表现的并非作者内心的真实，新生命通过阅读才被创造出来，所以文本是被加工过的东西。读者才是真正的支配者，经由读者的阅读，文本才能独自迈步前行。 文本有编织物的含义，就好像持续被编织不断扩大的织物一样，而且\", \"score\": 177, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a1448e164acc\", \"chapter_idx\": 54, \"focus\": \"作者之死 作者 文本 意义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 18.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_bEmcrt4WSwhu74olkWTE8396"
+    },
+    {
+     "t": 19.1,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_lFoEvPSwAGJZ3hYutKUA7794"
+    },
+    {
+     "t": 19.3,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_02_pSXZuBRwAKUAXQMJnhoy4413",
+     "status": "success",
+     "duration_seconds": 0.014
+    },
+    {
+     "t": 19.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "自由美 依附美 美的理想",
+      "author": "康德",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.104,
+     "result_full": "{\"query\": \"自由美 依附美 美的理想\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"snippet\": \"东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。 任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱的\", \"score\": 130, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"focus\": \"自由美 依附美 美的理想\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 12, \"chapter_title\": \"第一部分 审美判断力批判\", \"citation_label\": \"【《康德三大批判合集（上下）》·第一部分 审美判断力批判】\", \"snippet\": \"东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。 任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它 的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱\", \"score\": 122, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"10e1874c2255\", \"chapter_idx\": 12, \"focus\": \"自由美 依附美 美的理想\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 21.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "赝品 真迹 原作 艺术价值 同一性",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 1.878,
+     "result_full": "{\"query\": \"赝品 真迹 原作 艺术价值 同一性\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 358, \"chapter_title\": \"241\", \"citation_label\": \"【《尼采文集（合集）》·241】\", \"snippet\": \" 作品与艺术家 。——这位艺术家野心勃勃，再无别的：最后，他的作品只不过是一个放大镜，提供给每个人按他的方式来观看。\", \"score\": 0.5344, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 358, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.894}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 26, \"chapter_title\": \"第二稿·Ⅳ\", \"citation_label\": \"【《机械复制时代的艺术作品》·第二稿·Ⅳ】\", \"snippet\": \"一件艺术作品的独一无二性是与它置身于那种传统的联系相一致的。当然，这传统本身是绝对富有生 气的东西，它具有极大的可变性。例如，一尊维纳斯的古雕像，在古希腊和中世纪就处于完全不同的传统联系中。希腊人把维纳斯雕像视为崇拜的对象，而中世纪的牧师则把它视作一尊淫乱的邪神像；但这两种人都以同样的方式触及了这尊雕像的独一无二性，即它的光韵。艺术作品在传统联系中的存在方式最初体现在膜拜中。我们知道，最早的艺术品起源于某种礼仪一起初是巫术礼仪，后来是宗教礼仪。在此，具有决定意义的是艺术作品那种具有光韵的存在方式从未完全与它的礼仪功能分开[\\\"]，换言之，“原真”的艺术作品所具有的独一无二的价值植根于神学，艺术作品在礼仪中获得了其原始的、最初的使用价值\", \"score\": 0.5307, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 26, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.825}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 5, \"chapter_title\": \"5.礼仪与政治\", \"citation_label\": \"【《机械复制时代的艺术作品》·5.礼仪与政治】\", \"snippet\": \"一件艺术作品的独一无二性是与它置身于其中的传统关联相一致的。当然，这传统本身是绝对富有生气的东西，它具有极大的可变性。例如，一尊维纳斯的古雕像，在古希腊和中世纪就处于完全不同的传统关联中。希腊人把维纳斯雕像视为崇拜的对象，而中世纪的牧师则把它视作一尊淫乱的邪神像；但这两种人都以同样的方式触及了这尊雕像的独一无二性，即它的光韵。艺术作品在传统联系中的存在最初体现在膜拜中。我们知道，最早的艺术品起源于某种礼仪一一起初是巫术礼仪，后来是宗教礼仪。在此，具有决定意义的是艺术作品那种闪发光韵的存在方式从未 完全与它的礼仪功能分开，换言之，“原真”的艺术作品所具有的独一无二的价值植根于神学，这个根基尽管辗转流传，但它作为世俗化了的礼仪在对美的崇\", \"score\": 0.5232, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 5, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.684}, {\"book_id\": \"17fda3378628\", \"book_title\": \"美学理论\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 7, \"chapter_title\": \"第五章　艺术美：显形、精神化与直观性\", \"citation_label\": \"【《美学理论》·第五章　艺术美：显形、精神化与直观性】\", \"snippet\": \"一、“附加值”即表象 自然美的组成，在于其显得要说的东西多于其实际所说的东西。如今，艺术背后的理念，是要攫取自然界偶然场景产生的这一“附加值”，所采用的手法就是挪用自然表象和使其得以确定，这便意味着否定其非现实性以及其他一些东西。艺术的人为附加值并不凭借自身确保艺术包含任何形上学的内容。如若我们假定后者是琐碎无效的，这并非意味着艺术品不会设定一种表象的附加值。艺术品之所以成为艺术品，是因为它们产生的那种盈余，这正是其超越性所在。尽管如此，艺术品并非超越性发生的竞技场，这正是它们为何也与超越性分离的原因所在。艺术品中真正的超越性竞技场，是作品诸多契机的整合过程。通过努力争取整一性同时又设法适应整一性，一件艺术品的诸多契机就超越了这些契\", \"score\": 0.5216, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17fda3378628\", \"chapter_idx\": 7, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.653}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 3, \"chapter_title\": \"3.原真性\", \"citation_label\": \"【《机械复制时代的艺术作品》·3.原真性】\", \"snippet\": \"只能由化学或物理分析方法去发掘，面这种分析在复制品中又是无法实现的；至于后一种变化的痕迹则是个传统问题，对其追踪又必须以原作的状况为出发点。原作的即时即地性组成了它的原真性（Echtheit）。对传统的构想依据这原真性，才使即时即地性时至今日作为完全的等同物流传。完全的原真性是技术——当然不仅仅是技术—复制所达不到的。原作在碰到通常被视为品的手工复制品时，就获得了它全部的权成性，而碰到技术复制品时就不是这样了。其原因有二。一是技术复制比手工复制更独立于窄作。比如，在照相摄影中，技术复制可以突出 那些由肉眼不能看见但镜头可以捕捉的原作部分，而且镜头可以挑选其拍摄角度；此外，照相摄影还可以通过放大或慢摄等方法摄下那些肉眼未能看见的形象。\", \"score\": 0.5166, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 3, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.559}, {\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"chapter_idx\": 39, \"chapter_title\": \"第二稿·注释\", \"citation_label\": \"【《机械复制时代的艺术作品》·第二稿·注释】\", \"snippet\": \"（1）保罗·瓦莱利（PaulValery，1871一1945），法国象征主义诗人和理论家。一一译者[2]保罗·瓦莱利：《艺术片论集》（Piecessurl'art），巴黎，第105页（《无处不在的征服》）。一一第53页[3]当然，一件艺术品的历史还包括更多的东西，例如《蒙娜·丽莎》（MonaLisa）的历史，就还包括它在17、18、19世纪各种筹木的种类和数量。一第54页[4]正是由于原真性是不可复制的，努力采用某些一一机械一一复制方法，才有助于将原真性加以区分和归类，造就这种区分是艺术品买卖行业的一项重要职责。艺术品买卖行业的兴致明显地在于，把文宇发明前和发明后的各种木刻样版与铜版以及类似于铜版的东西区分开采。可以说，平在原真性以\", \"score\": 0.5113, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"71f2b160cfc7\", \"chapter_idx\": 39, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.459}, {\"book_id\": \"17fda3378628\", \"book_title\": \"美学理论\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 10, \"chapter_title\": \"第八章　连贯与意义\", \"citation_label\": \"【《美学理论》·第八章　连贯与意义】\", \"snippet\": \"一、逻辑性 艺术品既不是概念性的，也不是判断性的，但在一定程度上却是逻辑性的。倘若作品没有其逻辑性，作品也就不具有谜语特质。虽然这种逻辑性类似于推论性思想的逻辑特性，但它毕竟不能达到后者的标准。 有许多地方，艺术与逻辑都是重叠的，其中十分直接的地方就是艺术的“结论”形式与其逻辑里的对应形式。在各种时间艺术中，相当习以为常的说法是：某一段“接着”另一段。这不光是一种说法，而且反映出一种经验性因果关系。一物被视为另一物的延续——在时间艺术中如此，在视觉艺术中也是如此。艺术品务必与自身同一，这是其职责所在；这种职责与潜在的固有契约之间的应力，关乎动态平衡的传统理想，都是以三段论原则为先决条件。这就是艺术品的理性特征，一种内在的制约性，没有\", \"score\": 0.5079, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17fda3378628\", \"chapter_idx\": 10, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.396}, {\"book_id\": \"bbac1be0bb4b\", \"book_title\": \"黑格尔作品集（套装共14册）\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 217, \"chapter_title\": \"c）真正的客观性\", \"citation_label\": \"【《黑格尔作品集（套装共14册）》·c）真正的客观性】\", \"snippet\": \"关于这一层，我们可以按照理念的概念，从主体的外现方面来看，把真正的客观性定成这样：使艺术家得到灵感的那种真正的内容（意蕴）不能有丝毫部分仍保留在主体的内心里，而是要完全揭示出来；而揭示的方式又要是这样的：所选内容（意蕴）的普遍的灵魂和实体既很明确，它的个别形象本身也很圆满，而整个表现出来的作品显得有那灵魂和实体灌注在里面。因为最高尚最卓越的东西都不是什么不可言说的东西，认为诗人在作品里所表现的之外，还有远较深刻的东西，那是不正确的。作品就足以见出艺术家的最好的方面和真实的方面；他是什么样人就 是 什么样人，凡是只留在内心里的就还 不是 他。 3．作风、风格和独创性 但是尽管我们应该要求艺术家有上述意义的客观性，表现出来的东西却还是 \", \"score\": 0.5067, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bbac1be0bb4b\", \"chapter_idx\": 217, \"focus\": \"赝品 真迹 原作 艺术价值 同一性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.373}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 22.5,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_9d9xuymaqPkEbSbfyeRl3543"
+    },
+    {
+     "t": 22.7,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_fuRcI1Y5RREplW6PnzZE0601"
+    },
+    {
+     "t": 23.0,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_02_jh0zLFk4DRjovH8Lwdpu1793",
+     "status": "success",
+     "duration_seconds": 0.008
+    },
+    {
+     "t": 23.3,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "f08c1ead3164",
+      "chapter_idx": 3,
+      "focus": "自由美 依附美",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"chapter_idx\": 3, \"title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"text\": \"的。如果现在，在后一种愉悦方面的鉴赏判断被弄得依赖于前一种作为理性判断的愉悦中的目的并因此受到限制，那么这种判断就不再是一个自由的和纯粹的鉴赏判断了。\\n尽管鉴赏由于审美的愉悦和智性的愉悦的这一结合，而在自身得到固定方面，以及它虽然不是普遍的、然而却能就某些合目的地被规定的客体来给它颁定规则这方面有所收获；但这样一些规则因而也不是什么鉴赏规则，而只是\\n①法文：希腊式的。一译者\\n第一部分审美判断力批判鉴赏和理性、即美与善一致的规则，通过这种一致，前者可以被用作后者的意图的工具，以使用这种自身维持并具有主观普遍有效性的内心情调，来给那种只有通过下决心费力才能维持却具有客观普遍有效性的思想境界作铺垫。但真正说来，完善性并不通过美而有所收获，美也并不通过完善性而有所收获；相反，由于当我们把一个对象借以被给予我们的那个表象通过一个概念而与客体（就它应当是什么而言）相比较时，不能避免同时也把这表象与主体中的感觉放在一起作比较，这样，如果这两种内心状态是相协调的，表象力的全部能力才会有收获。\\n一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的。\\n但那样一来，这个判断者尽管由于把该对象评判为自由的美而作出了一个正72确的鉴赏判断，他却仍然会受到另一个把该对象的美只看作依附性的性状（着眼于对象的目的）的人的责备，被指责犯了鉴赏的错误，虽然双方都以自已的方式作出了正确的判断：一个是按照出现在他的感管面前的东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。\\n任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱的、几乎不足以猜度出来的标准，即一个由这些实例所证实了的鉴赏从那个深深隐藏着的一致性根据中发源的标准，这个一致性根据在评判诸对象由以被给予一切人的那些形式时，对一切人都是共同的。\\n17.美的理想\\n所以我们把一些鉴赏作品看作是示范性的：这并不是说，鉴赏似乎可以通过模仿别人而获得。因为鉴赏必须是自己特有的一种能力；凡是模仿一个典范的人，如果他模仿得准确的话，他虽然表现出熟巧，但只有当他能够自己评判这一典范时，他才表现出鉴赏。①但由此得出，最高的典范，即鉴赏的原型，73只是一个理念，每个人必须在自己心里把它产生出来，他必须据此来评判一切作为鉴赏的客体、作为用鉴赏来评判的实例的东西，甚至据此来评判每个人的鉴赏本身。本来，理念意味着一个理性概念，而理想则意味着一个单一存在物、作为符合某个理念的存在物的表象。因此那个鉴赏原型固然是基于理性有关一个最大值的不确定的理念之上的，但毕竟不能通过概念、而只能在个别的描绘中表现出来，它是更能被称之为美的理想的，这类东西我们虽然并不占有它，但却努力在我们心中把它创造出来。但它将只是想象力的一个理想，这正是因为它不是基于概念之上，而是基于描绘之上的；但描绘能力就是想象力。一—那么，我们如何才能达到这样一个美的理想呢？先天地还是经验性地？再如：哪一类的美能够成为一个理想？\\n首先应十分注意的是：要想从中寻求一个理想的那种美，必定不是什么流动的美，而是由一个有关客观合目的性的概念固定了的美，因而必定不属于一个完全纯粹的鉴赏判断的客体，而属于一个部分智性化了的鉴赏判断的客体。\\n这就是说，一个理想应当在评判的何种根据中发生，就必须以何种按照确定概念的理性理念为基础，这理念先天地规定着对象的内在可能性建立于其上的那个目的。美的花朵，美的家具，美的风景，它们的一个理想是不可思维的。74但即使是依附于某个确定概念的美，如一幢美的住房，一棵美的树，一个美的花园等等，也无法对之表现出任何理想；也许是因为这些目的不足以通过它们的概念来规定和固定，因而这种合目的性几乎像在流动的美那里一样的自由的缘故。只有那在自身中拥有自己实存的目的的东西，即人，他通过理性自己规定自己的目的，或是当他必须从外部知觉中章来这些目的时，却能把它们与本质的和普遍的目的放在一起加以对照，并因而也能审美地评判它们与那些\\n①在语言艺术方面鉴赏的典范必须以某种已死的高深语言来撰写：第一，为的是不必遭到改变，这是活着的语言不可避免地要遇到的：高贵的表达变得平庸，常见的表达变得过时，创新的表达则只在短暂的持续中流行；第二，为的是它具有某种不受任何捉弄人的时尚变更所左右、面保有自已不变规则的语法。一康德\\n第一部分审美判断力批判自的的协调一致：因而只有这样的人，才能成为美的一个理想，正如唯有人类在其人格中，作为理智者，才能成为世间一切对象中的完善性的理想一样。\\n但这里应该有两方面：一是审美的规格理念，这是一个单一直观（想象力的直观），它把人的评判尺度表现为一个属于某种特殊动物物种之物的尺度；二是理性理念，它使不能被感性地表象出来的那些人类目的成为人的形象的评判原则，而这些目的是通过作为它们的结果的人的形象而在现象中启示出来的。规格理念必须从经验中取得它用以构造某种特殊种类的动物形象的要素；但在这个形象的建构中，适合于用作该物种的每个个体的审美评判之普遍尺度的最大的合目的性，即那种仿佛是有意为大自然的技巧奠定基础、而只有整体中的类却没有任何个别个体与之符合的肖像，却毕竞只存在于评判者的理念中，但这理念作为审美的[感性的]理念却可以和它的各种比例一起在某75个典型形象中完全具体地被表现出来。为了在某种程度上理解这种情况是如何发生的（因为谁能引诱大自然完全说出它的秘密呢？），我们想尝试作一个心理学的解释。\\n必须注意的是：想象力以一种我们完全不理解的方式，不仅善于偶尔地、哪怕是从久远的时间中唤回那些概念的标记：而且也善于从各种不同的乃至于同一种的数不清的对象中把对象的肖像和形象再生产出来；甚至如果一心想要比较的话，也善于根据各种猜测实际地、哪伯不是充分意识到地仿佛让一个肖像重叠在另一个肖像上，并通过同一种类的多个肖像的重合而得来一个平均值，把它用作一切肖像的共同标准。某人看见过上千的成年男子。如果他现在想要对这个可以进行比较性的估量的标准身材加以判断，那么（在我看来）想象力就会让大量的肖像（也许是所有那些上千的成年男子）相互重叠；并且如果充许我在这里用光学上的表达方式来类比的话，在大多数的肖像合并起来的那个空间中，以及在涂以最强烈的颜色而显示出其位置的那个轮廊之内，就会辨认出那个中等身材，它不论是按照身高还是肩宽都是和最大号及最小号的体形的两个极端界线等距离远的；而这就是一个美男子的体形。\\n（我们也可以机械地得出这一点，如果我们对所有这上千的男子加以测量，把他们的身高和肩宽（以及体胖）各自加在一起，再把总和除以一千的话。只是想象力是凭借对这样一些形象的多\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 19645, \"excerpt_end\": 22645, \"chapter_text_length\": 100177, \"has_more\": true, \"next_offset\": 22645, \"has_previous\": true, \"previous_offset\": 16645, \"focus_found\": true, \"focus_terms_matched\": [\"自由美\", \"依附美\"], \"focus_terms_found_in_chapter\": [\"自由美\", \"依附美\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"自由美\", \"offset\": 20345, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"offset\": 20145, \"focus\": \"自由美\"}}, {\"term\": \"依附美\", \"offset\": 20356, \"read_args\": {\"book_id\": \"f08c1ead3164\", \"chapter_idx\": 3, \"offset\": 20156, \"focus\": \"依附美\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"8707306cbfc8970f64b4e28956964f1c9de94968592796163e9a12979eebd65c\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/f08c1ead3164?ch=3\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[19645, 22645]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 23.3,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 65,
+      "focus": "天才就是给艺术提供规则的才能",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.01,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 65, \"title\": \"第一部分 审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分 审美判断力的批判】\", \"text\": \"感官感觉为准绳的艺术。\\n第45节 美的艺术是一种就其同时 显得是自然而言的艺术\\n在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然；但是，它的形式中的合目的性毕竟必须显得如此摆脱了任性规则的一切强制，就好像它纯然是自然的一个产品似的。在我们诸般认识能力的毕竟同时又必须是合目的的游戏中的这种自由情感之上，建立起惟一可以普遍传达却并不建立在概念之上的那种愉快。自然是美的，如果它同时看起来是艺术；而艺术只有当我们意识到它是艺术而在我们看来它毕竟又是自然的时候才被称为美的。\\n因为无论是谈到自然美还是谈到艺术美，我们都可以一般地说：美的就是那在纯然评判中（而不是在感官感觉中，也不是通过一个概念）让人喜欢的东西。现在，艺术在任何时候都有一个要产生出某种东西来的确定意图。但是，如果这种东西纯然是应当伴有愉快的感觉（某种纯然主观的东西），那么，这个产品在评判中就会只是借助于感官感觉而让人喜欢的了。如果这意图是针对产生一个确定的客体的，那么，当这意图通过艺术而达到时，客体就会只是通过概念而让人喜欢的。但在这两种场合，艺术都会不是在纯然的评判中，亦即不是作为美的艺术，而是作为机械的艺术让人喜欢的。\\n因此，美的艺术的产品中的合目的性虽然是有意的，但却毕竟不显得是有意的；也就是说，美的艺术必须被视为自然，虽然人们意识到它是艺术。但一个艺术产品显得是自然却是由于，虽然惟有按照规则这个产品才能够成为它应当是的东西，而在与规则的一致中看得出所有的一丝不苟；但却没有刻板，没有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。\\n第46节 美的艺术是天才的艺术\\n天才就是给艺术提供规则的才能（自然禀赋）。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium），通过它自然给艺术提供规则。\\n不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论），人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。\\n因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现为可能的。但是，美的艺术的概念不允许关于其产品的美的判断从某个以一个概念为规定根据，因而以关于这产品如何可能的概念为基础的规则中推导出来。因此，美的艺术不能为自己想出它应当据以完成自己的产品的规则。既然没有先行的规则一个产品就绝不能叫做艺术，所以，自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的。\\n人们由此就看出：1.天才是一种产生出不能为之提供任何确定规则的东西的才能，而不是对于按照某种规则可以学习的东西的技巧禀赋；所以，原创性就必须它的第一属性。2.既然也可能存在原创的胡闹，所以天才的产品必须同时是典范，亦即是示范性的；因此，它们本身不是通过模仿产生的，但却必须对别人来说用于模仿，亦即用做评判的准绳或者规则。3.它是如何完成自己的产品的，它自己也不能描述或者科学地指明，相反，它是作为自然来提供规则的；因此，一个产品的创作者把这产品归功于他的天才，他自己并不知道这方面的理念是如何在他心中出现的，就连随心所欲地或者按照计划地想出这些理念并在使别人能够产生出同样的产品的这样一些规范中把这些理念传达给别人，这也不是他所能控制的（因此，天才这个词也很可能是派生自genius［守护神］，即特有的、对于一个人来说与生俱来的保护和引导的精神，那些原创的理念就源自它的灵感）。4.自然通过天才不是为科学，而是为艺术颁布规则，而且就连这也只是就艺术应当是美的艺术而言的。\\n第47节 对上述关于天才的说明的阐释和证实\\n在这一点上每个人都是一致的，即天才是与模仿的精神完全对立的。既然学习无非就是模仿，所以，机敏好学（接受力）作为机敏好学，这种最大的能力就毕竟不能被视为天才。但是，即便人们自己思想或者创作，而且不仅是把握别人想过的东西，甚至还对于艺术和科学有所发明，这毕竟也还不是真正的根据，以便把这样一个（常常是伟大的）头脑（与那种由于从来不能超出纯然的学习和模仿而叫做蠢才的头脑相对立）称为一个天才，因为恰好这一点也是能够学来的，因而是处在按照规则进行研究和沉思的自然道路之上的，并且与通过勤奋凭借模仿就能够获得的东西没有类的区别。所以，人们完全能够学会牛顿在其《自然哲学原理》这部不朽的著作中所讲述的一切，哪怕发明出这类东西需要一个伟大的头脑；但是，人们却不能学会富有灵气地作诗，哪怕诗艺的一切规范是如此详细，它的典范是如此优秀。原因在于，牛顿可以把它从几何学的最初要素直到他的伟大而深刻的发明所应当采取的一切步骤，都不仅仅向他自己，而且向每个他人完全直观地并为了追随而确定地示范出来；但却没有一个荷马或者维兰德能够指出，其头脑中那些富有幻想而又毕竟同时思想丰富的理念是如何产生出来并会聚到一起的，这是因为他自己也不知道这一点，因而也不能把它教给任何他人。因此在科学中，最伟大的发明者与最辛劳的模仿者和学徒都只有程度上的区别，与此相反，他与自然使其有美的艺术天赋的人却有类的区别。不过，在这里并没有与在其美的艺术才能方面的自然宠儿相比来贬低人类要如此之多地感恩的那些伟大人物。他们与那些配得上号称天才这一荣誉的人相比一个重大的优点恰恰在于，他们的才能适合于知识和依赖于知识的一切利益不断进步的更大的完善性，同样适合于在同样这些知识中教导别人；而对于后者来说，艺术在某个地方就停滞不前了，因为对艺术设立了一个界限，它不能够再超出这个界限，这个界限也许很久以来就已经被达到并且不能再被扩展；此外，这样一种技巧也不能被传达，而是要由自然之手直接授予每个人，因而也与它一起死去，直到自然有朝一日再次同样赋予另一个人，这个人所需要的只是一个榜样，以便让他在自己身上意识到的才能以类似的方式起作用。\\n既然自然禀赋必须给艺术（作为美的艺术）提供规则，那么，这些规则究竟是什么性质的呢？它不能以任何公式撰写出来充当规范；因为若不然，关于美者的判断就是可以按照概念来规定的了；相反，这规则必须从事实中，亦即从产品中抽出，在这产品上，别人可以检验他们自己的才能，不是为了让它充当仿造的典范，而是为了让它充当模仿的典范。至于这一点是如何可能的，却很难解释。艺术家的理念激起他的学徒的类似的理念，如果自然给这个学徒配备上心灵力量的一种类似比例的话。因此，美的艺术的典范是惟一把这艺术带给后来者的引导手段，这种事是不能通过纯然的描述来发生的（尤其是在言语艺术的学科中）；甚至在言语艺术中，也只有在古代的已死的、现在只是作为学术的言说艺术而保留下来的语言中的言说艺术才成为经典的。\\n尽管机械的艺术和美的艺术，前者纯然作为勤奋的和学习的艺术，后者作为天才的艺术，相互之间颇有区别，但却毕竟没有任何美的艺术，其中不是有某种能够按照规则来领会和遵从的机械性东西，因而有某种符合学院规则的东西来构成艺术的本质条件的。因为在这里必须把某种东西设想为目的，若不然，人们就根本不能把自己的产品归于任何艺术；它就会只是偶然的产品。但为了把一个目的确立在作品中，就要求有一定的规则\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 73231, \"excerpt_end\": 76231, \"chapter_text_length\": 115528, \"has_more\": true, \"next_offset\": 76231, \"has_previous\": true, \"previous_offset\": 70231, \"focus_found\": true, \"focus_terms_matched\": [\"天才就是给艺术提供规则的才能\"], \"focus_terms_found_in_chapter\": [\"天才就是给艺术提供规则的才能\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"天才就是给艺术提供规则的才能\", \"offset\": 73931, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 65, \"offset\": 73731, \"focus\": \"天才就是给艺术提供规则的才能\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"195888feceb43c9b9da6b503e8fa8e1fc23cc0a110870d081d6846c36cc69bc2\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/390398aff8d0?ch=65\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[73231, 76231]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 25.4,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_00_DAYLCJ6Peq9pm7z1Gl5t0830"
+    },
+    {
+     "t": 25.6,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_fMIs1Rpamz3nh5K11j1C7743",
+     "status": "empty",
+     "duration_seconds": 0.002
+    },
+    {
+     "t": 26.9,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI-generated art authorship aesthetic value devaluation",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.092,
+     "result_full": "{\"query\": \"AI-generated art authorship aesthetic value devaluation\", \"results\": [{\"source_record_id\": \"doi:10.56397/as.2023.02.11\", \"title\": \"The Impact of Authorship on Aesthetic Appreciation: A Study Comparing Human and AI-Generated Artworks\", \"authors\": [\"Taylor Darewych\"], \"year\": 2023, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Art and Society\", \"doi\": \"10.56397/as.2023.02.11\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31234/osf.io/f4wpe\", \"title\": \"Computational Power and Subjective Quality of AI-generated Outputs: The Case of Aesthetic Judgement and Positive Emotions in AI-generated Art\", \"authors\": [\"Simone Grassini\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31234/osf.io/f4wpe\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.64229/jx9x0w44\", \"title\": \"The Algorithmic Gaze: Datafication, Authorship, and Aesthetic Value in Post-Digital Art\", \"authors\": [\"Duterte Dima\", \"Zhihao Tan\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Art and Theory\", \"doi\": \"10.64229/jx9x0w44\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31234/osf.io/7tgvw\", \"title\": \"AI Contextual Information Shapes Moral and Aesthetic Judgements of AI-Generated Visual Art\", \"authors\": [\"Ionela Bara\", \"Richard Ramsey\", \"Emily S. Cross\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31234/osf.io/7tgvw\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"title\": \"Reconsidering the Aesthetic Attributes and Value of AI-Generated Art from the Perspective of Qu\", \"authors\": [\"Wanqi Meng\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Lecture Notes in Education, Arts, Management and Social Science\", \"doi\": \"10.18063/lne.v3i10.1128\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781003676423-3\", \"title\": \"Aesthetic Protocols of Popular AI Art\", \"authors\": [\"Lotte Philipsen\"], \"year\": 2025, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"AI Aesthetics\", \"doi\": \"10.4324/9781003676423-3\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 5, \"READABLE_SOURCE_IDS\": [\"doi:10.56397/as.2023.02.11\", \"doi:10.31234/osf.io/f4wpe\", \"doi:10.64229/jx9x0w44\", \"doi:10.31234/osf.io/7tgvw\", \"doi:10.18063/lne.v3i10.1128\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"AI-generated art authorship aesthetic value devaluation\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI-generated art authorship aesthetic value devaluation\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"AI-generated art authorship aesthetic value devaluation\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 28.1,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_ied4m1SmKvc6YVEV262S9217"
+    },
+    {
+     "t": 28.3,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_JvAbO25lKWGQsaI72YAj6130",
+     "status": "success",
+     "duration_seconds": 0.12
+    },
+    {
+     "t": 28.6,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.18063/lne.v3i10.1128",
+      "requested_access": "ABSTRACT",
+      "max_chars": 2200
+     },
+     "status": "success",
+     "duration_seconds": 0.128,
+     "result_full": "{\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"title\": \"Reconsidering the Aesthetic Attributes and Value of AI-Generated Art from the Perspective of Qu\", \"authors\": [\"Wanqi Meng\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Lecture Notes in Education, Arts, Management and Social Science\", \"doi\": \"10.18063/lne.v3i10.1128\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Drawing on the concept of &amp;ldquo;Qu&amp;rdquo; from traditional Chinese aesthetics, this paper examines the aesthetic generative mechanisms and value attribution of AI-generated art. Grounded in Qu&amp;rsquo;s&amp;nbsp;key characteristics&amp;mdash;non-instrumentality, balanced mediation, the principle of &amp;ldquo;deviating from convention while remaining in accord with aesthetic order,&amp;rdquo; and embodied experience&amp;mdash;this study proposes an alternative framework for understanding AI art. By doing so, it seeks to articulate a middle path that reconciles human subjectivity with technological generativity, thereby fostering a model of human&amp;ndash;technology co-existence within a posthuman context.</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"50a045def2242cb552d4f9ee1d773818fb9d055edc1534b26049f86a35b9a626\", \"excerpt_start\": 0, \"excerpt_end\": 735, \"total_characters\": 735, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"50a045def2242cb552d4f9ee1d773818fb9d055edc1534b26049f86a35b9a626\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 74.3,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_n5JEnkhJjPWLdmBgUdXE4432"
+    },
+    {
+     "t": 74.5,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_NlM4qekOlID3hiilImrz9221",
+     "status": "success",
+     "duration_seconds": 3.495
+    },
+    {
+     "t": 78.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "审美价值 道德 自律 艺术价值 削弱",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 3.709,
+     "result_full": "{\"query\": \"审美价值 道德 自律 艺术价值 削弱\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 358, \"chapter_title\": \"241\", \"citation_label\": \"【《尼采文集（合集）》·241】\", \"snippet\": \" 作品与艺术家 。——这位艺术家野心勃勃，再无别的：最后，他的作品只不过是一个放大镜，提供给每个人按他的方式来观看。\", \"score\": 0.5929, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 358, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.828}, {\"book_id\": \"17fda3378628\", \"book_title\": \"美学理论\", \"author\": \"西奥多·阿多诺\", \"chapter_idx\": 7, \"chapter_title\": \"第五章　艺术美：显形、精神化与直观性\", \"citation_label\": \"【《美学理论》·第五章　艺术美：显形、精神化与直观性】\", \"snippet\": \"一、“附加值”即表象 自然美的组成，在于其显得要说的东西多于其实际所说的东西。如今，艺术背后的理念，是要攫取自然界偶然场景产生的这一“附加值”，所采用的手法就是挪用自然表象和使其得以确定，这便意味着否定其非现实性以及其他一些东西。艺术的人为附加值并不凭借自身确保艺术包含任何形上学的内容。如若我们假定后者是琐碎无效的，这并非意味着艺术品不会设定一种表象的附加值。艺术品之所以成为艺术品，是因为它们产生的那种盈余，这正是其超越性所在。尽管如此，艺术品并非超越性发生的竞技场，这正是它们为何也与超越性分离的原因所在。艺术品中真正的超越性竞技场，是作品诸多契机的整合过程。通过努力争取整一性同时又设法适应整一性，一件艺术品的诸多契机就超越了这些契\", \"score\": 0.5779, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17fda3378628\", \"chapter_idx\": 7, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.57}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 362, \"chapter_title\": \"245\", \"citation_label\": \"【《尼采文集（合集）》·245】\", \"snippet\": \" 通过选择来赞美 。——艺术家选择自己的素材：这是他的赞美方式。\", \"score\": 0.5756, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 362, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.53}, {\"book_id\": \"bbac1be0bb4b\", \"book_title\": \"黑格尔作品集（套装共14册）\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 280, \"chapter_title\": \"c）荣誉的恢复\", \"citation_label\": \"【《黑格尔作品集（套装共14册）》·c）荣誉的恢复】\", \"snippet\": \"因此，每一种荣誉的破坏都被看成在本身上具有无限意义的，所以它也只能以无限的方式去补偿。当然，有许多程度不同的侮辱，就有许多程度不同的赔罪；不过我在现在这个题材范围里所说的破坏荣誉或侮辱是指我感觉到自己受侮辱，要求对方赔罪，这也完全是凭主观任意性的，而主观任意性有权利走到肆无忌惮和忿恨的极端。这里所要求的赎罪就须承认施损害者和受损害的我一样，也是一个重荣誉的人。因为我要从旁人那方面得到对我的荣誉的承认，如果我想他承认我的荣誉，我就要把他看成一个重荣誉的人，这就是说，我就要把他（尽管他伤害了我，我仇恨他）看成在人格上也是无限的。 所以荣誉的一般原则的基本定性是：每个人都不应通过自己的行动给旁人以凌驾于自己之上的权利，因此，不管他做了什么\", \"score\": 0.5618, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bbac1be0bb4b\", \"chapter_idx\": 280, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.292}, {\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 202, \"chapter_title\": \"85\", \"citation_label\": \"【《尼采文集（合集）》·85】\", \"snippet\": \" 善与美 。——艺术家不断地 颂扬 ——他们不做其他任何事体——：而且是颂扬所有那些状态和事物，后者享有好名声，能给人机会，或者让人感觉良好或伟大，或者让人感觉陶醉，或者让人感觉快乐，或者让人感觉舒适和智慧。对于人的 幸福 而言，这些 被精选的 事物和状态的价值是确凿的和有定论的，它们是艺术家的客体：艺术家总是在暗中守候，伺机去发现此类东西并且把它们拉入艺术领域之中。我想说：艺术家本身并不是幸福和幸福之物的估价员，但他们总是跻身于这些估价员近旁，怀着极大的好奇心和兴致，希望立即就能利用后者的评估。因为他们除了不耐烦，也具有宣告者的大肺腔和奔跑者的双脚，所以，他们也总是成为第一批颂扬 新的 善的人，而且经常 表现 为这样的人，后者首先\", \"score\": 0.5565, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 202, \"focus\": \"审美价值 道德 自律 艺术价值 削弱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.202}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    }
+   ],
+   "answer": "## 先把三样东西分开\n\n你用的词\"美\"和\"价值\"各自压着好几个问题：画面的美感、你对它的兴趣、作品作为艺术的价值（成就、表达、原真性），以及它在制度里的价值（归属、署名、定价）。你描述的这次变化里，**画面本身什么都没变**——变的是你关于它来历的信念。所以真正要问的不是\"美感会不会随信念变\"（会，而且这是常态），而是：这一次信念的变化，是在校正一个错误，还是在遮蔽一个你本来能看见的东西。\n\n## 作者确实能影响价值，这不是外行错觉\n\n康德把\"背后有没有一个主体\"写成了艺术美的构成条件。第 45 节：美的艺术作品上\"人们必须意识到，它是艺术而不是自然\"，同时其形式又必须显得像自然的产品；第 46 节更进一步——\"天才就是给艺术提供规则的才能（自然禀赋）\"，因为美的艺术不能自己为自己想出规则，\"自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的\"【《康德文集》·第一部分 审美判断力的批判】。康德不知道 AI，把他的框架套到生成图像上是我在做引申，不是他的论断；但在这套框架里，制造者的能力不是可有可无的附注，而是\"美的艺术\"这一概念的条件。\n\n本雅明从另一端为同一件事作证。他说\"原作的即时即地性组成了它的原真性（Echtheit）\"，而\"在对艺术作品的机械复制时代凋谢的东西就是艺术品的光韵\"；随之\"难以成立的就是该东西的权威性，即它在传统方面的重要性\"【《机械复制时代的艺术作品》·3.原真性】。生成图像把这件事推到底：连\"原作\"都不存在，无所谓即时即地性。至于制度层面，鉴定、归属、真伪与定价这套实践本来就是靠\"谁做的\"运转的——这不是审美理论，是可观察的事实。\n\n所以\"作者影响作品价值\"有真材料支撑。但**影响的到底是哪种价值**，才是关键。\n\n## 你自己的经验里有一个反例\n\n一朵花、一片晚霞，没有任何作者，你照样说它美。所以\"没有作者就没有美\"作为全称命题是假的。这意味着你实际信奉的原则不可能是那条，只能是它的一个收窄版本，而每种版本的强度差别很大：\n\n- 「没有心灵在这里对我说话」——关系性的理由，很强；\n- 「没有一个成就被完成」——关于功劳与难度的理由，中等；\n- 「没有不可复制的时间」——本雅明式的理由，中等；\n- 「我被欺骗了」——道德理由，只在它确实被伪装成人作时成立；\n- 「机器做的不算数」——这是结论的同义反复，不构成理由。\n\n康德在这里给了一个比\"偏见 or 价值\"更精细的出口。他说鉴赏者关于美的纷争可以这样调解：\"一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断\"，而\"双方都以自己的方式作出了正确的判断\"；因为\"一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的\"【《判断力批判》·第一卷 审美判断力的分析论】。你现在这个判断依赖一个概念（它是不是人做的、它该是什么），因此它落在依附美一侧。代价是：**你可以继续觉得它不美，但不能要求别人也必须同意**——那种\"人人应当赞同\"的要求只属于纯粹鉴赏判断。顺带一句：把\"知道来历后看法改变\"本身当作不正常的，才是误解；知道一幅画是速写、是残片、是习作、还是改笔，看它的方式本来就会变。诠释学传统甚至更进一步，主张前见不是理解的障碍而是理解的条件（这个概括出自一本解读《真理与方法》的著作，不是我读到的伽达默尔原文）。\n\n## 偏见的确切位置\n\n有三种形式，都是可以查的：\n\n**一、用类别覆盖已经发生过的例子。** 你在被告知之前确实被它打动了——这是一个证据：这个表面有力量唤起那个反应。如果你现在的判断是\"AI 生成的一概不美\"，那你是在用一个标签去否定一个你自己亲历过的实例，而标签对表面没有任何预测力。\n\n**二、把关系的变化说成对象属性的变化。** 准确的说法是\"我不再对它有兴趣了\"\"我原以为这里有一个心灵，现在没有了\"，而不是\"它不美了\"。前者说的是你与它的关系，后者说的是它。这两句话的检验方式完全不同。\n\n**三、把道德不满误登记为审美判决。** 欺骗、未获同意的训练素材、劳动与署名——这些理由是真的，但它们首先是道德与制度理由，而且只对具体作品成立。把它当成对所有含 AI 环节的作品的审美判决，会让你的审美判断承担它扛不动的重量，也让真正该被追究的那几种情形被稀释掉。\n\n## 还有一种情况不是偏见，而是发现\n\n如果你回头看那一刻的愉悦，发现里面本来就含着一个没被说出的预设——\"这里有一个人的眼睛\"——那么揭露身份并没有制造扭曲，它只是把一直存在的依赖关系显出来了。这不是你变心，是你发现了自己趣味的结构：你的审美反应是关系型的。这一点不需要辩护，但也不能靠类别一次结算，得一件件作品去试。\n\n这里有个对称性值得你自问：得知作者经历坎坷、得知是手作、得知画得极难，你会更被打动，且不觉得那有什么问题；那么反向的溯源敏感（知道没有作者就冷却）也不是自动荒谬的，它只是同一根轴上的位移。要论证的是这根轴本身是否正当，而不是只挑一个方向反对。\n\n## 三个自测\n\n**遮蔽测试**：把标签全部拿掉，只把画和别的画并排。眼睛还有反应吗？有，说明美感的对象还在，变的是你愿不愿意为它背书。\n\n**分解测试**：\"AI 生成\"这个词至少捆了五样东西：有无人的选择与意图、有无人类的技艺与劳动、有无可归属的成就、有无被欺骗、素材来源与原创性。找出真正让你熄灭的是哪一项——那一项往往对某些作品成立、对另一些不成立。笼统的\"AI\"是个代理变量，会掩盖你真正在意的东西。\n\n**外部参照**：Bara、Ramsey 与 Cross 2024 年一项预注册研究（我读到的是预印本摘要，不是全文）报告：关于 AI 后台流程的事实信息降低了道德可接受性与审美喜好（在金钱激励和\"艺术地位\"等情境中），而内隐联想任务未能可靠地把人类艺术与正面属性联系起来。这只能说明你的反应不孤立，**不能说明哪一方判断正确**——规范问题不是实验能裁决的。\n\n## 结论\n\n作者影响价值：是。影响的是\"背后有没有一个心灵、有没有一个成就、有没有一段不可复制的时间\"这类价值，康德与本雅明各自从一端为它作了证。说这是外行错觉，是错的。\n\n你算不算在偏见：取决于你把它说成什么。说成\"AI 作品在审美上无价值\"——这是未经检验的全称命题，被自然美和你自己的先前经验双重削弱，是偏见。说成\"我要的是一幅画里有一个人，这里没有，而我在意这一点\"——这是关于你的趣味与关系的真实陈述，可能对也可能错，但它在正确的层面上，可以被检验、被讨论、被反驳。\n\n真正要小心的不是\"你嫌 AI 作品不美\"，而是让一个类别代替一次观看：把一次具体的失望，结算成一整类东西的判决。反过来也一样——别把\"我不能要求别人同意\"听成\"我这感觉不成立\"。它成立，只是它的名分是依附美，不是纯粹趣味。",
+   "answer_chars": 2873,
+   "done_content": "## 先把三样东西分开\n\n你用的词\"美\"和\"价值\"各自压着好几个问题：画面的美感、你对它的兴趣、作品作为艺术的价值（成就、表达、原真性），以及它在制度里的价值（归属、署名、定价）。你描述的这次变化里，**画面本身什么都没变**——变的是你关于它来历的信念。所以真正要问的不是\"美感会不会随信念变\"（会，而且这是常态），而是：这一次信念的变化，是在校正一个错误，还是在遮蔽一个你本来能看见的东西。\n\n## 作者确实能影响价值，这不是外行错觉\n\n康德把\"背后有没有一个主体\"写成了艺术美的构成条件。第 45 节：美的艺术作品上\"人们必须意识到，它是艺术而不是自然\"，同时其形式又必须显得像自然的产品；第 46 节更进一步——\"天才就是给艺术提供规则的才能（自然禀赋）\"，因为美的艺术不能自己为自己想出规则，\"自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的\"【《康德文集》·第一部分 审美判断力的批判】。康德不知道 AI，把他的框架套到生成图像上是我在做引申，不是他的论断；但在这套框架里，制造者的能力不是可有可无的附注，而是\"美的艺术\"这一概念的条件。\n\n本雅明从另一端为同一件事作证。他说\"原作的即时即地性组成了它的原真性（Echtheit）\"，而\"在对艺术作品的机械复制时代凋谢的东西就是艺术品的光韵\"；随之\"难以成立的就是该东西的权威性，即它在传统方面的重要性\"【《机械复制时代的艺术作品》·3.原真性】。生成图像把这件事推到底：连\"原作\"都不存在，无所谓即时即地性。至于制度层面，鉴定、归属、真伪与定价这套实践本来就是靠\"谁做的\"运转的——这不是审美理论，是可观察的事实。\n\n所以\"作者影响作品价值\"有真材料支撑。但**影响的到底是哪种价值**，才是关键。\n\n## 你自己的经验里有一个反例\n\n一朵花、一片晚霞，没有任何作者，你照样说它美。所以\"没有作者就没有美\"作为全称命题是假的。这意味着你实际信奉的原则不可能是那条，只能是它的一个收窄版本，而每种版本的强度差别很大：\n\n- 「没有心灵在这里对我说话」——关系性的理由，很强；\n- 「没有一个成就被完成」——关于功劳与难度的理由，中等；\n- 「没有不可复制的时间」——本雅明式的理由，中等；\n- 「我被欺骗了」——道德理由，只在它确实被伪装成人作时成立；\n- 「机器做的不算数」——这是结论的同义反复，不构成理由。\n\n康德在这里给了一个比\"偏见 or 价值\"更精细的出口。他说鉴赏者关于美的纷争可以这样调解：\"一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断\"，而\"双方都以自己的方式作出了正确的判断\"；因为\"一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的\"【《判断力批判》·第一卷 审美判断力的分析论】。你现在这个判断依赖一个概念（它是不是人做的、它该是什么），因此它落在依附美一侧。代价是：**你可以继续觉得它不美，但不能要求别人也必须同意**——那种\"人人应当赞同\"的要求只属于纯粹鉴赏判断。顺带一句：把\"知道来历后看法改变\"本身当作不正常的，才是误解；知道一幅画是速写、是残片、是习作、还是改笔，看它的方式本来就会变。诠释学传统甚至更进一步，主张前见不是理解的障碍而是理解的条件（这个概括出自一本解读《真理与方法》的著作，不是我读到的伽达默尔原文）。\n\n## 偏见的确切位置\n\n有三种形式，都是可以查的：\n\n**一、用类别覆盖已经发生过的例子。** 你在被告知之前确实被它打动了——这是一个证据：这个表面有力量唤起那个反应。如果你现在的判断是\"AI 生成的一概不美\"，那你是在用一个标签去否定一个你自己亲历过的实例，而标签对表面没有任何预测力。\n\n**二、把关系的变化说成对象属性的变化。** 准确的说法是\"我不再对它有兴趣了\"\"我原以为这里有一个心灵，现在没有了\"，而不是\"它不美了\"。前者说的是你与它的关系，后者说的是它。这两句话的检验方式完全不同。\n\n**三、把道德不满误登记为审美判决。** 欺骗、未获同意的训练素材、劳动与署名——这些理由是真的，但它们首先是道德与制度理由，而且只对具体作品成立。把它当成对所有含 AI 环节的作品的审美判决，会让你的审美判断承担它扛不动的重量，也让真正该被追究的那几种情形被稀释掉。\n\n## 还有一种情况不是偏见，而是发现\n\n如果你回头看那一刻的愉悦，发现里面本来就含着一个没被说出的预设——\"这里有一个人的眼睛\"——那么揭露身份并没有制造扭曲，它只是把一直存在的依赖关系显出来了。这不是你变心，是你发现了自己趣味的结构：你的审美反应是关系型的。这一点不需要辩护，但也不能靠类别一次结算，得一件件作品去试。\n\n这里有个对称性值得你自问：得知作者经历坎坷、得知是手作、得知画得极难，你会更被打动，且不觉得那有什么问题；那么反向的溯源敏感（知道没有作者就冷却）也不是自动荒谬的，它只是同一根轴上的位移。要论证的是这根轴本身是否正当，而不是只挑一个方向反对。\n\n## 三个自测\n\n**遮蔽测试**：把标签全部拿掉，只把画和别的画并排。眼睛还有反应吗？有，说明美感的对象还在，变的是你愿不愿意为它背书。\n\n**分解测试**：\"AI 生成\"这个词至少捆了五样东西：有无人的选择与意图、有无人类的技艺与劳动、有无可归属的成就、有无被欺骗、素材来源与原创性。找出真正让你熄灭的是哪一项——那一项往往对某些作品成立、对另一些不成立。笼统的\"AI\"是个代理变量，会掩盖你真正在意的东西。\n\n**外部参照**：Bara、Ramsey 与 Cross 2024 年一项预注册研究（我读到的是预印本摘要，不是全文）报告：关于 AI 后台流程的事实信息降低了道德可接受性与审美喜好（在金钱激励和\"艺术地位\"等情境中），而内隐联想任务未能可靠地把人类艺术与正面属性联系起来。这只能说明你的反应不孤立，**不能说明哪一方判断正确**——规范问题不是实验能裁决的。\n\n## 结论\n\n作者影响价值：是。影响的是\"背后有没有一个心灵、有没有一个成就、有没有一段不可复制的时间\"这类价值，康德与本雅明各自从一端为它作了证。说这是外行错觉，是错的。\n\n你算不算在偏见：取决于你把它说成什么。说成\"AI 作品在审美上无价值\"——这是未经检验的全称命题，被自然美和你自己的先前经验双重削弱，是偏见。说成\"我要的是一幅画里有一个人，这里没有，而我在意这一点\"——这是关于你的趣味与关系的真实陈述，可能对也可能错，但它在正确的层面上，可以被检验、被讨论、被反驳。\n\n真正要小心的不是\"你嫌 AI 作品不美\"，而是让一个类别代替一次观看：把一次具体的失望，结算成一整类东西的判决。反过来也一样——别把\"我不能要求别人同意\"听成\"我这感觉不成立\"。它成立，只是它的名分是依附美，不是纯粹趣味。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_4",
+     "book": "判断力批判",
+     "chapter": "第一卷 审美判断力的分析论",
+     "book_id": "f08c1ead3164",
+     "chapter_idx": 3,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_28"
+     ],
+     "excerpt": "方式作出了正确的判断：一个是按照出现在他的感管面前的东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。\n任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱的、几乎不足以猜度出来的标准，即一个由这些实例所证实了的鉴赏从那个深深隐藏着的一致性根据中发源的标准，这个一致性根据在评判诸对象由以被给予一切人的那些形式时，对一切人都是共同的。\n17.美的理想\n所以我们把一些鉴赏作品看作是示范性的：这并不是说，鉴赏似乎可以通过模仿别人而获得。因为鉴赏必须是自己特有的一种能力；凡是模仿一个典范的人，如果他模仿得准确的话，他虽然表现出熟巧，但只有当他能够自己评判这一典范时，他才表现出鉴赏。①但由此得出，最高的典范，即鉴赏的原型，73只是一个理念，每个人必须在自己心里把它产生",
+     "quoted_passages": [
+      "一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断",
+      "一个鉴赏判断就一个确定的内在目的之对象而言，只有当判断者要么关于这个目的毫无概念，要么在自己的判断中把这目的抽掉时，才会是纯粹的"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 100177,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_7",
+     "book": "康德文集",
+     "chapter": "第一部分审美判断力的批判",
+     "book_id": "390398aff8d0",
+     "chapter_idx": 18,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [],
+     "excerpt": "有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。 第4 6节　美的艺术是天才的艺术 天才就是给艺术提供规则的才能（自然禀赋） 。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium） ，通过它自然给艺术提供规则。 不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到",
+     "quoted_passages": [],
+     "access_level": "SEARCH_EXCERPT"
+    },
+    {
+     "evidence_id": "ev_8",
+     "book": "康德文集",
+     "chapter": "第一部分 审美判断力的批判",
+     "book_id": "390398aff8d0",
+     "chapter_idx": 65,
+     "author": "伊曼努尔·康德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [],
+     "excerpt": "感官感觉为准绳的艺术。\n第45节 美的艺术是一种就其同时 显得是自然而言的艺术\n在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然；但是，它的形式中的合目的性毕竟必须显得如此摆脱了任性规则的一切强制，就好像它纯然是自然的一个产品似的。在我们诸般认识能力的毕竟同时又必须是合目的的游戏中的这种自由情感之上，建立起惟一可以普遍传达却并不建立在概念之上的那种愉快。自然是美的，如果它同时看起来是艺术；而艺术只有当我们意识到它是艺术而在我们看来它毕竟又是自然的时候才被称为美的。\n因为无论是谈到自然美还是谈到艺术美，我们都可以一般地说：美的就是那在纯然评判中（而不是在感官感觉中，也不是通过一个概念）让人喜欢的东西。现在，艺术在任何时候都有一个要产生出某种东西来的确定意图。但是，如果这种东西纯然是应当伴有愉快的感觉（某种纯然主观的东西），那么，这个产品在评判中就会只是借助于感官感觉而让人喜欢的了。如果这意图是针对产生一个确定的客体的，那么，当这意图通过艺术而达到时，客体就会只是通过概念而让人喜欢的。但在这两种场合，艺术都会不是在纯然的评判中，亦即不是作为美的艺术，而是作为机械的艺术让人喜欢的。\n因此，美的艺术的产品中的合目的性虽然是有意的，但却毕竟不显得是有意的；也就是说，美的艺术必须被视为自然，虽然人们意识到它是艺术。但一个艺术产品显得是自然却是由于，虽然惟有按照规则这个产品才能够成为它",
+     "quoted_passages": [
+      "人们必须意识到，它是艺术而不是自然",
+      "天才就是给艺术提供规则的才能（自然禀赋）",
+      "自然就必须在主体中（并通过主体各种能力的相称）给艺术提供规则，也就是说，美的艺术惟有作为天才的产品才是可能的"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 115528,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_10",
+     "book": "机械复制时代的艺术作品",
+     "chapter": "",
+     "book_id": "71f2b160cfc7",
+     "chapter_idx": -1,
+     "author": "瓦尔特·本雅明",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_12"
+     ],
+     "excerpt": "",
+     "quoted_passages": [],
+     "access_level": "METADATA_ONLY"
+    },
+    {
+     "evidence_id": "ev_22",
+     "book": "机械复制时代的艺术作品",
+     "chapter": "3.原真性",
+     "book_id": "71f2b160cfc7",
+     "chapter_idx": 3,
+     "author": "瓦尔特·本雅明",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_12"
+     ],
+     "excerpt": "化。前一种变化的痕迹只能由化学或物理分析方法去发掘，面这种分析在复制品中又是无法实现的；至于后一种变化的痕迹则是个传统问题，对其追踪又必须以原作的状况为出发点。原作的即时即地性组成了它的原真性（Echtheit）。对传统的构想依据这原真性，才使即时即地性时至今日作为完全的等同物流传。完全的原真性是技术——当然不仅仅是技术—复制所达不到的。原作在碰到通常被视为品的手工复制品时，就获得了它全部的权成性，而碰到技术复制品时就不是这样了。其原因有二。一是技术复制比手工复制更独立于窄作。比如，在照相摄影中，技术复制可以突出\n那些由肉眼不能看见但镜头可以捕捉的原作部分，而且镜头可以挑选其拍摄角度；此外，照相摄影还可以通过放大或慢摄等方法摄下那些肉眼未能看见的形象。这是其一。其二，技术复制能把原作的摹本带到原作本身无法达到的境界。首先，不管它是以照片的形式出现，还是以留声机唱片的形式出现，它都使原作能随时为人所欣赏。大教堂挪了位置是为了在艺术爱好者的工作间室能被人观赏；在音乐厅或露天里演奏的合唱作品，在卧室里也能听见。此外，对艺术品的这种改造可能不大会触及艺术的组成成分一但对艺术品的这种改造在任何情况下都使艺术品的即时即地性丧失了。这一点不仅对艺术品来说是这样，而且对例如电影观众眼前闪过的一处风景来说也是这样。因此，通过展示艺术品的过程还触及了一个最敏感的核心问题，即艺术品的原真性问题；这样一种",
+     "quoted_passages": [
+      "原作的即时即地性组成了它的原真性（Echtheit）",
+      "在对艺术作品的机械复制时代凋谢的东西就是艺术品的光韵",
+      "难以成立的就是该东西的权威性，即它在传统方面的重要性"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 1429,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 28,
+    "display_citations": 5,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "判断力批判",
+       "chapter": "第一卷 审美判断力的分析论",
+       "book_id": "f08c1ead3164",
+       "chapter_idx": 3,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "方式作出了正确的判断：一个是按照出现在他的感管面前的东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。\n任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱的、几乎不足以猜度出来的标准，即一个由这些实例所证实了的鉴赏从那个深深隐藏着的一致性根据中发源的标准，这个一致性根据在评判诸对象由以被给予一切人的那些形式时，对一切人都是共同的。\n17.美的理想\n所以我们把一些鉴赏作品看作是示范性的：这并不是说，鉴赏似乎可以通过模仿别人而获得。因为鉴赏必须是自己特有的一种能力；凡是模仿一个典范的人，如果他模仿得准确的话，他虽然表现出熟巧，但只有当他能够自己评判这一典范时，他才表现出鉴赏。①但由此得出，最高的典范，即鉴赏的原型，73只是一个理念，每个人必须在自己心里把它产生",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 100177,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德文集",
+       "chapter": "第一部分 审美判断力的批判",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 65,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "感官感觉为准绳的艺术。\n第45节 美的艺术是一种就其同时 显得是自然而言的艺术\n在美的艺术的一个产品上，人们必须意识到，它是艺术而不是自然；但是，它的形式中的合目的性毕竟必须显得如此摆脱了任性规则的一切强制，就好像它纯然是自然的一个产品似的。在我们诸般认识能力的毕竟同时又必须是合目的的游戏中的这种自由情感之上，建立起惟一可以普遍传达却并不建立在概念之上的那种愉快。自然是美的，如果它同时看起来是艺术；而艺术只有当我们意识到它是艺术而在我们看来它毕竟又是自然的时候才被称为美的。\n因为无论是谈到自然美还是谈到艺术美，我们都可以一般地说：美的就是那在纯然评判中（而不是在感官感觉中，也不是通过一个概念）让人喜欢的东西。现在，艺术在任何时候都有一个要产生出某种东西来的确定意图。但是，如果这种东西纯然是应当伴有愉快的感觉（某种纯然主观的东西），那么，这个产品在评判中就会只是借助于感官感觉而让人喜欢的了。如果这意图是针对产生一个确定的客体的，那么，当这意图通过艺术而达到时，客体就会只是通过概念而让人喜欢的。但在这两种场合，艺术都会不是在纯然的评判中，亦即不是作为美的艺术，而是作为机械的艺术让人喜欢的。\n因此，美的艺术的产品中的合目的性虽然是有意的，但却毕竟不显得是有意的；也就是说，美的艺术必须被视为自然，虽然人们意识到它是艺术。但一个艺术产品显得是自然却是由于，虽然惟有按照规则这个产品才能够成为它",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 115528,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "机械复制时代的艺术作品",
+       "chapter": "3.原真性",
+       "book_id": "71f2b160cfc7",
+       "chapter_idx": 3,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "化。前一种变化的痕迹只能由化学或物理分析方法去发掘，面这种分析在复制品中又是无法实现的；至于后一种变化的痕迹则是个传统问题，对其追踪又必须以原作的状况为出发点。原作的即时即地性组成了它的原真性（Echtheit）。对传统的构想依据这原真性，才使即时即地性时至今日作为完全的等同物流传。完全的原真性是技术——当然不仅仅是技术—复制所达不到的。原作在碰到通常被视为品的手工复制品时，就获得了它全部的权成性，而碰到技术复制品时就不是这样了。其原因有二。一是技术复制比手工复制更独立于窄作。比如，在照相摄影中，技术复制可以突出\n那些由肉眼不能看见但镜头可以捕捉的原作部分，而且镜头可以挑选其拍摄角度；此外，照相摄影还可以通过放大或慢摄等方法摄下那些肉眼未能看见的形象。这是其一。其二，技术复制能把原作的摹本带到原作本身无法达到的境界。首先，不管它是以照片的形式出现，还是以留声机唱片的形式出现，它都使原作能随时为人所欣赏。大教堂挪了位置是为了在艺术爱好者的工作间室能被人观赏；在音乐厅或露天里演奏的合唱作品，在卧室里也能听见。此外，对艺术品的这种改造可能不大会触及艺术的组成成分一但对艺术品的这种改造在任何情况下都使艺术品的即时即地性丧失了。这一点不仅对艺术品来说是这样，而且对例如电影观众眼前闪过的一处风景来说也是这样。因此，通过展示艺术品的过程还触及了一个最敏感的核心问题，即艺术品的原真性问题；这样一种",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 1429,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德文集",
+       "chapter": "第一部分审美判断力的批判",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 18,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "有显露出学院派的形式，也就是说，没有表现出这规则悬浮在艺术家眼前并给他的心灵力量加上桎梏的痕迹。 第4 6节　美的艺术是天才的艺术 天才就是给艺术提供规则的才能（自然禀赋） 。既然这种才能作为艺术家天生的创造性能力本身属于自然，所以人们也可以这样来表述：天才就是天生的心灵禀赋（ingenium） ，通过它自然给艺术提供规则。 不论这个定义是怎样一种情况，也不论它只是武断的，还是与人们通常和天才这个词相结合的那个概念相适合的（这一点应当到下一节中来讨论） ，人们毕竟已经能够预先证明，按照这里所假定的词义，美的艺术必然地必须被视为天才的艺术。 因为每一种艺术都以一些规则为前提条件，一个产品如果应当叫做艺术的，要通过这些规则的奠立才被表现",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "机械复制时代的艺术作品",
+       "chapter": "",
+       "book_id": "71f2b160cfc7",
+       "chapter_idx": -1,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "人性论（全4册）",
+       "chapter": "第一卷 第三章 论知识和或然性",
+       "book_id": "178e7d06d42d",
+       "chapter_idx": 5,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "而言，既然我们所有的或然性推理都是建立在观念的活泼性的基础上面的，所以它就同许多被蔑视为想象的产物面遭到拒绝的那些奇想和偏见相类似。根据这种表达，想象这一语词看起来通常有两种不向的意义；尽管对于真正的暂学面言，没有什么比这种不精确更为相反的了。然面，在下面的推理中，我又常常被迫陷人这种不精确中。当我把想象和记忆相对的时候，我意指我们形成微弱观念的那个感官能力；当我将想象和理性相对的时候，我意指相同的感官能力，仅仅排除了我们证实的或者或然的推理；当我不将想象和二者相对，则无论是在更大的或更有限的意义上来理解它都无关紧要，或者至少是根据上下文就足以解释这种意义。 是由看起来相当不足取的原理产生的，而且我们的绝大部分推理，以及我们的全部行",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "人性论（全4册）",
+       "chapter": "第一卷 第二章 论空间和时间观念",
+       "book_id": "178e7d06d42d",
+       "chapter_idx": 4,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "哲学家们往往会贪婪地信奉那些似是而非、与人类原始的和最无偏见的概念相反的论调，并将这一点炫耀成他们学说的优趣性在于能够发现远远超出于通常人们的见解。另一方面，任何能够引起我们的异和钦佩的东西都能给予心灵以满足，使得心灵沉滴于那些使人愉快的情绪中，并且再也不肯相信它的快乐是完全没有根据的。暂学家及他们的弟子的这些偏好就导致了他们那种互相奉承的情形：当哲学家们提出那么多的奇怪和无法解释的观点时，他们的弟子们却非常乐意于相信这些观点。对这种互相奉承的情形，关于无限可分的学说就是最为明显的一个例子，我将通过对这一学说的探究，开始去研究空间和时间观念这一主题。人们普遍承认，心灵的能力是有限的，永远不能获得一个完全和恰当的“无限”概念，即便这一",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "自然宗教对话录",
+       "chapter": "第四篇",
+       "book_id": "9c9e77918c07",
+       "chapter_idx": 6,
+       "author": "大卫·休谟",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "自已排列于一定的形式或秩序下；而这种形式或秩序并不能完整地保存片刻，却立刻又变成另外的一种排列。新的意见、新的情绪、新的情感、新的感觉起来了，它们不断地变更心灵上的情况，并且在其中制造出极大的错综性，和可能想象的最迅速的递换。这个怎能和一切真正有神论者们归诸于神的完全不变性和单纯性相容呢？他们说，他用同一行为能察知过去、现在和未来：他的爱和他的恨，他的慈悲和他的公正是同一个作用的发挥；他在空间上的每一点都是完全的存在，在持续上每一瞬的时间也是完全的存在。没有递换、没有变化、没有增加，也没有减少。他的实性中不包含差别或变异的任何影子。此刻他是什么，他过去也向来是如此，将来也永远是如此，没有任何新的判断、意见或作用。他固定在一个单纯的，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德三大批判合集（上下）",
+       "chapter": "第一部分 审美判断力批判",
+       "book_id": "10e1874c2255",
+       "chapter_idx": 12,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "东西，另一个是按照他在思想中所拥有的东西。通过这种区别我们可以调解鉴赏者们关于美的好些纷争，我们对他们指出，一方坚持的是自由美，另一方坚持的是依附美，前者作出了一个纯粹的鉴赏判断，后者作出了一个应用的鉴赏判断。 任何通过概念来规定什么是美的的客观鉴赏规则都是不可能有的。因为一切出自这一来源的判断都是审美的[感性的]；就是说，它 的规定根据是主体的情感而不是客体的概念。要寻求一条通过确定的概念指出美的普遍标准的鉴赏原则是劳而无功的，因为所寻求的东西是不可能的并且本身自相矛盾的。感觉（愉悦和不悦）的普遍可传达性，亦即这样一种无概念而发生的可传达性，一切时代和民族在某些对象的表象中对于这种情感尽可能的一致性：这就是那个经验性的、尽管是微弱",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "判断力批判",
+       "chapter": "附录 论康德《判断力批判》的先验人类学建构",
+       "book_id": "f08c1ead3164",
+       "chapter_idx": 10,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的经验事实即艺术和艺术史中，寻找鉴赏判断及审美愉快普遍传达的先天条件。前者追溯到人的社会性的“共通感”，后者追溯到个人的天才。 A.共通感康德认为，人的知性已经设定了在一切人心中都有一种共同的“主观的东西”作为它之所以可能的先天条件：既然审美的反思性判断力与认识的规定性判断力一样，都是认识诸能力的协调运用，那么这种主观先天的东西也就是审美愉快的普遍必然性和有效性的条件；反过来，这种认识诸能力在鉴赏里所要求的比例，对于普通认识中的健全知性也是需要的。这种先天条件表现在人身上就是共通感（sensuscommunis），即一个共同感觉的理念（dieIdeeeinesgemeinschafilichenSinnes），它“在自己的反思中（先",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "上卷 审美判断力的批判 第一部分 审美判断力的分析",
+       "book_id": "309de54e4392",
+       "chapter_idx": 33,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "[9] 确定他的判断是鉴赏判断。——译注 [10] 指客观关系。——译注 [11] Euler，1707—1783，德国天才的数学家。——译注 [12] 指鲍谟伽敦。——译注 [13] 关于语言艺术的鉴赏的范本，必须在一种已不通用的和艰深的语言里去寻找：第一，可以不须遭受变化，这是活的语言不可避免要碰到的，高尚的成了平凡，通常的陈旧了，新造的只通行一短时期；第二，它具有一定的语法，这种语法不因流行风尚而任意转变，但具有它的不变的法则。——原注 [14] 人们将见到，一个完全合规则的脸，画家请他坐着做模特的，通常是无所表现的： 因为这脸不具有特性，亦即较之个性的特殊点更多地表达着种的观念。这种的特性夸张过分，便破坏了标准观念（种的合目",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "单行道",
+       "chapter": "",
+       "book_id": "5d26edcad281",
+       "chapter_idx": -1,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "发达资本主义时代的抒情诗人",
+       "chapter": "",
+       "book_id": "679b795a17f8",
+       "chapter_idx": -1,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "托马斯•霍布斯",
+       "chapter": "通过相互立约创建国家",
+       "book_id": "dd75d637a2ad",
+       "chapter_idx": 2,
+       "author": "托马斯·霍布斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "）面不是历史。因此，她假定霍布斯的观点通过简单阅读他的文本即可理解。但是，在罗兰·巴特（RolandBarthes）的《作者之死》（TheDeathoftheAuthor）（1977）以及一般的后结构主义者都断言任何文学文本都有多重意义之后，这种方法论的可信度是否还站得住脚？另外，对非历史的观点的痴迷导致她考虑对历史学家来说似乎非常不合时宜的问题。例如，她讨论了温斯顿·史密斯（WinstonSmith）的101室困境，以使阐明霍布斯在《利维坦》中的论点。但是，《利维坦》和《一九八四》（1949）对政府有着同样的基本认识吗？事实上，霍布斯的政治想象力能否理解几百年后乔治·奥威尔讽刺的那种体制呢？显然，霍布斯并没有向奥威尔讲话，他也没有",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "别笑，我是正经哲学书",
+       "chapter": "用符号来解读世界",
+       "book_id": "a1448e164acc",
+       "chapter_idx": 54,
+       "author": "富增章成",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "理论基础是索绪尔的结构语言学，并运用符号学解读世界，使“文本”“书写”“话语”等现代思想基本用语蔚为风行。 巴尔特提出“作者之死”的概念，造成重大影响。一般来说，文学作品多被理解为作者思想的呈现，作品位于作者这个主人的支配之下，读者必须通过作品来了解作者的思想。 但是，巴尔特却主张这观念是近代特有的发想，而且已经过时了。在“作者之死”的概念下留下的，并非“作品”，而是“文本”。文本一旦离开作者之手，经读者的仔细阅读，就会得到深化，文本表现的并非作者内心的真实，新生命通过阅读才被创造出来，所以文本是被加工过的东西。读者才是真正的支配者，经由读者的阅读，文本才能独自迈步前行。 文本有编织物的含义，就好像持续被编织不断扩大的织物一样，而且",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼采文集（合集）",
+       "chapter": "241",
+       "book_id": "bedc9c78dfdf",
+       "chapter_idx": 358,
+       "author": "弗里德里希·尼采",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": " 作品与艺术家 。——这位艺术家野心勃勃，再无别的：最后，他的作品只不过是一个放大镜，提供给每个人按他的方式来观看。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "机械复制时代的艺术作品",
+       "chapter": "第二稿·Ⅳ",
+       "book_id": "71f2b160cfc7",
+       "chapter_idx": 26,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一件艺术作品的独一无二性是与它置身于那种传统的联系相一致的。当然，这传统本身是绝对富有生 气的东西，它具有极大的可变性。例如，一尊维纳斯的古雕像，在古希腊和中世纪就处于完全不同的传统联系中。希腊人把维纳斯雕像视为崇拜的对象，而中世纪的牧师则把它视作一尊淫乱的邪神像；但这两种人都以同样的方式触及了这尊雕像的独一无二性，即它的光韵。艺术作品在传统联系中的存在方式最初体现在膜拜中。我们知道，最早的艺术品起源于某种礼仪一起初是巫术礼仪，后来是宗教礼仪。在此，具有决定意义的是艺术作品那种具有光韵的存在方式从未完全与它的礼仪功能分开[\"]，换言之，“原真”的艺术作品所具有的独一无二的价值植根于神学，艺术作品在礼仪中获得了其原始的、最初的使用价值",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "机械复制时代的艺术作品",
+       "chapter": "5.礼仪与政治",
+       "book_id": "71f2b160cfc7",
+       "chapter_idx": 5,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一件艺术作品的独一无二性是与它置身于其中的传统关联相一致的。当然，这传统本身是绝对富有生气的东西，它具有极大的可变性。例如，一尊维纳斯的古雕像，在古希腊和中世纪就处于完全不同的传统关联中。希腊人把维纳斯雕像视为崇拜的对象，而中世纪的牧师则把它视作一尊淫乱的邪神像；但这两种人都以同样的方式触及了这尊雕像的独一无二性，即它的光韵。艺术作品在传统联系中的存在最初体现在膜拜中。我们知道，最早的艺术品起源于某种礼仪一一起初是巫术礼仪，后来是宗教礼仪。在此，具有决定意义的是艺术作品那种闪发光韵的存在方式从未 完全与它的礼仪功能分开，换言之，“原真”的艺术作品所具有的独一无二的价值植根于神学，这个根基尽管辗转流传，但它作为世俗化了的礼仪在对美的崇",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "美学理论",
+       "chapter": "第五章　艺术美：显形、精神化与直观性",
+       "book_id": "17fda3378628",
+       "chapter_idx": 7,
+       "author": "西奥多·阿多诺",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一、“附加值”即表象 自然美的组成，在于其显得要说的东西多于其实际所说的东西。如今，艺术背后的理念，是要攫取自然界偶然场景产生的这一“附加值”，所采用的手法就是挪用自然表象和使其得以确定，这便意味着否定其非现实性以及其他一些东西。艺术的人为附加值并不凭借自身确保艺术包含任何形上学的内容。如若我们假定后者是琐碎无效的，这并非意味着艺术品不会设定一种表象的附加值。艺术品之所以成为艺术品，是因为它们产生的那种盈余，这正是其超越性所在。尽管如此，艺术品并非超越性发生的竞技场，这正是它们为何也与超越性分离的原因所在。艺术品中真正的超越性竞技场，是作品诸多契机的整合过程。通过努力争取整一性同时又设法适应整一性，一件艺术品的诸多契机就超越了这些契",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "机械复制时代的艺术作品",
+       "chapter": "第二稿·注释",
+       "book_id": "71f2b160cfc7",
+       "chapter_idx": 39,
+       "author": "瓦尔特·本雅明",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "（1）保罗·瓦莱利（PaulValery，1871一1945），法国象征主义诗人和理论家。一一译者[2]保罗·瓦莱利：《艺术片论集》（Piecessurl'art），巴黎，第105页（《无处不在的征服》）。一一第53页[3]当然，一件艺术品的历史还包括更多的东西，例如《蒙娜·丽莎》（MonaLisa）的历史，就还包括它在17、18、19世纪各种筹木的种类和数量。一第54页[4]正是由于原真性是不可复制的，努力采用某些一一机械一一复制方法，才有助于将原真性加以区分和归类，造就这种区分是艺术品买卖行业的一项重要职责。艺术品买卖行业的兴致明显地在于，把文宇发明前和发明后的各种木刻样版与铜版以及类似于铜版的东西区分开采。可以说，平在原真性以",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 28,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 100.109,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 15.2,
+     "ev": "assistant_commentary",
+     "chars": 39
+    },
+    {
+     "t": 15.2,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 15.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_JqwAke90c5HkQy4gN93M7071"
+    },
+    {
+     "t": 15.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_92ID43f6APNeJqeZUJCy3064"
+    },
+    {
+     "t": 15.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_xlm6r9N6c4h6IrtGXlO52262"
+    },
+    {
+     "t": 16.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_VoNhMZkkG1oMFDgZVgnJ2639"
+    },
+    {
+     "t": 16.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.039,
+     "result_chars": 3330,
+     "result_head": "{\"query\": \"趣味的标准 偏见 情感 判断\", \"results\": [{\"book_id\": \"178e7d06d42d\", \"book_title\": \"人性论（全4册）\", \"author\": \"大卫·休谟\", \"chapter_idx\": 5, \"chapter_title\": \"第一卷 第三章 论知识"
+    },
+    {
+     "t": 16.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.078,
+     "result_chars": 6379,
+     "result_head": "{\"query\": \"天才 艺术 自然 自由 鉴赏\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析"
+    },
+    {
+     "t": 16.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.083,
+     "result_chars": 1571,
+     "result_head": "{\"query\": \"光晕 灵光 机械复制 此时此地\", \"results\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"mat"
+    },
+    {
+     "t": 17.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.404,
+     "result_chars": 1896,
+     "result_head": "{\"query\": \"作者之死 作者 文本 意义\", \"results\": [{\"book_id\": \"dd75d637a2ad\", \"book_title\": \"托马斯•霍布斯\", \"author\": \"托马斯·霍布斯\", \"chapter_idx\": 2, \"chapter_title\": \"通过相互立约创建国家\""
+    },
+    {
+     "t": 18.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_bEmcrt4WSwhu74olkWTE8396"
+    },
+    {
+     "t": 19.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_lFoEvPSwAGJZ3hYutKUA7794"
+    },
+    {
+     "t": 19.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_pSXZuBRwAKUAXQMJnhoy4413"
+    },
+    {
+     "t": 19.5,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.014,
+     "result_chars": 750,
+     "result_head": "{\"query\": \"韵味 本真性 复制 独一无二\", \"results\": [{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"author\": \"瓦尔特·本雅明\", \"citation_label\": \"【《机械复制时代的艺术作品》】\", \"matc"
+    },
+    {
+     "t": 19.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.104,
+     "result_chars": 2975,
+     "result_head": "{\"query\": \"自由美 依附美 美的理想\", \"results\": [{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 3, \"chapter_title\": \"第一卷 审美判断力的分析论\""
+    },
+    {
+     "t": 21.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.878,
+     "result_chars": 6646,
+     "result_head": "{\"query\": \"赝品 真迹 原作 艺术价值 同一性\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 358, \"chapter_title\": \"241"
+    },
+    {
+     "t": 22.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_9d9xuymaqPkEbSbfyeRl3543"
+    },
+    {
+     "t": 22.7,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_fuRcI1Y5RREplW6PnzZE0601"
+    },
+    {
+     "t": 23.0,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_jh0zLFk4DRjovH8Lwdpu1793"
+    },
+    {
+     "t": 23.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.008,
+     "result_chars": 3729,
+     "result_head": "{\"book_id\": \"71f2b160cfc7\", \"book_title\": \"机械复制时代的艺术作品\", \"chapter_idx\": 3, \"title\": \"3.原真性\", \"citation_label\": \"【《机械复制时代的艺术作品》·3.原真性】\", \"text\": \"即使在最完美的艺术复制品中也会"
+    },
+    {
+     "t": 23.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.009,
+     "result_chars": 4581,
+     "result_head": "{\"book_id\": \"f08c1ead3164\", \"book_title\": \"判断力批判\", \"chapter_idx\": 3, \"title\": \"第一卷 审美判断力的分析论\", \"citation_label\": \"【《判断力批判》·第一卷 审美判断力的分析论】\", \"text\": \"的。如果现在，在后一种"
+    },
+    {
+     "t": 23.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.01,
+     "result_chars": 4483,
+     "result_head": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 65, \"title\": \"第一部分 审美判断力的批判\", \"citation_label\": \"【《康德文集》·第一部分 审美判断力的批判】\", \"text\": \"感官感觉为准绳的艺术。\\"
+    },
+    {
+     "t": 25.4,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_00_DAYLCJ6Peq9pm7z1Gl5t0830"
+    },
+    {
+     "t": 25.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_fMIs1Rpamz3nh5K11j1C7743"
+    },
+    {
+     "t": 25.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 0.002,
+     "result_chars": 287,
+     "result_head": "{\"query\": \"艺术界 解释 不可分辨 艺术与非艺术\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 0}, \"search_"
+    },
+    {
+     "t": 26.9,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.092,
+     "result_chars": 5034,
+     "result_head": "{\"query\": \"AI-generated art authorship aesthetic value devaluation\", \"results\": [{\"source_record_id\": \"doi:10.56397/as.2023.02.11\", \"title\": \"The Impact of Auth"
+    },
+    {
+     "t": 28.1,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_ied4m1SmKvc6YVEV262S9217"
+    },
+    {
+     "t": 28.3,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_JvAbO25lKWGQsaI72YAj6130"
+    },
+    {
+     "t": 28.6,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.12,
+     "result_chars": 3450,
+     "result_head": "{\"source_record_id\": \"doi:10.31234/osf.io/7tgvw\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.31234/osf.io/7tgvw\", \"title\": \"AI Contextual Information "
+    },
+    {
+     "t": 28.6,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.128,
+     "result_chars": 2493,
+     "result_head": "{\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.18063/lne.v3i10.1128\", \"title\": \"Reconsidering the Aest"
+    },
+    {
+     "t": 74.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_n5JEnkhJjPWLdmBgUdXE4432"
+    },
+    {
+     "t": 74.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_NlM4qekOlID3hiilImrz9221"
+    },
+    {
+     "t": 78.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 3.495,
+     "result_chars": 2780,
+     "result_head": "{\"query\": \"前见 成见 理解的条件 视域\", \"results\": [{\"book_id\": \"b43aeb7ccc57\", \"book_title\": \"《真理与方法》解读\", \"author\": \"汉斯-格奥尔格·伽达默尔\", \"chapter_idx\": 4, \"chapter_title\": \"第二章"
+    },
+    {
+     "t": 78.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 3.709,
+     "result_chars": 3896,
+     "result_head": "{\"query\": \"审美价值 道德 自律 艺术价值 削弱\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 358, \"chapter_title\": \"24"
+    },
+    {
+     "t": 100.2,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1713
+  }
+ ],
+ "total_wall_s": 102.3,
+ "status": "COMPLETED"
+}

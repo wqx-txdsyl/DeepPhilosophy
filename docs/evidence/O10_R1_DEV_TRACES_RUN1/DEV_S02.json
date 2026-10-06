@@ -1,0 +1,62 @@
+{
+ "case_id": "DEV_S02",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "一位同学说：「不做肯定失败，做了也可能失败，所以做和不做的结果一样。」这个推理哪里出了问题？",
+ "tool_sequence": [],
+ "declarations": [],
+ "blocked_calls": [],
+ "answer_chars": 1181,
+ "final_answer": "这个推理的问题不在某一个小步骤，而在**结论偷偷换掉了前提里的模态词**。我们把它拆开看。\n\n## 一、先还原它的结构\n\n- 前提一：不做 → 必然失败。\n- 前提二：做 → **可能**失败（也就是说，也可能成功）。\n- 结论：做与不做，结果一样。\n\n问题在于：\"可能失败\"和\"必然失败\"是两个完全不同的模态。前提一说的是\"结果被锁死为失败\"，前提二说的是\"结果尚未锁定\"。结论却把这两个不同的东西合并成了\"一样\"。\n\n## 二、核心错误：模态谬误\n\n这是典型的**从\"可能\"滑到\"必然\"**的做法。用形式化说：\n\n- 不做：结果集合 = {失败}\n- 做：结果集合 = {成功，失败}\n\n{失败} 和 {成功，失败} 显然是两个不同的集合，不能说它们\"结果一样\"。推理要成立，必须先把前提二里的\"可能失败\"读成\"反正就是失败\"——可那样一来，前提二就不是原话的意思了。\n\n更微妙的一处是：**前提二本身就否定了结论。**\"做了也可能失败\"这句话里的\"可能\"如果是真正的可能（非零概率），它同时就承认了\"也可能成功\"。结论却说做了和没做一个样，等于把刚刚承认的那个\"可能成功\"悄悄抹掉了。前提和结论自相矛盾。\n\n## 三、它还漏掉了\"权重\"和\"代价\"\n\n就算退一步，只在\"最坏情况\"这个层面谈，说\"两者最坏都是失败\"——这也不是\"结果一样\"。因为：\n\n1. **概率不同。\"**不做\"是 100% 失败，\"做\"是把失败压到某个低于 100% 的概率上。概率不同，结果分布就不同。\n2. **失败的代价可能不同。**做了但失败，可能比不做失败损失更大（投入的时间、面子、机会成本），也可能更小。结论连这一层都没比。\n\n把它写成最朴素的期望值：\n\n设成功收益为 S，失败损失为 L，成功概率为 p（p > 0）。\n\n- 做的期望：p·S + (1−p)·(−L)\n- 不做的期望：−L\n\n两者相减，做比不做多出的是 **p·(S + L) > 0**。只要成功有正的收益、成功概率不为零，\"做\"的期望就严格高于\"不做\"。\n\n## 四、这个推理在什么意义上\"听着对\"\n\n它抓到了一件真事：**做并不保证成功。**这一点没错，p 可能很小。但\"p 很小\"和\"p 等于 0\"是两回事，同学的推理把前者当成了后者。真正被它搞反的是：**不做才是那个被锁死的、最坏确定的结果**；做的不确定性恰恰是翻盘的入口。\n\n## 五、一个反问\n\n前提二说\"做了也可能失败\"。那么请问：既然\"可能失败\"成立且不是必然，\"做了也可能成功\"是不是同样成立？如果成立，你打算把这个\"可能成功\"藏到哪里去，才能让结论里的\"结果一样\"站住脚？\n\n一句话收尾：**它的错误是拿\"最坏情况的下限\"冒充\"全部结果\"**，把\"可能失败\"偷换成\"必然失败\"，于是把唯一含有成功可能的选项，判成了和不做等价。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 11611,
+   "output_tokens": 2043,
+   "total_tokens": 13654
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11611,
+     "output_tokens": 2043,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 11611,
+  "output_tokens": 2043,
+  "total_tokens": 13654
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 15.8
+}

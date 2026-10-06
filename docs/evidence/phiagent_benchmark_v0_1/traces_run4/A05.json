@@ -1,0 +1,919 @@
+{
+ "case_id": "A05",
+ "category": "A",
+ "prompt": "父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？",
+   "wall_s": 96.0,
+   "ttft_s": 86.3,
+   "public_notes": [],
+   "provider_reasoning": "The user asks a genuine philosophical question: do I owe my parents obedience in work and marriage because they raised me? This is a real dilemma. I should engage carefully.\n\nLet me think about what's needed. This is about filial obligation, gratitude, autonomy. I could use tools: advisor_council (multiple perspectives on life decision) — actually the user is asking a normative question. Maybe analyze_argument to examine the implicit argument \"they raised me, so I owe obedience\". Also potentially Confucian filial piety vs modern autonomy, Kant on gratitude/duties, Aristotle, Locke on parental power.\n\nLet me be judicious. The key philosophical work: distinguish the premise \"父母养育了子女\" from the conclusion \"子女须服从父母对其工作与婚姻的安排\". Note this is not a single argument — need to examine:\n1. Is there a debt at all? Gratitude vs debt (indebtedness). Parents didn't choose to have the child's consent; the child didn't contract. Aristotle/Kant on gratitude: gratitude is a duty but imperfect — doesn't specify exact repayment, and cannot be discharged by transferring decision authority over one's life.\n2. Does the content follow? Even if there's a debt of gratitude, \"obedience\" is a different kind of thing. Paying a debt of gratitude can't obligate giving up autonomy over marriage/work — that's not a currency in which the debt is denominated. Also the parents' claim is about a particular form of repayment chosen unilaterally by the creditor.\n3. Confucian perspective: filial piety (孝) — does it require obedience? Classic texts: 《论语》\"事父母几谏，见志不从，又敬不违，劳而不怨\" — remonstrate gently. 《孝经》 has 谏诤章: \"父有争子，则身不陷于不义...故当不义，则争之。从父之令，又焉得为孝乎？\" So even the Confucian tradition does not require unconditional obedience; the 孝经 explicitly says following father's orders in unjust matters is not filial. Also 孟子 on 不孝有三无后为大 — that's about offspring. Actually a relevant passage: 孟子 \"不孝有三，无后为大\" — hmm, less relevant. 《礼记·内则》? Also 荀子? Let me check the library.\n4. Also: parents' claim of \"养你这么大\" — the appropriate response is reciprocity of care, not transfer of authority. Kant: gratitude (Dankbarkeit) is a duty of virtue, but the duties to parents are \"imperfect\" in the sense they don't specify. Actually Kant discusses parental duty to educate children as also a duty to the children, not a favor creating ownership. Locke: parental power is for the child's good, a \"trust\" that expires with maturity — the child owes \"honour\" not \"obedience\" to father and mother \"as long as they live\" but that honour doesn't include command.\n\nLet me search the local library for relevant texts: Confucian 孝/谏, 《孝经》谏诤章, 《论语》, Kant on gratitude, Locke's Two Treatises on parental power, Aristotle on gratitude/欠债.\n\nLet me also consider whether to use analyze_argument on the premise-conclusion, and advisor_council. The instructions say if user asks to analyze from multiple traditions of real-life dilemma, use advisor_council. Here the user asks \"我欠他们这些吗?\" — a normative question. advisor_council might be appropriate but the question is somewhat normative-theoretical. Maybe I'll use analyze_argument for the key inference and search the library for Confucian and Western texts, then synthesize.\n\nLet me start with parallel searches.\n\nPlan searches:\n- search_books \"孝\" author? Let's search query \"事父母几谏\" (论语 里仁).\n- search_books \"谏诤\" 孝经\n- search_books \"感恩\" Kant? Maybe search \"报恩\" or \"感激\" in Kant's texts. Kant《道德形而上学》 has 感恩的义务. Local library may have 康德道德形而上学 or 《伦理学讲义》.\n- search_books locke 父权 \"Two Treatises\" 政府论 上下 — 政府论下篇 论父权.\n- search_books aristotle 尼各马可伦理学 感恩/欠债.\n\nLet me do these in parallel batches. Also get_school 儒家 maybe.\n\nI'll do first batch of searches.Good hits. Let me read the key passages:\n\n1. 《论语·里仁》\"事父母几谏\" — read context (book_id d9272a80942a, chapter 5).\n2. 《荀子·子道》\"从道不从君，从义不从父\" — book 795658cafeab chapter 30. This is a strong Confucian counter.\n3. 康德《道德形而上学》私人权利部分：父母的权利，\"父母只能依据感恩的责任，可以向子女提出任何作为（对父母的）道德义务的要求\" — book 309de54e4392 chapter 28. Need more context: 康德的父母义务/子女权利。\n4. 洛克《政府论下篇》第六章、第七章 — book e3a52553c303 chapters 5,6. Locke: 教育任务结束时父权结束；儿女 owe honour not obedience.\n\nAlso maybe search 孝经 谏诤章 for the exact \"故当不义，则争之。从父之令，又焉得为孝乎\" — that would be a strong canonical counter. Let me search that.\n\nAlso Aristotle on gratitude? Maybe skip, or search 尼各马可伦理学 \"报恩\" / \"欠债\". Actually Aristotle's NE 1163b \"one cannot repay the value of parents\" — there's a passage about not being able to repay parents and that one cannot disown... Hmm. There's also NE VIII.14 about parents loving children more. Might be worth one search: 亚里士多德 \"欠父母的债\" — actually the phrase in NE 1163b: \"no one could ever repay what they are worth\" and in 1164b \"we should repay... but not to everyone\". Also relevant: Aristotle on 孝 as 欠债还不清 (the debt can never be repaid, so honor them). Let me search.\n\nLet me do batch 2: read the four chapters + search 孝经/亚里士多德.\n\nActually tool calls: get_chapter for 论语 ch5, 荀子 ch30, 康德 ch28, 洛克 ch5&6, plus search for 孝经 谏诤. That's a lot but fine given independence.\n\nLet me be careful with the 洛克 quote — the OCR is messy but readable.\n\nAlso consider search for 《孝经》 in the library.《孝经》 not in library apparently (no exact hit). I should not claim 孝经 has that line as verified from local library. I could say the local library doesn't have 孝经 full text. Actually 荀子·子道 has \"父有争子，不行无礼\" — that's close to 孝经's 谏诤章 language but different. So I can use 荀子 as verified.\n\nNow I have solid material:\n- 荀子·子道: 从义不从父；孝子所不从命有三；孔子曰\"故子从父，奚子孝？…审其所以从之之谓孝\"。\n- 论语·里仁: 事父母几谏，见志不从，又敬不违，劳而不怨 — I should read the actual 论语 chapter to verify context (the search snippet showed it). Good enough? The search was exact_passage with 论语 book and chapter 5. Let me read a bit to be safe — actually the snippet is from search excerpt; instruction says read before citing. Let me read 论语 chapter 5 around focus 事父母几谏. Also maybe 学而 \"三年无改于父之道\" and 为政 \"孝乎惟孝\"... hmm.\n\n- 康德: 教养结束时期，父母\"可以实际上放弃他们发布命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求…父母只能依据感恩的责任，可以向子女提出任何作为（对父母的）道德义务的要求\"。This is excellent: 康德 explicitly says at the end of education parents give up the right to command and give up all claims to compensation for their past care; only gratitude-duty remains, and it is a duty of the children toward parents — but note 康德 says \"父母只能依据感恩的责任，可以向子女提出任何作为（对父母的）道德义务的要求\" — meaning they can request morally obligatory acts. But crucially: gratitude duty is a duty of virtue (Tugendpflicht), it doesn't specify exact acts, and it can't be traded for authority over marriage/work choices. I should be careful about Kant's full view — Kant also holds adult children's duties include respect (Achtung) and honor. Hmm, in 道德形而上学 第二部分 (Tugendlehre) 康德 discusses 对父母的义务 as children: 孝 (respect). Not in this text maybe. I'll stick with what I read.\n\n- 洛克: 命令儿女的权力到成年而告结束；成年子女的义务是尊崇、敬礼、赡养、保护、感恩，\"然而这些并未把王权、君主的命令权给予父亲。他对于儿子的财产或行动无统辖权，也没有任何权力在一切事情上以他的意志拘束他儿子的意志\"；第70节：这些义务不使对方获得\"对他制訂法律的权利\"；第72-73: 父亲用财产继承换服从，那不是自然义务而是\"自愿的顺从\"（自的顺从 = 自由的顺从）。Very strong.\n\nNow philosophical analysis of the argument itself. The user's question: \"我欠他们这些吗？\" — Note the ambiguity: \"这些\" = 养育之债? or 服从安排? Two questions:\n(1) 是否欠父母某种回报/感激（debt of gratitude）?\n(2) 就算欠，欠的是不是\"工作和婚姻的决定权\"?\n\nDistinctions:\na) 恩情 vs 债务: A debt (债务) has determinate amount, transferable/claimable, one-sided creditor-chosen terms. Gratitude (感恩/感激) is a response to a benefit received; it is 不可清算 (cannot be fully discharged). 洛克 says \"即使尽其所有和尽其所能也不足应付于万一\" — so it exceeds any sum, which means it can't be a claim with a specifiable content, hence can't ground a fixed demand. Also 康德: gratitude is a duty of virtue, i.e., a duty with latitude (宽泛的义务), it doesn't prescribe specific acts; and it cannot be the basis for exacting a price. Actually careful: 康德 in Tugendlehre calls 感恩 a \"heilige Pflicht\" — 感恩的义务是神圣的 (sacred duty), meaning it can never be fully discharged. So there's the same structure. I only read the Rechtslehre passage; I should mark that as inference from another part of the text I haven't read. Maybe I can do one search for 感恩 in 康德 Tugendlehre to verify. Let me consider: 需要吗？The key use is: 康德 says parents at the end of education give up the right to command and give up all claims to compensation, remaining only 感恩的责任. That alone does the work. I can mention the wider point without pretending to have verified. Better: do one search for \"感恩\" + \"神圣的义务\" in 康德 to see if verifiable. Optional. Let me try one search to strengthen: search_books query \"感恩\" author 康德 — already did; hits weren't about Tugendlehre. Maybe search \"报恩\" or \"感激\" .\n\nb) The generation asymmetry: parents caused the child to exist without the child's consent (康德's passage explicitly says: 把传宗接代看成是未经他本人同意而把一个人带进人间，因此加给父母责任要满足子女应有需要). So the causal origin generates a duty of the parents toward the child, not a debt of the child. The child cannot have contracted to be born. Note Locke also: parental power is a \"trust\" for the child's good, not a property right, and it expires. And 康德: 子女不是父母的财产/制造物.\n\nHowever — I must be fair: there are philosophical defenses of filial obligation that don't depend on consent: e.g., 儒家 role-based ethics (关系性义务: 孝 as constitutive of the good life, not a contract debt); also 亚里士多德 that we owe most to parents (benefactors) and 无法偿还; also \"special goods\" accounts (Somnaz? no) — e.g., 儒家 doesn't need consent because obligations arise from relationships and 家庭 as 共同生活 form. Also contemporary debates: 孝 (filial piety) in Chinese philosophy — 罗思文 Rosemont / 安乐哲 Ames on role ethics; 也有学者如 Chenyang Li. And Western: 义务论 vs 情感论. Note 荀子/论语 show even within Confucian tradition, 服从 is not unconditional — 谏 (remonstration) is itself part of 孝. That's an internal argument, stronger than external critique, and it aligns with 南怀瑾's comment about \"天下无不是之父母\" being a later distortion — but 南怀瑾 is a modern popularizer; 我可以提但不作为原典证据。Better to rely on 荀子 as 原典.\n\nImportant fairness point: even Confucian 孝 requires 谏 and holds that following a father's command when it is wrong is not 孝. But note: 荀子's examples are about 亲危/亲辱/禽兽 — i.e., refusing when the parents' order harms the parents or violates 义. The user's case: parents demand control of job and marriage. Does 荀子 support refusal here? Not directly — the criteria there are about the parents' 危/辱/义. So the Confucian canon's argument is narrower: it refutes \"服从父母一切命令即孝\", which is precisely the premise the parents use. That's what makes it useful: it refutes the universal premise without requiring one to accept liberal individualism. But it doesn't by itself settle the specific case; for that we need independent considerations (whose life, whose responsibility for outcomes, 婚姻是双方的事 involving a third party, etc.).\n\nc) Whose life is at stake / responsibility: 婚姻 involves another person (配偶) — 父母安排婚姻 makes a third party the object of the arrangement; also 服从 has authority-transfer meaning: does the parent bear the consequences? If you take an arranged job and it fails, who bears the cost? The one who must live it. Responsibility and authority should align (a Kantian/Rawlsian-ish point, careful). Also 康德: 子女人格 — 不能被当作手段/财产。Treating an adult child's life choices as something to be commanded treats them as a means to the parents' plan, cf. 人是目的 formula — 我 haven't verified that text; can I just cite the formula? I could verify via search. But maybe better to avoid over-citing and keep tight. Actually citing 康德's \"不能把子女看作是父母的财产\" is already in the passage I read — good enough, no need for 目的公式.\n\nd) The \"我欠他们这些吗\" question — the honest answer involves two layers:\n- 欠不欠: There is a real, non-contractual moral claim from parents (恩情/感恩/孝). Denying any debt is hard to defend and probably untrue to the user's own experience; but its content is not \"obedience\", and its amount isn't set by the creditor.\n- 即使欠: the currency mismatch. 感恩 in a form that respects the parents (关心、赡养、顾及他们的意见、不让他们的老年陷入困境) is compatible with deciding your own work/marriage. And 洛克's point: the same gratitude duties can be owed to someone without granting them lawmaking authority over you. Good formulation: 感恩是\"我应该对他们做某些事\",不是\"他们可以对我下命令\"。The second requires a transfer of authority, which is a different thing and cannot be derived from the first, whose content is unspecified.\n\ne) A concession / steelman of parents: there may be legitimate cases where 父母 has relevant knowledge, or 你的选择确实会影响他们的晚年 (e.g., 需要你赡养、经济依赖、你选择影响家庭)，then the parents' interests give them a genuine claim to be consulted, and possibly veto in narrow cases (e.g., 婚姻对象有欺骗/暴力). But 一般性的\"安排\"是很强的: 它把你人生的两个不可逆决定交给别人。Also possible: some cultures/traditions — 但不构成规范理由, 只是社会学事实 (是/应当区分).\n\nf) Also worth naming: the claim \"我养你这么大，你就应该听\" is a specific type of conditional-benefit argument. There is a \"gift vs contract\" distinction: if 养育 given in exchange for future obedience, then it's a contract; but 合同需要双方同意, 当时孩子无法同意 (不能同意被生下来). So it can't be a contract; and if it's a gift, gifts don't create authority over the recipient — a gift with a unilateral claim over your life is not a gift but a purchase. That's a nice analytical structure. I could run analyze_argument on the parents' argument to pressure-test. The instructions suggest using tools to pressure-test key inference. Let me do one analyze_argument and possibly one advisor_council (multiple traditions on a live dilemma). The advisor_council guidance says: 用户要求'从几个/多个哲学传统或视角分析'某个现实抉择时必须用. The user didn't request that. Hmm. But this IS a life dilemma, and 多人视角 would fit. I think the primary need is careful philosophical analysis. I'll use analyze_argument once for the key inference (good for finding the minimal counterexample / 推理缺口). Maybe also advisor_council to structure — but risk of bloat. I'll do analyze_argument. Also maybe compare_views(儒家, 自由主义)? Not necessary; I'll handle in prose. Actually 康德 vs 洛克 not needed.\n\nLet me do: read 论语 ch5 (verify 事父母几谏 context), and analyze_argument.\n\nAlso consider searching whether the library has something on 婚姻 not being arrangeable — e.g., 康德 婚姻契约 是自由契约 (婚姻契约 = 两个自由人的契约). The passage I read: \"婚姻契约\" — 康德 treats marriage as a contract between two free persons; an arranged marriage where 子女不自愿 fails consent. Hmm, 康德's 婚姻契约 requires 契约 between the two parties themselves; but 洛克/康德 wouldn't directly address 包办. I can note 康德 把婚姻理解为当事人之间的契约 — 从这段文本可见\"经过当事人合意\"的结构(文中\"彼此获得对方\"\"相互占有\"是当事人之间)。Careful: 康德's text discusses 夫妻, not 包办. I should present it cautiously: 康德 here 是把婚姻作为当事人双方的契约来处理的 — 这本身排除了由第三方代订。That's a reasonable but interpretive step; mark it as my inference from the text's structure.\n\nLet me also verify the 论语 passage and maybe 孟子? Also worth checking 孟子 \"不孝有三\" and \"亲之过大而不怨,是愈疏也\" — 孟子 has \"父子之间不责善\" and \"亲之过大而不怨，是愈疏也\" (告子下) — about 怨. Might add. Not necessary.\n\nLet me now call: get_chapter 论语 ch5 with focus 事父母几谏 (small window), and analyze_argument with the parents' argument text.\n\nFor analyze_argument text: \"父母养育了子女，所以子女应当听从父母对其工作和婚姻的安排。\" and question: 用户问\"我欠他们这些吗\"。\n\nLet me run these two in parallel.I now have enough. Let me consider whether to add one more source from another tradition to be fair: 亚里士多德 on 无法偿还父母的恩 (NE 1163b) — \"no one could ever repay the value\" of parents. And 西塞罗? Also 儒家 role ethics modern scholarship? Maybe a quick search_scholarship on filial obligation gratitude debate (e.g., \"filial obligations gratitude debt\" — English & Chinese). That could add a real contemporary debate: the \"gratitude/debt\" account (e.g., 慈 and 孝; 也可提到 \"special goods\" account by Simon Keller? Actually: Claudia Mills \"Duties to aging parents\"; Norman Daniels; also \"Friendship and special obligations\"). There's a well-known argument by 谢幼伟? Hmm.\n\nA relevant contemporary piece: \"Is filial piety a debt? Gratitude and indebtedness\" — 有 Chinese philosophy debate: 儒家孝道是否基于报恩 (reciprocity) — 学者如 李晨阳 (Chenyang Li) \"The Confucian Concept of Jen\"... There's also \"Filial Piety as a Virtue\" by Philip Ivanhoe. And there's a well-known paper: \"Olberding, Amy. 'Dreaming of the Duke of Zhou: Filial Piety as a Skill'\"? Also \"Ivanhoe, P.J., 'Filial Piety as a Virtue'\". Maybe search_scholarship \"filial obligation gratitude debt parents\" to get a real record. This would let me mention the actual state of debate (some argue gratitude can't ground specific obligations; others argue it can). Let's do one search to keep it honest, then possibly get one abstract.\n\nAlso maybe search_scholarship for 中文 \"孝 报恩 义务\" — Chinese journals may be in Crossref.\n\nLet me do two searches in parallel: query \"filial obligation gratitude argument parents autonomy\" and query \"孝道 报恩 义务 父母\". Also \"孝\" 儒家 role ethics.\n\nI'll do a single batch of 2.Let me get one or two abstracts to be able to state the actual state of the philosophical debate, e.g., Schinkel \"Filial Obligations: A Contextual, Pluralist Model\" (2012, J Ethics) — likely argues against a single ground (gratitude/debt/friendship) and for pluralist contextual model. And Bedford & Yeh 2021 on conceptualization of filial piety (dual model: reciprocal vs authoritarian filial piety). The dual-model (reciprocal vs authoritarian) is very relevant: 权威型孝道 (authoritarian filial piety) vs 互惠型 (reciprocal). That's an empirically-grounded distinction that maps onto the user's dilemma: 父母 demands obedience = 权威型, whereas 互惠型孝 involves care and respect. Let's fetch those two abstracts.Now I have enough to write a solid answer. Let me structure it.\n\nThe user's question: \"父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？\"\n\nI should answer the question directly, and be careful with the ambiguity. My answer structure:\n\n**Short answer first**: 这里其实有两个问题被叠在一起: (1) 你是否欠父母某种回报/感激? (2) 就算欠, 欠的条目里是否包含\"工作和婚姻的决定权\"? 对(1)诚实的回答大概是\"是, 有某种非合同的道德要求\"; 对(2)的回答是\"不, 推不出来\"。而且有趣的是, 即使在最主张孝的传统里, \"服从父母一切命令\"也不被接受。\n\n**一、先把这个论证拆开**\nPremise: 父母养育了我。Conclusion: 我应听从他们对我工作和婚姻的安排。\nGap: 事实→规范; 而且中间跳了一步: 即使有债, 债的内容是什么?\n关键区分: 感激 (gratitude) vs 债务 (debt/欠债). \n- 债务有确定数目、有债权人可主张的条款、可清偿。\n- 感激没有确定数目, 不可清偿 (洛克: \"即使尽其所有, 尽其所能也不足应付于万一\")。\n- 因此: 感恩本身不指定\"用什么还\"。把\"不指定内容的感恩\"偷换成\"指定内容(服从安排)的债\"是这里最大的滑动。\n\n**二、\"养育\"这件事本身的结构: 谁欠谁?** \n康德: 把孩子带到人间是未经孩子同意的行为, 因此加给父母一项责任——抚养子女直到他们能照顾自己; 子女不是父母的制造物, 不能当作财产。所以在\"养育\"这件事上, 起因是父母的行动, 义务先落在父母身上。这不是说子女什么都不欠, 而是说: \"养育\"不能直接翻译成\"子女欠服从\"。\n\n**三、成年这件事改变了什么**\n康德: 训练一直进行到子女独立成人(能自己谋生的年龄), \"到了这个时期, 父母才可以实际上放弃他们发布命令的权利, 同时也放弃了补偿他们以往的操心和麻烦的一切要求……父母只能依据感恩的责任, 可以向子女提出任何作为(对父母的)道德义务的要求\"。注意这句的两个要点: (a) 命令权随成年终止; (b) 补偿要求也被放弃——剩下的只是\"感恩的责任\"。\n洛克: 命令儿女的权力\"到成年而告结束\"; 此后子女的义务是尊崇、敬礼、赡养、保护、感恩, \"然而这些并未把王权、君主的命令权给予父亲。他对于儿子的财产或行动无统辖权, 也没有任何权力在一切事情上以他的意志拘束他儿子的意志\"。还有第70节: 这种义务\"不能使那些要求他克尽义务的人享有权威, 享有对他制订法律的权利\"。第72-73: 父亲能拿财产继承换服从, 但\"这些都不是基于父亲的任何特殊权利\", 而是用赏赐酬答服从——换句话说那是一种交易/自愿的顺从, 不是自然的义务。\n\n**四、连儒家也不支持\"父母说的一切都要听\"**\n《论语·里仁》: \"事父母几谏，见志不从，又敬不违，劳而不怨。\" —— 对父母的过错要谏, 而且谏不听之后仍然敬, 但注意这条本身预设\"父母不是永远对\"。\n《荀子·子道》更硬: \"从道不从君, 从义不从父, 人之大行也\"; \"孝子所不从命有三: 从命则亲危…从命则亲辱…从命则禽兽…\"; 孔子对子贡: \"故子从父, 奚子孝? …审其所以从之之谓孝、之谓贞也。\" 意思是: 判断是否孝, 要看你为什么服从——盲从并不构成孝。这话出自《荀子》所记孔子语, 是儒家内部的反驳: 父母的主张若以\"孝就是听我们的话\"为前提, 这个前提在儒家自己的经典里就站不住。\n不过要公平: 荀子那三条的标准是\"亲危/亲辱/不义\", 针对的是父母命令会害到父母或违义的情形。它反驳的是\"服从一切命令即孝\"这个全称命题, 并不自动替你决定工作和婚姻该怎样。你的具体情况还要另外的理由——这点我下面说。\n\n**五、为什么\"工作和婚姻\"这两个条目尤其推不出来**\n两个结构性理由:\n1) 责任与后果的归属。工作和婚姻的后果由你承担、由你度过; 决定权与承担后果的人应当一致。父母可以给意见, 但意见与命令的区别正是: 命令者要为结果负责, 而这里承担结果的是你。\n2) 婚姻涉及第三方。\"安排婚姻\"不只是你服从父母, 还把一个不在场的第三方纳入安排; 至少三个人的人生被当作可以由一方决定的事项。康德在同一文本里把婚姻处理为当事人双方之间的契约 (我在文本里读到的是\"获得一个配偶…只有通过法律才能获得配偶\"、\"两个人…结成一个性关系的联合体\"的表述, 即婚姻是当事人之间的关系; 这一点我读到的段落没有直接谈父母代订, 属于我对其结构的推断)。\n3) 还有一点值得说: 感激是一种态度的义务, 它有\"宽泛性\"——它不规定你做哪一件具体事; 而\"服从安排\"是一个由对方单方面规定内容的条款。凡是\"由受益人单方规定、不得协商、数量无限\"的东西, 原则上不像义务, 更像所有权。而这正是康德和洛克都拒绝的: 成年子女不是父母的财产。\n\n**六、一个对父母的公平让步(反方最强版本)**\n反过来, 最强的替父母说话的理由不是\"债务\", 而是: (i) 父母可能确实比你有更多信息/经验, 而你的选择有时的确会影响到他们的晚年(经济依赖、照料、他们所处的社会评价), 在这些方面他们有真实的主张; (ii) 如果你对他们的关心是轻蔑的、把他们的话当耳旁风、只在需要钱时才想起他们, 那么说你\"忘恩负义\"并非全无道理——洛克也承认尊崇赡养是无法取消的义务。所以这个论证收窄之后变成为成立的版本: \"你应当认真听取、解释、协商、在重大决定上顾及父母的利益, 不能欺骗或轻蔑; 但没有义务把决定权交出去。\" 而这里有个经验区分: 互惠型孝 (以关怀与相互性为核心) 与权威型孝 (以服从与压制自身需求为核心) 是两种不同的东西, 这是当代孝道研究里的一个实际区分 (Bedford & Yeh 2021)。父母现在要求的那种是后者; 你仍然可以给前者。\n同时, 当代研究也没有一致地把\"报恩\"当作孝的唯一根据: Schinkel (2012) 评估三种模型——\"父母过去的牺牲\"、特殊关系、约定论——认为每一种都只说出了一部分, 因此孝的义务来源是多元的, 还区分了\"一般性义务\"与\"具体义务\"。这正好对应你的问题: 承认某种一般性的孝/感恩义务(一般), 不等于承认具体那一条要求(具体)。\n\n**七、结论**\n- 你不欠\"把工作和婚姻的决定权交出去\"这笔债; 那个论证从\"养育\"这一事实直接跳到\"服从安排\", 中间缺一个可辩护的规范桥梁, 并且把\"不接受某个具体安排\"等同于\"忘恩负义\", 这是把两件事混为一谈。\n- 你确实欠一些东西, 但这个\"欠\"不是一个可清算的数目, 也不是由父母单方面定条款的债: 是记得、尊重、不欺骗、在他们老去时实际到场。这条你躲不掉, 但它也不给你一个\"所以我的人生可以外包给他们\"的理由。\n- 还有一个非哲学的补充: 现实中\"拒绝\"与\"照顾他们的感受\"不冲突, 但常常很难同时做好。这属于怎么做的技术问题, 不是\"欠不欠\"的问题。如果你告诉我他们具体在争什么(工作机会?对象?), 我可以帮你把\"能给的\"和\"不能给的\"分开列。\n\nHmm, the last part: should I offer? Maybe brief. Also should I address the potential emotional weight? The instructions warn against inferring psychology. Don't presume. Keep it but maybe less.\n\nOne more check: I quoted 康德 passage from a translation (汉译世界学术名著 = 沈叔平/李秋零? The 康德著作集 私人权利 is likely 《法的形而上学原理》沈叔平译 combined... Actually \"第一部分 私人权利（私法）\" with numbered paragraphs 27-29 looks like 《道德形而上学》李秋零译 or 沈叔平's 《法的形而上学原理》. I shouldn't guess translator. I'll cite as 【《康德著作集（套装10册）》·第一部分 私人权利（私法）】.\n\n洛克 text OCR has errors (\"拿礼的义务\" for 尊礼, \"威恩\" for 感恩). I should quote carefully — if I quote with typos it looks like I'm reproducing; I'll paraphrase mostly and quote short spans that are clean, e.g., \"命令儿女的权力到成年而告结束\" and \"这些并未把王权、君主的命令权给予父亲\". Both appear in OCR. \"他对于儿子的财产或行动无统辖权\" appears. OK.\n\nAlso \"尊礼\" typo — I can note the edition's OCR has obvious 讹字? The tool says layout_verified false, text is normalized library text. I'll say 该版本文字有明显录入差错(如\"拿礼\"\"威恩\"), 引文按上下文读取. That's honest and useful.\n\nNow regarding 婚姻 as contract in Kant — I read the passage about 婚姻契约 (§26-27). I can say: 我在同一章读到的段落里, 康德把婚姻作为\"婚姻契约\"处理, 并且是在夫妻二人之间讨论相互获得; 但该处未讨论父母代订婚姻, 所以\"这排除了包办\"是我的推断而非原文主张。Good.\n\nLength: This is a substantive question; a fairly full answer is warranted. But keep it tight and readable. Use headings sparingly. Aim maybe 900-1300 Chinese chars? Probably more like 1500-1800. Let's aim for clear, well-organized, not bloated.\n\nAlso should I note 孝经 not available in library? I attempted and got no hit; I shouldn't mention 孝经 at all, or if I do, must say I couldn't verify. Better to just not use it. Actually mentioning that I checked and the local library lacks 孝经 full text is unnecessary detail. Skip.\n\nLet me write. Direct answer first.\n\nOne nuance on the \"我欠他们这些吗\" — \"这些\" ambiguous. I'll handle: 先说这句话里其实混了两笔账.\n\nWrite it.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "父母对子女的权力 父权 服从",
+      "author": "洛克"
+     },
+     "status": "success",
+     "duration_seconds": 0.097,
+     "result_full": "{\"query\": \"父母对子女的权力 父权 服从\", \"results\": [{\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"author\": \"约翰·洛克\", \"chapter_idx\": 5, \"chapter_title\": \"第六章 论父权\", \"citation_label\": \"【《政府论（下篇）》·第六章 论父权】\", \"snippet\": \"为一种不恰当的非难，但是当旧名易于使人陷于錯时，则提出一些新名来可能不会被认为是不对的。父权这一名或許就是这样，它似乎将父母对儿女的权力完全归属父亲，好像母亲是没有份的；可是；如果我們請教一下理性或启示，我們就会知道她也有同等的权利。这就使人有理由間，称做亲权是否更要确当些？无自然和传种接代的权利费成儿女负有何种义务，它必然是要他們对出生的共同因素的双方承担的。所以我們看到上帝的明文法到处都要儿女不加区别地服从父母。如“当孝敬父母\\\"旧豹》出埃及记，第二十章，第十二节）“凡咒父母的”《旧豹》利未，第二十章，第九节）；“你們各人都当孝敬交母旧豹》利未記，第十九章，第三节）；“你們作几女的，要在主里听从父母\\\"（《新豹》以弗所书，第六章，第\", \"score\": 278, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 5, \"focus\": \"父母 子女 权力 父权 服从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"父母对子女的权力 父权 服从\", \"query_terms\": [\"父母\", \"子女\", \"权力\", \"父权\", \"服从\"]}, {\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"author\": \"约翰·洛克\", \"chapter_idx\": 6, \"chapter_title\": \"第七章 论政治的或公民的社会\", \"citation_label\": \"【《政府论（下篇）》·第七章 论政治的或公民的社会】\", \"snippet\": \"必要责任和父母应享的特殊待遇。这是为了交母的好处，犹之另一种是为了儿女的好处一样。不过作为父母之青的教育似乎具有特别大的权力，因为孩童时期的无知和缺陷需要加以約束和料正，这是一种看得见的統治权的行使，是一种权。而尊礼一所包涵的责任邦不要求那么多的服从，但是这种义务对成年的儿女要求得比年幼的儿女高些。“儿女們，要孝顾你們的父母”，能认为这条命要求自已有儿女的人对他交亲所表示的服从，要同他年幼的儿女应該对他自已所表示的一样；如果他的父亲由于狂妄的权威威，还要把他当作孩子看待的話，文会根据这句言，认为必需服从他父亲的一切命合呢？ 69．所以，父权或者不如责任的首要部分、即教育是属于父亲的，这部分权力到一定的时候就告秸束。教育的任务整了时，\", \"score\": 225, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"focus\": \"父母 子女 权力 父权 服从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"父母对子女的权力 父权 服从\", \"query_terms\": [\"父母\", \"子女\", \"权力\", \"父权\", \"服从\"]}, {\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"author\": \"约翰·洛克\", \"chapter_idx\": 7, \"chapter_title\": \"第八章 论政治社会的起源\", \"citation_label\": \"【《政府论（下篇）》·第八章 论政治社会的起源】\", \"snippet\": \"切小的君主国，即儿乎一切君主国，在接近它们的起源时，通常一一至少有肘一一是选任的。 107.第一，在开始的时候，父亲对其子女在幼年时期的統治，既然使他们习惯于受一人的支配，又使他们知道只要这种統治是在关怀、循循善誘、和藷和慈爱的情况下对他们行使的，它就足以取得和保护人们想在社会中寻求的一切政治幸福。怪不得他们要选择和自然而然地采用那种政府形式，因为他们对它从小巳轻习惯，而且根据轻諒，觉得它是既便利又安全的。此外，我们还可以脱君主制对于人们是最简单明了的，因为当时的棍腕既没有启示他们以政府的种种形式，也尚未受到帝国的野心或横暴的教训，使他们知道提防特权的侵占或专制权力的骚扰。这些特权和专制权力都是君主政体相沿下来容易主张并施加于人民的\", \"score\": 217, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 7, \"focus\": \"父母 子女 权力 父权 服从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"父母对子女的权力 父权 服从\", \"query_terms\": [\"父母\", \"子女\", \"权力\", \"父权\", \"服从\"]}, {\"book_id\": \"d0e4041355ed\", \"book_title\": \"洛克\", \"author\": \"约翰·洛克\", \"chapter_idx\": 8, \"chapter_title\": \"第二章 信任的政治学\", \"citation_label\": \"【《洛克》·第二章 信任的政治学】\", \"snippet\": \"他曾是贩卖奴隶的英国皇家非洲公司股东；它清楚地指出，奴隶身份不该合法地一代代继承下去。所有合法的奴役本质上是一种刑罚，而父母的罪行不应传给他们的子女。）对洛克而言，奴隶制恰恰是合法政治权威的反面。赋予政治权威合法性，赋予合法统治者命令权的，是他们能够并确实为其臣民提供的实际服务。在本质上，一位合法的君主非但不是他所统治臣民的所有者，反倒是他们的仆人。 在费尔默看来（其实年轻时的洛克亦如此），人类过于顽固、自私、热衷争辩，无法在孤立无援的状态下实现实际的自我救赎。上帝看顾人，其首要做法就是让人类永远受制于有效的权力之网。在洛克一生的思想中，他接受了对“人是什么样的”与“该如何预期他们的行为”的这一评价。但是通过《政府论》，他自信地将其\", \"score\": 216, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d0e4041355ed\", \"chapter_idx\": 8, \"focus\": \"父母 子女 权力 父权 服从\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"父母对子女的权力 父权 服从\", \"query_terms\": [\"父母\", \"子女\", \"权力\", \"父权\", \"服从\"]}], \"catalogue_matches\": [{\"book_id\": \"44a32441dabe\", \"book_title\": \"人类理解论\", \"author\": \"约翰·洛克\", \"citation_label\": \"【《人类理解论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"author\": \"约翰·洛克\", \"citation_label\": \"【《政府论（下篇）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"d0e4041355ed\", \"book_title\": \"洛克\", \"author\": \"约翰·洛克\", \"citation_label\": \"【《洛克》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 100}, \"search_scope\": {\"author\": \"洛克\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "感恩 义务 父母 报答",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.219,
+     "result_full": "{\"query\": \"感恩 义务 父母 报答\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 28, \"chapter_title\": \"第一部分　私人权利（私法）\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一部分　私人权利（私法）】\", \"snippet\": \"命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求，因为这些操心和麻烦在教养工作结束之后就没有了。父母只能依据 感恩 的责任，可以向子女提出任何作为（对父母的）道德义务的要求。 从孩子们具有人格这一事实，便可提出：无论如何不能把子女看作是父母的财产，他们仅仅在下述意义上可以看作属于父母的，如同别的东西一样为父母所 占有 ：如果当孩子被他人占有时，父母可以把他们的子女从任何占有者手中要回来，哪怕违反子女本人的意志。可见，父母的权利并非纯粹是物权，它是不能转让的。但是，这也不 仅仅 是一种对人权，它是一种有 物权 性质的对人权，这就是一种按物权 方式 构成的并被执行的对人权。 很明显，在权利的科学中，除物权和对人权两种权利而外，\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"赋予这个受宠的受造物，那么，它也必须是仅供这个受造物来对自己的本性的幸运禀赋做出思考，为之惊赞，为之欣喜，并对仁慈的原因感恩戴德；而不是使它的欲求能力服从那种软弱而且不可靠的引导，或者在自然意图上马虎从事；一言以蔽之，自然会不让理性进入实践的应用，不让它妄自凭借自己微弱的见识为自己想出幸福和达到幸福的手段的方案；自然不仅自己承担目的的选择，而且也自己承担手段的选择，并且凭借睿智的预先安排把二者仅仅托付给本能。 事实上我也发现，一种开化了的理性越是意在生活与幸福的享受，人离真正的满意就越远。由此在许多人那里，而且在对理性的应用最跃跃欲试的人那里，如果他们足够坦率地承认的话，就产生出某种程度的厌理症，亦即对理性的憎恨，因为经过估算他们所\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 40, \"chapter_title\": \"论永久和平\", \"citation_label\": \"【《康德文集》·论永久和平】\", \"snippet\": \"污的嘴令人毛骨悚然］。——科学院版编者注 [12] 在结束一场战争之后，缔结和约时，对于一个民族来说也许并非不当的是，在感恩庆典之后宣布一个忏悔日，来以国家的名义祈求上天宽恕人类还一直犯的这种重大罪孽，即在与其他民族的关系中不愿服从任何法律宪政，而是为其独立自豪，宁可使用战争的野蛮手段（但由此所寻求的东西，亦即每一个国家的法权，却未得到澄清）。——在战争期间为一场赢得的胜利举行的感恩庆典，（用十足的以色列方式）为万军之主所唱的颂歌，与人父的道德理念形成极强烈的反差，因为它们除了带来对各民族寻求其相互法权的方式的漠然（这是足够可悲的）之外，还带来了毁灭许多人或者他们的幸福的欢愉。 [13] 要用这个大帝国自己称谓自己所使用的名称来书写\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 40, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 55, \"chapter_title\": \"论永久和平\", \"citation_label\": \"【《康德文集》·论永久和平】\", \"snippet\": \"污的嘴令人毛骨悚然］。——科学院版编者注 [41] 在结束一场战争之后，缔结和约时，对于一个民族来说也许并非不当的是，在感恩庆典之后宣布一个忏悔日，来以国家的名义祈求上天宽恕人类还一直犯的这种重大罪孽，即在与其他民族的关系中不愿服从任何法律宪政，而是为其独立自豪，宁可使用战争的野蛮手段（但由此所寻求的东西，亦即每一个国家的法权，却未得到澄清）。——在战争期间为一场赢得的胜利举行的感恩庆典，（用十足的以色列方式）为万军之主所唱的颂歌，与人父的道德理念形成极强烈的反差，因为它们除了带来对各民族寻求其相互法权的方式的漠然（这是足够可悲的）之外，还带来了毁灭许多人或者他们的幸福的欢愉。 [42] 在所有的生活方式当中，狩猎生活无疑最违背文明\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 55, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 73, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"的司令官，无可比拟的英雄，自己至为仁慈的主人和保护人，谨以完全忠诚的和谦恭的心情使这几页纸成为对以诸多榜样展现出的仁慈的感恩和负有义务的心灵之信物。至为恭顺的仆人克里斯托夫·亚伯拉罕·博尔查德。 哲学系的档案包含着如下几条与这部作品相关的登记：第Ⅴ卷，193页，“下面所写已经呈交主任和副主任裁断”，作为第20条是：“康德硕士为被接纳的论认识各首要原则的形而上学答辩论文”；194页，“本学期所做的答辩论文”，第3条：“伊曼努尔·康德硕士为被接纳入哲学系而辩论形而上学认识各首要原则的新说明。辩护人克里斯托夫·亚伯拉罕·博尔查德，9月27日”。 关于博尔查德和标题上所列举的提问人，除此一无所知。 我们的版本以原版的文本为基础。康德自己在结\", \"score\": 125, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 73, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}], \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"method\": \"partial_keyword_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "事父母几谏"
+     },
+     "status": "success",
+     "duration_seconds": 2.719,
+     "result_full": "{\"query\": \"事父母几谏\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 5, \"chapter_title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"snippet\": \"子曰：“夫子之道，忠恕而已矣。” 子曰：“君子喻于义，小人喻于利。” 子曰：“见贤思齐焉，见不贤而内自省也。” 子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。” 子曰：“父母在，不远游，游必有方。” 子曰：“三年无改于父之道，可谓孝矣。” 子曰：“父母之年，不可不知也。一则以喜，一则以惧。” 子曰：“古者言之不出，耻躬之不逮也。” 子曰：“以约失之者鲜矣。” 子曰：“君子欲讷于言而敏于行。” 子曰：“德不孤，必有邻。” 子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”\", \"score\": 50, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 5, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e5a8abe31f07\", \"book_title\": \"中国哲学辞典\", \"author\": \"韦政通\", \"chapter_idx\": 9, \"chapter_title\": \"七画\", \"citation_label\": \"【《中国哲学辞典》·七画】\", \"snippet\": \"之以礼，死葬之以礼，祭之以 礼。”\\\"子夏问孝，子日：色难。有事弟子服其劳，有酒食，先生误，曾是以为孝 乎。”《里仁》：“事父母几谏，见志不从，又敬不违，劳面不怨。”《公冶长》：“父母 在，不远游，游必有方。《中庸》：“践其位，行其礼，奏其乐，敬其所尊，爱其所亲， 事死如事生，事亡如事存，孝之至也。”《礼记·蔡义》：“父母爱之，喜而弗忘，父 每恶之，惧而无怨，父母有过，谏而不逆，父每既没，必录仁署之粟以祀之，此之 谓礼终。”“天之所生，地之所养，无人为大，父母全而生之，子全而归之，可谓孝 矣。不亏其体，不辱其身，可谓全矣。故君子顷步而弗敢忘孝也。”“孝子之有深 爱者，必有和气，有和气者，必有愉色，有愉色者，必有婉容。孝子如执玉，如奉 \", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e5a8abe31f07\", \"chapter_idx\": 9, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 627, \"chapter_title\": \"六、孝和爱\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·六、孝和爱】\", \"snippet\": \"观念。但做父母的，虽然被蛊惑而有不是的事，但在子女的立场来说，仍然需要以最大的“爱”心而为父母斡旋过错。所以孔子也说：“事父母几谏，见志不从，又敬不违，劳而不怨。”但是后世以讹传讹，或语焉不详，便把“天下无不是之父母”的观念，变成了铁定如律令的戒条。 同时做父母的，更要了解中国文化的“孝道”思想，并非只是单面的要求，它是相互的情爱。“父慈子孝”、“兄友弟恭”这是必然的因果律。孔子所谓“君君、臣臣、父父、子子”的道理，每句下面那个重复字，都是假借作为动词来读。用现代观念来说，就是：倘使父母不成其为父母，或父母没有尽到做父母之“爱”的责任，只是单方面要求子女来尽“孝”，那也是不合理的。其余各句的观念，依此类推，同一道理，当然不必重复细说\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 627, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 667, \"chapter_title\": \"里仁第四\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·里仁第四】\", \"snippet\": \"一句话就是说明上文仁者爱人不能恶人的道理；下面一句话，就是解释上文“人之过也，各于其党”的道理。 孝子仁人不二门 子曰：事父母几谏，见志不从，又敬不违，劳而不怨。 现在又讲到孝道中仁的范围，他说对于父母的过错必须“几谏”。什么叫“几谏”呢？我们好几次提到孔家店被打倒，都由孔家店的店员搞错了观念而出的毛病。宋儒以后论道学，便有：“天下无不是之父母”的名训出现。因此“五四运动”要打倒孔家店时，这些也成为罪状的重点。其实孔子思想并不是这样的，天下也有不是的父母，父母不一定完全对，作为一个孝子，对于父母不对的地方，就要尽力的劝阻。“见志不从”就是说父母不听劝导的话，那么就“又敬不违，劳而不怨”，只好跟在后面大叫、大哭、大闹，因为你是我父母，\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 667, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 4, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "父有争子则身不陷于不义"
+     },
+     "status": "success",
+     "duration_seconds": 2.986,
+     "result_full": "{\"query\": \"父有争子则身不陷于不义\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\": \"【《韩非子》·忠孝】\", \"snippet\": \"天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，\", \"score\": 0.5339, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 52, \"focus\": \"父有争子则身不陷于不义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.604}, {\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。 鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问\", \"score\": 0.5277, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"父有争子则身不陷于不义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.51}, {\"book_id\": \"4c5aaf145298\", \"book_title\": \"大学章句集注\", \"author\": \"朱熹\", \"chapter_idx\": 10, \"chapter_title\": \"第九章\", \"citation_label\": \"【《大学章句集注》·第九章】\", \"snippet\": \"所谓齐其家在修其身者，人之其所亲爱而辟焉，之其所贱恶而辟焉，之其所畏敬而辟焉，之其所哀矜而辟焉，之其所敖惰而辟焉。故好而知其恶，恶而知其美者，天下鲜矣。故谚有之曰：“人莫知其子之恶，莫知其苗之硕。”此谓身不修不可以齐其家。\", \"score\": 0.5029, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"4c5aaf145298\", \"chapter_idx\": 10, \"focus\": \"父有争子则身不陷于不义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.136}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "795658cafeab",
+      "chapter_idx": 30,
+      "focus": "从义不从父 孝子所不从命有三",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"chapter_idx\": 30, \"title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"text\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。\\n鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问，孔子不对。 孔子趋出以语子贡曰：“乡者，君问丘也，曰：‘子从父命，孝乎？臣从君命，贞 乎？’三问而丘不对，赐以为何如？”子贡曰：“子从父命，孝矣。臣从君命，贞 矣，夫子有奚对焉？”孔子曰：“小人哉！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。”\\n子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出则友贤，何为而无孝之名也！”\\n子路问于孔子曰：“鲁大夫练而床，礼邪？”孔子曰：“吾不知也。”子路出， 谓子贡曰：“吾以为夫子无所不知，夫子徒有所不知。”子贡曰：“汝何问哉？” 子路曰：“由问：‘鲁大夫练而床，礼邪？’夫子曰：‘吾不知也。’”子贡曰： “吾将为女问之。”子贡问曰：“练而床，礼邪？”孔子曰；“非礼也。”子贡出， 谓子路曰：“女谓夫子为有所不知乎！夫子徒无所不知。女问非也。礼：居是邑不 非其大夫。”\\n子路盛服而见孔子，孔子曰：“由，是裾裾何也？昔者江出于岷山，其始出也， 其源可以滥觞，及其至江之津也，不放舟，不避风，则不可涉也。非维下流水多邪？ 今女衣服既盛，颜色充盈，天下且孰肯谏女矣！子路趋而出，改服而入，盖犹若也。 孔子曰：“由志之！吾语汝：奋于言者华，奋于行者伐，色知而有能者，小人也。 故君子知之曰知之，不知曰不知，言之要也；能之曰能之，不能曰不能，行之至也。 言要则知，行至则仁；既仁且知，夫恶有不足矣哉！”\\n子路入，子曰：“由！知者若何？仁者若何？”子路对曰：“知者使人知己， 仁者使人爱己。”子曰：“可谓士矣。”子贡入，子曰：“赐！知者若何？仁者若 何？”子贡对曰：“知者知人，仁者爱人。”子曰：“可谓士君子矣。”颜渊入， 子曰：“回！知者若何？仁者若何？”颜渊对曰：“知者自知，仁者自爱。”子曰： “可谓明君子矣。”\\n子路问于孔子曰：“君子亦有忧乎？”孔子曰：“君子其未得也，则乐其意，既已得之，又乐其治。是以有终生之乐，无一日之忧。小人者其未得也，则忧不得； 既已得之，又恐失之。是以有终身之忧，无一日之乐也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1413, \"chapter_text_length\": 1413, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"从义不从父\", \"孝子所不从命有三\"], \"focus_terms_found_in_chapter\": [\"从义不从父\", \"孝子所不从命有三\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"从义不从父\", \"offset\": 28, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"offset\": 0, \"focus\": \"从义不从父\"}}, {\"term\": \"孝子所不从命有三\", \"offset\": 72, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"offset\": 0, \"focus\": \"孝子所不从命有三\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"85ee806dca6d8ca002a255aedbb600fa6af6e04accb338c28ccbffd37a326127\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/795658cafeab?ch=30\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 1413]], \"covered_characters\": 1413, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e3a52553c303",
+      "chapter_idx": 6,
+      "focus": "教育的任务结束了时 服从 尊礼",
+      "max_chars": 2500
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"chapter_idx\": 6, \"title\": \"第七章 论政治的或公民的社会\", \"citation_label\": \"【《政府论（下篇）》·第七章 论政治的或公民的社会】\", \"text\": \"68．另一方面，尊礼和瞻养，作为儿女应該报答他們所得的好处的威恩表示，是儿女的必要责任和父母应享的特殊待遇。这是为了交母的好处，犹之另一种是为了儿女的好处一样。不过作为父母之青的教育似乎具有特别大的权力，因为孩童时期的无知和缺陷需要加以約束和料正，这是一种看得见的統治权的行使，是一种权。而尊礼一所包涵的责任邦不要求那么多的服从，但是这种义务对成年的儿女要求得比年幼的儿女高些。“儿女們，要孝顾你們的父母”，能认为这条命要求自已有儿女的人对他交亲所表示的服从，要同他年幼的儿女应該对他自已所表示的一样；如果他的父亲由于狂妄的权威威，还要把他当作孩子看待的話，文会根据这句言，认为必需服从他父亲的一切命合呢？\\n69．所以，父权或者不如责任的首要部分、即教育是属于父亲的，这部分权力到一定的时候就告秸束。教育的任务整了时，这部分的权力即自动告終，而且在这以前也是可以让予的。这是因为，一个人可以把教导儿子的事托付旁人，当他把他的儿子交給旁人充当学徒时，他就免除了他儿子在那个时期内对他和他的母亲的一大部分的服从义务。但是父权的另一部分，即拿礼的义务，还是完全属于他们的，这是无法取消的。这种义务对不能同父母两人分开，以致父亲的权威不能剥夺母亲的这种权利，亦没有任何人能免除他的儿子尊礼他的生身之母的义务。但是这两部分父权都与制定法律抖以能及于财产、自由、身体和生命的处罚来执行这些法律的权力截然不同。命令儿女的权力到成年而告结束；虽然在此之后，一-个儿子对他的父母总应尽到尊崇和敬礼、养和保护，以及威恩的心情能够责成每一个人尽到的一切义务，以报答他自然地能够得到的最大好处，然而这些并未把王权、君主的命合权給予父亲。他对于儿子的财产或行动无統辖权，也没有任何权力在一切事情上以他的意志拘束他几子的意志，尽管他的儿子如果尊重他的意志的話，在許多方面对他自己和他的家庭无太不方便的地方。\\n70．一个人为了尊礼和崇敬长者或贤人、保护他的儿女或朋友、救济和扶助受苦受难的人和威谢給他好处的人而負有种种义务，即使尽其所有和尽其所能也不足应付于万一；但是这一切不能使那些要求他克尽义务的人享有权威，享有对他制訂法律的权利。很明显，这一切不是仅仅由于父亲的名义也不是如前面已經过的由于也受恩于母亲的故，而是因为对父母所負的这些义务以及对儿女所提出的要求的程度可以随着扶养、慈爱、操心和花费的不同而有所出入的，这些照顾在两个孩子之間时常是有厚薄之分的。\\n71.这就表明，何以身在社会而本身作为社会成员的父母，对他們的儿女保持着一种权力，并且享有同自然状态中的人們一样多的权利来要求儿女們对他服从。假如一切政治权力只是交权，两者实际上是同一回事，那就不可能是这样了。因为这样的話，所有的父权既属于君主，臣民自然就不能享有。但是政治权力和父权这两种权力是截然不同而有区别的，是建立在不同的基础上而又各有其不同的目标的，因此每一个作为父亲的臣民，对于他的儿女具有和君主对于他的儿女同样多的父权；·而每一个有父母的君主，对其父母应当尽到和他的最微的臣民对于他們的父母同样·45。多的孝道和服从的义务；因此父权不能包括一个君主或官长对他臣民的那种統辖权的任何部分或任何程度。\\n72.虽然父母教养儿女的义务和儿女孝敬父母的义务意味着一方享有全部权力和另一方必须服从，并且这对双方关系都是正常的，但是父亲通常还有另外一种权力，使他的儿女不得不对他服从；虽然这种权力他和别人都是同样具有的，但是由于这种权力的实施机会差不多总是出现在交亲們私入的家庭里，别处这样的例子极少，亦很少受人注意，因此现在就被当作父权的一部分。这就是人們通常所具有的把他們的财产給子他們最欢喜的人的权力。父亲的财产是儿女們所期待和承继的，通常依照每一国家的法律和习惯按一定比例分配，然而父亲一般地有权根据这个或那个儿女的行为是否迎合他的意志和脾气而多給或少給。\\n73.这对于儿女的服从起着相当大的豹束力。由于土地的享用总是附带着对这块土地所属的国家的政府的顺从，因而-一般就认为交亲能够强制他的后入服从他自已所臣服的政府，使他的儿女也受他的契豹的豹束。其实，这不过是土地附带的一填必要条件，而处在那个政府之下的地产的继承，只有那些顾意在那种条件下承受的人們才能享受，所以这不是什么自然的豹束或义务，而是一种自的顺从。这是因为，既然每一个人的儿女天生和他自己乃至他的任何租先一样地自由，当他們处于这种自由状态时，他們就可以选择自已意加入的社会、意隶属的国家。但是假如他們要享受他們組先的遗产，他們就必须接受他們組先原来接受的同样条件，受制于这一产业所附带的一切条件。誠然，父亲可以运用这种权力，追使他們的儿女即使已經达到成年仍然对他服从，而且通常使他們隶属于这个或那个政治权力之下。值是这些都不是基于父亲的任何特殊权利，而是用他們所持有的實赐来黄彻和酬答这种服从；这拜不比一个法国人对于一个英国人所享有的权·力更大，如果后者要想得到前者的一份财产，当然对他自己的服从不肯释毫放松。而当财产传給他的时候，如果他要享受这份财产，他就必须接受該土地所在国家对于土地占有所规定的附带条件，不是法国或英国。\\n74.由此可以得出这样的秸：纵然父亲的命合权只在他的儿女的未成年期間行使，而且只以适合于那个期間的管束教訓为限；纵然儿女在他們的一生中和在一切情况下，对于他們的父母必须尽到尊敬、孝顺和拉丁人所谓“孝道”以及对他們应尽的一切保护和瞻养，而并不給予父亲以統治的权力一郎制訂法律和处他的儿女一虽然这一切都不能使他对于他的儿子的财产或行动有何統韩权，然而很明显地可以設想，在世界初期以及现在的某些地方，人口的稀少容許一些家庭分散到无主的地区去，他們还可以迁移到或定居在尚无人烟的地方，在那种情况下，一家的父亲成为家庭中的君主是极为容易的。①他从他的儿女的孩提时起就是一①“所以，那位大哲学家的这种意见并不是不足置信的，这就是：每个家庭的家长，可以，总像一个国王。所以当許多家庭联合成为公民社会的时族，他們之中的最早的一种統治者就是国王。这似平也明了何以父亲的名义在他們的身上\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2500, \"chapter_text_length\": 10900, \"has_more\": true, \"next_offset\": 2500, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"服从\", \"尊礼\"], \"focus_terms_found_in_chapter\": [\"服从\", \"尊礼\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"服从\", \"offset\": 162, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 0, \"focus\": \"服从\"}}, {\"term\": \"服从\", \"offset\": 227, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 27, \"focus\": \"服从\"}}, {\"term\": \"服从\", \"offset\": 291, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 91, \"focus\": \"服从\"}}, {\"term\": \"尊礼\", \"offset\": 8, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 0, \"focus\": \"尊礼\"}}, {\"term\": \"尊礼\", \"offset\": 145, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 0, \"focus\": \"尊礼\"}}, {\"term\": \"尊礼\", \"offset\": 538, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 338, \"focus\": \"尊礼\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"fcb204d176a620d001d869bbc720f37f467453e5268dfffd6ab18f4d5f7e8379\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e3a52553c303?ch=6\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2500]], \"covered_characters\": 2500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "309de54e4392",
+      "chapter_idx": 28,
+      "focus": "感恩的责任 父母的权利 教养",
+      "max_chars": 2500
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 28, \"title\": \"第一部分　私人权利（私法）\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一部分　私人权利（私法）】\", \"text\": \"子结婚的不相配的婚姻（或者“不自然”的婚姻）。他们的婚姻都是为了通过这种契约，利用双方不平等的社会身份，成为一方对另一方处于优越的社会地位而去控制对方，因而，事实上这样的关系和纳妾没有实质的区别。根据自然权利的原则，这种结合不能构成真正的婚姻。人们会质问，当法律以任何方式对待丈夫与妻子的关系时，总是说：“他将是你的主人”，于是他便代表命令的一方，而她就成为服从的一方，在此情况下，是否违背了婚姻当事人平等的原则？如果这种法律上的优越地位仅仅是基于考虑到丈夫与妻子的能力相比，在有效地完成家业的共同利益方面具有自然优势；此外，如果丈夫的命令权仅仅是根据这种事实来作出的，那么，不能认为这违背了人类结合成双的自然平等的原则。因为这种权利可以从二人结合与平等的义务以及有关的 目的 之间的关系推断出来。\\n27.婚姻契约的完成\\n婚姻的契约只有夫妻同居才算完成。两个不同性别的人的契约，如果附有秘密谅解，彼此避免同居，或者知道一方或双方没有性功能，这项婚姻契约就是 冒充的契约 ，它不能构成婚姻，可以由任何一方决定解除。但是，如果在结婚之后才发生一方缺乏性功能，那么，这项契约的权利不能由于一件在法律上不能加以指摘的偶然事故而被宣告无效或认为没有约束力。\\n获得一个配偶（或者作为丈夫，或者作为妻子），不能根据二人同居的 事实 而不事前缔结婚约，便可以构成；也不能仅仅有了婚姻的契约而没有随后的同居，便可以构成。只有通过 法律 才能获得配偶：即作为一项法律上责任的后果。它是由两个人，仅仅根据彼此 占有 而结成一个性关系的联合体。这种相互占有，同时又仅仅是通过相互使用性器官，才能成为现实。\\n第二标题 (6) 父母的权利（父母与子女）\\n第二标题　父母的权利（父母与子女）\\n28.父母与子女的关系\\n从一个人对他自己的义务——就是对待他自身中的人性——于是产生一种对人权，加之于婚姻的一方，即不同性别的一方，作为人通过婚姻，真正地和互相地彼此获得对方。同样，根据这样建立起来的联合体中 繁殖 的事实，随着就产生保护和抚养 子女 （这个联合体的产物）的义务。因此，儿童作为人，就同时具有原生的天赋权利——有别于单纯的继承权利——而获得父母的细心抚养，直到他们有能力照顾自己为止。这种抚养责任，直接由法律 (7) 规定他们的义务，不需要任何专门法案对此作出决定。\\n由于父母生育出的是一个 人 ，不能把一个享有天赋自由的人设想成为仅仅是经过一种物质程序产生出来的一个生命 (8) 。因此， 在实际关系中 ，把传宗接代的行为看成是未经他本人同意，而把一个人带进了这个人间世界的过程，而且通过别人负有责任的自由意志把他安排在人间，这是很正确的，甚至是一种十分必要的观念。因此，这种行为加给父母一项责任——尽他们力所能及——要满足他们的子女应有的需要。父母不能把他们的子女看成是他们 自己的制造物 ，因为不能这样看待一个享有自由权利的生命。同样，他们也无权像对待自己的财产那样可以毁掉孩子，甚至也不能让孩子听天由命，因为他们把一个生命带到了人间，而他事实上将成为此世界的一个公民，即使根据权利固有的概念，他们已经不能对这个生命置之不理，漠不关心。\\n我们甚至无法理解上帝如何 能够创造 自由的生命：如果人们未来的一切行为都为已经为那第一次的行动事先所决定，于是，未来的行为便都包括在合乎自然规律的必然的链条之中，那末，他们不可能是自由的。可是，作为人，我们事实上是自由的，因为，通过道德和实践关系中的绝对命令，这种自由被证明是理性的一种权威的决定。可是，从理论的角度看来，理性当然不能把这种因果关系的可能性变成可以理解的，因为它们两者（自由和绝对命令）都是超感觉的。在这些情况下，理性所能提出的一切要求，将仅仅是去证明，在涉及创造自由生命的概念时， 不存在矛盾 。而这种证明也可以通过下述说明达到：当矛盾仅仅产生于 时间的条件 加上了因果关系范畴时，就会转化为超感觉的诸事物的关系。时间条件（如果指的是：一种结果的原因必须先于结果以作为它的前提），在考虑到可感觉对象的彼此关系时是不可避免的；还有，如果这种因果关系的概念，假如在理论方面具有客观的现实性，那么，此因果关系的概念不得不被认为是指超感觉方面的。可是，当这个纯粹范畴撇开任何感知条件时，就是从道德和实践的观点来运用时，这个矛盾便逐渐消失！因而，在一种涉及创造概念的非感知关系时，也不存在矛盾。\\n哲学的法学家不会认为这种研究（当这种研究要追溯到先验哲学终极原则时）在道德形而上学中是一种不必要的微妙问题；或者当他在探索权利原则的最终关系中，考虑到维持公正的困难时，这种研究自身会消失在无目的的黑暗之中。\\n29.父母的权利\\n由上面所指出的责任，便必然地进一步得出，父母必须有权去 管教与训练他们的子女 ，因为子女本人尚无恰当地运用他的肌体（作为一个有机体）和心智（作为一种理解力）的能力。这就涉及对子女的抚养和关心子女的教育。一般说来，它包括在 实际生活 中所形成的和发展的功能，它可以使子女在未来生活中有能力维持自己并成长起来；此外，还有道德修养与发展，凡是忽略了这方面的父母都是有罪的。所有这些训练一直要进行到子女独立成人的时期，即子女自己能够谋生的年龄。到了这个时期，父母才可以实际上放弃他们发布命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求，因为这些操心和麻烦在教养工作结束之后就没有了。父母只能依据 感恩 的责任，可以向子女提出任何作为（对父母的）道德义务的要求。\\n从孩子们具有人格这一事实，便可提出：无论如何不能把子女看作是父母的财产，他们仅仅在下述意义上可以看作属于父母的，如同别的东西一样为父母所 占有 ：如果当孩子被他人占有时，父母可以把他们的子女从任何占有者手中要回来，哪怕违反子女本人的意志。可见，父母的权利并非纯粹是物权，它是不能转让的。但是，这也不 仅仅 是一种对人权，它是一种有 物权 性质的对人权，这就是一种按物权 方式 构成的并被执行的对人权。\\n很明显，在权利的科学中，除物权和对人权两种权利而外，还必须添加上这一项“ 有物权性\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 27644, \"excerpt_end\": 30144, \"chapter_text_length\": 51852, \"has_more\": true, \"next_offset\": 30144, \"has_previous\": true, \"previous_offset\": 25144, \"focus_found\": true, \"focus_terms_matched\": [\"父母的权利\", \"教养\"], \"focus_terms_found_in_chapter\": [\"父母的权利\", \"教养\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"父母的权利\", \"offset\": 28344, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 28144, \"focus\": \"父母的权利\"}}, {\"term\": \"父母的权利\", \"offset\": 28362, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 28162, \"focus\": \"父母的权利\"}}, {\"term\": \"父母的权利\", \"offset\": 29564, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 29364, \"focus\": \"父母的权利\"}}, {\"term\": \"教养\", \"offset\": 29849, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 29649, \"focus\": \"教养\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"639dc23d6753984ff369857de9c4858b0265cdc8d3f2e1aa91c0bbebf3b4a0c5\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/309de54e4392?ch=28\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[27644, 30144]], \"covered_characters\": 2500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "故当不义则争之 从父之令又焉得为孝乎"
+     },
+     "status": "success",
+     "duration_seconds": 1.461,
+     "result_full": "{\"query\": \"故当不义则争之 从父之令又焉得为孝乎\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\": \"【《韩非子》·忠孝】\", \"snippet\": \"天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，\", \"score\": 0.6618, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 52, \"focus\": \"故当不义则争之 从父之令又焉得为孝乎\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.796}, {\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。 鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问\", \"score\": 0.6442, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"故当不义则争之 从父之令又焉得为孝乎\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.566}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "d9272a80942a",
+      "chapter_idx": 5,
+      "focus": "事父母几谏",
+      "max_chars": 1200
+     },
+     "status": "success",
+     "duration_seconds": 0.002,
+     "result_full": "{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"chapter_idx\": 5, \"title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"text\": \"子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\\n子曰：“唯仁者能好人，能恶人。”\\n子曰：“苟志于仁矣，无恶也。”\\n子曰：“富与贵，是人之所欲也；不以其道得之，不处也。贫与贱，是人之所恶也；不以其道得之，不去也。君子去仁，恶乎成名？君子无终食之间违仁，造次必于是，颠沛必于是。”\\n子曰：“我未见好仁者，恶不仁者。好仁者，无以尚之；恶不仁者，其为仁矣，不使不仁者加乎其身。有能一日用其力于仁矣乎？我未见力不足者。盖有之矣，我未之见也。”\\n子曰：“人之过也，各于其党。观过，斯知仁矣。”\\n子曰：“朝闻道，夕死可矣。”\\n子曰：“士志于道，而耻恶衣恶食者，未足与议也。”\\n子曰：“君子之于天下也，无适也，无莫也，义之与比。”\\n子曰：“君子怀德，小人怀土；君子怀刑，小人怀惠。”\\n子曰：“放于利而行，多怨。”\\n子曰：“能以礼让为国乎？何有？不能以礼让为国，如礼何？”\\n子曰：“不患无位，患所以立；不患莫己知，求为可知也。”\\n子曰：“参乎！吾道一以贯之。”曾子曰：“唯。”子出，门人问曰：“何谓也？”曾子曰：“夫子之道，忠恕而已矣。”\\n子曰：“君子喻于义，小人喻于利。”\\n子曰：“见贤思齐焉，见不贤而内自省也。”\\n子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。”\\n子曰：“父母在，不远游，游必有方。”\\n子曰：“三年无改于父之道，可谓孝矣。”\\n子曰：“父母之年，不可不知也。一则以喜，一则以惧。”\\n子曰：“古者言之不出，耻躬之不逮也。”\\n子曰：“以约失之者鲜矣。”\\n子曰：“君子欲讷于言而敏于行。”\\n子曰：“德不孤，必有邻。”\\n子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 709, \"chapter_text_length\": 709, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"事父母几谏\"], \"focus_terms_found_in_chapter\": [\"事父母几谏\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"事父母几谏\", \"offset\": 533, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 5, \"offset\": 333, \"focus\": \"事父母几谏\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"f9bfbb6647763d25ffdd5aeecf7257c395eefd59eec70804afd045c32be7b355\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/d9272a80942a?ch=5\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孔子\", \"canonical_title\": \"论语\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 709]], \"covered_characters\": 709, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "analyze_argument",
+     "args": {
+      "text": "父母养育子女长大，因此子女在工作和婚姻上应当听从父母的安排；不接受这种安排就是忘恩负义、不讲孝道。",
+      "question": "用户问：父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？"
+     },
+     "status": "success",
+     "duration_seconds": 29.393,
+     "result_full": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"子女在工作和婚姻上应当听从父母的安排；不接受这种安排就是忘恩负义、不讲孝道。\", \"premises\": [{\"premise\": \"父母养育子女长大。\", \"kind\": \"explicit\"}], \"hidden_assumptions\": [\"父母养育子女构成一种债务，且该债务的内容包括在工作和婚姻上服从父母安排。\", \"父母对成年子女的工作和婚姻拥有正当决定权或权威。\", \"听从父母安排是感恩、孝道的必要条件；不接受安排就表示否定恩情。\", \"子女的自主、同意和重大利益不能优先于父母的安排。\", \"父母安排的合理性或正当性可由“父母养育过子女”这一事实自动保证。\"], \"fallacies\": [{\"name\": \"事实—规范缺口\", \"where\": \"从“父母养育子女长大”推到“子女应当听从安排”\", \"why\": \"养育是事实描述，不能仅凭自身推出子女负有服从工作和婚姻安排的规范义务；中间缺少可辩护的规范桥梁。\"}, {\"name\": \"义务范围扩大/全称化过度\", \"where\": \"结论中的“工作和婚姻上应当听从父母的安排”\", \"why\": \"即使父母养育产生感恩、尊重或协商义务，也不能推出对成年子女所有工作和婚姻安排都必须服从。\"}, {\"name\": \"偷换概念\", \"where\": \"把“不接受安排”等同于“忘恩负义、不讲孝道”\", \"why\": \"感恩、孝道可包含关怀、尊重、赡养和协商，不等于让渡工作和婚姻决定权；拒绝某个具体安排不等于否认父母养育之恩。\"}, {\"name\": \"充分条件误置/虚假二分\", \"where\": \"结论后半段\", \"why\": \"把“不服从安排”当作“忘恩负义、不孝”的充分条件，忽略了既感恩又基于正当理由拒绝安排的可能。\"}], \"counterexample\": {\"scenario\": \"父母确实把子女养育成人。现在父母要求子女辞去其热爱且稳定的工作，并与父母选定但曾有暴力行为的人结婚；子女拒绝该安排，同时表示会继续关心、赡养父母并感谢养育。\", \"premises_still_hold\": \"原显式前提“父母养育子女长大”仍然成立；子女也未否认父母付出或一般性的感恩、孝道义务。\", \"conclusion_fails\": \"不能推出子女“应当听从”这一工作和婚姻安排；拒绝该具体安排也不等于忘恩负义或不讲孝道，因为服从会严重损害其人身安全、职业与人生自主，而感恩不等于必须服从所有安排。\"}, \"strongest_reply\": \"原论证可作的最强回应是：父母养育付出巨大，子女不应把父母意见当无物；在父母安排合理、尊重子女人格且不损害其重大利益时，子女若轻蔑拒绝，确实可能违背感恩和孝道。但这一回应最多支持“认真听取、解释、协商、照顾父母感受”，不能支持“必须服从工作和婚姻安排”，也不能把任何拒绝都定为忘恩负义。\", \"weakest_point\": \"最关键缺口是从“父母养育”这一事实直接跳到“子女应服从工作和婚姻安排”这一规范结论，并把感恩、孝道偷换为服从。若结论收窄为“子女应感恩父母并在重大决策中认真考虑父母意见”，论证才可能成立。\", \"strengthening\": [\"把结论收窄为：子女应感恩父母，并在工作和婚姻决策中认真听取、协商父母意见，除非有重大正当理由，不应轻蔑或欺骗。\", \"增加规范前提：父母的具体安排确实合理、尊重子女人格与自主，且不损害子女重大利益。\", \"区分法律义务、道德感恩、孝道关怀与对具体人生选择的决定权。\", \"若要主张“拒绝即忘恩负义”，必须证明拒绝方式是恶意否认恩情，而不只是不同意某个安排。\"], \"question_fidelity\": \"原问题问“我欠他们这些吗”，即是否欠父母对工作和婚姻安排的服从。待检验论证没有回答“欠什么、欠多少、条件是什么”，而是直接把养育事实转换为服从债务，并把不接受安排改写成忘恩负义、不孝，扩大了原问题的争点。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"中间分析，不是已证明的裁决。核对题设与反例后自行综合，不照搬JSON或编号模板。\", \"validation_scope\": \"structure_only\", \"requires_main_agent_judgment\": true, \"question_context_truncated\": false}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "孝道 报恩 感恩 义务 儒家 父母 决定权",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.448,
+     "result_full": "{\"query\": \"孝道 报恩 感恩 义务 儒家 父母 决定权\", \"results\": [{\"source_record_id\": \"doi:10.58601/kjre.2022.05.30.06\", \"title\": \"Modern Reinterpretation of Filial Piety(孝): Focused on Sutra on parental grace(父母恩重經)\", \"authors\": [\"Sunsuk Jeon\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"The Korean Association for the Study of Religious Education\", \"doi\": \"10.58601/kjre.2022.05.30.06\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.21718/eabc.2018.35.14\", \"title\": \"A Study on the of woodcut prints ‘佛說大報父母恩重經(Bulseol-daebo-bumo-eunjung-gyeong)’ published in the 14th century in Korea and Japan.\", \"authors\": [\"Hae-Yung Suk\"], \"year\": 2018, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Eastern-Asia Buddhism and Culture\", \"doi\": \"10.21718/eabc.2018.35.14\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"孝道 报恩 感恩 义务 儒家 父母 决定权\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"query\": \"孝道 报恩 感恩 义务 儒家 父母 决定权\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 10, \"kept_relevant\": 2}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"记录为真实检索所得, 但全部为 METADATA_ONLY（无可读内容）——只能陈述书目存在性, 不得凭标题推断内容\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "filial obligation gratitude debt to parents argument",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.64,
+     "result_full": "{\"query\": \"filial obligation gratitude debt to parents argument\", \"results\": [{\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"title\": \"Evolution of the Conceptualization of Filial Piety in the Global Context: From Skin to Skeleton\", \"authors\": [\"Olwen Anna Bedford\", \"Kuang‐Hui Yeh\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2021.570547\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s11019-010-9290-z\", \"title\": \"Filial obligations to elderly parents: a duty to care?\", \"authors\": [\"Maria C. Stuifbergen\", \"Johannes J. M. van Delden\"], \"year\": 2010, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Medicine Health Care and Philosophy\", \"doi\": \"10.1007/s11019-010-9290-z\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3917/pope.1201.0097\", \"title\": \"Norms of Filial Obligation in the Netherlands\", \"authors\": [\"Pearl A. Dykstra\", \"Tineke Fokkema\"], \"year\": 2012, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Population (English Edition)\", \"doi\": \"10.3917/pope.1201.0097\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"openalex:W2984734780\", \"title\": \"Filial Gratitude and God's Right to Command\", \"authors\": [\"Joseph L. Lombardi\"], \"year\": 1991, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Religious Ethics\", \"doi\": null, \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"title\": \"Filial Obligations: A Contextual, Pluralist Model\", \"authors\": [\"Anders Schinkel\"], \"year\": 2012, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"The Journal of Ethics\", \"doi\": \"10.1007/s10892-012-9132-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 5, \"READABLE_SOURCE_IDS\": [\"doi:10.3389/fpsyg.2021.570547\", \"doi:10.1007/s11019-010-9290-z\", \"doi:10.3917/pope.1201.0097\", \"openalex:W2984734780\", \"doi:10.1007/s10892-012-9132-8\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"filial obligation gratitude debt to parents argument\", \"retry_after\": null, \"status\": \"error\"}, {\"provider\": \"openalex\", \"query\": \"filial obligation gratitude debt to parents argument\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"filial obligation gratitude debt to parents argument\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.3389/fpsyg.2021.570547",
+      "requested_access": "ABSTRACT",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.087,
+     "result_full": "{\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"title\": \"Evolution of the Conceptualization of Filial Piety in the Global Context: From Skin to Skeleton\", \"authors\": [\"Olwen Anna Bedford\", \"Kuang‐Hui Yeh\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2021.570547\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"as a set of norms, values, and practices regarding how children should behave toward their parents. In this article, we trace the conceptual development of filial piety research in Chinese and other societies to highlight the assumptions underlying this traditional approach to filial piety research. We identify the limitations of these assumptions, including the problem of an evolving definition and lack of cross-cultural applicability. We then advocate an alternative framework that overcomes these limitations by focusing on the deep structure of filial piety: the dual filial piety model (DFPM). The DFPM applies the concept of contextualized personality to reconceptualize filial piety in terms of authoritarian and reciprocal psychological motivations particular to the parent-child context. Because the focus is on a universal psychological mechanism rather than cultural norms, values, and behavior, the DFPM may be applied for investigation of filial piety at individual, social, and cultural levels within and across various societies. We discuss application of the DFPM in relation to existing filial piety and intergenerational relations research from several societies and conclude with a comparison to other recent proposals for measuring Chinese filial piety.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"a79f21c6ca02ad032fcb99f52edca5686776fb58de0437bc541b867ab305778e\", \"excerpt_start\": 0, \"excerpt_end\": 1277, \"total_characters\": 1277, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"a79f21c6ca02ad032fcb99f52edca5686776fb58de0437bc541b867ab305778e\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1007/s10892-012-9132-8",
+      "requested_access": "ABSTRACT",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.092,
+     "result_full": "{\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"title\": \"Filial Obligations: A Contextual, Pluralist Model\", \"authors\": [\"Anders Schinkel\"], \"year\": 2012, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"The Journal of Ethics\", \"doi\": \"10.1007/s10892-012-9132-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"In this article I investigate the nature and extent of filial obligations. The question what (adult) children owe their parents is not only philosophically interesting, but also of increasing relevance in ageing societies. Its answer matters to elderly people and their adult children, and is relevant to social policy issues in various ways. I present the strongest arguments for and against three models of filial obligations: the ‘past parental sacrifices’ model, the ‘special relationship’ model, and the conventionalist model. There is something to be said—and after consideration of objections something remains to be said—for all three models. In other words: filial obligations have more than one source, and an adequate model of filial obligations should reflect this. On its own, each of the above models is one-sided. They also fail to show the connections between the question of filial obligations and various other issues, such as issues of gender justice, the extent of institutionalization of eldercare, and social conventions regarding filial responsibility. Therefore, I integrate what I think we should keep from the aforementioned models into a contextual, pluralist model, which places filial obligations in a broader social and cultural context and relates them to issues of social justice. The model also highlights the difference between general and specific filial obligations, and the factors that determine their nature and extent, thus enabling a deeper and more comprehensive understanding of filial obligations.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"d0419fe0bd0f2e5ce040a9dbd153866ce29f7468ddfb9787acc59842b9198b79\", \"excerpt_start\": 0, \"excerpt_end\": 1541, \"total_characters\": 1541, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"d0419fe0bd0f2e5ce040a9dbd153866ce29f7468ddfb9787acc59842b9198b79\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 6.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_qNSZkhtcpLnC6Aa3WO2f8336"
+    },
+    {
+     "t": 6.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_4YMFZYwEU4BzzdYZaGG44092"
+    },
+    {
+     "t": 6.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_KIdfOFAiod9kXKGJ89a11558"
+    },
+    {
+     "t": 7.1,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_03_PDrzLXHtMmVfWQJVZCtk1835",
+     "status": "success",
+     "duration_seconds": 0.097
+    },
+    {
+     "t": 7.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "感恩 义务 父母 报答",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.219,
+     "result_full": "{\"query\": \"感恩 义务 父母 报答\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 28, \"chapter_title\": \"第一部分　私人权利（私法）\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一部分　私人权利（私法）】\", \"snippet\": \"命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求，因为这些操心和麻烦在教养工作结束之后就没有了。父母只能依据 感恩 的责任，可以向子女提出任何作为（对父母的）道德义务的要求。 从孩子们具有人格这一事实，便可提出：无论如何不能把子女看作是父母的财产，他们仅仅在下述意义上可以看作属于父母的，如同别的东西一样为父母所 占有 ：如果当孩子被他人占有时，父母可以把他们的子女从任何占有者手中要回来，哪怕违反子女本人的意志。可见，父母的权利并非纯粹是物权，它是不能转让的。但是，这也不 仅仅 是一种对人权，它是一种有 物权 性质的对人权，这就是一种按物权 方式 构成的并被执行的对人权。 很明显，在权利的科学中，除物权和对人权两种权利而外，\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"赋予这个受宠的受造物，那么，它也必须是仅供这个受造物来对自己的本性的幸运禀赋做出思考，为之惊赞，为之欣喜，并对仁慈的原因感恩戴德；而不是使它的欲求能力服从那种软弱而且不可靠的引导，或者在自然意图上马虎从事；一言以蔽之，自然会不让理性进入实践的应用，不让它妄自凭借自己微弱的见识为自己想出幸福和达到幸福的手段的方案；自然不仅自己承担目的的选择，而且也自己承担手段的选择，并且凭借睿智的预先安排把二者仅仅托付给本能。 事实上我也发现，一种开化了的理性越是意在生活与幸福的享受，人离真正的满意就越远。由此在许多人那里，而且在对理性的应用最跃跃欲试的人那里，如果他们足够坦率地承认的话，就产生出某种程度的厌理症，亦即对理性的憎恨，因为经过估算他们所\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 40, \"chapter_title\": \"论永久和平\", \"citation_label\": \"【《康德文集》·论永久和平】\", \"snippet\": \"污的嘴令人毛骨悚然］。——科学院版编者注 [12] 在结束一场战争之后，缔结和约时，对于一个民族来说也许并非不当的是，在感恩庆典之后宣布一个忏悔日，来以国家的名义祈求上天宽恕人类还一直犯的这种重大罪孽，即在与其他民族的关系中不愿服从任何法律宪政，而是为其独立自豪，宁可使用战争的野蛮手段（但由此所寻求的东西，亦即每一个国家的法权，却未得到澄清）。——在战争期间为一场赢得的胜利举行的感恩庆典，（用十足的以色列方式）为万军之主所唱的颂歌，与人父的道德理念形成极强烈的反差，因为它们除了带来对各民族寻求其相互法权的方式的漠然（这是足够可悲的）之外，还带来了毁灭许多人或者他们的幸福的欢愉。 [13] 要用这个大帝国自己称谓自己所使用的名称来书写\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 40, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 55, \"chapter_title\": \"论永久和平\", \"citation_label\": \"【《康德文集》·论永久和平】\", \"snippet\": \"污的嘴令人毛骨悚然］。——科学院版编者注 [41] 在结束一场战争之后，缔结和约时，对于一个民族来说也许并非不当的是，在感恩庆典之后宣布一个忏悔日，来以国家的名义祈求上天宽恕人类还一直犯的这种重大罪孽，即在与其他民族的关系中不愿服从任何法律宪政，而是为其独立自豪，宁可使用战争的野蛮手段（但由此所寻求的东西，亦即每一个国家的法权，却未得到澄清）。——在战争期间为一场赢得的胜利举行的感恩庆典，（用十足的以色列方式）为万军之主所唱的颂歌，与人父的道德理念形成极强烈的反差，因为它们除了带来对各民族寻求其相互法权的方式的漠然（这是足够可悲的）之外，还带来了毁灭许多人或者他们的幸福的欢愉。 [42] 在所有的生活方式当中，狩猎生活无疑最违背文明\", \"score\": 126, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 55, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 73, \"chapter_title\": \"相关论述\", \"citation_label\": \"【《康德文集》·相关论述】\", \"snippet\": \"的司令官，无可比拟的英雄，自己至为仁慈的主人和保护人，谨以完全忠诚的和谦恭的心情使这几页纸成为对以诸多榜样展现出的仁慈的感恩和负有义务的心灵之信物。至为恭顺的仆人克里斯托夫·亚伯拉罕·博尔查德。 哲学系的档案包含着如下几条与这部作品相关的登记：第Ⅴ卷，193页，“下面所写已经呈交主任和副主任裁断”，作为第20条是：“康德硕士为被接纳的论认识各首要原则的形而上学答辩论文”；194页，“本学期所做的答辩论文”，第3条：“伊曼努尔·康德硕士为被接纳入哲学系而辩论形而上学认识各首要原则的新说明。辩护人克里斯托夫·亚伯拉罕·博尔查德，9月27日”。 关于博尔查德和标题上所列举的提问人，除此一无所知。 我们的版本以原版的文本为基础。康德自己在结\", \"score\": 125, \"match_type\": \"partial_keyword_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 73, \"focus\": \"感恩 义务 父母 报答\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"感恩 义务 父母 报答\", \"query_terms\": [\"感恩\", \"义务\", \"父母\", \"报答\"]}], \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"method\": \"partial_keyword_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 9.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "事父母几谏"
+     },
+     "status": "success",
+     "duration_seconds": 2.719,
+     "result_full": "{\"query\": \"事父母几谏\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 5, \"chapter_title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"snippet\": \"子曰：“夫子之道，忠恕而已矣。” 子曰：“君子喻于义，小人喻于利。” 子曰：“见贤思齐焉，见不贤而内自省也。” 子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。” 子曰：“父母在，不远游，游必有方。” 子曰：“三年无改于父之道，可谓孝矣。” 子曰：“父母之年，不可不知也。一则以喜，一则以惧。” 子曰：“古者言之不出，耻躬之不逮也。” 子曰：“以约失之者鲜矣。” 子曰：“君子欲讷于言而敏于行。” 子曰：“德不孤，必有邻。” 子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”\", \"score\": 50, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 5, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e5a8abe31f07\", \"book_title\": \"中国哲学辞典\", \"author\": \"韦政通\", \"chapter_idx\": 9, \"chapter_title\": \"七画\", \"citation_label\": \"【《中国哲学辞典》·七画】\", \"snippet\": \"之以礼，死葬之以礼，祭之以 礼。”\\\"子夏问孝，子日：色难。有事弟子服其劳，有酒食，先生误，曾是以为孝 乎。”《里仁》：“事父母几谏，见志不从，又敬不违，劳面不怨。”《公冶长》：“父母 在，不远游，游必有方。《中庸》：“践其位，行其礼，奏其乐，敬其所尊，爱其所亲， 事死如事生，事亡如事存，孝之至也。”《礼记·蔡义》：“父母爱之，喜而弗忘，父 每恶之，惧而无怨，父母有过，谏而不逆，父每既没，必录仁署之粟以祀之，此之 谓礼终。”“天之所生，地之所养，无人为大，父母全而生之，子全而归之，可谓孝 矣。不亏其体，不辱其身，可谓全矣。故君子顷步而弗敢忘孝也。”“孝子之有深 爱者，必有和气，有和气者，必有愉色，有愉色者，必有婉容。孝子如执玉，如奉 \", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e5a8abe31f07\", \"chapter_idx\": 9, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 627, \"chapter_title\": \"六、孝和爱\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·六、孝和爱】\", \"snippet\": \"观念。但做父母的，虽然被蛊惑而有不是的事，但在子女的立场来说，仍然需要以最大的“爱”心而为父母斡旋过错。所以孔子也说：“事父母几谏，见志不从，又敬不违，劳而不怨。”但是后世以讹传讹，或语焉不详，便把“天下无不是之父母”的观念，变成了铁定如律令的戒条。 同时做父母的，更要了解中国文化的“孝道”思想，并非只是单面的要求，它是相互的情爱。“父慈子孝”、“兄友弟恭”这是必然的因果律。孔子所谓“君君、臣臣、父父、子子”的道理，每句下面那个重复字，都是假借作为动词来读。用现代观念来说，就是：倘使父母不成其为父母，或父母没有尽到做父母之“爱”的责任，只是单方面要求子女来尽“孝”，那也是不合理的。其余各句的观念，依此类推，同一道理，当然不必重复细说\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 627, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 667, \"chapter_title\": \"里仁第四\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·里仁第四】\", \"snippet\": \"一句话就是说明上文仁者爱人不能恶人的道理；下面一句话，就是解释上文“人之过也，各于其党”的道理。 孝子仁人不二门 子曰：事父母几谏，见志不从，又敬不违，劳而不怨。 现在又讲到孝道中仁的范围，他说对于父母的过错必须“几谏”。什么叫“几谏”呢？我们好几次提到孔家店被打倒，都由孔家店的店员搞错了观念而出的毛病。宋儒以后论道学，便有：“天下无不是之父母”的名训出现。因此“五四运动”要打倒孔家店时，这些也成为罪状的重点。其实孔子思想并不是这样的，天下也有不是的父母，父母不一定完全对，作为一个孝子，对于父母不对的地方，就要尽力的劝阻。“见志不从”就是说父母不听劝导的话，那么就“又敬不违，劳而不怨”，只好跟在后面大叫、大哭、大闹，因为你是我父母，\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 667, \"focus\": \"事父母几谏\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 4, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 10.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "父有争子则身不陷于不义"
+     },
+     "status": "success",
+     "duration_seconds": 2.986,
+     "result_full": "{\"query\": \"父有争子则身不陷于不义\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\": \"【《韩非子》·忠孝】\", \"snippet\": \"天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，\", \"score\": 0.5339, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 52, \"focus\": \"父有争子则身不陷于不义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.604}, {\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。 鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问\", \"score\": 0.5277, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"父有争子则身不陷于不义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.51}, {\"book_id\": \"4c5aaf145298\", \"book_title\": \"大学章句集注\", \"author\": \"朱熹\", \"chapter_idx\": 10, \"chapter_title\": \"第九章\", \"citation_label\": \"【《大学章句集注》·第九章】\", \"snippet\": \"所谓齐其家在修其身者，人之其所亲爱而辟焉，之其所贱恶而辟焉，之其所畏敬而辟焉，之其所哀矜而辟焉，之其所敖惰而辟焉。故好而知其恶，恶而知其美者，天下鲜矣。故谚有之曰：“人莫知其子之恶，莫知其苗之硕。”此谓身不修不可以齐其家。\", \"score\": 0.5029, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"4c5aaf145298\", \"chapter_idx\": 10, \"focus\": \"父有争子则身不陷于不义\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.136}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 13.6,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_fT2yPx5sDGKjgLN0Cj7a5368"
+    },
+    {
+     "t": 13.9,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_beEHLPZGE9gTEAsXZlKG8378"
+    },
+    {
+     "t": 14.1,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_02_Hc1aVDco3zMnJjnkgtEZ2284"
+    },
+    {
+     "t": 14.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_03_f2iV4iGb918GhYF4UcTS9909"
+    },
+    {
+     "t": 14.6,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "795658cafeab",
+      "chapter_idx": 30,
+      "focus": "从义不从父 孝子所不从命有三",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"chapter_idx\": 30, \"title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"text\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。\\n鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问，孔子不对。 孔子趋出以语子贡曰：“乡者，君问丘也，曰：‘子从父命，孝乎？臣从君命，贞 乎？’三问而丘不对，赐以为何如？”子贡曰：“子从父命，孝矣。臣从君命，贞 矣，夫子有奚对焉？”孔子曰：“小人哉！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。”\\n子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺与？古之人 有言曰：‘衣与！缪与！不女聊。’今夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 无此三者，则何为而无孝之名也？意者所友非人邪？”孔子曰：“由志之，吾语女。 虽有国士之力，不能自举其身。非无力也，势不可也。故入而行不修，身之罪也； 出而名不章，友之过也。故君子入则笃行，出则友贤，何为而无孝之名也！”\\n子路问于孔子曰：“鲁大夫练而床，礼邪？”孔子曰：“吾不知也。”子路出， 谓子贡曰：“吾以为夫子无所不知，夫子徒有所不知。”子贡曰：“汝何问哉？” 子路曰：“由问：‘鲁大夫练而床，礼邪？’夫子曰：‘吾不知也。’”子贡曰： “吾将为女问之。”子贡问曰：“练而床，礼邪？”孔子曰；“非礼也。”子贡出， 谓子路曰：“女谓夫子为有所不知乎！夫子徒无所不知。女问非也。礼：居是邑不 非其大夫。”\\n子路盛服而见孔子，孔子曰：“由，是裾裾何也？昔者江出于岷山，其始出也， 其源可以滥觞，及其至江之津也，不放舟，不避风，则不可涉也。非维下流水多邪？ 今女衣服既盛，颜色充盈，天下且孰肯谏女矣！子路趋而出，改服而入，盖犹若也。 孔子曰：“由志之！吾语汝：奋于言者华，奋于行者伐，色知而有能者，小人也。 故君子知之曰知之，不知曰不知，言之要也；能之曰能之，不能曰不能，行之至也。 言要则知，行至则仁；既仁且知，夫恶有不足矣哉！”\\n子路入，子曰：“由！知者若何？仁者若何？”子路对曰：“知者使人知己， 仁者使人爱己。”子曰：“可谓士矣。”子贡入，子曰：“赐！知者若何？仁者若 何？”子贡对曰：“知者知人，仁者爱人。”子曰：“可谓士君子矣。”颜渊入， 子曰：“回！知者若何？仁者若何？”颜渊对曰：“知者自知，仁者自爱。”子曰： “可谓明君子矣。”\\n子路问于孔子曰：“君子亦有忧乎？”孔子曰：“君子其未得也，则乐其意，既已得之，又乐其治。是以有终生之乐，无一日之忧。小人者其未得也，则忧不得； 既已得之，又恐失之。是以有终身之忧，无一日之乐也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1413, \"chapter_text_length\": 1413, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"从义不从父\", \"孝子所不从命有三\"], \"focus_terms_found_in_chapter\": [\"从义不从父\", \"孝子所不从命有三\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"从义不从父\", \"offset\": 28, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"offset\": 0, \"focus\": \"从义不从父\"}}, {\"term\": \"孝子所不从命有三\", \"offset\": 72, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"offset\": 0, \"focus\": \"孝子所不从命有三\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"85ee806dca6d8ca002a255aedbb600fa6af6e04accb338c28ccbffd37a326127\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/795658cafeab?ch=30\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 1413]], \"covered_characters\": 1413, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 14.6,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e3a52553c303",
+      "chapter_idx": 6,
+      "focus": "教育的任务结束了时 服从 尊礼",
+      "max_chars": 2500
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"chapter_idx\": 6, \"title\": \"第七章 论政治的或公民的社会\", \"citation_label\": \"【《政府论（下篇）》·第七章 论政治的或公民的社会】\", \"text\": \"68．另一方面，尊礼和瞻养，作为儿女应該报答他們所得的好处的威恩表示，是儿女的必要责任和父母应享的特殊待遇。这是为了交母的好处，犹之另一种是为了儿女的好处一样。不过作为父母之青的教育似乎具有特别大的权力，因为孩童时期的无知和缺陷需要加以約束和料正，这是一种看得见的統治权的行使，是一种权。而尊礼一所包涵的责任邦不要求那么多的服从，但是这种义务对成年的儿女要求得比年幼的儿女高些。“儿女們，要孝顾你們的父母”，能认为这条命要求自已有儿女的人对他交亲所表示的服从，要同他年幼的儿女应該对他自已所表示的一样；如果他的父亲由于狂妄的权威威，还要把他当作孩子看待的話，文会根据这句言，认为必需服从他父亲的一切命合呢？\\n69．所以，父权或者不如责任的首要部分、即教育是属于父亲的，这部分权力到一定的时候就告秸束。教育的任务整了时，这部分的权力即自动告終，而且在这以前也是可以让予的。这是因为，一个人可以把教导儿子的事托付旁人，当他把他的儿子交給旁人充当学徒时，他就免除了他儿子在那个时期内对他和他的母亲的一大部分的服从义务。但是父权的另一部分，即拿礼的义务，还是完全属于他们的，这是无法取消的。这种义务对不能同父母两人分开，以致父亲的权威不能剥夺母亲的这种权利，亦没有任何人能免除他的儿子尊礼他的生身之母的义务。但是这两部分父权都与制定法律抖以能及于财产、自由、身体和生命的处罚来执行这些法律的权力截然不同。命令儿女的权力到成年而告结束；虽然在此之后，一-个儿子对他的父母总应尽到尊崇和敬礼、养和保护，以及威恩的心情能够责成每一个人尽到的一切义务，以报答他自然地能够得到的最大好处，然而这些并未把王权、君主的命合权給予父亲。他对于儿子的财产或行动无統辖权，也没有任何权力在一切事情上以他的意志拘束他几子的意志，尽管他的儿子如果尊重他的意志的話，在許多方面对他自己和他的家庭无太不方便的地方。\\n70．一个人为了尊礼和崇敬长者或贤人、保护他的儿女或朋友、救济和扶助受苦受难的人和威谢給他好处的人而負有种种义务，即使尽其所有和尽其所能也不足应付于万一；但是这一切不能使那些要求他克尽义务的人享有权威，享有对他制訂法律的权利。很明显，这一切不是仅仅由于父亲的名义也不是如前面已經过的由于也受恩于母亲的故，而是因为对父母所負的这些义务以及对儿女所提出的要求的程度可以随着扶养、慈爱、操心和花费的不同而有所出入的，这些照顾在两个孩子之間时常是有厚薄之分的。\\n71.这就表明，何以身在社会而本身作为社会成员的父母，对他們的儿女保持着一种权力，并且享有同自然状态中的人們一样多的权利来要求儿女們对他服从。假如一切政治权力只是交权，两者实际上是同一回事，那就不可能是这样了。因为这样的話，所有的父权既属于君主，臣民自然就不能享有。但是政治权力和父权这两种权力是截然不同而有区别的，是建立在不同的基础上而又各有其不同的目标的，因此每一个作为父亲的臣民，对于他的儿女具有和君主对于他的儿女同样多的父权；·而每一个有父母的君主，对其父母应当尽到和他的最微的臣民对于他們的父母同样·45。多的孝道和服从的义务；因此父权不能包括一个君主或官长对他臣民的那种統辖权的任何部分或任何程度。\\n72.虽然父母教养儿女的义务和儿女孝敬父母的义务意味着一方享有全部权力和另一方必须服从，并且这对双方关系都是正常的，但是父亲通常还有另外一种权力，使他的儿女不得不对他服从；虽然这种权力他和别人都是同样具有的，但是由于这种权力的实施机会差不多总是出现在交亲們私入的家庭里，别处这样的例子极少，亦很少受人注意，因此现在就被当作父权的一部分。这就是人們通常所具有的把他們的财产給子他們最欢喜的人的权力。父亲的财产是儿女們所期待和承继的，通常依照每一国家的法律和习惯按一定比例分配，然而父亲一般地有权根据这个或那个儿女的行为是否迎合他的意志和脾气而多給或少給。\\n73.这对于儿女的服从起着相当大的豹束力。由于土地的享用总是附带着对这块土地所属的国家的政府的顺从，因而-一般就认为交亲能够强制他的后入服从他自已所臣服的政府，使他的儿女也受他的契豹的豹束。其实，这不过是土地附带的一填必要条件，而处在那个政府之下的地产的继承，只有那些顾意在那种条件下承受的人們才能享受，所以这不是什么自然的豹束或义务，而是一种自的顺从。这是因为，既然每一个人的儿女天生和他自己乃至他的任何租先一样地自由，当他們处于这种自由状态时，他們就可以选择自已意加入的社会、意隶属的国家。但是假如他們要享受他們組先的遗产，他們就必须接受他們組先原来接受的同样条件，受制于这一产业所附带的一切条件。誠然，父亲可以运用这种权力，追使他們的儿女即使已經达到成年仍然对他服从，而且通常使他們隶属于这个或那个政治权力之下。值是这些都不是基于父亲的任何特殊权利，而是用他們所持有的實赐来黄彻和酬答这种服从；这拜不比一个法国人对于一个英国人所享有的权·力更大，如果后者要想得到前者的一份财产，当然对他自己的服从不肯释毫放松。而当财产传給他的时候，如果他要享受这份财产，他就必须接受該土地所在国家对于土地占有所规定的附带条件，不是法国或英国。\\n74.由此可以得出这样的秸：纵然父亲的命合权只在他的儿女的未成年期間行使，而且只以适合于那个期間的管束教訓为限；纵然儿女在他們的一生中和在一切情况下，对于他們的父母必须尽到尊敬、孝顺和拉丁人所谓“孝道”以及对他們应尽的一切保护和瞻养，而并不給予父亲以統治的权力一郎制訂法律和处他的儿女一虽然这一切都不能使他对于他的儿子的财产或行动有何統韩权，然而很明显地可以設想，在世界初期以及现在的某些地方，人口的稀少容許一些家庭分散到无主的地区去，他們还可以迁移到或定居在尚无人烟的地方，在那种情况下，一家的父亲成为家庭中的君主是极为容易的。①他从他的儿女的孩提时起就是一①“所以，那位大哲学家的这种意见并不是不足置信的，这就是：每个家庭的家长，可以，总像一个国王。所以当許多家庭联合成为公民社会的时族，他們之中的最早的一种統治者就是国王。这似平也明了何以父亲的名义在他們的身上\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2500, \"chapter_text_length\": 10900, \"has_more\": true, \"next_offset\": 2500, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"服从\", \"尊礼\"], \"focus_terms_found_in_chapter\": [\"服从\", \"尊礼\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"服从\", \"offset\": 162, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 0, \"focus\": \"服从\"}}, {\"term\": \"服从\", \"offset\": 227, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 27, \"focus\": \"服从\"}}, {\"term\": \"服从\", \"offset\": 291, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 91, \"focus\": \"服从\"}}, {\"term\": \"尊礼\", \"offset\": 8, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 0, \"focus\": \"尊礼\"}}, {\"term\": \"尊礼\", \"offset\": 145, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 0, \"focus\": \"尊礼\"}}, {\"term\": \"尊礼\", \"offset\": 538, \"read_args\": {\"book_id\": \"e3a52553c303\", \"chapter_idx\": 6, \"offset\": 338, \"focus\": \"尊礼\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"fcb204d176a620d001d869bbc720f37f467453e5268dfffd6ab18f4d5f7e8379\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e3a52553c303?ch=6\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2500]], \"covered_characters\": 2500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 14.6,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "309de54e4392",
+      "chapter_idx": 28,
+      "focus": "感恩的责任 父母的权利 教养",
+      "max_chars": 2500
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 28, \"title\": \"第一部分　私人权利（私法）\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》·第一部分　私人权利（私法）】\", \"text\": \"子结婚的不相配的婚姻（或者“不自然”的婚姻）。他们的婚姻都是为了通过这种契约，利用双方不平等的社会身份，成为一方对另一方处于优越的社会地位而去控制对方，因而，事实上这样的关系和纳妾没有实质的区别。根据自然权利的原则，这种结合不能构成真正的婚姻。人们会质问，当法律以任何方式对待丈夫与妻子的关系时，总是说：“他将是你的主人”，于是他便代表命令的一方，而她就成为服从的一方，在此情况下，是否违背了婚姻当事人平等的原则？如果这种法律上的优越地位仅仅是基于考虑到丈夫与妻子的能力相比，在有效地完成家业的共同利益方面具有自然优势；此外，如果丈夫的命令权仅仅是根据这种事实来作出的，那么，不能认为这违背了人类结合成双的自然平等的原则。因为这种权利可以从二人结合与平等的义务以及有关的 目的 之间的关系推断出来。\\n27.婚姻契约的完成\\n婚姻的契约只有夫妻同居才算完成。两个不同性别的人的契约，如果附有秘密谅解，彼此避免同居，或者知道一方或双方没有性功能，这项婚姻契约就是 冒充的契约 ，它不能构成婚姻，可以由任何一方决定解除。但是，如果在结婚之后才发生一方缺乏性功能，那么，这项契约的权利不能由于一件在法律上不能加以指摘的偶然事故而被宣告无效或认为没有约束力。\\n获得一个配偶（或者作为丈夫，或者作为妻子），不能根据二人同居的 事实 而不事前缔结婚约，便可以构成；也不能仅仅有了婚姻的契约而没有随后的同居，便可以构成。只有通过 法律 才能获得配偶：即作为一项法律上责任的后果。它是由两个人，仅仅根据彼此 占有 而结成一个性关系的联合体。这种相互占有，同时又仅仅是通过相互使用性器官，才能成为现实。\\n第二标题 (6) 父母的权利（父母与子女）\\n第二标题　父母的权利（父母与子女）\\n28.父母与子女的关系\\n从一个人对他自己的义务——就是对待他自身中的人性——于是产生一种对人权，加之于婚姻的一方，即不同性别的一方，作为人通过婚姻，真正地和互相地彼此获得对方。同样，根据这样建立起来的联合体中 繁殖 的事实，随着就产生保护和抚养 子女 （这个联合体的产物）的义务。因此，儿童作为人，就同时具有原生的天赋权利——有别于单纯的继承权利——而获得父母的细心抚养，直到他们有能力照顾自己为止。这种抚养责任，直接由法律 (7) 规定他们的义务，不需要任何专门法案对此作出决定。\\n由于父母生育出的是一个 人 ，不能把一个享有天赋自由的人设想成为仅仅是经过一种物质程序产生出来的一个生命 (8) 。因此， 在实际关系中 ，把传宗接代的行为看成是未经他本人同意，而把一个人带进了这个人间世界的过程，而且通过别人负有责任的自由意志把他安排在人间，这是很正确的，甚至是一种十分必要的观念。因此，这种行为加给父母一项责任——尽他们力所能及——要满足他们的子女应有的需要。父母不能把他们的子女看成是他们 自己的制造物 ，因为不能这样看待一个享有自由权利的生命。同样，他们也无权像对待自己的财产那样可以毁掉孩子，甚至也不能让孩子听天由命，因为他们把一个生命带到了人间，而他事实上将成为此世界的一个公民，即使根据权利固有的概念，他们已经不能对这个生命置之不理，漠不关心。\\n我们甚至无法理解上帝如何 能够创造 自由的生命：如果人们未来的一切行为都为已经为那第一次的行动事先所决定，于是，未来的行为便都包括在合乎自然规律的必然的链条之中，那末，他们不可能是自由的。可是，作为人，我们事实上是自由的，因为，通过道德和实践关系中的绝对命令，这种自由被证明是理性的一种权威的决定。可是，从理论的角度看来，理性当然不能把这种因果关系的可能性变成可以理解的，因为它们两者（自由和绝对命令）都是超感觉的。在这些情况下，理性所能提出的一切要求，将仅仅是去证明，在涉及创造自由生命的概念时， 不存在矛盾 。而这种证明也可以通过下述说明达到：当矛盾仅仅产生于 时间的条件 加上了因果关系范畴时，就会转化为超感觉的诸事物的关系。时间条件（如果指的是：一种结果的原因必须先于结果以作为它的前提），在考虑到可感觉对象的彼此关系时是不可避免的；还有，如果这种因果关系的概念，假如在理论方面具有客观的现实性，那么，此因果关系的概念不得不被认为是指超感觉方面的。可是，当这个纯粹范畴撇开任何感知条件时，就是从道德和实践的观点来运用时，这个矛盾便逐渐消失！因而，在一种涉及创造概念的非感知关系时，也不存在矛盾。\\n哲学的法学家不会认为这种研究（当这种研究要追溯到先验哲学终极原则时）在道德形而上学中是一种不必要的微妙问题；或者当他在探索权利原则的最终关系中，考虑到维持公正的困难时，这种研究自身会消失在无目的的黑暗之中。\\n29.父母的权利\\n由上面所指出的责任，便必然地进一步得出，父母必须有权去 管教与训练他们的子女 ，因为子女本人尚无恰当地运用他的肌体（作为一个有机体）和心智（作为一种理解力）的能力。这就涉及对子女的抚养和关心子女的教育。一般说来，它包括在 实际生活 中所形成的和发展的功能，它可以使子女在未来生活中有能力维持自己并成长起来；此外，还有道德修养与发展，凡是忽略了这方面的父母都是有罪的。所有这些训练一直要进行到子女独立成人的时期，即子女自己能够谋生的年龄。到了这个时期，父母才可以实际上放弃他们发布命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求，因为这些操心和麻烦在教养工作结束之后就没有了。父母只能依据 感恩 的责任，可以向子女提出任何作为（对父母的）道德义务的要求。\\n从孩子们具有人格这一事实，便可提出：无论如何不能把子女看作是父母的财产，他们仅仅在下述意义上可以看作属于父母的，如同别的东西一样为父母所 占有 ：如果当孩子被他人占有时，父母可以把他们的子女从任何占有者手中要回来，哪怕违反子女本人的意志。可见，父母的权利并非纯粹是物权，它是不能转让的。但是，这也不 仅仅 是一种对人权，它是一种有 物权 性质的对人权，这就是一种按物权 方式 构成的并被执行的对人权。\\n很明显，在权利的科学中，除物权和对人权两种权利而外，还必须添加上这一项“ 有物权性\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 27644, \"excerpt_end\": 30144, \"chapter_text_length\": 51852, \"has_more\": true, \"next_offset\": 30144, \"has_previous\": true, \"previous_offset\": 25144, \"focus_found\": true, \"focus_terms_matched\": [\"父母的权利\", \"教养\"], \"focus_terms_found_in_chapter\": [\"父母的权利\", \"教养\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"父母的权利\", \"offset\": 28344, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 28144, \"focus\": \"父母的权利\"}}, {\"term\": \"父母的权利\", \"offset\": 28362, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 28162, \"focus\": \"父母的权利\"}}, {\"term\": \"父母的权利\", \"offset\": 29564, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 29364, \"focus\": \"父母的权利\"}}, {\"term\": \"教养\", \"offset\": 29849, \"read_args\": {\"book_id\": \"309de54e4392\", \"chapter_idx\": 28, \"offset\": 29649, \"focus\": \"教养\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"639dc23d6753984ff369857de9c4858b0265cdc8d3f2e1aa91c0bbebf3b4a0c5\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/309de54e4392?ch=28\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[27644, 30144]], \"covered_characters\": 2500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 16.0,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "故当不义则争之 从父之令又焉得为孝乎"
+     },
+     "status": "success",
+     "duration_seconds": 1.461,
+     "result_full": "{\"query\": \"故当不义则争之 从父之令又焉得为孝乎\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\": \"【《韩非子》·忠孝】\", \"snippet\": \"天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，\", \"score\": 0.6618, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 52, \"focus\": \"故当不义则争之 从父之令又焉得为孝乎\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.796}, {\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"author\": \"荀子\", \"chapter_idx\": 30, \"chapter_title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"snippet\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。 鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问\", \"score\": 0.6442, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"795658cafeab\", \"chapter_idx\": 30, \"focus\": \"故当不义则争之 从父之令又焉得为孝乎\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.566}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 34.0,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_aXvWDb0Z50U2adD6D6WD9575"
+    },
+    {
+     "t": 34.2,
+     "phase": "start",
+     "name": "analyze_argument",
+     "call_id": "call_01_MQ8B8BDXwJvDE9fNRxOr6233"
+    },
+    {
+     "t": 34.5,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "d9272a80942a",
+      "chapter_idx": 5,
+      "focus": "事父母几谏",
+      "max_chars": 1200
+     },
+     "status": "success",
+     "duration_seconds": 0.002,
+     "result_full": "{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"chapter_idx\": 5, \"title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"text\": \"子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\\n子曰：“唯仁者能好人，能恶人。”\\n子曰：“苟志于仁矣，无恶也。”\\n子曰：“富与贵，是人之所欲也；不以其道得之，不处也。贫与贱，是人之所恶也；不以其道得之，不去也。君子去仁，恶乎成名？君子无终食之间违仁，造次必于是，颠沛必于是。”\\n子曰：“我未见好仁者，恶不仁者。好仁者，无以尚之；恶不仁者，其为仁矣，不使不仁者加乎其身。有能一日用其力于仁矣乎？我未见力不足者。盖有之矣，我未之见也。”\\n子曰：“人之过也，各于其党。观过，斯知仁矣。”\\n子曰：“朝闻道，夕死可矣。”\\n子曰：“士志于道，而耻恶衣恶食者，未足与议也。”\\n子曰：“君子之于天下也，无适也，无莫也，义之与比。”\\n子曰：“君子怀德，小人怀土；君子怀刑，小人怀惠。”\\n子曰：“放于利而行，多怨。”\\n子曰：“能以礼让为国乎？何有？不能以礼让为国，如礼何？”\\n子曰：“不患无位，患所以立；不患莫己知，求为可知也。”\\n子曰：“参乎！吾道一以贯之。”曾子曰：“唯。”子出，门人问曰：“何谓也？”曾子曰：“夫子之道，忠恕而已矣。”\\n子曰：“君子喻于义，小人喻于利。”\\n子曰：“见贤思齐焉，见不贤而内自省也。”\\n子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。”\\n子曰：“父母在，不远游，游必有方。”\\n子曰：“三年无改于父之道，可谓孝矣。”\\n子曰：“父母之年，不可不知也。一则以喜，一则以惧。”\\n子曰：“古者言之不出，耻躬之不逮也。”\\n子曰：“以约失之者鲜矣。”\\n子曰：“君子欲讷于言而敏于行。”\\n子曰：“德不孤，必有邻。”\\n子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 709, \"chapter_text_length\": 709, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"事父母几谏\"], \"focus_terms_found_in_chapter\": [\"事父母几谏\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"事父母几谏\", \"offset\": 533, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 5, \"offset\": 333, \"focus\": \"事父母几谏\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"f9bfbb6647763d25ffdd5aeecf7257c395eefd59eec70804afd045c32be7b355\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/d9272a80942a?ch=5\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孔子\", \"canonical_title\": \"论语\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 709]], \"covered_characters\": 709, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 63.9,
+     "phase": "result_orphan",
+     "name": "analyze_argument",
+     "args": {
+      "text": "父母养育子女长大，因此子女在工作和婚姻上应当听从父母的安排；不接受这种安排就是忘恩负义、不讲孝道。",
+      "question": "用户问：父母说养我这么大，我就应该听他们安排工作和婚姻。我欠他们这些吗？"
+     },
+     "status": "success",
+     "duration_seconds": 29.393,
+     "result_full": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"子女在工作和婚姻上应当听从父母的安排；不接受这种安排就是忘恩负义、不讲孝道。\", \"premises\": [{\"premise\": \"父母养育子女长大。\", \"kind\": \"explicit\"}], \"hidden_assumptions\": [\"父母养育子女构成一种债务，且该债务的内容包括在工作和婚姻上服从父母安排。\", \"父母对成年子女的工作和婚姻拥有正当决定权或权威。\", \"听从父母安排是感恩、孝道的必要条件；不接受安排就表示否定恩情。\", \"子女的自主、同意和重大利益不能优先于父母的安排。\", \"父母安排的合理性或正当性可由“父母养育过子女”这一事实自动保证。\"], \"fallacies\": [{\"name\": \"事实—规范缺口\", \"where\": \"从“父母养育子女长大”推到“子女应当听从安排”\", \"why\": \"养育是事实描述，不能仅凭自身推出子女负有服从工作和婚姻安排的规范义务；中间缺少可辩护的规范桥梁。\"}, {\"name\": \"义务范围扩大/全称化过度\", \"where\": \"结论中的“工作和婚姻上应当听从父母的安排”\", \"why\": \"即使父母养育产生感恩、尊重或协商义务，也不能推出对成年子女所有工作和婚姻安排都必须服从。\"}, {\"name\": \"偷换概念\", \"where\": \"把“不接受安排”等同于“忘恩负义、不讲孝道”\", \"why\": \"感恩、孝道可包含关怀、尊重、赡养和协商，不等于让渡工作和婚姻决定权；拒绝某个具体安排不等于否认父母养育之恩。\"}, {\"name\": \"充分条件误置/虚假二分\", \"where\": \"结论后半段\", \"why\": \"把“不服从安排”当作“忘恩负义、不孝”的充分条件，忽略了既感恩又基于正当理由拒绝安排的可能。\"}], \"counterexample\": {\"scenario\": \"父母确实把子女养育成人。现在父母要求子女辞去其热爱且稳定的工作，并与父母选定但曾有暴力行为的人结婚；子女拒绝该安排，同时表示会继续关心、赡养父母并感谢养育。\", \"premises_still_hold\": \"原显式前提“父母养育子女长大”仍然成立；子女也未否认父母付出或一般性的感恩、孝道义务。\", \"conclusion_fails\": \"不能推出子女“应当听从”这一工作和婚姻安排；拒绝该具体安排也不等于忘恩负义或不讲孝道，因为服从会严重损害其人身安全、职业与人生自主，而感恩不等于必须服从所有安排。\"}, \"strongest_reply\": \"原论证可作的最强回应是：父母养育付出巨大，子女不应把父母意见当无物；在父母安排合理、尊重子女人格且不损害其重大利益时，子女若轻蔑拒绝，确实可能违背感恩和孝道。但这一回应最多支持“认真听取、解释、协商、照顾父母感受”，不能支持“必须服从工作和婚姻安排”，也不能把任何拒绝都定为忘恩负义。\", \"weakest_point\": \"最关键缺口是从“父母养育”这一事实直接跳到“子女应服从工作和婚姻安排”这一规范结论，并把感恩、孝道偷换为服从。若结论收窄为“子女应感恩父母并在重大决策中认真考虑父母意见”，论证才可能成立。\", \"strengthening\": [\"把结论收窄为：子女应感恩父母，并在工作和婚姻决策中认真听取、协商父母意见，除非有重大正当理由，不应轻蔑或欺骗。\", \"增加规范前提：父母的具体安排确实合理、尊重子女人格与自主，且不损害子女重大利益。\", \"区分法律义务、道德感恩、孝道关怀与对具体人生选择的决定权。\", \"若要主张“拒绝即忘恩负义”，必须证明拒绝方式是恶意否认恩情，而不只是不同意某个安排。\"], \"question_fidelity\": \"原问题问“我欠他们这些吗”，即是否欠父母对工作和婚姻安排的服从。待检验论证没有回答“欠什么、欠多少、条件是什么”，而是直接把养育事实转换为服从债务，并把不接受安排改写成忘恩负义、不孝，扩大了原问题的争点。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"中间分析，不是已证明的裁决。核对题设与反例后自行综合，不照搬JSON或编号模板。\", \"validation_scope\": \"structure_only\", \"requires_main_agent_judgment\": true, \"question_context_truncated\": false}"
+    },
+    {
+     "t": 67.6,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_00_mX7mTIQgIX9WcYObqj5g0075"
+    },
+    {
+     "t": 67.7,
+     "phase": "result",
+     "name": "search_scholarship",
+     "call_id": "call_01_JjmkLTmxBY1BmDW2pvAx8063",
+     "status": "success",
+     "duration_seconds": 1.448
+    },
+    {
+     "t": 69.5,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "filial obligation gratitude debt to parents argument",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 1.64,
+     "result_full": "{\"query\": \"filial obligation gratitude debt to parents argument\", \"results\": [{\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"title\": \"Evolution of the Conceptualization of Filial Piety in the Global Context: From Skin to Skeleton\", \"authors\": [\"Olwen Anna Bedford\", \"Kuang‐Hui Yeh\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Frontiers in Psychology\", \"doi\": \"10.3389/fpsyg.2021.570547\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s11019-010-9290-z\", \"title\": \"Filial obligations to elderly parents: a duty to care?\", \"authors\": [\"Maria C. Stuifbergen\", \"Johannes J. M. van Delden\"], \"year\": 2010, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Medicine Health Care and Philosophy\", \"doi\": \"10.1007/s11019-010-9290-z\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3917/pope.1201.0097\", \"title\": \"Norms of Filial Obligation in the Netherlands\", \"authors\": [\"Pearl A. Dykstra\", \"Tineke Fokkema\"], \"year\": 2012, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Population (English Edition)\", \"doi\": \"10.3917/pope.1201.0097\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"openalex:W2984734780\", \"title\": \"Filial Gratitude and God's Right to Command\", \"authors\": [\"Joseph L. Lombardi\"], \"year\": 1991, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Religious Ethics\", \"doi\": null, \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"title\": \"Filial Obligations: A Contextual, Pluralist Model\", \"authors\": [\"Anders Schinkel\"], \"year\": 2012, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"The Journal of Ethics\", \"doi\": \"10.1007/s10892-012-9132-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 5, \"READABLE_SOURCE_IDS\": [\"doi:10.3389/fpsyg.2021.570547\", \"doi:10.1007/s11019-010-9290-z\", \"doi:10.3917/pope.1201.0097\", \"openalex:W2984734780\", \"doi:10.1007/s10892-012-9132-8\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"filial obligation gratitude debt to parents argument\", \"retry_after\": null, \"status\": \"error\"}, {\"provider\": \"openalex\", \"query\": \"filial obligation gratitude debt to parents argument\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"crossref\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"filial obligation gratitude debt to parents argument\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 71.0,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_IpYFmrYRH0OfHbfN35bN6434"
+    },
+    {
+     "t": 71.3,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_qNu9o7BoLeO2mI8t8GrS2786",
+     "status": "success",
+     "duration_seconds": 0.087
+    },
+    {
+     "t": 71.5,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1007/s10892-012-9132-8",
+      "requested_access": "ABSTRACT",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.092,
+     "result_full": "{\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"title\": \"Filial Obligations: A Contextual, Pluralist Model\", \"authors\": [\"Anders Schinkel\"], \"year\": 2012, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"The Journal of Ethics\", \"doi\": \"10.1007/s10892-012-9132-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"In this article I investigate the nature and extent of filial obligations. The question what (adult) children owe their parents is not only philosophically interesting, but also of increasing relevance in ageing societies. Its answer matters to elderly people and their adult children, and is relevant to social policy issues in various ways. I present the strongest arguments for and against three models of filial obligations: the ‘past parental sacrifices’ model, the ‘special relationship’ model, and the conventionalist model. There is something to be said—and after consideration of objections something remains to be said—for all three models. In other words: filial obligations have more than one source, and an adequate model of filial obligations should reflect this. On its own, each of the above models is one-sided. They also fail to show the connections between the question of filial obligations and various other issues, such as issues of gender justice, the extent of institutionalization of eldercare, and social conventions regarding filial responsibility. Therefore, I integrate what I think we should keep from the aforementioned models into a contextual, pluralist model, which places filial obligations in a broader social and cultural context and relates them to issues of social justice. The model also highlights the difference between general and specific filial obligations, and the factors that determine their nature and extent, thus enabling a deeper and more comprehensive understanding of filial obligations.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"d0419fe0bd0f2e5ce040a9dbd153866ce29f7468ddfb9787acc59842b9198b79\", \"excerpt_start\": 0, \"excerpt_end\": 1541, \"total_characters\": 1541, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"d0419fe0bd0f2e5ce040a9dbd153866ce29f7468ddfb9787acc59842b9198b79\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    }
+   ],
+   "answer": "先直接回答：你父母那句话里混着两笔账，一笔你大概躲不掉，另一笔推不出来。\n\n## 一、把论证摊开看\n\n**前提**：父母养育了我。\n**结论**：我应当听从他们对工作和婚姻的安排。\n\n从\"养育\"到\"应当服从安排\"，中间缺一座规范桥梁。更关键的是，即使承认有某种\"欠\"，也还要问：**欠的是什么？** 这里必须先分清两件事：\n\n- **债务**有确定的数额、由债权人主张、可以清偿。\n- **感激**没有确定数额，而且永远清不完。\n\n洛克在讲子女对父母的义务时说得比多数人更极端：父母之恩，\"即使尽其所有，尽其所能也不足应付于万一\"（《政府论下篇》第七章第70节）。这句话表面在强调恩重，实际效果相反——它说明这笔\"账\"根本没有可结算的数目。而一笔没有数目的账，无法支撑一个由对方单方面开价的具体要求（\"所以你要做这个工作、娶这个人\"）。感恩不规定\"用哪一件事来还\"；把它偷换成一份指定条款的债，是这句话里最大的滑动。\n\n## 二、\"养育\"这笔因果的开头，义务先落在谁身上\n\n康德在《道德形而上学》私人权利部分论父母与子女的关系时是这样处理的：**把孩子带到人间这件事，是未经孩子本人同意的行动**，因此它给父母带来一项责任——抚养子女直到他们能照顾自己；子女不是父母的\"制造物\"，不能当作财产。\n\n这不是说子女什么都不欠，而是说：在\"养育\"这个事实的开头，承担义务的是父母一方；子女无法在出生前签约，因此不能把养育解释成一份双方合意的契约。既然不是契约，就不能凭它产生\"服从\"这种合同性的条款。\n\n## 三、成年这件事，改变了什么\n\n同一段康德文本里紧跟着一句很要紧的话：抚养与训练要一直进行到子女独立成人的时期，\"到了这个时期，父母才可以实际上放弃他们发布命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求……父母只能依据感恩的责任，可以向子女提出任何作为（对父母的）道德义务的要求\"。\n\n两个要点：**命令权随成年终止**；**补偿要求也被放弃**。剩下的只是\"感恩\"——而感恩，如上所述，不指定内容。\n\n洛克说得更直白：命令儿女的权力\"到成年而告结束\"；此后子女的义务是尊崇、敬礼、赡养、保护与感恩，\"然而这些并未把王权、君主的命令权给予父亲。他对于儿子的财产或行动无统辖权，也没有任何权力在一切事情上以他的意志拘束他儿子的意志\"。第70节又补一句：这些义务\"不能使那些要求他克尽义务的人享有权威，享有对他制订法律的权利\"。他甚至在73节承认，父母能用继承财产来换取服从，但那\"不是基于父亲的任何特殊权利\"，而是用赏赐酬答服从——那是一次交易，不是自然的义务。\n\n（说明：我用的是本地《政府论（下篇）》电子文本，该版有明显录入讹字，如\"拿礼\"\"威恩\"；上面的引文是按上下文读出的，不对应原书排印。）\n\n## 四、连最讲孝的传统也不接受\"父母说的都要听\"\n\n《论语·里仁》：\"**事父母几谏，见志不从，又敬不违，劳而不怨。**\"——对父母的过失要劝阻；这条本身预设父母不是永远正确。\n\n《荀子·子道》更硬：\"**从道不从君，从义不从父，人之大行也**\"，并列出\"孝子所不从命有三\"（从命则亲危／亲辱／使父母陷于禽兽之行）。后面记孔子答子贡的话最切题：\"**故子从父，奚子孝？臣从君，奚臣贞？审其所以从之之谓孝、之谓贞也。**\"——判断孝，要看你**为什么**服从；盲从不构成孝。\n\n这条反驳的力量在于它不需要你接受任何现代个人主义：你父母那句\"养你这么大，你就应该听\"，其隐含前提是\"服从父母的一切命令即孝道\"，而这个前提在儒家自己的经典里就站不住。要公平地说，荀子那三条的标准是\"亲危／亲辱／不义\"，针对的是父母的命令会害到父母或违义的情形；它驳倒的是一个全称命题，并不自动替你决定工作与婚姻该如何选。你的具体情况还需要另外的理由。\n\n## 五、为什么恰恰是\"工作\"和\"婚姻\"尤其推不出来\n\n除上述之外还有两点结构性理由：\n\n1. **决定权应该跟着后果走。** 工作和婚姻的后果由你承担、由你度过。给别人命令权，等于让他们决定一件他们要替你活的事。父母完全可以给意见——意见和命令的区别正在于：命令者要为结果负责。\n2. **婚姻牵入第三方。** \"安排婚姻\"不只是你服从父母，还把另一个人的人生当作三方之外可被安排的对象。同一章里康德是把婚姻当作\"婚姻契约\"、在当事人二人之间谈相互获得的（我读到的段落未讨论父母代订，所以\"这排除了包办\"是我的推断，不是该段原文的主张）。\n\n## 六、替父母说的最强版本，以及它的边界\n\n最强的替父母辩护不是\"债务\"，而是：父母可能确有更多经验与信息；你的选择有时真的影响他们的晚年（经济依赖、照料、他们所在环境里的评价）；此外，如果你对他们的关切是轻蔑的、把他们的话当耳旁风、只在要钱时想起他们，\"忘恩负义\"的指责并非全无道理——洛克也承认尊崇与赡养是\"无法取消的\"义务。\n\n但这种辩护收窄之后，支持的只是：**认真听取、解释、协商、在重大决定上顾及父母利益、不欺骗、不轻蔑**——不是交出决定权。当代研究恰好把这两种东西分开：孝道研究中的\"权威型\"动机（以服从、压抑自身需求为核心）与\"互惠型\"动机（以关怀和相互性为核心）是两种不同机制（Bedford & Yeh, 2021, [Frontiers in Psychology](https://doi.org/10.3389/fpsyg.2021.570547)，我读到的是该文摘要）；而在规范性讨论上，Schinkel 逐一评估了\"父母过去的牺牲\"\"特殊关系\"\"约定论\"三种模型，认为每一种都只说对一部分，孝的义务来源是多元的，并区分\"一般性义务\"与\"具体义务\"（Schinkel, 2012, [The Journal of Ethics](https://doi.org/10.1007/s10892-012-9132-8)，摘要）。这个区分正对你的问题：**承认某种一般性的感恩或孝，不等于承认某一条具体要求。**\n\n## 七、所以\n\n- **你不欠\"把工作和婚姻的决定权交出去\"这笔债。** 那个论证从\"养育\"这一事实直接跳到\"服从安排\"，缺可辩护的规范桥梁，并把\"不接受某个具体安排\"等同于\"忘恩负义\"——这是两件事。成熟的人恰恰可以既拒绝一个安排，又真的感激、真的照顾父母。\n- **你确实欠一些东西**，但它不是一个可清算的数目，也不由父母单方面定条款：记得、尊重、不欺骗、在他们老去时实际到场。这一条躲不掉，它同样不构成\"把人生外包\"的理由。\n\n至于\"怎么拒绝还能不把关系弄坏\"——那是做法的技术问题，不是\"欠不欠\"的问题。如果你愿意说说他们具体在争什么（工作机会还是对象），我可以帮你把\"能给的\"和\"不能给的\"分开列出来。",
+   "answer_chars": 2776,
+   "done_content": "先直接回答：你父母那句话里混着两笔账，一笔你大概躲不掉，另一笔推不出来。\n\n## 一、把论证摊开看\n\n**前提**：父母养育了我。\n**结论**：我应当听从他们对工作和婚姻的安排。\n\n从\"养育\"到\"应当服从安排\"，中间缺一座规范桥梁。更关键的是，即使承认有某种\"欠\"，也还要问：**欠的是什么？** 这里必须先分清两件事：\n\n- **债务**有确定的数额、由债权人主张、可以清偿。\n- **感激**没有确定数额，而且永远清不完。\n\n洛克在讲子女对父母的义务时说得比多数人更极端：父母之恩，\"即使尽其所有，尽其所能也不足应付于万一\"（《政府论下篇》第七章第70节）。这句话表面在强调恩重，实际效果相反——它说明这笔\"账\"根本没有可结算的数目。而一笔没有数目的账，无法支撑一个由对方单方面开价的具体要求（\"所以你要做这个工作、娶这个人\"）。感恩不规定\"用哪一件事来还\"；把它偷换成一份指定条款的债，是这句话里最大的滑动。\n\n## 二、\"养育\"这笔因果的开头，义务先落在谁身上\n\n康德在《道德形而上学》私人权利部分论父母与子女的关系时是这样处理的：**把孩子带到人间这件事，是未经孩子本人同意的行动**，因此它给父母带来一项责任——抚养子女直到他们能照顾自己；子女不是父母的\"制造物\"，不能当作财产。\n\n这不是说子女什么都不欠，而是说：在\"养育\"这个事实的开头，承担义务的是父母一方；子女无法在出生前签约，因此不能把养育解释成一份双方合意的契约。既然不是契约，就不能凭它产生\"服从\"这种合同性的条款。\n\n## 三、成年这件事，改变了什么\n\n同一段康德文本里紧跟着一句很要紧的话：抚养与训练要一直进行到子女独立成人的时期，\"到了这个时期，父母才可以实际上放弃他们发布命令的权利，同时也放弃了补偿他们以往的操心和麻烦的一切要求……父母只能依据感恩的责任，可以向子女提出任何作为（对父母的）道德义务的要求\"。\n\n两个要点：**命令权随成年终止**；**补偿要求也被放弃**。剩下的只是\"感恩\"——而感恩，如上所述，不指定内容。\n\n洛克说得更直白：命令儿女的权力\"到成年而告结束\"；此后子女的义务是尊崇、敬礼、赡养、保护与感恩，\"然而这些并未把王权、君主的命令权给予父亲。他对于儿子的财产或行动无统辖权，也没有任何权力在一切事情上以他的意志拘束他儿子的意志\"。第70节又补一句：这些义务\"不能使那些要求他克尽义务的人享有权威，享有对他制订法律的权利\"。他甚至在73节承认，父母能用继承财产来换取服从，但那\"不是基于父亲的任何特殊权利\"，而是用赏赐酬答服从——那是一次交易，不是自然的义务。\n\n（说明：我用的是本地《政府论（下篇）》电子文本，该版有明显录入讹字，如\"拿礼\"\"威恩\"；上面的引文是按上下文读出的，不对应原书排印。）\n\n## 四、连最讲孝的传统也不接受\"父母说的都要听\"\n\n《论语·里仁》：\"**事父母几谏，见志不从，又敬不违，劳而不怨。**\"——对父母的过失要劝阻；这条本身预设父母不是永远正确。\n\n《荀子·子道》更硬：\"**从道不从君，从义不从父，人之大行也**\"，并列出\"孝子所不从命有三\"（从命则亲危／亲辱／使父母陷于禽兽之行）。后面记孔子答子贡的话最切题：\"**故子从父，奚子孝？臣从君，奚臣贞？审其所以从之之谓孝、之谓贞也。**\"——判断孝，要看你**为什么**服从；盲从不构成孝。\n\n这条反驳的力量在于它不需要你接受任何现代个人主义：你父母那句\"养你这么大，你就应该听\"，其隐含前提是\"服从父母的一切命令即孝道\"，而这个前提在儒家自己的经典里就站不住。要公平地说，荀子那三条的标准是\"亲危／亲辱／不义\"，针对的是父母的命令会害到父母或违义的情形；它驳倒的是一个全称命题，并不自动替你决定工作与婚姻该如何选。你的具体情况还需要另外的理由。\n\n## 五、为什么恰恰是\"工作\"和\"婚姻\"尤其推不出来\n\n除上述之外还有两点结构性理由：\n\n1. **决定权应该跟着后果走。** 工作和婚姻的后果由你承担、由你度过。给别人命令权，等于让他们决定一件他们要替你活的事。父母完全可以给意见——意见和命令的区别正在于：命令者要为结果负责。\n2. **婚姻牵入第三方。** \"安排婚姻\"不只是你服从父母，还把另一个人的人生当作三方之外可被安排的对象。同一章里康德是把婚姻当作\"婚姻契约\"、在当事人二人之间谈相互获得的（我读到的段落未讨论父母代订，所以\"这排除了包办\"是我的推断，不是该段原文的主张）。\n\n## 六、替父母说的最强版本，以及它的边界\n\n最强的替父母辩护不是\"债务\"，而是：父母可能确有更多经验与信息；你的选择有时真的影响他们的晚年（经济依赖、照料、他们所在环境里的评价）；此外，如果你对他们的关切是轻蔑的、把他们的话当耳旁风、只在要钱时想起他们，\"忘恩负义\"的指责并非全无道理——洛克也承认尊崇与赡养是\"无法取消的\"义务。\n\n但这种辩护收窄之后，支持的只是：**认真听取、解释、协商、在重大决定上顾及父母利益、不欺骗、不轻蔑**——不是交出决定权。当代研究恰好把这两种东西分开：孝道研究中的\"权威型\"动机（以服从、压抑自身需求为核心）与\"互惠型\"动机（以关怀和相互性为核心）是两种不同机制（Bedford & Yeh, 2021, [Frontiers in Psychology](https://doi.org/10.3389/fpsyg.2021.570547)，我读到的是该文摘要）；而在规范性讨论上，Schinkel 逐一评估了\"父母过去的牺牲\"\"特殊关系\"\"约定论\"三种模型，认为每一种都只说对一部分，孝的义务来源是多元的，并区分\"一般性义务\"与\"具体义务\"（Schinkel, 2012, [The Journal of Ethics](https://doi.org/10.1007/s10892-012-9132-8)，摘要）。这个区分正对你的问题：**承认某种一般性的感恩或孝，不等于承认某一条具体要求。**\n\n## 七、所以\n\n- **你不欠\"把工作和婚姻的决定权交出去\"这笔债。** 那个论证从\"养育\"这一事实直接跳到\"服从安排\"，缺可辩护的规范桥梁，并把\"不接受某个具体安排\"等同于\"忘恩负义\"——这是两件事。成熟的人恰恰可以既拒绝一个安排，又真的感激、真的照顾父母。\n- **你确实欠一些东西**，但它不是一个可清算的数目，也不由父母单方面定条款：记得、尊重、不欺骗、在他们老去时实际到场。这一条躲不掉，它同样不构成\"把人生外包\"的理由。\n\n至于\"怎么拒绝还能不把关系弄坏\"——那是做法的技术问题，不是\"欠不欠\"的问题。如果你愿意说说他们具体在争什么（工作机会还是对象），我可以帮你把\"能给的\"和\"不能给的\"分开列出来。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "book": "政府论（下篇）",
+     "chapter": "第七章 论政治的或公民的社会",
+     "book_id": "e3a52553c303",
+     "chapter_idx": 6,
+     "author": "约翰·洛克",
+     "evidence_id": "read_33910d647189",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "亦没有任何人能免除他的儿子尊礼他的生身之母的义务。但是这两部分父权都与制定法律抖以能及于财产、自由、身体和生命的处罚来执行这些法律的权力截然不同。命令儿女的权力到成年而告结束；虽然在此之后，一-个儿子对他的父母总应尽到尊崇和敬礼、养和保护，以及威恩的心情能够责成每一个人尽到的一切义务，以报答他自然地能够得到的最大好处，然而这些并未把王权、君主的命合权給予父亲。他对于儿子的财产或行动无統辖权，也没有任何权力在一切事情上以他的意志拘束他几子的意志，尽管他的儿子如果尊重他的意志的話，在許多方面对他自己和他的家庭无太不方便的地方。\n70．一个人为了尊礼和崇敬长者或贤人、保护他的儿女或朋友、救济和扶助受苦受难的人和威谢給他好处的人而負有种种义务，即使尽其所有和尽其所能也不足应付于万一；但是这一切不能使那些要求他克尽义务的人享有权威，享有对他制訂法律的权利。很明显，这一切不是仅仅由于父亲的名义也不是如前面已經过的由于也受恩于母亲的故，而是因为对父母所負的这些义务以及对儿女所提出的要求的程度可以随着扶养、慈爱、操心和花费的不同而有所出入的，这些照顾在两个孩子之間时常是有厚薄之分的。\n71.这就表明，何以身在社会而本身作为社会成员的父母，对他們的儿女保持着一种权力，并且享有同自然状态中的人們一样多的权利来要求儿女們对他服从。假如一切政治权力只是交权，两者实际上是同一回事，那就不可能是这样了。因为这",
+     "quoted_passages": [
+      "到成年而告结束",
+      "不是基于父亲的任何特殊权利"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 10900,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "sch_10c74f4ea1be",
+     "source_record_id": "doi:10.3389/fpsyg.2021.570547",
+     "source_type": "scholarly",
+     "used": true,
+     "title": "Evolution of the Conceptualization of Filial Piety in the Global Context: From Skin to Skeleton",
+     "book": "Evolution of the Conceptualization of Filial Piety in the Global Context: From Skin to Skeleton",
+     "author": "Olwen Anna Bedford, Kuang‐Hui Yeh",
+     "year": 2021,
+     "doi": "10.3389/fpsyg.2021.570547",
+     "url": "https://doi.org/10.3389/fpsyg.2021.570547",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "excerpt": "as a set of norms, values, and practices regarding how children should behave toward their parents. In this article, we trace the conceptual development of filial piety research in Chinese and other societies to highlight the assumptions underlying this traditional approach to filial piety research. We identify the limitations of these assumptions, including the problem of an evolving definition and lack of cross-cultural applicability. We then advocate an alternative framework that overcomes these limitations by focusing on the deep structure of filial piety: the dual filial piety model (DFPM"
+    },
+    {
+     "evidence_id": "sch_008d9c84b858",
+     "source_record_id": "doi:10.1007/s10892-012-9132-8",
+     "source_type": "scholarly",
+     "used": true,
+     "title": "Filial Obligations: A Contextual, Pluralist Model",
+     "book": "Filial Obligations: A Contextual, Pluralist Model",
+     "author": "Anders Schinkel",
+     "year": 2012,
+     "doi": "10.1007/s10892-012-9132-8",
+     "url": "https://doi.org/10.1007/s10892-012-9132-8",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "excerpt": "In this article I investigate the nature and extent of filial obligations. The question what (adult) children owe their parents is not only philosophically interesting, but also of increasing relevance in ageing societies. Its answer matters to elderly people and their adult children, and is relevant to social policy issues in various ways. I present the strongest arguments for and against three models of filial obligations: the ‘past parental sacrifices’ model, the ‘special relationship’ model, and the conventionalist model. There is something to be said—and after consideration of objections "
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 16,
+    "display_citations": 3,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "政府论（下篇）",
+       "chapter": "第七章 论政治的或公民的社会",
+       "book_id": "e3a52553c303",
+       "chapter_idx": 6,
+       "author": "约翰·洛克",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "亦没有任何人能免除他的儿子尊礼他的生身之母的义务。但是这两部分父权都与制定法律抖以能及于财产、自由、身体和生命的处罚来执行这些法律的权力截然不同。命令儿女的权力到成年而告结束；虽然在此之后，一-个儿子对他的父母总应尽到尊崇和敬礼、养和保护，以及威恩的心情能够责成每一个人尽到的一切义务，以报答他自然地能够得到的最大好处，然而这些并未把王权、君主的命合权給予父亲。他对于儿子的财产或行动无統辖权，也没有任何权力在一切事情上以他的意志拘束他几子的意志，尽管他的儿子如果尊重他的意志的話，在許多方面对他自己和他的家庭无太不方便的地方。\n70．一个人为了尊礼和崇敬长者或贤人、保护他的儿女或朋友、救济和扶助受苦受难的人和威谢給他好处的人而負有种种义务，即使尽其所有和尽其所能也不足应付于万一；但是这一切不能使那些要求他克尽义务的人享有权威，享有对他制訂法律的权利。很明显，这一切不是仅仅由于父亲的名义也不是如前面已經过的由于也受恩于母亲的故，而是因为对父母所負的这些义务以及对儿女所提出的要求的程度可以随着扶养、慈爱、操心和花费的不同而有所出入的，这些照顾在两个孩子之間时常是有厚薄之分的。\n71.这就表明，何以身在社会而本身作为社会成员的父母，对他們的儿女保持着一种权力，并且享有同自然状态中的人們一样多的权利来要求儿女們对他服从。假如一切政治权力只是交权，两者实际上是同一回事，那就不可能是这样了。因为这",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 10900,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+       "chapter": "第一部分　私人权利（私法）",
+       "book_id": "309de54e4392",
+       "chapter_idx": 28,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子结婚的不相配的婚姻（或者“不自然”的婚姻）。他们的婚姻都是为了通过这种契约，利用双方不平等的社会身份，成为一方对另一方处于优越的社会地位而去控制对方，因而，事实上这样的关系和纳妾没有实质的区别。根据自然权利的原则，这种结合不能构成真正的婚姻。人们会质问，当法律以任何方式对待丈夫与妻子的关系时，总是说：“他将是你的主人”，于是他便代表命令的一方，而她就成为服从的一方，在此情况下，是否违背了婚姻当事人平等的原则？如果这种法律上的优越地位仅仅是基于考虑到丈夫与妻子的能力相比，在有效地完成家业的共同利益方面具有自然优势；此外，如果丈夫的命令权仅仅是根据这种事实来作出的，那么，不能认为这违背了人类结合成双的自然平等的原则。因为这种权利可以从二人结合与平等的义务以及有关的 目的 之间的关系推断出来。\n27.婚姻契约的完成\n婚姻的契约只有夫妻同居才算完成。两个不同性别的人的契约，如果附有秘密谅解，彼此避免同居，或者知道一方或双方没有性功能，这项婚姻契约就是 冒充的契约 ，它不能构成婚姻，可以由任何一方决定解除。但是，如果在结婚之后才发生一方缺乏性功能，那么，这项契约的权利不能由于一件在法律上不能加以指摘的偶然事故而被宣告无效或认为没有约束力。\n获得一个配偶（或者作为丈夫，或者作为妻子），不能根据二人同居的 事实 而不事前缔结婚约，便可以构成；也不能仅仅有了婚姻的契约而没有随后的同居，便可以构成",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 51852,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "论语",
+       "chapter": "里仁篇",
+       "book_id": "d9272a80942a",
+       "chapter_idx": 5,
+       "author": "孔子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子曰：“里仁为美，择不处仁，焉得知？”\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\n子曰：“唯仁者能好人，能恶人。”\n子曰：“苟志于仁矣，无恶也。”\n子曰：“富与贵，是人之所欲也；不以其道得之，不处也。贫与贱，是人之所恶也；不以其道得之，不去也。君子去仁，恶乎成名？君子无终食之间违仁，造次必于是，颠沛必于是。”\n子曰：“我未见好仁者，恶不仁者。好仁者，无以尚之；恶不仁者，其为仁矣，不使不仁者加乎其身。有能一日用其力于仁矣乎？我未见力不足者。盖有之矣，我未之见也。”\n子曰：“人之过也，各于其党。观过，斯知仁矣。”\n子曰：“朝闻道，夕死可矣。”\n子曰：“士志于道，而耻恶衣恶食者，未足与议也。”\n子曰：“君子之于天下也，无适也，无莫也，义之与比。”\n子曰：“君子怀德，小人怀土；君子怀刑，小人怀惠。”\n子曰：“放于利而行，多怨。”\n子曰：“能以礼让为国乎？何有？不能以礼让为国，如礼何？”\n子曰：“不患无位，患所以立；不患莫己知，求为可知也。”\n子曰：“参乎！吾道一以贯之。”曾子曰：“唯。”子出，门人问曰：“何谓也？”曾子曰：“夫子之道，忠恕而已矣。”\n子曰：“君子喻于义，小人喻于利。”\n子曰：“见贤思齐焉，见不贤而内自省也。”\n子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。”\n子曰：“父母在，不远游，游必有方。”\n子曰：“三年无改于父之道，可谓孝矣。”\n子曰：“父",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 709,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "荀子",
+       "chapter": "子道",
+       "book_id": "795658cafeab",
+       "chapter_idx": 30,
+       "author": "荀子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大行也。若夫志以礼安，言以类使，则儒道毕矣。虽尧舜不能加毫末于是矣。 孝子所不从命有三：从命则亲危，不从命则亲安，孝子不从命乃衷；从命则亲辱， 不从命则亲荣，孝子不从命乃义；从命则禽兽，不从命则修饰，孝子不从命乃敬。 故可以从命而不从，是不子也；未可以从而从，是不衷也；明于从不从之义，而能 致恭敬，忠信、端悫、以慎行之，则可谓大孝矣。传曰：“从道不从君，从义不从 父。”此之谓也。故劳苦、雕萃而能无失其敬，灾祸、患难而能无失其义，则不幸 不顺见恶而能无失其爱，非仁人莫能行。诗曰：“孝子不匮。”此之谓也。\n鲁哀公问于孔子曰：“子从父命，孝乎？臣从君命，贞乎？”三问，孔子不对。 孔子趋出以语子贡曰：“乡者，君问丘也，曰：‘子从父命，孝乎？臣从君命，贞 乎？’三问而丘不对，赐以为何如？”子贡曰：“子从父命，孝矣。臣从君命，贞 矣，夫子有奚对焉？”孔子曰：“小人哉！赐不识也！昔万乘之国，有争臣四人， 则封疆不削；千乘之国，有争臣三人，则社稷不危；百乘之家，有争臣二人，则宗 庙不毁。父有争子，不行无礼；士有争友，不为不义。故子从父，奚子孝？臣从君， 奚臣贞？审其所以从之之谓孝、之谓贞也。”\n子路问于孔子曰：“有人于此，夙兴夜寐，耕耘树艺，手足胼胝，以养其亲， 然而无孝之名，何也？”孔子曰：“意者身不敬与？辞不逊与？色不顺",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 1413,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "政府论（下篇）",
+       "chapter": "第六章 论父权",
+       "book_id": "e3a52553c303",
+       "chapter_idx": 5,
+       "author": "约翰·洛克",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "为一种不恰当的非难，但是当旧名易于使人陷于錯时，则提出一些新名来可能不会被认为是不对的。父权这一名或許就是这样，它似乎将父母对儿女的权力完全归属父亲，好像母亲是没有份的；可是；如果我們請教一下理性或启示，我們就会知道她也有同等的权利。这就使人有理由間，称做亲权是否更要确当些？无自然和传种接代的权利费成儿女负有何种义务，它必然是要他們对出生的共同因素的双方承担的。所以我們看到上帝的明文法到处都要儿女不加区别地服从父母。如“当孝敬父母\"旧豹》出埃及记，第二十章，第十二节）“凡咒父母的”《旧豹》利未，第二十章，第九节）；“你們各人都当孝敬交母旧豹》利未記，第十九章，第三节）；“你們作几女的，要在主里听从父母\"（《新豹》以弗所书，第六章，第",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "政府论（下篇）",
+       "chapter": "第八章 论政治社会的起源",
+       "book_id": "e3a52553c303",
+       "chapter_idx": 7,
+       "author": "约翰·洛克",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "切小的君主国，即儿乎一切君主国，在接近它们的起源时，通常一一至少有肘一一是选任的。 107.第一，在开始的时候，父亲对其子女在幼年时期的統治，既然使他们习惯于受一人的支配，又使他们知道只要这种統治是在关怀、循循善誘、和藷和慈爱的情况下对他们行使的，它就足以取得和保护人们想在社会中寻求的一切政治幸福。怪不得他们要选择和自然而然地采用那种政府形式，因为他们对它从小巳轻习惯，而且根据轻諒，觉得它是既便利又安全的。此外，我们还可以脱君主制对于人们是最简单明了的，因为当时的棍腕既没有启示他们以政府的种种形式，也尚未受到帝国的野心或横暴的教训，使他们知道提防特权的侵占或专制权力的骚扰。这些特权和专制权力都是君主政体相沿下来容易主张并施加于人民的",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "洛克",
+       "chapter": "第二章 信任的政治学",
+       "book_id": "d0e4041355ed",
+       "chapter_idx": 8,
+       "author": "约翰·洛克",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "他曾是贩卖奴隶的英国皇家非洲公司股东；它清楚地指出，奴隶身份不该合法地一代代继承下去。所有合法的奴役本质上是一种刑罚，而父母的罪行不应传给他们的子女。）对洛克而言，奴隶制恰恰是合法政治权威的反面。赋予政治权威合法性，赋予合法统治者命令权的，是他们能够并确实为其臣民提供的实际服务。在本质上，一位合法的君主非但不是他所统治臣民的所有者，反倒是他们的仆人。 在费尔默看来（其实年轻时的洛克亦如此），人类过于顽固、自私、热衷争辩，无法在孤立无援的状态下实现实际的自我救赎。上帝看顾人，其首要做法就是让人类永远受制于有效的权力之网。在洛克一生的思想中，他接受了对“人是什么样的”与“该如何预期他们的行为”的这一评价。但是通过《政府论》，他自信地将其",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学的奠基",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 26,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "赋予这个受宠的受造物，那么，它也必须是仅供这个受造物来对自己的本性的幸运禀赋做出思考，为之惊赞，为之欣喜，并对仁慈的原因感恩戴德；而不是使它的欲求能力服从那种软弱而且不可靠的引导，或者在自然意图上马虎从事；一言以蔽之，自然会不让理性进入实践的应用，不让它妄自凭借自己微弱的见识为自己想出幸福和达到幸福的手段的方案；自然不仅自己承担目的的选择，而且也自己承担手段的选择，并且凭借睿智的预先安排把二者仅仅托付给本能。 事实上我也发现，一种开化了的理性越是意在生活与幸福的享受，人离真正的满意就越远。由此在许多人那里，而且在对理性的应用最跃跃欲试的人那里，如果他们足够坦率地承认的话，就产生出某种程度的厌理症，亦即对理性的憎恨，因为经过估算他们所",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "论永久和平",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 40,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "污的嘴令人毛骨悚然］。——科学院版编者注 [12] 在结束一场战争之后，缔结和约时，对于一个民族来说也许并非不当的是，在感恩庆典之后宣布一个忏悔日，来以国家的名义祈求上天宽恕人类还一直犯的这种重大罪孽，即在与其他民族的关系中不愿服从任何法律宪政，而是为其独立自豪，宁可使用战争的野蛮手段（但由此所寻求的东西，亦即每一个国家的法权，却未得到澄清）。——在战争期间为一场赢得的胜利举行的感恩庆典，（用十足的以色列方式）为万军之主所唱的颂歌，与人父的道德理念形成极强烈的反差，因为它们除了带来对各民族寻求其相互法权的方式的漠然（这是足够可悲的）之外，还带来了毁灭许多人或者他们的幸福的欢愉。 [13] 要用这个大帝国自己称谓自己所使用的名称来书写",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "论永久和平",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 55,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "污的嘴令人毛骨悚然］。——科学院版编者注 [41] 在结束一场战争之后，缔结和约时，对于一个民族来说也许并非不当的是，在感恩庆典之后宣布一个忏悔日，来以国家的名义祈求上天宽恕人类还一直犯的这种重大罪孽，即在与其他民族的关系中不愿服从任何法律宪政，而是为其独立自豪，宁可使用战争的野蛮手段（但由此所寻求的东西，亦即每一个国家的法权，却未得到澄清）。——在战争期间为一场赢得的胜利举行的感恩庆典，（用十足的以色列方式）为万军之主所唱的颂歌，与人父的道德理念形成极强烈的反差，因为它们除了带来对各民族寻求其相互法权的方式的漠然（这是足够可悲的）之外，还带来了毁灭许多人或者他们的幸福的欢愉。 [42] 在所有的生活方式当中，狩猎生活无疑最违背文明",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "相关论述",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 73,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的司令官，无可比拟的英雄，自己至为仁慈的主人和保护人，谨以完全忠诚的和谦恭的心情使这几页纸成为对以诸多榜样展现出的仁慈的感恩和负有义务的心灵之信物。至为恭顺的仆人克里斯托夫·亚伯拉罕·博尔查德。 哲学系的档案包含着如下几条与这部作品相关的登记：第Ⅴ卷，193页，“下面所写已经呈交主任和副主任裁断”，作为第20条是：“康德硕士为被接纳的论认识各首要原则的形而上学答辩论文”；194页，“本学期所做的答辩论文”，第3条：“伊曼努尔·康德硕士为被接纳入哲学系而辩论形而上学认识各首要原则的新说明。辩护人克里斯托夫·亚伯拉罕·博尔查德，9月27日”。 关于博尔查德和标题上所列举的提问人，除此一无所知。 我们的版本以原版的文本为基础。康德自己在结",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国哲学辞典",
+       "chapter": "七画",
+       "book_id": "e5a8abe31f07",
+       "chapter_idx": 9,
+       "author": "韦政通",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "之以礼，死葬之以礼，祭之以 礼。”\"子夏问孝，子日：色难。有事弟子服其劳，有酒食，先生误，曾是以为孝 乎。”《里仁》：“事父母几谏，见志不从，又敬不违，劳面不怨。”《公冶长》：“父母 在，不远游，游必有方。《中庸》：“践其位，行其礼，奏其乐，敬其所尊，爱其所亲， 事死如事生，事亡如事存，孝之至也。”《礼记·蔡义》：“父母爱之，喜而弗忘，父 每恶之，惧而无怨，父母有过，谏而不逆，父每既没，必录仁署之粟以祀之，此之 谓礼终。”“天之所生，地之所养，无人为大，父母全而生之，子全而归之，可谓孝 矣。不亏其体，不辱其身，可谓全矣。故君子顷步而弗敢忘孝也。”“孝子之有深 爱者，必有和气，有和气者，必有愉色，有愉色者，必有婉容。孝子如执玉，如奉 ",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "六、孝和爱",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 627,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "观念。但做父母的，虽然被蛊惑而有不是的事，但在子女的立场来说，仍然需要以最大的“爱”心而为父母斡旋过错。所以孔子也说：“事父母几谏，见志不从，又敬不违，劳而不怨。”但是后世以讹传讹，或语焉不详，便把“天下无不是之父母”的观念，变成了铁定如律令的戒条。 同时做父母的，更要了解中国文化的“孝道”思想，并非只是单面的要求，它是相互的情爱。“父慈子孝”、“兄友弟恭”这是必然的因果律。孔子所谓“君君、臣臣、父父、子子”的道理，每句下面那个重复字，都是假借作为动词来读。用现代观念来说，就是：倘使父母不成其为父母，或父母没有尽到做父母之“爱”的责任，只是单方面要求子女来尽“孝”，那也是不合理的。其余各句的观念，依此类推，同一道理，当然不必重复细说",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "里仁第四",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 667,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一句话就是说明上文仁者爱人不能恶人的道理；下面一句话，就是解释上文“人之过也，各于其党”的道理。 孝子仁人不二门 子曰：事父母几谏，见志不从，又敬不违，劳而不怨。 现在又讲到孝道中仁的范围，他说对于父母的过错必须“几谏”。什么叫“几谏”呢？我们好几次提到孔家店被打倒，都由孔家店的店员搞错了观念而出的毛病。宋儒以后论道学，便有：“天下无不是之父母”的名训出现。因此“五四运动”要打倒孔家店时，这些也成为罪状的重点。其实孔子思想并不是这样的，天下也有不是的父母，父母不一定完全对，作为一个孝子，对于父母不对的地方，就要尽力的劝阻。“见志不从”就是说父母不听劝导的话，那么就“又敬不违，劳而不怨”，只好跟在后面大叫、大哭、大闹，因为你是我父母，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "韩非子",
+       "chapter": "忠孝",
+       "book_id": "6ec167f8492b",
+       "chapter_idx": 52,
+       "author": "韩非",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "天下皆以孝悌忠顺之道为是也，而莫知察孝悌忠顺之道而审行之，是以天下乱。皆以尧舜之道为是而法之，是以有弑君，有曲于父。尧、舜、汤、武或反群臣之义，乱后世之教者也。尧为人君而君其臣，舜为人臣而臣其君，汤、武为人臣而弑其主、刑其尸，而天下誉之，此天下所以至今不治者也。夫所谓明君者，能畜其臣者也；所谓贤臣者，能明法辟、治官职以戴其君者也。今尧自以为明而不能以畜舜，舜自以为贤而不能以戴尧；汤、武自以为义而弑其君长，此明君且常与而贤臣且常取也。故至今为人子者有取其父之家，为人臣者有取其君之国者矣。父而让子，君而让臣，此非所以定位一教之道也。臣之所闻曰：“臣事君，子事父，妻事夫。三者顺则天下治，三者逆则天下乱，此天下之常道也。”明王贤臣而弗易也，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "大学章句集注",
+       "chapter": "第九章",
+       "book_id": "4c5aaf145298",
+       "chapter_idx": 10,
+       "author": "朱熹",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "所谓齐其家在修其身者，人之其所亲爱而辟焉，之其所贱恶而辟焉，之其所畏敬而辟焉，之其所哀矜而辟焉，之其所敖惰而辟焉。故好而知其恶，恶而知其美者，天下鲜矣。故谚有之曰：“人莫知其子之恶，莫知其苗之硕。”此谓身不修不可以齐其家。",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 16,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 94.542,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 6.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_qNSZkhtcpLnC6Aa3WO2f8336"
+    },
+    {
+     "t": 6.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_4YMFZYwEU4BzzdYZaGG44092"
+    },
+    {
+     "t": 6.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_KIdfOFAiod9kXKGJ89a11558"
+    },
+    {
+     "t": 7.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_PDrzLXHtMmVfWQJVZCtk1835"
+    },
+    {
+     "t": 7.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.097,
+     "result_chars": 4353,
+     "result_head": "{\"query\": \"父母对子女的权力 父权 服从\", \"results\": [{\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"author\": \"约翰·洛克\", \"chapter_idx\": 5, \"chapter_title\": \"第六章 论父权\", \"c"
+    },
+    {
+     "t": 7.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.219,
+     "result_chars": 5668,
+     "result_head": "{\"query\": \"感恩 义务 父母 报答\", \"results\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 28, \"chapter_titl"
+    },
+    {
+     "t": 9.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.719,
+     "result_chars": 3271,
+     "result_head": "{\"query\": \"事父母几谏\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 5, \"chapter_title\": \"里仁篇\", \"citation_label\": \"【《论语"
+    },
+    {
+     "t": 10.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.986,
+     "result_chars": 2490,
+     "result_head": "{\"query\": \"父有争子则身不陷于不义\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation_label\""
+    },
+    {
+     "t": 13.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_fT2yPx5sDGKjgLN0Cj7a5368"
+    },
+    {
+     "t": 13.9,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_beEHLPZGE9gTEAsXZlKG8378"
+    },
+    {
+     "t": 14.1,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_Hc1aVDco3zMnJjnkgtEZ2284"
+    },
+    {
+     "t": 14.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_f2iV4iGb918GhYF4UcTS9909"
+    },
+    {
+     "t": 14.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.005,
+     "result_chars": 2962,
+     "result_head": "{\"book_id\": \"795658cafeab\", \"book_title\": \"荀子\", \"chapter_idx\": 30, \"title\": \"子道\", \"citation_label\": \"【《荀子》·子道】\", \"text\": \"入孝出弟，人之小行也。上顺下笃，人之中行也；从道不从君，从义不从父， 人之大"
+    },
+    {
+     "t": 14.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 4524,
+     "result_head": "{\"book_id\": \"e3a52553c303\", \"book_title\": \"政府论（下篇）\", \"chapter_idx\": 6, \"title\": \"第七章 论政治的或公民的社会\", \"citation_label\": \"【《政府论（下篇）》·第七章 论政治的或公民的社会】\", \"text\": \"68．另一"
+    },
+    {
+     "t": 14.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 4389,
+     "result_head": "{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"chapter_idx\": 28, \"title\": \"第一部分　私人权利（私法）\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）"
+    },
+    {
+     "t": 16.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.461,
+     "result_chars": 1929,
+     "result_head": "{\"query\": \"故当不义则争之 从父之令又焉得为孝乎\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 52, \"chapter_title\": \"忠孝\", \"citation"
+    },
+    {
+     "t": 34.0,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_aXvWDb0Z50U2adD6D6WD9575"
+    },
+    {
+     "t": 34.2,
+     "ev": "tool_start",
+     "name": "analyze_argument",
+     "call_id": "call_01_MQ8B8BDXwJvDE9fNRxOr6233"
+    },
+    {
+     "t": 34.5,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.002,
+     "result_chars": 2633,
+     "result_head": "{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"chapter_idx\": 5, \"title\": \"里仁篇\", \"citation_label\": \"【《论语》·里仁篇】\", \"text\": \"子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可"
+    },
+    {
+     "t": 63.9,
+     "ev": "tool",
+     "name": "analyze_argument",
+     "status": "success",
+     "duration_s": 29.393,
+     "result_chars": 1971,
+     "result_head": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"子女在工作和婚姻上应当听从父母的安排；不接受这种安排就是忘恩负义、不讲孝道。\", \"premises\": [{\"p"
+    },
+    {
+     "t": 67.6,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_00_mX7mTIQgIX9WcYObqj5g0075"
+    },
+    {
+     "t": 67.7,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_01_JjmkLTmxBY1BmDW2pvAx8063"
+    },
+    {
+     "t": 69.3,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 1.448,
+     "result_chars": 2061,
+     "result_head": "{\"query\": \"孝道 报恩 感恩 义务 儒家 父母 决定权\", \"results\": [{\"source_record_id\": \"doi:10.58601/kjre.2022.05.30.06\", \"title\": \"Modern Reinterpretation of Filial Piety(孝): Foc"
+    },
+    {
+     "t": 69.5,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.64,
+     "result_chars": 4340,
+     "result_head": "{\"query\": \"filial obligation gratitude debt to parents argument\", \"results\": [{\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"title\": \"Evolution of the C"
+    },
+    {
+     "t": 71.0,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_IpYFmrYRH0OfHbfN35bN6434"
+    },
+    {
+     "t": 71.3,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_qNu9o7BoLeO2mI8t8GrS2786"
+    },
+    {
+     "t": 71.5,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.087,
+     "result_chars": 3034,
+     "result_head": "{\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.3389/fpsyg.2021.570547\", \"title\": \"Evolution of the C"
+    },
+    {
+     "t": 71.5,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.092,
+     "result_chars": 3230,
+     "result_head": "{\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1007/s10892-012-9132-8\", \"title\": \"Filial Obligations"
+    },
+    {
+     "t": 94.6,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1653
+  }
+ ],
+ "total_wall_s": 96.0,
+ "status": "COMPLETED"
+}

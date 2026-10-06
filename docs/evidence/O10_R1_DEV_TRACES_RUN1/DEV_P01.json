@@ -1,0 +1,302 @@
+{
+ "case_id": "DEV_P01",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《孟子》里「鱼与熊掌」的比喻出现在哪一章？请读取该章原文，引用「二者不可得兼」一句的原文，并解释孟子用这个比喻论证什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_OrxzkZxO5e5TiC7byo5O4561"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_V6oJg8BjWqDZ0kpfnYW68470"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_L093yYK4A98KwoWfWqiS8017",
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 49, 'chapter_title': '德经·第五十章', 'citation_label': '【《道德经》·德经·第五十章】'"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_6IDYP53UBXOhQxsl40Xb8414"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_8P69QwAtIKTvgRgm1M4O6178"
+  },
+  {
+   "name": "query_database",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_rqTtij8ZUvwPw3U5gTfI0041",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_oGhcAko8U0s3nS6TAWkX5498"
+  },
+  {
+   "name": "list_books",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_v7obWzsKC0aWcx1ekOpf0986",
+   "result_head": "{'books': [{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'rank': 40.8, 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_sErFHXpKzzBVJkgQ7Zx98522",
+   "result_head": "{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_feq0r8K9zoYoVTAJc20E6123",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_h8Wp8LOTGVsZaMgU7KnN4443"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_1zGqoSKSrUZBQbT9Gxfo9691",
+   "result_head": "{'results': [], 'query': '熊掌', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_vustH9HGgwxSJR3sWwC71636",
+   "result_head": "{'book_id': 'dd03ec6572e7', 'chapter_idx': 10, 'title': '告子章句上', 'book_title': '孟子', 'citation_label': '【《孟子》·告子章句上】', 'text': '告子章句上·第一节\\n告子曰：“性，犹杞柳也；义，犹桮棬也。以人"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_JQQeAdLaSIXpmvGJ9N3D3751",
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '《孟"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子》\"鱼与熊掌\"比喻的所在篇章及\"二者不可得兼\"一句的原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "确认本库是否收录《孟子》全文，并定位\"鱼与熊掌\"所在篇章的原文",
+    "gap_filled": false,
+    "budget_extension_reason": "三轮检索均未命中《孟子》，返回的都是《道德经》《庄子》等无关文本，无法判断本库究竟未收录《孟子》还是检索词未命中；用户明确要求读取该章原文，证据缺口未闭合，需一次延展以确认书目收录情况并定位原典。",
+    "unresolved_evidence_gap": "《孟子》\"鱼与熊掌／舍生取义\"一章的原文措辞与所在篇章"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子》\"鱼与熊掌／二者不可得兼\"章的 chapter_idx 定位与原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "本库已确认收录《孟子》（id dd03ec6572e7），但目录中篇名与\"第X节\"混列，无法凭目录确定\"告子章句上\"对应的 chapter_idx；用户明确要求读取该章原文并逐字引用\"二者不可得兼\"，这是不可跳过的原文核验步骤，缺口未闭合。本次延展只用于一次定位检索与一次章节读取（get_chapter），非重复检索。",
+    "unresolved_evidence_gap": "《孟子·告子上》\"鱼与熊掌\"章的原文措辞与所在位置"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子》\"鱼与熊掌\"章原文与所在篇章",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1212,
+ "final_answer": "## 一、出处\n\n该比喻见于《孟子》**《告子章句上》**（通称《告子上》）。在本库所收《孟子》文本中，《告子章句上》按\"第某节\"编排，此段属其中讨论\"生与义\"的一节（我读取了该篇全文予以核验；下引为库中该篇文字）。\n\n## 二、原文\n\n> 鱼，我所欲也；熊掌，亦我所欲也，二者不可得兼，舍鱼而取熊掌者也。生，亦我所欲也；义，亦我所欲也，二者不可得兼，舍生而取义者也。\n\n【《孟子》·告子章句上】\n\n用户特别问到的\"二者不可得兼\"一句，正出现在这一节，且连用两次：第一次用于\"鱼／熊掌\"，第二次用于\"生／义\"。\n\n## 三、孟子用它论证什么\n\n**1. 比喻本身只是引子。** 鱼与熊掌都是\"所欲\"，但价值有轻重；当二者不能同时得到时，取更珍贵的一方（熊掌）。孟子以此作类比铺垫，随即把它平移到最尖锐的一组冲突上：生命（生）与道义（义）都是人所欲，而一旦鱼与熊掌式的\"不可得兼\"发生在生与义之间，就应\"舍生而取义\"。比喻的作用是**设定一个价值分层的思维模型**，而非完成论证。\n\n**2. 真正的论证在比喻之后。** 按我读到的那一节文气，孟子接着往下推进（以下为对文意的大意转述）：人之所以能够不苟且偷生、不躲避祸患，是因为\"所欲有甚于生者\"\"所恶有甚于死者\"——即存在比生命更值得欲求的东西（义），也存在比死亡更可厌弃的东西（不义）。这一步的关键在于：孟子不是靠宣示\"义比生重要\"，而是从**人们实际会宁死不苟得的行为事实**反推出那样一个更高的价值维度。这说明\"舍生取义\"不是要人牺牲，而是揭示人心中本已存在的价值排序。\n\n**3. 落点在本心与性善。** 该节的收束，通常被读作顺此推出：这样的心\"非独贤者有是心也，人皆有之，贤者能勿丧耳\"——舍生取义的能力并非圣贤专有，而是人人本具，只是贤者能不把它丢失。这与孟子\"羞恶之心，义之端也\"的性善论框架相互呼应，\"舍生取义\"因此是他\"四端\"说在生死这一极端情境下的检验。同篇后文还借\"万钟\"（厚禄）之喻批评有人为物欲而丧失本心，形成正反对照（此段措辞未在本次核验范围内逐字确认，仅述大意）。\n\n## 四、层次说明（避免混淆）\n\n- **文本事实**：比喻与\"二者不可得兼，舍生而取义者也\"这一句确在《孟子·告子章句上》（上述引文来自库中该篇文本）。\n- **我的解读**：把比喻定位为\"设定价值分层的引子\"、把后文读作\"由行为事实反推更高价值\"，属于对文脉的分析，孟子本人并未使用\"类比推理\"\"反推\"这类后世术语。\n- **学界争议**：此处仅就文本本身作答，未展开历代注疏（如赵岐、朱熹）对\"舍生取义\"的不同侧重；若需，我可以另作一次带二手文献的专门梳理。\n\n一句话概括：孟子用鱼与熊掌的轻重之喻，**为人面对\"生\"与\"义\"不可兼得时的价值抉择提供模型，进而论证\"义\"重于\"生\"，且这种取舍能力植根于人皆有的本心**——这就是\"舍生取义\"这一命题的原始出处与语境。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《孟子》\"鱼与熊掌／二者不可得兼\"章的 chapter_idx 定位与原文措辞",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:12:39",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《孟子》\"鱼与熊掌\"比喻的所在篇章及\"二者不可得兼\"一句的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 11:12:45",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "确认本库是否收录《孟子》全文，并定位\"鱼与熊掌\"所在篇章的原文",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:13:00",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《孟子》\"鱼与熊掌／二者不可得兼\"章的 chapter_idx 定位与原文措辞",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:13:15",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:12:45",
+    "reason": "三轮检索均未命中《孟子》，返回的都是《道德经》《庄子》等无关文本，无法判断本库究竟未收录《孟子》还是检索词未命中；用户明确要求读取该章原文，证据缺口未闭合，需一次延展以确认书目收录情况并定位原典。",
+    "unresolved_gap": "《孟子》\"鱼与熊掌／舍生取义\"一章的原文措辞与所在篇章"
+   },
+   {
+    "ts": "2026-09-13 11:13:00",
+    "reason": "本库已确认收录《孟子》（id dd03ec6572e7），但目录中篇名与\"第X节\"混列，无法凭目录确定\"告子章句上\"对应的 chapter_idx；用户明确要求读取该章原文并逐字引用\"二者不可得兼\"，这是不可跳过的原文核验步骤，缺口未闭合。本次延展只用于一次定位检索与一次章节读取（get_chapter），非重复检索。",
+    "unresolved_gap": "《孟子·告子上》\"鱼与熊掌\"章的原文措辞与所在位置"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:12:42"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:12:42"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:12:54"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 150243,
+   "output_tokens": 8973,
+   "total_tokens": 159216
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 20075,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11629,
+     "output_tokens": 425,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17204,
+     "output_tokens": 302,
+     "tool_chars_added": 9066
+    },
+    {
+     "round": 3,
+     "input_tokens": 15181,
+     "output_tokens": 465,
+     "tool_chars_added": 4471
+    },
+    {
+     "round": 4,
+     "input_tokens": 14787,
+     "output_tokens": 236,
+     "tool_chars_added": 2137
+    },
+    {
+     "round": 5,
+     "input_tokens": 14888,
+     "output_tokens": 1153,
+     "tool_chars_added": 1177
+    },
+    {
+     "round": 6,
+     "input_tokens": 15789,
+     "output_tokens": 1103,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 7,
+     "input_tokens": 18180,
+     "output_tokens": 1091,
+     "tool_chars_added": 2783
+    },
+    {
+     "round": 8,
+     "input_tokens": 21424,
+     "output_tokens": 1239,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 9,
+     "input_tokens": 21161,
+     "output_tokens": 2959,
+     "tool_chars_added": 2876
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 150243,
+  "output_tokens": 8973,
+  "total_tokens": 159216
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 59.2
+}

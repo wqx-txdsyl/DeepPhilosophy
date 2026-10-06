@@ -1,0 +1,379 @@
+{
+ "case_id": "DEV_G08",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请综述女性主义科学哲学对「价值无涉理想」（value-free ideal）的批评研究：代表学者、论文与当前争论焦点。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_UimPvVER1qp0RMfd1rmG5494"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_TSBogJz0xyjYXzgBzOfs9395"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_MTTcO0agb7on0KpQc3dK7246"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_RvacdiySArr7ugq5atp68716",
+   "args": {
+    "query": "Helen Longino values objectivity science as social knowledge",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Helen Longino values objectivity science as social knowledge', 'results': [{'source_record_id': 'doi:10.1080/00201748908602185', 'title': 'Love and k"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_llyNuB26y2G3QuUWMTLL3198"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_9xCfhVMPIpKqdxRMv1k40216"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_jwQBBN08K3A4AGW4J58z8073"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_HGHWBxDPAhevQBlKUj2x8330",
+   "args": {
+    "source_record_id": "doi:10.1007/s11191-012-9481-5",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_EJvrrCzMGVKc3CLSXVzI8440",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位高相关文献（Douglas 2007、Crasnow 1993、Jaggar 1989、Carrier 2012、Brown 2024、Hoyningen-Huene 2023 等）但尚未取得任何一条的内容证据（摘要/正文），无法做学术归因",
+    "gap_filled": false,
+    "budget_extension_reason": "已完成的 4 次检索全部只产生书目 metadata（LOCATE 层），内容证据（READ 层）为零。学术契约要求对文献做内容归因前必须 get_scholarly_source 读取；若现在收口，我将只能陈述\"某文献存在\"却无法说明其论证——这不足以支撑用户要求的\"代表学者论文与争论焦点\"综述。需延展以读取 2-3 条最相关来源。",
+    "unresolved_evidence_gap": "Douglas 2007《Rejecting the Ideal of Value-Free Science》、Brown 2024《For values in science》、Hoyningen-Huene 2023《Objectivity, value-free science, and inductive risk》等核心文献的实际论证内容"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 已定位高相关文献（Douglas 2007、Crasnow 1993、Jaggar 1989、Carrier 2012、Brown 2024、"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_mSbh05yJvUPyOh7HueTm1583"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_BWt8v68IsG1SQDvMl69y9693",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1017/can.2020.45"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1017/can.2020.45', 'bibliographic_record': {'source_record_id': 'doi:10.1017/can.2020.45', 'title': 'Understanding the Problem of “"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_vLO5Xf1ZeKR6ddY3in185835"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_XhThCPHD6ogjVUeli33r9521"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_WSRFrCi4LMIzy0YiA2Nd0436",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1111/j.1527-2001.1993.tb00045.x"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1111/j.1527-2001.1993.tb00045.x', 'bibliographic_record': {'source_record_id': 'doi:10.1111/j.1527-2001.1993.tb00045.x', 'title': \""
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_8nsn9hqGwHJxWMkYKmbi0005"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_GTsB9P8Y5SKcskIuYrXV9778",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1086/687259"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_NEzaNg9gH9x7TtnP6Jq15166"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_yfp0PAYoA0tfcMwCtEK92266"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_02_StUig1ogapA1XUsGp8rP1890",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1086/687259"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "女性主义科学哲学批评\"价值无涉理想\"的代表学者、具体论文与当前争论焦点的真实文献证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位高相关文献（Douglas 2007、Crasnow 1993、Jaggar 1989、Carrier 2012、Brown 2024、Hoyningen-Huene 2023 等）但尚未取得任何一条的内容证据（摘要/正文），无法做学术归因",
+    "gap_filled": false,
+    "budget_extension_reason": "已完成的 4 次检索全部只产生书目 metadata（LOCATE 层），内容证据（READ 层）为零。学术契约要求对文献做内容归因前必须 get_scholarly_source 读取；若现在收口，我将只能陈述\"某文献存在\"却无法说明其论证——这不足以支撑用户要求的\"代表学者论文与争论焦点\"综述。需延展以读取 2-3 条最相关来源。",
+    "unresolved_evidence_gap": "Douglas 2007《Rejecting the Ideal of Value-Free Science》、Brown 2024《For values in science》、Hoyningen-Huene 2023《Objectivity, value-free science, and inductive risk》等核心文献的实际论证内容"
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "上一次延展取得的内容证据仅 2 条（Jaggar 1989、Intemann 2020），且均非用户问题的核心对象。Douglas 对价值无涉理想的正面批评、Longino 的语境经验论、Harding 的立场论、Crasnow 对 Longino 的评述，这些恰恰是\"代表学者论文\"的主干，其内容证据仍为零——不读则无法归因，只能列书名，远不足以支撑用户要求的综述。",
+    "evidence_gap": "Douglas/Longino/Harding/Crasnow/Anderson 等核心文献的实际论证内容（内容证据层 READ）",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "unresolved_evidence_gap": "价值无涉理想批评核心文本（Douglas、Longino、Harding）的摘要/正文内容"
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "已取得内容证据仅 3 条（Jaggar 1989、Crasnow 1993、Intemann 2020），其中 Crasnow 提供了 Longino 语境经验论的二手证据，但本主题最核心的正面批评文本 Douglas《Rejecting the Ideal of Value-Free Science》与当前争论枢纽 de Melo-Martín & Intemann《The Risk of Using Inductive Risk to Challenge the Value-Free Ideal》的摘要均未读取。二者是用户问题\"代表论文/争论焦点\"的主干，缺之则无法对其论证做负责任归因。",
+    "evidence_gap": "Douglas 2007 与 de Melo-Martín & Intemann 2016 的实际论证内容",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "unresolved_evidence_gap": "Douglas 2007 拒绝价值无涉理想的论证、de Melo-Martín & Intemann 2016 对归纳风险策略的质疑"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3963,
+ "final_answer": "# 女性主义科学哲学对\"价值无涉理想\"的批评：研究地图与证据边界\n\n先说清这份综述的**证据状态**，因为它决定了下面哪些话能说到多重：我实际读到摘要内容的只有 3 条文献（Jaggar 1989、Crasnow 1993、Intemann 2020）；另有约十种文献被真实检索到、书目信息可核验，但我**未能读取其内容**，因此只能陈述\"它们存在、题名/作者/年份为何\"，不能替它们说\"主张了什么\"。凡属我的记忆而未在本次检索中确认的（如 Harding、Anderson 的相关著作），我会显式标出。\n\n## 一、被批评的对象：一个需要先厘清的区分\n\n\"价值无涉理想\"（value-free ideal）通常指：科学的**认证**（justification / 接受或拒绝假说）不应受非认知价值（道德、政治、社会、个人利益）影响，只应受证据与认知价值（如准确性、一致性、预测力）支配。批评的关键不是\"科学家能否完全不动情\"，而是这个**规范性理想**是否可取、是否可能、是否是好的科学规范。\n\n这里有一个分析哲学内部也在用的区分——**认知价值 vs 非认知价值**（也叫\"自由价值\" freedom-values）。女性主义与科学价值哲学（如 Douglas 一路）的批评共享一个切口：非认知价值并非只在\"选题\"或\"应用\"环节进入科学，它们会渗透到证据的**相关性判断**与**风险权衡**之中，因此二分的\"认证/发现\"划界站不住。这一逻辑框架我标为**背景性共识层面的解释**，下面用具体文献落地。\n\n## 二、女性主义进路的几条核心线索\n\n**（1）情感/无偏性的神话与认识权威的分配**——这是我读到内容的证据之一。Jaggar 1989《Love and knowledge: Emotion in feminist epistemology》（*Inquiry*）的摘要论证：西方认识论传统把情感当作\"认识论上具有颠覆性\"之物而加以贬黜，从而遮蔽了情感在知识建构中的真实作用；情感是主动的、自愿的、社会建构的；而\"冷静无偏研究的神话\"（the myth of dispassionate investigation）在历史上被用来贬低女性及一切与情感相关联的社会群体的认识权威。这一条把\"价值无涉\"从方法论问题转成了**权力/认识权威的分配问题**。\n\n**（2）语境经验论：价值进入证据相关性**——Crasnow 1993《Can Science Be Objective? Longino's *Science as Social Knowledge*》（*Hypatia*）的摘要是关键的二手证据：Longino 提出\"语境经验论\"（contextual empiricism），对**证据相关性**作语境化分析，试图以此调和科学的客观性与\"科学是社会建构\"这一主张；而 Crasnow 认为，Longino 关于\"科学仍然是客观的\"这一论断**是有问题的**。也就是说，批评者阵营内部对\"能否在放弃价值无涉后保住客观性\"本身就有分歧。\n\n**（3）立场论与\"强客观性\"**——这一线索（Sandra Harding《The Science Question in Feminism》1986、《Whose Science? Whose Knowledge?》1991，主张从边缘处境出发的\"强客观性\"）是女性主义科学哲学的另一支柱，但**本次检索未命中其记录**，故此处仅为基于我记忆的提示（记忆，未经库中核验），请读者自行核验。\n\n**（4）当代延伸：从方法论批评到科学传播伦理**——Intemann 2020《Understanding the Problem of \"Hype\": Exaggeration, Values, and Trust in Science》（*Canadian Journal of Philosophy*）的摘要指出，\"炒作\"是夸大科学正面面向的一种特定类型，且价值判断在其中起作用。这把\"价值不能中立\"的论点推到了**科学与公众信任**的领域。\n\n## 三、代表文献清单（按证据等级分列）\n\n**已读取内容（可作内容归因）：**\n- Jaggar 1989, *Inquiry*\n- Crasnow 1993, *Hypatia*（评 Longino《Science as Social Knowledge》，1990，Princeton）\n- Intemann 2020, *Canadian Journal of Philosophy*\n\n**已核验书目存在、但内容未读（只能确认文献存在与题名/出处）：**\n- Douglas, \"Rejecting the Ideal of Value-Free Science\"，收入 Kincaid、Dupré、Wylie 编《Value-Free Science? Ideals and Illusions》（Oxford UP），doi:10.1093/acprof:oso/9780195308969.003.0009——这是本主题最核心的正面批评文本，题名直接指向\"拒斥价值无涉理想\"，但**其论证我未能读取**。\n- de Melo-Martín & Intemann 2016, \"The Risk of Using Inductive Risk to Challenge the Value-Free Ideal\", *Philosophy of Science*, doi:10.1086/687259\n- Havstad 2021, \"Sensational Science, Archaic Hominin Genetics, and Amplified Inductive Risk\", *Canadian Journal of Philosophy*, doi:10.1017/can.2021.15\n- Ludwig 2015, \"Ontological Choices and the Value-Free Ideal\", *Erkenntnis*\n- Wilholt 2012, \"Epistemic Trust in Science\", *BJPS*\n- Daston 1995, \"The Moral Economy of Science\", *Osiris*, doi:10.1086/368740\n- \"The social contract for science and the value-free ideal\", *Synthese* (2024), doi:10.1007/s11229-023-04477-9\n- Carrier 2012（价值负载、多元论与认知态度）；Alcoff 1996（女性主义对理性的批评是否理性）；Alexandrova 2016（福祉科学能否客观）；Lee & Schunn 2011（社会偏见与程序客观性，《Hypatia》）\n\n## 四、当前争论的焦点（从文献地形看）\n\n基于检索到的题名分布——**注意这只是\"哪些议题被讨论\"的地形，不是\"谁论证了什么\"**——当下争论集中在三条轴线上：\n\n1. **归纳风险（inductive risk）路线是否奏效**：de Melo-Martín & Intemann 2016 与 Havstad 2021 的题名把\"归纳风险\"当作争论枢纽——前者似乎在反思\"用归纳风险去挑战价值无涉理想\"这一策略本身的风险，后者则讨论\"被放大的归纳风险\"。这提示：即便在批评者内部，对**用什么武器**反驳价值无涉理想也是有争辩的。\n2. **区分\"接受/拒绝假说中的价值\"与\"选题/应用中的价值\"是否还守得住**：Ludwig 2015、Douglas 一路围绕本体论选择、认知价值边界展开。\n3. **信任与传播**：Wilholt 2012、Intemann 2020、2024 年 *Synthese* 的\"社会契约\"文，把争论从认识论推向科学的社会契约与公众信任。\n\n## 五、我的综合与诚实的缺口声明\n\n**综合判断（我的看法）**：女性主义科学哲学的贡献不在于\"证明科学充满偏见\"，而在于把\"价值无涉\"从一条不言自明的方法论理想，重新描述为**一种需要辩护的规范性立场**，并追问它服务于谁的认识权威。它与 Douglas 一路的科学价值哲学合流，形成今天\"科学中的价值\"（values in science）研究纲领。\n\n**必须声明的缺口**：我**未能读取** Douglas 2007、de Melo-Martín & Intemann 2016、Harding 立场论著作、以及 Anderson 相关论述的内容——因此上文对它们的立场只做了**题名层面的描述**，不含对其论证的归因。若你要继续深入，建议的检索入口是：先在相关数据库查 Douglas 2007 全文与 de Melo-Martín & Intemann 2016，再沿它们的引文网回溯 Longino《Science as Social Knowledge》与 Harding 的两本代表作，最后用 Stanford 哲学百科\"Feminist Epistemology and Philosophy of Science\"（Anderson 撰）条作总览——这几步我在本次受检索预算限制未能完成，请以原文献为准。\n\n如果你愿意，我可以换一个研究需求类别重新展开，把\"立场论/强客观性\"这条线单独做深。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "Douglas 2007 与 de Melo-Martín & Intemann 2016 的实际论证内容",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:26:26",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "女性主义科学哲学批评\"价值无涉理想\"的代表学者、具体论文与当前争论焦点的真实文献证据"
+   },
+   {
+    "ts": "2026-09-13 12:26:45",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已定位高相关文献（Douglas 2007、Crasnow 1993、Jaggar 1989、Carrier 2012、Brown 2024、Hoyningen-Huene 2023 等）但尚未取得任何一条的内容证据（摘要/正文），无法做学术归因",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:27:13",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "Douglas/Longino/Harding/Crasnow/Anderson 等核心文献的实际论证内容（内容证据层 READ）",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:27:27",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "Douglas 2007 与 de Melo-Martín & Intemann 2016 的实际论证内容",
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:26:45",
+    "reason": "已完成的 4 次检索全部只产生书目 metadata（LOCATE 层），内容证据（READ 层）为零。学术契约要求对文献做内容归因前必须 get_scholarly_source 读取；若现在收口，我将只能陈述\"某文献存在\"却无法说明其论证——这不足以支撑用户要求的\"代表学者论文与争论焦点\"综述。需延展以读取 2-3 条最相关来源。",
+    "unresolved_gap": "Douglas 2007《Rejecting the Ideal of Value-Free Science》、Brown 2024《For values in science》、Hoyningen-Huene 2023《Objectivity, value-free science, and inductive risk》等核心文献的实际论证内容"
+   },
+   {
+    "ts": "2026-09-13 12:27:13",
+    "reason": "上一次延展取得的内容证据仅 2 条（Jaggar 1989、Intemann 2020），且均非用户问题的核心对象。Douglas 对价值无涉理想的正面批评、Longino 的语境经验论、Harding 的立场论、Crasnow 对 Longino 的评述，这些恰恰是\"代表学者论文\"的主干，其内容证据仍为零——不读则无法归因，只能列书名，远不足以支撑用户要求的综述。",
+    "unresolved_gap": "价值无涉理想批评核心文本（Douglas、Longino、Harding）的摘要/正文内容"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:26:37"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:26:37"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:26:37"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:27:20"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:27:20"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:27:27"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:27:27"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 158076,
+   "output_tokens": 14496,
+   "total_tokens": 172572
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 16,
+   "compacted_chars_saved": 27545,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11753,
+     "output_tokens": 1064,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17094,
+     "output_tokens": 1466,
+     "tool_chars_added": 13095
+    },
+    {
+     "round": 3,
+     "input_tokens": 16390,
+     "output_tokens": 924,
+     "tool_chars_added": 4735
+    },
+    {
+     "round": 4,
+     "input_tokens": 17344,
+     "output_tokens": 3114,
+     "tool_chars_added": 2483
+    },
+    {
+     "round": 5,
+     "input_tokens": 20593,
+     "output_tokens": 1719,
+     "tool_chars_added": 3764
+    },
+    {
+     "round": 6,
+     "input_tokens": 24840,
+     "output_tokens": 945,
+     "tool_chars_added": 8650
+    },
+    {
+     "round": 7,
+     "input_tokens": 23448,
+     "output_tokens": 1303,
+     "tool_chars_added": 490
+    },
+    {
+     "round": 8,
+     "input_tokens": 26614,
+     "output_tokens": 3961,
+     "tool_chars_added": 4128
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 158076,
+  "output_tokens": 14496,
+  "total_tokens": 172572
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 98.2
+}

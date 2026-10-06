@@ -9,6 +9,7 @@ import { useAuth } from '../auth';
 
 const UI = {
   zh: {
+    preview: '测试版', searchAgents: '搜索哲学家、传统或思想主题',
     sidebarTitle: '智能体广场', agentNote: '哲学家智能体基于其著作语料与人格数据构建',
     login: '登录 / 注册', logout: '登出', userCenter: '用户中心',
     placeholder: '问一个哲学问题…', send: '↑', stop: '■',
@@ -28,6 +29,7 @@ const UI = {
     calling: '正在调用', tryAsk: '试着问：', stopGenerating: '停止生成',
     uploadFail: '上传失败', reqFail: '请求失败', bodyText: '正文', philoAgent: '哲学家智能体',
     citeFail: '无法定位出处', citeOpen: '阅读原文', attachmentNote: '附件',
+    epEveryday: '现实生活哲学',
     saved: '已保存', saveFail: '保存失败', oldPwdPrompt: '输入当前密码',
     newPwdPrompt: '输入新密码（≥8 字符）', pwdShort: '新密码至少 8 字符', pwdUpdated: '密码已更新', pwdFail: '修改失败',
     clearConfirm: '确定清除全部对话历史？此操作不可撤销。', historyCleared: '历史已清除',
@@ -85,6 +87,7 @@ const UI = {
     collapseSidebar: '收起侧栏', expandSidebar: '展开侧栏',
   },
   en: {
+    preview: 'Preview', searchAgents: 'Search philosophers, traditions or themes',
     sidebarTitle: 'Agent Plaza', agentNote: 'Philosopher agents built from their corpus & persona data',
     login: 'Sign in / Register', logout: 'Sign out', userCenter: 'User Center',
     placeholder: 'Ask a philosophy question…', send: '↑', stop: '■',
@@ -106,6 +109,7 @@ const UI = {
     calling: 'Calling', tryAsk: 'Try asking:', stopGenerating: 'Stop generating',
     uploadFail: 'Upload failed', reqFail: 'Request failed', bodyText: 'Main text', philoAgent: 'Philosopher Agent',
     citeFail: 'Source not found', citeOpen: 'Read source', attachmentNote: 'Attachment',
+    epEveryday: 'Everyday philosophy',
     saved: 'Saved', saveFail: 'Save failed', oldPwdPrompt: 'Enter current password',
     newPwdPrompt: 'Enter new password (≥8 chars)', pwdShort: 'Password must be at least 8 chars',
     pwdUpdated: 'Password updated', pwdFail: 'Update failed',
@@ -178,6 +182,13 @@ export const AGENT_SUBS = {
 // 工具名（双语）
 export const TOOL_LABELS = {
   search_books: { zh: '检索原典', en: 'Search Texts' },
+  search_primary_texts: { zh: '查找原典', en: 'Find primary texts' },
+  read_primary_text: { zh: '阅读原典', en: 'Read primary text' },
+  recall_account_memory: { zh: '读取长期记忆', en: 'Recall account memory' },
+  remember_account_memory: { zh: '保存长期记忆', en: 'Save account memory' },
+  forget_account_memory: { zh: '忘记长期记忆', en: 'Forget account memory' },
+  search_account_history: { zh: '查找历史对话', en: 'Search past conversations' },
+  read_account_conversation: { zh: '读取历史对话', en: 'Read past conversation' },
   get_chapter: { zh: '读取章节', en: 'Read Chapter' },
   get_book_detail: { zh: '查书详情', en: 'Book Detail' },
   list_books: { zh: '筛选书目', en: 'List Books' },
@@ -224,7 +235,7 @@ export const LANGS = [
 const LangContext = createContext(null);
 
 export function LangProvider({ children }) {
-  const { profile, authFetch } = useAuth();
+  const { profile, updateProfile } = useAuth();
   const [lang, setLangState] = useState(() => localStorage.getItem('phiagent_lang') || 'zh');
 
   const setLang = useCallback((l) => {
@@ -232,11 +243,10 @@ export function LangProvider({ children }) {
     setLangState(l);
     if (profile) {
       // 登录用户同步到 profile（供后端语言注入）
-      authFetch('/api/auth/profile', {
-        method: 'PUT', body: JSON.stringify({ language: l }),
-      }).catch(() => {});
+      return updateProfile({ language: l });
     }
-  }, [profile, authFetch]);
+    return Promise.resolve();
+  }, [profile, updateProfile]);
 
   // 登录后同步 profile.language（切换/登录/刷新时生效）
   useEffect(() => {
@@ -251,7 +261,8 @@ export function LangProvider({ children }) {
     if (params) for (const [k2, v2] of Object.entries(params)) s = s.replaceAll(`{${k2}}`, String(v2));
     return s;
   }, [lang]);
-  const agentName = useCallback((key) => (AGENT_NAMES[key] || {})[lang] || key, [lang]);
+  const agentName = useCallback((key, spec) => (AGENT_NAMES[key] || {})[lang]
+    || (lang === 'en' ? spec?.name_en : spec?.name) || spec?.name || '', [lang]);
   const agentSub = useCallback((key) => (AGENT_SUBS[key] || {})[lang] || '', [lang]);
   const toolLabel = useCallback((key) => (TOOL_LABELS[key] || {})[lang] || key, [lang]);
 

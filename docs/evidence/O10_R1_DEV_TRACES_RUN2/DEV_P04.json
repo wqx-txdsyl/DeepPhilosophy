@@ -1,0 +1,347 @@
+{
+ "case_id": "DEV_P04",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "马可·奥勒留在《沉思录》里如何处理「被外界打扰」这件事？请找到相关原文章节，引用关键句，并说明斯多葛式的处理技术是什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_EoDTd07PB7Aip8mxPfRr4506"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_KWJMKBpwc7ito5F6vD356193"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_VmhydHaJmtn2ip0jRA070252"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_Fh701kWX7tz5TdbIARzc0067",
+   "args": {
+    "query": "逃避 宁静 独处 内心 城堡"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 281, 'chapter_title': '164', 'citation_label': '【《尼采文集（合"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_M0GPriJGZruMOcNjQdem6825"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_5lSy2mjQTmqyfTUSRGrK3682",
+   "args": {
+    "book_id": "a43cd7310a57"
+   },
+   "result_head": "{'id': 'a43cd7310a57', 'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎马倥偬的军旅生涯中，是斯多葛哲学最著名的实践文本之"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_HoVNDN626YWDaBNhOowc5595"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_CK76sVh6SdBfIV44fdDc7041",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 9
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_3BIp4rtFRMjdJ8YhBJEI4882"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_lqTAlQ9MididsiKC03kU9940"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_ikk9BlluKY94277I4gUI2461",
+   "args": {
+    "query": "退入内心 宁静 不受干扰 马可·奥勒留"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_ByrBGU3a8nm3kBtQdvgY0043",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》关于\"退回自身/印象/不受干扰\"的具体卷节原文措辞仍未取得",
+    "gap_filled": false,
+    "budget_extension_reason": "此前多轮检索的结果已被上下文压缩，无法据以给出可核验的逐字引文；用户明确要求\"找到原文章节、引用关键句\"，该证据缺口尚未补齐，需重新读取《沉思录》对应卷章原文。",
+    "unresolved_evidence_gap": "《沉思录》卷四\"退回自身心灵\"段、卷六/卷五关于\"印象与判断\"段的具体卷节位置与原文措辞"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《沉思录》关于\"退回自身/印象/不受干扰\"的具体卷节原文措辞仍未取得）。soft 检索预算=5 次。预算延展已获准（BUDGET_EXTENSIO"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_6APBe0VQoUHreDMxcbBI5224",
+   "args": {
+    "book_id": "沉思录"
+   },
+   "result_head": "{'id': 'a43cd7310a57', 'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎马倥偬的军旅生涯中，是斯多葛哲学最著名的实践文本之"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_QwrC0eayu26DNwQmCZ1z9557"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_4Shv3785FBGmgsXre6Wz5128",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 6
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于被外界打扰/退隐内心/判断的原文措辞与具体卷节位置",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尚未定位《沉思录》卷四\"退隐自身\"段与涉及\"判断即扰\"段原文措辞及卷节",
+    "gap_filled": false,
+    "budget_extension_reason": "首轮三检索仅命中卷十一/十二片段，未取得卷四\"退回自身心灵\"等核心段落原文，需读取目录与对应卷章核验措辞后方可作答",
+    "unresolved_evidence_gap": "《沉思录》关于\"被外界打扰/退回内心\"的原文精确措辞与所在卷节"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于\"外界印象（phantasia）\"、\"退入内心\"、\"不被打扰（ataraxia/tarache）\"相关段落的具体章节与原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》关于\"退回自身/印象/不受干扰\"的具体卷节原文措辞仍未取得",
+    "gap_filled": false,
+    "budget_extension_reason": "此前多轮检索的结果已被上下文压缩，无法据以给出可核验的逐字引文；用户明确要求\"找到原文章节、引用关键句\"，该证据缺口尚未补齐，需重新读取《沉思录》对应卷章原文。",
+    "unresolved_evidence_gap": "《沉思录》卷四\"退回自身心灵\"段、卷六/卷五关于\"印象与判断\"段的具体卷节位置与原文措辞"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 118,
+ "final_answer": "## 一、奥勒留把\"打扰\"定位在哪里\n\n对奥勒留来说，外界本身并不构成打扰；打扰发生在\"起支配作用的心灵\"这一层。他在第三卷里把\"琢磨他人\"直接指认为分心的来源：\n\n> 不要荒废余生，在思考公众福祉之外琢磨他人。\n\n> 琢磨某人的言行或",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 2,
+  "verified_exact": 2,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《沉思录》关于\"退回自身/印象/不受干扰\"的具体卷节原文措辞仍未取得",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:39:31",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《沉思录》中关于被外界打扰/退隐内心/判断的原文措辞与具体卷节位置"
+   },
+   {
+    "ts": "2026-09-13 11:39:37",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "尚未定位《沉思录》卷四\"退隐自身\"段与涉及\"判断即扰\"段原文措辞及卷节",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:40:22",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于\"外界印象（phantasia）\"、\"退入内心\"、\"不被打扰（ataraxia/tarache）\"相关段落的具体章节与原文措辞"
+   },
+   {
+    "ts": "2026-09-13 11:40:29",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》关于\"退回自身/印象/不受干扰\"的具体卷节原文措辞仍未取得",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:39:37",
+    "reason": "首轮三检索仅命中卷十一/十二片段，未取得卷四\"退回自身心灵\"等核心段落原文，需读取目录与对应卷章核验措辞后方可作答",
+    "unresolved_gap": "《沉思录》关于\"被外界打扰/退回内心\"的原文精确措辞与所在卷节"
+   },
+   {
+    "ts": "2026-09-13 11:40:29",
+    "reason": "此前多轮检索的结果已被上下文压缩，无法据以给出可核验的逐字引文；用户明确要求\"找到原文章节、引用关键句\"，该证据缺口尚未补齐，需重新读取《沉思录》对应卷章原文。",
+    "unresolved_gap": "《沉思录》卷四\"退回自身心灵\"段、卷六/卷五关于\"印象与判断\"段的具体卷节位置与原文措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:39:40"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:40:22"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:40:22"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:40:35"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 154220,
+   "output_tokens": 15893,
+   "total_tokens": 170113
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 11,
+   "compacted_chars_saved": 18546,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11707,
+     "output_tokens": 596,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18840,
+     "output_tokens": 855,
+     "tool_chars_added": 13054
+    },
+    {
+     "round": 3,
+     "input_tokens": 14914,
+     "output_tokens": 606,
+     "tool_chars_added": 2311
+    },
+    {
+     "round": 4,
+     "input_tokens": 17290,
+     "output_tokens": 3308,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 5,
+     "input_tokens": 17164,
+     "output_tokens": 4000,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 6,
+     "input_tokens": 12090,
+     "output_tokens": 434,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 13746,
+     "output_tokens": 1056,
+     "tool_chars_added": 2734
+    },
+    {
+     "round": 8,
+     "input_tokens": 15324,
+     "output_tokens": 523,
+     "tool_chars_added": 2873
+    },
+    {
+     "round": 9,
+     "input_tokens": 15123,
+     "output_tokens": 515,
+     "tool_chars_added": 748
+    },
+    {
+     "round": 10,
+     "input_tokens": 18022,
+     "output_tokens": 4000,
+     "tool_chars_added": 4243
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 154220,
+  "output_tokens": 15893,
+  "total_tokens": 170113
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 89.3
+}

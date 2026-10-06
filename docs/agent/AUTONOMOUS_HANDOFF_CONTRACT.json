@@ -1,0 +1,157 @@
+{
+  "AUTONOMOUS_HANDOFF_CONTRACT": true,
+  "version": "1.0",
+  "created": "2026-09-12",
+  "authorized_by": "Reviewer GPT-5.6 Sol — PhiAgent O8-R1 Correction + Handoff Patch（Reviewer Verdict 2026-09-12）",
+  "builder": "ZCode / GLM-5.3",
+  "reviewer_transport": {
+    "REVIEWER": "GPT-5.6 Sol",
+    "REVIEWER_TRANSPORT": "ZCODE_BUILT_IN_BROWSER",
+    "REVIEWER_CONVERSATION_ID": "/c/6aa5243e-52cc-83ee-b173-e6866a00313d",
+    "REVIEWER_CONVERSATION_LOCKED": true,
+    "identity_rule": "始终直接打开/复用 REVIEWER_CONVERSATION_ID; 标题只可作为人类可读说明, 不可作为 identity",
+    "unavailable_fallback": {
+      "HUMAN_DECISION_REQUIRED": true,
+      "REASON": "LOCKED_REVIEWER_CONVERSATION_UNAVAILABLE",
+      "forbidden": "不得自动选择 Recents 中其他会话"
+    },
+    "removed_routing_rules": [
+      "Recents 最新 Reviewer 会话",
+      "永远在最新 Reviewer 会话提交回执",
+      "按标题猜 Reviewer conversation",
+      "自动切换到新 ChatGPT conversation"
+    ]
+  },
+  "states": [
+    "BUILDER_RUNNING",
+    "RECEIPT_READY",
+    "REVIEW_PENDING",
+    "REVIEWER_RUNNING",
+    "PATCH_DISPATCH",
+    "CURRENT_GATE_PASSED",
+    "NEXT_PHASE_DISPATCH",
+    "LANDED",
+    "HUMAN_DECISION_REQUIRED"
+  ],
+  "state_transitions": {
+    "builder_complete": "BUILDER_RUNNING → RECEIPT_READY → REVIEW_PENDING → REVIEWER_RUNNING",
+    "patch": "PATCH_REQUIRED → patch verbatim（不改写/不摘要）→ PATCH_DISPATCH → BUILDER_RUNNING",
+    "pass": "PASS → CURRENT_GATE_PASSED → NEXT_PHASE_DISPATCH → BUILDER_RUNNING",
+    "invariants": "PASS != LANDED != CLOSED; PASS 仅代表 CURRENT_GATE_PASSED=true"
+  },
+  "stop_for_review_semantics": {
+    "STOP_FOR_REVIEW": [
+      "STOP_MUTATING_REPO",
+      "HANDOFF_TO_REVIEWER_AUTOMATICALLY",
+      "CONTINUE_AFTER_VERDICT",
+      "DO_NOT_ASK_USER"
+    ],
+    "note": "它不是 workflow 结束"
+  },
+  "forbidden": [
+    "ask user to relay receipt",
+    "ask 是否继续",
+    "ask whether to execute patch",
+    "ask whether to enter next phase",
+    "open substitute Reviewer conversation",
+    "Builder self-review"
+  ],
+  "verdict_actions": {
+    "PATCH_REQUIRED": "原样捕获 Patch Task → 不改写 → 不摘要 → 作为下一 Builder input → 自动执行",
+    "PASS": "若 roadmap 存在已授权下一阶段 → 自动 NEXT_PHASE_DISPATCH，不得询问用户"
+  },
+  "human_decision_gate": {
+    "HUMAN_DECISION_REQUIRED": true,
+    "allowed_reasons": [
+      "产品 scope 需要真实选择",
+      "credential / authentication",
+      "destructive / irreversible operation",
+      "repo / BASE identity conflict",
+      "Reviewer 明确要求用户决定",
+      "Reviewer ChatGPT 对话无法访问",
+      "roadmap 中不存在已授权下一阶段"
+    ],
+    "not_user_decisions": ["PATCH", "PASS", "phase transition", "test failure", "review retry"]
+  },
+  "handoff_mechanics": {
+    "transport_notes": "内置浏览器 trusted input 失效时的绕过: 分块 execCommand insertText（~16 行/块）+ 合成 PointerEvent/MouseEvent click（data-testid=send-button）; 会话定位 = 永远直接打开 REVIEWER_CONVERSATION_ID（已锁定, 不做 Recents/标题路由）",
+    "receipt_must_include": [
+      "当前任务书",
+      "BASE_SHA",
+      "CONTENT_HEAD/ARCHIVE_HEAD/REMOTE_SHA",
+      "tests / evidence",
+      "Final Receipt"
+    ]
+  },
+  "o8_r2_measurement_isolation": {
+    "O8_R2_REQUIRES_CLEAN_ISOLATED_WORKTREE": true,
+    "reason": "主工作树存在 pre-existing tracked dirty diff（docs/evidence/PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json 409→410, corpus 相关）; dirty state 上的测量会污染 canonical benchmark",
+    "dirty_user_worktree_policy": {
+      "DIRTY_USER_WORKTREE_MUTATED": false,
+      "forbidden": ["删除", "覆盖", "stash pop", "提交", "修改该 diff 内容"]
+    },
+    "procedure": [
+      "REVIEWED_HEAD = 本 micro-patch PASS 后的 HEAD",
+      "git worktree add <isolated-path> REVIEWED_HEAD（或等价 isolated checkout）",
+      "验证: git status --porcelain == \"\" 且 HEAD == REVIEWED_HEAD",
+      "72-case benchmark / 32-tool audit / LOCAL_CURATED census / primary-text coverage census / efficiency measurements 全部在 clean isolated environment 执行"
+    ],
+    "forbidden_measurement_source": "原 dirty worktree 不得作为 formal measurement source"
+  },
+  "phase_authorizations": {
+    "O8_R2": {
+      "status": "PREAUTHORIZED（本 O8-R1 correction patch PASS 后自动启动, 不询问用户）",
+      "definition": "O8-R2 = EXECUTION AUDIT（MEASURE/AUDIT/CLASSIFY, 不做 O10 的统一 production repair）",
+      "scope": [
+        "72-case capability benchmark",
+        "32-tool Mechanical Gate",
+        "32-tool Agentic Gate",
+        "KEEP/MERGE/REWRITE/DEPRECATE/DELETE classification",
+        "efficiency audit",
+        "LOCAL_CURATED coverage census",
+        "conversationSync ownership audit",
+        "primary-text coverage census/policy measurement"
+      ],
+      "real_api_calls": "AUTHORIZED=true（真实 production-path LLM/API 调用）",
+      "limits": [
+        "use existing credentials/quota only",
+        "no purchase",
+        "no credential mutation",
+        "no corpus expansion",
+        "no full-rewrite safety implementation",
+        "no destructive orphan deletion"
+      ],
+      "must_record": [
+        "LLM_CALLS",
+        "TOOL_CALLS",
+        "RETRIEVAL_ROUNDS",
+        "DUPLICATE_CALLS",
+        "LATENCY",
+        "REPAIR_COUNT",
+        "TOKEN_COST"
+      ]
+    }
+  },
+  "boundaries": {
+    "must_not_modify": [
+      "engine_langgraph behavior",
+      "prompt constitution",
+      "tool behavior",
+      "retrieval behavior",
+      "Local Patch semantics",
+      "validator",
+      "quote_bound",
+      "judge",
+      "final gate",
+      "qualification thresholds",
+      "production model",
+      "corpus contents"
+    ],
+    "allowed": [
+      "docs/evidence/state",
+      "workflow contract",
+      "授权的 test baseline constants",
+      "tests proving correction"
+    ]
+  }
+}

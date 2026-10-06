@@ -1,0 +1,153 @@
+{
+ "V5_F2_R1_CLOSURE": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V5_F2_R1_CLOSURE_TASK.md",
+ "BASE_SHA": "c6974fbf3470871d737e9703c1a4db272d5ab904",
+ "CONTENT_HEAD": "bf640e06f513625c2f0431e20b507b69f98bd697",
+ "CONTENT_COMMIT_CHAIN": [
+  "554d62fac R1 P0/P1 guard 逐字段溯源+per-call trace+nonce case",
+  "bf640e06f 冻结基线前移至 554d62fac"
+ ],
+ "ARCHIVE_PARENT": "bf640e06f513625c2f0431e20b507b69f98bd697",
+ "PRIOR_EVIDENCE_PRESERVED": "docs/evidence/V5_F2_SCHOLARLY_PIPELINE_REPAIR.json 未覆盖",
+ "BIBLIOGRAPHY_GUARD": "PASS",
+ "NO_TRACE_BIBLIOGRAPHY_BLOCKED": "PASS",
+ "FIELD_LEVEL_GROUNDING": "PASS",
+ "SAFE_FALLBACK_BEHAVIOR": "PASS",
+ "PER_CALL_PROVENANCE": "PASS",
+ "P0_GUARD_REDESIGN": {
+  "semantics": "零 scholarly record 时显式书目形态一律 flag（删除空池 early-pass）; 逐字段 grounding——断言字段必须同时匹配同一条 retrieved record 且字段在 bibliographic_verified_fields 中; publisher/volume/pages 当前 provider 不验证→该类断言永不 grounding",
+  "trigger_forms": [
+   "DOI 字符串",
+   "学术出版社+年份括注",
+   "「作者, 书名, 年份」条目"
+  ],
+  "conservative_note": "普通行文年份/非书目形态不触发（有回归测试）",
+  "v512_regressions": [
+   "J. L. Mackie, Ethics: Inventing Right and Wrong, 1977 → flag ✓",
+   "Derek Parfit, On What Matters, Vol. 2 (OUP, 2011) → flag ✓",
+   "Enoch, Taking Morality Seriously (OUP, 2011) → flag ✓",
+   "(Clarendon Press, 1977) + 无 verified publisher 的 Mackie record → FAIL（不得借作者+同年放行）✓",
+   "作者/书名/年份全匹配 verified record → pass ✓"
+  ],
+  "unit_tests": 12
+ },
+ "P1_PER_CALL_TRACE": {
+  "search_call_fields": [
+   "tool_call_id",
+   "args",
+   "returned_source_record_ids",
+   "access_levels",
+   "retrieval_origins",
+   "provider_errors",
+   "offline_mode"
+  ],
+  "read_call_fields": [
+   "tool_call_id",
+   "args",
+   "source_record_id",
+   "access_before",
+   "access_after",
+   "returned_evidence_level",
+   "content_hash"
+  ],
+  "mechanism": "search 用确定性重放（run 刚写入 cache, 命中即精确复现; 结构化字段直接进 run artifact, 不依赖 cache 存活）; READ 与 case 级 scholarly_evidence 对账; bounded 无 CoT"
+ },
+ "F2_DEV_REGRESSION": {
+  "runs": [
+   {
+    "published": true,
+    "search_calls": 10,
+    "read_calls": 7,
+    "content_evidence": 7,
+    "final_issue_codes": [],
+    "per_call_trace_count": 17,
+    "args_recorded": 18
+   },
+   {
+    "published": true,
+    "search_calls": 5,
+    "read_calls": 5,
+    "content_evidence": 3,
+    "final_issue_codes": [],
+    "per_call_trace_count": 10,
+    "args_recorded": 10
+   },
+   {
+    "published": true,
+    "search_calls": 12,
+    "read_calls": 3,
+    "content_evidence": 2,
+    "final_issue_codes": [],
+    "per_call_trace_count": 15,
+    "args_recorded": 15
+   },
+   {
+    "published": true,
+    "search_calls": 6,
+    "read_calls": 7,
+    "content_evidence": 3,
+    "final_issue_codes": [],
+    "per_call_trace_count": 13,
+    "args_recorded": 13
+   },
+   {
+    "published": true,
+    "search_calls": 11,
+    "read_calls": 6,
+    "content_evidence": 6,
+    "final_issue_codes": [],
+    "per_call_trace_count": 17,
+    "args_recorded": 17
+   },
+   {
+    "published": true,
+    "search_calls": 9,
+    "read_calls": 7,
+    "content_evidence": 3,
+    "final_issue_codes": [],
+    "per_call_trace_count": 16,
+    "args_recorded": 16
+   }
+  ],
+  "published": "6/6",
+  "search": "6/6",
+  "scholarly_READ": "6/6（≥5/6）",
+  "content_evidence": "6/6（≥5/6）",
+  "bibliography_issue_count": 0
+ },
+ "SAFE_FALLBACK_NONCE_PROBE": {
+  "case_id": "DP-07",
+  "fictional_target": "「洄溪学派」(Huiyuan School of Interpretation)——虚构学术目标, corpus/provider 无直接相关文献",
+  "SEARCH_OCCURRED": true,
+  "search_calls": 4,
+  "DIRECT_RELEVANT_CONTENT_EVIDENCE": 0,
+  "SAFE_FALLBACK_DISCLOSED": true,
+  "disclosure_evidence": "答案开头: 「我没有检索到「洄溪学派」存在的任何证据…我不能为一个查无实据的学派拼凑出文献综述, 所以先把检索实情如实汇报」+ 分述原典库/Crossref/OpenAlex 各路检索实情",
+  "MEMORY_SCHOLAR_ATTRIBUTION_AS_VERIFIED": false,
+  "PRECISE_UNGROUNDED_BIBLIOGRAPHY": 0,
+  "PUBLISHED": true,
+  "no_mock": "真实 production agent path（deepseek-v4-flash）, 未 mock search/answer"
+ },
+ "FULL_TEST_RESULT": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "run_at": "bf640e06f513625c2f0431e20b507b69f98bd697",
+  "passed": 838,
+  "failed": 0,
+  "skipped": 0
+ },
+ "changed_files_git_diff": [
+  "backend/final_validator.py",
+  "backend/tests/test_o6_q2_quality_closeout.py",
+  "backend/tests/test_o7a_scholarly_evaluator.py",
+  "backend/tests/test_o7b_bibliographic_metadata.py",
+  "backend/tests/test_o7c_scholarly_retrieval.py",
+  "backend/tests/test_o7d_scholarly_corpus.py",
+  "backend/tests/test_o7e_repair_compat.py",
+  "backend/tests/test_o7e_rp2_repair_convergence.py",
+  "backend/tests/test_o7e_v5f2_scholarly_repair.py",
+  "backend/tools/evaluation/o7e_production_calibration.py",
+  "docs/evidence/V5_F2_DEV_PROBE_MANIFEST.json",
+  "docs/tasks/PHIAGENT_O7E_V5_F2_R1_CLOSURE_TASK.md"
+ ],
+ "changed_files_git_diff_note": "精确等于 git diff --name-only c6974fbf3470871d737e9703c1a4db272d5ab904..bf640e06f513625c2f0431e20b507b69f98bd697"
+}

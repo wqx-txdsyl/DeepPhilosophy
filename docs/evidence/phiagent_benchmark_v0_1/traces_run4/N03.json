@@ -1,0 +1,891 @@
+{
+ "case_id": "N03",
+ "category": "N",
+ "prompt": "如果一个信念不能被证明，信仰它就是不理性吗？请区分宗教信仰、对朋友的信任和没有依据的事实断言。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "如果一个信念不能被证明，信仰它就是不理性吗？请区分宗教信仰、对朋友的信任和没有依据的事实断言。",
+   "wall_s": 50.6,
+   "ttft_s": 9.6,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "7fde5cc4b6a24d2daaf996fdd823e6e8:1:note:0",
+     "content": "我先到本地书库核对几位关键人物的原文，避免凭印象引用。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "7fde5cc4b6a24d2daaf996fdd823e6e8:2:note:0",
+     "content": "初步命中：克利福德与詹姆斯的对立出现在一部二手著作的转述中；维特根斯坦《论确定性》有本地原文。我再取上下文，并看有无詹姆斯本人著作。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "7fde5cc4b6a24d2daaf996fdd823e6e8:3:note:0",
+     "content": "我再核对维特根斯坦《论确定性》的关键句原文，并查一下\"信任与信念之别\"在当代研究里是否真是争议点。"
+    }
+   ],
+   "provider_reasoning": "The user asks a genuinely philosophical question: is believing something unproven irrational? And asks to distinguish religious faith, trust in a friend, and unfounded factual assertions.\n\nThis is a conceptual analysis question. I should give a careful answer. Do I need tools? The question is philosophical and I could support with material. Let me consider: the framework asks me to let materials resolve the dispute. But this is largely a conceptual question — I can answer directly with clear distinctions. However, it might be worth grounding some claims: e.g., the distinction between evidentialism (Clifford: \"It is wrong always, everywhere, and for anyone, to believe anything upon insufficient evidence\") and fideism / William James \"The Will to Believe\" — James argues that for genuine options that are forced, live, and momentous, and where the evidence cannot decide, believing can be rational. Also Pascal's wager, Kierkegaard's leap, Plantinga's reformed epistemology (properly basic beliefs), Wittgenstein's \"On Certainty\" on hinge propositions.\n\nShould I verify quotes? The guiding principles say: when quoting, must have actually read the relevant text. So if I want to quote Clifford's famous line or James's, I should verify. Let me search the local library for these.\n\nLet me do a couple of searches: \"克莱福德 信念 证据\" or \"威廉·詹姆斯 信仰的意志\", \"克里福德\". Also maybe \"信任\" in relation to friendship — Aristotle on friendship, or Baier \"Trust and Antitrust\". Let me search.\n\nPlan:\n1. search_books for 威廉·詹姆斯 信仰的意志 / \"相信的意志\"\n2. search_books for 克利福德 \"证据不足\"\n3. Maybe search for 维特根斯坦 论确定性 枢纽命题.\n4. Maybe search for 亚里士多德 友爱 信任.\n\nLet me run parallel searches.\n\nAlso the structure of the answer: core thesis — \"不能被证明\" is ambiguous between several things: (a) not deductively proven but well-supported inductively; (b) no evidence at all available; (c) evidence is in principle unavailable/inconclusive; (d) evidence exists but I haven't assessed it. Rationality of belief is relative to what a belief is for (aiming at truth? constituting a relationship? being a practical commitment?).\n\nThen distinguish:\n1. Religious faith — ambiguous itself: propositional belief (that God exists), trust (faith in God), and fiducial commitment. Evidentialist critique applies differently. Note that many religious epistemologies (Plantinga, Alston) argue religious experience gives non-inferential justification; or that faith is not a species of belief-with-insufficient-evidence but trust. Also note: even if not provable, faith isn't automatically irrational — depends: if it's a belief held *without* any epistemic support and *in the face of* contrary evidence, and held as a factual claim about the world, then it conflicts with epistemic norms. But if it's a practical commitment / trust-relation, different norms (fidelity, risk).\n\n2. Trust in a friend — trust suspends demand for proof; it's partly constitutive of the relationship; but trust is not blind: it's grounded in and responsive to evidence (track record), and it's held as a practical stance with risk, not as a claim to certainty. Distinguish trust from belief: you can trust while suspecting; trust is more like a policy/commitment. Also trust is part of a practice — demanding proof destroys the good (like demanding proof of love's sincerity).\n\n3. Unfounded factual assertion — this is the clearest case: claiming \"X is the case\" with no evidence, especially about matters that are decidable and matter, is epistemically defective. This is where Clifford-style evidentialism bites hardest. Note: irrationality is graded — a defect in the believer's functioning? Or a defect in the belief? Distinguish rationality of the *act of believing* (process) vs. the belief's *justification*.\n\nAlso note the difference: \n- Object of belief type: descriptive vs. relational/practical.\n- Stakes and reversibility of error (Pascal's point about asymmetry, James's), error costs.\n- Whether the matter is \"evidence-apt\": some things can't be settled by proof but can be lived (love, trust, vocation).\n- Whether faith is \"premise\" or \"conclusion\" — Wittgenstein hinge propositions, presuppositions that make inquiry possible; not themselves provable.\n\nKey philosophical point: \"证明\" is a high bar. Most rational beliefs are not \"proven\" — they're justified by fallible evidence, inference to the best explanation. So \"unproven → irrational\" is a non sequitur. The real question is: is there adequate/undefeated support of the appropriate kind, given the aim of the belief.\n\nAlso: rationality is often relativized to goals. If the goal is truth, only evidence counts. But religious faith may aim at something else — a life, a relationship, a shape of existence. That's not a blanket excuse though (per my guidance re: sincerity/disclosure/no payment not being universal exemptions — hmm, that's more about moral exemptions). I should be careful not to grant a blanket exemption: one can't just say \"faith is about living, not truth\" if the faith involves claims about what is the case that guide action. But there is a defensible version: faith as trust/practical commitment has its own rationality conditions (fidelity to something you can't guarantee; risk is internal to it).\n\nLet me also handoff the \"三个区分\" as axes:\n- 内容类型：事实断言 / 关系性信任 / 生存性托付\n- 证据可及性：可判定但未查 / 原则上无法证明 / 证据不对称\n- 失败代价与可逆性\n- 是否主动悬置证据（轻信）还是证据本身不足\n- 规范类型：认识论规范 vs. 实践/伦理规范\n\nAnd answer directly: 不必然。不能被证明 ≠ 不理性。但\"不能被证明\"这句话里藏了至少四种不同情形，而且信仰的对象有三种非常不同的类型。\n\nLet me do the tool calls to ground quotes. I'll search for James and Clifford.\n\nActually, let me be careful about which quotes exist in the local library. Let me search.\n\nI'll do parallel searches.Good. I found a secondary source quoting Clifford and James. Let me read that chapter for context. Also let me check if the library has James's \"The Will to Believe\" (信仰的意志) as a book — maybe in the 实用主义 collection. Let me search author=威廉·詹姆斯.\n\nAlso check the Wittgenstein 论确定性 hinge propositions — maybe search for \"这条信念是不可动摇的\" or \"枢軸\" — actually the Chinese translation often uses \"枢纽命题\" or \"轴\". Let me search for specific text: \"我不是在提出一个命题\" or \"这是不可证明的\".\n\nLet me do:\n1. get_chapter for 织梦人 chapter 15 (the Clifford/James passage context).\n2. search_books author=威廉·詹姆斯 query=\"信仰\" to see if there's a direct text.\n3. search_books for 维特根斯坦 \"确定性\" specific quote like \"怀疑本身要建立在确定的基础上\".\n4. Also search for 亚里士多德 友爱 (Nicomachean Ethics on friendship and trust) — maybe.\n\nActually let me prioritize. The core answer is conceptual. I want maybe 2-3 verified anchors: Clifford/James contrast (from the secondary source — must label as 转述), and Wittgenstein on hinge propositions (from the primary text 论确定性 in the collection), and maybe Aristotle on friendship.\n\nLet me also consider searching for Plantinga or 宗教认识论. And also for 帕斯卡. But let me not overload.\n\nLet me do parallel calls.I have good material. Now, do I need more? Let me consider whether I should check the Wittgenstein 论确定性 for a specific hinge proposition quote. I have \"确定的证据即这样的证据：我们假定这一证据绝对确定，依据这一证据确定不疑地行动\" — that's ÜG §196? Actually the snippet labels are messy. Let me read the 论确定性 chapter 119 to get accurate text and section numbers.\n\nAlso, James's \"信仰的意志\" itself is not in the library (only 宗教经验种种 and 心理学原理). So I should label the James quote as it appears in the secondary source 织梦人 — the book says \"这与詹姆斯所写的形成了鲜明的对照\" and quotes. I should attribute as: 《织梦人》转述, and note the original is James's \"The Will to Believe\". Also the Kierkegaard quote is also from that secondary source.\n\nLet me read the 论确定性 chapter for hinge propositions. Chapter 119 is 193-425节. Let me search for the specific famous line: \"怀疑的游戏本身以确定性为前提\" or \"即使我们最努力地怀疑，也...\" Hmm. The famous §341: \"怀疑本身是以不容怀疑的东西为前提的\" — Chinese: \"怀疑本身是以不容怀疑的东西为前提的。\" Let me verify with verify_quote or search within the chapter.\n\nLet me use verify_quote with book_id c0e78ea6f80a and quote \"怀疑本身是以不容怀疑的东西为前提的\".\n\nAlso maybe verify the Clifford line in the 织梦人 book — \"无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。\" I already read it in the chapter, that's fine.\n\nLet me also consider a scholarly source on the epistemology of faith/trust to add rigor. Maybe search_scholarship for \"faith belief without evidence rationality\" or \"trust epistemic rationality\". Could add. But is it necessary? The answer is conceptual. I think one or two scholarly anchors could help with the \"religious epistemology\" part (e.g., Alston/Plantinga). Let me do a quick search_scholarship on \"epistemology of faith trust\" and maybe \"belief without evidence rationality\". Actually, my principles say don't search just to look academic. But there's a real question here about whether there's literature distinguishing these. Hmm — the user asks a conceptual question; I can answer from analysis. I'll do one targeted scholarly search to check whether the \"trust vs. belief\" distinction is actually a live debate (this matters for the claim I'd make). Let me search for that briefly.\n\nLet me do: verify the Wittgenstein quote; and search_scholarship for the faith/trust distinction.\n\nActually let me be careful about token/time budget. Two parallel calls.The Wittgenstein quote didn't match — I should not attribute it. Let me instead read the 论确定性 chapter 119 to find actual hinge-proposition language. The snippet already gave: \"确定的证据即这样的证据：我们假定这一证据绝对确定，依据这一证据确定不疑地行动。我们叫作'出错'的，在我们的语言游戏中扮演着极为特殊的角色，我们视作'确定的证据'的，也是如此。\" That's labeled ÜG §196 (the numbering \"690.\" is the collection's numbering, and §196 in parentheses). Hmm, actually the snippet says \"690．... （Ü\" truncated.\n\nLet me read chapter 119 with focus \"不容怀疑\" or read around. Let me try search within 论确定性 for \"不容怀疑\" and \"枢軸\"/\"轴\". Let me do a search_books with book_id c0e78ea6f80a and query \"不容怀疑 怀疑 前提\".\n\nActually to be efficient: I'll do one call reading chapter 119 with focus \"不容怀疑\".\n\nAlso the scholarship search found \"Trusting Others, Trusting God\" (2016) — relevant book but METADATA_ONLY for those chapters; only one readable record which is Foley's chapter, not very on-point. I'll mention that a philosophical literature exists linking trust in others and trust in God, but I shouldn't claim content. Actually I read nothing; better not to cite it as content. I could just note the existence. Hmm — my principles: records exist ≠ paper read; don't infer content from title. I'll either skip it or mention only as a pointer with honest labeling. I think I'll skip citing it, or mention very briefly as \"有一支文献专门比较'信任他人'与'信仰上帝'\"— but that's inferring from a title. I'd better either read one or omit. Let me try reading the Foley abstract? Not on point.\n\nBetter: omit scholarly citations, or do one more targeted search on \"faith as trust vs belief\" with a more likely hit. Actually, let me just do the Wittgenstein read and then write. The answer is conceptual; I have Clifford/James/Kierkegaard via a secondary source (properly labeled) and Wittgenstein primary.\n\nLet me read chapter 119 focused on 不容怀疑.Excellent material. Key verified quotes from 《论确定性》 (维特根斯坦文集, 中译):\n- §253: \"有根据的信念的根基处是没有根据的信念。\"\n- §248: \"我触及到了我的信念的最底层。几乎可以说：这里的墙基是由整栋房屋支撑的。\"\n- §243: \"如果他有的是这样的一类信念：他所能给出的根据并不比他的断言更为确定，那么他就不能说，他知道他所相信的东西。\"\n- §239: 天主教徒相信面饼的本质会完全改变，\"而与此同时，一切证据所表明的却是其反面\" — very relevant to religious faith vs evidence!\n- §225: \"我所固守的并非一个命题，而是一张由诸多命题编织而成的网络。\"\n- §239 also about 耶稣只有一位人类母亲 — beliefs that resist counter-evidence.\n\nThat's rich. Now I have enough. Note translations are from 维特根斯坦文集 (Chinese translation) — I should say it's 中译本节号，并给出ÜG节号。\n\nAlso important: §239 is a great anchor for the religious faith case: Wittgenstein notes the Catholic belief about transubstantiation holds \"一切证据所表明的却是其反面\" — i.e., faith can be a ground-level picture that isn't answerable to evidence in the ordinary way. But careful: Wittgenstein describes, doesn't endorse. I should note that.\n\nNow let me construct the answer.\n\nCore structure:\n\n**直接回答**: 不能证明 ≠ 不理性。但这个\"不能证明\"含混，至少四义；而且\"信仰\"的对象有三类不同东西，理性标准不同。所以问题的答案取决于：信的是什么类型的东西、以什么方式信、\"不能证明\"是哪种不能。\n\n**第一步：拆\"证明\"**\n\"证明\"通常指演绎证明（结论被前提必然推出）。要求\"能被证明才可相信\"会把几乎所有信念都判为不理性，包括科学理论和日常知觉。因为：\n1. 演绎证明需要前提，前提本身要被证明，会无穷回溯或循环。维特根斯坦§253：有根据的信念的根基处是没有根据的信念。§248 墙基由整栋房屋支撑。\n2. 所以合理的标准通常不是\"被证明\"，而是\"有恰当类型的、未被推翻的支持\"（证据、最佳解释、可靠来源、经验）。\n由此：真正的反面不是\"未证明\"，而是\"轻信\"——即对可获得的、本可决定问题的相反证据不加理睬，或者支持强度与确信强度不匹配。\n\n关键区分（三问）：\n(a) 证据是否可获得？\n(b) 该信念是否以\"事实主张\"的身份被持有？\n(c) 相信的主体是否在按认识论规范行事（是否愿意修正）？\n\n**第二步：三类信念**\n\n**1. 没有依据的事实断言**——最难辩护。\n这是克利福德的目标。克利福德（据《织梦人》转述，原文出自\"信念的伦理\"）：\"无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。\"\n这里要说清：不理性不是\"没有证明\"，而是\"证据不足却按事实断定\"——即在问题上可判定、且证据可获得时，仍以断言的方式持有。这类不理性的典型不是\"信得太少\"，而是确信度与证据不匹配、且拒绝修正。\n但注意：即使在这里也有程度差别。一个不可判定的问题（如死后有无意识）与\"隔壁是间谍\"不同，前者没有\"可获得而未被采用的证据\"这一缺陷。\n\n**2. 对朋友的信任**——不是同类的东西。\n信任不是\"关于朋友不会背叛我的事实断言\"（虽然含有预期）。它的结构不同：\n- 信任是把某事的处置权交出去（承担风险），而不是断言会怎样。你可以\"信任他\"同时\"不认为他一定不会失败\"——信任的目标不是准确，而是关系本身的维系。\n- 它有自己的支撑：既往的可靠记录、对他性格的了解。所以信任也不是无证据的，只是证据类型不是证明。\n- 关键：它有一个自毁结构——如果要求以证明为信任的前提，信任活动本身就无法进行（要求保证就取消了托付）。这类似亚里士多德《尼各马可伦理学》第八卷讲的：友爱是德性相关的东西，建立在品格上的友爱持久。\n- 而且信任是可错的、可撤回的，不是无限度的。\"信任\"不等于\"免于被追问\"。这跟事实断言的不理性有一个重要差别：信任的规范性标准部分是伦理的/实践的（忠诚、相互性），而不是纯粹认识的。\n\n**3. 宗教信仰**——内部不是一种东西，至少三重，理性评价要分开：\n(i) 作为事实主张的信念（\"上帝存在\"）：以认识论标准评判。若证据不足仍以事实断言方式持有，且拒绝任何可能的修正，那么按认识论标准它有缺陷——这就是克利福德式的批评的靶子。\n(ii) 作为信任/托付（\"我信靠上帝\"）：结构与对朋友的信任类似——把自身交出去，不可保证（克尔凯郭尔所谓\"信念的一跃\"见于《织梦人》转述）。这里的理性标准含实践维度：是否值得冒这个风险、是否与你的其余生活一致、能否承受失败。\n(iii) 作为不可证明的框架/世界图景（如维特根斯坦§239讨论的天主教徒对面饼的看法：与\"一切证据\"相反，也不因此被当作一个待检验假设）。这类信念不是从证据推出，而是使一整串判断得以成立的背景。维特根斯坦的描述是中性的：他说的是\"这不是我们的游戏\"式的差异，而不是\"他们不理性\"。\n——但要点：所有这些并不能给宗教信仰一张空白支票。宗教信念若在公开可判定的事情上（历史事件、可检验的事实主张）给出断言，或用来指挥他人的行为，就重新落回 (i) 的评判；\"这是信仰\"不构成普遍豁免。\n另一个方向：詹姆斯（《信仰的意志》，此处经《织梦人》转述）认为：当事物属于\"真实的选择\"——被迫、重大、不能由知性证据决定——不决断本身就是决断，情感本性的介入可以是合法的。这是一个有条件的论证，不是全称的：它只适用于证据原则上无法判定的选项，而不能给\"有明确反证的断言\"发豁免。\n\n**第三步：给个可操作的判据（避免二选一）**\n不理性 = 确信强度与支持强度脱节 + 拒绝任何可能的检验/修正 + 在证据可及且能决定问题时不去查。\n理性未必 = 被证明。理性 = 按问题所允许的证据类型，在适当的强度上持有，并保留可修正的通道。\n\n分三层的对照表：\n- 对象\n- \"不能证明\"是哪种\n- 应有的理性标准\n- 何时变为不理性\n\n**第四步（诚实）：我的立场与边界**\n- 我给出的区分本身是分析性的；我不主张\"三者理性程度排名\"。宗教、信任、事实断言是不同类的实践，不能用一个尺度排序——但也不能因此让宗教信念免除事实层面的责任：一个信念若同时充当事实断言，就要接受事实断言的标准。\n- 悬而未决：宗教信念是否本质上都是\"事实断言\"是一个真正的哲学争议（有人主张它是实践承诺/生活方式）；我没有在这里解决它。\n\nAlso maybe mention: 信仰主义 (fideism) — 认为对上帝的信仰与理性和逻辑无关 — noted in the 织梦人. And 圣保罗 \"世间不通过智慧来认识上帝\" (转述). I can mention briefly.\n\nCitations: I'll cite 【《织梦人——一个男孩穿越现实的哲学之旅》·第八章 信仰与理性】 with reader_url? The guidance says use tool-returned real URLs. I have reader_url for 织梦人: https://deepphilosophy.top/reader/0f00c3a90243?ch=15 and 维特根斯坦: https://deepphilosophy.top/reader/c0e78ea6f80a?ch=119. I'll include those.\n\nI should be careful to label: the Clifford/James/Kierkegaard lines are quoted within a Chinese secondary/popular philosophy book (《织梦人》), not from Clifford's or James's own texts in the library. So attribute properly: 转引自《织梦人》. And note 詹姆斯《信仰的意志》本人著作本地库未收（本库只有他的《宗教经验种种》《心理学原理》）— from catalogue matches.\n\nWittgenstein quotes are from 中译本《维特根斯坦文集》含《论确定性》, with ÜG section numbers. Note \"抽取文本，未核对原版扫描排印\".\n\nNow write. Length: medium-long, structured but not bloated. Use headers and a table maybe. Avoid over-templating. The principles say express directly, don't use 篇幅/术语 to show depth.\n\nLet me write it.\n\nI should be careful about the Clifford quote wording: from the book: \"无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。\" This is a translation of \"It is wrong always, everywhere, and for anyone, to believe anything upon insufficient evidence.\" I'll quote as it appears, marking it as 中译转述 in 《织梦人》.\n\nJames quote as in 织梦人: \"无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，'不做决定，就将这个问题放着吧'，其本身就是一个情感性的决定——就像决定'是'或'不是'一样——并且同样伴随着错过真理的风险。\"\n\nKierkegaard: \"我如果能够客观地理解上帝，［那么］就不会相信祂；而正是因为我做不到客观地理解，因而我必须相信。\" — labeled as 克尔凯郭尔 in 织梦人 (the book attributes 信念的一跃 to him).\n\nNote: 织梦人 also marks that this James quote is from 《信仰的意志》. Actually it says \"这与詹姆斯所写的形成了鲜明的对照\" without naming the work explicitly in that fragment; the preceding text says 威廉·詹姆斯论述道... The Kierkegaard \"信念的一跃\" is attributed. James's 《信仰的意志》 is mentioned in the translator's note in 宗教经验种种 (\"詹姆斯在《信仰的意志）中提到...\"). So I can say this passage is from James's essay 《信仰的意志》 — reasonably. But to be safe: say \"詹姆斯在《信仰的意志》中\" and note the wording I have comes through 《织梦人》's Chinese rendering. That's honest.\n\nNow, writing the answer.\n\nStructure:\n1. 短答\n2. \"证明\"的歧义 & 回退问题（维特根斯坦）\n3. 三种东西各是什么、各按什么标准\n   - 事实断言\n   - 信任\n   - 宗教信仰（三层）\n4. 判据表\n5. 我的立场/未决边界\n\nLet me be concise but substantive. Aim ~900-1200 字 of substance. Actually more like 1200-1500 given three cases. Fine.\n\nOne more thing: I should answer the direct question crisply at the start: 不必然。因为\"理性\"的判据是\"信念是否以恰当方式、在恰当强度上回应了该问题所允许的证据\"，而不是\"是否被证明\"。以及 \"不能被证明\" 有四种读法。\n\nLet me write.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "信任 友爱 怀疑 朋友",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.624,
+     "result_full": "{\"query\": \"信任 友爱 怀疑 朋友\", \"results\": [{\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷\", \"citation_label\": \"【《爱弥儿》·第四卷】\", \"snippet\": \"人厌恶他和责难他；而一看到我的学生的面貌，我就不禁想到一付朴实可爱的神情，它流露出他内心的喜悦和宁静，赢得了人们的尊重和信任，好象你到他的身边，他就要向你倾诉他的友情。有人认为，人的相貌只不过是大自然所描绘的特征的简单的发展而已。而在我看来，我认为，除了这种发展以外，一个人的面部的特征是通过心灵的某些感情的惯常的影响而不知不觉地形成的。在面貌上流露的这些情感是最真确不过的，它们流露惯了，就会在脸上留下持久的痕迹。因此，我才说相貌可以显示一个人的性格，我们用不着去听人家拿我们不懂得的学问做一番神秘的解释，也往往能互相看出彼此的性情。 小孩子只有两种很显明的感情：高兴和痛苦。高兴就笑，痛苦就哭；他没有介于这两者之间的情感，他不断地时而哭\", \"score\": 181, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32e4ebd33ddc\", \"chapter_idx\": 4, \"focus\": \"信任 友爱 怀疑 朋友\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"21a479c4978d\", \"book_title\": \"道德情操论\", \"author\": \"亚当·斯密\", \"chapter_idx\": 18, \"chapter_title\": \"第四章　论不同的作者处理道德实务规则的方式\", \"citation_label\": \"【《道德情操论》·第四章　论不同的作者处理道德实务规则的方式】\", \"snippet\": \"，这种心理负担往往会伴随着焦虑不安与恐惧。一般人，在这种苦恼的时候，就像在所有其他苦恼的时候，自然渴望借由向某个他们能够信任保守秘密又有判断力的人倾吐他们心中的苦闷，以便卸下他们觉得压在他们心头的重担。他们因这种告白而蒙受的丢脸，会得到充分的补偿，因为他们倾吐的对象对他们的同情很少不会减轻他们心里的不安。他们觉得宽慰，因为他们发现，他们并非完全不值得尊敬，尽管他们过去的行为该受谴责，但他们目前的意向至少是被赞许的，而这也许足以弥补他们从前的过错，至少足以使他们的朋友对他还怀有一定程度的尊重。有一为数众多与手段巧妙的僧侣团队，在从前那些迷信的时代，巧妙迂回地获得几乎每一个私人家庭的信任。他们拥有那些时代所能提供的一切浅薄的学识，而且他\", \"score\": 180, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"21a479c4978d\", \"chapter_idx\": 18, \"focus\": \"信任 友爱 怀疑 朋友\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 5, \"chapter_title\": \"第五卷\", \"citation_label\": \"【《爱弥儿》·第五卷】\", \"snippet\": \"一次乱伦和犯罪的事情同不忠实的女人是没有牵连的。如果说世界上确有一种可怕的处境的话，那就是一个倒霉的父亲的处境了：他不敢信任他的妻子，从而也不敢尽量发抒他内心的甜蜜的情感，当他拥抱他的孩子的时候，他怀疑他所拥抱的那个孩子是不是别人的，是不是他的耻辱的象征，是不是篡窃他嫡亲的子女的财产的盗贼。在这个家庭中，尽管那个犯罪的女人强使家中的人做出相爱的样子，但实际上是在挑使他们互相成为暗中的仇敌，所以，哪里能说他们是一家人呢？ 因此，问题不仅是做妻子的人本人应该是很忠实的，而且她在她的丈夫、她的邻人以及所有一切的人看来都是忠实的；她应当态度谦逊、举止谨慎，而且还略略含羞；她在别人的眼中看来，也要如同她在她自己的良心看来一样，不愧为一个有品德\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32e4ebd33ddc\", \"chapter_idx\": 5, \"focus\": \"信任 友爱 怀疑 朋友\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"406efc92bfd4\", \"book_title\": \"生活的哲学\", \"author\": \"朱尔斯·埃文斯\", \"chapter_idx\": 15, \"chapter_title\": \"尾声 思考死亡，就是思考人生\", \"citation_label\": \"【《生活的哲学》·尾声 思考死亡，就是思考人生】\", \"snippet\": \"成功地证明了，一个人只需要做很少的工作、花很少的钱就能养活自己。但他对文明的拒斥并没有使他深入荒野——他最远只到了他的朋友爱默生的花园。 犬儒主义的再兴起 有一段时间，朴素的无政府主义对资本主义的批判因为马列主义的出现而黯然失色，但是随着对苏联模式的幻灭，犬儒主义又回归了。你可以在情境主义者的哲学、1968年巴黎的抗议运动上看到它的影响，1968年抗议运动的目标不是用共产主义国家取代资本主义国家，而是通过海报艺术和反讽涂鸦的运动宣扬其彻底废除政府的理念。你还可以在60和70年代的“雅皮士”（或者“青年国际党”）身上看到犬儒主义的影响，他们因“格鲁乔·马克思”的花招而声名狼藉，像是在纽约证券交易所朝地板上扔一卷卷的假钱引起混乱。你还可\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"406efc92bfd4\", \"chapter_idx\": 15, \"focus\": \"信任 友爱 怀疑 朋友\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"406efc92bfd4\", \"book_title\": \"生活的哲学\", \"author\": \"朱尔斯·埃文斯\", \"chapter_idx\": 18, \"chapter_title\": \"附录三 让理性放假，在音乐里活！\", \"citation_label\": \"【《生活的哲学》·附录三 让理性放假，在音乐里活！】\", \"snippet\": \"成功地证明了，一个人只需要做很少的工作、花很少的钱就能养活自己。但他对文明的拒斥并没有使他深入荒野——他最远只到了他的朋友爱默生的花园。 犬儒主义的再兴起 有一段时间，朴素的无政府主义对资本主义的批判因为马列主义的出现而黯然失色，但是随着对苏联模式的幻灭，犬儒主义又回归了。你可以在情境主义者的哲学、1968年巴黎的抗议运动上看到它的影响，1968年抗议运动的目标不是用共产主义国家取代资本主义国家，而是通过海报艺术和反讽涂鸦的运动宣扬其彻底废除政府的理念。你还可以在60和70年代的“雅皮士”（或者“青年国际党”）身上看到犬儒主义的影响，他们因“格鲁乔·马克思”的花招而声名狼藉，像是在纽约证券交易所朝地板上扔一卷卷的假钱引起混乱。你还可\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"406efc92bfd4\", \"chapter_idx\": 18, \"focus\": \"信任 友爱 怀疑 朋友\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"88dc7d5961df\", \"book_title\": \"西方百年学术经典著作\", \"author\": \"佚名\", \"chapter_idx\": 94, \"chapter_title\": \"第四卷\", \"citation_label\": \"【《西方百年学术经典著作》·第四卷】\", \"snippet\": \"恶。而一想到我自己的学生爱弥儿，我就仿佛看到他脸上纯真而可爱的表情，流露出他的知足常乐和内心真正的平静，这些会激发尊重和信任，并且似乎只是在等待朋友的到来，并将他自己的信任延伸出去，馈赠给别人。人们认为，人的面相只是大自然已经定好的某些容貌特征的简单发展。但是在我看来，除了这种简单的发展以外，一个人的面部特征是内心情感经常产生的一些习惯性影响在不知不觉中形成的。这些影响表露在人的脸上，没有什么比这更确定的了，而当它们变成一种习惯的时候，就必定会留下持久的痕迹。这就是为什么我认为一个人的表情会显示出其性格，而且有的时候我们无须从不太懂的知识中寻找那些故弄玄虚的解释，就能判断出彼此是什么样的人。 孩子只有两种明显的情绪——开心和伤心。他\", \"score\": 179, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"88dc7d5961df\", \"chapter_idx\": 94, \"focus\": \"信任 友爱 怀疑 朋友\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 69, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "克利福德 信念 证据 不理性",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.632,
+     "result_full": "{\"query\": \"克利福德 信念 证据 不理性\", \"results\": [{\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 15, \"chapter_title\": \"第八章 信仰与理性\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第八章 信仰与理性】\", \"snippet\": \"但冒着出错的风险； 怀疑论者，或者说否定信仰者，热衷于不出错，但冒着失掉发现真理的机会之风险。 作为信念的伦理 W.K.克利福德（W.K.Clifford）写道：“无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。”这与詹姆斯所写的形成了鲜明的对照：“无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，‘不做决定，就将这个问题放着吧’，其本身就是一个情感性的决定——就像决定‘是’或‘不是’一样——并且同样伴随着错过真理的风险。” 信仰主义（Fideism）——一种认为对上帝的信仰与理性和逻辑无关\", \"score\": 174, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"focus\": \"克利福德 信念 证据 不理性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "论确定性 枢纽命题 不可证明 怀疑",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.877,
+     "result_full": "{\"query\": \"论确定性 枢纽命题 不可证明 怀疑\", \"results\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 119, \"chapter_title\": \"（《论确定性》193-425节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》193-425节）】\", \"snippet\": \"（《论确定性》193-425节） 687．一句话的真是确定无疑的——这是什么意思？（ÜG §193） 688．我们用“确定”一词表达完全信服、毫不怀疑的态度，并因此试图说服他人。这是主观的确定性。 但在什么情况下某种东西才是客观上确定的？——在不可能出错的情况。但这是一种什么样的可能性呢？ 出错的可能性不是必须在逻辑上已被排除了吗？（ÜG §194） 689．如果我相信我正坐在我的房间，实际却并非如此，人们不会说我出错了：但出错与这件事的本质区别是什么？（ÜG §195） 690．确定的证据即这样的证据：我们假定这一证据绝对确定，依据这一证据确定不疑地行动。 我们叫作“出错”的，在我们的语言游戏中扮演着极为特殊的角色，我们视作“确定\", \"score\": 0.5603, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"focus\": \"论确定性 枢纽命题 不可证明 怀疑\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.28}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "信仰的意志 相信的权利 证据不足",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.889,
+     "result_full": "{\"query\": \"信仰的意志 相信的权利 证据不足\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 464, \"chapter_title\": \"347\", \"citation_label\": \"【《尼采文集（合集）》·347】\", \"snippet\": \" 虔信者及其对信仰的需要 。——一个人在多大程度上需要一种 信仰 才能成长，一个人需要多少“坚固之物”，因为 依靠 之而不想动摇之的“坚固之物”，——此乃一个人的力量的标尺（或者讲得更清晰些，是一个人的虚弱的标尺）。在我看来，在古老的欧洲，在今天依然，大多数人是需要基督教的：所以它也总还能得到信仰。因为人就是这样：他可能千百次地驳斥某个信条，——假如他需要这个信条，那么，他也总是会一再地把它当做“真的”，——依照圣经里讲的那个著名的“力量之证明”。一些人依然需要形而上学；但也需要那种狂热的 对于确定性的要求 ，这种要求如今以科学实证主义的方式在广大群众身上爆发出来，就是 想要 彻底地牢牢掌握某个东西的要求（而由于这种要求的激昂，人们\", \"score\": 0.5487, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 464, \"focus\": \"信仰的意志 相信的权利 证据不足\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.17}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "0f00c3a90243",
+      "chapter_idx": 15,
+      "focus": "克利福德 不充分的证据 詹姆斯",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"chapter_idx\": 15, \"title\": \"第八章 信仰与理性\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第八章 信仰与理性】\", \"text\": \"何种意义上支配着你的信仰。有些人的确认为，他们能支配自己的思想。这确实是他们认为自身所能支配的想法之一。”\\n奇怪的哲学偶像\\n威廉·詹姆斯论述道，忽视我们“情感的”本性而等待有“足够的”证据，这是不理性的——这样做会让我们错失某些不可能单凭理性去认识的真理。\\n“当我想到……如此的指导：我们应当抑制住我们的情感、直觉、勇气，然后一直等到……我们的智慧和意识协同发挥作用，并能够吸收足够的证据——我得说，这种指导对我来说就是，在哲学的洞穴中不断制造出来的、最奇怪的偶像。”\\n伊恩的脸上露出了迷惑而又赞赏的表情。\\n“而关于所有这一切的最后要点，孩子——或许是最重要的一点——当我们谈论让情感成为我们推理中的一个合法因素的时候，曾有所提及。你知道，即使是最顽固的怀疑论者，他在做出决定、阐述哲学的时候，都建立在其情感本性的基础之上。”\\n伊恩仍保持着刚才的表情：迷惑而又赞赏。\\n“就像非理性者热衷于发现真理一样，怀疑论者热衷于避免错误。宗教狂热者则必然有一种认知上帝的愿望，即使这种知识从来不是确定性的，且基于信仰。怀疑论者总是声称，我们不可能认识事物——尤其是在关于某个永恒存在者的存在问题上——而由此他必然有一种避免错误的愿望。怀疑论者可能永远不会错，但有可能失去发现真理的机会，而在现在的情况下，可能会失去获得永恒拯救的机会。信仰宗教者冒着误信的风险，但也可能正确从而达成伟大的事业。他们都对某种东西下注，并且都是建立在情感的基础上去下注：\\n相信者，或者说肯定信仰者，热衷于发现上帝，但冒着出错的风险；\\n怀疑论者，或者说否定信仰者，热衷于不出错，但冒着失掉发现真理的机会之风险。\\n作为信念的伦理\\nW.K.克利福德（W.K.Clifford）写道：“无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。”这与詹姆斯所写的形成了鲜明的对照：“无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，‘不做决定，就将这个问题放着吧’，其本身就是一个情感性的决定——就像决定‘是’或‘不是’一样——并且同样伴随着错过真理的风险。”\\n信仰主义（Fideism）——一种认为对上帝的信仰与理性和逻辑无关的观点。\\n因为，就上帝的智慧来看，世间不通过智慧来认识上帝……因为上帝之愚也要比人类的［智慧］聪明。\\n——圣保罗，《哥林多书》（Corinthians）（1:21—25）\\n为了认识其各自声称的知识，他们都会做出信念的飞跃。回想一下我们是如何认识事物的：有些东西必须外在于理性。纯粹理性低估了我们——无论我们在讨论的，是我们的感觉之所无，还是理性的不一致性、归纳法的不足，或是所有关于‘坛中之脑’的思想实验、邪恶的天才，以及‘我们无法区分梦境与现实’这样的更鲜明的观点。纯粹理性只能带领我们走到那么远——而接下来我们必须做飞跃。瞧。”她又画了一张图，以帮助说明：\\n“所有的知识都需要有某种飞跃。我们的感官和理性只能带领我们走到那么远——这就是我们有能力超越它们的原因。我们有信念。若非如此，我们确实会错失任何真实。”\\n“孩子，对你的挑战就是，确实努力地审查你的信念。你对哪些感到自豪？你愿意改变哪些？在努力改变你的信念的过程中，你得自觉地发挥作用。许多人相信祈祷和冥想有助于此，而另有许多人相信这些事情无法改变。而且，对于那些你所无法改变的信念，它们如何影响你的自我？”\\n信念的一跃\\n索伦·克尔凯郭尔（Soren Kierkegaard）创造了上述用语，其背后的动力是其信念“真理是主观的”。由于缺乏客观的确定性，因而必须做出信念的一跃。他写道：“我如果能够客观地理解上帝，［那么］就不会相信祂；而正是因为我做不到客观地理解，因而我必须相信。”\\n他不可能以绝对的确定性去认知，因而依靠信念的帮助，“跃”过了逻辑和客观性的鸿沟。\\n无神论者和信徒的信念\\n……无神论者是我那怀有不同信念的兄弟姐妹，他们所说的每句话，都涉及信念。他们像我一样，用理性之足尽量地走远——然后他们一跃而过。\\n就获取食物、衣服和居所之事而言，理性干得很出色。理性是最佳的工具包……但是，过于讲究合理性，你就会冒着将宇宙连着洗澡水一起泼掉的风险。\\n——扬·马特尔，《少年Pi的奇幻漂流》\\n理性认识的最后一步是，认识到尚有无可限量的事物超出了理性。\\n——帕斯卡\\n伊恩现出不知所措的表情，尽管还带着些许激动。\\n“我早就知道，在那个挑选盒子的奇特情境下，你会做出‘理性的’的选择。你的头脑是如此适合于理性之事。我只是希望，你这一出色的理性能力，不会遮蔽你丰富的感知力和运用直觉的能力。”\\n妈妈微笑着，亲了亲伊恩的额头。伊恩也报以微笑。\\n通过直觉得来的知识\\n心理学家戴维·迈尔斯指出，对于一个人的知识结构而言，直觉具有与逻辑同等的重要性。他将直觉定义为，“我们直接获得知识的能力，无须观测或推理而当下洞察的能力”。\\n同样，在马尔科姆·格拉德威尔（Malcom Gladwell）的著作《眨眼之间》（Blink）中，他为该书副标题“不假思索的力量”（The Power of Thinking Without Thinking）作了辩护。他举出了大量的事例和相应的研究，以说明我们的直觉可以提供理性思维所不能提供的“真理”。\\n为何他爱她\\n所有这些，我已经受够了。厨房里不能休息，床上也得不到休息。杰夫家比较安静，那就去杰夫家吧。每当到杰夫家敲门的时候，我都宁愿敲门而不是按门铃：这样有个性得多。\\n“嗨，伊恩！”杰夫在里面喊道，“进来吧！”\\n就在进入人们家里的时候，我总会产生一点神秘感。如果在他们家算是寻常的事，在我家看来则不寻常，而我就这样进来了，那会怎样呢？如果他们家里并非每个人都有我要进来的心理准备，又会如何？要是在周六的上午，人们没有准备让他人进来而在走道上放了东西，而我就这样进来把东西撞倒了，那又该怎么办？我在前门探了探头：“喂。”我刚进来的时候，总有种要破门而入的感觉。“杰夫？”\\n“伊恩。嗨，来这儿。”又一次成功进来了。我沿着地下室的台阶走下来，而杰夫拿着一根粗粗的黑线给我看。线的一端连着一个荧光屏，另一端插进地下室墙上的一个老鼠洞。那个洞的确像是老鼠打的，几乎就是卡通片里的老鼠洞。“你要灭鼠吗？”我问。\\n他摇着头，对我做了个鬼脸：“不，这很令人惊奇，你会喜欢的。这个玩意是‘一生的观察器’，这就是它的名称。我刚用它看完一个系列，真是令人吃惊。瞧，通过这个屏幕，你可以十分清晰地看到这只老鼠家里的情况。通过这只耳机，你可以真切地听到它们的对话。我最后看的那一家真的很酷。而事情就是如此。这个仪器像疯了一般地使时间加速——你可以用半小时左右看完一只老鼠的一生。”\\n“有点可悲。老鼠只活半小时会有什么感觉？”我答道。\\n“老鼠并未觉察到。这个玩意是按照某种新的相对论原则来运作的。这些在这本小册子上都有说明，但我确实看不懂。我倒真的希望你爸爸能解释一下。但现在这些都没有关系，你来看这个就行。”\\n“那你做什么？”我问。\\n杰夫将那黑线递给我。我往屏幕一看，看见了一只刚出生的老鼠和他 [1] 的妈妈，两只老鼠看上去都很机灵。“这儿，把耳机戴好。你可以听见他们的对话。”我把耳机塞进了耳朵。“早上好，费斯特。”鼠\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 10401, \"excerpt_end\": 13401, \"chapter_text_length\": 15720, \"has_more\": true, \"next_offset\": 13401, \"has_previous\": true, \"previous_offset\": 7401, \"focus_found\": true, \"focus_terms_matched\": [\"克利福德\", \"不充分的证据\", \"詹姆斯\"], \"focus_terms_found_in_chapter\": [\"克利福德\", \"不充分的证据\", \"詹姆斯\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"克利福德\", \"offset\": 11101, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 10901, \"focus\": \"克利福德\"}}, {\"term\": \"不充分的证据\", \"offset\": 11140, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 10940, \"focus\": \"不充分的证据\"}}, {\"term\": \"詹姆斯\", \"offset\": 7770, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 7570, \"focus\": \"詹姆斯\"}}, {\"term\": \"詹姆斯\", \"offset\": 7894, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 7694, \"focus\": \"詹姆斯\"}}, {\"term\": \"詹姆斯\", \"offset\": 10466, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 10266, \"focus\": \"詹姆斯\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"1ea7c390038e42eb2df36bd6b813b930a83ab5d1f27295fa7599cb0a17cafd71\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/0f00c3a90243?ch=15\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[10401, 13401]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "信仰的意志 真实的选择 情感本性",
+      "author": "威廉·詹姆斯",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.06,
+     "result_full": "{\"query\": \"信仰的意志 真实的选择 情感本性\", \"results\": [{\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 15, \"chapter_title\": \"第十八讲哲学\", \"citation_label\": \"【《宗教经验种种》·第十八讲哲学】\", \"snippet\": \"无常和任性，为了区分宗教里的真实与虚妄，我们必须诉诸客观标准。进入人心的首先必须经由理智鉴别其真实（true）。它必须在本性上有权利统制感情，并构成判断感情所依 据的原则。①评价个人、国家、种族的宗教品格时，首要的问题不是他们如何感受，而是他们患想和信仰什么一—不是他们的宗教是否表现出激情，热烈的程度有多高，而是激发这些情绪的上帝以及神圣之物的概念是什么。感情是宗教必需的；但是，决定宗教品格和价值的不是感情，面是宗教的内容（content）或宗教的理性基础。②纽曼主教在《大学的观念》（TheIdeaofaUniversity）那部书里更强烈地表现出对情感的轻蔑。他说，神学是最严格意义上的科学。我要告诉你们，神学不是什么一不是证明上帝\", \"score\": 271, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 15, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 12, \"chapter_title\": \"第十一、十二、十三讲圣徒性\", \"citation_label\": \"【《宗教经验种种》·第十一、十二、十三讲圣徒性】\", \"snippet\": \"际上没有障碍。洪水比它们建造的堤坝还要高。某个近卫兵正在为皇帝①亨顿（1822-1875），英国医生、智学家。詹姆斯在《信仰的意志）中提到他所作的一本书《痛苦的神秘主义：一本关于悲惨的书）（The Mystery of Pain：A Book for theSorrouful,London;Smith,Elder,1866.)。———译者注 的被俘狂躁不安，这时有人提起他的妻子和孩子，他大声叫喊：“他们要是饿了，就让他们讨饭去吧！”据说，困在失火的剧院里的人们，竞然有人用刀从人群中杀出一条路。①在强悍性格的构造中，有一种情绪激动是极其重要的，因为它特别能够破坏抑制。我的意思是说，就低级形式而言，直接指暴躁、易怒、好斗的脾气；精微的形\", \"score\": 270, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 12, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 7, \"chapter_title\": \"第四、五讲健康心灵的宗教\", \"citation_label\": \"【《宗教经验种种》·第四、五讲健康心灵的宗教】\", \"snippet\": \"有这种经验，是宗教品格与纯粹道德品格的分野。凡充分经历它的人，任何批评都不会使他怀疑其实在性。他们知道；因为他们放弃个人意志的紧张时，实际地感受到更高的力量。信仰复兴派的传教士经常讲述一个故事，说有一个人夜里失足，从悬崖边滑下去。终于，他抓住一条树枝，不再往下坠落，并悲惨地吊在那儿，过了好几个小时。最后，他的手指不得不松开，绝望地告别生命，让自已掉下去。然而，他只掉下了六英寸。假如他早点儿松手，烦恼恐怕早就没有了。传教士说，正如大地之母接受他一样，那永恒的臂膀也会接受我们，只要我们绝对信任它们，放弃依赖自已个人力量的传统习惯，以及那些不能报警的警惕和从不救人的保安。医心学者将这种经验扩展到最大范围。他们证明，凭借放松和撒手获得再生，\", \"score\": 266, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 7, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 14, \"chapter_title\": \"第十六、十七讲神秘主义\", \"citation_label\": \"【《宗教经验种种》·第十六、十七讲神秘主义】\", \"snippet\": \"sm）和“神秘的”（mystical）这些词，往往是在371纯粹贬斥的意义上运用的，以指我们认为模椭不清，阔大无边，滥发情感，而且没有事实依据或逻辑根据的那些意见。有些作者以为，凡相信传心术（thought-transference）或灵魂回归的人，都是“神秘主义者”“（mystic）。这样应用，这个词将很少派上用场：因为，不那么模棱两可①在《信仰的意志）“论一些黑格尔主义”一节的附录中（Works,Pp217-221），詹姆斯描述了他在醚（ether）的氛围内的经验。“神秘主义的启发”（A Suggestion aboutMysticism）一文，包含一些自传式的记述，而“多元宇宙”则讨论了本杰明·保罗·布拉德（Benjamin \", \"score\": 266, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 14, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 13, \"chapter_title\": \"第十四、十五讲圣徒性的价值\", \"citation_label\": \"【《宗教经验种种》·第十四、十五讲圣徒性的价值】\", \"snippet\": \"证的神，都是对他们自己有价值的某种东西。他们能 够利用这个神。这神则指导他们的想象力，保证他们的希望得以实现，控制他们的意志一不然，他们就需要这个神作保镖，以抗拒魔鬼，抑制他人犯罪。总而言之，他们选择这个神，是因为他产生的结果323对他们有价值。这些结果一且出现毫无价值的端倪；一且与必不可少的人类理想发生冲突，或者过分贬损其他价值；一旦经过反省，发现他极其幼稚，不值一提，或者道德败坏，这个神立刻就会声名扫地，很快被人忽略和遗忘。古希腊罗马的诸神后来不再为有教养的人所信奉，经历的过程正是这种方式。我们自已也是这样评判印度教、佛教和伊斯兰教神学的。新教如此对待天主教的神明概念，自由主义新教亦如此对待旧式新教的概念。中国人这样判断我们，我\", \"score\": 265, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 13, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}], \"catalogue_matches\": [{\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"citation_label\": \"【《宗教经验种种》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"1dfacd2231b9\", \"book_title\": \"心理学原理\", \"author\": \"威廉·詹姆斯\", \"citation_label\": \"【《心理学原理》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 20}, \"search_scope\": {\"author\": \"威廉·詹姆斯\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "友爱 信任 朋友 德性",
+      "author": "亚里士多德",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.066,
+     "result_full": "{\"query\": \"友爱 信任 朋友 德性\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"snippet\": \"第八卷友爱论 1155a1.友爱对于个人和城邦的重要性及其伦理等级此后轮到讨论友爱了，因为它是一种德性，或者说与德性紧密相连。1155a5其次，它对生活是最必需的东西。因为没有人想过没有朋友的生活，即便他有所有其他的善缘。富人、当权者、有势者看起来都特别需要朋友。因为如果有可能做善事，人们首先以及最受称赞的方式就是把好东西与朋友分享，否1155a10则这些财富又有何用？而且，如果没有朋友，财富又如何能够得到保护和保存？是呀，财富越多就越不安全。而陷【356】荷马《伊利亚人贫穷和窘追之时，除了朋友，谁还能特》10，224。这句话可伸出援助之手呢？青年人需要朋友的帮能本来就是不完整的句助在成长中少犯错误，老年人需要朋友子，所以有的译本译\", \"score\": 261, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"focus\": \"友爱 信任 朋友 德性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 9, \"chapter_title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"snippet\": \"以他们的友爱也是不能持久的。与之相反，建立在品格之上的友爱和因友谊本身而建立的友爱，则如我们所说，具有持久性。同时，如果朋友得到的并不是他所追求的东西，也会发生意见1164a15分歧。因为如果不能如愿以偿，就相当于什么也没得到。这就如同一个琴师的雇佣者，他许诺，琴弹奏得越好，得到的报酬也就会越高。可是第二天，当琴师要求其兑现许诺时，他却回答说，他已经以快乐来支付报酬了。如果两人的意愿都是快乐的话，这样也还算说得过去。但如果一个人追求的是娱乐，另一个人追求的报酬，前1164a20者如愿以偿，而后者却得不到报酬，这样就无法达成一致。因为每个人意图得到的，正是他恰好必需的东西，为了这个东西他才付出他所拥有的东西。但报酬应该由谁来决定呢，是\", \"score\": 202, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"focus\": \"友爱 信任 朋友 德性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "怀疑本身要建立在确定的基础上 不可证明",
+      "author": "维特根斯坦",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.084,
+     "result_full": "{\"query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"results\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 119, \"chapter_title\": \"（《论确定性》193-425节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》193-425节）】\", \"snippet\": \"5节） 687．一句话的真是确定无疑的——这是什么意思？（ÜG §193） 688．我们用“确定”一词表达完全信服、毫不怀疑的态度，并因此试图说服他人。这是主观的确定性。 但在什么情况下某种东西才是客观上确定的？——在不可能出错的情况。但这是一种什么样的可能性呢？ 出错的可能性不是必须在逻辑上已被排除了吗？（ÜG §194） 689．如果我相信我正坐在我的房间，实际却并非如此，人们不会说我出错了：但出错与这件事的本质区别是什么？（ÜG §195） 690．确定的证据即这样的证据：我们假定这一证据绝对确定，依据这一证据确定不疑地行动。 我们叫作“出错”的，在我们的语言游戏中扮演着极为特殊的角色，我们视作“确定的证据”的，也是如此。（Ü\", \"score\": 336, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 123, \"chapter_title\": \"（《论确定性》426-523节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》426-523节）】\", \"snippet\": \"指物教词的方法教小孩学习事物的名称时，我们必须知道这些事物存在。”——为什么我们必须知道这一点？之后的经验不曾给出反面的证明还不够吗？ 为什么语言游戏非要建立在一类所知的基础上？（ÜG §477） 1951年4月7日 1060．孩子相信乳汁存在吗？或者孩子知道乳汁存在？ 猫知道有一只老鼠存在吗？（ÜG §478） 1061．我们应当说“物理对象存在”的知识来得很早亦或来得很迟？（ÜG §479） 1951年4月8日 1062．学习使用“树”一词的孩子。我们同他站在一棵树前说“多美的树啊！”很清楚，对树的存在的怀疑没有出现在这个语言游戏中。但我们能说孩子知道有一棵树存在吗？固然，从“知道某事”本身的确不能推论出“思考某事”——但知道某\", \"score\": 334, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 123, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"08e055841182\", \"book_title\": \"哲学研究\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 17, \"chapter_title\": \"第二部分\", \"citation_label\": \"【《哲学研究》·第二部分】\", \"snippet\": \"信他的话吗？如果他说他只是偶尔地意识到深度（也许是在谈论它时）一—我相信他的这个说法吗？这些回答将会使我产生一种认为它们建立在虚假基础上的印象。一一如果他说对象有时使他感到是平面的、有时使他感到是三维的，那就跟上面的情况有所不同了。 某人告诉我：“我看着花儿，但想着别的事因而没意识到花的颜色。”我理解这句话吗？一一我能给它想象一种有意义的语境，比如他继续说“然后我突然看到它，并且认出它是一个…·” 或者：“如果我那时扭过头去，我就会说不出它是什么颜色。” “他对它视而未见。”——有这种事情。但它的判据是什么？一这里有各种各样的情况。 “刚才我更多地是注视形状而不是颜色。”不要让这种话把你搞糊涂。首先不要去想“在眼睛或大脑中能发生些什\", \"score\": 315, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"08e055841182\", \"chapter_idx\": 17, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"5d906139d1b2\", \"book_title\": \"逻辑哲学论\", \"author\": \"维特根斯坦\", \"chapter_idx\": 1, \"chapter_title\": \"导　言\", \"citation_label\": \"【《逻辑哲学论》·导　言】\", \"snippet\": \"相信时发生了什么事情的思想图式的问题。当然，这个问题不仅适用于相信，它同样也适用于可以称为命题态度的许多其它精神现象，如怀疑、考虑、期待等等。在所有这些场合，好像很自然地就用“A怀疑p”、“A期望p”等等的形式来表述这种精神现象。这种形式使人觉得我们像是在处理一个人和一个命题之间的关系。这当然不可能是最后的分析，因为除非在它们本身就是独立的事实这个意义上这些人是虚设的，这些命题也是如此。作为本身是一个独立的事实来考虑的命题，可以是一个人对自己说出来的一套语词，一个复杂的意象，一列闪过他心头的意象或者一套开始发生的身体的动作。它可能是无数种不同事情之一。这个本身是独立事实的命题，比如一个人对自己说出来的实在的一套词语，是与逻辑无关的。\", \"score\": 313, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"5d906139d1b2\", \"chapter_idx\": 1, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"5d906139d1b2\", \"book_title\": \"逻辑哲学论\", \"author\": \"维特根斯坦\", \"chapter_idx\": 7, \"chapter_title\": \"第五章 真值函项\", \"citation_label\": \"【《逻辑哲学论》·第五章 真值函项】\", \"snippet\": \"个简单的记号来代替“＋c”；可是，在“～p”中，“p”不是附标而是主目：除非已经先理解了“p”的意义，“～p”的意义就 不可能 理解。（在名称尤利乌斯・恺撒中，“尤利乌斯”是一个附标。附标总是对对象的描述的一部分，我们把它附加到对象的名称上面：例如尤利乌斯家族中的 这位 恺撒。） 如果我没有弄错，弗雷格关于命题和函项的指谓理论，就是建立在混淆主目和附标的基础之上的。弗雷格认为逻辑命题是名称，而它们的主目则是这些名称的附标。 5.1　　真值函项可以排成系列。 这是概率论的基础。 5.101　一定数目的基本命题的真值函项，可以按以下这种图式 列出： （WWWW）（p，q） 重言式（如果p则p，且如果q则q。） （p⊃p・q⊃q） （FW\", \"score\": 310, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"5d906139d1b2\", \"chapter_idx\": 7, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}], \"catalogue_matches\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"5d906139d1b2\", \"book_title\": \"逻辑哲学论\", \"author\": \"维特根斯坦\", \"citation_label\": \"【《逻辑哲学论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"08e055841182\", \"book_title\": \"哲学研究\", \"author\": \"路德维希·维特根斯坦\", \"citation_label\": \"【《哲学研究》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 160}, \"search_scope\": {\"author\": \"维特根斯坦\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "verify_quote",
+     "args": {
+      "book_id": "c0e78ea6f80a",
+      "quote": "怀疑本身是以不容怀疑的东西为前提的",
+      "limit": 3
+     },
+     "status": "empty",
+     "duration_seconds": 0.113,
+     "result_full": "{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"quote\": \"怀疑本身是以不容怀疑的东西为前提的\", \"found\": false, \"match_count\": 0, \"verification_status\": \"not_matched_in_this_library\", \"author_attribution_verdict\": \"undetermined\", \"matches\": [], \"matches_omitted\": 0, \"coverage\": {\"scope\": \"present_local_chapter_files\", \"unit\": \"本库文本单元，可含序言和目录，不等于传统篇章数\", \"searched_chapters\": 130, \"unreadable_indices\": [], \"declared_chapters\": 130, \"directory_consistent\": true}, \"note\": \"仅核对本库现有版本，不作语义近似替代。whitespace_only只忽略排版空白，matched_text保留实际原文。程序扫描报告的范围，但模型只读到了matches.text给出的上下文。命中不自动证明说话者就是作者；请区分正文、对话角色与译注。未命中不能排除标点、异写、译本或未收录部分，也不支持未经核验的词源或年代断言。\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "trust versus belief epistemology of faith rationality without evidence",
+      "limit": 5
+     },
+     "status": "partial",
+     "duration_seconds": 1.273,
+     "result_full": "{\"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"results\": [{\"source_record_id\": \"doi:10.23943/princeton/9780691154725.003.0026\", \"title\": \"Epistemology within a General Theory of Rationality\", \"authors\": [\"Richard Foley\"], \"year\": 2012, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"When Is True Belief Knowledge?\", \"doi\": \"10.23943/princeton/9780691154725.003.0026\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-1\", \"title\": \"Trust, Rationality, and Utility\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-6\", \"title\": \"Secular Trust\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-6\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-4\", \"title\": \"Trust and Primitive Reactions\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-2\", \"title\": \"Religious Trust and Utility\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 1, \"READABLE_SOURCE_IDS\": [\"doi:10.23943/princeton/9780691154725.003.0026\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"status\": \"success\", \"raw_result_count\": 5}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c0e78ea6f80a",
+      "chapter_idx": 119,
+      "focus": "不容怀疑 怀疑 前提 根据",
+      "max_chars": 3000,
+      "offset": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"chapter_idx\": 119, \"title\": \"（《论确定性》193-425节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》193-425节）】\", \"text\": \"22）\\n717．不也可能恰恰是我疯了，从而没有对我本来绝对应当怀疑的事情加以怀疑吗？（ÜG §223）\\n718．“我知道这件事从未发生过，因为假如它发生过，我是不可能忘掉的。”\\n但假定它发生过，而你总归还是忘了。你如何知道你不可能忘掉这件事呢？不就是由于之前的经验吗？（ÜG §224）\\n719．我所固守的并非一个命题，而是一张由诸多命题编织而成的网络。（ÜG §225）\\n720．我真的会为“我曾到过北极”这一假定展开一番郑重其事的调查吗？（ÜG §226）\\n721．“这竟是人可以忘记的事吗？！”（ÜG §227）\\n722．“在这样的情形下，人们不会说‘也许我们所有人都忘记了’之类，人们会假定……” （ÜG §228）\\n723．我们的言谈通过我们的其余的活动获得意义。（ÜG §229）\\n724．我们来问一问自己：我们拿“我知道……”这一表述做什么？因为对我们而言它无关乎心灵中的过程与状态。\\n人们必须以这种方式判定一种东西是或不是一种知道。（ÜG §230）\\n725．如果有人怀疑地球100年前是否曾经存在，我会由于这样的原因不理解他：我不知道他还会允许哪些东西作为证据，而不允许哪些东西作为证据。（ÜG §231）\\n726．“我们能够怀疑这些事实中的任何一个单独的事实，但不能怀疑所有这些事实。”\\n说“我们并不怀疑一切”不是更加正确吗？\\n我们不怀疑所有这些事实：这正是我们做判断的方式，我们行动的方式。（ÜG §232）\\n727．如果一个孩子问我，地球在我出生之前是否存在，我不会回答，地球在我出生后才存在，而会回答，地球在此之前就已经存在了很长很长时间了。与此同时，我会觉得我的回答也很奇怪。就有点像这个孩子在问，某座山是否高过了他曾见过的一座很高的房子。我只有先传授给他一幅世界图景，才可能回答他的那个问题。\\n如果我带着确信回答这一问题，是什么给了我这种确信呢？（ÜG §233）\\n728．我相信我有祖先，每个人都有祖先。我相信有许多不同的城市，总的来讲，也相信地理与历史上的基本常识。我相信，地球是一个我们行走于其上的物体，它不会突然消失之类，正如其他任何一个固体：这张桌子、这座房子、这棵树等。如果我想怀疑地球在我出生前是否存在，也就必须怀疑一切可能在我看来确凿不移的东西。（ÜG §234）\\n729．某种东西在我看来确凿不移，并非基于我的愚蠢或轻信。（ÜG §235）\\n730．如果有人说“地球并未存在很久……”——他由此攻击的是什么？我知道吗？\\n那必定是一种所谓的科学信念吗？就不可能是什么神秘的信念吗？他必定无条件地反对一切历史事实吗？甚至地理事实？（ÜG §236）\\n731.如果我说“这张桌子一小时前还不存在”，我的意思大概是，这张桌子是那之后才被制作出来的。\\n如果我说“这座山那时还不存在”，我的意思很可能是，这座山是那之后——也许由于火山喷发——才形成的。\\n如果我说“这座山半小时前还不存在”，这就是一个很古怪的表述，我意指什么并不清楚。例如，在我所意指的意义上，这句话会不会是错的，但又是在科学的意义上说的？也许人们会以为，不管怎样设想它的语境，“这座山那时还不存在”这个表述的意思都很清楚。但试想有人说“这座山一分钟以前还不存在，而是一座一模一样的山存在过”。只有在惯常的周边情况下，所意指的东西才得以清楚地呈现出来。（ÜG §237）\\n732．我可以继续问那个声称地球在他出生前并不存在的人，以便发现他在哪些方面与我的信念相冲突。也许，他会与我的基础世界观（Grundanschauungen）相冲突。假若如此，我就只能由它去了。\\n如果他说他曾到过月球，情况也将类似。（ÜG §238）\\n733．是的，我相信每个人都有双亲，双亲都是人类；但天主教徒相信，耶稣只有一位人类母亲。其他人也可能相信有人没有父母，并拒绝对一切反面证据给予信任。天主教徒也相信在特定的周边情况下，面饼的本质会完全改变；而与此同时，一切证据所表明的却是其反面。因此，如果穆尔说我知道这是葡萄酒而不是血液，天主教徒就会反对他。（ÜG §239）\\n734．人类皆有父母这一信念奠立在什么基础之上？经验。而我如何可能把这一确定的信念奠立在我的经验的基础上呢？这一信念的基础不只是我认识一些人的父母，而且包括我所学到的关于人类性生活、解剖学和生理学的全部知识；也包括我关于各种动物的所见所闻。\\n但这真的是一个证明吗？（ÜG §240）\\n735．这里有的难道不是一个假设吗——而它正如我所相信的那样，总是一再地得到完全的确证？（ÜG §241）\\n736．我们不是必须每走一步都说上一遍“我确定地相信这一点”吗？（ÜG §242）\\n737．我们说“我知道……”，当我们已经备好了不容置辩的根据的时候。“我知道”关涉到指明真相的一种方法 注171 。假定一个人已经信服于某事，那么他是否知道此事，总是有迹可循的。\\n不过，如果他有的是这样的一类信念：他所能给出的根据并不比他的断言更为确定，那么他就不能说，他知道他所相信的东西。（ÜG §243）\\n738．如果有人说“我有一个身体”，我们便可以问他：“这儿是谁在用这张嘴说话？” （ÜG §244）\\n739．一个人在对谁说他知道某事？对自己说，还是对别人说？如果他在对自己说，这如何区别于他对自己确信此事的认定？不存在对“我知道某事”的主观确定。确信是主观的，知道却不是主观的。所以，如果我对自己说“我知道我有两只手”，并且要表达的不只是我的主观确信，那么我必须能够令自己信服 注172 ，我有理由这样说。但我做不到这一点；因为就算我随后察看双手，也不能令我有两只手这一点变得更为确定。\\n但我或许可以说：“我有两只手，我无可动摇地相信这一点。”而这所表达的是：我不准备承认任何与此命题相悖的证明。（ÜG §245）\\n740．“这里，我触及到了我的一切信念的基础。”“我会坚守这一阵地！”但这不恰恰是因为我对此完完全全地信服吗？——“完完全全地信服”是怎么一回事？（ÜG §246）\\n741．我如果现在怀疑我有两只手，又会怎样？对此我为什么完全无从想象？这我都不信，我还会相信什么？我根本没有一个容纳这种怀疑的系统。（ÜG §247）\\n742．我触及到了我的信念的最底层。\\n几乎可以说：这里的墙基是由整栋房屋支撑的。（ÜG §248）\\n743．人们为自己描画了一幅关于怀疑的错误图画。（ÜG §249）\\n744．在正常情况下，我有两只手，同我能引为证据的任何事情一样的确定。\\n因此我不可能把对我的手的观看引作此事的证据。（ÜG §250）\\n745．这不是意味着我将无条件地依照这一信念行动且不受任何事情干扰吗？（ÜG §251）\\n746．但并非只是我以这种方式相信我有两只手，每一个理智的人都这样做。（ÜG §252）\\n747．有根据的信念的根基处是没有根据的信念。（ÜG §253）\\n748．每一个“理智的”人都如此行动。（ÜG §254）\\n749.怀疑具有某些富有特征的表露，但只有在特定的周边情况下，这些表露才成其为怀疑的特征。如果一个人说他怀疑他双手的存在，并老是从各个角度端详着双手，企图让自己确信这不是由镜面反射之类造成的，我们会不确定要不要把这叫作一种怀疑。我们也许会把他的这类做法描述为一种与怀疑相类似的行为，但他的游戏不是我们的游戏。（ÜG\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2000, \"excerpt_end\": 5000, \"chapter_text_length\": 20978, \"has_more\": true, \"next_offset\": 5000, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"怀疑\", \"根据\"], \"focus_terms_found_in_chapter\": [\"怀疑\", \"前提\", \"根据\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"怀疑\", \"offset\": 73, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 0, \"focus\": \"怀疑\"}}, {\"term\": \"怀疑\", \"offset\": 1875, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 1675, \"focus\": \"怀疑\"}}, {\"term\": \"怀疑\", \"offset\": 1931, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 1731, \"focus\": \"怀疑\"}}, {\"term\": \"前提\", \"offset\": 11543, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 11343, \"focus\": \"前提\"}}, {\"term\": \"根据\", \"offset\": 592, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 392, \"focus\": \"根据\"}}, {\"term\": \"根据\", \"offset\": 885, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 685, \"focus\": \"根据\"}}, {\"term\": \"根据\", \"offset\": 891, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"offset\": 691, \"focus\": \"根据\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"c786cb64b58e9e80d034f8d95669a0c9807dfb175b1705b9ca3a598bc208f458\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/c0e78ea6f80a?ch=119\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2000, 5000]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 9.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_FuVHxwXxqcOSCwjIafkY9249"
+    },
+    {
+     "t": 9.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_KkCw3a8vGxrE4LtVEvzi7412"
+    },
+    {
+     "t": 10.0,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_an9CKTCr4zADd0bRcdWC1463"
+    },
+    {
+     "t": 10.3,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_03_OXGYY9IWbaUzcOFttZr65764",
+     "status": "success",
+     "duration_seconds": 2.624
+    },
+    {
+     "t": 13.0,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "克利福德 信念 证据 不理性",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.632,
+     "result_full": "{\"query\": \"克利福德 信念 证据 不理性\", \"results\": [{\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 15, \"chapter_title\": \"第八章 信仰与理性\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第八章 信仰与理性】\", \"snippet\": \"但冒着出错的风险； 怀疑论者，或者说否定信仰者，热衷于不出错，但冒着失掉发现真理的机会之风险。 作为信念的伦理 W.K.克利福德（W.K.Clifford）写道：“无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。”这与詹姆斯所写的形成了鲜明的对照：“无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，‘不做决定，就将这个问题放着吧’，其本身就是一个情感性的决定——就像决定‘是’或‘不是’一样——并且同样伴随着错过真理的风险。” 信仰主义（Fideism）——一种认为对上帝的信仰与理性和逻辑无关\", \"score\": 174, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"focus\": \"克利福德 信念 证据 不理性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 13.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "论确定性 枢纽命题 不可证明 怀疑",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.877,
+     "result_full": "{\"query\": \"论确定性 枢纽命题 不可证明 怀疑\", \"results\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 119, \"chapter_title\": \"（《论确定性》193-425节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》193-425节）】\", \"snippet\": \"（《论确定性》193-425节） 687．一句话的真是确定无疑的——这是什么意思？（ÜG §193） 688．我们用“确定”一词表达完全信服、毫不怀疑的态度，并因此试图说服他人。这是主观的确定性。 但在什么情况下某种东西才是客观上确定的？——在不可能出错的情况。但这是一种什么样的可能性呢？ 出错的可能性不是必须在逻辑上已被排除了吗？（ÜG §194） 689．如果我相信我正坐在我的房间，实际却并非如此，人们不会说我出错了：但出错与这件事的本质区别是什么？（ÜG §195） 690．确定的证据即这样的证据：我们假定这一证据绝对确定，依据这一证据确定不疑地行动。 我们叫作“出错”的，在我们的语言游戏中扮演着极为特殊的角色，我们视作“确定\", \"score\": 0.5603, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"focus\": \"论确定性 枢纽命题 不可证明 怀疑\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.28}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 13.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "信仰的意志 相信的权利 证据不足",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.889,
+     "result_full": "{\"query\": \"信仰的意志 相信的权利 证据不足\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 464, \"chapter_title\": \"347\", \"citation_label\": \"【《尼采文集（合集）》·347】\", \"snippet\": \" 虔信者及其对信仰的需要 。——一个人在多大程度上需要一种 信仰 才能成长，一个人需要多少“坚固之物”，因为 依靠 之而不想动摇之的“坚固之物”，——此乃一个人的力量的标尺（或者讲得更清晰些，是一个人的虚弱的标尺）。在我看来，在古老的欧洲，在今天依然，大多数人是需要基督教的：所以它也总还能得到信仰。因为人就是这样：他可能千百次地驳斥某个信条，——假如他需要这个信条，那么，他也总是会一再地把它当做“真的”，——依照圣经里讲的那个著名的“力量之证明”。一些人依然需要形而上学；但也需要那种狂热的 对于确定性的要求 ，这种要求如今以科学实证主义的方式在广大群众身上爆发出来，就是 想要 彻底地牢牢掌握某个东西的要求（而由于这种要求的激昂，人们\", \"score\": 0.5487, \"match_type\": \"semantic_candidate\", \"evidence_scope\": \"unverified_candidate\", \"needs_read\": true, \"read_args\": {\"book_id\": \"bedc9c78dfdf\", \"chapter_idx\": 464, \"focus\": \"信仰的意志 相信的权利 证据不足\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"similarity_z\": 4.17}], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"semantic_candidates\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。\"}"
+    },
+    {
+     "t": 15.6,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_5uj0yGi3xDPdE7NxSZTI0001"
+    },
+    {
+     "t": 15.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_h8J1sP5g2BDDY67rwBnG4071"
+    },
+    {
+     "t": 16.1,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_rx3I9xyg5qCP2xcESZjq2581"
+    },
+    {
+     "t": 16.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_03_oNWk6SrETnzBPBCwkTV02759"
+    },
+    {
+     "t": 16.4,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "0f00c3a90243",
+      "chapter_idx": 15,
+      "focus": "克利福德 不充分的证据 詹姆斯",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"chapter_idx\": 15, \"title\": \"第八章 信仰与理性\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第八章 信仰与理性】\", \"text\": \"何种意义上支配着你的信仰。有些人的确认为，他们能支配自己的思想。这确实是他们认为自身所能支配的想法之一。”\\n奇怪的哲学偶像\\n威廉·詹姆斯论述道，忽视我们“情感的”本性而等待有“足够的”证据，这是不理性的——这样做会让我们错失某些不可能单凭理性去认识的真理。\\n“当我想到……如此的指导：我们应当抑制住我们的情感、直觉、勇气，然后一直等到……我们的智慧和意识协同发挥作用，并能够吸收足够的证据——我得说，这种指导对我来说就是，在哲学的洞穴中不断制造出来的、最奇怪的偶像。”\\n伊恩的脸上露出了迷惑而又赞赏的表情。\\n“而关于所有这一切的最后要点，孩子——或许是最重要的一点——当我们谈论让情感成为我们推理中的一个合法因素的时候，曾有所提及。你知道，即使是最顽固的怀疑论者，他在做出决定、阐述哲学的时候，都建立在其情感本性的基础之上。”\\n伊恩仍保持着刚才的表情：迷惑而又赞赏。\\n“就像非理性者热衷于发现真理一样，怀疑论者热衷于避免错误。宗教狂热者则必然有一种认知上帝的愿望，即使这种知识从来不是确定性的，且基于信仰。怀疑论者总是声称，我们不可能认识事物——尤其是在关于某个永恒存在者的存在问题上——而由此他必然有一种避免错误的愿望。怀疑论者可能永远不会错，但有可能失去发现真理的机会，而在现在的情况下，可能会失去获得永恒拯救的机会。信仰宗教者冒着误信的风险，但也可能正确从而达成伟大的事业。他们都对某种东西下注，并且都是建立在情感的基础上去下注：\\n相信者，或者说肯定信仰者，热衷于发现上帝，但冒着出错的风险；\\n怀疑论者，或者说否定信仰者，热衷于不出错，但冒着失掉发现真理的机会之风险。\\n作为信念的伦理\\nW.K.克利福德（W.K.Clifford）写道：“无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。”这与詹姆斯所写的形成了鲜明的对照：“无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，‘不做决定，就将这个问题放着吧’，其本身就是一个情感性的决定——就像决定‘是’或‘不是’一样——并且同样伴随着错过真理的风险。”\\n信仰主义（Fideism）——一种认为对上帝的信仰与理性和逻辑无关的观点。\\n因为，就上帝的智慧来看，世间不通过智慧来认识上帝……因为上帝之愚也要比人类的［智慧］聪明。\\n——圣保罗，《哥林多书》（Corinthians）（1:21—25）\\n为了认识其各自声称的知识，他们都会做出信念的飞跃。回想一下我们是如何认识事物的：有些东西必须外在于理性。纯粹理性低估了我们——无论我们在讨论的，是我们的感觉之所无，还是理性的不一致性、归纳法的不足，或是所有关于‘坛中之脑’的思想实验、邪恶的天才，以及‘我们无法区分梦境与现实’这样的更鲜明的观点。纯粹理性只能带领我们走到那么远——而接下来我们必须做飞跃。瞧。”她又画了一张图，以帮助说明：\\n“所有的知识都需要有某种飞跃。我们的感官和理性只能带领我们走到那么远——这就是我们有能力超越它们的原因。我们有信念。若非如此，我们确实会错失任何真实。”\\n“孩子，对你的挑战就是，确实努力地审查你的信念。你对哪些感到自豪？你愿意改变哪些？在努力改变你的信念的过程中，你得自觉地发挥作用。许多人相信祈祷和冥想有助于此，而另有许多人相信这些事情无法改变。而且，对于那些你所无法改变的信念，它们如何影响你的自我？”\\n信念的一跃\\n索伦·克尔凯郭尔（Soren Kierkegaard）创造了上述用语，其背后的动力是其信念“真理是主观的”。由于缺乏客观的确定性，因而必须做出信念的一跃。他写道：“我如果能够客观地理解上帝，［那么］就不会相信祂；而正是因为我做不到客观地理解，因而我必须相信。”\\n他不可能以绝对的确定性去认知，因而依靠信念的帮助，“跃”过了逻辑和客观性的鸿沟。\\n无神论者和信徒的信念\\n……无神论者是我那怀有不同信念的兄弟姐妹，他们所说的每句话，都涉及信念。他们像我一样，用理性之足尽量地走远——然后他们一跃而过。\\n就获取食物、衣服和居所之事而言，理性干得很出色。理性是最佳的工具包……但是，过于讲究合理性，你就会冒着将宇宙连着洗澡水一起泼掉的风险。\\n——扬·马特尔，《少年Pi的奇幻漂流》\\n理性认识的最后一步是，认识到尚有无可限量的事物超出了理性。\\n——帕斯卡\\n伊恩现出不知所措的表情，尽管还带着些许激动。\\n“我早就知道，在那个挑选盒子的奇特情境下，你会做出‘理性的’的选择。你的头脑是如此适合于理性之事。我只是希望，你这一出色的理性能力，不会遮蔽你丰富的感知力和运用直觉的能力。”\\n妈妈微笑着，亲了亲伊恩的额头。伊恩也报以微笑。\\n通过直觉得来的知识\\n心理学家戴维·迈尔斯指出，对于一个人的知识结构而言，直觉具有与逻辑同等的重要性。他将直觉定义为，“我们直接获得知识的能力，无须观测或推理而当下洞察的能力”。\\n同样，在马尔科姆·格拉德威尔（Malcom Gladwell）的著作《眨眼之间》（Blink）中，他为该书副标题“不假思索的力量”（The Power of Thinking Without Thinking）作了辩护。他举出了大量的事例和相应的研究，以说明我们的直觉可以提供理性思维所不能提供的“真理”。\\n为何他爱她\\n所有这些，我已经受够了。厨房里不能休息，床上也得不到休息。杰夫家比较安静，那就去杰夫家吧。每当到杰夫家敲门的时候，我都宁愿敲门而不是按门铃：这样有个性得多。\\n“嗨，伊恩！”杰夫在里面喊道，“进来吧！”\\n就在进入人们家里的时候，我总会产生一点神秘感。如果在他们家算是寻常的事，在我家看来则不寻常，而我就这样进来了，那会怎样呢？如果他们家里并非每个人都有我要进来的心理准备，又会如何？要是在周六的上午，人们没有准备让他人进来而在走道上放了东西，而我就这样进来把东西撞倒了，那又该怎么办？我在前门探了探头：“喂。”我刚进来的时候，总有种要破门而入的感觉。“杰夫？”\\n“伊恩。嗨，来这儿。”又一次成功进来了。我沿着地下室的台阶走下来，而杰夫拿着一根粗粗的黑线给我看。线的一端连着一个荧光屏，另一端插进地下室墙上的一个老鼠洞。那个洞的确像是老鼠打的，几乎就是卡通片里的老鼠洞。“你要灭鼠吗？”我问。\\n他摇着头，对我做了个鬼脸：“不，这很令人惊奇，你会喜欢的。这个玩意是‘一生的观察器’，这就是它的名称。我刚用它看完一个系列，真是令人吃惊。瞧，通过这个屏幕，你可以十分清晰地看到这只老鼠家里的情况。通过这只耳机，你可以真切地听到它们的对话。我最后看的那一家真的很酷。而事情就是如此。这个仪器像疯了一般地使时间加速——你可以用半小时左右看完一只老鼠的一生。”\\n“有点可悲。老鼠只活半小时会有什么感觉？”我答道。\\n“老鼠并未觉察到。这个玩意是按照某种新的相对论原则来运作的。这些在这本小册子上都有说明，但我确实看不懂。我倒真的希望你爸爸能解释一下。但现在这些都没有关系，你来看这个就行。”\\n“那你做什么？”我问。\\n杰夫将那黑线递给我。我往屏幕一看，看见了一只刚出生的老鼠和他 [1] 的妈妈，两只老鼠看上去都很机灵。“这儿，把耳机戴好。你可以听见他们的对话。”我把耳机塞进了耳朵。“早上好，费斯特。”鼠\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 10401, \"excerpt_end\": 13401, \"chapter_text_length\": 15720, \"has_more\": true, \"next_offset\": 13401, \"has_previous\": true, \"previous_offset\": 7401, \"focus_found\": true, \"focus_terms_matched\": [\"克利福德\", \"不充分的证据\", \"詹姆斯\"], \"focus_terms_found_in_chapter\": [\"克利福德\", \"不充分的证据\", \"詹姆斯\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"克利福德\", \"offset\": 11101, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 10901, \"focus\": \"克利福德\"}}, {\"term\": \"不充分的证据\", \"offset\": 11140, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 10940, \"focus\": \"不充分的证据\"}}, {\"term\": \"詹姆斯\", \"offset\": 7770, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 7570, \"focus\": \"詹姆斯\"}}, {\"term\": \"詹姆斯\", \"offset\": 7894, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 7694, \"focus\": \"詹姆斯\"}}, {\"term\": \"詹姆斯\", \"offset\": 10466, \"read_args\": {\"book_id\": \"0f00c3a90243\", \"chapter_idx\": 15, \"offset\": 10266, \"focus\": \"詹姆斯\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"1ea7c390038e42eb2df36bd6b813b930a83ab5d1f27295fa7599cb0a17cafd71\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/0f00c3a90243?ch=15\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[10401, 13401]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 16.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "信仰的意志 真实的选择 情感本性",
+      "author": "威廉·詹姆斯",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.06,
+     "result_full": "{\"query\": \"信仰的意志 真实的选择 情感本性\", \"results\": [{\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 15, \"chapter_title\": \"第十八讲哲学\", \"citation_label\": \"【《宗教经验种种》·第十八讲哲学】\", \"snippet\": \"无常和任性，为了区分宗教里的真实与虚妄，我们必须诉诸客观标准。进入人心的首先必须经由理智鉴别其真实（true）。它必须在本性上有权利统制感情，并构成判断感情所依 据的原则。①评价个人、国家、种族的宗教品格时，首要的问题不是他们如何感受，而是他们患想和信仰什么一—不是他们的宗教是否表现出激情，热烈的程度有多高，而是激发这些情绪的上帝以及神圣之物的概念是什么。感情是宗教必需的；但是，决定宗教品格和价值的不是感情，面是宗教的内容（content）或宗教的理性基础。②纽曼主教在《大学的观念》（TheIdeaofaUniversity）那部书里更强烈地表现出对情感的轻蔑。他说，神学是最严格意义上的科学。我要告诉你们，神学不是什么一不是证明上帝\", \"score\": 271, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 15, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 12, \"chapter_title\": \"第十一、十二、十三讲圣徒性\", \"citation_label\": \"【《宗教经验种种》·第十一、十二、十三讲圣徒性】\", \"snippet\": \"际上没有障碍。洪水比它们建造的堤坝还要高。某个近卫兵正在为皇帝①亨顿（1822-1875），英国医生、智学家。詹姆斯在《信仰的意志）中提到他所作的一本书《痛苦的神秘主义：一本关于悲惨的书）（The Mystery of Pain：A Book for theSorrouful,London;Smith,Elder,1866.)。———译者注 的被俘狂躁不安，这时有人提起他的妻子和孩子，他大声叫喊：“他们要是饿了，就让他们讨饭去吧！”据说，困在失火的剧院里的人们，竞然有人用刀从人群中杀出一条路。①在强悍性格的构造中，有一种情绪激动是极其重要的，因为它特别能够破坏抑制。我的意思是说，就低级形式而言，直接指暴躁、易怒、好斗的脾气；精微的形\", \"score\": 270, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 12, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 7, \"chapter_title\": \"第四、五讲健康心灵的宗教\", \"citation_label\": \"【《宗教经验种种》·第四、五讲健康心灵的宗教】\", \"snippet\": \"有这种经验，是宗教品格与纯粹道德品格的分野。凡充分经历它的人，任何批评都不会使他怀疑其实在性。他们知道；因为他们放弃个人意志的紧张时，实际地感受到更高的力量。信仰复兴派的传教士经常讲述一个故事，说有一个人夜里失足，从悬崖边滑下去。终于，他抓住一条树枝，不再往下坠落，并悲惨地吊在那儿，过了好几个小时。最后，他的手指不得不松开，绝望地告别生命，让自已掉下去。然而，他只掉下了六英寸。假如他早点儿松手，烦恼恐怕早就没有了。传教士说，正如大地之母接受他一样，那永恒的臂膀也会接受我们，只要我们绝对信任它们，放弃依赖自已个人力量的传统习惯，以及那些不能报警的警惕和从不救人的保安。医心学者将这种经验扩展到最大范围。他们证明，凭借放松和撒手获得再生，\", \"score\": 266, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 7, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 14, \"chapter_title\": \"第十六、十七讲神秘主义\", \"citation_label\": \"【《宗教经验种种》·第十六、十七讲神秘主义】\", \"snippet\": \"sm）和“神秘的”（mystical）这些词，往往是在371纯粹贬斥的意义上运用的，以指我们认为模椭不清，阔大无边，滥发情感，而且没有事实依据或逻辑根据的那些意见。有些作者以为，凡相信传心术（thought-transference）或灵魂回归的人，都是“神秘主义者”“（mystic）。这样应用，这个词将很少派上用场：因为，不那么模棱两可①在《信仰的意志）“论一些黑格尔主义”一节的附录中（Works,Pp217-221），詹姆斯描述了他在醚（ether）的氛围内的经验。“神秘主义的启发”（A Suggestion aboutMysticism）一文，包含一些自传式的记述，而“多元宇宙”则讨论了本杰明·保罗·布拉德（Benjamin \", \"score\": 266, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 14, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}, {\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 13, \"chapter_title\": \"第十四、十五讲圣徒性的价值\", \"citation_label\": \"【《宗教经验种种》·第十四、十五讲圣徒性的价值】\", \"snippet\": \"证的神，都是对他们自己有价值的某种东西。他们能 够利用这个神。这神则指导他们的想象力，保证他们的希望得以实现，控制他们的意志一不然，他们就需要这个神作保镖，以抗拒魔鬼，抑制他人犯罪。总而言之，他们选择这个神，是因为他产生的结果323对他们有价值。这些结果一且出现毫无价值的端倪；一且与必不可少的人类理想发生冲突，或者过分贬损其他价值；一旦经过反省，发现他极其幼稚，不值一提，或者道德败坏，这个神立刻就会声名扫地，很快被人忽略和遗忘。古希腊罗马的诸神后来不再为有教养的人所信奉，经历的过程正是这种方式。我们自已也是这样评判印度教、佛教和伊斯兰教神学的。新教如此对待天主教的神明概念，自由主义新教亦如此对待旧式新教的概念。中国人这样判断我们，我\", \"score\": 265, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"469fc9745e43\", \"chapter_idx\": 13, \"focus\": \"信仰 意志 真实 选择 情感 本性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"信仰的意志 真实的选择 情感本性\", \"query_terms\": [\"信仰\", \"意志\", \"真实\", \"选择\", \"情感\", \"本性\"]}], \"catalogue_matches\": [{\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"citation_label\": \"【《宗教经验种种》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"1dfacd2231b9\", \"book_title\": \"心理学原理\", \"author\": \"威廉·詹姆斯\", \"citation_label\": \"【《心理学原理》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 2, \"search_coverage\": {\"chapter_entries_examined\": 20}, \"search_scope\": {\"author\": \"威廉·詹姆斯\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 16.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "友爱 信任 朋友 德性",
+      "author": "亚里士多德",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.066,
+     "result_full": "{\"query\": \"友爱 信任 朋友 德性\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"snippet\": \"第八卷友爱论 1155a1.友爱对于个人和城邦的重要性及其伦理等级此后轮到讨论友爱了，因为它是一种德性，或者说与德性紧密相连。1155a5其次，它对生活是最必需的东西。因为没有人想过没有朋友的生活，即便他有所有其他的善缘。富人、当权者、有势者看起来都特别需要朋友。因为如果有可能做善事，人们首先以及最受称赞的方式就是把好东西与朋友分享，否1155a10则这些财富又有何用？而且，如果没有朋友，财富又如何能够得到保护和保存？是呀，财富越多就越不安全。而陷【356】荷马《伊利亚人贫穷和窘追之时，除了朋友，谁还能特》10，224。这句话可伸出援助之手呢？青年人需要朋友的帮能本来就是不完整的句助在成长中少犯错误，老年人需要朋友子，所以有的译本译\", \"score\": 261, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"focus\": \"友爱 信任 朋友 德性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 9, \"chapter_title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"snippet\": \"以他们的友爱也是不能持久的。与之相反，建立在品格之上的友爱和因友谊本身而建立的友爱，则如我们所说，具有持久性。同时，如果朋友得到的并不是他所追求的东西，也会发生意见1164a15分歧。因为如果不能如愿以偿，就相当于什么也没得到。这就如同一个琴师的雇佣者，他许诺，琴弹奏得越好，得到的报酬也就会越高。可是第二天，当琴师要求其兑现许诺时，他却回答说，他已经以快乐来支付报酬了。如果两人的意愿都是快乐的话，这样也还算说得过去。但如果一个人追求的是娱乐，另一个人追求的报酬，前1164a20者如愿以偿，而后者却得不到报酬，这样就无法达成一致。因为每个人意图得到的，正是他恰好必需的东西，为了这个东西他才付出他所拥有的东西。但报酬应该由谁来决定呢，是\", \"score\": 202, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"focus\": \"友爱 信任 朋友 德性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 16.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "怀疑本身要建立在确定的基础上 不可证明",
+      "author": "维特根斯坦",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 0.084,
+     "result_full": "{\"query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"results\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 119, \"chapter_title\": \"（《论确定性》193-425节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》193-425节）】\", \"snippet\": \"5节） 687．一句话的真是确定无疑的——这是什么意思？（ÜG §193） 688．我们用“确定”一词表达完全信服、毫不怀疑的态度，并因此试图说服他人。这是主观的确定性。 但在什么情况下某种东西才是客观上确定的？——在不可能出错的情况。但这是一种什么样的可能性呢？ 出错的可能性不是必须在逻辑上已被排除了吗？（ÜG §194） 689．如果我相信我正坐在我的房间，实际却并非如此，人们不会说我出错了：但出错与这件事的本质区别是什么？（ÜG §195） 690．确定的证据即这样的证据：我们假定这一证据绝对确定，依据这一证据确定不疑地行动。 我们叫作“出错”的，在我们的语言游戏中扮演着极为特殊的角色，我们视作“确定的证据”的，也是如此。（Ü\", \"score\": 336, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 119, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 123, \"chapter_title\": \"（《论确定性》426-523节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》426-523节）】\", \"snippet\": \"指物教词的方法教小孩学习事物的名称时，我们必须知道这些事物存在。”——为什么我们必须知道这一点？之后的经验不曾给出反面的证明还不够吗？ 为什么语言游戏非要建立在一类所知的基础上？（ÜG §477） 1951年4月7日 1060．孩子相信乳汁存在吗？或者孩子知道乳汁存在？ 猫知道有一只老鼠存在吗？（ÜG §478） 1061．我们应当说“物理对象存在”的知识来得很早亦或来得很迟？（ÜG §479） 1951年4月8日 1062．学习使用“树”一词的孩子。我们同他站在一棵树前说“多美的树啊！”很清楚，对树的存在的怀疑没有出现在这个语言游戏中。但我们能说孩子知道有一棵树存在吗？固然，从“知道某事”本身的确不能推论出“思考某事”——但知道某\", \"score\": 334, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c0e78ea6f80a\", \"chapter_idx\": 123, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"08e055841182\", \"book_title\": \"哲学研究\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 17, \"chapter_title\": \"第二部分\", \"citation_label\": \"【《哲学研究》·第二部分】\", \"snippet\": \"信他的话吗？如果他说他只是偶尔地意识到深度（也许是在谈论它时）一—我相信他的这个说法吗？这些回答将会使我产生一种认为它们建立在虚假基础上的印象。一一如果他说对象有时使他感到是平面的、有时使他感到是三维的，那就跟上面的情况有所不同了。 某人告诉我：“我看着花儿，但想着别的事因而没意识到花的颜色。”我理解这句话吗？一一我能给它想象一种有意义的语境，比如他继续说“然后我突然看到它，并且认出它是一个…·” 或者：“如果我那时扭过头去，我就会说不出它是什么颜色。” “他对它视而未见。”——有这种事情。但它的判据是什么？一这里有各种各样的情况。 “刚才我更多地是注视形状而不是颜色。”不要让这种话把你搞糊涂。首先不要去想“在眼睛或大脑中能发生些什\", \"score\": 315, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"08e055841182\", \"chapter_idx\": 17, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"5d906139d1b2\", \"book_title\": \"逻辑哲学论\", \"author\": \"维特根斯坦\", \"chapter_idx\": 1, \"chapter_title\": \"导　言\", \"citation_label\": \"【《逻辑哲学论》·导　言】\", \"snippet\": \"相信时发生了什么事情的思想图式的问题。当然，这个问题不仅适用于相信，它同样也适用于可以称为命题态度的许多其它精神现象，如怀疑、考虑、期待等等。在所有这些场合，好像很自然地就用“A怀疑p”、“A期望p”等等的形式来表述这种精神现象。这种形式使人觉得我们像是在处理一个人和一个命题之间的关系。这当然不可能是最后的分析，因为除非在它们本身就是独立的事实这个意义上这些人是虚设的，这些命题也是如此。作为本身是一个独立的事实来考虑的命题，可以是一个人对自己说出来的一套语词，一个复杂的意象，一列闪过他心头的意象或者一套开始发生的身体的动作。它可能是无数种不同事情之一。这个本身是独立事实的命题，比如一个人对自己说出来的实在的一套词语，是与逻辑无关的。\", \"score\": 313, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"5d906139d1b2\", \"chapter_idx\": 1, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}, {\"book_id\": \"5d906139d1b2\", \"book_title\": \"逻辑哲学论\", \"author\": \"维特根斯坦\", \"chapter_idx\": 7, \"chapter_title\": \"第五章 真值函项\", \"citation_label\": \"【《逻辑哲学论》·第五章 真值函项】\", \"snippet\": \"个简单的记号来代替“＋c”；可是，在“～p”中，“p”不是附标而是主目：除非已经先理解了“p”的意义，“～p”的意义就 不可能 理解。（在名称尤利乌斯・恺撒中，“尤利乌斯”是一个附标。附标总是对对象的描述的一部分，我们把它附加到对象的名称上面：例如尤利乌斯家族中的 这位 恺撒。） 如果我没有弄错，弗雷格关于命题和函项的指谓理论，就是建立在混淆主目和附标的基础之上的。弗雷格认为逻辑命题是名称，而它们的主目则是这些名称的附标。 5.1　　真值函项可以排成系列。 这是概率论的基础。 5.101　一定数目的基本命题的真值函项，可以按以下这种图式 列出： （WWWW）（p，q） 重言式（如果p则p，且如果q则q。） （p⊃p・q⊃q） （FW\", \"score\": 310, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"5d906139d1b2\", \"chapter_idx\": 7, \"focus\": \"怀疑 本身 建立 确定 基础 不可 证明\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"query_terms\": [\"怀疑\", \"本身\", \"建立\", \"确定\", \"基础\", \"不可\", \"证明\"]}], \"catalogue_matches\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"5d906139d1b2\", \"book_title\": \"逻辑哲学论\", \"author\": \"维特根斯坦\", \"citation_label\": \"【《逻辑哲学论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"08e055841182\", \"book_title\": \"哲学研究\", \"author\": \"路德维希·维特根斯坦\", \"citation_label\": \"【《哲学研究》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 3, \"search_coverage\": {\"chapter_entries_examined\": 160}, \"search_scope\": {\"author\": \"维特根斯坦\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "t": 20.4,
+     "phase": "start",
+     "name": "verify_quote",
+     "call_id": "call_00_vZv79YqAUy4sMCYC2x5g3778"
+    },
+    {
+     "t": 20.6,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_01_J5fBGTGeEZ1hbos8a7zZ6561"
+    },
+    {
+     "t": 20.9,
+     "phase": "result_orphan",
+     "name": "verify_quote",
+     "args": {
+      "book_id": "c0e78ea6f80a",
+      "quote": "怀疑本身是以不容怀疑的东西为前提的",
+      "limit": 3
+     },
+     "status": "empty",
+     "duration_seconds": 0.113,
+     "result_full": "{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"quote\": \"怀疑本身是以不容怀疑的东西为前提的\", \"found\": false, \"match_count\": 0, \"verification_status\": \"not_matched_in_this_library\", \"author_attribution_verdict\": \"undetermined\", \"matches\": [], \"matches_omitted\": 0, \"coverage\": {\"scope\": \"present_local_chapter_files\", \"unit\": \"本库文本单元，可含序言和目录，不等于传统篇章数\", \"searched_chapters\": 130, \"unreadable_indices\": [], \"declared_chapters\": 130, \"directory_consistent\": true}, \"note\": \"仅核对本库现有版本，不作语义近似替代。whitespace_only只忽略排版空白，matched_text保留实际原文。程序扫描报告的范围，但模型只读到了matches.text给出的上下文。命中不自动证明说话者就是作者；请区分正文、对话角色与译注。未命中不能排除标点、异写、译本或未收录部分，也不支持未经核验的词源或年代断言。\"}"
+    },
+    {
+     "t": 22.0,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "trust versus belief epistemology of faith rationality without evidence",
+      "limit": 5
+     },
+     "status": "partial",
+     "duration_seconds": 1.273,
+     "result_full": "{\"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"results\": [{\"source_record_id\": \"doi:10.23943/princeton/9780691154725.003.0026\", \"title\": \"Epistemology within a General Theory of Rationality\", \"authors\": [\"Richard Foley\"], \"year\": 2012, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"When Is True Belief Knowledge?\", \"doi\": \"10.23943/princeton/9780691154725.003.0026\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-1\", \"title\": \"Trust, Rationality, and Utility\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-1\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-6\", \"title\": \"Secular Trust\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-6\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-4\", \"title\": \"Trust and Primitive Reactions\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315549606-2\", \"title\": \"Religious Trust and Utility\", \"authors\": [], \"year\": 2016, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Trusting Others, Trusting God\", \"doi\": \"10.4324/9781315549606-2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 1, \"READABLE_SOURCE_IDS\": [\"doi:10.23943/princeton/9780691154725.003.0026\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"status\": \"success\", \"raw_result_count\": 5}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    },
+    {
+     "t": 25.4,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_kp8VkXg1MrP8Tb0PXdmf1180",
+     "status": "success",
+     "duration_seconds": 0.003
+    }
+   ],
+   "answer": "## 短答\n\n不必然。这里有两处松动：一是\"证明\"这个词太窄，二是\"信仰\"的对象不是一种东西。\n\n如果把\"理性\"理解为\"能被证明才可相信\"，那结果不是宗教被淘汰，而是几乎所有信念都被判为不理性——包括\"地球在我出生前就存在\"。所以真正要问的不是\"能不能证明\"，而是：**这个信念是否以恰当的方式、在恰当的强度上，回应了这个问题所允许的、可获得的证据。**\n\n## 一、\"不能被证明\"至少有四种意思\n\n1. **尚未证明，但证据在路上**（科学假说）；\n2. **原则上无法证明**，因为没有可决断的证据（死后是否有意识）；\n3. **证据可及，只是我没去查**；\n4. **有明确的相反证据，我照信不误**。\n\n这四种的理性评价完全不同。第 3、4 种才是\"轻信\"的靶子，而它们的问题也不是\"缺证明\"，是**确信强度与支持强度脱节，并且拒绝修正**。\n\n还有一层前提性的事实：演绎证明要从前提出发，前提若也要证明，就无穷回溯。维特根斯坦《论确定性》说得干脆——\"有根据的信念的根基处是没有根据的信念\"（§253），\"我触及到了我的信念的最底层……这里的墙基是由整栋房屋支撑的\"（§248）。他由此指出，对\"我知道我有两只手\"这类东西，给不出比断言本身更确定的根据；能给的只是\"我无可动摇地相信\"（§243、§245）。这不是缺陷的暴露，而是信念结构的一般形状。\n\n## 二、三种东西不是同一类\n\n**（1）没有依据的事实断言——最站不住的一种**\n\n这是克利福德的靶子：《织梦人》第八章转引他的一句名言——\"无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。\"（此为中译转述，原句出自克利福德《信念的伦理》；本库未收克利福德原著。）\n\n要弄清它反对的到底是什么：不是\"未证明\"，而是**在一个可判定、证据可及的问题上，用断言的方式持有，且不受反证影响**。不过这里也有梯度——\"隔壁邻居是间谍\"和\"死后有无意识\"不是一回事，后者没有\"可采而未采的证据\"这个缺陷，因此不能用同一个尺子量。\n\n**（2）对朋友的信任——不是事实断言那一类**\n\n信任的结构不同：它是**把某事交出去、承担风险**，而不是断言\"他一定不会辜负我\"。你完全可以\"信任他\"同时\"知道他有失败的可能\"。它的支撑是既往记录与对性格的了解，所以不是无证据的，只是这里的证据不叫证明。\n\n更关键的是：信任有一个自毁结构——**要求保证就取消了托付**。把\"先证明你值得信任\"设为信任的前提，信任这件事就无法发生。亚里士多德《尼各马可伦理学》第八卷把友爱列为德性相关之物，并强调建立在品格上的友爱才持久，道理相通。但信任也不是无边界的，它的规范标准一部分是实践/伦理的（忠诚、相互性），而且始终可撤回。\n\n**（3）宗教信仰——内部最少有三层，必须分开评**\n\n- **作为事实主张的信念**（\"上帝存在\"）：这是克利福德式批评真正有效的位置。若以事实断言的方式持有、且对可能的修正通道一律关闭，那么它就带有认识论缺陷。\n- **作为信任与托付**（\"我信靠上帝\"）：结构与对朋友的信任相近——不可保证、承担风险、涉及整个生活。克尔凯郭尔式的\"信念的一跃\"（同上见《织梦人》转述）说的就是这个位置：客观确定性拿不到，所以才要信。这里理性的部分是实践的——这个风险是否值得冒、它与你其余生活是否一致。\n- **作为背景性的世界图景**：维特根斯坦 §239 有一段很值得看的地方——他举天主教徒相信面饼的本质完全改变为例，说这信念与\"一切证据所表明的\"相反，而它并不因此被当成一个待检验的假设。维特根斯坦是在**描述**差异（\"他的游戏不是我们的游戏\"），不是在判谁不理性。\n\n詹姆斯在《信仰的意志》里给这条路加了个条件（此处据《织梦人》第八章中译转述）：当事项是\"真实的选择\"——被迫的、重大的、且知性理由原则上无法决断——那么\"暂不决定\"本身也是一种情感性的决定，同样承担错过真理的风险。但请注意这是**有条件的**论证：它只对证据原则上无法判定的选项生效，不能给\"已有明确反证的事实断言\"发豁免。\n\n## 三、一个可用的判据\n\n| | 不证明是哪种 | 恰当的标准 | 何时变成不理性 |\n|---|---|---|---|\n| 事实断言 | 多为第 3 种（没查） | 与可得证据相称的置信度 | 可判定却不去查；有反证却不修正 |\n| 对朋友的信任 | 不可能\"证明\"人的忠诚 | 既往记录 + 风险承担 | 无条件免检、拒绝任何负面信息 |\n| 宗教信仰（事实层） | 第 2 或 4 种 | 同事实断言 | 在可判定之事上照样断言 |\n| 宗教信仰（托付层） | 第 2 种 | 实践一致性、可承受性 | 用它指挥他人行为却拒绝对话 |\n\n一句话：**不理性 ≠ 未被证明；不理性 = 强度脱节 + 通道关闭。** 理性则是：按该问题所允许的证据类型、在相称的强度上持有，并留着可修正的口子。\n\n## 四、两点我不打算含糊过去\n\n其一，我没有给三者排\"理性程度\"的名次。它们是不同类型的实践，用一把尺子排序本身就会走形——但这不等于宗教信念能因此免责。**同一个信念若同时充当事实断言（历史事件、可检验的世界主张），它就要接受事实断言的评判；\"这是信仰\"不是普遍豁免。**\n\n其二，有个真争议我在这里没有解决：宗教信仰在本质上是否就是\"事实断言\"的一种，还是更接近一种生活方式/实践承诺。上面的区分依赖这个悬而未决的问题，我没有靠它偷偷把结论定下来。\n\n（引文出处：维特根斯坦《论确定性》中译见《维特根斯坦文集》[《论确定性》193–425 节](https://deepphilosophy.top/reader/c0e78ea6f80a?ch=119)；克利福德、詹姆斯、克尔凯郭尔三处均转引自《织梦人》[第八章 信仰与理性](https://deepphilosophy.top/reader/0f00c3a90243?ch=15)，非其本人著作，原句未逐字核验。）",
+   "answer_chars": 2492,
+   "done_content": "## 短答\n\n不必然。这里有两处松动：一是\"证明\"这个词太窄，二是\"信仰\"的对象不是一种东西。\n\n如果把\"理性\"理解为\"能被证明才可相信\"，那结果不是宗教被淘汰，而是几乎所有信念都被判为不理性——包括\"地球在我出生前就存在\"。所以真正要问的不是\"能不能证明\"，而是：**这个信念是否以恰当的方式、在恰当的强度上，回应了这个问题所允许的、可获得的证据。**\n\n## 一、\"不能被证明\"至少有四种意思\n\n1. **尚未证明，但证据在路上**（科学假说）；\n2. **原则上无法证明**，因为没有可决断的证据（死后是否有意识）；\n3. **证据可及，只是我没去查**；\n4. **有明确的相反证据，我照信不误**。\n\n这四种的理性评价完全不同。第 3、4 种才是\"轻信\"的靶子，而它们的问题也不是\"缺证明\"，是**确信强度与支持强度脱节，并且拒绝修正**。\n\n还有一层前提性的事实：演绎证明要从前提出发，前提若也要证明，就无穷回溯。维特根斯坦《论确定性》说得干脆——\"有根据的信念的根基处是没有根据的信念\"（§253），\"我触及到了我的信念的最底层……这里的墙基是由整栋房屋支撑的\"（§248）。他由此指出，对\"我知道我有两只手\"这类东西，给不出比断言本身更确定的根据；能给的只是\"我无可动摇地相信\"（§243、§245）。这不是缺陷的暴露，而是信念结构的一般形状。\n\n## 二、三种东西不是同一类\n\n**（1）没有依据的事实断言——最站不住的一种**\n\n这是克利福德的靶子：《织梦人》第八章转引他的一句名言——\"无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。\"（此为中译转述，原句出自克利福德《信念的伦理》；本库未收克利福德原著。）\n\n要弄清它反对的到底是什么：不是\"未证明\"，而是**在一个可判定、证据可及的问题上，用断言的方式持有，且不受反证影响**。不过这里也有梯度——\"隔壁邻居是间谍\"和\"死后有无意识\"不是一回事，后者没有\"可采而未采的证据\"这个缺陷，因此不能用同一个尺子量。\n\n**（2）对朋友的信任——不是事实断言那一类**\n\n信任的结构不同：它是**把某事交出去、承担风险**，而不是断言\"他一定不会辜负我\"。你完全可以\"信任他\"同时\"知道他有失败的可能\"。它的支撑是既往记录与对性格的了解，所以不是无证据的，只是这里的证据不叫证明。\n\n更关键的是：信任有一个自毁结构——**要求保证就取消了托付**。把\"先证明你值得信任\"设为信任的前提，信任这件事就无法发生。亚里士多德《尼各马可伦理学》第八卷把友爱列为德性相关之物，并强调建立在品格上的友爱才持久，道理相通。但信任也不是无边界的，它的规范标准一部分是实践/伦理的（忠诚、相互性），而且始终可撤回。\n\n**（3）宗教信仰——内部最少有三层，必须分开评**\n\n- **作为事实主张的信念**（\"上帝存在\"）：这是克利福德式批评真正有效的位置。若以事实断言的方式持有、且对可能的修正通道一律关闭，那么它就带有认识论缺陷。\n- **作为信任与托付**（\"我信靠上帝\"）：结构与对朋友的信任相近——不可保证、承担风险、涉及整个生活。克尔凯郭尔式的\"信念的一跃\"（同上见《织梦人》转述）说的就是这个位置：客观确定性拿不到，所以才要信。这里理性的部分是实践的——这个风险是否值得冒、它与你其余生活是否一致。\n- **作为背景性的世界图景**：维特根斯坦 §239 有一段很值得看的地方——他举天主教徒相信面饼的本质完全改变为例，说这信念与\"一切证据所表明的\"相反，而它并不因此被当成一个待检验的假设。维特根斯坦是在**描述**差异（\"他的游戏不是我们的游戏\"），不是在判谁不理性。\n\n詹姆斯在《信仰的意志》里给这条路加了个条件（此处据《织梦人》第八章中译转述）：当事项是\"真实的选择\"——被迫的、重大的、且知性理由原则上无法决断——那么\"暂不决定\"本身也是一种情感性的决定，同样承担错过真理的风险。但请注意这是**有条件的**论证：它只对证据原则上无法判定的选项生效，不能给\"已有明确反证的事实断言\"发豁免。\n\n## 三、一个可用的判据\n\n| | 不证明是哪种 | 恰当的标准 | 何时变成不理性 |\n|---|---|---|---|\n| 事实断言 | 多为第 3 种（没查） | 与可得证据相称的置信度 | 可判定却不去查；有反证却不修正 |\n| 对朋友的信任 | 不可能\"证明\"人的忠诚 | 既往记录 + 风险承担 | 无条件免检、拒绝任何负面信息 |\n| 宗教信仰（事实层） | 第 2 或 4 种 | 同事实断言 | 在可判定之事上照样断言 |\n| 宗教信仰（托付层） | 第 2 种 | 实践一致性、可承受性 | 用它指挥他人行为却拒绝对话 |\n\n一句话：**不理性 ≠ 未被证明；不理性 = 强度脱节 + 通道关闭。** 理性则是：按该问题所允许的证据类型、在相称的强度上持有，并留着可修正的口子。\n\n## 四、两点我不打算含糊过去\n\n其一，我没有给三者排\"理性程度\"的名次。它们是不同类型的实践，用一把尺子排序本身就会走形——但这不等于宗教信念能因此免责。**同一个信念若同时充当事实断言（历史事件、可检验的世界主张），它就要接受事实断言的评判；\"这是信仰\"不是普遍豁免。**\n\n其二，有个真争议我在这里没有解决：宗教信仰在本质上是否就是\"事实断言\"的一种，还是更接近一种生活方式/实践承诺。上面的区分依赖这个悬而未决的问题，我没有靠它偷偷把结论定下来。\n\n（引文出处：维特根斯坦《论确定性》中译见《维特根斯坦文集》[《论确定性》193–425 节](https://deepphilosophy.top/reader/c0e78ea6f80a?ch=119)；克利福德、詹姆斯、克尔凯郭尔三处均转引自《织梦人》[第八章 信仰与理性](https://deepphilosophy.top/reader/0f00c3a90243?ch=15)，非其本人著作，原句未逐字核验。）",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "book": "织梦人——一个男孩穿越现实的哲学之旅",
+     "chapter": "第八章 信仰与理性",
+     "book_id": "0f00c3a90243",
+     "chapter_idx": 15,
+     "author": "杰克·鲍温",
+     "evidence_id": "read_08ad97e77bf4",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "着出错的风险；\n怀疑论者，或者说否定信仰者，热衷于不出错，但冒着失掉发现真理的机会之风险。\n作为信念的伦理\nW.K.克利福德（W.K.Clifford）写道：“无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。”这与詹姆斯所写的形成了鲜明的对照：“无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，‘不做决定，就将这个问题放着吧’，其本身就是一个情感性的决定——就像决定‘是’或‘不是’一样——并且同样伴随着错过真理的风险。”\n信仰主义（Fideism）——一种认为对上帝的信仰与理性和逻辑无关的观点。\n因为，就上帝的智慧来看，世间不通过智慧来认识上帝……因为上帝之愚也要比人类的［智慧］聪明。\n——圣保罗，《哥林多书》（Corinthians）（1:21—25）\n为了认识其各自声称的知识，他们都会做出信念的飞跃。回想一下我们是如何认识事物的：有些东西必须外在于理性。纯粹理性低估了我们——无论我们在讨论的，是我们的感觉之所无，还是理性的不一致性、归纳法的不足，或是所有关于‘坛中之脑’的思想实验、邪恶的天才，以及‘我们无法区分梦境与现实’这样的更鲜明的观点。纯粹理性只能带领我们走到那么远——而接下来我们必须做飞跃。瞧。”她又画了一张图，以帮助说明：\n“",
+     "quoted_passages": [
+      "无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 15720,
+     "reader_coordinate_valid": true
+    },
+    {
+     "book": "维特根斯坦文集（套装全8卷）",
+     "chapter": "（《论确定性》193-425节）",
+     "book_id": "c0e78ea6f80a",
+     "chapter_idx": 119,
+     "author": "路德维希·维特根斯坦",
+     "evidence_id": "read_80cb3ad57c81",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "件地依照这一信念行动且不受任何事情干扰吗？（ÜG §251）\n746．但并非只是我以这种方式相信我有两只手，每一个理智的人都这样做。（ÜG §252）\n747．有根据的信念的根基处是没有根据的信念。（ÜG §253）\n748．每一个“理智的”人都如此行动。（ÜG §254）\n749.怀疑具有某些富有特征的表露，但只有在特定的周边情况下，这些表露才成其为怀疑的特征。如果一个人说他怀疑他双手的存在，并老是从各个角度端详着双手，企图让自己确信这不是由镜面反射之类造成的，我们会不确定要不要把这叫作一种怀疑。我们也许会把他的这类做法描述为一种与怀疑相类似的行为，但他的游戏不是我们的游戏。（ÜG",
+     "quoted_passages": [
+      "有根据的信念的根基处是没有根据的信念",
+      "我知道我有两只手",
+      "我无可动摇地相信",
+      "一切证据所表明的",
+      "他的游戏不是我们的游戏"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 20978,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 20,
+    "display_citations": 2,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "织梦人——一个男孩穿越现实的哲学之旅",
+       "chapter": "第八章 信仰与理性",
+       "book_id": "0f00c3a90243",
+       "chapter_idx": 15,
+       "author": "杰克·鲍温",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "着出错的风险；\n怀疑论者，或者说否定信仰者，热衷于不出错，但冒着失掉发现真理的机会之风险。\n作为信念的伦理\nW.K.克利福德（W.K.Clifford）写道：“无论何时，无论何地，相信一些建立在不充分的证据上的任何东西，对于任何人来说都是错误的。”这与詹姆斯所写的形成了鲜明的对照：“无论何时，只要一种真实的选择就其本性来说不可能通过知性的理由来决定，那我们的情感本性就不仅可以合法地、而且必须在各种提议之间做出抉择；比如说，在如此情境下，‘不做决定，就将这个问题放着吧’，其本身就是一个情感性的决定——就像决定‘是’或‘不是’一样——并且同样伴随着错过真理的风险。”\n信仰主义（Fideism）——一种认为对上帝的信仰与理性和逻辑无关的观点。\n因为，就上帝的智慧来看，世间不通过智慧来认识上帝……因为上帝之愚也要比人类的［智慧］聪明。\n——圣保罗，《哥林多书》（Corinthians）（1:21—25）\n为了认识其各自声称的知识，他们都会做出信念的飞跃。回想一下我们是如何认识事物的：有些东西必须外在于理性。纯粹理性低估了我们——无论我们在讨论的，是我们的感觉之所无，还是理性的不一致性、归纳法的不足，或是所有关于‘坛中之脑’的思想实验、邪恶的天才，以及‘我们无法区分梦境与现实’这样的更鲜明的观点。纯粹理性只能带领我们走到那么远——而接下来我们必须做飞跃。瞧。”她又画了一张图，以帮助说明：\n“",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 15720,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "维特根斯坦文集（套装全8卷）",
+       "chapter": "（《论确定性》193-425节）",
+       "book_id": "c0e78ea6f80a",
+       "chapter_idx": 119,
+       "author": "路德维希·维特根斯坦",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "件地依照这一信念行动且不受任何事情干扰吗？（ÜG §251）\n746．但并非只是我以这种方式相信我有两只手，每一个理智的人都这样做。（ÜG §252）\n747．有根据的信念的根基处是没有根据的信念。（ÜG §253）\n748．每一个“理智的”人都如此行动。（ÜG §254）\n749.怀疑具有某些富有特征的表露，但只有在特定的周边情况下，这些表露才成其为怀疑的特征。如果一个人说他怀疑他双手的存在，并老是从各个角度端详着双手，企图让自己确信这不是由镜面反射之类造成的，我们会不确定要不要把这叫作一种怀疑。我们也许会把他的这类做法描述为一种与怀疑相类似的行为，但他的游戏不是我们的游戏。（ÜG",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 20978,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "爱弥儿",
+       "chapter": "第四卷",
+       "book_id": "32e4ebd33ddc",
+       "chapter_idx": 4,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "人厌恶他和责难他；而一看到我的学生的面貌，我就不禁想到一付朴实可爱的神情，它流露出他内心的喜悦和宁静，赢得了人们的尊重和信任，好象你到他的身边，他就要向你倾诉他的友情。有人认为，人的相貌只不过是大自然所描绘的特征的简单的发展而已。而在我看来，我认为，除了这种发展以外，一个人的面部的特征是通过心灵的某些感情的惯常的影响而不知不觉地形成的。在面貌上流露的这些情感是最真确不过的，它们流露惯了，就会在脸上留下持久的痕迹。因此，我才说相貌可以显示一个人的性格，我们用不着去听人家拿我们不懂得的学问做一番神秘的解释，也往往能互相看出彼此的性情。 小孩子只有两种很显明的感情：高兴和痛苦。高兴就笑，痛苦就哭；他没有介于这两者之间的情感，他不断地时而哭",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "道德情操论",
+       "chapter": "第四章　论不同的作者处理道德实务规则的方式",
+       "book_id": "21a479c4978d",
+       "chapter_idx": 18,
+       "author": "亚当·斯密",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，这种心理负担往往会伴随着焦虑不安与恐惧。一般人，在这种苦恼的时候，就像在所有其他苦恼的时候，自然渴望借由向某个他们能够信任保守秘密又有判断力的人倾吐他们心中的苦闷，以便卸下他们觉得压在他们心头的重担。他们因这种告白而蒙受的丢脸，会得到充分的补偿，因为他们倾吐的对象对他们的同情很少不会减轻他们心里的不安。他们觉得宽慰，因为他们发现，他们并非完全不值得尊敬，尽管他们过去的行为该受谴责，但他们目前的意向至少是被赞许的，而这也许足以弥补他们从前的过错，至少足以使他们的朋友对他还怀有一定程度的尊重。有一为数众多与手段巧妙的僧侣团队，在从前那些迷信的时代，巧妙迂回地获得几乎每一个私人家庭的信任。他们拥有那些时代所能提供的一切浅薄的学识，而且他",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "爱弥儿",
+       "chapter": "第五卷",
+       "book_id": "32e4ebd33ddc",
+       "chapter_idx": 5,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "一次乱伦和犯罪的事情同不忠实的女人是没有牵连的。如果说世界上确有一种可怕的处境的话，那就是一个倒霉的父亲的处境了：他不敢信任他的妻子，从而也不敢尽量发抒他内心的甜蜜的情感，当他拥抱他的孩子的时候，他怀疑他所拥抱的那个孩子是不是别人的，是不是他的耻辱的象征，是不是篡窃他嫡亲的子女的财产的盗贼。在这个家庭中，尽管那个犯罪的女人强使家中的人做出相爱的样子，但实际上是在挑使他们互相成为暗中的仇敌，所以，哪里能说他们是一家人呢？ 因此，问题不仅是做妻子的人本人应该是很忠实的，而且她在她的丈夫、她的邻人以及所有一切的人看来都是忠实的；她应当态度谦逊、举止谨慎，而且还略略含羞；她在别人的眼中看来，也要如同她在她自己的良心看来一样，不愧为一个有品德",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "生活的哲学",
+       "chapter": "尾声 思考死亡，就是思考人生",
+       "book_id": "406efc92bfd4",
+       "chapter_idx": 15,
+       "author": "朱尔斯·埃文斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "成功地证明了，一个人只需要做很少的工作、花很少的钱就能养活自己。但他对文明的拒斥并没有使他深入荒野——他最远只到了他的朋友爱默生的花园。 犬儒主义的再兴起 有一段时间，朴素的无政府主义对资本主义的批判因为马列主义的出现而黯然失色，但是随着对苏联模式的幻灭，犬儒主义又回归了。你可以在情境主义者的哲学、1968年巴黎的抗议运动上看到它的影响，1968年抗议运动的目标不是用共产主义国家取代资本主义国家，而是通过海报艺术和反讽涂鸦的运动宣扬其彻底废除政府的理念。你还可以在60和70年代的“雅皮士”（或者“青年国际党”）身上看到犬儒主义的影响，他们因“格鲁乔·马克思”的花招而声名狼藉，像是在纽约证券交易所朝地板上扔一卷卷的假钱引起混乱。你还可",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "生活的哲学",
+       "chapter": "附录三 让理性放假，在音乐里活！",
+       "book_id": "406efc92bfd4",
+       "chapter_idx": 18,
+       "author": "朱尔斯·埃文斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "成功地证明了，一个人只需要做很少的工作、花很少的钱就能养活自己。但他对文明的拒斥并没有使他深入荒野——他最远只到了他的朋友爱默生的花园。 犬儒主义的再兴起 有一段时间，朴素的无政府主义对资本主义的批判因为马列主义的出现而黯然失色，但是随着对苏联模式的幻灭，犬儒主义又回归了。你可以在情境主义者的哲学、1968年巴黎的抗议运动上看到它的影响，1968年抗议运动的目标不是用共产主义国家取代资本主义国家，而是通过海报艺术和反讽涂鸦的运动宣扬其彻底废除政府的理念。你还可以在60和70年代的“雅皮士”（或者“青年国际党”）身上看到犬儒主义的影响，他们因“格鲁乔·马克思”的花招而声名狼藉，像是在纽约证券交易所朝地板上扔一卷卷的假钱引起混乱。你还可",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "西方百年学术经典著作",
+       "chapter": "第四卷",
+       "book_id": "88dc7d5961df",
+       "chapter_idx": 94,
+       "author": "佚名",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "恶。而一想到我自己的学生爱弥儿，我就仿佛看到他脸上纯真而可爱的表情，流露出他的知足常乐和内心真正的平静，这些会激发尊重和信任，并且似乎只是在等待朋友的到来，并将他自己的信任延伸出去，馈赠给别人。人们认为，人的面相只是大自然已经定好的某些容貌特征的简单发展。但是在我看来，除了这种简单的发展以外，一个人的面部特征是内心情感经常产生的一些习惯性影响在不知不觉中形成的。这些影响表露在人的脸上，没有什么比这更确定的了，而当它们变成一种习惯的时候，就必定会留下持久的痕迹。这就是为什么我认为一个人的表情会显示出其性格，而且有的时候我们无须从不太懂的知识中寻找那些故弄玄虚的解释，就能判断出彼此是什么样的人。 孩子只有两种明显的情绪——开心和伤心。他",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼采文集（合集）",
+       "chapter": "347",
+       "book_id": "bedc9c78dfdf",
+       "chapter_idx": 464,
+       "author": "弗里德里希·尼采",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": " 虔信者及其对信仰的需要 。——一个人在多大程度上需要一种 信仰 才能成长，一个人需要多少“坚固之物”，因为 依靠 之而不想动摇之的“坚固之物”，——此乃一个人的力量的标尺（或者讲得更清晰些，是一个人的虚弱的标尺）。在我看来，在古老的欧洲，在今天依然，大多数人是需要基督教的：所以它也总还能得到信仰。因为人就是这样：他可能千百次地驳斥某个信条，——假如他需要这个信条，那么，他也总是会一再地把它当做“真的”，——依照圣经里讲的那个著名的“力量之证明”。一些人依然需要形而上学；但也需要那种狂热的 对于确定性的要求 ，这种要求如今以科学实证主义的方式在广大群众身上爆发出来，就是 想要 彻底地牢牢掌握某个东西的要求（而由于这种要求的激昂，人们",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "宗教经验种种",
+       "chapter": "第十八讲哲学",
+       "book_id": "469fc9745e43",
+       "chapter_idx": 15,
+       "author": "威廉·詹姆斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "无常和任性，为了区分宗教里的真实与虚妄，我们必须诉诸客观标准。进入人心的首先必须经由理智鉴别其真实（true）。它必须在本性上有权利统制感情，并构成判断感情所依 据的原则。①评价个人、国家、种族的宗教品格时，首要的问题不是他们如何感受，而是他们患想和信仰什么一—不是他们的宗教是否表现出激情，热烈的程度有多高，而是激发这些情绪的上帝以及神圣之物的概念是什么。感情是宗教必需的；但是，决定宗教品格和价值的不是感情，面是宗教的内容（content）或宗教的理性基础。②纽曼主教在《大学的观念》（TheIdeaofaUniversity）那部书里更强烈地表现出对情感的轻蔑。他说，神学是最严格意义上的科学。我要告诉你们，神学不是什么一不是证明上帝",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "宗教经验种种",
+       "chapter": "第十一、十二、十三讲圣徒性",
+       "book_id": "469fc9745e43",
+       "chapter_idx": 12,
+       "author": "威廉·詹姆斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "际上没有障碍。洪水比它们建造的堤坝还要高。某个近卫兵正在为皇帝①亨顿（1822-1875），英国医生、智学家。詹姆斯在《信仰的意志）中提到他所作的一本书《痛苦的神秘主义：一本关于悲惨的书）（The Mystery of Pain：A Book for theSorrouful,London;Smith,Elder,1866.)。———译者注 的被俘狂躁不安，这时有人提起他的妻子和孩子，他大声叫喊：“他们要是饿了，就让他们讨饭去吧！”据说，困在失火的剧院里的人们，竞然有人用刀从人群中杀出一条路。①在强悍性格的构造中，有一种情绪激动是极其重要的，因为它特别能够破坏抑制。我的意思是说，就低级形式而言，直接指暴躁、易怒、好斗的脾气；精微的形",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "宗教经验种种",
+       "chapter": "第四、五讲健康心灵的宗教",
+       "book_id": "469fc9745e43",
+       "chapter_idx": 7,
+       "author": "威廉·詹姆斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "有这种经验，是宗教品格与纯粹道德品格的分野。凡充分经历它的人，任何批评都不会使他怀疑其实在性。他们知道；因为他们放弃个人意志的紧张时，实际地感受到更高的力量。信仰复兴派的传教士经常讲述一个故事，说有一个人夜里失足，从悬崖边滑下去。终于，他抓住一条树枝，不再往下坠落，并悲惨地吊在那儿，过了好几个小时。最后，他的手指不得不松开，绝望地告别生命，让自已掉下去。然而，他只掉下了六英寸。假如他早点儿松手，烦恼恐怕早就没有了。传教士说，正如大地之母接受他一样，那永恒的臂膀也会接受我们，只要我们绝对信任它们，放弃依赖自已个人力量的传统习惯，以及那些不能报警的警惕和从不救人的保安。医心学者将这种经验扩展到最大范围。他们证明，凭借放松和撒手获得再生，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "宗教经验种种",
+       "chapter": "第十六、十七讲神秘主义",
+       "book_id": "469fc9745e43",
+       "chapter_idx": 14,
+       "author": "威廉·詹姆斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "sm）和“神秘的”（mystical）这些词，往往是在371纯粹贬斥的意义上运用的，以指我们认为模椭不清，阔大无边，滥发情感，而且没有事实依据或逻辑根据的那些意见。有些作者以为，凡相信传心术（thought-transference）或灵魂回归的人，都是“神秘主义者”“（mystic）。这样应用，这个词将很少派上用场：因为，不那么模棱两可①在《信仰的意志）“论一些黑格尔主义”一节的附录中（Works,Pp217-221），詹姆斯描述了他在醚（ether）的氛围内的经验。“神秘主义的启发”（A Suggestion aboutMysticism）一文，包含一些自传式的记述，而“多元宇宙”则讨论了本杰明·保罗·布拉德（Benjamin ",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "宗教经验种种",
+       "chapter": "第十四、十五讲圣徒性的价值",
+       "book_id": "469fc9745e43",
+       "chapter_idx": 13,
+       "author": "威廉·詹姆斯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "证的神，都是对他们自己有价值的某种东西。他们能 够利用这个神。这神则指导他们的想象力，保证他们的希望得以实现，控制他们的意志一不然，他们就需要这个神作保镖，以抗拒魔鬼，抑制他人犯罪。总而言之，他们选择这个神，是因为他产生的结果323对他们有价值。这些结果一且出现毫无价值的端倪；一且与必不可少的人类理想发生冲突，或者过分贬损其他价值；一旦经过反省，发现他极其幼稚，不值一提，或者道德败坏，这个神立刻就会声名扫地，很快被人忽略和遗忘。古希腊罗马的诸神后来不再为有教养的人所信奉，经历的过程正是这种方式。我们自已也是这样评判印度教、佛教和伊斯兰教神学的。新教如此对待天主教的神明概念，自由主义新教亦如此对待旧式新教的概念。中国人这样判断我们，我",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第八卷 友爱论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 8,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "第八卷友爱论 1155a1.友爱对于个人和城邦的重要性及其伦理等级此后轮到讨论友爱了，因为它是一种德性，或者说与德性紧密相连。1155a5其次，它对生活是最必需的东西。因为没有人想过没有朋友的生活，即便他有所有其他的善缘。富人、当权者、有势者看起来都特别需要朋友。因为如果有可能做善事，人们首先以及最受称赞的方式就是把好东西与朋友分享，否1155a10则这些财富又有何用？而且，如果没有朋友，财富又如何能够得到保护和保存？是呀，财富越多就越不安全。而陷【356】荷马《伊利亚人贫穷和窘追之时，除了朋友，谁还能特》10，224。这句话可伸出援助之手呢？青年人需要朋友的帮能本来就是不完整的句助在成长中少犯错误，老年人需要朋友子，所以有的译本译",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第九卷 友爱续论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 9,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "以他们的友爱也是不能持久的。与之相反，建立在品格之上的友爱和因友谊本身而建立的友爱，则如我们所说，具有持久性。同时，如果朋友得到的并不是他所追求的东西，也会发生意见1164a15分歧。因为如果不能如愿以偿，就相当于什么也没得到。这就如同一个琴师的雇佣者，他许诺，琴弹奏得越好，得到的报酬也就会越高。可是第二天，当琴师要求其兑现许诺时，他却回答说，他已经以快乐来支付报酬了。如果两人的意愿都是快乐的话，这样也还算说得过去。但如果一个人追求的是娱乐，另一个人追求的报酬，前1164a20者如愿以偿，而后者却得不到报酬，这样就无法达成一致。因为每个人意图得到的，正是他恰好必需的东西，为了这个东西他才付出他所拥有的东西。但报酬应该由谁来决定呢，是",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "维特根斯坦文集（套装全8卷）",
+       "chapter": "（《论确定性》426-523节）",
+       "book_id": "c0e78ea6f80a",
+       "chapter_idx": 123,
+       "author": "路德维希·维特根斯坦",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "指物教词的方法教小孩学习事物的名称时，我们必须知道这些事物存在。”——为什么我们必须知道这一点？之后的经验不曾给出反面的证明还不够吗？ 为什么语言游戏非要建立在一类所知的基础上？（ÜG §477） 1951年4月7日 1060．孩子相信乳汁存在吗？或者孩子知道乳汁存在？ 猫知道有一只老鼠存在吗？（ÜG §478） 1061．我们应当说“物理对象存在”的知识来得很早亦或来得很迟？（ÜG §479） 1951年4月8日 1062．学习使用“树”一词的孩子。我们同他站在一棵树前说“多美的树啊！”很清楚，对树的存在的怀疑没有出现在这个语言游戏中。但我们能说孩子知道有一棵树存在吗？固然，从“知道某事”本身的确不能推论出“思考某事”——但知道某",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学研究",
+       "chapter": "第二部分",
+       "book_id": "08e055841182",
+       "chapter_idx": 17,
+       "author": "路德维希·维特根斯坦",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "信他的话吗？如果他说他只是偶尔地意识到深度（也许是在谈论它时）一—我相信他的这个说法吗？这些回答将会使我产生一种认为它们建立在虚假基础上的印象。一一如果他说对象有时使他感到是平面的、有时使他感到是三维的，那就跟上面的情况有所不同了。 某人告诉我：“我看着花儿，但想着别的事因而没意识到花的颜色。”我理解这句话吗？一一我能给它想象一种有意义的语境，比如他继续说“然后我突然看到它，并且认出它是一个…·” 或者：“如果我那时扭过头去，我就会说不出它是什么颜色。” “他对它视而未见。”——有这种事情。但它的判据是什么？一这里有各种各样的情况。 “刚才我更多地是注视形状而不是颜色。”不要让这种话把你搞糊涂。首先不要去想“在眼睛或大脑中能发生些什",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "逻辑哲学论",
+       "chapter": "导　言",
+       "book_id": "5d906139d1b2",
+       "chapter_idx": 1,
+       "author": "维特根斯坦",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "相信时发生了什么事情的思想图式的问题。当然，这个问题不仅适用于相信，它同样也适用于可以称为命题态度的许多其它精神现象，如怀疑、考虑、期待等等。在所有这些场合，好像很自然地就用“A怀疑p”、“A期望p”等等的形式来表述这种精神现象。这种形式使人觉得我们像是在处理一个人和一个命题之间的关系。这当然不可能是最后的分析，因为除非在它们本身就是独立的事实这个意义上这些人是虚设的，这些命题也是如此。作为本身是一个独立的事实来考虑的命题，可以是一个人对自己说出来的一套语词，一个复杂的意象，一列闪过他心头的意象或者一套开始发生的身体的动作。它可能是无数种不同事情之一。这个本身是独立事实的命题，比如一个人对自己说出来的实在的一套词语，是与逻辑无关的。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "逻辑哲学论",
+       "chapter": "第五章 真值函项",
+       "book_id": "5d906139d1b2",
+       "chapter_idx": 7,
+       "author": "维特根斯坦",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "个简单的记号来代替“＋c”；可是，在“～p”中，“p”不是附标而是主目：除非已经先理解了“p”的意义，“～p”的意义就 不可能 理解。（在名称尤利乌斯・恺撒中，“尤利乌斯”是一个附标。附标总是对对象的描述的一部分，我们把它附加到对象的名称上面：例如尤利乌斯家族中的 这位 恺撒。） 如果我没有弄错，弗雷格关于命题和函项的指谓理论，就是建立在混淆主目和附标的基础之上的。弗雷格认为逻辑命题是名称，而它们的主目则是这些名称的附标。 5.1　　真值函项可以排成系列。 这是概率论的基础。 5.101　一定数目的基本命题的真值函项，可以按以下这种图式 列出： （WWWW）（p，q） 重言式（如果p则p，且如果q则q。） （p⊃p・q⊃q） （FW",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 20,
+     "quote_checks": [
+      {
+       "book_id": "c0e78ea6f80a",
+       "book_title": "维特根斯坦文集（套装全8卷）",
+       "quote": "怀疑本身是以不容怀疑的东西为前提的",
+       "found": false,
+       "match_count": 0,
+       "coverage": {
+        "scope": "present_local_chapter_files",
+        "unit": "本库文本单元，可含序言和目录，不等于传统篇章数",
+        "searched_chapters": 130,
+        "unreadable_indices": [],
+        "declared_chapters": 130,
+        "directory_consistent": true
+       }
+      }
+     ]
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 49.17,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 9.7,
+     "ev": "assistant_commentary",
+     "chars": 27
+    },
+    {
+     "t": 9.7,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 9.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_FuVHxwXxqcOSCwjIafkY9249"
+    },
+    {
+     "t": 9.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_KkCw3a8vGxrE4LtVEvzi7412"
+    },
+    {
+     "t": 10.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_an9CKTCr4zADd0bRcdWC1463"
+    },
+    {
+     "t": 10.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_OXGYY9IWbaUzcOFttZr65764"
+    },
+    {
+     "t": 13.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.624,
+     "result_chars": 4965,
+     "result_head": "{\"query\": \"信任 友爱 怀疑 朋友\", \"results\": [{\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷\", \"citation_l"
+    },
+    {
+     "t": 13.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.632,
+     "result_chars": 1141,
+     "result_head": "{\"query\": \"克利福德 信念 证据 不理性\", \"results\": [{\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"author\": \"杰克·鲍温\", \"chapter_idx\": 15, \"chapter_title\": \""
+    },
+    {
+     "t": 13.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.877,
+     "result_chars": 1197,
+     "result_head": "{\"query\": \"论确定性 枢纽命题 不可证明 怀疑\", \"results\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 119, \"chapter_titl"
+    },
+    {
+     "t": 13.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.889,
+     "result_chars": 1155,
+     "result_head": "{\"query\": \"信仰的意志 相信的权利 证据不足\", \"results\": [{\"book_id\": \"bedc9c78dfdf\", \"book_title\": \"尼采文集（合集）\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 464, \"chapter_title\": \"347\""
+    },
+    {
+     "t": 15.6,
+     "ev": "assistant_commentary",
+     "chars": 66
+    },
+    {
+     "t": 15.6,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 15.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_5uj0yGi3xDPdE7NxSZTI0001"
+    },
+    {
+     "t": 15.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_h8J1sP5g2BDDY67rwBnG4071"
+    },
+    {
+     "t": 16.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_rx3I9xyg5qCP2xcESZjq2581"
+    },
+    {
+     "t": 16.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_oNWk6SrETnzBPBCwkTV02759"
+    },
+    {
+     "t": 16.4,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 5038,
+     "result_head": "{\"book_id\": \"0f00c3a90243\", \"book_title\": \"织梦人——一个男孩穿越现实的哲学之旅\", \"chapter_idx\": 15, \"title\": \"第八章 信仰与理性\", \"citation_label\": \"【《织梦人——一个男孩穿越现实的哲学之旅》·第八章 信仰与理性】\", \""
+    },
+    {
+     "t": 16.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.06,
+     "result_chars": 5099,
+     "result_head": "{\"query\": \"信仰的意志 真实的选择 情感本性\", \"results\": [{\"book_id\": \"469fc9745e43\", \"book_title\": \"宗教经验种种\", \"author\": \"威廉·詹姆斯\", \"chapter_idx\": 15, \"chapter_title\": \"第十八讲哲学\", "
+    },
+    {
+     "t": 16.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.066,
+     "result_chars": 2706,
+     "result_head": "{\"query\": \"友爱 信任 朋友 德性\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\""
+    },
+    {
+     "t": 16.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.084,
+     "result_chars": 5403,
+     "result_head": "{\"query\": \"怀疑本身要建立在确定的基础上 不可证明\", \"results\": [{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"author\": \"路德维希·维特根斯坦\", \"chapter_idx\": 119, \"chapter_ti"
+    },
+    {
+     "t": 20.4,
+     "ev": "assistant_commentary",
+     "chars": 49
+    },
+    {
+     "t": 20.4,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 20.4,
+     "ev": "tool_start",
+     "name": "verify_quote",
+     "call_id": "call_00_vZv79YqAUy4sMCYC2x5g3778"
+    },
+    {
+     "t": 20.6,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_01_J5fBGTGeEZ1hbos8a7zZ6561"
+    },
+    {
+     "t": 20.9,
+     "ev": "tool",
+     "name": "verify_quote",
+     "status": "empty",
+     "duration_s": 0.113,
+     "result_chars": 634,
+     "result_head": "{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"quote\": \"怀疑本身是以不容怀疑的东西为前提的\", \"found\": false, \"match_count\": 0, \"verification_status\": \"not_matched_"
+    },
+    {
+     "t": 22.0,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 1.273,
+     "result_chars": 4021,
+     "result_head": "{\"query\": \"trust versus belief epistemology of faith rationality without evidence\", \"results\": [{\"source_record_id\": \"doi:10.23943/princeton/9780691154725.003.0"
+    },
+    {
+     "t": 25.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_kp8VkXg1MrP8Tb0PXdmf1180"
+    },
+    {
+     "t": 25.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5245,
+     "result_head": "{\"book_id\": \"c0e78ea6f80a\", \"book_title\": \"维特根斯坦文集（套装全8卷）\", \"chapter_idx\": 119, \"title\": \"（《论确定性》193-425节）\", \"citation_label\": \"【《维特根斯坦文集（套装全8卷）》·（《论确定性》193-425"
+    },
+    {
+     "t": 49.2,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1564
+  }
+ ],
+ "total_wall_s": 50.6,
+ "status": "COMPLETED"
+}

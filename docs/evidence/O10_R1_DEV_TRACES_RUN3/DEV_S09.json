@@ -1,0 +1,149 @@
+{
+ "case_id": "DEV_S09",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "「数字 3 有多重？」这样的问题为什么让人觉得奇怪？请用「范畴错误」这个概念解释这种奇怪感从何而来，再举一个类似例子。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_6IbgmBtvmZ2pH9yrU9AJ9493"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_S8pcr15dvdcIOlDSR1GC8636"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_XifgK1NRxWQHqgc3IWMk1157",
+   "args": {
+    "query": "赖尔 心的概念 category mistake"
+   },
+   "result_head": "{'results': [{'book_id': '4a4a200536bd', 'book_title': '西方哲学史（第9版）', 'author': '撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽', 'chapter_idx': 24, 'chapter_title': '第二十章 晚近的哲学', 'citatio"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_6djAUz6x2N5qaEfAeZGK3196"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_1sYVs1UFPvtqxEDilXSt7431",
+   "args": {
+    "query": "赖尔 范畴错误 心的概念 大学 例子 category mistake Ryle"
+   },
+   "result_head": "{'results': [], 'query': '赖尔 范畴错误 心的概念 大学 例子 category mistake Ryle', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "核验赖尔\"范畴错误\"概念在《心的概念》中的定义与经典例子（如大学/图书馆的访问者）的原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "WEB",
+    "evidence_gap": "赖尔\"范畴错误\"概念的定义表述与其\"大学/学院\"经典例子的具体内容",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2372,
+ "final_answer": "我先把研究边界如实说清楚：赖尔确立\"范畴错误\"（category mistake）这一概念的书是《心的概念》（*The Concept of Mind*, 1949）。我在本院的原典库里没有检索到这部著作本身，网络检索这次也没有返回可用条目，因此下文凡涉及赖尔原文定义和那个著名\"大学\"例子的部分，我会明确标为转述或记忆，不冒充逐字原文。好在——这道题的关键并不在引用，而在分析。\n\n## 一、先说\"范畴错误\"是什么\n\n\"范畴错误\"这个说法由 Gilbert Ryle 提出。它的核心意思是：**把属于某一类（范畴／逻辑类型）事物的谓词，加到了根本不属于这一类的对象上。** 这里出错的不是事实判断（说错了某物有什么属性），而是更靠底层的\"分类\"——你把一个东西放进了一个它无法落脚的抽屉。\n\n按我的记忆（未经本院库中核验），赖尔在《心的概念》开篇用的例子是：一个初次到访牛津的外国人，被领着看了各个学院、图书馆、行政楼，然后他问：\"那么**大学**在哪里？\"——他把\"大学\"当成和这些建筑并列的、藏在其中的某一个额外事物。而\"大学\"并不在这些建筑之外，它恰恰是这些设施被组织、运作起来的那种方式。他犯的不是看漏了某个东西，而是把\"大学\"错放进了\"建筑物\"这个范畴。\n\n## 二、\"数字 3 有多重\"奇怪在哪里\n\n奇怪感来自一个精确的落差：**这个问题在句法上完全合法，在语义—范畴上却无处落地。**\n\n把它的结构拆开看：\n\n- 谓词\"……有多重\"，它的寄居条件是：主词必须是一个**物理对象**——占据空间、受引力作用、可被放到秤上称量的东西。重量这个属性，只有在\"有质量的物体\"这个范畴里才有意义。\n- \"数字 3\"是一个**抽象对象（数学对象）**。它没有位置、没有延展、不能与任何物质相互作用。它能承载的属性是\"是质数\"\"是奇数\"\"是 1 与 4 之间的整数\"等等——而不是\"有多重\"。\n\n于是当我们听到这句话时，理解被卡在两段之间：\n\n1. **句法解析成功**：名词短语 + 疑问量。听起来像一句完整的问题，像是\"这台机器有多重\"\"那块石头有多重\"的同类。\n2. **语义填充失败**：等到要给\"数字 3\"填上\"重量\"这个槽位时，我们发现根本没有这个槽位可用。\n\n**\"奇怪\"正是这个落差本身**——一种\"看起来能被回答、实际上不能被回答\"的失序感。\n\n这里要把三种\"回答不上来\"区分开，这正是这个例子的价值所在：\n\n| 类型 | 例子 | 感受 |\n|---|---|---|\n| 不知事实 | 珠穆朗玛峰有多重？ | 想知道，但可以去测 |\n| 说错了 | \"3 是偶数\" | 激起反驳，有对错 |\n| 范畴错误 | \"数字 3 有多重？\" | 无处着力，不是对也不是错 |\n\n关键在于：第三种情况**不是无知，也不是错误**。你无法通过更多观察、更多计算来回答它，因为它并没有一个等待被填上的空。与其说它是一个\"错误的答案\"，不如说它是一个**预设了错误归属的问题**——它假装有一个答案槽，却从没建立过那个槽位。这就是它与\"未知事实\"的根本差别：未知事实让人好奇，范畴错误让人发窘。\n\n（一个更技术化的说法：这类问句没有可满足的真实条件。不过\"真值条件是否真空\"这一点在语言哲学里本身有争论——一派认为它只是废话／无真值，另一派认为它其实是假命题。这个我在此不展开，只需知道：无论哪种读法，它都不是一个\"待查\"的问题。）\n\n## 三、一个同类例子\n\n按同样结构给你一个——**\"这个论证是蓝色的吗？\"**\n\n- 谓词\"……是蓝色的\"要求主词是一个**光学对象**（物体、光、颜色载体）。\n- \"论证\"是**抽象结构**，它承载的属性是\"有效的／无效的\"\"可靠的／不可靠的\"\"有说服力的\"——它没有颜色，也不会反射光。\n\n于是这句的失序方式与\"数字 3 有多重\"完全同构：句法合法（\"这张桌子是蓝色的吗\"的亲戚），范畴错位（把颜色谓词塞进抽象结构）。你无法用更仔细的观察或更强的推理来回答它——不是难答，是**问题本身没安放在能长出答案的地方**。\n\n再随手给几个变体，全都踩同一个坑：三角形是诚实的吗？星期二是懒惰的吗？圆的平方根住在哪条街？\"自由意志有多少克？\"（最后这个其实是赖尔那个\"机器中的幽灵\"批评的街头版——把心灵当作与身体并列的、可以称量的另一种东西，正是库内斯通普夫《西方哲学史》在\"晚近的哲学\"一章里所述赖尔\"机器中的幽灵\"论证的靶子。)\n\n## 四、一点引申\n\n有意思的是，这类奇怪感之所以很难当场说清，是因为**语法给了它一层合法的外衣**。语言允许名词进任何谓词的槽位，于是\"数字 3\"念起来和\"石头\"一样顺，问题就\"看起来成立\"了。这一点与维特根斯坦\"语言游戏\"的想法相通：每个范畴背后是一套玩法（称量是一种玩法，证明是另一种玩法），把一套玩法的动作搬到另一套玩法的对象上，就会产生这种\"手脚不知往哪放\"的错位感。赖尔正是用这个工具去攻击笛卡尔式的心身二元论——把\"心灵\"当成藏在大脑里的另一种实体，就是把\"物\"的范畴硬套到\"心\"上。\n\n如果说这个例子有什么教益，那就是：**一个句子能被说出来，不等于它提出了一个问题。** 区分\"我听不懂（知识缺口）\"\"你说错了（真假问题）\"和\"这话无从回答（范畴错位）\"，恰恰是保持思维清醒的一项基本功。\n\n---\n\n**证据边界说明**：赖尔\"范畴错误\"的原文定义与\"大学\"例子，本节为我的转述／记忆，未能在本次会话中经本院原典库或网络检索核验到《心的概念》原文；库内实际检索到的相关材料是斯通普夫、菲泽《西方哲学史（第 9 版）》\"晚近的哲学\"一章中对赖尔\"机器中的幽灵\"的评述。文中的分析、类比例子与三层区分表，均为我基于该概念所作的分析，而非原文引文。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "WEB",
+  "evidence_gap": "赖尔\"范畴错误\"概念的定义表述与其\"大学/学院\"经典例子的具体内容",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:58:31",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "核验赖尔\"范畴错误\"概念在《心的概念》中的定义与经典例子（如大学/图书馆的访问者）的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 11:58:37",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "WEB",
+    "prev": "PRIMARY",
+    "evidence_gap": "赖尔\"范畴错误\"概念的定义表述与其\"大学/学院\"经典例子的具体内容"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 43992,
+   "output_tokens": 4982,
+   "total_tokens": 48974
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 8188,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11758,
+     "output_tokens": 1055,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17407,
+     "output_tokens": 921,
+     "tool_chars_added": 9101
+    },
+    {
+     "round": 3,
+     "input_tokens": 14827,
+     "output_tokens": 3006,
+     "tool_chars_added": 1427
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 43992,
+  "output_tokens": 4982,
+  "total_tokens": 48974
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 39.6
+}

@@ -1,0 +1,928 @@
+{
+ "case_id": "E01",
+ "category": "E",
+ "prompt": "请读《尼各马可伦理学》友爱论相关上下文，判断“真诚安慰必须以长期友谊为前提”能否由此推出。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "60675439c081c8db8150a2196de28c96e354f432",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T14:01:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.5",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "请读《尼各马可伦理学》友爱论相关上下文，判断“真诚安慰必须以长期友谊为前提”能否由此推出。",
+   "wall_s": 68.0,
+   "ttft_s": 9.1,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "fe70fb5673cf4f64a97f666cc8ef214b:1:note:0",
+     "content": "我先在本地库中定位《尼各马可伦理学》及其友爱论相关章节。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "fe70fb5673cf4f64a97f666cc8ef214b:2:note:0",
+     "content": "本地有该书的注释导读本。我直接在该书内检索友爱论的关键词，再读章节上下文。"
+    }
+   ],
+   "provider_reasoning": "The user asks: read the Nicomachean Ethics' discussion of friendship (philia), related context, and judge whether \"真诚安慰必须以长期友谊为前提\" (genuine/sincere consolation must presuppose long-term friendship) can be derived from it.\n\nI should search the local library for Aristotle's Nicomachean Ethics, friendship books (Book VIII and IX), and read relevant context. Then judge whether the inference holds.\n\nLet me start searching.\n\nKey passages: NE VIII.2-6 on kinds of friendship (utility, pleasure, virtue), NE VIII.3 关于完善的友爱与时间 (perfect friendship requires time and familiarity — \"ἡ δὲ τελεία φιλία... χρόνου καὶ συνήθειας δεῖται\"), NE IX.4 on 好意 (eunoia), NE IX.5 关于善意与友爱, NE IX.8 关于自爱, NE IX.11 关于患难中的朋友 (是否需要朋友 in misfortune — \"ἐν ταῖς ἀτυχίαις... ἡ παρουσία τῶν φίλων\").\n\nActually the relevant passage: NE IX.11 (1169b) — whether we need friends in good fortune more or in bad fortune; in misfortune the presence of friends is pleasant... 1171a? Actually 1155? Let me recall: Book IX chapter 11 discusses \"whether we need friends more in prosperity or adversity\". Aristotle says in misfortune, the presence of friends is beneficial (the friend's presence is comforting — \"παραμυθία\" consoling).\n\nAlso VIII.6: \"δύο μὲν οὖν ἐν τούτοις...\" Actually the key: perfect friendship (ἡ τελεία φιλία) requires time and intimacy: \"διὸ οὐδ' εἰσὶν οἱ τοιοῦτοι ῥᾴδιοι γνώριμοι\" (1156b25).\n\nAlso NE VIII.2: friendship involves reciprocal goodwill and requires \"εὔνοια\" and mutuality openly expressed. Even toward inanimate objects we don't have friendship (1155a).\n\nSo the question: can \"genuine consolation must presuppose long-term friendship\" be derived from NE? Aristotle's discussion of consolation (παραμυθία) — in IX.11 he says friends' presence consorts in misfortune; but does he require long-term friendship for that? Also the distinction between kinds of friendship: utility/pleasure friendships can offer comfort too. Also eunoia (goodwill) which arises without friendship — NE IX.5: \"εὔνοια\" arises suddenly, but friendship requires choice and time, whereas eunoia does not require... Actually IX.5: goodwill seems to be sudden, like falling in love (ἐρᾶν), but friendship requires mutual choice based on... \"οὐ γὰρ ἐστιν εὔνοια φιλία... τελεία?\" Let me check: \"ἡ δ' εὔνοια φιλία μὲν οὔτε φαίνεται...\" and 1167a: \"ἔοικε δὲ ἡ εὔνοια ἀρχὴ φιλίας εἶναι\" (goodwill is a beginning of friendship).\n\nSo the derivation: The premise says 真诚安慰 (genuine consolation) requires 长期友谊 — that's a modal/necessary premise. Aristotle's text: does he argue that only friends' consolation is meaningful? And whether \"long-term\" is necessary? Aristotle distinguishes friendship of virtue requires time; but consulers could be any friend. Also Aristotle says in IX.11 that in adversity we need friends whose company is pleasant, and \"διὸ ἐν ἀτυχίᾳ ἡ παρουσία τῶν φίλων...\" Hmm, he also says there is a question whether we should invite friends in misfortune, because they'd be pained—actually he says \"εὐλαβητέον δὲ μὴ...\" Let me actually read the text.\n\nAlso IX.8: self-love, and whether the good man should be a friend to himself. IX.4: friendship toward neighbors...\n\nLet me search the library. First, is the Nicomachean Ethics in the library? Let me search.\n\nI'll do parallel searches: search_books for 《尼各马可伦理学》/ 亚里士多德 友爱.\n\nLet me also check verify_quote for \"παραμυθία\"? Probably Chinese translation. Let me search.\n\nPlan:\n1. search_books query \"友爱\" author \"亚里士多德\"\n2. search_books query \"尼各马可伦理学\"\n\nThen get_book_detail, then get_chapter.\n\nAlso consider whether the claim could be derived: my judgment likely: it cannot be derived as stated (over-strong); Aristotle's conditions for consolation differ — he focuses on 痛苦中的在场、同情 (συναλγεῖν), and the kind of friendship; long-term is a condition of perfect/complete friendship, not of every genuine consolation. Also consolation \"真诚\" concept is modern-ish. Also Aristotle's eunoia and pity (ἔλεος) in Rhetoric — consolation requires sharing pain (συναλγεῖν) rather than long-term friendship.\n\nAlso note: might need to distinguish \"not derivable\" from \"contradicted\". Aristotle does imply that friends of virtue/stable friendships are better consolers, maybe.\n\nAlso check IX.11 for the passage where he says in misfortune present friends relieves grief — and importantly, in IX.11 he discusses: \"moreover in misfortune the presence of friends... and there's the question of whether the friend should share...\" Also he mentions \"in bad fortune one needs friends who can help (χρήσιμοι) but in good fortune friends who are... \" Hmm, I need to read.\n\nLet me start.本地有《尼各马可伦理学[注释导读本]》book_id e574c8e7f515，第八卷 友爱论 (chapter_idx 8), 第九卷 友爱续论 (chapter_idx 9)。\n\n我需要读取：\n1. 第八卷中关于三种友爱、完善友爱需要时间与熟悉（1156b）\n2. 第九卷关于 好意/善意 (εὔνοια) 第5章、关于患难中朋友的在场（第11章）\n3. 可能旁及 第八卷第2章 友爱定义、第5章 友爱与相似性\n\n先读第八卷，重点找\"时间\"、\"熟悉\"。用 focus。\n\nLet me read 第八卷友爱论 with focus \"时间\" 或 \"习惯\"。Let me do parallel reads: chapter 8 focus \"时间和\" ... Actually focus should be the original term. Let me try \"时间\".\n\nActually let me search within the book for specific terms: \"时间\" and \"熟悉\", \"患难\", \"安慰\", \"同情\". Let me use search_books with book_id.Hmm, book_id 限定时似乎检索未命中正文（只 12 chapter_entries examined）。可能该书检索索引分章不同。Let me get_book_detail to see chapter index, then read chapter 8 and 9.\n\nNote the earlier search returned chapter_idx 8 = 第八卷 友爱论, chapter_idx 9 = 第九卷 友爱续论. Let me read those with get_chapter, and search within using focus. But focus search inside chapter may work with get_chapter's focus param.\n\nLet me get book detail first.I need the key passages. Book IX chapter 11 (1169b... hmm). Actually the passage about 不幸 at offset 15836 — that's likely IX.11 about whether we need friends more in misfortune. Also offset 11883 is IX.9 (幸福的人也需要朋友) about whether happy person needs friends in good/bad fortune.\n\nLet me read from 15636 onward (focus 不幸).\n\nAlso need Book VIII: 1156a-1156b on kinds of friendship and time requirement (\"时间与熟悉\"), and VIII.2 on reciprocity, VIII.5-6 on complete friendship and time.\n\nAnd IX.5 on 好意 (εὔνοια), IX.4? Also IX.11 for consolation.\n\nLet me read: chapter 9 offset 15636; and search chapter 8 for 时间.\n\nLet me do parallel: get_chapter ch9 offset 15636 max 3500; get_chapter ch8 focus \"时间\".Excellent. I now have:\n- VIII.3 (1156b): 完善的友爱需要时间培养、共同生活的习惯（\"需要时间来培养这种性情并养成对共同生活的习惯\"）— 时间与习性。这与\"长期\"相关。\n- VIII.6 (1158a15): \"必须在长期交往中了解到别人的品性\" — again long-term.\n- VIII.5-6: 三种友爱；有用/快乐的友爱也能存在，且\"人们只要友善或者似乎友善，就可考虑交朋友\"（1157a35）。\n- IX.11 (1171a-b): 厄运中朋友更必要；朋友的在场就令人愉悦；\"如果有朋友分忧，痛苦就会减轻\"；\"一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格\" — 这里\"老道的/了解别人的性格\"暗示长期了解。但同时也说到\"看到某人是为自己的不幸而悲痛，也是令人痛苦的\"，\"妇人和妇人气的男人…喜欢和别人一起唉声叹气，把他们作为真正的朋友和同情者来爱\"——亚里士多德不赞许但承认这种。\n- IX.9 (1169b): 幸福的人需要朋友（既需要行善对象，也需要观照有德之人的行为）。\n- IX.11 结尾: 对不幸中的朋友应该主动不请自到。\n\n我还需要：\n1. 第八卷第2章 (1155b-1156a) 关于友爱的定义与相互性，以及\"对无生命物不能友爱\"、\"善意/好意\"。\n2. 第九卷第5章 (1166b-1167a) 关于 εὔνοια 好意（善意）——它像友爱但不是友爱，是好意的开始，可以突然产生，不需要时间。这很关键：善意不需要熟悉或长期友谊就能产生，而且在窘迫时\"会伸出援助之手\"（1158a9 已见：\"这样的人相互之间诚然也会有善意：他们也愿望别人好，在别人窘迫之时也会伸出援助之手。但严格地说，他们不是朋友\"）。这直接反驳\"真诚安慰必须以长期友谊为前提\"！即 VIII.6 明确说：性情古怪者/不共同生活的人之间有善意，在对方窘迫时会伸手援助——不是朋友但会援助。\n\nWait — 1158a9 is in VIII.6. That's a strong counterexample: 善意（goodwill）可以在非朋友之间产生，并且在窘迫时伸出援手。虽然\"援助\"不完全等于\"安慰\"，但相关。\n\n3. 第九卷第5章 关于好意的明确论述：\"好意是友爱的起点/尚未达到友爱的善意\"，可突然产生（像一见倾心），不需要时间与熟悉。\n\nLet me search chapter 9 for 好意 and read. Also check 第八卷 开头 1155a-b for 定义与相互性、以及\"善意\"（εὔνοια）。\n\nAlso useful: 第九卷 第10章? 关于\"朋友的数量\"（1170b20-1171a20）——\"一个人不可能跟许多人交朋友\"，\"同所有人都见面就熟…自来熟\"。已读到一部分。\n\nLet me search for 好意 in the whole book, and read ch9 around it.\n\nAlso worth checking: the notion of 同情 (συναλγεῖν) in IX.11: \"不想一起悲叹\" — 亚里士多德 says the manly person 羞于让朋友分担悲哀. Interesting: this shows Aristotle is aware of consolation dynamics.\n\nLet me search book for \"好意\" and \"善意\".\n\nAlso the mention \"朋友的在场就已经是令人愉悦的\" and \"如果有朋友分忧，痛苦就会减轻\" — 注意这里没有说\"必须是长期朋友\"。\n\nAlso 第八卷第2章: 友爱需要相互的、公开的善意? Let me read VIII beginning (offset ~586? or 0). Actually let me read chapter 8 from start (offset 0) to get 1155a-1156a definitions including 相互善意.\n\nLet me do parallel: search for \"好意\" in whole library (or book), and read ch8 offset 0.\n\nHmm, search_books with book_id gave no results earlier for keywords; the index seems to search only when author is given without book_id? The first search with author 亚里士多德 returned passages with chapter_idx. The book_id-only search returned catalogue only. Possibly the book_id search works with different query. Let me instead use search_books query \"好意\" author \"亚里士多德\" — that returned hits earlier with author filter working.\n\nActually earlier search with author=\"亚里士多德\" returned hits from this book. Let me use that with query \"好意\"、\"善意\".\n\nLet me do parallel calls.Great — I got 1155b-1156a: 善意/仁爱 (εὔνοια) defined, \"许多人对他们从未谋面的、却认为他们是善良和有用的人抱有善意\" — goodwill can be held toward people never met. And 注释 mentions 1166b30-31 \"善意与友爱类似，却不是友爱\" (IX.5).\n\nNow let me read IX.5 (1166b) on 善意/好意 to get the argument that 善意 arises suddenly and doesn't require time/familiarity — key evidence. Book IX chapter is chapter_idx 9. Let me find 1166b: search within chapter 9 for \"善意\".\n\nAlso worth reading VIII.2's definition of friendship (1155b33-1156a5 already read) — friendship requires mutual goodwill that is not concealed, plus reciprocal love.\n\nNow the crucial question: 真诚安慰必须以长期友谊为前提 — can it be derived?\n\nKey considerations:\n(a) Aristotle says 完善的友爱（德性友爱）需要时间与共同生活的习惯（1156b25ff），且\"必须在长期交往中了解到别人的品性\"（1158a15）。So 长期 is a condition of the highest friendship, not of all friendship (有用/快乐的友爱 can be formed quickly: \"人们只需花费很少的时间就能获得\"). Actually text says useful/pleasant friends can be many and obtained with little time.\n\n(b) On consolation specifically (1171a25-1171b10): in misfortune friends are more necessary; the friend's presence is pleasant; 分忧减轻痛苦; \"一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格，明白是什么让那个人感到痛苦和快乐\". So Aristotle's requirement here is 了解对方的性格 — which is 经验/熟悉, not necessarily 长期友谊; and it's stated as a description of the effective consoler, not a necessary condition on \"真诚\" consolation.\n\n(c) Aristotle's counterexample-ish: 善意 (εὔνοια) — arises toward people never met; VIII.6 (1158a9): 性情古怪者之间\"也愿望别人好，在别人窘迫之时也会伸出援助之手。但严格地说，他们不是朋友\" — so 援助 without friendship. Also IX.5: 善意是友爱的开端，可突然产生（像一见倾心），不需要时间.\n\n(d) Also: 陌生人/同邦人之间 — 1155a20 \"在陌生人中，我们也能看到，如同对待亲戚和邻人那样的友善\" — 1126b (第四卷) about 对生人和熟人.\n\n(e) Also, IX.11: 对不幸中的朋友\"应该主动地不请自到\" — 这是朋友义务.\n\nSo can \"真诚安慰必须以长期友谊为前提\" be derived? Answer: No, not as a strict necessary condition. What can be derived: (i) 长期共同生活与相互了解是\"完善的友爱\"的构成条件，而完善的友爱的朋友在患难中的安慰最可靠/最有效——所以长期友谊是\"最佳/最可靠安慰\"的重要条件之一，甚至可以是充分条件的一部分; (ii) 但亚里士多德明确承认非朋友之间的善意与援手（1158a9），承认善意可以针对从未谋面者（1155b34-36），承认善意可突然产生（IX.5），所以\"真诚安慰\"并不必然以长期友谊为前提。\n\nAlso need to consider the ambiguity of \"真诚安慰\": if \"真诚\" is defined as 出于对对方本身之故的善意/愿望其好，then that's εὔνοια + 让对方感受到（1156a3-5: 要成为朋友必须双方都让对方感受到善意）。Hmm: 1156a3-5 says to BE friends, goodwill must be mutual and both must perceive it. But goodwill itself doesn't require friendship.\n\nSo the sharp answer: The premise 真诚安慰 requires something; if 真诚安慰 = 出于愿望对方好的安慰，则亚里士多德的条件是善意，不是长期友谊。若 真诚安慰 = 真正有效/懂得如何安慰，则需要了解对方的性格（1171b1-3），这通常但非必然由长期交往获得。若指\"完善的友爱中的安慰\"，则需要时间与共同生活。\n\nAlso note: 患难中的\"分忧\" — 亚里士多德的机制是 共同悲叹 (συναλγεῖν) 与在场, 甚至提出一个张力: 分忧使痛苦减轻，但看到朋友为自己痛苦又令人痛苦——所以真正有男子气概的人不愿让朋友分担。这里有内在张力，值得指出：亚里士多德似乎认为最深厚的友谊中，安慰反而要克制。这一点削弱\"必须由长期朋友安慰\"的推论。\n\nNow, also I should double check IX.5's text about 善意 suddenly arising and \"善意是友爱的开端\" and \"不涉及共同生活/不需要时间\". Let me read chapter 9 around 1166b-1167a.\n\nAlso might want to check whether there is a passage in 第九卷 about 善意 \"对于那些从未见过的人也可以有善意\" — probably in IX.5.\n\nLet me search within whole library for \"善意\" 亚里士多德 or read ch9 offsets. The chapter 9 length is 17516. IX.5 would be early-ish. Let me read ch9 with focus \"善意\".\n\nAlso maybe check 第九卷第4章 (1166a) 关于 对邻人的友爱 & 友爱与自爱的类比.\n\nLet me also consider using compare_views? Not needed. The task: read context，判断能否推出。I'll do one more read then answer. Maybe also use analyze_argument to stress-test? It could be useful but I can do the logic myself. The instructions say complex reasoning may use analyze_argument once to pressure-test. The core logical question: does Aristotle's text entail the necessity claim? I think I can handle it. But a quick analyze_argument might be justified... It's optional. I'll consider it — the guidance says \"复杂思辨可用一次来压力测试关键推理\". I'll skip heavy tool use and rely on the textual evidence, but maybe one call to analyze_argument on my own tentative judgment could help check the modal structure. Actually let me do it — it's cheap and directly relevant (checking a necessity claim). Hmm, but the tool outputs are generic scaffolds. I think the textual work is the crux. I'll do one analyze_argument call on my key judgment to check for counterexamples I might have missed.\n\nLet me first read IX.5.Now I have IX.5 (1166b30–1167a20): 仁爱/善意 (εὔνοια):\n- 对不认识的人也有仁爱之心，且可不被对方所知（1166b30-33）\n- 可突然出现（1167a1）\n- \"仁爱之心是友爱之发端\"（1167a3），但\"有了仁爱之心并不一定友爱\"，\"只是单纯的善意，他们并不带着这些善意共同采取行动，也还不愿因这种善意添麻烦\"——\"不作为的友爱\"（1167a10-12）\n- 如果长久延续、相互建立信赖，就转变为现实的友爱（1167a12-14）\n- 仁爱基于德性和公道而产生，看到别人表现出高尚和勇敢等德性就会产生善意（1167a18-20）\n\nThis is the key negative evidence: 善意/仁爱 can arise suddenly, toward strangers, without being known, and it is 友爱的开端 rather than 友爱本身. Note carefully: it says the goodwill-holder \"并不想为他做点什么\"（1167a2）——所以善意本身不等于安慰行动。这其实两头都切：善意不必以长期友谊为前提，但善意也还不是安慰的施行。所以论证结构更微妙：亚里士多德把\"愿望对方好\"（动机/意愿层面）与\"带着善意共同行动/愿意因善意添麻烦\"（行动层面）分开。安慰是行动层面的事（添麻烦、到场）。\n\nSo the derivation question decomposes:\n1. 若\"真诚安慰\"指安慰者的动机真诚 = 出于对方自身之故的愿望其好 → 亚里士多德的条件是善意（εὔνοια），而善意明确不要求长期友谊，甚至不要求相识（1166b31）。→ 推不出，甚至与前提相反有文本反例。\n2. 若\"真诚安慰\"指有效的、切中对方痛苦的安慰 → 亚里士多德说需要\"老道的\"朋友\"了解别人的性格，明白是什么让那个人感到痛苦和快乐\"（1171b1-3）。这里的条件是\"了解\"，而了解通常通过长期相处获得（1158a15：必须在长期交往中了解别人的品性）——但这是关于\"完善的友爱\"中的情形，且亚里士多德并未把它表述为安慰的必要条件，只是描述有效安慰者的特征。而且，他明确说\"一个人可以对许多人有善意，也可以在别人窘迫之时伸出援助之手\"而不成为朋友（1158a5-10）。→ 至多推出\"长期友谊是有效安慰的典型条件/常例\"，不是\"必须\"。\n3. 若\"真诚安慰\"指基于完善的友爱（德性友爱）的安慰 → 那么长期共同生活确实是这种友爱的构成条件（1156b25ff. 需要时间培养、养成共同生活的习惯；1158a15 长期交往了解品性）。这是一个由\"完善的友爱\"的定义出发的分析性推论。但这是把结论中的\"长期友谊\"换成了\"完善的（德性的）友爱\"，而亚里士多德明确区分三种友爱，前两种（有用、快乐的）也是友爱（尽管是偶然的、派生的），并且它们也能形成得快（1158a16-18：\"在涉及有用和快乐的地方…人们只需花费很少的时间就能获得\"）。所以在\"友爱\"这个词的宽泛意义下，前提也不成立。\n\nOther relevant: 第八卷第1章 (1155a20ff): 在陌生人中也能看到如同对待亲戚邻人那样的友善；友爱是城邦纽带。第七卷? Not needed.\n\nAlso worth noting: 第四卷关于\"对生人和熟人\"（1126b20-25）：有德性的人对生人和熟人\"同样对待，只是在每一种情况下这样做才合适\"——即陌生人也配得适当的对待，虽然方式不同。这可以作为补充但不必。\n\nAlso should note the 内在张力 in IX.11: 看到朋友为自己不幸而悲痛也令人痛苦；有男子气概的人羞于让朋友分担悲哀；因此最深厚的友爱中，安慰可能反而被克制（1171b4-11）。这削弱了\"必须由（长期）朋友安慰\"的规范读法——亚里士多德把\"接受安慰\"看作有条件的、有时甚至应避免的事。同时他也说\"对于不幸中的朋友我们反而应该主动地不请自到\"（1171b19-21）——即施与安慰的义务在朋友这边是严格的，而接受则要克制。有意思。\n\nAlso: 亚里士多德把\"朋友分忧减轻痛苦\"这件事本身列为\"令人疑惑的问题\"：究竟是朋友分担了重负，还是仅仅在场就令人高兴，还是分忧的意识本身。他明确说\"我们现在也不去管它，究竟是由于这个原因还是别的原因使人得到宽慰。反正事实与所说的一致，就足以\"（1171a32-35）——即他对安慰的机制不作严格论证。这很关键：既然机制未被严格论证，说\"必须以长期友谊为前提\"就缺乏文本基础。Hmm — actually he does offer the explanation of the 老道的朋友 了解性格. But he treats the mechanism as unresolved (\"我们现在也不去管它\"). Good point: 那条关于\"了解性格\"的说明是他给出的最接近\"为什么有效\"的解释，但他自己标为存疑，并且以事实观察为足。\n\nNow, the question: \"判断'真诚安慰必须以长期友谊为前提'能否由此推出\" — Answer: 不能由友爱论推出为一个必要条件；只能说：若把\"真诚安慰\"限定为完善的（德性）友爱中的安慰，则长期共同生活是该友爱得以形成的条件之一，于是长期友谊是那类安慰的前提——但这是加了限定后的重述，且亚里士多德本人的文本另有两处反例（善意可对陌生人产生；非朋友在窘迫中也会伸出援手）。另外，即使长期友谊存在，也不因此保证安慰是\"真诚\"或有效的（亚里士多德说有用/快乐的友爱是偶然的、变化的）。\n\nI should also flag the modal direction: 长期友谊可能是\"完善的友爱中安慰\"的必要条件（且仅在这一限定的意义上），但文本不给\"充分条件\"。而且\"以…为前提\"若读作\"没有长期友谊就不可能有真诚安慰\"，文本反例使其为假。\n\nAlso worth noting an ambiguity: \"长期\" — Aristotle says 需要时间来培养、养成共同生活的习惯，以及\"长期交往中了解品性\"。他没有给出时限，所以\"长期\"本身是程度性的；把他这句话读成一个可操作的判据（如\"若干年\"）是超出文本的。\n\nShould I also check whether the Greek term παραμυθία appears? The translation used \"慰籍\"(安慰). Not necessary.\n\nMaybe also check 第九卷第9章/第十一章 remainder? I have IX.11 fully? The excerpt 15436-17516 covers the end of ch.11 and ch.12; earlier part of ch.11 began at 15436? focus location 15836 is 不幸. Text at 15436 begins with 1171a15 area (about 许多朋友). Then \"正文11.幸运中的朋友和厄运中的朋友\" — so yes I got the whole chapter 11 from 1171a21 to 1171b27, and ch.12.\n\nI also might want IX.4 or the part of IX.11 before? Chapter 11 starts at ~15400. I read from 15436. Good enough.\n\nAlso VIII.2/3 for 相互善意和让对方感受到 (1156a1-5) — read. Good.\n\nOne more useful piece: 第八卷第4-5章? 关于 友爱是否存在于恶人之间 etc. Not necessary.\n\nMaybe I should verify a quote with verify_quote for the key sentence about 善意/仁爱 toward strangers, to be safe about attribution. The get_chapter already gave text with Bekker numbers 1166b30-33. That's actual reading, fine.\n\nOptionally I could check the Greek original? Not available presumably. Skip.\n\nShould I use analyze_argument to pressure test? The claim structure: \"真诚安慰必须以长期友谊为前提\" — necessity claim. Textual evidence: counterexamples (εὔνοια toward strangers; 非朋友的援手; 竞赛者突然的善意). Also the concept ambiguity. I think I can present this without the tool. But the system prompt suggests using it for complex reasoning pressure-testing. It's optional (\"可用一次\"). I'll skip it to avoid diluting — actually, hmm. Using it might surface a counterexample I've missed (e.g., 神? 自足?). Let me think about whether there's a genuine counterexample class in Aristotle: \n- 父母对子女的友爱（第八卷第12章 1161b? about 父母爱子女 as 友爱? — 家庭友爱 in VIII.12）：父母对孩子的爱不需要\"长期友谊\"（孩子出生即被爱），且父母安慰孩子显然真诚。That's a strong Aristotelian counterexample! 第八卷第12章 论家庭友爱 (1160b-1162a): 父母爱子女如同爱自己的一部分; 父母对子女的爱是 因缘最多的一种友爱。Also 母子/父子关系 not \"长期友谊\" but 自然亲情. And it's genuine consolation (母亲安慰孩子). Let me verify that passage exists in this library edition. Search for 父母 子女 友爱.\n\nThat would strengthen the answer: 在亚里士多德体系中，\"真诚安慰\"的典型场景之一是父母安慰子女，而这种关系不是\"长期友谊\"，而是自然亲情（第八卷12章）。\n\nLet me search for that. Also could mention 政治家/同邦人的友爱 (政治友爱, IX.6 和睦) — 对同邦人的善意不需长期友谊。\n\nLet me do one search: query \"父母对子女 友爱 家庭\" author 亚里士多德.Good — VIII.12 (1161b-1162a) on family friendship: 父母对子女的友爱, 兄弟友爱\"最为经久坚固\" (经受时间考验), 夫妻友爱.\n\nNote: 父母对子女的爱 是友爱的形式之一，且是\"因缘最多\"的一种（1162a?). The snippet at 1162a5 gives 父母给予子女的最大恩德. Let me read that region to confirm the claim that 父母对子女的友爱 doesn't require 长期友谊 as a prior condition (it's natural, 从一出生) and that 父母 are 施善者. Actually 1162a10-15 says 兄弟从一出生起就相互喜爱. So natural/familial friendship doesn't require prior long acquaintance — Aristotle says 父母爱子女 as 自身的一部分 and 因缘最多 (有三重因缘? \"父母对子女的友爱具有更多因缘\"?). Let me read ch8 offset ~13000-16000 area? Chapter 8 length is 20542. 1162a would be near the end, ~ offset 15000+. Let me read ch8 with focus \"父母\".\n\nActually let me just read ch8 offset 14000, max 3200 to capture 1161b-1162a. Hmm, I'd rather use focus \"父母\" to land near.\n\nLet me call get_chapter ch8 focus \"父母对子女\".I have plenty. Note 1161b24-28: \"在时间长度上也有区别，因为父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母\" — 父母对子女的爱不需要时间积累；子女对父母的爱则需要时间。\n\nNow I have enough textual material. Let me also consider whether I should check whether the edition's own annotation/导读 (chapter 0) or 附录 says something about 友爱与安慰 — not necessary.\n\nNow compose the answer.\n\nStructure:\n1. 先确定\"由友爱论推出\"的准确含义 — 需要什么样的文本支撑（必要条件）。\n2. 我实际读到的四处相关上下文（附 Bekker 编号与出处）：\n   a. VIII.3 (1156b24-32)：完善的友爱需要时间与共同生活的习惯；\"从前没有一起吃过盐巴的人，是不会相知相识的\"。→ 支持\"长期\"作为最高友爱的构成条件。\n   b. VIII.6 (1158a14-16)：必须在长期交往中了解别人品性。→ 支持\"了解对方品性需要长期\"。\n   c. VIII.6 (1158a6-10) + VIII.2 (1155b34-1156a5) + IX.5 (1166b30-1167a14)：善意/仁爱不等于友爱，可对从未谋面者有之，可突然产生，是友爱的发端；而\"性情古怪者\"之间也会\"在别人窘迫之时伸出援助之手\"，但\"严格地说，他们不是朋友\"。→ 反例。\n   d. IX.11 (1171a21-1171b27)：厄运中朋友更必要；在场即令人愉悦；朋友分忧减轻痛苦；\"一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格\"；男子汉羞于让朋友分担；妇人气的人喜欢和别人一起唉声叹气，\"把他们作为真正的朋友和同情者来爱\"（亚里士多德不赞许此评价但记录了现象）。且亚里士多德明说机制存疑：\"我们现在也不去管它……反正事实与所说的一致，就足以。\"\n   e. VIII.12 (1161b24-28, 1162a9-15)：父母从子女一出生就爱他们；亲子之爱不是先有\"长期友谊\"。\n3. 判断：\n   - 不能作为必要条件推出。分三种读法说明：\n     (i) 真诚 = 动机出于对方自身之故 → 条件是善意（εὔνοια），亚里士多德明确说善意不要求相识、不要求时间（1166b31, 1167a1）。而这就要求\"长期友谊\"为前提为假。但注意：善意也还\"不带着善意共同行动\",\"不愿因这种善意添麻烦\"（1167a10-12）——所以这一读法下得到的是\"真诚的愿望\"，还不等于安慰的行动。\n     (ii) 真诚安慰 = 真切、切中对方的安慰（行动，需要到场、说话）→ 亚里士多德给的条件是\"老道的\"\"了解对方的性格\"，而这一了解的常规途径确实是长期交往（1158a15），但（α）他未把\"长期友谊\"列为必要条件，只描述有效安慰者的特征；（β）他自己说安慰何以生效的机制是存疑的；（γ）他明确承认非朋友（无共同生活、相互不喜欢的性情古怪者）会在窘迫中援助。→ 至多推出\"长期友谊是有效安慰的典型途径\"，推不出\"必须\"。\n     (iii) 真诚安慰 = 完善的（德性）友爱中的安慰 → 长期共同生活的习惯确实是这种友爱的构成条件，这个推论成立。但这是把前提中\"长期友谊\"偷换成\"完善的友爱\"，并且亚里士多德把友爱分为三种，有用与快乐的友爱在很少时间内就能结成（1158a16-18），所以\"以长期友谊为前提\"若指任何一种友爱则不成立。\n   - 还有一个方向性问题：即使长期友谊在场，也不保证真诚或有效——有用/快乐的友爱是\"偶然的\"，一旦因缘改变就消逝（1156a20-24）。\n   - 以及一个耐人寻味的反向张力：IX.11 中，男子汉羞于让朋友分担悲哀、不愿朋友为自己痛苦，因此亚里士多德认为最深厚的友爱中安慰反而受克制；同时施与安慰对朋友一方则是义务（\"不请自到\"）。这与\"真诚安慰必须以长期友谊为前提\"的直觉方向不完全一致：亚里士多德把\"接受安慰\"看成有条件的事，把\"给予安慰\"看成朋友的义务。\n4. 结论句子：能推出的最接近命题是\"在完善的、基于德性的友爱中，长期共同生活与相互了解是该友爱得以形成的条件，而这类朋友在患难中的在场最可靠地减轻痛苦；但'真诚安慰'本身在亚里士多德那里并不以长期友谊为必要条件\"。\n5. 需要说明的残余不确定性：本库版本是注释导读本（抽取文本，未核原版排印），\"长期\"没有给出时限；我读的是章节片段（有界，非整章/全文）。另外\"真诚安慰\"是当代语汇，不是亚里士多德术语，因此把它当作一个单一概念去要求文本的必要条件，本身就有概念错配的风险——亚里士多德区分的是 善意/仁爱(εὔνοια)、有用/快乐的友爱、德性的友爱、以及\"在场\"这一事实。这一点应该讲。\n\nLet me note reading scope honestly: I read 第八卷 offsets 0-586? no: 586-3586, 4186-7786, 14600-17600; 第九卷 4983-8183, 11183-14183, 15436-17516 (到章末). Not whole chapters. I'll say so.\n\nTerminology: 该译本把 εὔνοια 译为\"仁爱\"（Wohlwollen），注释里也提到\"善意与友爱类似，却不是友爱\"（1166b30-31）。第八卷译本用\"善意\"。I should note the translation variance: VIII uses 善意, IX uses 仁爱, both εὔνοια.\n\nNow write the answer in Chinese, moderate length, with citations: 【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】+ Bekker numbers.\n\nI'll structure with headers and keep it tight. Also include a note on 模态 direction and what would be needed to derive it.\n\nLength: aim ~900-1300 字. Should be clear and complete.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "友爱",
+      "author": "亚里士多德",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 0.034,
+     "result_full": "{\"query\": \"友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"snippet\": \"第八卷友爱论 1155a1.友爱对于个人和城邦的重要性及其伦理等级此后轮到讨论友爱了，因为它是一种德性，或者说与德性紧密相连。1155a5其次，它对生活是最必需的东西。因为没有人想过没有朋友的生活，即便他有所有其他的善缘。富人、当权者、有势者看起来都特别需要朋友。因为如果有可能做善事，人们首先以及最受称赞的方式就是把好东西与朋友分享，否1155a10则这些财富又有何用？而且，如果没有朋友，财富又如何能够得到保护和保存？是呀，财富越多就越不安全。而陷【356】荷马《伊利亚人贫穷和窘追之时，除了朋友，谁还能特》10，224。这句话可伸出援助之手呢？青年人需要朋友的帮能本来就是不完整的句助在成长中少犯错误，老年人需要朋友子，所以有的译本译\", \"score\": 70, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 9, \"chapter_title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"snippet\": \"第九卷友爱续论 正文7.因缘不同的友爱如何回报在所有不同类型的友爱中，如上所述，合乎比例地建立了平等并得以保存了友谊。这也就如同在公民交往中鞋匠得到与他做的鞋1163b35所等值的回报，织布匠和其他匠人也是如此。所以人们在这里创造1164a了作为共同尺度的货币。一切都以它为基准，以它来衡量。相反在爱情关系中，有时爱者抱怨他爱得太多，没有得到相对应的爱的回1164a5报，也许是他本来就没什么值得人爱之处，而有些被爱者却抱怨，对方先前给他承诺的一切，现在无一兑现。凡是出现此类情况的地方，都是因为一方因快乐而爱对方，另一方是因功利而爱对方，双方都没有达到其意图。如果友爱建立在这样的基础上，那么只要他1164a10们不能如愿以偿（因此之故他\", \"score\": 70, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"chapter_idx\": 3, \"chapter_title\": \"第四章\", \"citation_label\": \"【《形而上学》·第四章】\", \"snippet\": \"秩序的和*美的东西，而且有混乱的和丑恶的东西，而且坏的东西比善的东西多，卑劣的东西比美好的东西多，因而另外的思想家提出了友爱与争斗（iiakaivcikog），二者中的每一个相应地是两类事物中的每一类的原因。如果我们贯彻恩培多克勒的观点，并且根据它的*意义而不是它的含混的表达来解释它的话，我们会5发现友爱是善的事物的原因，而争斗是坏的事物的原因。因此，如果我们说恩培多克勒在一种意义上同时说到恶与善是本原，并且是最早这样说的，那么我们也许会是对的，因为所有的善的事物的原因就*是善10本身。 正如我们所说，这些思想家明显地抓住了（而且在这种程度上抓任了）原因中的两个（我们在论自然的著作中区分过这些原因）—质料以及运动的源泉一然而它是粗略\", \"score\": 53, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f11f1b13c278\", \"chapter_idx\": 3, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"chapter_idx\": 6, \"chapter_title\": \"第七章\", \"citation_label\": \"【《形而上学》·第七章】\", \"snippet\": \"都有这类原因，因为有人说过第一元素就是这一类的。②这些思想家仅仅抓住了这个原因，但是某些其他的人提出了运动的源泉，例如把友爱与争斗或者理性或者性爱作为本原的那些人。 *没有一个人明确地表达过本质以及实体。它主要由那些相信*“形988式”的人所提示。因为他们并不假定“形式”是可感觉事物的质料以及①参看《物理学》，1I1.3.7。 ②参看第尔士：《前苏格拉底哲学家》第3版，1.18.821,415,32-416,27。这个相关事项也许指的是阿那克西美尼的追随者。 “二”是“形式”的质料，或者它们是运动的来源（因为他们说这些母宁是不动的和处于静止状态的东西的原因），但是他们提供“形式”作为*每个其他事物的本质，并提供“二”作为“形式”的本\", \"score\": 51, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f11f1b13c278\", \"chapter_idx\": 6, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"chapter_idx\": 117, \"chapter_title\": \"第十章\", \"citation_label\": \"【《形而上学》·第十章】\", \"snippet\": \"怎样是一个本原，*他们却没有说一无论是作为目的，或是作为推动者或是作为形式。 恩培多克勒也有一个奇怪的观点，因为他将善与友爱等同，但这是一个既作为推动者（因为它把事物结合在一起）又作为质料（因为它是5混合物一部分）的本原。现在，即使发生了同一*事物是本原，它既作为质料又作为推动者，但是这两个本原的本质仍然不是同样的。在哪方面友爱是一个本原呢？并且说争斗应当是不可坏灭的，这也是荒谬的； 恶的本性恰恰是争斗。 ①因为有一个永恒的实体，它不是从对立中产生出来的（参看本卷第六章），并且不仅有事物从对立中产生，也有从其质中产生的（参看本卷第二章）。 ②亦即为了存在物的高级形式可以从元素的新的组合中产生出来。 ③即指基质④指柏拉图主义者的主张。\", \"score\": 51, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f11f1b13c278\", \"chapter_idx\": 117, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"chapter_idx\": 17, \"chapter_title\": \"第六章\", \"citation_label\": \"【《形而上学》·第六章】\", \"snippet\": \"但是，至少这一点是明显的一而且这是我们的出发点—*根据他的理论就得出争斗也是存在的原因，正如它是毁灭的原因一样。相似地，友爱不专是存在的原因；因为在把事物聚集为一时，它就摧毁了所有其他的事物。并且，与此同时，恩培多克勒在事物由于本性是如此之外，没有提到变化本身的原因。 但是当争斗最后在球体的边缘变大时，*并且当时间已到了它跳出来确定它的权利时，那是依次地由强大的普言为它们确定的。 这意味着变化是必然的，但是他未表明这个必然的原因。但是直到这时只有他是前后一贯地谈论问题，因为他并没有让有些事物是可坏灭的而另一些事物是不可坏灭的，而是*使除了元素以外的一切事物都是可以坏灭的。我们现在正谈论的困难是：如果所有事物都是由相同的本原构成的，那\", \"score\": 50, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"f11f1b13c278\", \"chapter_idx\": 17, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"chapter_idx\": 17, \"chapter_title\": \"第四章\", \"citation_label\": \"【《政治学》·第四章】\", \"snippet\": \"的目的说，这种妇孺归公 的社会毋宁实行于［被统治的］农民之间，不应该实施于［统治阶级的］卫国公民。在妇孺公有的社会中，“友爱”的精神一定削弱，而被统治阶级减少相互间的友谊恰恰有利于服从而免得他们试作反叛的图谋 ②。概括地说，［于柏拉图的《理想国》中］苏格拉底倡议的这种制度所产生的效果一定不 同于习俗制度所得的效果，而这些效果也一定相反于他原先所企求的目的。因为消除内讧最有赖于友爱，所以大家总是以友爱作为城邦主要的善德 ③。苏格拉底更特别重视城邦的全体一致（洽和），他和世人都曾经想到并说明惟有友爱可以 造成这样的团结。但他所想望的全体团结，类似《爱情篇》中男女情侣的热爱，有如阿里斯多芳所描绘的，他们由于情意炽烈，双方都乐于合为一体。这\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"53b09f03e24e\", \"chapter_idx\": 17, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"chapter_idx\": 9, \"chapter_title\": \"论题篇第三卷\", \"citation_label\": \"【《工具论》·论题篇第三卷】\", \"snippet\": \"的东西比健康更值得选择；因为它超过同一的标准更多。 再次，由于自身而更高尚、更珍贵以及更值得做的东西就更值得选择，例如，友爱比财富、公正比健康更值得选择。因为前者由于自身而属于珍贵的和值得做的东西，后者则不是由于自身而是其他；因为无人由于自身而珍视财富，总是由于其他，相反，我们是为了自身而珍惜友爱，即使它不可能给我们带来什么。 【2】 此外，当两个东西彼此非常相似，而我们看不出其中的一个比另一个有任何更好之处时，就应从它们的结果出发来考察它们。因为带来更善的东西，更值得选择；或者，如果结果是恶，带来更少恶的东西就更值得选择。因为即使二者都可以选择，但仍会有某种不合适的结果。从结果出发的考察又有两种方式，因为有在先的结果和在后的结果，\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"b471f41a78de\", \"chapter_idx\": 9, \"focus\": \"友爱\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"total_passage_hits\": 21, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "尼各马可伦理学 友爱 时间 习性",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 1.41,
+     "result_full": "{\"query\": \"尼各马可伦理学 友爱 时间 习性\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷 具体德性续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第四卷 具体德性续论】\", \"snippet\": \"论一个好朋友时爱是有差别的，在德语所指的那种人的话，就只需再加上可爱中基本上和我们汉语相就行了。似，一般用友谊和爱两个同友爱的区别在于它缺乏对所交往词来表达，但在希腊文之人的情感和爱，因为人在此如其应当中，philia,philo,philos 有的那样中庸，不是出于爱与恨，而只是“友谊”和“友爱”“热因为有此品质。他对生人和熟人，亲近1126b25爱”等义，友谊和友爱基的人和疏远的人都同样对待，只是在每本上能相互蕴含的，所以一种情况下这样做才合适罢了。因为对我国的一些希腊哲学专亲近的人和生疏的人以同样的方式关心家认为，把英文friend或或伤害，是不应该的。friendship译为“友谊”不所以，上面所说的是人们一般地如如译为“友\", \"score\": 177, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 4, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 11, \"chapter_title\": \"附录\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·附录】\", \"snippet\": \"piciokparla,Aristocracy）贵族制，贵族政体一种好的政制160a32；其蜕变160b10；夫妻之间的友爱显得是贵族式的160b34；131a23；贵族从德性看人的尊贵131a28。AuBere Guter（EKTogayaeu,εueTnpia, εunμepla, xopnyla）外在的善目(善物或善缘）作为幸福的必然要素98b26,99a31；101a15，153b18，178b33；梭伦的看法179a11—16；思辨的生活相比于实践的生活对外在善目的需要更少178a24；身体的善和灵魂的善之区分98b13；荣誉作为最大的外在善目123b20。 BBelehrung.Lernen（μaθnrov,ioaaka\", \"score\": 176, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 11, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 2, \"chapter_title\": \"第二卷 伦理德性与中庸\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\", \"snippet\": \"然票赋”（Anlagen），如们称作性情的是欲望、愤视觉、听觉等一样。怒、恐惧、自信、嫉妒（Neid，envy）、愉悦、友爱、增恨，渴慕、忌妒（Eifer-sucht, Mi β gunst, emula-tion）、同情，总而言之是所有那些伴随着苦乐的性情；能力我是指那种我们因之能够感受这些性情的东西，例如那种使我们能够感1105b25受愤怒、悲伤或怜阀的东西；称作品质的是，我们借助于它在面对非理性的情感冲动时使我们能正当或不正当地对待的东西，例如，面对一种怒气的爆发，如果我 正文们的情感对它太激烈或者太软弱，我们的举止就不当，而如果我们适度地对待它，那就是正当的。类似的东西也适用于其余的性情。1 105b30性情既非德也非恶，首\", \"score\": 174, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 2, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 5, \"chapter_title\": \"第五卷 公正论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第五卷 公正论】\", \"snippet\": \"么贪婪者的贪欲也与之般不会说“绝对如相关，这样一个在恶事上想少得的人也显得是何”，我们还是用贪婪者，但实际上他是不平等的友爱者。所“就其本身而言”以，贪婪者就是贪图财富和喜爱不平等的人，1129b10来理解。贪婪是对这两者的共同表达。.3.公正乃德性之首【199】不平等此外，违法的人也是不公正的。这种不公包含了贪婪和狭义正，违法或者不平等，包含了所有的不公正，上的不平等。对于每一种不公正而言，都是共同的【199】。 由于我们把违法的【200】对这段文字，西方学者的理解人看做是不公正的，把历来分歧较大，不同的译本有不同的译法，守法的人看做是公正我先是依Meiner版的译法，但最终依据的的，那么显然，一切合是Taschenbuch版的，\", \"score\": 172, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 5, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 0, \"chapter_title\": \"导读：从《尼各马可伦理学》找回对德性力量的确信\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·导读：从《尼各马可伦理学》找回对德性力量的确信】\", \"snippet\": \"靠法治，同样需要人的德性，但它不是需要具体的像勇敢、节制这样的美德，而是需要“公平”、“正义”这种“总德”（大德）和友善友爱这样的待人之德，因为只有“公正”和“友爱”才是维系城邦共同体的德性力量。而在内，既然所有生物有机体都能做到自我实现其功能的优秀和卓越，那么人难道就没有能力实现自己人之为人的固有使命吗？当然有，人尽管不是宇宙中最高贵的存在者，也称得上是次高贵的存在者，因为人的灵魂中尽管有植物性的自然要素，有非理性的情感因素，但也有理性的逻各斯（logos）和通神的努斯（nous），因此人的德性是否有力量实现人的优秀和卓越，关键在于人是否让灵魂中的高贵部分起主宰和领导作用。如果人只能让植物性灵魂起主导作用，那么人就只能像一般植物那\", \"score\": 16, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 0, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"EDITORIAL_CANDIDATE\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 5, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "患难 不幸 朋友的在场 分担忧愁",
+      "book_id": "e574c8e7f515",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.022,
+     "result_full": "{\"query\": \"患难 不幸 朋友的在场 分担忧愁\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": null, \"book_id\": \"e574c8e7f515\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "时间 熟识 完善的友爱",
+      "book_id": "e574c8e7f515",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.023,
+     "result_full": "{\"query\": \"时间 熟识 完善的友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": null, \"book_id\": \"e574c8e7f515\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "好意 善意 善意不是友爱",
+      "book_id": "e574c8e7f515",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.025,
+     "result_full": "{\"query\": \"好意 善意 善意不是友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": null, \"book_id\": \"e574c8e7f515\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 9,
+      "focus": "不幸",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 9, \"title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"text\": \"\\n况。因为他们为自己选择的是伟大而高尚的事业。也肯舍弃钱财，朋友因此得到更多。朋友得到了钱财，而他自己收获的是高贵，这样他为自己求得了更大的善。对于荣誉和地位他也1169a30同样如此。他可以把所有这些都留给朋友，因为这样对于他自己而言就是高尚和值得赞美的。这样他理所当然地显得是德性高贵者，因为他在道德上比所有其他人都更加优秀。确实，他也会留一些事情让朋友去做，警如在让朋友去执行比他自已亲身去做可能更加美好的情况下。1169a35所以在所有值得赞美的事情上，有德之人1169b显得对自身的完美要求更高。在这种意义上，如我们所说，人应该是自爱者，但不是如大多数人所认为的那种自爱。.幸福的人也需要朋友人们也问自己，幸福的人需不需要朋友。【414】欧里庇有人说，谁幸福，谁就是自足的，不需要朋德斯的《俄瑞斯式》1169b57友。因为他好像已经万善具备，因而也就自满（Orest）V.667。“神自足，无一所缺；而朋友，作为另一个自我，佑”在古希腊语中是从自我本身所不能达到的。所以有诗日：与“幸福”有密切关倘有神佑，谁还要朋友？【414】联，因为所谓“神佑”但另一方面，若说幸福的人万善皆有，唯缺朋就相当于“神（Dai-友，看来是说不通的，因为朋友在所有外在善mon）带来好运”1169b10缘中显得是最大的善。（eá），而“幸福”其次，如果朋友之为朋友，与其说是受善就是：eu-daimonia。\\n第九卷友爱续论者不如说是施善者，如果对于有德之人和德性，不为他人施行善举是不可思议的，如果施善于朋友比施善于陌生人终究更为高尚，那么道德高尚的人需要能够受其善举的朋友。因此人们也问，人是否在幸运时比在不幸时更需要朋友；因为不幸的人需要有人为他行善，而幸1169b15福的人需要有这样的接受者，他才能够行善。也许把享受至福的人当作孤独者也是荒唐的。因为没有人愿意，在孤独中拥有万善。人【415】作为“政是政治的动物【415】，天生要过共同生活。所治的动物”指的是以享受至福者也要过这种共同生活，由于他确1169b20人本质上是社会实拥有了所有自然具有的善，而且他的生活与的，即生活在与他朋友和有德之人一起共享比与陌生人和偶遇的人的关系中。参人共享更好。所以，幸福的人要有朋友。阅本书第一卷5，1097b11和第七卷他们的意见在何种意义上是对的？大概就在14,1162a18。其于，许多人把朋友理解为有用的人吧？确实，1169b25次，著名的地方在幸福的人不需要这些有用的人。因为他万善具《政治学》第一券备。他也不需要为他取乐的朋友，或者很少需第2章，1253a3。要（因为他的生活本来就是快乐的，不需要从【416】即本章外部带来的快乐）。所以他不需要这样的朋友，开头所说的，幸福这就显得他好像一般地不需要朋友了。但真实的人不需要朋友。[417 】1098a16,幸福是一种实现活动，这种活动是生成，【418】1169b30b31—1099a7。而不单纯地如同对财富的占有。如果幸福存在[ 418 】 Meiner于生活和生成实现活动中，那么有德之人就是版还加了一句：是从事德性的生成实现活动，如我们开头所说的一个过程。那样，本身就是令人愉悦的，此外，如果每个人对他本身独有的东西和与自身相关的东西都能获得享受，如果我们比观照我们自身更容易观照我们的邻人，比观照我们自身的行为更容1169b35易观照陌生人的行为，而且，如果有德之人的\\n行为对于另外一些作为其朋友的有德者而言，【419】特俄格必定是令人愉悦的（因为善和满足这两者都内尼斯（Theognis），涵于自身，发自本性地是令人愉悦和令人享受公元前6世纪希腊1170a的），因此推导出，幸福的人需要这样的朋友，抒情诗人，这里所因为他乐于观照有德性的和他所信任的行为，指的是他的诗第35而另一些有德之人（作为他的朋友）的行为正行所述：“你从高贵是这样的行为。者身上习得高贵”1170a5人们也认为，幸福之人生活必定愉悦，孤或译作：“你从善者单一人生活必定艰苦。而且，孤单一人从事实学习善”，所以苗现活动难以为继，而有他人相伴并为了他人，力田先生译作“近实现活动就轻松快活。所以，这种本身快乐的朱者赤”是很传神实现活动以此方式就将更为持续不断，幸福之的，但没有把“学人的实现活动必定就是如此（因为有德之人对习”“习得”这种合乎德性之行为的愉悦是作为对其本身的愉“实践”意义表达1170a10悦，就如同音乐家对优美的旋律本身就愉悦，出来。参见Antho-有德之人之厌恶恶劣行为，也如同音乐家对低logia Lyrica Graeca劣的声音的气愤一样）。《希腊抒情诗选》，这也产生了一种德性习得的方式：通过同ed.E.Diel（编者）,有德性者的共同生活，特俄格尼斯也已经说过2Bde.（2卷），这一点。【419】Leipzig（莱比锡），如果更多地从自然哲学的立场【420】来考1933—1942。察这个问题，那么一个有德行的朋友对于一个【420】借助于有德性的人而言发自本性地就显得是值得交自然暂学的证据来的。讨论这个问题一直1170a15因为我们说过，发自本性的善对于有德性延续到b18。类似者而言本身就是善的和愉悦的。的考察方式在讨论其次，有生命者的生活受知觉能力规定，友爱问题的开头：人的生活受知觉或思想能力规定。而能力诉诸第八卷21155b8—9。实现活动。因为主要事务是实现活动。所以，在第七卷51147a24生活本质上显得以知觉或思想为根基。但生命也提到：“如果人们1170a20本身就是善的和令人愉悦的。因为它是有限度从自然哲学的角度的，而限度属于善的本性。但本性为善者，对来考察的话”。\\n第九卷友爱续论于有德之人也是善的。所以对于大家也显得是愉悦的。人们在这里不可想到恶劣的生命，堕落的生命和悲苦的生命。因为这样的生命是无【421】这句话度的和无法描述的【421】，这也如同由它支配Tasc henbuch 版的事物。我们所指的悲苦是什么，下面将闸释和Reclam版译作：得更清楚。1170a25unbestimmt （不如果生命本身是善的和令人愉悦的（这可规定的）或die诚然也在所有人都追求生命上表现出来，尤klare Umgrenzung其是有德之人和幸福的人，因为对于他们而fehlen（缺乏明晰言，生命是最值得欲求的，他们的生活也是最的界限），Meiner幸福的），其次，如果一个观看者知觉到他所版还附加了：und观看到的东西，一个听者知觉到他所听到的东unumschrieben (不西，一个行者知觉到他所行之路，而且在所有. 1170a30可改写的或无法描其他活动中同样具有对这些活动的知觉，我们述的），但Meiner就是生活在活动中，以至于我们知觉我们所知版在主题索引中，觉的，我们思想我们所思想的：进而言之，我还另外用了这个们在知觉和思想，这是我们存在着的一个标志词：konturenlos（没（因为存在对于我们来说就是知觉和思想）。其1170b有轮廊）来表达。次，如果知觉到，我们活着，本身就令人愉悦（因为生命发乎本性地令人愉悦，能够知觉到本身存有的善是令人愉悦的），那么生命对于有德之人是优先地值得欲求的，由于存在对于他们是善的和愉悦的（因为他们在自身之中同1170b5时知觉到了本来的善并对自身感到愉悦）；这就\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 11183, \"excerpt_end\": 14183, \"chapter_text_length\": 17516, \"has_more\": true, \"next_offset\": 14183, \"has_previous\": true, \"previous_offset\": 8183, \"focus_found\": true, \"focus_terms_matched\": [\"不幸\"], \"focus_terms_found_in_chapter\": [\"不幸\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"不幸\", \"offset\": 11883, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 11683, \"focus\": \"不幸\"}}, {\"term\": \"不幸\", \"offset\": 11894, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 11694, \"focus\": \"不幸\"}}, {\"term\": \"不幸\", \"offset\": 15836, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 15636, \"focus\": \"不幸\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"c408cbe0e5dabe97fd041af0ae2fa72907ff3cfe82eed6b4ddd8247a30dc00a5\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=9\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[11183, 14183]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "e574c8e7f515"
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"id\": \"e574c8e7f515\", \"title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追问“人应当如何生活”这一根本问题。他提出，所有人类活动都以某种“善”为目的，而最高的善就是“幸福”（eudaimonia）。幸福不是短暂的快乐，而是灵魂合乎理性德性的现实活动。书中详细区分了伦理德性与理智德性，并提出了著名的“中庸之道”——德性就是两种极端之间的中道。亚里士多德强调，德性不是天生的，而是通过习惯和实践培养出来的。他还深入讨论了正义、友谊、快乐等伦理主题，指出友谊不仅是个人幸福的重要组成部分，也是城邦团结的基础。本书的注释导读本为现代读者提供了清晰的解读路径，帮助理解亚里士多德如何将伦理学从抽象理论转化为可实践的智慧。作为古希腊哲学的集大成者，亚里士多德的思想深刻影响了后来的基督教神学、启蒙运动哲学以及当代美德伦理学，至今仍是哲学研究的核心议题。阅读本书，不仅是在学习一套伦理体系，更是在学习如何理性地思考人生、选择与幸福。\", \"rank\": 45.1, \"chapterCount\": 12, \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 12, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 12, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"导读：从《尼各马可伦理学》找回对德性力量的确信\"}, {\"index\": 1, \"title\": \"第一卷 伦理学和政治学：善、幸福与灵魂活动\"}, {\"index\": 2, \"title\": \"第二卷 伦理德性与中庸\"}, {\"index\": 3, \"title\": \"第三卷 德行特征与具体德性\"}, {\"index\": 4, \"title\": \"第四卷 具体德性续论\"}, {\"index\": 5, \"title\": \"第五卷 公正论\"}, {\"index\": 6, \"title\": \"第六卷 理智德性论\"}, {\"index\": 7, \"title\": \"第七卷 自制和快乐\"}, {\"index\": 8, \"title\": \"第八卷 友爱论\"}, {\"index\": 9, \"title\": \"第九卷 友爱续论\"}, {\"index\": 10, \"title\": \"第十卷 论快乐、幸福和立法\"}, {\"index\": 11, \"title\": \"附录\"}], \"matched_chapters\": 12, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 9,
+      "focus": "不幸",
+      "offset": 15436,
+      "max_chars": 3600
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 9, \"title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"text\": \"上很少至同名誉性的要求最出现炽烈情感的友爱，在诗歌作品中被歌颂相符合”。剑桥英文的友爱总是只限于两个人之间。但谁有许多1171a15版的译法是：In the朋友，同所有人都见面就熟，就似乎与谁都way fellow citizens不是真正的朋友，除非说，同邦人都是朋are friends,indced,one友。这种人也被称之为自来熟【423】。不过，can be a friens to在同邦人即朋友的意义上，一个人可以有许many and yet not多朋友却不是自来熟，而是有一个真诚的、obsequious,but a gen-uinely good person.因他人本身之故一个人不可能跟许多人交朋供参考。友；这样的朋友哪怕只有几个，我们必定就1171a20很知足了。\\n正文11.幸运中的朋友和厄运中的朋友但一个人是在幸运中还是在厄运中更需要朋友呢？在两种情况下人们都寻求朋友：遭不幸的人需要帮助，幸福的人需要能够陪他们共同生活并接受其好处的人。因为他们愿意行善。厄运中朋友更1171a25必要，因此也需要朋友有用；幸运中朋友更美好，所以人们追求优秀和卓越。行善和同优秀的人共同生活更值得欲求。无论是在幸运中还是厄运中，朋友的在场就已经是令人愉悦的。117la30如果有朋友分忧，痛苦就会减轻。所以我们也疑惑，究竞是朋友分担了重负还是虽然并没有分担而只是在场就令人高兴，而且朋友分忧的意识就使痛苦减轻了。所以，我们现在也不去管它，究竞是由于这个原因还是别的原因使人得到宽慰。反正事实与所说的一致，1171a35就足以。朋友的在场可以说显得是某种混合性的东西。因为朋友的1171b探视确实是令人喜悦的，尤其是当处在厄运中时，这的确有助于减轻痛苦（因为一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格，明白是什么让那个人感到痛苦和快乐）。另一方面，看到某人是为自已的不幸而悲痛，也是令1171b5人痛苦的。因为每个人都避免让朋友为自己而痛苦。所以，有男子汉气概的人总是羞于让朋友来分担他的悲哀，如果痛苦不会被他人的宽慰而消除，那么他们不会忍受朋友因他而经历痛苦；总而言之，1171b10他们不想一起悲叹，因为他们本身都不是这种本性。妇人和妇人气的男人相反，他们喜欢和别人一起喉声叹气，把他们作为真正的朋友和同情者来爱。但显然，我们在所有事情上都应该以更好的人为榜样。在幸运中相反，朋友的在场使我们的交往其乐融融，让我们注意到，他们对我们自己的好生活感到高兴，也是令人愉悦的；所以1171b15人们确实也会认为，人们乐于邀请朋友来分享他的幸福（因为对朋\\n第九卷友爱续论正文友的善举是美好的），但请朋友来分担不幸则总是犹豫的（因为人们应该尽可能少地让朋友分担自己的厄运，正如俗话所说：“我自己不幸就足矣”）。通常在麻烦小、帮助大的情况下，人们还是应该请朋友来帮忙。反之，对于不幸中的朋友我们反而应该主动地不请自到（因为1171b20这是朋友的事，尤其是他处在困迫中，所以不会请求我们，这样做对于双方都是令人尊敬和欣慰的事），对于幸运的人我们应该乐于合作（因为这也属于朋友的义务）。但如果是去分享好处则不要那么急切，因为急功近利地跑过去并不美好。但在推却好处时诚然也要避1171b25免引起不快，有的时候这种假相是会发生的。所以，在所有事情上朋友的在场显得是可欲的。12.共同生活之于友爱的意义在恋人之间，眉来眼去地互视是最可爱的，与其他感觉相比我1171b30们更喜爱这种感觉，因为爱情总是先有了这种感觉才产生和存在，那么在朋友之间也像恋人之间一样，共同生活是最可欲的吗？因为友谊就是一个共同体，而且人们如何待已也就如何待友。如果这种感觉对于我们自己是可欲的，那么对于朋友也就是可欲的。但产生1171b35这种感觉的现实活动，存在于共同生活中，所以，朋友也合乎本性地追求共同生活。最终，每个人总是愿意把他和朋友共同从事的活动，视为他的1172a真正存在之所向或者生活的终极目标。所以，有些人一起喝酒，有些人一起掷般子，有些人一起锻炼、打猎或者讨论哲学。总之，他1172a5们每一次都是在他们生活中最为他们看重的事情上与朋友们一起度过时光。因为他们愿意与朋友一起共同生活，所以，他们共同从事的活动，对于他们而言正是他们的共同生活之所在。低劣者的友谊是低劣的（因为他们共同从事低劣的事，相互在\\n一起是不能持久的和要变坏1172a10的，因为近墨者黑），高贵者的友谊是高尚的，随着他们相互信赖的往来而增高，而且他们都在积极的实现活动中相互促进，也似乎变得更好。因为每个人都把别人【425】特俄格尼斯诗篇第35行。身上他所喜爱的品质当作楷原文为：“你从高贵者身上习得高贵”。模而接受到自身中来，这就参阅上文1170a12/13的注释。Reclam是所谓的：近朱者赤。【425】版对此的注释加了一句总结的话：整1172a15关于友爱就谈这么多。个友爱篇所得出的恰当结论是：完善接着这里我们要讨论快乐。的友爱是高贵者之间的友爱。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 15436, \"excerpt_end\": 17516, \"chapter_text_length\": 17516, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 11836, \"focus_found\": true, \"focus_terms_matched\": [\"不幸\"], \"focus_terms_found_in_chapter\": [\"不幸\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"不幸\", \"offset\": 11883, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 11683, \"focus\": \"不幸\"}}, {\"term\": \"不幸\", \"offset\": 11894, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 11694, \"focus\": \"不幸\"}}, {\"term\": \"不幸\", \"offset\": 15836, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 15636, \"focus\": \"不幸\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"c408cbe0e5dabe97fd041af0ae2fa72907ff3cfe82eed6b4ddd8247a30dc00a5\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=9\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[11183, 14183], [15436, 17516]], \"covered_characters\": 5080, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 1, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 8,
+      "focus": "时间",
+      "max_chars": 3600
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"故而愿望他好的与前面说的“有1156b10友爱，就是完善意义上的友爱，因为他们对对用”是同一个词：方友爱，不是出于偶然因缘，而是出于每个人nitzlich，但“有都爱对方的品质。所以在这些人之间存在的友用”在我们的语境爱，只要他们的德性品质还在，就一直存在，中过于功利化了，而德性就是持久的品质。所以在完善的友爱其次，在这种友善关系中的每个人原本就的意义上，还是用是友善并对朋友友善的。因为德性高贵者都是“有益”这个词来原本友善，同时又相互有益的【367】。而且他表达可能更加切合1156b15们在同样的方式上令人快乐，因为德性既原本亚里士多德这里的就令人愉悦，又能让对方感到欢喜。每个人既语义。对他的也对与他相似的行为方式感到愉悦：有【368】 Reclam德之人既有相同的也有相似的行为方式。【368】版的翻译做了一点这种友爱是持久的，有其善的因缘，在朋引申，它把“相友当中必须有的东西都汇集在这种友爱中了。同的行为方式”译1156b20因为每种友爱都基于某一善或某一快乐，善和作：“每个人都有快乐中的每一个或者是就本身而言的，或者单源自其固有品质的纯地是对朋友而言的，此外还基于某种程度的行为方式”；把“相品质类似性。但在完善的友爱中包含了我们所似的行为方式”译说的所有善缘：本身的善或快乐和对朋友的友作：源自快乐的行善和快乐。因为在它当中通常的一切都统一一为方式。供参考。\\n第八卷友爱论司正文致了，既是完全的善，也完全令人快乐。而这也就是友爱的最高形式了，爱和友谊在这些人当中获得了最友善的和最高贵的形式。可是，这种友爱自然是很稀罕的，因为很少有这么高贵品质的1156b25人。此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的，所以，除非一个人向另一个人证明了自已值得爱，确立了信任之后，人们才能相互承认并接受对方为朋友。但那些迅速表明了友爱的外1156b30在形式的人们，虽然是想交朋友，但还不是朋友。因为他们也不能同时是可爱的，也不能同时认识到对方的可爱。成为朋友的意愿能很快完成，但友爱不能很快结成。5.三种友爱之比较所以这种友爱鉴于持久性和其他条件都是完善的，而且在这种友爱中，每一方所付出的和从朋友那里得到的回报，都是相同的和1156b35类似的，朋友就该如此。因快乐之故而生的友爱同这种完善的友爱有类似性，因为有德1157a性的人互为快乐之源。同样，因有用之故而生的友爱也与完善的友爱类似，因为有德之人的友谊也相互有益。但即使是在这些倾向于得到快乐和好处的人们这里，也只有当他们每个人能从对方那里得到相同的回报，例如快乐，不仅如此，而且也要从同样令他们快乐1157a5的事物上，例如，在同样品格和同样幽默的人们的交往中，相互感受得到回报，友爱关系才是最持久的。这种关系与爱和被爱的关系不一样。在这里两人不对同样的东西感到愉悦，而是一个人对受到了爱的关注，另一个人对示爱的成就感到愉悦。但是，不少人一且青春的花容消逝，爱的终点也就来临了。因为一人不再从关注中得1157a10到快乐，另一人不再得到习惯了的关注。但是，如果两人在品质上取得一致，并且每个人在交往中能得到另一人心心相印的信任，这\\n正文P种友爱也会继续。但是，如果人们在他们的关系中不是以快乐交换快乐，而是以好处交换好处，他们就不是真朋友，友爱关系也不会持久。毋宁说，因有用之故结交的朋友，一旦对方不再有用了，他1157a15们的关系就终止了。因为这种友爱不是涉及对方的人品，而是涉及能得到的好处。因快乐和有用之故而生的友爱也能存在于品质低劣者之间、品质高贵者与品质低劣者之间和品质既不高贵也不低劣者同任何品质的每个人之间，但因朋友自身之故而生的友爱明显地只存在于德性高1157a20贵者之间。因为品质低劣者只能从他们所能获得的好处中相互喜爱。也只有品质高贵者的友爱能抵御挑拨离间。因为这样的人不会轻易相信别人对经受了自己长时间考验的朋友的流言语。在这种友爱中信任是主要的，在他们当中适用的话是：“我信任他”，“他绝不会对我做什么不够道义的事”，他们当中有保持真正的友爱所要求1157a25的一切。相比之下，在别的友爱形式中则不免受到此类中伤。既然人们也称那些因有用而走到一起的人为朋友，这也像城邦的做法，城邦与城邦之间诚然就是因利益而结盟的：也称那些因快1157a30乐而相互倾心的人为朋友，就像儿童所为，如果我们一定要说这些关系也是友爱的话，那我们反而就必须说有多种友爱，尽管最高的和真正意义上的是品德高贵者当中的友爱，另一些都是与前一种类似的友爱。因为人们只要友善或者似乎友善，就可考虑交朋友。令1157a35人快乐者也确实对于爱快乐的人而言是好人。但是，缘于有用和缘于快乐的友爱并不总是相容，不是同一种友爱，因为只是偶然合到一起的东西，不会经常连在一起。6.友爱之被视为品质和活动1157b由于友爱分为这几种类型，所以品质低劣的人也就因快乐和有用变成朋友，由于他们追求的这些东西相同，但品质高贵者则因自\\n第八卷友爱论正文身品质之故而成朋友，因为他们恰恰是因为品质高贵而互生友爱。所以他们是真正的朋友，而前两种相反是偶然的朋友，因为他们只1157b5是与后者类似。我们回顾一下德性，有些人是因品质而高贵，有些人是因活动而高贵，所以，在友爱这里也是如此。如果朋友共同生活在一起，那他们相互愉悦，互相做有意义的事；但如果他们睡着了，或天各一方，虽然他们不能实现友爱活动，可相应的品质还在。因为空间1157b10上的分离虽然不摧毁友爱，但阻隔了友爱活动的实现。如果长久的分离，友爱也会被淡忘。所以俗话说：“缺乏交流的友爱，常常已枯菱”老年人和性情古怪者也很难成为朋友。因为在他们那里很少能让人1157b15舒心，没有人能够长期忍受跟一个愁眉苦脸的或不能令人舒心的人在一起。因为大多数人本性上就是避免痛苦而追求快乐。那些相互之间客客气气却不能共同生活的人，宁可说具有善意的品质而不是友爱的品质。因为没有什么比共同生活更合适地表达友爱的特征了。1157b20需要帮助的人看重的是朋友有用，享福的人看重的是跟朋友在一起，因为他最不适应的是孤独。但整天在一起消磨时光只在这些人当中才是可能的：他们相互愉悦，能对同样的事情感到愉快。从小一起长大的人之间的友爱就是这样。我们已经多次说过，真正的友爱是德性高贵者之间的友爱。因1157b25为只有真正的善和令人快乐的东西才可视为可爱可欲的，仅对个别人可爱可欲的东西永远都只对于那个人才是这样的东西，但高贵对于德性高贵者而言出于双方的缘故都同时是可爱可欲的。但情爱看起来是一种感性情感，而友爱是一种德性品质。因为1157b30爱也可以给予无生命的东西，互爱则要求自愿的选择，自愿的选择\\n则以某种品质为前提。人们也愿望他所爱的人好，这是一种因其意愿的好，不是出于感性情感，而是出于德性品质。爱朋友的人，同时也爱对于朋友本身是好的东西。因为当一个德性高贵者变成朋友时，对于他的朋友而言他就是1157b35高贵的东西。所以，他们每个人都爱着对他本身而言是高贵的东西，并给予对方以同样的回1158a报，希望对方好，给予他以快乐。这就叫做：【369】据拉尔然表现得最明显。修的《明哲言行录》在性情古怪者和老年人那里不容易有友记载，这句话出自爱，因为他们脾气不好，又不喜欢社交。因为毕达哥拉斯。在柏脾气好并喜欢社交几乎可以说完全是友爱的特拉图的《法律篇》1158a5征和原因。所以青年人很快就会成为朋友，老中就作为“古人的年人则不行。因为人们不和自己不喜欢的人交格言”而引用。朋友。性情古怪者也是这样。但这样的人相互之间诚然也会有善意：他们也愿望别人好，在别人窘迫之时也会伸出援助之手。但严格地1158a10说，他们不是朋友，因为他们不会共同生活，相互不喜欢，这却是友爱最主要的特征。在完善的友爱意义上，一个人不可能跟许多人交朋友，正如一个人不能同时跟许多人恋爱一样。因为这种爱情是一种过渡，而就爱的本性而言，应该是倾心于一个人的。许多人同时对一个人喜爱得不得了，这也不容易发生。而且，许多人都德性高贵，这也不容易碰到。1158a15再者，必须在长期交往中了解到别人的品性，这也是很难的。但是，在涉及有用和快乐的地方，人们确实会喜欢许多人，因为有用的和令人愉悦的人很多，而且他们能够给予的好处，人们只需花费很少的时间就能获得。在这两类友爱中，基于快乐的更接近于真\\n第八卷友爱论正的友爱本身，因为两人起的是相同的作用，相互地给予或者在同一事情上感到快1158±20乐。年轻人的友爱就是这样的。因为他们在快乐上总是表现得慷概，而在基于利用的友爱中则陷入斤斤计较。那些享福的人们也不需要朋友有用，而是需要朋友给他们带来快乐。他们希望别人围在他们\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 4186, \"excerpt_end\": 7786, \"chapter_text_length\": 20542, \"has_more\": true, \"next_offset\": 7786, \"has_previous\": true, \"previous_offset\": 586, \"focus_found\": true, \"focus_terms_matched\": [\"时间\"], \"focus_terms_found_in_chapter\": [\"时间\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"时间\", \"offset\": 4886, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 4686, \"focus\": \"时间\"}}, {\"term\": \"时间\", \"offset\": 5818, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 5618, \"focus\": \"时间\"}}, {\"term\": \"时间\", \"offset\": 7623, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 7423, \"focus\": \"时间\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4de43c2e302802d856237bd1823a0748aa731a4844d375fc3aa43e934daba735\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=8\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[4186, 7786]], \"covered_characters\": 3600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 8,
+      "max_chars": 3000,
+      "offset": 586
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"0都存在；她把这种本能赋予了同根同源在这里想要表达的意思。\\n第八卷友爱论的存在者，特别赋予了人。所以我们【357】这不可译为“纷称赞仁爱者，称赞友爱。在陌生人中，争”，因为无论什么体制我们也能看到，如同对待亲戚和邻人的城邦，纷争是必不可少那样的友善。这种经验也告诉我们，的，纷争不仅不是“敌友爱是把城邦联系起来的纽带，立法人”，很多时候是必需的，者心仪友谊更胜过公正。因为城邦的1155a25而只有“分裂”才是治国和睦显然与友谊近似，城邦治理者心中者不可容忍、必须根除的想望的主要目标就是城邦和睦团结，而“死敌”。分裂【357】则是他们处心积虑予以消除【358】像前面许多地的敌人。方一样，这里的有些人也在朋友中也不需要公正。但在行事是暗指柏拉图学园中的公正的人当中需要友谊作为公正的某种人，因为柏拉图在《吕西补充，而最高的公道也是在朋友中才斯篇》（Lysis）214d5说：可遇。“只有善者是善者的朋友，所以，友谊不仅是必需的，而且是恶人决不与善者交朋友”。美好的，也是高责的。我们称赞友谊，1155a30所以，真正的友谊是善人高扬其意义。我们认为有许多朋友的人的友谊，这也是亚里士多德思想的核心。定是朋友。2.对友谊的不同意见/三种可爱的因缘但是，对于友谊存在不少意见分歧。一些人说，友谊只对同一类人存在，跟自已同类的人才谈得上友【359】这也是柏拉图谊【359】，所以俗语说，“同类跟同类交《吕西斯篇》讨论的话题，友”，“寒鸦临寒鸦而栖”，诸如此类的1155a35参见214a—C。说法还有很多。\\n1155b相反，另一些人说，同行是冤家，正如陶匠跟陶匠是对头一样。有些人在深人研究这些问题，试图更多地从自然哲学中取得更高的答案。欧里庇德斯这样说：干早的土地喜爱下雨，挂着重雨的高空1155b5渴望坠落大地。赫拉克利特说，“对立的东西契合一致，最美的和谐来自对立”，“万物因争斗而成”。另一些则表达出相反的看法，恩培多克勒坚持同类渴望同类。我们不谈事物的这些物理方面，它与我们目前1155b10的研究隔膜。相反，我们要讨论的是属于人的领域并与品格和性情相关的方面。例如，是不是在所有人当中都能产生友谊，或者说，是不是在恶人之间不可能有朋友，还有，友谊只有一种还是有多种类型。有些人认为友谊只有一种，是因为他们认为友1155b15情可以有深浅的差异，这种理由是不充足的，因为不同种类的友谊，也可以有深浅程度上的不同。对这一点前面已经说过了。【360】[360】所如果我们事先就已经知道了什么东西是可爱有注释家都的，也许就可搞清楚这个问题。因为显然不是所有注意到，前东西都可爱，而是只有值得爱的东西才可爱。值得面并没有说，爱的东西有三种：善、令人快乐的东西和有用的东是谁搞错了？【361】类们带来善和快乐的东西，所以作为目的只有善和令似的说法在人快乐的东西是值得爱的。但人究竞是爱善本身还1 0 9 9 a 2 4 —是爱对于他是善的东西呢？因为两者有时显得是冲28,1104b31。突的。这个问题同样也适合于在令人快乐的东西上发问。显然，每个人似乎都爱对于他是善的东西，所以以至于值得爱的似乎就绝对是善，而且对个别1155b25人和对他都是善。可是，个别的人并不爱对他是善的东西，而是爱对他显现为善的东西，但这并没有什么区别，因为我们说的正是，值得爱的东西就是显现为善的东西。\\n第八卷友爱论【362】对这句话译者的理解是所以，这三类事物是产生友、爱有别，对无生命的东西可以爱的因缘。但我们在爱无生命有爱，但没有友谊，后者是相互的东西时，不谈友谊。【362】的，需要回报。尽管爱一般也是相因为这里既没有爱的回报，也互的，需要回报，但那是指同类之没有对他人的善意。确实，谁间。因此亚里士多德在这里说的是要是指望葡萄酒有善意，是可对无生命的东西你可以产生爱（如笑的，因为这里要说“善意”1155b30人爱收藏石头，爱山水等），这就的话，对葡萄酒而言最高的意不存在友谊。但即使在人类之间，愿就是有人好好保存它，以便有时也存在单方面没有回报、也不为其自身拥有它。但对朋友，指望有回报的爱，这是一种“仁人们必须因其本身而愿望他爱”。所以，不能无条件地把友、好。如果某人以此方式愿望朋爱合在一起用，而要区别对待。有友好，哪怕人们感受到的是与时是友谊、有时是仁爱。别人不同的，我们也称他是有【363】注意这里的“善意”（Wohlwollen）也就是一般说的“仁善意的地方，那么我们就说这爱之心”，就是单纯意愿他人好。里有友谊。或者我们还必须补不把“善意”和“仁爱之心”等同充一句：不可向对方一直隐藏起来就与这里讲的三种可爱的对象善意？因为许多人对他们从未对应不起来。把“善意”（Wohlwol-谋面的、却认为他们是善良和1155b35len）译作“仁爱”我们起码在休误有用的人抱有善意，而后者对1156a的书中见到过（参见休谟著、曾晓前者也可能抱有同样的善意。平译、陈修斋校：《道德原理研究》，所以，他们相互之间看起来是商务印书馆2004年版，第二章：论相互有善意的，但是，如果一仁爱（uber das Wohlwollen），但同个人对另一个人一直隐瞒这种时也请注意亚里士多德对二者关系善意，那我们如何能称他们是的明确表达：“善意与友爱类似，却朋友呢？所以，要成为朋友，还不是友爱”（1166b30—31）。但无就必须不仅要出于上面所说的论如何，善意、仁爱、友爱、友谊可爱因缘互有善意，都愿望对这四个概念具有密切关系，这是我方好，且双方都要让对方感受1156a5们在阅读亚里士多德时要充分注得到这种善意。意的。\\n3.三种友爱由于三种因缘不同，结果友爱【364】【364】“友爱”一般的也就不同。因此说，有三种友谊，对应表达是“友谊”和“爱”。于值得爱者的三种性质。这样，在每一我们在这里也把因可爱个值得爱的人心中都有一种毫不掩饰的的任何一种因缘产生的1156a10爱的回报。于是，相互友爱的人们出于友谊而称做“友爱”。因互爱之故，都愿意对方好，因此才成为此尽管字面上它只是“友朋友。谊”，我们还是可以译做因有用之故而爱，这不是因另一个“友爱”。人本身的品质而爱，而是因能从对方得到某种好处而爱；基于快乐因缘的友爱1156a15也是如此。因为不是因为他本身的品质而爱他，而是因为他在社会中精明能干而给自己带来快乐。所以，凡是因有用之故而形成的友爱，人们爱的是自己，因为他们是为自身欲求某种好处，而在因快乐之故而生的友爱这里也是如此，因为他们为自己追求快乐。这样看来，在这两种情况下，都不是因友本身可爱而生友爱，而是因对方有用或能带来快乐而生友爱。这些友爱因此就是偶然的。因为他不是因为他本来所是而被友爱，而是由于他能带来某种好处或快乐而被友爱。1156a20所以这种友爱，一旦朋友有所变故，就容易消逝。因为伙伴中的一方不\\n第八卷友爱论再能带来快乐或不再有用了，对他的友爱就终止了。而有用是不能持久的，它有时这样，有时又是另一样。一旦这种因缘变了，友爱就会随之烟消云散，因为他们一心所考虑的那个东西不再存在。经验告诉我们，基于有用的友爱尤1156a25其存在于老年人当中，因为这个年纪的人不再追求快乐，而追求实用。而在中年人和青年人中只有那些以他们的利益为重的人才是这样。但这些人也根本不适合于过共同生活，因为在共同\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 586, \"excerpt_end\": 3586, \"chapter_text_length\": 20542, \"has_more\": true, \"next_offset\": 3586, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": null, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4de43c2e302802d856237bd1823a0748aa731a4844d375fc3aa43e934daba735\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=8\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[586, 3586], [4186, 7786]], \"covered_characters\": 6600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 1, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "亚里士多德",
+      "limit": 5,
+      "query": "好意 善意 友爱的开端"
+     },
+     "status": "success",
+     "duration_seconds": 0.046,
+     "result_full": "{\"query\": \"好意 善意 友爱的开端\", \"results\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 9,
+      "focus": "善意",
+      "max_chars": 3200,
+      "offset": 4983
+     },
+     "status": "success",
+     "duration_seconds": 0.001,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 9, \"title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"text\": \"这种关系，所谓朋友就是交流。如同待已那样来对待的人。但存不存在对自己本身的友爱，我们现在\\n第九卷友爱续论存而不论。可以说，如果在一个人身上具有两1166a35个或更多的部分，这样的对自身的友爱看来也是存在的。友爱过度就与此类似。1166b上面所谈到的友爱特征似乎也在许多人那里存在，尽管这些人也可能是德性不高的人。如果这些人喜爱自己本身，自我欣赏，自认优秀，他们就可混人有德之人中吗？完全的1166b5恶棍和罪犯全然不具有友爱成分，也不曾显得具有。其实，在所有德性低劣者那里也都不具有。因为他们的内心是分裂的，他们追求的是一种东西，欲望的又是另一种东西，就像不能自制者那样。他们倾心于对他们显得好的东西，令他们快乐的东西，实际上对他们是有害1166b10的东西。另一些人则由于怯儒和懒情而不去做他们所认为的对他们最好的事情。而作恶多端的人，由于其邪恶而遭人仇恨，所以逃避生活，以自杀了结生命。德性低劣者追求能与他们共处的人，但逃避自己本身。因为当他们独处时，他们回想起1166b15[401】其他版本也译作“坏事”，但如果同别人在一起时，就可忘记这些事情。“恶劣的事”，“可由于对于他们而言不存在什么本身值得爱的东怕的事”或“许多西，所以就不可能生活在同自己本身的友爱丑恶的回忆”等，中。这样的人既分享不到自己本心的快乐也感可供参考。受不了自己真实的苦难。因为他们的灵魂骚动不宁，其中一个部分因其低劣而对缺乏某些东西感到痛苦，另一部分则对此感到高兴。一个1166b20部分把他拉向这里，另一部分把他拉向那里，如同要把他撕裂。如果不能同时感受到快乐和痛苦，那么在一个人快乐之后不久，马上就感到痛苦并想着如果自己不曾享受这个愉悦该有多好。灵魂低劣者总是这样懊悔。这样一来，1166b25\\n灵魂低劣者也就显得缺乏与自已本身友爱的情操，因为对他而言没有什么本身值得爱的东西。如果这种状况是极其可悲的话，那么我们必须竭尽全力避免恶劣，努力追求德性高贵。这样的话就会把自己本身作为朋友对待，也会变成别人的朋友。5.友爱与仁爱1166b30仁爱（Wohlwollen）与友爱类似，但不等同于友爱。因为一个人对不认识的人也有仁爱之心，而且这种仁爱之心可以不被另一个人所知，但友爱不是这样，而是相反。这【402】参阅爱【403】。因为它不会出现心灵紧张和感性欲1155b32—1156a5。望，而这两者是伴随着情爱的。情爱也只在[403】 Tasch-1166b35相互信赖的交往中形成，但仁爱之心也可能buch版把“爱情”是突然出现的。例如，对于某个竞赛人们可或“情爱”译作“倾1167a能会突然产生仁爱之意，希望他获胜，但并心”(Zuneigung ）。不想为他做点什么。因为像刚说的那样，这种仁爱之心是瞬间诞生的，它所包含的爱停留于表面。这样就可看出，仁爱之心是友爱之发端，就如同视觉快感是情爱之发端一样。因为一个人如果不是事先对所倾心者的形象感到愉1167a5悦，就不会去爱。但如果只是对别人的外表感到愉悦，那么还不是爱他，只有当他不在场时就盼望见到他，欲求那个人到场时，才\\n第九卷友爱续论是在恋爱。所以，如果不是事先萌发了仁爱之心，人们也就不会成为朋友，但并不因为有了仁爱之心人们就一定会友爱。因为仁爱之心只是单纯的善意，他们并不带着这些善意共同1167a10采取行动，也还不愿因这种善意添麻烦。所以在转义上把仁爱称作不作为的友爱也是可以的，但如果长久地延续这种仁爱，相互建立起信赖，也就转变成为现实的友爱了。友爱不是因利和乐，因利和乐产生不了仁爱。因为感受到别人仁爱之举的人，就去1167a15报答他所感受到的这种善意，这只满足了公道的要求。而如果他愿望某人好，只是希望从那人那里得到好处，这与其说是对那个人有善意，不如说是对自己的善意，这也就如同，一个因某种自私的意图而关心别人的人，也不是朋友一样。总而言之，仁爱基于德性和公道而产生，当一个人对别人表现出高尚和勇敢等等德性时，我们就会对他产生善意，就像我们关于1167a20竞赛者所说的那样。6.友爱与和睦[404】Oμouota和睦【404】似乎也是一种友爱，不可把(homonoia ),它混淆于意见相同。因为与根本不认识的人语：Eintracht。也可以有相同的意见。它也不是指称在随便什么事情—例如天体现象上的意见一致（因1167a25为此类意见一致与友爱根本不沾边），而是把\\n这样的城邦称为和睦的：其公民们对于【405】亚里士多德《政他们的共同利益意见一致，愿望相同，治学》1285a—b3提到：做共同决定的事情。于是，人在行动中“米提利尼人当流亡者们是和睦的，虽然是在那些对于他们意义以安蒂米尼得和诗人阿尔1167a30重大、对于双方或所有人都能达到的事喀俄为领袖而率众来攻情上：例如在一个城邦中，如果所有人时，就拥戴毕塔库斯（Pit-共同决定，通过选举来分派当权者，或takus）为“借主’（领袖），者要与斯巴达结盟，或者要拥戴毕达库以统筹守御”，以此说明，毕达库斯的临时统治地位同意了的话。但如果每个人都像《排尼是由人民公推的。米提利尼诗人阿尔喀俄（Alkaios，已登上权力的顶峰，就会引起冲突。因盛年约在公元前606年）为和睦不意味着两人都只追求同一件他在诗中茂称其为“贱种”，们以为永远如此的事，而是意味着，同说明他父母可能是奴隶出样的事情也在同样的人心中想看到其实身。第欧根尼·拉尔修在1167a35现，例如，如果人民和贵族都想让最优《学者例传》卷一75，说1167b秀的人来当治理者，[这就和睦了]。到毕达库斯任米提利尼总因为这包含着大家的追求是一致的。这裁有十年之久（参阅《政样看来，和睦是一种政治友爱，它也是治学》，商务印书馆中文被这样称呼的。因为它关系到公共利益版第163页注释），在他和与生活相关的事情，离职时，据说全体公民希这样的和睦也存在于有德之人中望他继任，他本人却不愿1167b5间。因为这些人既同自己本身和睦，相意，因此亚里士多德在此互之间也和睦，几乎可以说，他们永远有“如果他本人也已经同保持不变。因为他们决定了的事就会持意了的话”之说。久稳定，而不像欧里普斯的潮水流转无【406】在欧里庇德常：他们心想的是公道和公益，他们共斯的戏剧《腓尼基人》同追求的也是这些。不过，品质低劣者(Phoinizierinnen) ( 588—1167b10不可能保持和睦，除非在极小的程度637)中 Eteokles 和 Poly-上，就像他们也不可能是朋友一样，因neikes是俄狄浦斯两个敌为他们总想多得利，少出力。由于每个对的儿子，每个人都想成人都这样为自己着想，那么他就算计邻为国王。\\n第九卷友爱续论人并阻碍他达到其自私的多得利、少出力的目的。如果大家都不爱护共同利益，共同利益确实就会遭受毁灭。所以他们之间随之就会出现争端，相互之间都单方面地强追对方，而自己却不愿去做公道的事。1167b157.施善者更加友爱受善者与受善者对施善者的友爱相比，施善者看来对受善者更加友爱，我们要来探究这一有俘常理的现象之原因。大多数人认为，这是因为受善者处于债务人的地1167b20位，施善者则处于债权人的地位，就像在借贷关系中那样，债务人期望的是他的债权人不在了才好，而债权人反而关心其债务人的安康。所以施善者也恰恰愿望受善者好好活着，这样就能报答他的善举，而受善者则不再关心感恩报答了。埃庇卡1167b25【407】埃庇卡莫斯莫斯【407】也许会说，这些意见出于对人（Epicharmos）公元前6太过恶劣的评价，但人差不多就是这个样世纪一公元前5世纪西子。因为大多数人对于所受的恩和善没有西里的喜剧诗人。记性，宁愿接受不愿给予。但事情的原因可能更深刻地扎根于本性，从债权人和债务人的关系作的解释，完全不着边际。因为债权人\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 4983, \"excerpt_end\": 8183, \"chapter_text_length\": 17516, \"has_more\": true, \"next_offset\": 8183, \"has_previous\": true, \"previous_offset\": 1783, \"focus_found\": true, \"focus_terms_matched\": [\"善意\"], \"focus_terms_found_in_chapter\": [\"善意\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"善意\", \"offset\": 6337, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 6137, \"focus\": \"善意\"}}, {\"term\": \"善意\", \"offset\": 6348, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 6148, \"focus\": \"善意\"}}, {\"term\": \"善意\", \"offset\": 6371, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 9, \"offset\": 6171, \"focus\": \"善意\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"c408cbe0e5dabe97fd041af0ae2fa72907ff3cfe82eed6b4ddd8247a30dc00a5\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=9\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[4983, 8183], [11183, 14183], [15436, 17516]], \"covered_characters\": 8280, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 2, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "亚里士多德",
+      "limit": 5,
+      "query": "父母对子女的友爱 家庭 亲子"
+     },
+     "status": "success",
+     "duration_seconds": 0.04,
+     "result_full": "{\"query\": \"父母对子女的友爱 家庭 亲子\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"snippet\": \"2a5尚与优越者的爱。因为父母给予子女的最大恩德，就是赋予了子女以生命，为哺育和教养他们操心操劳。和非亲非故的友爱相比，亲子之爱得到的快乐与益处更大，因为他们有更加亲密的关系，有更多共同的生活基础。在兄弟的友爱中能发现所有伙伴友爱的特1162a10性，特别是如果兄弟们都同样优秀出色，那么兄弟的友爱更胜于伙伴的友爱。因为兄弟们相亲相近，从一出生起就相互喜爱；作为同一父母的孩子，从小一起由父母抚养、教育长大，性情品质和思维方式也就更为相似。此外兄弟之情在长年1162a15累月中经受时间的考验，因而最为经久坚固。在其他亲属间的友爱中，其亲密程度同样也与其关系的远近有关。夫妻之间似乎出自自然地存在友爱。因为人的本性与其说倾向于过城邦共同体的\", \"score\": 249, \"match_type\": \"segmented_candidate\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"focus\": \"父母 子女 友爱 家庭 亲子\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"original_query\": \"父母对子女的友爱 家庭 亲子\", \"query_terms\": [\"父母\", \"子女\", \"友爱\", \"家庭\", \"亲子\"]}], \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"method\": \"segmented_candidate\", \"note\": \"未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 8,
+      "focus": "父母对子女",
+      "max_chars": 3000,
+      "offset": 14600
+     },
+     "status": "success",
+     "duration_seconds": 0.001,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"君一臣这是基于自然的关系。这种友爱的基1161a20础是一方的优越性，这也是为何父母受到尊敬的原因。所以在这些关系中公正对双方也不是同样的，而是根据等级和尊卑而定，因为君主制中的友爱关系也是如此。夫妻之间的友爱与贵族制中的友爱是相同的。它的基础是个人的德性，德性更佳一方得到的善也更多，不过每个人各得1161a25其所。这种关系中的公正也是如此。兄弟间的友爱与伙伴的友爱相似，因为他们互相平等，且年龄相近，因此这意味着他们大多在心智与品质上也是一致的。因此，这种友爱类似于财权制中的友爱。在财权制下，全体公民力求同样的权利和价值，因此他们轮流执政、平分权力，他们的友爱也正是在同样的基础上与平等相应而形成的。11161a30但在这些政体的变体或蜕变形式中，很少有公正或正义，所以也很少有友爱。在最坏的政体：僧主制中，友爱自然就最少，或根本不存在友爱。因为统治者与被统治者之间没有任何共同点，因为在这里没有了公正，也就没有了友爱，而只有一种如同工匠同工具、灵魂同肉体、主人同奴隶的关系：后者虽1161a35然得到了使用者某种程度的关注，但对于这些无生命物既不存1161b在什么友爱也不存在公正关系。对于牛马和奴隶亦是如此，因为主奴之间根本无共同点可言。奴隶是有生命的工具，工具是无生命的奴隶。因此，只要身为奴隶，使不可能有友爱，但诚1161b5然在此限度内他还是人。因为每个人，人们可以说，与每个能够参与到共同的法则与契约关系中的人处在某种公正关系中。因此，只要奴隶是人，在此限度内就有某种可能的友爱纽带。所以，即使在僧主制中，友爱与公正也是存在的，只是很少能找到。而在民主制中友爱与公正最多，因为平等的公民之间拥1161b10有许多共同之处。\\n《正文注释对不同形式的血亲友爱和夫妻友爱的进一步规定那么，每种友爱，如上所述，都基于共同体。然而，在这里还是让我们把血亲之爱和伙伴【387】的友爱做个区别，就是说，把这些从小【387】伙伴：一起长大的人们当中的友爱，作为特殊类型。因Hetairia ( topiα )为同邦公民、同族人和同行等等之间的友爱与之在古希腊主要是1161b15相反，反映了某种[外在的］共同体的关系，因指某种政治关系，为这种友爱似乎是基于契约的。主客之间的友爱或政治同盟。也可归于这一类。血亲中的友爱虽有多种，但似乎都由父子间的友爱派生而来。因为父母爱他们的子女，是把子女看做自身的骨肉，而子女爱他们的父母，是1161b20感谢父母生养了他们。但父母比他们的孩子更能了解孩子是由己所出。此外，创造者更亲近被创造者，被创造者对于它的原创者则不那么亲近。因为生育者更愿把由己所出的东西看做是自身的骨肉，正如每个人都把他的牙齿、头发等等看做是属于他自身一样。但对于被创造者而言，则不把或不大把创造者看做是属于自身的。再者，在1161b25时间长度上也有区别，因为父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母。由此【388】便可以[388】注意明白，父母之爱为何更伟大。上面讲了三条理从这里我们看到，父母爱子如爱己一—因为由。1161b30由己所出者就是与己分离的另一个自己一—而子女爱父母，则是因为他们是由父母所生。兄弟姊\\n第八卷友爱论妹之间的互爱，是因为他们都是由同一父母所生。这种共同的生命来源造就了他们的共同之处，所以常言道，“血脉相通，骨肉相连”，即是如此。因此，兄弟姊妹从某种意义上可以说是相互分离了的同一个存在。此外，兄弟之情也会因一起长大成人和年龄相近而愈加牢固，因为年纪【389】这句1161b35古谚也出自柏拉的友爱与伙伴的友爱相似图，在《菲德罗叔伯兄弟以及其他亲属的感情也都由兄弟感1162a篇》(Phaidros )情派生而来，因为他们同根同源。这种关系的亲240c1—3引1用了疏远近与他们同共同祖先的远近相应。它。子女对父母的爱类似于人对神的爱，是对高1162a5尚与优越者的爱。因为父母给予子女的最大恩德，就是赋予了子女以生命，为哺育和教养他们操心操劳。和非亲非故的友爱相比，亲子之爱得到的快乐与益处更大，因为他们有更加亲密的关系，有更多共同的生活基础。在兄弟的友爱中能发现所有伙伴友爱的特1162a10性，特别是如果兄弟们都同样优秀出色，那么兄弟的友爱更胜于伙伴的友爱。因为兄弟们相亲相近，从一出生起就相互喜爱；作为同一父母的孩子，从小一起由父母抚养、教育长大，性情品质和思维方式也就更为相似。此外兄弟之情在长年1162a15累月中经受时间的考验，因而最为经久坚固。在其他亲属间的友爱中，其亲密程度同样也与其关系的远近有关。夫妻之间似乎出自自然地存在友爱。因为人的本性与其说倾向于过城邦共同体的生活，不如说更倾向于过夫妻生活，因为家庭先于城邦且更为必要，繁衍后代也是动物们所共有的特性。但1162a20在其他动物那里[共同生活]仅限于共同群居，交配也只限于为了繁衍后代。而人则不然，家庭\\n的共同生活不单是为了生儿育女，还为了满足日常生活的需要。从一开始起，男女两性的职责和活动就有了分工，男女有别。他们互相帮助，将自己的特别才干投人到共为一体的建家立业中。因此，婚姻关系中的这种友爱也是可以既有益又愉悦1162a25的。但这种愉悦性也是基于他们的德性的。如果夫妇俩都德性高贵，夫妇又各有其独特的德性，那么这就是他们相互吸引并感到快乐的源泉。孩子似乎构成了婚姻共同体的一条纽带，所以没有孩子的婚姻容易解体。因为孩子是双方共同的财富，1162a30共同的东西把人结合在一起。但是，夫妻之间，以及一般地说，朋友之间的共同生活形式，如何是应当的这个问题，无非就是要问，公正是如何实现的问题。因为显然，在朋友之间，陌生人之间或伙伴和同学之间，公正都是不同的。1.5.平等友爱中的抱怨和如何回报的分歧1162a35由于开始已经说过，有三种友爱，在【390】原意是“每一种当中朋友或者是平等的，或者是有方是优越的”，借用墨子“无差等的爱”和“有1162b人可能会成为朋友，一个较好的人和一个差等的爱”之概念，译较坏的人也可能成为朋友。【这两种可能成“有差等的”友爱更性也]同样存在于以快乐和有用为目的的可与我国传统德性论相友爱中，因为在提供的好处上或者双方是比较了。\\n第八卷友爱论相等的，也可能是有差等的一—所以，平等的人必须按照平等来友爱，在所有事情上做到相互平等；而有差等的人则按比例使过度的东西从另一方面来补偿。但抱怨和指责或者唯一地或者主要存1162b5在于基于有用的友爱中，这是易于理解的。那些因德性之故而结成友谊的人，由于都意愿对方好一—这是德性和友爱的本质特征——都努力做到这一点，所以在他们之间根本就不可能有抱怨和指责。没有人去抱怨和指责爱他的人，指望他好的1162b10人。如果他品质高贵的话，他会以同等的善举来回报。而付出比所得多的人，却不会责怪朋友，这时他自已也得到了他所欲的【391】Reclam版对东西，因为他们每一个都愿望对方好。【391】此有个注释，说这段话在为了快乐之故而结下友爱的朋友这的意思是，有德性的人里也不会出现许多抱怨，因为当他们以快在做善事中实现他的道乐来相互回报时，两位朋友同时得到了他1162b15德价值，他因此达到们所欲的东西。假如某人想要抱怨另一方（得到）了他所追求的没有给他\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 14600, \"excerpt_end\": 17600, \"chapter_text_length\": 20542, \"has_more\": true, \"next_offset\": 17600, \"has_previous\": true, \"previous_offset\": 11600, \"focus_found\": false, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [\"父母对子女\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。 当前窗口没有匹配词，其他实际位置见focus_locations；这不等于全章没有。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"父母对子女\", \"offset\": 8885, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 8685, \"focus\": \"父母对子女\"}}, {\"term\": \"父母对子女\", \"offset\": 11954, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 11754, \"focus\": \"父母对子女\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4de43c2e302802d856237bd1823a0748aa731a4844d375fc3aa43e934daba735\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=8\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[586, 3586], [4186, 7786], [14600, 17600]], \"covered_characters\": 9600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 2, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 9.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_scdpujrQ8BeVNGt0jk4z3115"
+    },
+    {
+     "t": 9.3,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_NFevyyi3sFnTvZrhuG7M9961",
+     "status": "success",
+     "duration_seconds": 0.034
+    },
+    {
+     "t": 10.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "尼各马可伦理学 友爱 时间 习性",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 1.41,
+     "result_full": "{\"query\": \"尼各马可伦理学 友爱 时间 习性\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷 具体德性续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第四卷 具体德性续论】\", \"snippet\": \"论一个好朋友时爱是有差别的，在德语所指的那种人的话，就只需再加上可爱中基本上和我们汉语相就行了。似，一般用友谊和爱两个同友爱的区别在于它缺乏对所交往词来表达，但在希腊文之人的情感和爱，因为人在此如其应当中，philia,philo,philos 有的那样中庸，不是出于爱与恨，而只是“友谊”和“友爱”“热因为有此品质。他对生人和熟人，亲近1126b25爱”等义，友谊和友爱基的人和疏远的人都同样对待，只是在每本上能相互蕴含的，所以一种情况下这样做才合适罢了。因为对我国的一些希腊哲学专亲近的人和生疏的人以同样的方式关心家认为，把英文friend或或伤害，是不应该的。friendship译为“友谊”不所以，上面所说的是人们一般地如如译为“友\", \"score\": 177, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 4, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 11, \"chapter_title\": \"附录\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·附录】\", \"snippet\": \"piciokparla,Aristocracy）贵族制，贵族政体一种好的政制160a32；其蜕变160b10；夫妻之间的友爱显得是贵族式的160b34；131a23；贵族从德性看人的尊贵131a28。AuBere Guter（EKTogayaeu,εueTnpia, εunμepla, xopnyla）外在的善目(善物或善缘）作为幸福的必然要素98b26,99a31；101a15，153b18，178b33；梭伦的看法179a11—16；思辨的生活相比于实践的生活对外在善目的需要更少178a24；身体的善和灵魂的善之区分98b13；荣誉作为最大的外在善目123b20。 BBelehrung.Lernen（μaθnrov,ioaaka\", \"score\": 176, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 11, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 2, \"chapter_title\": \"第二卷 伦理德性与中庸\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】\", \"snippet\": \"然票赋”（Anlagen），如们称作性情的是欲望、愤视觉、听觉等一样。怒、恐惧、自信、嫉妒（Neid，envy）、愉悦、友爱、增恨，渴慕、忌妒（Eifer-sucht, Mi β gunst, emula-tion）、同情，总而言之是所有那些伴随着苦乐的性情；能力我是指那种我们因之能够感受这些性情的东西，例如那种使我们能够感1105b25受愤怒、悲伤或怜阀的东西；称作品质的是，我们借助于它在面对非理性的情感冲动时使我们能正当或不正当地对待的东西，例如，面对一种怒气的爆发，如果我 正文们的情感对它太激烈或者太软弱，我们的举止就不当，而如果我们适度地对待它，那就是正当的。类似的东西也适用于其余的性情。1 105b30性情既非德也非恶，首\", \"score\": 174, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 2, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 5, \"chapter_title\": \"第五卷 公正论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第五卷 公正论】\", \"snippet\": \"么贪婪者的贪欲也与之般不会说“绝对如相关，这样一个在恶事上想少得的人也显得是何”，我们还是用贪婪者，但实际上他是不平等的友爱者。所“就其本身而言”以，贪婪者就是贪图财富和喜爱不平等的人，1129b10来理解。贪婪是对这两者的共同表达。.3.公正乃德性之首【199】不平等此外，违法的人也是不公正的。这种不公包含了贪婪和狭义正，违法或者不平等，包含了所有的不公正，上的不平等。对于每一种不公正而言，都是共同的【199】。 由于我们把违法的【200】对这段文字，西方学者的理解人看做是不公正的，把历来分歧较大，不同的译本有不同的译法，守法的人看做是公正我先是依Meiner版的译法，但最终依据的的，那么显然，一切合是Taschenbuch版的，\", \"score\": 172, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 5, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 0, \"chapter_title\": \"导读：从《尼各马可伦理学》找回对德性力量的确信\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·导读：从《尼各马可伦理学》找回对德性力量的确信】\", \"snippet\": \"靠法治，同样需要人的德性，但它不是需要具体的像勇敢、节制这样的美德，而是需要“公平”、“正义”这种“总德”（大德）和友善友爱这样的待人之德，因为只有“公正”和“友爱”才是维系城邦共同体的德性力量。而在内，既然所有生物有机体都能做到自我实现其功能的优秀和卓越，那么人难道就没有能力实现自己人之为人的固有使命吗？当然有，人尽管不是宇宙中最高贵的存在者，也称得上是次高贵的存在者，因为人的灵魂中尽管有植物性的自然要素，有非理性的情感因素，但也有理性的逻各斯（logos）和通神的努斯（nous），因此人的德性是否有力量实现人的优秀和卓越，关键在于人是否让灵魂中的高贵部分起主宰和领导作用。如果人只能让植物性灵魂起主导作用，那么人就只能像一般植物那\", \"score\": 16, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 0, \"focus\": \"尼各马可伦理学 友爱 时间 习性\"}, \"material_role\": \"EDITORIAL_CANDIDATE\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 5, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 13.0,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_D7GGpXfbR6dEQzrWfz0Q0441"
+    },
+    {
+     "t": 13.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_jvnmDFdcBk2TfMXUI85W3160"
+    },
+    {
+     "t": 13.4,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_02_K8lw4mzCNOctrsYRFcqg7686",
+     "status": "success",
+     "duration_seconds": 0.022
+    },
+    {
+     "t": 13.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "时间 熟识 完善的友爱",
+      "book_id": "e574c8e7f515",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.023,
+     "result_full": "{\"query\": \"时间 熟识 完善的友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": null, \"book_id\": \"e574c8e7f515\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 13.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "好意 善意 善意不是友爱",
+      "book_id": "e574c8e7f515",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 0.025,
+     "result_full": "{\"query\": \"好意 善意 善意不是友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 12}, \"search_scope\": {\"author\": null, \"book_id\": \"e574c8e7f515\"}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 15.5,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_00_lAcYbDox6C6imjcnwy5x1781"
+    },
+    {
+     "t": 15.6,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_16tLZExEKneE8xK9PtVX3276",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 15.8,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "e574c8e7f515"
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"id\": \"e574c8e7f515\", \"title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追问“人应当如何生活”这一根本问题。他提出，所有人类活动都以某种“善”为目的，而最高的善就是“幸福”（eudaimonia）。幸福不是短暂的快乐，而是灵魂合乎理性德性的现实活动。书中详细区分了伦理德性与理智德性，并提出了著名的“中庸之道”——德性就是两种极端之间的中道。亚里士多德强调，德性不是天生的，而是通过习惯和实践培养出来的。他还深入讨论了正义、友谊、快乐等伦理主题，指出友谊不仅是个人幸福的重要组成部分，也是城邦团结的基础。本书的注释导读本为现代读者提供了清晰的解读路径，帮助理解亚里士多德如何将伦理学从抽象理论转化为可实践的智慧。作为古希腊哲学的集大成者，亚里士多德的思想深刻影响了后来的基督教神学、启蒙运动哲学以及当代美德伦理学，至今仍是哲学研究的核心议题。阅读本书，不仅是在学习一套伦理体系，更是在学习如何理性地思考人生、选择与幸福。\", \"rank\": 45.1, \"chapterCount\": 12, \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 12, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 12, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"导读：从《尼各马可伦理学》找回对德性力量的确信\"}, {\"index\": 1, \"title\": \"第一卷 伦理学和政治学：善、幸福与灵魂活动\"}, {\"index\": 2, \"title\": \"第二卷 伦理德性与中庸\"}, {\"index\": 3, \"title\": \"第三卷 德行特征与具体德性\"}, {\"index\": 4, \"title\": \"第四卷 具体德性续论\"}, {\"index\": 5, \"title\": \"第五卷 公正论\"}, {\"index\": 6, \"title\": \"第六卷 理智德性论\"}, {\"index\": 7, \"title\": \"第七卷 自制和快乐\"}, {\"index\": 8, \"title\": \"第八卷 友爱论\"}, {\"index\": 9, \"title\": \"第九卷 友爱续论\"}, {\"index\": 10, \"title\": \"第十卷 论快乐、幸福和立法\"}, {\"index\": 11, \"title\": \"附录\"}], \"matched_chapters\": 12, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 17.4,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_TCq9atirIoMk2lykRc5K8811"
+    },
+    {
+     "t": 17.7,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_imDg35kmAmPeRi8iYAX18075",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 17.8,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 8,
+      "focus": "时间",
+      "max_chars": 3600
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"故而愿望他好的与前面说的“有1156b10友爱，就是完善意义上的友爱，因为他们对对用”是同一个词：方友爱，不是出于偶然因缘，而是出于每个人nitzlich，但“有都爱对方的品质。所以在这些人之间存在的友用”在我们的语境爱，只要他们的德性品质还在，就一直存在，中过于功利化了，而德性就是持久的品质。所以在完善的友爱其次，在这种友善关系中的每个人原本就的意义上，还是用是友善并对朋友友善的。因为德性高贵者都是“有益”这个词来原本友善，同时又相互有益的【367】。而且他表达可能更加切合1156b15们在同样的方式上令人快乐，因为德性既原本亚里士多德这里的就令人愉悦，又能让对方感到欢喜。每个人既语义。对他的也对与他相似的行为方式感到愉悦：有【368】 Reclam德之人既有相同的也有相似的行为方式。【368】版的翻译做了一点这种友爱是持久的，有其善的因缘，在朋引申，它把“相友当中必须有的东西都汇集在这种友爱中了。同的行为方式”译1156b20因为每种友爱都基于某一善或某一快乐，善和作：“每个人都有快乐中的每一个或者是就本身而言的，或者单源自其固有品质的纯地是对朋友而言的，此外还基于某种程度的行为方式”；把“相品质类似性。但在完善的友爱中包含了我们所似的行为方式”译说的所有善缘：本身的善或快乐和对朋友的友作：源自快乐的行善和快乐。因为在它当中通常的一切都统一一为方式。供参考。\\n第八卷友爱论司正文致了，既是完全的善，也完全令人快乐。而这也就是友爱的最高形式了，爱和友谊在这些人当中获得了最友善的和最高贵的形式。可是，这种友爱自然是很稀罕的，因为很少有这么高贵品质的1156b25人。此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的，所以，除非一个人向另一个人证明了自已值得爱，确立了信任之后，人们才能相互承认并接受对方为朋友。但那些迅速表明了友爱的外1156b30在形式的人们，虽然是想交朋友，但还不是朋友。因为他们也不能同时是可爱的，也不能同时认识到对方的可爱。成为朋友的意愿能很快完成，但友爱不能很快结成。5.三种友爱之比较所以这种友爱鉴于持久性和其他条件都是完善的，而且在这种友爱中，每一方所付出的和从朋友那里得到的回报，都是相同的和1156b35类似的，朋友就该如此。因快乐之故而生的友爱同这种完善的友爱有类似性，因为有德1157a性的人互为快乐之源。同样，因有用之故而生的友爱也与完善的友爱类似，因为有德之人的友谊也相互有益。但即使是在这些倾向于得到快乐和好处的人们这里，也只有当他们每个人能从对方那里得到相同的回报，例如快乐，不仅如此，而且也要从同样令他们快乐1157a5的事物上，例如，在同样品格和同样幽默的人们的交往中，相互感受得到回报，友爱关系才是最持久的。这种关系与爱和被爱的关系不一样。在这里两人不对同样的东西感到愉悦，而是一个人对受到了爱的关注，另一个人对示爱的成就感到愉悦。但是，不少人一且青春的花容消逝，爱的终点也就来临了。因为一人不再从关注中得1157a10到快乐，另一人不再得到习惯了的关注。但是，如果两人在品质上取得一致，并且每个人在交往中能得到另一人心心相印的信任，这\\n正文P种友爱也会继续。但是，如果人们在他们的关系中不是以快乐交换快乐，而是以好处交换好处，他们就不是真朋友，友爱关系也不会持久。毋宁说，因有用之故结交的朋友，一旦对方不再有用了，他1157a15们的关系就终止了。因为这种友爱不是涉及对方的人品，而是涉及能得到的好处。因快乐和有用之故而生的友爱也能存在于品质低劣者之间、品质高贵者与品质低劣者之间和品质既不高贵也不低劣者同任何品质的每个人之间，但因朋友自身之故而生的友爱明显地只存在于德性高1157a20贵者之间。因为品质低劣者只能从他们所能获得的好处中相互喜爱。也只有品质高贵者的友爱能抵御挑拨离间。因为这样的人不会轻易相信别人对经受了自己长时间考验的朋友的流言语。在这种友爱中信任是主要的，在他们当中适用的话是：“我信任他”，“他绝不会对我做什么不够道义的事”，他们当中有保持真正的友爱所要求1157a25的一切。相比之下，在别的友爱形式中则不免受到此类中伤。既然人们也称那些因有用而走到一起的人为朋友，这也像城邦的做法，城邦与城邦之间诚然就是因利益而结盟的：也称那些因快1157a30乐而相互倾心的人为朋友，就像儿童所为，如果我们一定要说这些关系也是友爱的话，那我们反而就必须说有多种友爱，尽管最高的和真正意义上的是品德高贵者当中的友爱，另一些都是与前一种类似的友爱。因为人们只要友善或者似乎友善，就可考虑交朋友。令1157a35人快乐者也确实对于爱快乐的人而言是好人。但是，缘于有用和缘于快乐的友爱并不总是相容，不是同一种友爱，因为只是偶然合到一起的东西，不会经常连在一起。6.友爱之被视为品质和活动1157b由于友爱分为这几种类型，所以品质低劣的人也就因快乐和有用变成朋友，由于他们追求的这些东西相同，但品质高贵者则因自\\n第八卷友爱论正文身品质之故而成朋友，因为他们恰恰是因为品质高贵而互生友爱。所以他们是真正的朋友，而前两种相反是偶然的朋友，因为他们只1157b5是与后者类似。我们回顾一下德性，有些人是因品质而高贵，有些人是因活动而高贵，所以，在友爱这里也是如此。如果朋友共同生活在一起，那他们相互愉悦，互相做有意义的事；但如果他们睡着了，或天各一方，虽然他们不能实现友爱活动，可相应的品质还在。因为空间1157b10上的分离虽然不摧毁友爱，但阻隔了友爱活动的实现。如果长久的分离，友爱也会被淡忘。所以俗话说：“缺乏交流的友爱，常常已枯菱”老年人和性情古怪者也很难成为朋友。因为在他们那里很少能让人1157b15舒心，没有人能够长期忍受跟一个愁眉苦脸的或不能令人舒心的人在一起。因为大多数人本性上就是避免痛苦而追求快乐。那些相互之间客客气气却不能共同生活的人，宁可说具有善意的品质而不是友爱的品质。因为没有什么比共同生活更合适地表达友爱的特征了。1157b20需要帮助的人看重的是朋友有用，享福的人看重的是跟朋友在一起，因为他最不适应的是孤独。但整天在一起消磨时光只在这些人当中才是可能的：他们相互愉悦，能对同样的事情感到愉快。从小一起长大的人之间的友爱就是这样。我们已经多次说过，真正的友爱是德性高贵者之间的友爱。因1157b25为只有真正的善和令人快乐的东西才可视为可爱可欲的，仅对个别人可爱可欲的东西永远都只对于那个人才是这样的东西，但高贵对于德性高贵者而言出于双方的缘故都同时是可爱可欲的。但情爱看起来是一种感性情感，而友爱是一种德性品质。因为1157b30爱也可以给予无生命的东西，互爱则要求自愿的选择，自愿的选择\\n则以某种品质为前提。人们也愿望他所爱的人好，这是一种因其意愿的好，不是出于感性情感，而是出于德性品质。爱朋友的人，同时也爱对于朋友本身是好的东西。因为当一个德性高贵者变成朋友时，对于他的朋友而言他就是1157b35高贵的东西。所以，他们每个人都爱着对他本身而言是高贵的东西，并给予对方以同样的回1158a报，希望对方好，给予他以快乐。这就叫做：【369】据拉尔然表现得最明显。修的《明哲言行录》在性情古怪者和老年人那里不容易有友记载，这句话出自爱，因为他们脾气不好，又不喜欢社交。因为毕达哥拉斯。在柏脾气好并喜欢社交几乎可以说完全是友爱的特拉图的《法律篇》1158a5征和原因。所以青年人很快就会成为朋友，老中就作为“古人的年人则不行。因为人们不和自己不喜欢的人交格言”而引用。朋友。性情古怪者也是这样。但这样的人相互之间诚然也会有善意：他们也愿望别人好，在别人窘迫之时也会伸出援助之手。但严格地1158a10说，他们不是朋友，因为他们不会共同生活，相互不喜欢，这却是友爱最主要的特征。在完善的友爱意义上，一个人不可能跟许多人交朋友，正如一个人不能同时跟许多人恋爱一样。因为这种爱情是一种过渡，而就爱的本性而言，应该是倾心于一个人的。许多人同时对一个人喜爱得不得了，这也不容易发生。而且，许多人都德性高贵，这也不容易碰到。1158a15再者，必须在长期交往中了解到别人的品性，这也是很难的。但是，在涉及有用和快乐的地方，人们确实会喜欢许多人，因为有用的和令人愉悦的人很多，而且他们能够给予的好处，人们只需花费很少的时间就能获得。在这两类友爱中，基于快乐的更接近于真\\n第八卷友爱论正的友爱本身，因为两人起的是相同的作用，相互地给予或者在同一事情上感到快1158±20乐。年轻人的友爱就是这样的。因为他们在快乐上总是表现得慷概，而在基于利用的友爱中则陷入斤斤计较。那些享福的人们也不需要朋友有用，而是需要朋友给他们带来快乐。他们希望别人围在他们\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 4186, \"excerpt_end\": 7786, \"chapter_text_length\": 20542, \"has_more\": true, \"next_offset\": 7786, \"has_previous\": true, \"previous_offset\": 586, \"focus_found\": true, \"focus_terms_matched\": [\"时间\"], \"focus_terms_found_in_chapter\": [\"时间\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"时间\", \"offset\": 4886, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 4686, \"focus\": \"时间\"}}, {\"term\": \"时间\", \"offset\": 5818, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 5618, \"focus\": \"时间\"}}, {\"term\": \"时间\", \"offset\": 7623, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 7423, \"focus\": \"时间\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4de43c2e302802d856237bd1823a0748aa731a4844d375fc3aa43e934daba735\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=8\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[4186, 7786]], \"covered_characters\": 3600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 23.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_l829GJune4UD3FzPOjh89933"
+    },
+    {
+     "t": 24.1,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_LGopJ51XNLsOtTNJPZLP9884",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 24.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "author": "亚里士多德",
+      "limit": 5,
+      "query": "好意 善意 友爱的开端"
+     },
+     "status": "success",
+     "duration_seconds": 0.046,
+     "result_full": "{\"query\": \"好意 善意 友爱的开端\", \"results\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"method\": \"catalogue\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"note\": \"本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。\"}"
+    },
+    {
+     "t": 33.3,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_FK0r8xpkEYFvAW29wYN37805",
+     "status": "success",
+     "duration_seconds": 0.001
+    },
+    {
+     "t": 47.1,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_00_Mymt2N3yajNxvu51bzYK2984",
+     "status": "success",
+     "duration_seconds": 0.04
+    },
+    {
+     "t": 50.4,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_mt26t0s8fu8QK8c6fJYD8978",
+     "status": "success",
+     "duration_seconds": 0.001
+    }
+   ],
+   "answer": "## 我读了哪些上下文（及范围）\n\n本地书为《尼各马可伦理学[注释导读本]》（book_id e574c8e7f515）。我实际读到的是有界片段，不是整卷：第八卷三个窗口、第九卷三个窗口（含第九卷末章读到章末）。关键处如下。\n\n**支持\"长期\"的一侧**\n\n- 第八卷 3 章讲完善的友爱：\"这种友爱自然是很稀罕的……此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的……成为朋友的意愿能很快完成，但友爱不能很快结成。\"（1156b24–32）【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\n- 第八卷 6 章再次点明了解对方要时间：\"必须在长期交往中了解到别人的品性，这也是很难的。\"（1158a14–16）\n\n**不利推出\"必须\"的一侧**\n\n- 善意（εὔνοια）被明确划在友爱之外。第八卷 2 章：\"许多人对他们从未谋面的、却认为他们是善良和有用的人抱有善意\"（1155b34–35）；要成为朋友才需要双方互有善意且\"双方都要让对方感受到这种善意\"（1156a4–5）。\n- 第九卷 5 章集中论善意：\"一个人对不认识的人也有仁爱之心，而且这种仁爱之心可以不被另一个人所知，但友爱不是这样……仁爱之心也可能是突然出现的……是友爱之发端\"，并称其为\"不作为的友爱\"——\"他们并不带着这些善意共同采取行动，也还不愿因这种善意添麻烦\"（1166b30–1167a14）。\n- 非朋友也会在困厄中援手。第八卷 6 章讲性情古怪者与老年人之间：\"这样的人相互之间诚然也会有善意：他们也愿望别人好，在别人窘迫之时也会伸出援助之手。但严格地说，他们不是朋友\"（1158a7–10）。\n- 第九卷 11 章（厄运中的朋友）：遭不幸的人需要帮助；\"朋友的在场就已经是令人愉悦的\"\"如果有朋友分忧，痛苦就会减轻\"；紧接着给出机制：\"一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格，明白是什么让那个人感到痛苦和快乐。\"（1171a25–1171b3）但亚里士多德随即声明机制存疑：\"我们现在也不去管它，究竟是由于这个原因还是别的原因使人得到宽慰。反正事实与所说的一致，就足以。\"（1171a32–35）\n- 同一章还有反向张力：有男子汉气概的人\"羞于让朋友来分担他的悲哀\"，不愿朋友因自己而痛苦；而对不幸中的朋友，朋友的义务是\"主动地不请自到\"（1171b4–11、1171b19–21）。\n- 第八卷 12 章：父母对子女的爱不是先有长期交往——\"父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母\"（1161b24–27）。\n\n## 判断：不能推出\n\n要\"由此推出\"，需要文本把长期友谊设定为真诚安慰的**必要条件**（无之则不可能）。友爱论没有这样做，而且按\"真诚安慰\"的三种可能读法分别看：\n\n1. **读作\"安慰者真心愿望对方好\"**：亚里士多德这里的条件是善意，而他明确说善意可以对不相识者、可以突然产生、可以不被对方知道（1166b31、1167a1）。这一读法下前提不只是推不出，还有直接反例。但要注意他的限定：善意\"不愿因这种善意添麻烦\"，所以这一读法得到的只是真诚的意愿，还不是安慰这一行动的施行。\n2. **读作\"真切有效、切中对方痛苦的安慰\"**：他给的条件是\"老道的\"、了解对方性格（1171b1–3），了解的常规途径确实是长期交往（1158a15）。但这只是对有效安慰者的描述性说明，不是必要条件；他自己把安慰何以生效列为悬置问题；而且他承认并非朋友的人也会在窘迫时伸手（1158a9）。至多推出\"长期友谊是有效安慰的典型途径\"，推不出\"必须\"。\n3. **读作\"基于完善的（德性的）友爱的安慰\"**：这一读法下推理成立——长期共同生活与相互了解确实是这种友爱得以形成的条件（1156b24–32、1158a14–16）。但代价是把\"长期友谊\"换成\"完善的友爱\"：亚里士多德把友爱分为三种，因有用、因快乐的友爱\"只需花费很少的时间就能获得\"（1158a16–18），也是友爱（虽然只是派生、偶然的）。所以若\"友谊\"取宽义，前提仍为假。\n\n另外，反方向也不保证：有用与快乐的友爱\"一旦朋友有所变故，就容易消逝\"（1156a20–24），长期存在并不自动使安慰成为真诚或有效的。\n\n**能站住的最接近命题**是：在基于德性的友爱中，长期共同生活与相互了解是该友爱形成的条件之一，而这类朋友在患难中的在场与分忧最可靠地减轻痛苦；但\"真诚安慰以长期友谊为必要前提\"不是友爱论的结论。\n\n## 两点限定\n\n- \"真诚安慰\"是当代语汇，不是亚里士多德的术语。他实际区分的是：善意（第八卷译\"善意\"，第九卷译\"仁爱\"，同为 εὔνοια）、因有用/因快乐的友爱、因德性的友爱，以及\"在场\"这一事实。要求文本为\"真诚安慰\"这一现代复合概念提供必要条件，本身就有概念错配的风险；上面按三种读法拆开，正是为避开这一点。\n- \"长期\"在文本中没有时限，只是\"需要时间\"\"长期交往\"的程度表述，把它读成可操作的年限判据是超出文本的。本库版本是注释导读本、抽取文本未核原版排印，我读到的也只是上述窗口而非整卷；若要在写作中引用，建议按 1156b、1158a、1161b、1166b–1167a、1171a–b 这些 Bekker 位置核对通行译本。",
+   "answer_chars": 2237,
+   "done_content": "## 我读了哪些上下文（及范围）\n\n本地书为《尼各马可伦理学[注释导读本]》（book_id e574c8e7f515）。我实际读到的是有界片段，不是整卷：第八卷三个窗口、第九卷三个窗口（含第九卷末章读到章末）。关键处如下。\n\n**支持\"长期\"的一侧**\n\n- 第八卷 3 章讲完善的友爱：\"这种友爱自然是很稀罕的……此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的……成为朋友的意愿能很快完成，但友爱不能很快结成。\"（1156b24–32）【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\n- 第八卷 6 章再次点明了解对方要时间：\"必须在长期交往中了解到别人的品性，这也是很难的。\"（1158a14–16）\n\n**不利推出\"必须\"的一侧**\n\n- 善意（εὔνοια）被明确划在友爱之外。第八卷 2 章：\"许多人对他们从未谋面的、却认为他们是善良和有用的人抱有善意\"（1155b34–35）；要成为朋友才需要双方互有善意且\"双方都要让对方感受到这种善意\"（1156a4–5）。\n- 第九卷 5 章集中论善意：\"一个人对不认识的人也有仁爱之心，而且这种仁爱之心可以不被另一个人所知，但友爱不是这样……仁爱之心也可能是突然出现的……是友爱之发端\"，并称其为\"不作为的友爱\"——\"他们并不带着这些善意共同采取行动，也还不愿因这种善意添麻烦\"（1166b30–1167a14）。\n- 非朋友也会在困厄中援手。第八卷 6 章讲性情古怪者与老年人之间：\"这样的人相互之间诚然也会有善意：他们也愿望别人好，在别人窘迫之时也会伸出援助之手。但严格地说，他们不是朋友\"（1158a7–10）。\n- 第九卷 11 章（厄运中的朋友）：遭不幸的人需要帮助；\"朋友的在场就已经是令人愉悦的\"\"如果有朋友分忧，痛苦就会减轻\"；紧接着给出机制：\"一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格，明白是什么让那个人感到痛苦和快乐。\"（1171a25–1171b3）但亚里士多德随即声明机制存疑：\"我们现在也不去管它，究竟是由于这个原因还是别的原因使人得到宽慰。反正事实与所说的一致，就足以。\"（1171a32–35）\n- 同一章还有反向张力：有男子汉气概的人\"羞于让朋友来分担他的悲哀\"，不愿朋友因自己而痛苦；而对不幸中的朋友，朋友的义务是\"主动地不请自到\"（1171b4–11、1171b19–21）。\n- 第八卷 12 章：父母对子女的爱不是先有长期交往——\"父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母\"（1161b24–27）。\n\n## 判断：不能推出\n\n要\"由此推出\"，需要文本把长期友谊设定为真诚安慰的**必要条件**（无之则不可能）。友爱论没有这样做，而且按\"真诚安慰\"的三种可能读法分别看：\n\n1. **读作\"安慰者真心愿望对方好\"**：亚里士多德这里的条件是善意，而他明确说善意可以对不相识者、可以突然产生、可以不被对方知道（1166b31、1167a1）。这一读法下前提不只是推不出，还有直接反例。但要注意他的限定：善意\"不愿因这种善意添麻烦\"，所以这一读法得到的只是真诚的意愿，还不是安慰这一行动的施行。\n2. **读作\"真切有效、切中对方痛苦的安慰\"**：他给的条件是\"老道的\"、了解对方性格（1171b1–3），了解的常规途径确实是长期交往（1158a15）。但这只是对有效安慰者的描述性说明，不是必要条件；他自己把安慰何以生效列为悬置问题；而且他承认并非朋友的人也会在窘迫时伸手（1158a9）。至多推出\"长期友谊是有效安慰的典型途径\"，推不出\"必须\"。\n3. **读作\"基于完善的（德性的）友爱的安慰\"**：这一读法下推理成立——长期共同生活与相互了解确实是这种友爱得以形成的条件（1156b24–32、1158a14–16）。但代价是把\"长期友谊\"换成\"完善的友爱\"：亚里士多德把友爱分为三种，因有用、因快乐的友爱\"只需花费很少的时间就能获得\"（1158a16–18），也是友爱（虽然只是派生、偶然的）。所以若\"友谊\"取宽义，前提仍为假。\n\n另外，反方向也不保证：有用与快乐的友爱\"一旦朋友有所变故，就容易消逝\"（1156a20–24），长期存在并不自动使安慰成为真诚或有效的。\n\n**能站住的最接近命题**是：在基于德性的友爱中，长期共同生活与相互了解是该友爱形成的条件之一，而这类朋友在患难中的在场与分忧最可靠地减轻痛苦；但\"真诚安慰以长期友谊为必要前提\"不是友爱论的结论。\n\n## 两点限定\n\n- \"真诚安慰\"是当代语汇，不是亚里士多德的术语。他实际区分的是：善意（第八卷译\"善意\"，第九卷译\"仁爱\"，同为 εὔνοια）、因有用/因快乐的友爱、因德性的友爱，以及\"在场\"这一事实。要求文本为\"真诚安慰\"这一现代复合概念提供必要条件，本身就有概念错配的风险；上面按三种读法拆开，正是为避开这一点。\n- \"长期\"在文本中没有时限，只是\"需要时间\"\"长期交往\"的程度表述，把它读成可操作的年限判据是超出文本的。本库版本是注释导读本、抽取文本未核原版排印，我读到的也只是上述窗口而非整卷；若要在写作中引用，建议按 1156b、1158a、1161b、1166b–1167a、1171a–b 这些 Bekker 位置核对通行译本。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_1",
+     "book": "尼各马可伦理学[注释导读本]",
+     "chapter": "第八卷 友爱论",
+     "book_id": "e574c8e7f515",
+     "chapter_idx": 8,
+     "author": "亚里士多德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_7"
+     ],
+     "excerpt": "，正如每个人都把他的牙齿、头发等等看做是属于他自身一样。但对于被创造者而言，则不把或不大把创造者看做是属于自身的。再者，在1161b25时间长度上也有区别，因为父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母。由此【388】便可以[388】注意明白，父母之爱为何更伟大。上面讲了三条理从这里我们看到，父母爱子如爱己一—因为由。1161b30由己所出者就是与己分离的另一个自己一—而子女爱父母，则是因为他们是由父母所生。兄弟姊\n第八卷友爱论妹之间的互爱，是因为他们都是由同一父母所生。这种共同的生命来源造就了他们的共同之处，所以常言道，“血脉相通，骨肉相连”，即是如此。因此，兄弟姊妹从某种意义上可以说是相互分离了的同一个存在。此外，兄弟之情也会因一起长大成人和年龄相近而愈加牢固，因为年纪【389】这句1161b35古谚也出自柏拉的友爱与伙伴的友爱相似图，在《菲德罗叔伯兄弟以及其他亲属的感情也都由兄弟感1162a篇》(Phaidros )情派生而来，因为他们同根同源。这种关系的亲240c1—3引1用了疏远近与他们同共同祖先的远近相应。它。子女对父母的爱类似于人对神的爱，是对高1162a5尚与优越者的爱。因为父母给予子女的最大恩德，就是赋予了子女以生命，为哺育和教养他们操心操劳。和非亲非故的友爱相比，亲子之爱得到的快乐与益处更大，因为他们有更加亲密的关系，有",
+     "quoted_passages": [
+      "必须在长期交往中了解到别人的品性，这也是很难的。",
+      "父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母",
+      "一旦朋友有所变故，就容易消逝"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 20542,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_14",
+     "book": "尼各马可伦理学[注释导读本]",
+     "chapter": "",
+     "book_id": "e574c8e7f515",
+     "chapter_idx": -1,
+     "author": "亚里士多德",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_7"
+     ],
+     "excerpt": "",
+     "quoted_passages": [],
+     "access_level": "METADATA_ONLY"
+    },
+    {
+     "book": "尼各马可伦理学[注释导读本]",
+     "chapter": "第九卷 友爱续论",
+     "book_id": "e574c8e7f515",
+     "chapter_idx": 9,
+     "author": "亚里士多德",
+     "evidence_id": "read_334d545647fa",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "善。厄运中朋友更1171a25必要，因此也需要朋友有用；幸运中朋友更美好，所以人们追求优秀和卓越。行善和同优秀的人共同生活更值得欲求。无论是在幸运中还是厄运中，朋友的在场就已经是令人愉悦的。117la30如果有朋友分忧，痛苦就会减轻。所以我们也疑惑，究竞是朋友分担了重负还是虽然并没有分担而只是在场就令人高兴，而且朋友分忧的意识就使痛苦减轻了。所以，我们现在也不去管它，究竞是由于这个原因还是别的原因使人得到宽慰。反正事实与所说的一致，1171a35就足以。朋友的在场可以说显得是某种混合性的东西。因为朋友的1171b探视确实是令人喜悦的，尤其是当处在厄运中时，这的确有助于减轻痛苦（因为一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格，明白是什么让那个人感到痛苦和快乐）。另一方面，看到某人是为自已的不幸而悲痛，也是令1171b5人痛苦的。因为每个人都避免让朋友为自己而痛苦。所以，有男子汉气概的人总是羞于让朋友来分担他的悲哀，如果痛苦不会被他人的宽慰而消除，那么他们不会忍受朋友因他而经历痛苦；总而言之，1171b10他们不想一起悲叹，因为他们本身都不是这种本性。妇人和妇人气的男人相反，他们喜欢和别人一起喉声叹气，把他们作为真正的朋友和同情者来爱。但显然，我们在所有事情上都应该以更好的人为榜样。在幸运中相反，朋友的在场使我们的交往其乐融融，让我们注意到，他们对",
+     "quoted_passages": [
+      "不作为的友爱",
+      "朋友的在场就已经是令人愉悦的",
+      "如果有朋友分忧，痛苦就会减轻",
+      "羞于让朋友来分担他的悲哀",
+      "主动地不请自到",
+      "不愿因这种善意添麻烦"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 17516,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 17,
+    "display_citations": 3,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第八卷 友爱论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 8,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "，正如每个人都把他的牙齿、头发等等看做是属于他自身一样。但对于被创造者而言，则不把或不大把创造者看做是属于自身的。再者，在1161b25时间长度上也有区别，因为父母从子女刚出生时就爱他们，而孩子只有经过了一段时间并且懂事了之后才会去爱他们的父母。由此【388】便可以[388】注意明白，父母之爱为何更伟大。上面讲了三条理从这里我们看到，父母爱子如爱己一—因为由。1161b30由己所出者就是与己分离的另一个自己一—而子女爱父母，则是因为他们是由父母所生。兄弟姊\n第八卷友爱论妹之间的互爱，是因为他们都是由同一父母所生。这种共同的生命来源造就了他们的共同之处，所以常言道，“血脉相通，骨肉相连”，即是如此。因此，兄弟姊妹从某种意义上可以说是相互分离了的同一个存在。此外，兄弟之情也会因一起长大成人和年龄相近而愈加牢固，因为年纪【389】这句1161b35古谚也出自柏拉的友爱与伙伴的友爱相似图，在《菲德罗叔伯兄弟以及其他亲属的感情也都由兄弟感1162a篇》(Phaidros )情派生而来，因为他们同根同源。这种关系的亲240c1—3引1用了疏远近与他们同共同祖先的远近相应。它。子女对父母的爱类似于人对神的爱，是对高1162a5尚与优越者的爱。因为父母给予子女的最大恩德，就是赋予了子女以生命，为哺育和教养他们操心操劳。和非亲非故的友爱相比，亲子之爱得到的快乐与益处更大，因为他们有更加亲密的关系，有",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 20542,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第九卷 友爱续论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 9,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "善。厄运中朋友更1171a25必要，因此也需要朋友有用；幸运中朋友更美好，所以人们追求优秀和卓越。行善和同优秀的人共同生活更值得欲求。无论是在幸运中还是厄运中，朋友的在场就已经是令人愉悦的。117la30如果有朋友分忧，痛苦就会减轻。所以我们也疑惑，究竞是朋友分担了重负还是虽然并没有分担而只是在场就令人高兴，而且朋友分忧的意识就使痛苦减轻了。所以，我们现在也不去管它，究竞是由于这个原因还是别的原因使人得到宽慰。反正事实与所说的一致，1171a35就足以。朋友的在场可以说显得是某种混合性的东西。因为朋友的1171b探视确实是令人喜悦的，尤其是当处在厄运中时，这的确有助于减轻痛苦（因为一个朋友，如果是老道的，通过他的目光和话语就能使人得到慰籍，因为他了解别人的性格，明白是什么让那个人感到痛苦和快乐）。另一方面，看到某人是为自已的不幸而悲痛，也是令1171b5人痛苦的。因为每个人都避免让朋友为自己而痛苦。所以，有男子汉气概的人总是羞于让朋友来分担他的悲哀，如果痛苦不会被他人的宽慰而消除，那么他们不会忍受朋友因他而经历痛苦；总而言之，1171b10他们不想一起悲叹，因为他们本身都不是这种本性。妇人和妇人气的男人相反，他们喜欢和别人一起喉声叹气，把他们作为真正的朋友和同情者来爱。但显然，我们在所有事情上都应该以更好的人为榜样。在幸运中相反，朋友的在场使我们的交往其乐融融，让我们注意到，他们对",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 17516,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": -1,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "形而上学",
+       "chapter": "第四章",
+       "book_id": "f11f1b13c278",
+       "chapter_idx": 3,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "秩序的和*美的东西，而且有混乱的和丑恶的东西，而且坏的东西比善的东西多，卑劣的东西比美好的东西多，因而另外的思想家提出了友爱与争斗（iiakaivcikog），二者中的每一个相应地是两类事物中的每一类的原因。如果我们贯彻恩培多克勒的观点，并且根据它的*意义而不是它的含混的表达来解释它的话，我们会5发现友爱是善的事物的原因，而争斗是坏的事物的原因。因此，如果我们说恩培多克勒在一种意义上同时说到恶与善是本原，并且是最早这样说的，那么我们也许会是对的，因为所有的善的事物的原因就*是善10本身。 正如我们所说，这些思想家明显地抓住了（而且在这种程度上抓任了）原因中的两个（我们在论自然的著作中区分过这些原因）—质料以及运动的源泉一然而它是粗略",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "形而上学",
+       "chapter": "第七章",
+       "book_id": "f11f1b13c278",
+       "chapter_idx": 6,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "都有这类原因，因为有人说过第一元素就是这一类的。②这些思想家仅仅抓住了这个原因，但是某些其他的人提出了运动的源泉，例如把友爱与争斗或者理性或者性爱作为本原的那些人。 *没有一个人明确地表达过本质以及实体。它主要由那些相信*“形988式”的人所提示。因为他们并不假定“形式”是可感觉事物的质料以及①参看《物理学》，1I1.3.7。 ②参看第尔士：《前苏格拉底哲学家》第3版，1.18.821,415,32-416,27。这个相关事项也许指的是阿那克西美尼的追随者。 “二”是“形式”的质料，或者它们是运动的来源（因为他们说这些母宁是不动的和处于静止状态的东西的原因），但是他们提供“形式”作为*每个其他事物的本质，并提供“二”作为“形式”的本",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "形而上学",
+       "chapter": "第十章",
+       "book_id": "f11f1b13c278",
+       "chapter_idx": 117,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "怎样是一个本原，*他们却没有说一无论是作为目的，或是作为推动者或是作为形式。 恩培多克勒也有一个奇怪的观点，因为他将善与友爱等同，但这是一个既作为推动者（因为它把事物结合在一起）又作为质料（因为它是5混合物一部分）的本原。现在，即使发生了同一*事物是本原，它既作为质料又作为推动者，但是这两个本原的本质仍然不是同样的。在哪方面友爱是一个本原呢？并且说争斗应当是不可坏灭的，这也是荒谬的； 恶的本性恰恰是争斗。 ①因为有一个永恒的实体，它不是从对立中产生出来的（参看本卷第六章），并且不仅有事物从对立中产生，也有从其质中产生的（参看本卷第二章）。 ②亦即为了存在物的高级形式可以从元素的新的组合中产生出来。 ③即指基质④指柏拉图主义者的主张。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "形而上学",
+       "chapter": "第六章",
+       "book_id": "f11f1b13c278",
+       "chapter_idx": 17,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "但是，至少这一点是明显的一而且这是我们的出发点—*根据他的理论就得出争斗也是存在的原因，正如它是毁灭的原因一样。相似地，友爱不专是存在的原因；因为在把事物聚集为一时，它就摧毁了所有其他的事物。并且，与此同时，恩培多克勒在事物由于本性是如此之外，没有提到变化本身的原因。 但是当争斗最后在球体的边缘变大时，*并且当时间已到了它跳出来确定它的权利时，那是依次地由强大的普言为它们确定的。 这意味着变化是必然的，但是他未表明这个必然的原因。但是直到这时只有他是前后一贯地谈论问题，因为他并没有让有些事物是可坏灭的而另一些事物是不可坏灭的，而是*使除了元素以外的一切事物都是可以坏灭的。我们现在正谈论的困难是：如果所有事物都是由相同的本原构成的，那",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "政治学",
+       "chapter": "第四章",
+       "book_id": "53b09f03e24e",
+       "chapter_idx": 17,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的目的说，这种妇孺归公 的社会毋宁实行于［被统治的］农民之间，不应该实施于［统治阶级的］卫国公民。在妇孺公有的社会中，“友爱”的精神一定削弱，而被统治阶级减少相互间的友谊恰恰有利于服从而免得他们试作反叛的图谋 ②。概括地说，［于柏拉图的《理想国》中］苏格拉底倡议的这种制度所产生的效果一定不 同于习俗制度所得的效果，而这些效果也一定相反于他原先所企求的目的。因为消除内讧最有赖于友爱，所以大家总是以友爱作为城邦主要的善德 ③。苏格拉底更特别重视城邦的全体一致（洽和），他和世人都曾经想到并说明惟有友爱可以 造成这样的团结。但他所想望的全体团结，类似《爱情篇》中男女情侣的热爱，有如阿里斯多芳所描绘的，他们由于情意炽烈，双方都乐于合为一体。这",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "工具论",
+       "chapter": "论题篇第三卷",
+       "book_id": "b471f41a78de",
+       "chapter_idx": 9,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的东西比健康更值得选择；因为它超过同一的标准更多。 再次，由于自身而更高尚、更珍贵以及更值得做的东西就更值得选择，例如，友爱比财富、公正比健康更值得选择。因为前者由于自身而属于珍贵的和值得做的东西，后者则不是由于自身而是其他；因为无人由于自身而珍视财富，总是由于其他，相反，我们是为了自身而珍惜友爱，即使它不可能给我们带来什么。 【2】 此外，当两个东西彼此非常相似，而我们看不出其中的一个比另一个有任何更好之处时，就应从它们的结果出发来考察它们。因为带来更善的东西，更值得选择；或者，如果结果是恶，带来更少恶的东西就更值得选择。因为即使二者都可以选择，但仍会有某种不合适的结果。从结果出发的考察又有两种方式，因为有在先的结果和在后的结果，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第四卷 具体德性续论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 4,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "论一个好朋友时爱是有差别的，在德语所指的那种人的话，就只需再加上可爱中基本上和我们汉语相就行了。似，一般用友谊和爱两个同友爱的区别在于它缺乏对所交往词来表达，但在希腊文之人的情感和爱，因为人在此如其应当中，philia,philo,philos 有的那样中庸，不是出于爱与恨，而只是“友谊”和“友爱”“热因为有此品质。他对生人和熟人，亲近1126b25爱”等义，友谊和友爱基的人和疏远的人都同样对待，只是在每本上能相互蕴含的，所以一种情况下这样做才合适罢了。因为对我国的一些希腊哲学专亲近的人和生疏的人以同样的方式关心家认为，把英文friend或或伤害，是不应该的。friendship译为“友谊”不所以，上面所说的是人们一般地如如译为“友",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "附录",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 11,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "piciokparla,Aristocracy）贵族制，贵族政体一种好的政制160a32；其蜕变160b10；夫妻之间的友爱显得是贵族式的160b34；131a23；贵族从德性看人的尊贵131a28。AuBere Guter（EKTogayaeu,εueTnpia, εunμepla, xopnyla）外在的善目(善物或善缘）作为幸福的必然要素98b26,99a31；101a15，153b18，178b33；梭伦的看法179a11—16；思辨的生活相比于实践的生活对外在善目的需要更少178a24；身体的善和灵魂的善之区分98b13；荣誉作为最大的外在善目123b20。 BBelehrung.Lernen（μaθnrov,ioaaka",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第二卷 伦理德性与中庸",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 2,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "然票赋”（Anlagen），如们称作性情的是欲望、愤视觉、听觉等一样。怒、恐惧、自信、嫉妒（Neid，envy）、愉悦、友爱、增恨，渴慕、忌妒（Eifer-sucht, Mi β gunst, emula-tion）、同情，总而言之是所有那些伴随着苦乐的性情；能力我是指那种我们因之能够感受这些性情的东西，例如那种使我们能够感1105b25受愤怒、悲伤或怜阀的东西；称作品质的是，我们借助于它在面对非理性的情感冲动时使我们能正当或不正当地对待的东西，例如，面对一种怒气的爆发，如果我 正文们的情感对它太激烈或者太软弱，我们的举止就不当，而如果我们适度地对待它，那就是正当的。类似的东西也适用于其余的性情。1 105b30性情既非德也非恶，首",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第五卷 公正论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 5,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "么贪婪者的贪欲也与之般不会说“绝对如相关，这样一个在恶事上想少得的人也显得是何”，我们还是用贪婪者，但实际上他是不平等的友爱者。所“就其本身而言”以，贪婪者就是贪图财富和喜爱不平等的人，1129b10来理解。贪婪是对这两者的共同表达。.3.公正乃德性之首【199】不平等此外，违法的人也是不公正的。这种不公包含了贪婪和狭义正，违法或者不平等，包含了所有的不公正，上的不平等。对于每一种不公正而言，都是共同的【199】。 由于我们把违法的【200】对这段文字，西方学者的理解人看做是不公正的，把历来分歧较大，不同的译本有不同的译法，守法的人看做是公正我先是依Meiner版的译法，但最终依据的的，那么显然，一切合是Taschenbuch版的，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "导读：从《尼各马可伦理学》找回对德性力量的确信",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 0,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "靠法治，同样需要人的德性，但它不是需要具体的像勇敢、节制这样的美德，而是需要“公平”、“正义”这种“总德”（大德）和友善友爱这样的待人之德，因为只有“公正”和“友爱”才是维系城邦共同体的德性力量。而在内，既然所有生物有机体都能做到自我实现其功能的优秀和卓越，那么人难道就没有能力实现自己人之为人的固有使命吗？当然有，人尽管不是宇宙中最高贵的存在者，也称得上是次高贵的存在者，因为人的灵魂中尽管有植物性的自然要素，有非理性的情感因素，但也有理性的逻各斯（logos）和通神的努斯（nous），因此人的德性是否有力量实现人的优秀和卓越，关键在于人是否让灵魂中的高贵部分起主宰和领导作用。如果人只能让植物性灵魂起主导作用，那么人就只能像一般植物那",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "工具论",
+       "chapter": "",
+       "book_id": "b471f41a78de",
+       "chapter_idx": -1,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "政治学",
+       "chapter": "",
+       "book_id": "53b09f03e24e",
+       "chapter_idx": -1,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      },
+      {
+       "book": "形而上学",
+       "chapter": "",
+       "book_id": "f11f1b13c278",
+       "chapter_idx": -1,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "",
+       "access_level": "METADATA_ONLY"
+      }
+     ],
+     "total": 17,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 66.206,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 9.2,
+     "ev": "assistant_commentary",
+     "chars": 28
+    },
+    {
+     "t": 9.2,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 9.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_scdpujrQ8BeVNGt0jk4z3115"
+    },
+    {
+     "t": 9.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_NFevyyi3sFnTvZrhuG7M9961"
+    },
+    {
+     "t": 9.5,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.034,
+     "result_chars": 7140,
+     "result_head": "{\"query\": \"友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citati"
+    },
+    {
+     "t": 10.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.41,
+     "result_chars": 4315,
+     "result_head": "{\"query\": \"尼各马可伦理学 友爱 时间 习性\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷"
+    },
+    {
+     "t": 13.0,
+     "ev": "assistant_commentary",
+     "chars": 37
+    },
+    {
+     "t": 13.0,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 13.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_D7GGpXfbR6dEQzrWfz0Q0441"
+    },
+    {
+     "t": 13.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_jvnmDFdcBk2TfMXUI85W3160"
+    },
+    {
+     "t": 13.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_K8lw4mzCNOctrsYRFcqg7686"
+    },
+    {
+     "t": 13.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.022,
+     "result_chars": 760,
+     "result_head": "{\"query\": \"患难 不幸 朋友的在场 分担忧愁\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\","
+    },
+    {
+     "t": 13.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.023,
+     "result_chars": 755,
+     "result_head": "{\"query\": \"时间 熟识 完善的友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"mat"
+    },
+    {
+     "t": 13.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.025,
+     "result_chars": 756,
+     "result_head": "{\"query\": \"好意 善意 善意不是友爱\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"ma"
+    },
+    {
+     "t": 15.5,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_lAcYbDox6C6imjcnwy5x1781"
+    },
+    {
+     "t": 15.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_16tLZExEKneE8xK9PtVX3276"
+    },
+    {
+     "t": 15.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5229,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 9, \"title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"text\": \"\\n况"
+    },
+    {
+     "t": 15.8,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 1876,
+     "result_head": "{\"id\": \"e574c8e7f515\", \"title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"region\": \"西方\", \"file_type\": \"pdf\", \"summary\": \"《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系"
+    },
+    {
+     "t": 17.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_TCq9atirIoMk2lykRc5K8811"
+    },
+    {
+     "t": 17.7,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_imDg35kmAmPeRi8iYAX18075"
+    },
+    {
+     "t": 17.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 4325,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 9, \"title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"text\": \"上很少"
+    },
+    {
+     "t": 17.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5816,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"故而愿望他"
+    },
+    {
+     "t": 23.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_l829GJune4UD3FzPOjh89933"
+    },
+    {
+     "t": 24.1,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_LGopJ51XNLsOtTNJPZLP9884"
+    },
+    {
+     "t": 24.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 4796,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"0都存在；"
+    },
+    {
+     "t": 24.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.046,
+     "result_chars": 1923,
+     "result_head": "{\"query\": \"好意 善意 友爱的开端\", \"results\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metada"
+    },
+    {
+     "t": 33.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_FK0r8xpkEYFvAW29wYN37805"
+    },
+    {
+     "t": 33.6,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.001,
+     "result_chars": 5451,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 9, \"title\": \"第九卷 友爱续论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第九卷 友爱续论】\", \"text\": \"这种关"
+    },
+    {
+     "t": 47.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_Mymt2N3yajNxvu51bzYK2984"
+    },
+    {
+     "t": 47.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.04,
+     "result_chars": 1983,
+     "result_head": "{\"query\": \"父母对子女的友爱 家庭 亲子\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友"
+    },
+    {
+     "t": 50.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_mt26t0s8fu8QK8c6fJYD8978"
+    },
+    {
+     "t": 50.7,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.001,
+     "result_chars": 5183,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"君一臣这是"
+    },
+    {
+     "t": 66.3,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1408
+  }
+ ],
+ "total_wall_s": 68.0,
+ "status": "COMPLETED"
+}

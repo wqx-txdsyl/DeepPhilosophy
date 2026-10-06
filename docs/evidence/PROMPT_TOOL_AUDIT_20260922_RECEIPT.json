@@ -1,0 +1,219 @@
+{
+  "baseline_commit": "9b477d260",
+  "books": 410,
+  "primary_before": {
+    "entries": 12434,
+    "issues": 106,
+    "query_hits": {
+      "analects_exact": 1,
+      "kant_phrase": 0,
+      "hume_phrase": 0,
+      "kant_multi": 0,
+      "aristotle_friendship": 3,
+      "fabricated": 0
+    }
+  },
+  "primary_after": {
+    "entries": 12435,
+    "issues": 0,
+    "query_hits": {
+      "analects_exact": 1,
+      "kant_phrase": 3,
+      "hume_phrase": 3,
+      "kant_multi": 3,
+      "aristotle_friendship": 3,
+      "fabricated": 0
+    },
+    "all_returned_passages_roundtrip": true,
+    "reader_issues": [
+      {
+        "book_id": "590ee1d9a55a",
+        "index": 10,
+        "kind": "OUTSIDE_WEBSITE_CHAPTER_RANGE"
+      }
+    ]
+  },
+  "tool_calls": [
+    {
+      "tool": "get_book_detail",
+      "status": "RETURNED",
+      "seconds": 0.006
+    },
+    {
+      "tool": "get_chapter",
+      "status": "RETURNED",
+      "seconds": 0.001
+    },
+    {
+      "tool": "query_graph",
+      "status": "RETURNED",
+      "seconds": 0.003
+    },
+    {
+      "tool": "get_philosopher",
+      "status": "RETURNED",
+      "seconds": 0.006
+    },
+    {
+      "tool": "list_books",
+      "status": "RETURNED",
+      "seconds": 0.0
+    },
+    {
+      "tool": "search_books",
+      "status": "RETURNED",
+      "seconds": 0.774
+    },
+    {
+      "tool": "write_essay",
+      "status": "RETURNED",
+      "seconds": 4.415
+    },
+    {
+      "tool": "get_school",
+      "status": "RETURNED",
+      "seconds": 0.038
+    },
+    {
+      "tool": "phti_test",
+      "status": "RETURNED",
+      "seconds": 0.001
+    },
+    {
+      "tool": "generate_image",
+      "status": "RETURNED",
+      "seconds": 11.431
+    },
+    {
+      "tool": "socratic_tutor",
+      "status": "RETURNED",
+      "seconds": 1.406
+    },
+    {
+      "tool": "philosopher_debate",
+      "status": "RETURNED",
+      "seconds": 2.355
+    },
+    {
+      "tool": "compare_views",
+      "status": "RETURNED",
+      "seconds": 12.952
+    },
+    {
+      "tool": "thought_experiment",
+      "status": "RETURNED",
+      "seconds": 4.012
+    },
+    {
+      "tool": "advisor_council",
+      "status": "RETURNED",
+      "seconds": 3.072
+    },
+    {
+      "tool": "analyze_argument",
+      "status": "RETURNED",
+      "seconds": 11.551
+    },
+    {
+      "tool": "concept_trace",
+      "status": "RETURNED",
+      "seconds": 1.308
+    },
+    {
+      "tool": "profile",
+      "status": "RETURNED",
+      "seconds": 1.787
+    },
+    {
+      "tool": "conceptual_map",
+      "status": "RETURNED",
+      "seconds": 0.002
+    },
+    {
+      "tool": "websearch",
+      "status": "RETURNED",
+      "seconds": 0.908
+    },
+    {
+      "tool": "paper_review",
+      "status": "RETURNED",
+      "seconds": 16.076
+    },
+    {
+      "tool": "query_database",
+      "status": "RETURNED",
+      "seconds": 0.001
+    },
+    {
+      "tool": "role_play",
+      "status": "RETURNED",
+      "seconds": 0.005
+    },
+    {
+      "tool": "life_coach",
+      "status": "RETURNED",
+      "seconds": 2.617
+    },
+    {
+      "tool": "essay_outline",
+      "status": "RETURNED",
+      "seconds": 4.06
+    },
+    {
+      "tool": "history_timeline",
+      "status": "RETURNED",
+      "seconds": 1.162
+    },
+    {
+      "tool": "dialectic",
+      "status": "RETURNED",
+      "seconds": 2.847
+    },
+    {
+      "tool": "confrontation",
+      "status": "RETURNED",
+      "seconds": 6.306
+    },
+    {
+      "tool": "agent_council",
+      "status": "RETURNED",
+      "seconds": 2.944
+    },
+    {
+      "tool": "school_arena",
+      "status": "RETURNED",
+      "seconds": 9.761
+    },
+    {
+      "tool": "get_scholarly_source",
+      "status": "RETURNED",
+      "seconds": 0.032
+    },
+    {
+      "tool": "verify_quote",
+      "status": "RETURNED",
+      "seconds": 0.004
+    },
+    {
+      "tool": "search_scholarship",
+      "status": "RETURNED",
+      "seconds": 2.693
+    },
+    {
+      "tool": "review_answer",
+      "status": "RETURNED",
+      "seconds": 8.954
+    }
+  ],
+  "targeted_after_full_audit": [
+    "essay-read-retest",
+    "arena-retest",
+    "citation-repair-tests.log"
+  ],
+  "limitations": [
+    "tool RETURNED is not academic correctness",
+    "local coordinate verification is not exhaustive online reachability",
+    "role hints are heuristic",
+    "no corpus files were changed"
+  ]
+}

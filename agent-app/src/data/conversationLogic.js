@@ -1,7 +1,7 @@
 /**
  * Conversation 纯逻辑（无 React / 无 window 依赖, Node 可直接测试）
  *
- * 设计文档: docs/PhiAgent_Conversation_Workspace_Refactor.md
+ * 设计文档: docs/ui/conversation-workspace-refactor.md
  * - §4  标题: deterministic 规则, 中文约 8~20 字, 不做额外 LLM 调用
  * - §6  打开旧会话 Composer Agent 优先级: last_used → default → general
  * - §10 "可继续探索" Agent 规则: 未主动切 Agent → 沿用来源回答的 agent_id;
@@ -10,6 +10,12 @@
  */
 
 export const GENERAL_AGENT = 'general';
+
+/** Persisted records are JSON data; older mobile browsers lack structuredClone. */
+export function clonePersisted(value) {
+  return typeof structuredClone === 'function' ? structuredClone(value)
+    : value == null ? value : JSON.parse(JSON.stringify(value));
+}
 
 /** 会话 id（persist 后使用）与草稿 scope（路由 /agent 上的临时 Draft） */
 export const DRAFT_ID = '__draft__';
@@ -98,7 +104,11 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
     conversation_id: raw.conversation_id || null,
     role,
     ...(role === 'assistant' ? { agent_id: raw.agent_id || fallbackAgentId } : {}),
+    ...(raw.runtime_profile ? { runtime_profile: raw.runtime_profile } : {}),
+    ...(raw.agent_release ? { agent_release:raw.agent_release } : {}),
+    ...(raw.main_model_usage ? { main_model_usage:raw.main_model_usage } : {}),
     content: typeof raw.content === 'string' ? raw.content : '',
+    ...(typeof raw.context_content === 'string' ? { context_content: raw.context_content } : {}),
     ...(normalizeAttachments(raw.attachments).length ? { attachments: normalizeAttachments(raw.attachments) } : {}),
     ...(role === 'assistant'
       ? {
@@ -106,8 +116,10 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
           ...(raw.evidence ? { evidence: raw.evidence } : {}),
           tool_events: Array.isArray(raw.tool_events) ? raw.tool_events : (Array.isArray(raw.events) ? raw.events : []),
           ...(raw.suggestions?.length ? { suggestions: raw.suggestions } : {}),
+          ...(raw.suggestions_status ? { suggestions_status: raw.suggestions_status } : {}),
           ...(raw.reasoning_summary ? { reasoning_summary: raw.reasoning_summary } : {}),
           ...(raw.safety ? { safety: raw.safety } : {}),
+          ...(raw.stream_state ? { stream_state: raw.stream_state, error: raw.error || '' } : {}),
         }
       : {}),
     created_at: raw.created_at || new Date().toISOString(),
@@ -124,6 +136,7 @@ export function normalizeAttachments(raw) {
       filename: String(a.filename),
       kind: ['image', 'markdown', 'text', 'document'].includes(a.kind) ? a.kind : 'document',
       ...(Number.isFinite(a.size) ? { size: a.size } : {}),
+      ...(a.truncated === true ? { truncated: true } : {}),
     }));
 }
 
@@ -179,6 +192,7 @@ export function toolShortArgs(args) {
 
 /** 检索/查阅类工具: Level 1 可合并为「查阅了 N 项资料」 */
 export const RETRIEVAL_TOOLS = new Set([
+  'search_primary_texts', 'read_primary_text',
   'search_books', 'get_chapter', 'get_book_detail', 'get_philosopher', 'get_school',
   'list_books', 'query_graph', 'query_database', 'concept_trace',
 ]);
@@ -202,6 +216,10 @@ export function toolHumanSummary(name, args, shortResult) {
   const n = m ? Number(m[1]) : null;
   const cut = (s, max = 22) => (s.length > max ? s.slice(0, max) + '…' : s);
   switch (name) {
+    case 'search_primary_texts':
+      return query ? `已查找原典：${cut(query)}` : '已查找原典';
+    case 'read_primary_text':
+      return '已读取原典片段';
     case 'search_books':
       return query ? `已检索《${cut(query)}》` : (n != null ? `已检索到 ${n} 项资料` : '已检索原典');
     case 'get_chapter':
@@ -276,23 +294,31 @@ export function toPersistedMessage(m) {
   };
   const attachments = normalizeAttachments(m.attachments);
   if (attachments.length) base.attachments = attachments;
+  if (typeof m.context_content === 'string') base.context_content = m.context_content;
   if (m.role !== 'assistant') return base;
   const events = (m.events || m.tool_events || []).map((ev) => {
-    if (ev?.t === 'tool_start') return { t: 'tool_cancel', name: ev.name, reason: '未执行，已跳过' };
+    if (ev?.t === 'tool_start') return { ...ev, t: 'tool_cancel', name: ev.name, reason: '执行结果未保存' };
     if (ev?.t === 'tool' && ev.tc) {
-      return { t: 'tool', tc: { ...ev.tc, result_summary: String(ev.tc.result_summary || '').slice(0, 400) } };
+      const summary = String(ev.tc.result_summary || '');
+      return { ...ev, t: 'tool', tc: { ...ev.tc, result_summary: m.runtime_profile === 'bare' ? summary : summary.slice(0, 400) } };
     }
     return ev;
   });
   return {
     ...base,
     agent_id: m.agent_id || GENERAL_AGENT,
+    ...(m.runtime_profile ? { runtime_profile: m.runtime_profile } : {}),
+    ...(m.agent_release ? { agent_release:m.agent_release } : {}),
+    ...(m.main_model_usage ? { main_model_usage:m.main_model_usage } : {}),
     citations: Array.isArray(m.citations) ? m.citations : [],
     ...(m.evidence ? { evidence: m.evidence } : {}),
     tool_events: events,
     ...(m.suggestions?.length ? { suggestions: m.suggestions } : {}),
+    ...(m.suggestions_status ? { suggestions_status: m.suggestions_status } : {}),
     ...(m.reasoning_summary ? { reasoning_summary: m.reasoning_summary } : {}),
     ...(m.safety ? { safety: m.safety } : {}),
+    ...(m.stream_state ? { stream_state: m.stream_state, error: m.error || '' } : {}),
+    ...(Number.isFinite(m.duration_seconds) ? { duration_seconds: m.duration_seconds } : {}),
   };
 }
 
@@ -306,6 +332,7 @@ export function normalizeConversation(raw) {
     last_used_agent_id: raw.last_used_agent_id || null,
     created_at: raw.created_at || new Date().toISOString(),
     updated_at: raw.updated_at || raw.created_at || new Date().toISOString(),
+    ...(raw.messages_loaded === false ? { messages_loaded: false, message_count: raw.message_count || 0 } : {}),
     reading_context: {
       book_id: raw.reading_context?.book_id ?? null,
       chapter_id: raw.reading_context?.chapter_id ?? null,

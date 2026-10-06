@@ -1,0 +1,344 @@
+{
+ "case_id": "DEV_G05",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "「体验机器」（experience machine）思想实验在当代研究中的争论现状如何？请提供近年学术文献与双方主要论证。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_7Dz2T0zcnQ4oG6NMdWgL5225"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_etQvgeqgbTnuY7lsXqfy0544"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_r9naoy9nWIGdciRm5Lig4798",
+   "args": {
+    "query": "experience machine Nozick thought experiment",
+    "limit": 10
+   },
+   "result_head": "{'query': 'experience machine Nozick thought experiment', 'results': [{'source_record_id': 'doi:10.1080/09515089.2017.1406600', 'title': 'Nozick’s experience ma"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_pjSdbM0ImLxRIHI9EAo90868"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_BW5KxMZpS3sexaqbnPTc2139"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_BdjZvH5RXsSGBImV3lBB3587"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_giNNRPYi1byFwstr2It93373"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_4kPcGimE2eUDLnl3Ipmy7179",
+   "args": {
+    "source_record_id": "openalex:W2527234593",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_8EUujla5hOf1X3tNYu2j5359"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_Hdx2n91dlPAQSePJb4pO8731"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_u6q6psSunb4NLtHgLh503965"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_03_jegZpMoaYuMJzm72LgtN2411"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_04_i9bpnuCquXo0xtZgeYha0161",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "openalex:W2527234593"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_rMth9E3VUc2m7mXOMRyN1549",
+   "args": {
+    "budget_extension_reason": "用户明确要求呈现\"双方主要论证\"，目前仅反对方（Weijers 2011 的 status quo bias 反驳）取得可读内容证据，支持/辩护方（如 Barber 2011、van der Deijl 2018、Rowland 2017）仅有书目、无内容证据，无法平衡呈现双方立场，不延展则该核心请求不成立",
+    "evidence_gap": "体验机器争论中支持/辩护诺齐克式结论（实在体验更可欲、快乐主义有缺陷）的近年文献内容证据，以与已有的反对方证据形成对照",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "unresolved_evidence_gap": "支持方论证的内容证据（Barber 2011 / van der Deijl 2018 / Rowland 2017 等的摘要内容）"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 体验机器争论中支持/辩护诺齐克式结论（实在体验更可欲、快乐主义有缺陷）的近年文献内容证据，以与已有的反对方证据形成对照）。soft 检索预算="
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_IMePGI9mfi8NYzvIkp9w2783",
+   "args": {
+    "limit": 10,
+    "query": "hedonism experience machine objection reply defense"
+   },
+   "result_head": "{'query': 'hedonism experience machine objection reply defense', 'results': [{'source_record_id': 'doi:10.1111/phc3.12645', 'title': 'Aesthetic hedonism and its"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_3WN2n9O7SkCTcdw9nvWg6073"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_UotJnn388KTrvZXiSRek7391"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_xJX806ANGIwbtwIRLFNO5357",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.3998/ergo.12405314.0003.004"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "用户明确要求\"近年学术文献与双方主要论证\"，需要：（1）诺齐克提出体验机器的原典原文；（2）当代研究中支持与反对该思想实验论证效力的可读二手文献",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位但未读取的 Weijers（直觉偏差）、Belshaw、Smith 等来源，以及 de Brigard 等反对\"体验机器\"直觉可靠性的实证研究——\"双方主要论证\"的文本证据仍不完整",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"近年学术文献与双方主要论证\"（SCHOLARLY 核心请求）；目前仅取得 1 篇摘要，支持方与反对方均缺可读内容证据，无法完成\"双方论证\"的对比综合，不延展则无法满足请求核心",
+    "unresolved_evidence_gap": "体验机器争论中反对方（如 de Brigard 的实证反驳、Weijers 对直觉可靠性的质疑）与支持方（如实在论价值论）的近年文献内容证据"
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "用户明确要求呈现\"双方主要论证\"，目前仅反对方（Weijers 2011 的 status quo bias 反驳）取得可读内容证据，支持/辩护方（如 Barber 2011、van der Deijl 2018、Rowland 2017）仅有书目、无内容证据，无法平衡呈现双方立场，不延展则该核心请求不成立",
+    "evidence_gap": "体验机器争论中支持/辩护诺齐克式结论（实在体验更可欲、快乐主义有缺陷）的近年文献内容证据，以与已有的反对方证据形成对照",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "unresolved_evidence_gap": "支持方论证的内容证据（Barber 2011 / van der Deijl 2018 / Rowland 2017 等的摘要内容）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1725,
+ "final_answer": "我已用尽可检索的额度，且大部分关键文献都取得了可核验的书目信息与部分摘要证据。下面是综合梳理——我会清楚区分哪些是我实际核验到的文献证据、哪些是我的哲学重建、哪些是记忆层面需存疑的内容。\n\n---\n\n# 「体验机器」在当代研究中的争论现状\n\n## 一、先说结论：争论的重心已经转移\n\n诺齐克提出这个思想实验，本意是用它**反驳快乐主义**（hedonism）：如果多数人不愿接入机器，说明\"快乐体验\"之外还有我们真正看重的东西。但当代争论的**主战场已经不完全在这里**了。目前至少并行着两条线：\n\n1. **价值论之争**：拒绝接入是否真的证明\"快乐之外的东西\"有价值（诺齐克结论成不成立）；\n2. **方法论之争**：人们\"拒绝接入\"的那条直觉，本身是不是可靠的证据？——这是近十余年最活跃的方向。\n\n第二条线的兴起，把争论从\"快乐主义对不对\"变成了\"思想实验的直觉能不能当证据用\"。\n\n---\n\n## 二、原典起点（转述，非库中核验原文）\n\n需先说明：我**未能在本站原典库中检索到诺齐克《无政府、国家与乌托邦》的体验机器段落**（以\"体验机器\"\"诺齐克 无政府\"等关键词检索均未命中该书，命中的是伊壁鸠鲁、密尔一系的快乐主义文本）。因此以下是对该思想实验的**通行转述**，不是库中核验的逐字原文，我不为它挂正式引用标注：\n\n诺齐克设想一种机器，能让你体验到任何你想要的、极其逼真的经历。你可以在里面\"写一部交响曲\"\"交到挚友\"\"读一本好书\"，而这些体验与真实经历在你主观上无法区分。问题是：你愿不愿意一辈子接入？\n\n诺齐克认为多数人不会——因此他给出三点理由，大意是：我们想**真正地做**某事，而不只是想有\"做了\"的体验；我们想**成为**某种人；机器把我们限制在一个由他人造出的人造现实中，剥夺了我们\"以自己方式生活\"的可能。\n\n（以上为记忆层面的通行转述；若需逐字核对，应查该书中译本相应章节，我在本站库中无法完成这一步。）\n\n---\n\n## 三、争论的一方：维护诺齐克结论的\"实在价值论\"\n\n这一方的核心主张是：**真实性、自主性、成就的因果真实性**等，是独立于体验的内在价值，因此拒绝接入是合理的，快乐主义确有缺陷。\n\n需说明：这一立场的文本细节，我本次**未取得可读的文献内容证据**，因此不点名归因具体学者的论证结构。我能确认的是，这一进路在当代文献中持续被讨论——这也是诺齐克本人论证的自然延伸。\n\n---\n\n## 四、争论的另一方：为快乐主义/福祉主义辩护的回应\n\n诺齐克结论若成立，快乐主义就受损。因此有文献专门**为快乐主义辩护**，主张快乐主义仍能解释或容纳\"拒绝接入\"这一直觉。我检索到（书目已核验）：\n\n- **Barber, Alex W. (2011). \"Hedonism and the Experience Machine.\" *Philosophical Papers*** — 题名直接指向\"快乐主义与体验机器\"，属辩护快乐主义方向的文献。（说明：我尝试读取其摘要时，返回的仅是版权声明文本，未取得有效摘要，故不陈述其具体论证内容，仅确认其存在与题名。）\n- **Bramble, Ben (2016). \"A New Defense of Hedonism about Well-Being.\" *Ergo*** — 题名为\"福祉快乐主义的新辩护\"，方向明确；但我未能读取其内容，仅确认书目。\n\n这两篇的**题名**足以说明\"为快乐主义辩护\"这一阵营确实存在；但它们的具体论证，我这次没有取得可引用的内容证据，不作展开。\n\n---\n\n## 五、争论中最活跃的一路：质疑直觉可靠性的\"实证/方法论转向\"\n\n这是\"近年研究\"最值得关注的部分——它不直接争论快乐主义，而是质疑**体验机器直觉的证言效力**。我检索到以下（书目已核验，部分取得摘要层面证据）：\n\n- **Hindriks, F. & Douven, I. (2017). \"Nozick's Experience Machine: An Empirical Study.\" *Philosophical Psychology*** —",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "体验机器争论中支持/辩护诺齐克式结论（实在体验更可欲、快乐主义有缺陷）的近年文献内容证据，以与已有的反对方证据形成对照",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:06:57",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "用户明确要求\"近年学术文献与双方主要论证\"，需要：（1）诺齐克提出体验机器的原典原文；（2）当代研究中支持与反对该思想实验论证效力的可读二手文献"
+   },
+   {
+    "ts": "2026-09-13 12:07:10",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已定位但未读取的 Weijers（直觉偏差）、Belshaw、Smith 等来源，以及 de Brigard 等反对\"体验机器\"直觉可靠性的实证研究——\"双方主要论证\"的文本证据仍不完整",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:07:21",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "体验机器争论中支持/辩护诺齐克式结论（实在体验更可欲、快乐主义有缺陷）的近年文献内容证据，以与已有的反对方证据形成对照",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:07:10",
+    "reason": "用户明确要求\"近年学术文献与双方主要论证\"（SCHOLARLY 核心请求）；目前仅取得 1 篇摘要，支持方与反对方均缺可读内容证据，无法完成\"双方论证\"的对比综合，不延展则无法满足请求核心",
+    "unresolved_gap": "体验机器争论中反对方（如 de Brigard 的实证反驳、Weijers 对直觉可靠性的质疑）与支持方（如实在论价值论）的近年文献内容证据"
+   },
+   {
+    "ts": "2026-09-13 12:07:21",
+    "reason": "用户明确要求呈现\"双方主要论证\"，目前仅反对方（Weijers 2011 的 status quo bias 反驳）取得可读内容证据，支持/辩护方（如 Barber 2011、van der Deijl 2018、Rowland 2017）仅有书目、无内容证据，无法平衡呈现双方立场，不延展则该核心请求不成立",
+    "unresolved_gap": "支持方论证的内容证据（Barber 2011 / van der Deijl 2018 / Rowland 2017 等的摘要内容）"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:03"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:03"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:03"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:10"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:10"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:36"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:36"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 123581,
+   "output_tokens": 10263,
+   "total_tokens": 133844
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 15,
+   "compacted_chars_saved": 26579,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11750,
+     "output_tokens": 403,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15991,
+     "output_tokens": 797,
+     "tool_chars_added": 9183
+    },
+    {
+     "round": 3,
+     "input_tokens": 16342,
+     "output_tokens": 1204,
+     "tool_chars_added": 6650
+    },
+    {
+     "round": 4,
+     "input_tokens": 18519,
+     "output_tokens": 1524,
+     "tool_chars_added": 8770
+    },
+    {
+     "round": 5,
+     "input_tokens": 19143,
+     "output_tokens": 1510,
+     "tool_chars_added": 2968
+    },
+    {
+     "round": 6,
+     "input_tokens": 20768,
+     "output_tokens": 825,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 7,
+     "input_tokens": 21068,
+     "output_tokens": 4000,
+     "tool_chars_added": 1736
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 123581,
+  "output_tokens": 10263,
+  "total_tokens": 133844
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 68.7
+}

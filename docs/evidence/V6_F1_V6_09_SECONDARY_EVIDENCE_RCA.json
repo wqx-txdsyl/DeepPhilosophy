@@ -1,0 +1,132 @@
+{
+ "V6_F1_V6_09_SECONDARY_EVIDENCE_RCA": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V6_F1_V09_RCA_TASK.md",
+ "BASE": "e6fa2ccaea300f027be997204666eb92661cbbf1",
+ "V6_MEASUREMENT_UNCHANGED": true,
+ "measurement_unchanged_note": "仅离线分析冻结 V6-09 original-call trace + 已消费原 query 的确定性诊断重放（任务书明示允许）; 零 production/V6 artifact 修改",
+ "V6_09_SEARCH_CALLS": 8,
+ "V6_09_READ_CALLS": 0,
+ "V6_09_CONTENT_EVIDENCE": 0,
+ "EIGHT_CALL_AUDIT": [
+  {
+   "n": 1,
+   "tool_call_id": "call_04_HRxo",
+   "query": "义利之辨 事功学派 陈亮 叶适 朱熹",
+   "origin": "LOCAL_CURATED",
+   "returned": 8,
+   "abstract_available": 4,
+   "direct_relevant": 0,
+   "note": "返回全部为旧 curated 簇离题邻居（王阳明韩国综合/Scheler+王阳明/Philosophers' Imprint 等）——经由 zhu/xi/confucianism 等泛词凑满 ≥0.6 覆盖率"
+  },
+  {
+   "n": 2,
+   "tool_call_id": "call_05_dNOT",
+   "query": "董仲舒 正其谊不谋其利 义利观",
+   "origin": "LIVE_CROSSREF",
+   "returned": 8,
+   "abstract_available": 3,
+   "direct_relevant": 0,
+   "note": "live crossref 对 CJK 查询按单字噪声匹配: 「义利」→水利工程项目论文等; 无一董仲舒/义利之辨直接文献（诊断重放取证标题证实）"
+  },
+  {
+   "n": 3,
+   "tool_call_id": "call_04_4dN6",
+   "query": "Chen Liang Zhu Xi debate utilitarian Confucianism",
+   "origin": "LOCAL_CURATED",
+   "returned": 8,
+   "abstract_available": 5,
+   "direct_relevant": 0,
+   "note": "同簇邻居 + Philosophy Compass 泛伦理学文章"
+  },
+  {
+   "n": 4,
+   "tool_call_id": "call_05_IjB5",
+   "query": "moral righteousness versus profit Chinese philosophy",
+   "origin": "LOCAL_CURATED",
+   "returned": 8,
+   "abstract_available": 5,
+   "direct_relevant": 0,
+   "note": "泛 ethics 文章, 无董仲舒/事功专门研究"
+  },
+  {
+   "n": 5,
+   "tool_call_id": "call_04_JE9a",
+   "query": "Dong Zhongshu righteousness profit Ming dynasty Neo-Confucianism",
+   "origin": "LOCAL_CURATED",
+   "returned": 8,
+   "abstract_available": 4,
+   "direct_relevant": 0,
+   "note": "Dong Zhongshu 查询仍只返回王阳明簇邻居——registry 无 Dong Zhongshu 记录"
+  },
+  {
+   "n": 6,
+   "tool_call_id": "call_05_ajFF",
+   "query": "utilitarianism in Chinese thought Yongjia school Ye Shi",
+   "origin": "LOCAL_CURATED",
+   "returned": 8,
+   "abstract_available": 6,
+   "direct_relevant": 0,
+   "note": "含 Nishida 簇/Searle 簇记录混入（Pure Experience/Chinese Room）"
+  },
+  {
+   "n": 7,
+   "tool_call_id": "call_03_W7GU",
+   "query": "事功学派 功利主义 儒家伦理 义利",
+   "origin": "LIVE_CROSSREF",
+   "returned": 8,
+   "abstract_available": 1,
+   "direct_relevant": 0,
+   "note": "live: 汉斯 OA 期刊按单字噪声匹配（功利主义→密尔论文等）; 中文一手/二手学术文献基本不在 crossref 覆盖范围"
+  },
+  {
+   "n": 8,
+   "tool_call_id": "call_04_runF",
+   "query": "Yongjia school utilitarianism Song Neo-Confucianism",
+   "origin": "LOCAL_CURATED",
+   "returned": 8,
+   "abstract_available": 4,
+   "direct_relevant": 0,
+   "note": "同簇邻居重复"
+  }
+ ],
+ "KEY_FINDINGS": [
+  "8 个 exact query 全部构造良好（中英双语/人名/学派名/概念词齐备）——QUERY_FORMULATION 无缺陷",
+  "LOCAL_CURATED 侧: registry 中不存在董仲舒/陈亮/叶适/事功学派/义利之辨任何直接相关记录; 返回的全部是旧 curated 簇（王阳明/西田/塞尔/墨子）经泛词（zhu/xi/confucianism/utilitarian…）凑覆盖率挤入的离题邻居",
+  "LIVE_CROSSREF 侧（2 条中文 query）: crossref 对 CJK 查询按单字噪声匹配（「义利」→「水利」工程论文; utilitarianism→密尔论文）, 中文学术文献基本不在 crossref 覆盖范围; 无一直接相关",
+  "唯一 READ 之外的合理性行为: 模型对全部离题可读记录未做内容性引用, 最终诚实披露未取得相关研究 → LO=1 而非 fabrication（safe fallback 生效）",
+  "V5-F1 时代「可读但未读=orchestration 失败」的推断在 V6-09 不成立: 可读记录全部离题, 读了也无济于事"
+ ],
+ "ANSWERS": {
+  "8个query": "见 EIGHT_CALL_AUDIT（原调用快照逐字恢复, 零推测）",
+  "是否返回直接相关记录": "否——8 次调用 0 条直接相关（逐条标题核对; live 侧经诊断重放取证）",
+  "相关记录的access": "不适用（无直接相关记录）; 离题记录中 27 条 ABSTRACT_AVAILABLE",
+  "是否存在 relevant+readable 未 READ": "否",
+  "缺口在哪一层": "registry/corpus 层（中文二手学术语料不存在）; 叠加 live provider 对中文学术主题的覆盖/tokenization 限制",
+  "provider error/offline 阻断": "无（8 次 search 全部 0 errors, offline_mode=false; 本轮 live 通道工作正常）",
+  "registry 是否有可用更合理 alias 找到的可读材料": "否——单专名探针与全部 8 次原 query 变体均无直接命中（本 RCA 前已对董仲舒/陈亮/叶适/事功学派 做确定性探针）",
+  "CORPUS_COVERAGE_GAP 能否确认": "能——CONFIRMED（本地 registry 零记录 + live crossref 对该中文学术主题噪声级覆盖, 双通道均无直接文献）"
+ },
+ "FAILURE_CLASSIFICATIONS": {
+  "QUERY_FORMULATION_FAILURE": "NOT_DEMONSTRATED",
+  "RELEVANCE_RANKING_FAILURE": "CONTRIBUTING（次要: 离题邻居经泛词凑覆盖率挤入 top-8, 稀释 READABLE_SOURCE_IDS 信号质量; 但因不存在更好的记录, 排序不是 operative 失败原因）",
+  "CORPUS_COVERAGE_GAP": "CONFIRMED（PRIMARY）",
+  "CONTENT_AVAILABILITY_GAP": "CONFIRMED（语料内容层: 可达宇宙内不存在该主题可读专门研究）",
+  "ACCESS_DEPTH_GAP": "NOT_APPLICABLE（无直接记录, 无深度可言）",
+  "READ_ORCHESTRATION_FAILURE": "NOT_DEMONSTRATED（零 READ 是理性: 无直接相关可读目标; 与 V5-F1 的读靶盲选不同本）",
+  "EVIDENCE_PROMOTION_FAILURE": "NOT_DEMONSTRATED",
+  "MODEL_TOOL_USE_FAILURE": "NOT_DEMONSTRATED（search 行为本身优秀: 中英双语 8 查询全覆盖）"
+ },
+ "PRIMARY_ROOT_CAUSE": "CORPUS_COVERAGE_GAP（中文二手学术语料）: registry 中不存在董仲舒/陈亮/叶适/事功学派/义利之辨任何记录, live crossref 对中文学术主题亦仅能返回单字噪声级结果——模型在两条通道均无直接文献可得的处境下正确执行诚实降级（明确披露未取得相关研究）, LO=1 反映的是「题目要求的文献依据客观不可得」而非能力或行为缺陷",
+ "PRIMARY_ROOT_CAUSE_CONFIDENCE": "HIGH（原调用快照逐字恢复 + 8/8 调用逐条标题核对 + 2 条原 query 诊断重放取证 + 此前单专名确定性探针, 四重证据一致）",
+ "SECONDARY_ROOT_CAUSES": [
+  "RELEVANCE_RANKING_FAILURE (CONTRIBUTING): 覆盖率阈值下离题邻居仍可挤入 top-8, 污染 READABLE_SOURCE_IDS 的信号价值",
+  "LIVE_PROVIDER_CJK_LIMITATION: crossref 对中文 query 的 CJK tokenization 噪声匹配, 中文学术文献需 CNKI 类专用通道（超出当前 provider 集）",
+  "POSITIVE_NOTE (非缺陷): 零相关证据时诚实披露而非编造——V5-12/F2-D guard 与 contract E2 的设计目标在真实场景生效"
+ ],
+ "MINIMUM_REPAIR_SURFACE": [
+  "corpus 面: 中文二手学术语料通道（CNKI/读秀类 provider 或人工 curated 中文记录入 registry）——由 Reviewer 裁定是否值得为单一 tail gate 立项",
+  "ranking 面: 覆盖率阈值/泛词降权微调, 防止离题邻居挤占 READABLE_SOURCE_IDS（次要）",
+  "其余已闭合面零触碰"
+ ],
+ "RECEIPT_CORRECTION_ACK": "REPAIR_TRIGGERED=9/9（非回执中 8/8, receipt-only 勘误已由 Reviewer 记录, QUALIFICATION_IMPACT=NONE）"
+}

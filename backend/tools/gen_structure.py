@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
-"""生成项目全文件结构图 PROJECT_STRUCTURE.md (两个仓库各自生成, 各自放根目录)
+"""生成当前仓库结构图 docs/reference/project-structure.md
 
-用法: python gen_structure.py   # 输出 PhiAgent/PROJECT_STRUCTURE.md + DeepPhilosophy/PROJECT_STRUCTURE.md
+用法: python gen_structure.py   # 输出 docs/reference/project-structure.md
 规则:
 - 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
 - 目录直接子条目 > 30 折叠为计数摘要 (数据大目录带专用注释)
 - tools/ 长期可复用脚本清单强制全列
 """
 import datetime, io, json, os, sys
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(BASE)
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-EXCLUDE = {'.git', 'node_modules', '.venv', '__pycache__', '.wrangler', '.idea', '.claude', 'dist'}
+EXCLUDE = {'.git', '.pytest_cache', '.DS_Store', 'node_modules', '.venv', '__pycache__', '.wrangler', '.idea', '.claude', 'dist'}
 FOLD = 30                     # 目录直接子条目超过此数折叠为计数摘要
 ALWAYS_EXPAND = {'tools', 'scripts'}     # 脚本清单强制全列
 ALWAYS_FOLD = {'ai_author', 'book_chapters', 'book_detail', 'book_images', 'embeddings', '_tmp'}  # 数据大目录强制折叠
 
 # (仓库名, 根路径, 段标题) — 2026-08-14 PhiAgent 已并入, 单仓库一份结构图
 REPOS = [
-    ('DeepPhilosophy', r'F:\program\Python\DeepPhilosophy',
+    ('DeepPhilosophy', ROOT,
      'DeepPhilosophy × PhiAgent 合并后单仓库（2026-08-14: 平台 + 智能体 + 书库工具）'),
 ]
 
@@ -356,8 +358,8 @@ def main():
         lines += ['```', '']
         # 2026-08-14: 结构图移入 docs/ 统一管理
         docs_dir = os.path.join(root, 'docs')
-        os.makedirs(docs_dir, exist_ok=True)
-        out_path = os.path.join(docs_dir, 'PROJECT_STRUCTURE.md')
+        os.makedirs(os.path.join(docs_dir, 'reference'), exist_ok=True)
+        out_path = os.path.join(docs_dir, 'reference', 'project-structure.md')
         io.open(out_path, 'w', encoding='utf-8').write('\n'.join(lines))
         size_b = len('\n'.join(lines).encode('utf-8'))
         print(f'已生成: {out_path} ({size_b:,} B)')

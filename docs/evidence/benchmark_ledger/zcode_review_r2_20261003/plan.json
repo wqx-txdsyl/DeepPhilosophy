@@ -1,0 +1,52 @@
+{
+  "batch_id": "zcode_review_r2_20261003",
+  "record_produced": "R2-20261004",
+  "task_book": "docs/tasks/2026-10-03-unified-answer-review-r2.md",
+  "created_utc": "2026-10-04T04:00:00Z",
+  "method": {
+    "reviewer": "zcode子代理（会话模型GLM-5.3系），每题组9份一个评分代理，共72个评分代理；主评审协调并抽查",
+    "protocol": "冻结v1.2量尺逐字嵌入协议；校准锚点取自控制样本盲评结果；补充裁定a-e（汇总层计分、非决定性小误入audit、E4执行宣称判据、深链有效性、绝对锚点定级）",
+    "anonymity": "评分全程使用匿名包（PLAN.json提交序），不读PRIVATE_KEY与任何历史评分；解盲仅发生在648份评分完成后的审计核查阶段",
+    "input_packets": "docs/evidence/benchmark_ledger/review_r2_20261003/full_review/packets/（648份，prepare_benchmark_r2.py verify通过）",
+    "control_check": "rubric_v1_2控制样本T1-T6共20份先盲评后对标签；全部PLAN检查通过（control_check.json）",
+    "quote_verification": "R族及带引号引文逐字对照pool.json/原包回执；OCR噪声与译文变体按裁定不判伪引",
+    "no_external_api": "零付费评分API调用；Python仅离线抽取/校验/算术"
+  },
+  "subjects": ["phiagent-0.1.0", "phiagent-0.1.1", "phiagent-0.1.2", "phiagent-0.1.3", "phiagent-0.1.4", "phiagent-0.1.5", "deepseek-browser-run1-20261002", "doubao-browser-run1-20261002", "chatgpt-work-sol61-high-20261002"],
+  "scope": {
+    "cases": 60,
+    "turns_per_subject": 72,
+    "rows": 648,
+    "excluded": "5道K纯核验题单列不评（与R1口径一致）；5道故障fixture未测；ChatGPT条件=桌面Work 6.1 Sol high+本地书库（保留说明）"
+  },
+  "aggregation": {
+    "turn_contribution": "C: C精确分/60×100; R: (C精确分+R精确分)/100×100",
+    "task_then_subject": "题内平均规定回合→60题等权平均；未取整计算，两位小数显示",
+    "dimension_scopes": "C键适用60题；R键适用24题",
+    "pass_rule": "冻结pass规则；错误状态采用裁定后结论（confirmed/pending任一阻断通过）",
+    "empty_answer": "A05空正文包（Rda7c0616869afc）全维0保留在分母，E4 pending"
+  },
+  "evidence_boundaries": {
+    "reference_pools": "仅作独立解释核对，不回填执行事实",
+    "browser_subjects_no_receipt_layer": "DeepSeek/豆包0回执、ChatGPT 0回执0引用0元数据——零回执是采集伪影；执行捏造指控对浏览器主体pending封顶",
+    "phiagent_receipts_are_real": "每包59-69条真实工具回执；宣称-回执矛盾可confirmed",
+    "banner_attribution": "「搜索N个关键词」横幅经解盲核实为豆包产品UI文本（17/17包为豆包；PhiAgent轨迹与ChatGPT答卷0处）",
+    "unblinding_timing": "评分完成后（任务书允许），仅用于横幅归属与回执可得性核查"
+  },
+  "review_pipeline": {
+    "controls_first": true,
+    "scoring_waves": "22波并行评分代理（每波3-6个，每代理恰9份）",
+    "validation": "validate_reviews.py全量648份通过（键齐全/值合法/单位ID存在/无总分/空包全0/内在矛盾检查）",
+    "audit": "三批独立审计代理复核全部45条初始指控+2个无E包audit轨；按主体规则最终裁定confirmed 1 / pending 42 / rejected 2",
+    "spotchecks": "A04-T1心理归因、J01-T4条件扩大、F03-T1研究假冲突×9主体；发现1处真实误判已改判（R55b1aa681153f5），3处审计轨补记（不改分）"
+  },
+  "outputs": ["plan.json", "scores.json", "aggregate.json", "source-audit.json", "source_audit_adjudications.json", "control_check.json", "audit_batch1.json", "audit_batch2.json", "audit_batch3.json", "spotcheck_A04-T1.json", "spotcheck_J01-T4.json", "spotcheck_F03-T1.json", "summary.md", "validation.json", "reviews/（648份逐轮评分JSON）"],
+  "frozen_record": "docs/evidence/benchmark_ledger/frozen_r2_20261004/",
+  "r1_untouched": true,
+  "known_limitations": [
+    "单一评审族（zcode），无评分者间一致性；控制检查为合成操作检查，不宣称专家一致性或总体效度",
+    "PhiAgent与评审同属本项目，从属偏差风险已登记；95-99高分段可能存在天花板效应",
+    "浏览器主体执行事实不可核验（采集层缺失），其pending指控是证据上限而非无罪判定",
+    "控制盲评时标签角色可从内容部分辨认（已在control_check.json登记）"
+  ]
+}

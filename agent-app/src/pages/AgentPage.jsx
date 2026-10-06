@@ -9,16 +9,19 @@ import { getPref, setPref } from '../data/localPrefs';
 import useAgents from '../utils/useAgents';
 import ConversationSidebar from '../components/conversation/ConversationSidebar';
 import ConversationHeader from '../components/conversation/ConversationHeader';
-import MessageList, { QUESTION_BANK } from '../components/conversation/MessageList';
+import MessageList from '../components/conversation/MessageList';
+import PersonalizedQuestions from '../components/conversation/PersonalizedQuestions';
 import Composer from '../components/conversation/Composer';
 import AgentPlaza from '../components/conversation/AgentPlaza';
 import SettingsPanel from '../components/conversation/SettingsPanel';
 import DrawioModal from '../components/DrawioModal';
 import Icon from '../components/Icon';
+import { TriangleAlert } from 'lucide-react';
+import { createGeneralStream, reduceGeneralEvent, finishGeneralStream, readEventStream, prepareGeneralTurn, ownsGeneralRequest, releaseGeneralAnswer, prepareGeneralRequest } from '../data/generalStream';
 import '../conversation.css';
 
 /**
- * AgentWorkspace — PhiAgent「会话优先」工作区（docs/PhiAgent_Conversation_Workspace_Refactor.md）
+ * AgentWorkspace — PhiAgent「会话优先」工作区（docs/ui/conversation-workspace-refactor.md）
  *
  * Routing: /agent（临时 Draft）与 /agent/c/:conversationId（稳定会话身份）
  * Streaming Ownership（§9）: 每次 Invocation 创建时冻结 {conversation_id, message_id, agent_id},
@@ -27,6 +30,7 @@ import '../conversation.css';
  *   - A Streaming 中打开 B → token 只写回 A
  *   - 删除 Streaming 会话 → 先 abort; late event 经 deletedRef + 缺失会话守卫不复活
  */
+const sharedRuntime = agent => typeof agent === 'string' && agent.length > 0;
 const genId = (p) => `${p}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 
 export default function AgentWorkspace() {
@@ -37,12 +41,15 @@ export default function AgentWorkspace() {
     ? decodeURIComponent(pathname.slice('/agent/c/'.length))
     : null;
   const { t, lang, agentName, agentSub } = useLang();
-  const { token } = useAuth();
+  const { token, profile, accountReady, historyStatus, retryHistory, authError, retryAccount, logout, ensureConversation,
+    beginHistoryStream, endHistoryStream } = useAuth();
   const { agents, agentsLoading } = useAgents();
 
   const [conversations, setConversations] = useState([]);
   const [hydrated, setHydrated] = useState(false);
   const [hydrateError, setHydrateError] = useState(false);
+  const [conversationReadError, setConversationReadError] = useState(false);
+  const [readRetry, setReadRetry] = useState(0);
   const [plazaOpen, setPlazaOpen] = useState(false);
   const [navOpen, setNavOpen] = useState(false);          // 移动端侧栏抽屉
   const [settingsOpen, setSettingsOpen] = useState(false); // 设置面板（§24; portal, 不卸载会话）
@@ -55,6 +62,8 @@ export default function AgentWorkspace() {
   const [drawio, setDrawio] = useState(null);             // {xml, convId, messageId}
 
   const streamsRef = useRef(new Map());   // convId → {controller, messageId}
+  const explorationRequestsRef = useRef(new Set());
+  const draftSendRef = useRef(false);
   const thinkQueueRef = useRef(new Map());   // convId → {list:[text]}: 思考打字机队列（逐字, 与回答同节奏）
   const thinkPlayingRef = useRef(new Set()); // convId → 正在播放
   const deletedRef = useRef(new Set());   // 已删除会话: late event 一律丢弃
@@ -74,21 +83,55 @@ export default function AgentWorkspace() {
     setHydrateError(false);
     try {
       conversationStore.migrateLegacy();
-      setConversations(conversationStore.listConversations());
+      const loaded=conversationStore.listConversations();
+      for (const c of loaded) for (const m of c.messages || []) {
+        if (m.suggestions_status==='pending' && !streamsRef.current.has(c.conversation_id)
+            && !explorationRequestsRef.current.has(`${c.conversation_id}:${m.message_id}`)) {
+          m.suggestions_status='unavailable';
+          conversationStore.updateMessage(c.conversation_id,m.message_id,{suggestions_status:'unavailable'});
+        }
+      }
+      setConversations(previous => loaded.map(c => streamsRef.current.has(c.conversation_id)
+        ? previous.find(old => old.conversation_id === c.conversation_id) || c : c));
       setHydrated(true);
     } catch (e) {
       setHydrateError(true);
     }
   };
-  useEffect(() => { loadConversations(); }, []);
+  useEffect(() => {
+    if (!accountReady) { setHydrated(false); setConversations([]); return; }
+    deletedRef.current.clear();
+    loadConversations();
+  }, [accountReady, profile?.id]);
+  useEffect(() => {
+    let active = true;
+    setConversationReadError(false);
+    if (accountReady && token && activeConv?.messages_loaded === false) {
+      ensureConversation(conversationId).catch(() => { if (active) setConversationReadError(true); });
+    }
+    return () => { active = false; };
+  }, [conversationId, activeConv?.messages_loaded, profile?.id, readRetry, accountReady, token]);
+  useEffect(() => {
+    window.addEventListener('phiagent-history-restored', loadConversations);
+    window.addEventListener('phiagent-account-changed', loadConversations);
+    return () => {
+      window.removeEventListener('phiagent-history-restored', loadConversations);
+      window.removeEventListener('phiagent-account-changed', loadConversations);
+    };
+  }, []);
+  useEffect(() => () => {
+    for (const stream of streamsRef.current.values()) if (sharedRuntime(stream.agent)) stream.controller.abort();
+  }, []);
 
   /* ── 登出（auth.jsx 广播）: 清内存会话 + 回草稿页（隐私, §auth）── */
   useEffect(() => {
     const onLogout = () => {
-      for (const { controller } of streamsRef.current.values()) {
+      for (const [id, { controller }] of streamsRef.current) {
+        deletedRef.current.add(id);
         try { controller.abort(); } catch (e) { /* 已中断 */ }
       }
       streamsRef.current.clear();
+      setStreamingIds(new Set());
       setConversations([]);
       navigate('/agent', { replace: true });   // 回草稿页（conversationId 由路由派生）
     };
@@ -99,6 +142,8 @@ export default function AgentWorkspace() {
 
   /* ── 打开会话 → Composer Agent 优先级（§6）: last_used → default → general ── */
   useEffect(() => {
+    if (!hydrated) return;
+    draftSendRef.current = false;
     setSelectorTouched(false);
     if (conversationId) {
       // 会话不存在(已删除/失效): 交给 notFound 视图, 不得让异常卸载整棵树（§13）
@@ -110,7 +155,7 @@ export default function AgentWorkspace() {
       setComposerAgent(draftAgent || conversations[0]?.last_used_agent_id || conversations[0]?.default_agent_id || 'general');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversationId]);
+  }, [conversationId, hydrated]);
 
   /* ── 本地状态变更（内存即真相; store 只做写穿持久化） ── */
   const addConversationLocal = (conv) =>
@@ -133,11 +178,13 @@ export default function AgentWorkspace() {
         : c);
     });
 
-  const markStream = (convId, mid, controller) => {
-    streamsRef.current.set(convId, { controller, messageId: mid });
+  const markStream = (convId, mid, controller, agent) => {
+    beginHistoryStream(convId);
+    streamsRef.current.set(convId, { controller, messageId: mid, agent });
     setStreamingIds(prev => new Set(prev).add(convId));
   };
   const unmarkStream = (convId) => {
+    endHistoryStream(convId);
     streamsRef.current.delete(convId);
     setStreamingIds(prev => { const n = new Set(prev); n.delete(convId); return n; });
   };
@@ -157,9 +204,13 @@ export default function AgentWorkspace() {
   const handleSelect = (id) => {
     if (id !== conversationId) navigate(`/agent/c/${id}`);
   };
-  const handleRename = (conv, newTitle) => {
+  const handleRename = async (conv, newTitle) => {
     const title = String(newTitle || '').trim();
     if (!title || !conv) return;
+    if (conv.messages_loaded === false) {
+      try { await ensureConversation(conv.conversation_id); }
+      catch { setConversationReadError(true); return; }
+    }
     patchConvMeta(conv.conversation_id, { title });
     conversationStore.setConversationTitle(conv.conversation_id, title);
   };
@@ -203,7 +254,9 @@ export default function AgentWorkspace() {
   };
 
   /* ── 发送（Streaming Ownership 冻结点） ── */
-  const dispatchSend = async ({ message, display, localOnly = false, agentOverride = null, sourceMsg = null, attachments = [] }) => {
+  const dispatchSend = async ({ message, display, localOnly = false, agentOverride = null, sourceMsg = null, attachments = [], newConversation = false }) => {
+    if (!accountReady || (!newConversation && activeConv?.messages_loaded === false)) return;
+    const requestOwner = conversationStore.owner;
     const agent = agentOverride || composerAgentRef.current;
     const text = typeof message === 'string' ? message : String(message || '');
     const shown = typeof display === 'string' ? display : text;
@@ -211,9 +264,22 @@ export default function AgentWorkspace() {
 
     if (!shown.trim() && !hasAttach) return;   // 仅附件发送允许空文本（T6）
     // 同步锁（streamsRef 是同步结构; streamingIds 状态更新是异步的, 防双击产生双会话/双流）
-    if (!localOnly && streamsRef.current.has(scopeKey)) return;
+    const sendScope = newConversation ? DRAFT_ID : scopeKey;
+    const previousMetadata=streamsRef.current.get(sendScope);
+    if (!localOnly && !prepareGeneralRequest(streamsRef.current, sendScope)) return;
+    if (!localOnly && previousMetadata?.answerDone) {
+      const old=conversationStore.getConversation(scopeKey)?.messages.find(m=>m.message_id===previousMetadata.messageId);
+      if (old?.suggestions_status==='pending') {
+        patchMessageLocal(scopeKey,old.message_id,m=>({...m,suggestions_status:'unavailable'}));
+        conversationStore.updateMessage(scopeKey,old.message_id,{suggestions_status:'unavailable'});
+      }
+    }
+    if (sharedRuntime(agent) && (!conversationId || newConversation) && !localOnly) {
+      if (draftSendRef.current) return;
+      draftSendRef.current = true;
+    }
 
-    let convId = conversationId;
+    let convId = newConversation ? null : conversationId;
     const isNewConv = !convId;
     if (isNewConv) {
       const created = conversationStore.createConversation({
@@ -232,8 +298,11 @@ export default function AgentWorkspace() {
     const _sendT0 = performance.now();   // Thinking UI: 最终「思考了 X 秒」用
     // 发送瞬间 snapshot attachments → immutable metadata（§12）; draft 由 Composer 清空
     const attachMeta = (attachments || []).filter(a => a && a.filename);
+    const convNow = conversations.find(c => c.conversation_id === convId);
+    const generalTurn = sharedRuntime(agent) ? prepareGeneralTurn(text, sourceMsg, convNow?.messages, hasAttach) : null;
     const userMsg = {
       message_id: genId('msg'), conversation_id: convId, role: 'user', content: shown, created_at: nowIso,
+      ...(generalTurn?.context_content !== undefined ? { context_content: generalTurn.context_content } : {}),
       ...(attachMeta.length ? { attachments: attachMeta } : {}),
     };
     appendMessageLocal(convId, userMsg);
@@ -249,11 +318,69 @@ export default function AgentWorkspace() {
     appendMessageLocal(convId, assistantMsg);
 
     // 历史快照: 发送前 20 条（含两种 Agent 的公开回答, §8 共享）
-    const convNow = conversations.find(c => c.conversation_id === convId);
-    const history = (convNow?.messages || []).slice(-20).map(m => ({ role: m.role, content: m.content }));
+    const conversationHistory = convNow?.messages || [];
+    const history = (sharedRuntime(agent) ? conversationHistory : conversationHistory.slice(-20))
+      .map(m => ({ role: m.role, content: sharedRuntime(agent) ? (m.context_content || m.content) : m.content }));
 
     const controller = new AbortController();
-    markStream(convId, mid, controller);
+    markStream(convId, mid, controller, agent);
+
+    // General owns its canonical network snapshot. Painting is batched, persistence never lags it.
+    // General and Nietzsche share stream ownership, previews and recovery.
+    if (sharedRuntime(agent)) {
+      let state = createGeneralStream();
+      let paintTimer = null;
+      let lastSaved = 0;
+      const ownsStream = () => conversationStore.owner === requestOwner && !deletedRef.current.has(convId) && ownsGeneralRequest(streamsRef.current, convId, mid);
+      const paint = () => {
+        paintTimer = null;
+        if (!ownsStream()) return;
+        const snapshot = state;
+        patchMessageLocal(convId, mid, m => ({ ...m, ...snapshot }));
+        if (Date.now() - lastSaved > 1500) {
+          conversationStore.updateMessage(convId, mid, { ...snapshot, stream_state: snapshot.done_received ? 'complete' : 'interrupted' });
+          lastSaved = Date.now();
+        }
+      };
+      conversationStore.appendMessage(convId, { ...assistantMsg, stream_state: 'interrupted' });
+      let failure = '';
+      try {
+        const response = await fetch(`${getApiBase()}/api/agent/stream_lg`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+          body: JSON.stringify({ message: generalTurn.message, history, agent, language: lang, conversation_id: convId, message_id: mid }),
+          signal: controller.signal,
+        });
+        await readEventStream(response, evt => {
+          if (!ownsStream()) return;
+          state = reduceGeneralEvent(state, evt);
+          if (evt.type === 'done' && state.done_received) {
+            endHistoryStream(convId);
+            state = finishGeneralStream(state, { duration: (performance.now() - _sendT0) / 1000, metadataFinished: false });
+            if (releaseGeneralAnswer(streamsRef.current, convId, mid)) {
+              setStreamingIds(prev => { const next = new Set(prev); next.delete(convId); return next; });
+            }
+            clearTimeout(paintTimer);
+            paint();
+            conversationStore.updateMessage(convId, mid, state);
+            lastSaved = Date.now();
+            return;
+          }
+          if (!paintTimer) paintTimer = setTimeout(paint, 32);
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') failure = err instanceof TypeError
+          ? (lang === 'zh' ? '网络连接中断，已保留收到的内容。可以继续回答。' : 'Connection interrupted. Received text is kept; you can continue the answer.') : err.message || t('reqFail');
+      } finally {
+        clearTimeout(paintTimer);
+        state = finishGeneralStream(state, { aborted: controller.signal.aborted, error: failure, duration: (performance.now() - _sendT0) / 1000 });
+        if (ownsStream()) {
+          patchMessageLocal(convId, mid, m => ({ ...m, ...state }));
+          conversationStore.updateMessage(convId, mid, state);
+          unmarkStream(convId);
+        }
+      }
+      return;
+    }
 
     /* ── 本轮流式快照（事件按 convId+msgId 归属; 与全局 agent 无关） ── */
     const snap = { content: '', events: [], citations: [], evidence: null, suggestions: [], reasoning_summary: null, safety: null, curThought: null };
@@ -279,6 +406,7 @@ export default function AgentWorkspace() {
       renderMeta();
     };
     const typingTimer = setInterval(() => {
+      if (conversationStore.owner !== requestOwner) { clearInterval(typingTimer); return; }
       if (tokenBuf) {
         // 2026-08-29 提速: 固定 12ms/字(83 字/s)对长回答太慢, 打字机感被放大。
         // 改为自适应批渲染——队列越厚每 tick 批字越多(≤12 字), 积压超 300 字直接放闸:
@@ -313,7 +441,7 @@ export default function AgentWorkspace() {
         safety: snap.safety, created_at: nowIso,
         duration_seconds: Math.max(1, Math.round((performance.now() - _sendT0) / 1000)),
       };
-      if (!deletedRef.current.has(convId)) {
+      if (conversationStore.owner === requestOwner && !deletedRef.current.has(convId)) {
         // 持久化写入最终值; UI 的引用/建议/摘要由 flushMeta(正文打字机完成)显示,
         // 不以连接关闭时刻为准(后处理 LLM 快慢不定 => "提前跳出, 时有时无"根因)
         patchMessageLocal(convId, mid, m => ({ ...m, ...extra, typing: false, streaming: false, curThought: null, duration_seconds: finalMsg.duration_seconds }));
@@ -343,7 +471,7 @@ export default function AgentWorkspace() {
         let text = q.list.shift();
         let i = 0;
         const timer = setInterval(() => {
-          if (deletedRef.current.has(convId)) { clearInterval(timer); thinkPlayingRef.current.delete(convId); return; }
+          if (conversationStore.owner !== requestOwner || deletedRef.current.has(convId)) { clearInterval(timer); thinkPlayingRef.current.delete(convId); return; }
           i += Math.max(1, Math.min(8, Math.ceil((text.length - i) / 40)));
           const slice = text.slice(0, Math.min(i, text.length));
           patchMessageLocal(convId, mid, m => {
@@ -474,6 +602,7 @@ export default function AgentWorkspace() {
       };
       while (true) {
         const { done, value } = await reader.read();
+        if (conversationStore.owner !== requestOwner) { controller.abort(); break; }
         if (done) break;
         buf += decoder.decode(value, { stream: true });
         let idx;
@@ -499,7 +628,7 @@ export default function AgentWorkspace() {
   const handleSuggestion = (text, sourceMsg) => {
     const agent = resolveFollowupAgent(selectorTouched, composerAgent, sourceMsg?.agent_id);
     setComposerAgent(agent);
-    dispatchSend({ message: text, display: text, agentOverride: agent });
+    dispatchSend({ message: text, display: text, agentOverride: agent, ...(sharedRuntime(agent) ? { sourceMsg } : {}) });
   };
 
   // 稳定回调引用: MessageBubble 是 memo 组件, 流式 tick 期间若 onSend 引用每帧重建,
@@ -508,47 +637,57 @@ export default function AgentWorkspace() {
   sendRef.current = (text, sourceMsg) =>
     sourceMsg ? handleSuggestion(text, sourceMsg) : dispatchSend({ message: text, display: text, agentOverride: composerAgent });
   const stableOnSend = useCallback((text, sourceMsg) => sendRef.current(text, sourceMsg), []);
+  const handleMemoryExplore = question => {
+    setSettingsOpen(false);setComposerAgent('general');
+    dispatchSend({message:question,display:question,agentOverride:'general',newConversation:true});
+  };
+
+  const handleRegenerateExploration = useCallback(async (source, question) => {
+    const convId=source.conversation_id || conversationId, mid=source.message_id;
+    const key=`${convId}:${mid}`;
+    const owner=conversationStore.owner;
+    const alive=()=>{
+      if (conversationStore.owner!==owner || deletedRef.current.has(convId)) return false;
+      try { return conversationStore.getConversation(convId).messages.some(m=>m.message_id===mid); }
+      catch { return false; }
+    };
+    if (!alive() || explorationRequestsRef.current.has(key)) return;
+    explorationRequestsRef.current.add(key);
+    const apply=patch=>{ if (!alive()) return; patchMessageLocal(convId,mid,m=>({...m,...patch}));conversationStore.updateMessage(convId,mid,patch); };
+    apply({suggestions_status:'pending'});
+    try {
+      const response=await fetch(`${getApiBase()}/api/agent/exploration`,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},
+        body:JSON.stringify({message:question || '',answer:source.content,language:lang,agent:'general',previous_questions:source.suggestions || []})});
+      if (!response.ok) throw new Error('Generation failed');
+      const result=await response.json();
+      apply(result.status==='ready' && Array.isArray(result.suggestions) && result.suggestions.length
+        ? {suggestions:result.suggestions,suggestions_status:'ready'} : {suggestions_status:result.status || 'unavailable'});
+    } catch { apply({suggestions_status:'unavailable'}); }
+    finally { explorationRequestsRef.current.delete(key); }
+  },[token,lang,conversationId]);
 
   const handleComposerSend = ({ message, display, localOnly = false, attachments = [] }) =>
     dispatchSend({ message, display, localOnly, attachments });
 
   /* ── 空状态（§23: 简洁, Composer 近中心; Agent 依 Composer 选择变化） ── */
   const emptyState = (() => {
-    const name = agentName(composerAgent) || '深哲';
-    const sub = agentSub(composerAgent) || '';
+    const spec = agents.find(a => a.key === composerAgent);
+    const name = agentName(composerAgent, spec) || '深哲';
+    const sub = agentSub(composerAgent) || spec?.subtitle || '';
     if (composerAgent !== 'general') {
       return (
         <div className="cw-empty">
           <Icon name="icon-brain" size={38} />
           <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
           {sub && <div className="cw-empty-sub">{sub}</div>}
-          <div className="cw-empty-starters" style={{ flexDirection: 'column', maxWidth: 420 }}>
-            {(QUESTION_BANK[composerAgent]?.[lang] || []).map((q, i) => (
-              <button key={i} className="cw-empty-chip" onClick={() => dispatchSend({ message: q, display: q })}>
-                {q}
-              </button>
-            ))}
-          </div>
         </div>
       );
     }
-    const starters = [
-      ['oneConcept', t('emptyConcept')],
-      ['book', t('emptyBook')],
-      ['compare', t('emptyCompare')],
-    ];
     return (
-      <div className="cw-empty">
-        <Icon name="icon-brain" size={38} />
-        <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
-        <div className="cw-empty-sub">{t('emptyGreeting')}</div>
-        <div className="cw-empty-starters">
-          {starters.map(([k, label]) => (
-            <button key={k} className="cw-empty-chip" onClick={() => document.querySelector('.cw-composer textarea')?.focus()}>
-              {label}
-            </button>
-          ))}
-        </div>
+      <div className="cw-empty cw-empty-general">
+        <h1 className="cw-brand-wordmark" aria-label="PhiAgent 深哲">PHIAGENT</h1>
+        <div className="cw-brand-caption"><span>{name}</span><span aria-hidden="true">·</span><span>{t('emptyGreeting')}</span></div>
+        <PersonalizedQuestions lang={lang} onPick={q => dispatchSend({ message: q, display: q })} />
       </div>
     );
   })();
@@ -565,9 +704,17 @@ export default function AgentWorkspace() {
       </div>
     );
   }
-  if (!hydrated) {
+  if (!accountReady || !hydrated || (conversationId && !activeConv && historyStatus === 'loading')) {
+    if (authError) return <div className="cw-auth-unavailable" role="status">
+      <p>{lang === 'zh' ? '暂时无法连接账号，历史记录已保留。' : 'Account connection is unavailable. Your history is preserved.'}</p>
+      <button onClick={retryAccount}>{t('retry')}</button><button onClick={logout}>{t('logout')}</button>
+    </div>;
     return <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-dim)' }}>…</div>;
   }
+  if (conversationId && !activeConv && historyStatus === 'offline') return <div className="cw-auth-unavailable" role="status">
+    <p>{lang === 'zh' ? '历史暂未恢复，请重试加载。' : 'History could not be restored. Please retry.'}</p>
+    <button onClick={retryHistory}>{t('retry')}</button><button onClick={handleNew}>{t('newChat')}</button>
+  </div>;
   if (conversationId && !activeConv) {
     return (
       <div className="cw-root">
@@ -585,7 +732,7 @@ export default function AgentWorkspace() {
           </div>
         </div>
         <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} conversation={null} />
+        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} agents={agents} />
       </div>
     );
   }
@@ -600,24 +747,35 @@ export default function AgentWorkspace() {
         onExplore={() => setPlazaOpen(true)} onRename={handleRename} onDelete={handleDelete}
         onOpenSettings={() => setSettingsOpen(true)} />
       <div className="cw-main">
+        {token && ['offline','cache-error'].includes(historyStatus) && <div className="cw-history-notice" role="status">
+          {lang === 'en' ? 'Account sync is interrupted. Retrying…' : '账号同步暂时中断，正在重试…'}
+          <button onClick={retryHistory}>{lang === 'en' ? 'Retry' : '重试'}</button>
+        </div>}
         <ConversationHeader title={activeConv?.title || (isDraft ? t('newChat') : '')} isDraft={isDraft}
+          navOpen={navOpen}
           streaming={activeStreaming} onOpenNav={() => setNavOpen(true)} onToggleSidebar={handleToggleSidebar}
           onRename={(newTitle) => activeConv && handleRename(activeConv, newTitle)}
           onDelete={() => activeConv && handleDelete(activeConv)} />
-        <div className="cw-messages">
+        <div className={`cw-messages${!messages.length && composerAgent === 'general' ? ' cw-messages-home' : ''}`}>
+          {activeConv?.messages_loaded === false && <div className="cw-history-loading" role="status">
+            {conversationReadError ? (lang === 'zh' ? '这段对话加载失败。' : 'Could not load this conversation.') : (lang === 'zh' ? '正在读取对话…' : 'Loading conversation…')}
+            {conversationReadError && <button onClick={() => setReadRetry(n=>n+1)}>{t('retry')}</button>}
+          </div>}
           {unavailable && (
             <div style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, fontSize: 12.5,
                           border: '1px solid var(--border)', background: 'var(--soft)', color: 'var(--text-dim)' }}>
-              ⚠ {t('agentUnavailable')}
+              {composerAgent === 'general' ? <TriangleAlert size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} /> : '⚠ '}{t('agentUnavailable')}
             </div>
           )}
           <MessageList
             messages={messages}
             agents={agents}
-            emptyState={emptyState}
+            emptyState={activeConv?.messages_loaded === false ? null : emptyState}
             conversationKey={conversationId || DRAFT_ID}
             prefsTick={prefsTick}
+            streaming={activeStreaming}
             onSend={stableOnSend}
+            onRegenerateExploration={handleRegenerateExploration}
             onDrawioEdit={openDrawio}
           />
         </div>
@@ -626,10 +784,10 @@ export default function AgentWorkspace() {
         onSend={handleComposerSend} streaming={activeStreaming}
         onStop={() => streamsRef.current.get(conversationId)?.controller.abort()}
         onExplore={() => setPlazaOpen(true)}
-        unavailable={unavailable} resetKey={scopeKey} autoFocus={isDraft}
+        unavailable={unavailable || activeConv?.messages_loaded === false} resetKey={scopeKey} autoFocus={isDraft}
         dockLeft={sidebarCollapsed ? 0 : undefined} />
       <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} conversation={activeConv} />
+      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} agents={agents} />
       {drawio && <DrawioModal xml={drawio.xml} onClose={closeDrawio} />}
     </div>
   );

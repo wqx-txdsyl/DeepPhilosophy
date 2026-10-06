@@ -1,0 +1,242 @@
+{
+ "case_id": "DEV_G02",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "当代美学研究中，「恐怖悖论」（paradox of horror）有哪些代表性论文和对立解释？请综述学界研究现状。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_aG4gE7pUTIODf6pyAsN82250"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_tUfEAiq58CWJ58Dk9b9d4752"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_4w98E6HaqjbVj0EolPWv1980",
+   "args": {
+    "query": "paradox of horror aesthetics Carroll horror fiction negative emotions",
+    "limit": 10
+   },
+   "result_head": "{'query': 'paradox of horror aesthetics Carroll horror fiction negative emotions', 'results': [{'source_record_id': 'doi:10.3366/edinburgh/9780748693528.003.000"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_sL2uxpX8rm9p6uQHTYJl9756"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_njKxXyaT68fEn5aGlrT48657",
+   "args": {
+    "query": "paradox of painful art enjoying negative emotions fiction Smuts",
+    "limit": 10
+   },
+   "result_head": "{'query': 'paradox of painful art enjoying negative emotions fiction Smuts', 'results': [{'source_record_id': 'doi:10.4000/169s1', 'title': 'Pondering the Parad"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_w4rGIhU2DvJgvmjaKIIY2686"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_KHKwG2tMeXjUl88wIiNG0360",
+   "args": {
+    "limit": 10,
+    "query": "Noel Carroll philosophy of horror art-horror curiosity Gaut paradox"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_AU0HJebZ84iFsSB7dAdk6246",
+   "args": {
+    "budget_extension_reason": "综述请求要求覆盖\"代表性论文\"骨架与\"对立解释\"分类，已知证据仅含 Vorobej 一篇可读摘要，尚不足以支撑对 Carroll/Gaut 奠基文献的学术归因，也未读取 Harrison(2026) 可读摘要。",
+    "evidence_gap": "核验 Carroll《The Philosophy of Horror》/Gaut 1993《The Paradox of Horror》等奠基文献的真实书目，并读取 Harrison(2026) 可读摘要以支撑\"游戏理论\"解释类型",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "Carroll/Gaut 奠基文献的书目核验；Harrison(2026) 摘要内容"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 核验 Carroll《The Philosophy of Horror》/Gaut 1993《The Paradox of Horror》等奠"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_b6yzOSSQDhgc8Iai1gCK8167"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_sSEsVte2lAnYbNJrvvom6140",
+   "args": {
+    "limit": 10,
+    "query": "Gaut The Paradox of Horror British Journal of Aesthetics 1993"
+   },
+   "result_head": "{'query': 'Gaut The Paradox of Horror British Journal of Aesthetics 1993', 'results': [{'source_record_id': 'doi:10.1093/bjaesthetics/33.4.333', 'title': 'THE P"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代美学代表性文献及对立解释，需要真实书目与可读内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "综述请求要求覆盖\"代表性论文\"骨架与\"对立解释\"分类，已知证据仅含 Vorobej 一篇可读摘要，尚不足以支撑对 Carroll/Gaut 奠基文献的学术归因，也未读取 Harrison(2026) 可读摘要。",
+    "evidence_gap": "核验 Carroll《The Philosophy of Horror》/Gaut 1993《The Paradox of Horror》等奠基文献的真实书目，并读取 Harrison(2026) 可读摘要以支撑\"游戏理论\"解释类型",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "Carroll/Gaut 奠基文献的书目核验；Harrison(2026) 摘要内容"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2656,
+ "final_answer": "## 恐怖悖论（paradox of horror）研究现状：文献骨架与对立解释\n\n### 一、问题界定\n\n恐怖悖论属于美学中所谓\"负面情绪悖论/痛苦艺术悖论\"（paradox of painful art）的一个子问题。它的规范表述不是\"恐怖作品为何吓人\"，而是：恐怖小说与恐怖电影**刻意**引发恐惧、厌恶、惊骇等我们在现实生活中会主动回避的负面情绪，为什么观众却仍主动寻求这类作品，并从中获得愉悦？一个较新的综述性表述（已读摘要）把它概括为：为什么我们有时会享受那些引发痛苦情绪、而我们在现实中倾向回避的艺术。\n\n### 二、被本次检索核验到的代表性文献\n\n以下书目均来自本次学术文献检索，并标注了实际取得的证据层级：\n\n**奠基性的往复争论（BJA 上的一个对辩链）**\n- Berys Gaut, \"The Paradox of Horror,\" *The British Journal of Aesthetics* 33(4), 1993 —— 仅书目（METADATA_ONLY）\n- Noël Carroll, \"Enjoying Horror Fictions: A Reply to Gaut,\" *The British Journal of Aesthetics* 35(1), 1995 —— 仅书目\n- Berys Gaut, \"The Enjoyment Theory of Horror: A Response to Carroll,\" *The British Journal of Aesthetics* 35(3), 1995 —— 仅书目\n\n仅凭这三条书目我只能确认：Gaut 与 Carroll 之间确实存在一轮\"恐怖快感理论\"的公开往复（Carroll 回复 Gaut、Gaut 再回应 Carroll）。**两篇回应文的具体论证我并未读到内容证据**，因此不对其内部主张作归因。\n\n**其他已核验的存在性条目**\n- Mark Vorobej, \"Monsters and the Paradox of Horror,\" *Dialogue*, 1997 —— 摘要已读\n- Lucia Schwarz, \"The Paradox of Rape in Horror Movies,\" *The British Journal of Aesthetics*, 2022 —— 仅书目\n- Kaci Harrison, \"Pondering the Paradox: A Play Theory of Painful Art,\" *Rivista di estetica*, 2026 —— 摘要已读\n\n关于 Noël Carroll 的系统性专著（通常被引为该领域奠基文本，一般题为 *The Philosophy of Horror*），我**未能在本次检索中直接定位到该书的书目记录**，故此处只作背景提及，不列为已核验条目。\n\n### 三、对立解释的谱系\n\n**（1）三分框架：控制论 / 补偿论 / 转化论**\n\n这是我在 Harrison（2026）摘要中读到的、对现行解法最清晰的分类。该摘要指出，该悖论的三种主导解法——\n- **控制论**（control theory）\n- **补偿论**（compensatory theory）\n- **转化论**（conversionary theory）\n\n——通常被当作**互斥**的选项来处理。这里的分类术语是摘要原文用语。其大意可理解为：控制论诉诸\"我们能在虚构中安全地掌控恐惧的强度与时机\"；补偿论诉诸\"痛苦被某种附加快感所抵消/补偿\"；转化论诉诸\"痛苦情绪本身被转化成快感\"。Harrison 的批评要点在于：把三者视为互斥是错的，她主张用\"游戏\"（play）框架揭示它们可以同时成立——借 C. Thi Nguyen 的两层动机结构（玩游戏的动机 + 游戏过程中临时采纳的目标与规范），说明我们为达成\"审美参与\"这个原初目的，会临时采纳游戏规范与作品引发的负面情绪；换言之，愿意在艺术中感受痛苦，部分源于\"对审美经验本身的更深欣赏\"。\n\n**（2）认知/好奇论 vs. 自我认识论**\n\nVorobej（1997）摘要记录了一组更具体的对立：据该摘要转述，Carroll 的立场诉诸一种**认知快感**——恐怖艺术的吸引力源于它满足我们对\"怪物\"的自然好奇心；而 Vorobej 判定这一\"认知解决\"是**根本错误的**（理由与怪物在恐怖叙事中的呈现方式有关），并提出一条替代路径：把怪物理解为**自我认识的手段**。\n\n需要说明的是，这条对立的核心内容来自 Vorobej 对其对手立场的**转述**，而非我直接读到的 Carroll 原文，因此 Carroll 本人的措辞与论证细节未经核验。\n\n### 四、我对争议结构的判断（综合层）\n\n把这些证据并置，恐怖悖论的争论实际上沿**三条不同的解释轴**展开，而非简单的\"两派对立\"：\n\n1. **情绪的对象轴**：我们恐惧的是虚构中的怪物（意向性对象），还是恐惧情绪本身被悬置为\"非真实\"（quasi-emotion）？\n2. **动机轴**：快感来自情绪之外的补偿（求知的满足、安全的掌控），还是来自痛苦情绪自身的转化？\n3. **层次轴**：Harrison 的整合提示，问题可能被\"单一答案\"的提问方式本身误导——控制、补偿、转化也许各自捕捉了同一心理结构的不同环节。\n\n### 五、研究现状小结与继续阅读路径\n\n- 若要在**原典层面**进入这场争论，最直接的入口是 BJA 上 Gaut(1993)—Carroll(1995)—Gaut(1995) 这一往复链，但三篇均为本次仅书目级条目，建议直接调阅原文。\n- 若要把握**分类框架**，Harrison(2026) 是当前对\"控制/补偿/转化\"三分解最清晰的、已读摘要的来源。\n- 若要考察**引申与当代拓展**，Schwarz(2022) 把悖论推进到\"恐怖片中的强奸\"这一更尖锐的伦理—审美议题，Vorobej(1997) 则把怪物重释为自我认识的中介。\n\n**证据边界**：本综述中真正读到内容证据的只有 Vorobej(1997) 与 Harrison(2026) 两篇摘要；其余为仅确认存在性的书目条目。凡涉及未读文献的立场描述，我均已标明是\"据某某摘要的转述\"或\"",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "核验 Carroll《The Philosophy of Horror》/Gaut 1993《The Paradox of Horror》等奠基文献的真实书目，并读取 Harrison(2026) 可读摘要以支撑\"游戏理论\"解释类型",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:37:00",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代美学代表性文献及对立解释，需要真实书目与可读内容证据",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:37:21",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "核验 Carroll《The Philosophy of Horror》/Gaut 1993《The Paradox of Horror》等奠基文献的真实书目，并读取 Harrison(2026) 可读摘要以支撑\"游戏理论\"解释类型",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:37:21",
+    "reason": "综述请求要求覆盖\"代表性论文\"骨架与\"对立解释\"分类，已知证据仅含 Vorobej 一篇可读摘要，尚不足以支撑对 Carroll/Gaut 奠基文献的学术归因，也未读取 Harrison(2026) 可读摘要。",
+    "unresolved_gap": "Carroll/Gaut 奠基文献的书目核验；Harrison(2026) 摘要内容"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:15"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:15"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 96475,
+   "output_tokens": 8385,
+   "total_tokens": 104860
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 8,
+   "compacted_chars_saved": 15311,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 902,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15927,
+     "output_tokens": 796,
+     "tool_chars_added": 9218
+    },
+    {
+     "round": 3,
+     "input_tokens": 15876,
+     "output_tokens": 1013,
+     "tool_chars_added": 5904
+    },
+    {
+     "round": 4,
+     "input_tokens": 15590,
+     "output_tokens": 1030,
+     "tool_chars_added": 490
+    },
+    {
+     "round": 5,
+     "input_tokens": 17690,
+     "output_tokens": 644,
+     "tool_chars_added": 2394
+    },
+    {
+     "round": 6,
+     "input_tokens": 19506,
+     "output_tokens": 4000,
+     "tool_chars_added": 6880
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 96475,
+  "output_tokens": 8385,
+  "total_tokens": 104860
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 60.5
+}

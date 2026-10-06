@@ -8,11 +8,13 @@ import { useLang } from '../../utils/i18n';
 import { renderMarkdown } from './markdown';
 import { DP_READER, resolveCite, resolvePortrait } from '../../utils/api';
 import { pickUsedEvidence } from '../../utils/evidence';
+import { DepthControls, SourceDrawer, layerOf, layerLabel, researchPhase } from './O9';
 import {
   resolveIdentityVisible, toolShortSummary, toolShortArgs, toolHumanSummary,
   isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
 } from '../../data/conversationLogic';
 import { getPref } from '../../data/localPrefs';
+import GeneralAnswer from './GeneralAnswer';
 
 /**
  * MessageList — Conversation 消息区（spec §8/§9/§10/§18-§22）
@@ -27,6 +29,8 @@ import { getPref } from '../../data/localPrefs';
  */
 
 const TOOL_META = {
+  search_primary_texts: { icon: 'icon-search', label: '查找原典' },
+  read_primary_text: { icon: 'icon-book-open', label: '阅读原典' },
   search_books: { icon: 'icon-search', label: '检索原典' },
   get_chapter: { icon: 'icon-book-open', label: '读取章节' },
   get_book_detail: { icon: 'nav-books', label: '查书详情' },
@@ -88,7 +92,10 @@ function MessageAttachmentCards({ attachments }) {
 const CAN_DEBUG = import.meta.env.DEV || /[?&]debug(?:=1)?([#&]|$)/.test(window.location.search);
 
 function ToolTrace({ events, streaming }) {
-  const { t, toolLabel } = useLang();
+  const { t, toolLabel, lang } = useLang();
+  const PhasePill = ({ name, text }) => (
+    <span className="o9-phase" title={researchPhase(name, text, lang)}>{researchPhase(name, text, lang)}</span>
+  );
   const [openSet, setOpenSet] = useState(() => {
     const s = new Set();
     if (getPref('toolTraceOpen')) (events || []).forEach((ev, i) => { if (ev?.t === 'tool') { s.add('c' + i); s.add('t' + i); } });
@@ -145,6 +152,7 @@ function ToolTrace({ events, streaming }) {
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('c' + ev.i); } }}>
           {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
           <span className="cw-tool-line-icon">⌕</span>
+          <PhasePill name={rName} text={tc.result_summary || tc.thought} />
           <span className="cw-tool-line-label">{label}</span>
           <span className="cw-tool-line-summ">{short}</span>
           <span className="cw-tool-line-status">
@@ -208,6 +216,7 @@ function ToolTrace({ events, streaming }) {
             <div key={rEv.i} className="cw-tool-line">
               <Loader2 size={12} className="cw-spinner" aria-hidden />
               <span className="cw-tool-line-icon">⌕</span>
+              <PhasePill name={rName} />
               <span>{t('calling')} {label}…</span>
             </div>
           );
@@ -232,6 +241,7 @@ function ToolTrace({ events, streaming }) {
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('m' + g.key); } }}>
                 <ChevronRight size={11} />
                 <span className="cw-tool-line-icon">⌕</span>
+                <PhasePill name={toolName(g.items[0].ev)} />
                 <span>{retrievalGroupSummary(g.items.length)}</span>
                 <span className="cw-tool-line-done"><Check size={11} /> {t('toolDone')}</span>
               </div>
@@ -260,6 +270,7 @@ function ToolTrace({ events, streaming }) {
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('t' + rEv.i); } }}>
               {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
               <span className="cw-tool-line-icon">⌕</span>
+              <PhasePill name={rName} text={tc.result_summary || tc.thought} />
               <span className="cw-tool-line-label">{human || label}</span>
               <span className="cw-tool-line-summ">{human ? '' : (toolShortSummary(tc) || '')}</span>
               <span className="cw-tool-line-status">
@@ -291,14 +302,25 @@ function _toolEvidence(args) {
 const EVIDENCE_PREVIEW = 5;   // 低干扰: 默认最多 5 个 chip（§21 Evidence Without Noise）
 
 function EvidenceChips({ citations, evidence }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const used = pickUsedEvidence(citations);
   // 单一 source of truth（P0-2）: citationExpanded 控制 collapsed/expanded 两态
   const [citationExpanded, setCitationExpanded] = useState(false);
+  const [drawer, setDrawer] = useState(null);   // O9: 来源抽屉（全量字段+核验状态+阅读器深链）
   if (!used.length) return null;
   const rCount = evidence?.retrieved_count;
   const shown = citationExpanded ? used : used.slice(0, EVIDENCE_PREVIEW);
   const rest = used.length - EVIDENCE_PREVIEW;
+  // O9 §7: 分层展示（原典/学术/网络），层内保持原顺序并编号（[1]..[n] 对应抽屉）
+  const layers = [];
+  for (const c of shown) {
+    const L = layerOf(c);
+    if (!layers.find(x => x.layer === L)) layers.push({ layer: L, items: [] });
+    layers.find(x => x.layer === L).items.push(c);
+  }
+  let n = 0;
+  const idxById = new Map();
+  for (const c of used) { n += 1; idxById.set(c.evidence_id || `${c.book}/${c.chapter}/${n}`, n); }
   return (
     <div className="cw-evidence">
       <span className="cw-evidence-cap">
@@ -307,7 +329,23 @@ function EvidenceChips({ citations, evidence }) {
           ? ` · ${t('verifiedCount', { a: used.length, b: rCount })}`
           : ` · ${used.length}`}
       </span>
-      {shown.map((c, i) => <CiteChip key={c.evidence_id || i} c={c} />)}
+      {layers.map(({ layer, items }) => (
+        <div key={layer} className="o9-layer">
+          <span className="o9-layer-cap">{layerLabel(layer, lang)}</span>
+          {items.map((c) => {
+            n = idxById.get(c.evidence_id || `${c.book}/${c.chapter}/${-1}`) || 0;
+            return (
+              <button key={c.evidence_id || `${layer}-${c.title}-${n}`} className="cw-cite-chip o9-cite-numbered"
+                onClick={() => setDrawer(c)}
+                title={t('citeOpen')}
+                aria-label={`[${n}] ${(c.title || c.book || '').slice(0, 60)}`}>
+                <sup className="o9-cite-n">[{n}]</sup>
+                <span className="cw-cite-chip-title">{(c.title || (c.book ? `《${c.book}》${c.chapter ? `· ${c.chapter}` : ''}` : '')) .slice(0, 46)}</span>
+              </button>
+            );
+          })}
+        </div>
+      ))}
       {!citationExpanded && rest > 0 && (
         <button className="cw-cite-more" onClick={() => setCitationExpanded(true)}
           aria-label={t('expandCitations', { a: used.length })}>
@@ -320,6 +358,7 @@ function EvidenceChips({ citations, evidence }) {
           {t('citationCollapse')}
         </button>
       )}
+      <SourceDrawer open={!!drawer} citation={drawer} lang={lang} onClose={() => setDrawer(null)} />
     </div>
   );
 }
@@ -358,9 +397,9 @@ const cleanContent = (text) => (text || '')
 
 /* ── AgentIdentity（§10: 依 resolveIdentityVisible 决定是否显示; 始终来自 message.agent_id） ── */
 function AgentIdentity({ agentId, agents }) {
-  const { agentName, agentSub } = useLang();
+  const { t, agentName, agentSub } = useLang();
   const spec = (agents || []).find((a) => a.key === agentId);
-  const name = agentName(agentId) || spec?.name || agentId;
+  const name = agentName(agentId, spec) || agentId;
   const portrait = resolvePortrait(spec?.portrait);
   return (
     <div className="cw-agent-identity">
@@ -370,10 +409,12 @@ function AgentIdentity({ agentId, agents }) {
         <span className="cw-agent-avatar-fallback">{(name || '?')[0]}</span>
       )}
       <span className="cw-agent-name">{name}</span>
+      {spec?.status === 'preview' && <span className="cw-preview-badge">{t('preview')}</span>}
       {agentSub(agentId) && <span className="cw-agent-sub">{agentSub(agentId)}</span>}
     </div>
   );
 }
+
 
 /* ── Agent Activity（P0: Thinking + inline Tool Activity 同一时间流; 无 card container） ──
  * 语义: “Agent 当前如何理解问题、为什么下一步这样做”（用户可见的安全 thinking 流,
@@ -433,8 +474,8 @@ function AgentActivity({ m, prefsTick }) {
 }
 
 /* ── 单条消息（memo: 流式 tick 只重渲变化消息） ── */
-const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend }) {
-  const { t } = useLang();
+const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend, busy, question, onRegenerateExploration }) {
+  const { t, lang } = useLang();
 
   if (m.role === 'user') {
     // P0-3: visible content = structured attachment cards + 用户文本（legacy serialization 前缀保守 dedupe）
@@ -449,39 +490,17 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
     );
   }
 
-  return (
-    <div className="cw-assistant">
-      {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
-      {m.safety === 'warning' && (
-        <div className="cw-reasoning" style={{ marginTop: 0, color: 'var(--text-dim)' }}>{t('warning')}</div>
-      )}
-      <AgentActivity m={m} prefsTick={prefsTick} />
-      <div style={{ lineHeight: 'var(--cw-line-body)', fontSize: 14.5 }}>
-        {renderMarkdown(cleanContent(m.content), (code) => onDrawioEdit(m.message_id, code), m.drawioXml, t)}
-        {m.streaming && m.content && (
-          <span className="cw-stream-cursor" style={{ display: 'inline-block', width: 6, height: 14, marginLeft: 3,
-            background: 'var(--accent)', animation: 'pulse 1s infinite', verticalAlign: 'middle' }} />
-        )}
-      </div>
-      {getPref('showCitations') && <EvidenceChips citations={m.citations} evidence={m.evidence} />}
-      {m.suggestions?.length > 0 && !m.streaming && (
-        <div className="cw-followups">
-          <div className="cw-followups-cap">{t('explore')}</div>
-          {m.suggestions.map((s, i) => (
-            <button key={i} className="cw-followup-chip" onClick={() => onSend(s, m)}>
-              <CornerDownRight size={11} style={{ marginRight: 6, verticalAlign: '-2px', color: 'var(--text-dim)' }} aria-hidden />
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <div className="cw-assistant" data-agent={m.agent_id}>
+    {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
+    <GeneralAnswer message={m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} question={question} onRegenerateExploration={onRegenerateExploration}
+      primaryOnly={agents.some(a => a.key === m.agent_id && a.status === 'preview')} />
+  </div>;
+
 });
 
 export default function MessageList({
   messages, agents, emptyState, onSend, onDrawioEdit,
-  conversationKey, prefsTick,
+  conversationKey, prefsTick, streaming, onRegenerateExploration,
 }) {
   const { t } = useLang();
   const bottomRef = useRef(null);
@@ -526,6 +545,11 @@ export default function MessageList({
 
   // identity 计算: 依历史 assistant agent 序列（与当前选择无关, §10）
   let prevAssistants = [];
+  let lastQuestion = '';
+  const sourceQuestions = (messages || []).map(m => {
+    if (m.role === 'user') lastQuestion = m.context_content || m.content || '';
+    return lastQuestion;
+  });
   const identityFlags = (messages || []).map((m) => {
     if (m.role !== 'assistant') return false;
     const flag = resolveIdentityVisible(prevAssistants, m.agent_id);
@@ -539,6 +563,9 @@ export default function MessageList({
       {(messages || []).map((m, i) => (
         <MessageBubble key={m.message_id || i} m={m} agents={agents}
           showIdentity={identityFlags[i]} prefsTick={prefsTick}
+          busy={streaming}
+          question={sourceQuestions[i]}
+          onRegenerateExploration={onRegenerateExploration}
           onDrawioEdit={onDrawioEdit} onSend={onSend} />
       ))}
       <div ref={bottomRef} />
@@ -567,5 +594,3 @@ export const QUESTION_BANK = {
          'How would you judge this age?', 'What does eternal recurrence mean?'],
   },
 };
-
-

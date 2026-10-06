@@ -1,0 +1,259 @@
+{
+ "case_id": "DEV_G02",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "当代美学研究中，「恐怖悖论」（paradox of horror）有哪些代表性论文和对立解释？请综述学界研究现状。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_vo14DzuQTOilc76dsZL23684"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_A13rAd6wy4GvNKVNaKjX5908"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_8EOApBuJ6B7SCumXNkco5475"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_JAY28HewaSvVhxy0G4RB3551",
+   "result_head": "{'query': 'Noël Carroll paradox of horror philosophy of horror', 'results': [], 'READABLE_RESULT_COUNT': 0, 'READABLE_SOURCE_IDS': [], 'providers_queried': ['LO"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_xoTghiEvONEq1z19qzUZ3061"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_mRmh5aWtvseQY5czBbNp0061"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_dG3t2CcAI5uFl8shrn3E6218"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_ar3fok9ZibcDUDjTHdE26141"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_Df27i2KqSLzx08ri4AVd3499",
+   "result_head": "{'results': [], 'query': 'paradox of horror philosophy Carroll 恐怖悖论', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_DpCCCdgemouTNDJKXIyN8284"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_GACjLp7W6N5UKwT1uCIT5658"
+  },
+  {
+   "name": "concept_trace",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_s0wF4n0ol7k4sOUyz35D3423",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reas"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_UPyGGnvNE30092dJ7g0T9714"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_nONjHO1yMkfTWqVK0TUv1947",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代代表性论文与对立解释阵营的真实书目与内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "恐怖悖论的学界二手文献（换关键词再试）与古典根源原典（休谟论悲剧/柏克崇高/亚里士多德诗学）证据，以及网络背景",
+    "gap_filled": false,
+    "budget_extension_reason": "外部 scholarly provider（Crossref/OpenAlex）整体 URL_BLOCKED 失败，本地策展库首轮回返回无关结果，尚未取得任何恐怖悖论相关证据",
+    "unresolved_evidence_gap": "恐怖悖论代表性论文与对立解释的真实书目与内容证据"
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代代表性文献书目（Carroll/Gaut/Walton）是否可取得可溯源检索记录",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2703,
+ "final_answer": "## 说明（请先读）\n\n这个问题要求的是**当代分析美学中\"恐怖悖论\"研究的学界综述**，我为此做了多轮检索，但必须如实告知你本次检索的实际状况：\n\n- **学术文献通道**：Crossref 与 OpenAlex 双源本轮全部因网络原因不可达；本地策展库对 `paradox of horror`、`horror fiction emotion aesthetic paradox Carroll` 等关键词多次检索**全部空命中**。\n- **原典库（403 本）通道**：这是一个**经典原著库**，不覆盖当代分析美学期刊，因此不收录恐怖悖论的当代论文；休谟《论悲剧》、柏克《崇高与美》、亚里士多德《诗学》均未命中，只检索到美学中\"痛感/快感\"问题的**邻近文本**（尼采《悲剧的诞生》、康德论崇高、叔本华、齐奥朗、所罗门《哲学的快乐》论\"悲剧之死\"）。\n- **网络检索**：不可达，无结果。\n\n**因此，关于本问题\"学界研究现状\"的当代文献书目与内容，我这次没有取得任何可核验的一手/二手证据。** 下面的第二部分是我基于既有知识提供的研究地图，凡属此类，我都用\"（记忆，未经本次核验）\"标注——它们**不构成可引用的、经过核验的来源**，请当作待你自行查证的线索，而非已确认的学界事实。\n\n---\n\n## 一、问题本身是什么（概念分析，可独立作答）\n\n恐怖悖论（paradox of horror）通常被表述为一个表面矛盾：恐怖艺术（哥特小说、恐怖电影）的受众，一方面对怪物、威胁产生恐惧、厌恶、恶心等我们通常视为\"不愉快\"、本能要回避的情感；另一方面却主动、自愿、反复地追求并享受这类作品。\n\n（以上是对该问题的一般性描述，属我的概括，并非任何文献的引文。）\n\n悖论的核心问题是：**为什么我们会去追求会引发负面情感的艺术？** 它其实是更一般的\"**悲剧悖论**\"（paradox of tragedy，即观众为何从悲剧的悲伤中获得快感）在\"恐怖\"这一类型上的特例。理清这一点很重要：恐怖悖论不是孤立的部门问题，而是美学中\"负面情感与审美愉悦能否共存\"这一大问题的子问题。\n\n---\n\n## 二、古典根源（记忆，未经本次核验）\n\n这一问题的前史通常追溯到三条线：\n\n1. **亚里士多德《诗学》的卡塔西斯（catharsis）**——悲剧通过怜悯与恐惧的\"净化/宣泄\"产生快感。（记忆，未核验）\n2. **休谟《论悲剧》**——试图解释观众为何从悲剧的悲痛中获得愉悦，常被概括为\"雄辩/修辞本身带来的快感超过了悲痛的痛感\"。（记忆，未核验）\n3. **柏克《论崇高与美》**——提出\"愉悦性的恐惧\"（delightful horror）、崇高中的痛感与快感交织。（记忆，未核验）\n\n**原典库中确可检索到的邻近脉络**（这些是我这次真实检索命中的，但讨论的是更广的\"痛感/快感\"美学问题，**并非恐怖悖论文献本身**）：尼采《悲剧的诞生》反复处理\"希腊人为何从悲剧的毁灭中获取形而上慰藉\"的问题；康德论崇高与优美中的\"消极快感\"；叔本华论感觉与痛苦。它们可作为论证背景，但不能替代恐怖悖论的专门研究。\n\n---\n\n## 三、当代代表性解释阵营（记忆，未经本次核验——请重点核验）\n\n以下是我所了解的该领域主要路线。**其中每一个书目与归属都需你自行核实，我这次无法给出经过核验的引用，故不提供任何精确出版信息**：\n\n| 路线 | 代表主张 | 代表文献（记忆，未核验） |\n|---|---|---|\n| **认知—好奇心说** | 恐怖快感来自\"好奇心\"与叙事对怪物的\"揭示/发现\"结构；恐怖作品的核心是认知性的 | Noël Carroll, *The Philosophy of Horror, or Paradoxes of the Heart* |\n| **准情感说** | 观众对虚构怪物只有\"准恐惧\"（quasi-fear），并非真正的恐惧，故无真正矛盾 | Kendall Walton, \"Fearing Fictions\" |\n| **元情感/元反应说** | 快感不来自恐惧本身，而来自对\"自己被吓到\"这一情感反应的元层次享受 | Berys Gaut, \"The Paradox of Horror\"，常被视为对 Carroll 的直接批评 |\n| **宣泄/释放说** | 恐怖提供负面情感的象征性释放 | 承亚里士多德—弗洛伊德传统 |\n| **象征/意识形态说** | 怪物象征文化焦虑（性别、他者、身体），快感源于象征层面的处理 | Cynthia Freeland 等（记忆，未核验） |\n\n**最主要的对立轴线**大致是：**Carroll 的\"认知—好奇心\"解释**（快感是可理解的好奇心满足）↔ **Gaut 等人的\"元反应/矛盾情感\"解释**（快感来自对负面情感本身的享受）↔ **Walton 的\"准情感\"消解**（否认存在真悖论，认为情感本身就是\"假装的\"）。这三者构成了当代争论的基本格局。（以上阵营划分与人物归属均属我的记忆综合，未经核验。）\n\n---\n\n## 四、你可以如何自行核验与深入\n\n由于本次工具通道不可用，我建议你按以下路径核实（均为记忆中的线索，非已核验书目）：\n\n1. 在 **PhilPapers**、**British Journal of Aesthetics**、**Journal of Aesthetics and Art Criticism** 中检索 \"paradox of horror\"。\n2. 核心锚点文献：Carroll 的 *The Philosophy of Horror*、Gaut 的 \"The Paradox of Horror\"、Walton 的 \"Fearing Fictions\"——通常先读 Gaut 那篇，它往往同时梳理并反驳 Carroll，是进入争论最经济的入口。\n3. 顺藤检索其被引/引证，即可看到 \"art horror\"、\"negative emotions in art\"、\"paradox of tragedy\" 等关联子领域。\n\n---\n\n**一句话总结**：这次我未能取得任何可核验的学界文献证据，因此无法给你一份\"经过检索确认\"的综述；上面第二部分的概念界定与第三部分的阵营地图来自我的既有知识，**均需你按第四部分自行核实后才可引用**。如果你希望，我可以在通道恢复后专门针对某一篇（如 Gaut 的批评文章或 Carroll 的专著）做定点核验与细读。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "恐怖悖论（paradox of horror）的当代代表性文献书目（Carroll/Gaut/Walton）是否可取得可溯源检索记录",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:16:41",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代代表性论文与对立解释阵营的真实书目与内容证据"
+   },
+   {
+    "ts": "2026-09-13 11:16:48",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "恐怖悖论的学界二手文献（换关键词再试）与古典根源原典（休谟论悲剧/柏克崇高/亚里士多德诗学）证据，以及网络背景",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:17:28",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "MIXED",
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代代表性文献书目（Carroll/Gaut/Walton）是否可取得可溯源检索记录"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:16:48",
+    "reason": "外部 scholarly provider（Crossref/OpenAlex）整体 URL_BLOCKED 失败，本地策展库首轮回返回无关结果，尚未取得任何恐怖悖论相关证据",
+    "unresolved_gap": "恐怖悖论代表性论文与对立解释的真实书目与内容证据"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:02"
+   },
+   {
+    "tool": "concept_trace",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:02"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:28"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 93855,
+   "output_tokens": 10601,
+   "total_tokens": 104456
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 9,
+   "compacted_chars_saved": 12490,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11613,
+     "output_tokens": 599,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14003,
+     "output_tokens": 1318,
+     "tool_chars_added": 4857
+    },
+    {
+     "round": 3,
+     "input_tokens": 19146,
+     "output_tokens": 2222,
+     "tool_chars_added": 10252
+    },
+    {
+     "round": 4,
+     "input_tokens": 19307,
+     "output_tokens": 2867,
+     "tool_chars_added": 4482
+    },
+    {
+     "round": 5,
+     "input_tokens": 13566,
+     "output_tokens": 1567,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 6,
+     "input_tokens": 16220,
+     "output_tokens": 2028,
+     "tool_chars_added": 2523
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 93855,
+  "output_tokens": 10601,
+  "total_tokens": 104456
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 67.0
+}

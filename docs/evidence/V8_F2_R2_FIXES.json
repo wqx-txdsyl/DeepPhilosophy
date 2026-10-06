@@ -1,0 +1,12 @@
+{
+ "V8_F2_R2_FIXES": true,
+ "R2_BASE": "dd91d10958bce124bfb40880edd2c4225d3e8f8a",
+ "CONTENT_HEAD_R2": "9125dde4af97619016d25ec8626aa38c8e0e0224",
+ "fixes": {
+  "per_candidate_plan_only": "每个候选独立判定（repair 生成同样拦截）; publish = validation.ok AND not current_plan_only",
+  "completion_tightened": "完成性证据只在最后意图宣告之后出现才算实质交付; 过去检索不豁免未来宣告; O4-T5 实况与真实完成型回答均正常发布"
+ },
+ "scope": "仅 engine_langgraph.py + tests + freeze hash（任务书允许范围）; no-op repair 与 scholarly fallback（R1 已通过）零再动",
+ "FULL_TEST_SHA": "9125dde4af97619016d25ec8626aa38c8e0e0224",
+ "FULL_TEST_RESULT": "883 passed / 0 failed @ exact CONTENT_HEAD_R2"
+}

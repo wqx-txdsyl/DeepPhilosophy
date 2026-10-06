@@ -1,0 +1,216 @@
+
+我审完 ca799c02b → e95d0d164。这轮可以正式结束 Flash repair config 的 ablation：保留 RP-B，不跑 RP-A，不测 JSON transport。
+
+不过先修正回执里一个数字：B1_PATCH_PROTOCOL_ERRORS=0 不成立。B1 artifact 里实际出现了两处 INVALID_JSON 轨迹：一例连续两次 INVALID_JSON，另一例有一次 INVALID_JSON 后最终恢复发布。 B2 则 8 个 case 的 lp_errors 全为空。
+
+这不推翻 qualification，因为我们预注册的 RP-B hard gate 是 publication + convergence + correctness gates，并没有要求 PATCH_PROTOCOL_ERRORS=0。B1 仍然是 7/8 + 0.857，B2 是 7/8 + 0.833，而 anchor、coverage、starvation、wrapper、non-target 等门两轮全部通过。
+
+正式裁定：
+
+O7_E_PF_RP2_REVIEW = PASS
+
+CAL2_STATUS = OBSERVED_NONCANONICAL_FAIL
+CAL2_RERUN = false
+
+CALIBRATION_RUNNER_REPRODUCIBLE = PASS
+JUDGE_MEASUREMENT_WIRING = PASS
+
+B1_DELIVERY_GATE = PASS
+B2_DELIVERY_GATE = PASS
+
+B1_PUBLISHED = 7/8
+B1_REPAIR_CONVERGENCE = 0.857
+B1_PATCH_PROTOCOL_ERRORS =
+  INVALID_JSON_EVENTS=3
+  AFFECTED_CASES=2
+
+B2_PUBLISHED = 7/8
+B2_REPAIR_CONVERGENCE = 0.833
+B2_PATCH_PROTOCOL_ERRORS = 0
+
+RP_B_QUALIFIED = true
+RP_A_QUALIFIED = NOT_TESTED
+JSON_TRANSPORT_TESTED = false
+
+PROPOSED_VERDICT = RETAIN_RP_B
+RETAIN_RP_B = AUTHORIZED
+
+LOCAL_PATCH_ARCHITECTURE_QUALIFIED = true
+LOCAL_PATCH_SEMANTICS_REOPEN = false
+REPAIR_PROMPT_TUNING = false
+
+MAX_VALIDATION_REPAIRS = 2
+PRODUCTION_FREEZE_BASE = 72b553dec
+
+V3_HOLDOUT_AUTHORIZED = false
+
+Runner provenance 这次也确实闭上了：缺掉的 val / tel / published / final_codes 四个机械定义已经回到 HEAD，P6 不是源码 grep，而是真正调用 run_case_production() 跑一条 fake production flow。
+
+Judge wiring 也已经按上一轮要求分开：PRIMARY_TEXT_EVIDENCE 使用 existing-run 的 source text；secondary/access 进入 build_judge_input() 的正式字段；REQUIRED 与 applicable 两套分母已经拆开。 Judge invocation 本身仍是冻结的 glm-4.6 / temperature=0 / thinking disabled / json_object。
+
+有一点因果表述也要收紧：我们已经证明旧 System contract drift 是真实 bug，但不能说它是 CAL1/CAL2 波动的主要原因。 因为 CAL2 已经修掉 drift，仍只有 6/8；之后同一 production freeze 下 B1/B2 又都是 7/8。更准确的结论是：contract confound 已消除，而 Flash 仍存在可观察的 run-to-run variance，不过当前 RP-B 已连续两轮跨过预注册可靠性门。
+
+下一步：Canonical Scholarly Gate
+
+现在终于回到 O7-E 真正的产品目标：答案的学术质量。
+
+不再生成新的 8-case Agent run。为了避免看完结果后挑样本，直接预注册：
+
+CANONICAL_SCHOLARLY_INPUT = FLASH_B1
+REASON = first canonical RP-B qualification run
+FLASH_B2 = delivery replication only
+
+B1 虽然有一个未发布 case，delivery gate 已允许 >=7/8；academic judge 只评审那 7 个真正发布的 final answers。
+
+任务：
+
+O7-E PF-RP3 — CANONICAL SCHOLARLY GATE
+
+MODEL = GLM-5.3-Flash
+REASONING = MAX
+REVIEWER = GPT-5.6 Sol
+
+BASE_SHA = e95d0d164
+
+CANDIDATE_ARTIFACT =
+docs/evidence/o7e_calib_FLASH_B1.json
+
+TESTED_AGENT_MODEL = deepseek-v4-flash
+REPAIR_CONFIG = RP-B
+
+JUDGE_MODEL = glm-4.6
+JUDGE_TEMPERATURE = 0
+JUDGE_THINKING = disabled
+
+NEW_AGENT_RUN = false
+V3_HOLDOUT_RUN = false
+
+在跑 judge 前只补两个纯 aggregate 字段，不改宪法、不改输入、不改 judge prompt：
+
+REQUIRED_DIMENSION_MEDIAN_LT_2
+FATAL_FLAG_COUNTS_BY_TYPE
+
+定义：
+
+REQUIRED_DIMENSION_MEDIAN_LT_2 =
+所有 published case × manifest REQUIRED 维中
+median < 2 的数量
+
+六个 fatal 分别计数：
+
+FABRICATED_BIBLIOGRAPHY
+FABRICATED_SCHOLAR_ATTRIBUTION
+PRIMARY_TEXT_MISREPRESENTATION
+MAJOR_ANACHRONISM
+FALSE_EXACT_QUOTE
+LITERATURE_ACCESS_OVERCLAIM
+
+然后只跑 B1 scholarly judge。
+
+Hard Gate：
+
+JUDGE_CASES_EXPECTED = 7
+JUDGE_CASES_VALID = 7
+JUDGE_CASES_MISSING = 0
+
+EVALUATION_INVALID = false
+REQUIRED_DIMENSION_MISSING_SCORE = 0
+
+APPLICABLE_DIMENSION_MEAN >= 3.20
+
+TEXTUAL_GROUNDING_REQUIRED_MEAN >= 3.40
+ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN >= 3.20
+INTERPRETIVE_PLURALITY_REQUIRED_MEAN >= 3.00
+HISTORICAL_DISCIPLINE_REQUIRED_MEAN >= 3.40
+LITERATURE_ORIENTATION_REQUIRED_MEAN >= 3.20
+
+REQUIRED_DIMENSION_MEDIAN_LT_2 = 0
+
+FABRICATED_BIBLIOGRAPHY = 0
+FABRICATED_SCHOLAR_ATTRIBUTION = 0
+PRIMARY_TEXT_MISREPRESENTATION = 0
+MAJOR_ANACHRONISM = 0
+FALSE_EXACT_QUOTE = 0
+LITERATURE_ACCESS_OVERCLAIM = 0
+
+如果 PASS：
+
+O7_E_CALIBRATION_DUAL_AXIS = PASS
+
+DELIVERY_RELIABILITY = PASS
+SCHOLARLY_QUALITY = PASS
+
+V3_HOLDOUT_AUTHORIZED = true
+
+然后才打开冻结至今的 28-case untouched V3。
+
+如果 academic FAIL：
+
+STOP
+SCHOLARLY_GATE_NOT_MET
+V3_HOLDOUT_AUTHORIZED=false
+
+而且不许回去修改 Local Patch。下一刀只能针对 Scholarly Contract / evidence availability / retrieval quality / literature usage 等真实学术质量问题。
+
+最终回执：
+
+O7_E_PF_RP3 =
+READY_FOR_REVIEW /
+SCHOLARLY_GATE_NOT_MET
+
+BASE_SHA=e95d0d164
+
+AGGREGATE_FIX_SHA=
+JUDGE_ARTIFACT_SHA=
+HEAD_SHA=
+REMOTE_SHA=
+
+CANONICAL_SCHOLARLY_INPUT=FLASH_B1
+NEW_AGENT_RUN=false
+
+JUDGE_MODEL=glm-4.6
+JUDGE_ADDITIONAL_RETRIEVAL=0
+
+JUDGE_CASES_EXPECTED=7
+JUDGE_CASES_VALID=
+JUDGE_CASES_MISSING=
+EVALUATION_INVALID=
+
+REQUIRED_DIMENSION_MISSING_SCORE=
+REQUIRED_DIMENSION_MEDIAN_LT_2=
+
+APPLICABLE_DIMENSION_MEAN=
+
+TEXTUAL_GROUNDING_REQUIRED_MEAN=
+ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN=
+INTERPRETIVE_PLURALITY_REQUIRED_MEAN=
+HISTORICAL_DISCIPLINE_REQUIRED_MEAN=
+LITERATURE_ORIENTATION_REQUIRED_MEAN=
+
+FABRICATED_BIBLIOGRAPHY=
+FABRICATED_SCHOLAR_ATTRIBUTION=
+PRIMARY_TEXT_MISREPRESENTATION=
+MAJOR_ANACHRONISM=
+FALSE_EXACT_QUOTE=
+LITERATURE_ACCESS_OVERCLAIM=
+
+DELIVERY_RELIABILITY_QUALIFIED=true
+RP_B_QUALIFIED=true
+
+LOCAL_PATCH_SEMANTICS_CHANGED=false
+REPAIR_PROMPT_CHANGED=false
+PRODUCTION_MODEL_CHANGED=false
+
+V3_HOLDOUT_RUN=false
+
+PROPOSED_VERDICT=
+AUTHORIZE_V3_HOLDOUT /
+SCHOLARLY_GATE_NOT_MET
+
+STOP
+
+所以当前里程碑可以记得非常清楚：
+
+RCA-1 / RCA-2：结束。Local Patch：qualified。Production RP-B：qualified。Flash reliability ablation：结束。
+
+现在不再研究“怎么把答案修出来”，而是终于开始问：修出来、发布出来的答案，到底够不够学术。

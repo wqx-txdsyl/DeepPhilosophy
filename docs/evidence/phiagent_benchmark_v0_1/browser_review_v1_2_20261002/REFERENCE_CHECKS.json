@@ -1,0 +1,72 @@
+{
+  "checks": [
+    {
+      "id": "D04-local",
+      "scope": "independent reviewer recheck; not original product execution",
+      "file": "backend/data/book_chapters/e574c8e7f515/8.json",
+      "sha256": "27ef5d459843e64c965b018a0082d676b96afc3f1ee9c90340630265b209dd9c",
+      "chapter": "第八卷 友爱论",
+      "block_idx": 9,
+      "finding": "The target sentence concerns friends joined for utility and ceasing to be useful, not ceasing to be pleasurable.",
+      "target_exact": "因有用之故结交的朋友，一旦对方不再有用了，他1157a15们的关系就终止了。"
+    },
+    {
+      "id": "D05-local",
+      "scope": "current local/public catalogue, not proof of the provider initial search",
+      "file": "app/public/books.json",
+      "sha256": "c1a83e6ee6ca3e8d0dfe43c93f18b128cd514eb5ce09251f1f998c48ccfcbb08",
+      "feng_titles": [
+        {
+          "id": "32093eed6ff1",
+          "title": "中国哲学简史",
+          "author": "冯友兰"
+        }
+      ],
+      "finding": "Catalogued Feng title is 中国哲学简史. Browser answers do not identify the actual library item/version/readability."
+    },
+    {
+      "id": "F03-deepseek",
+      "url": "https://journals.aps.org/prd/abstract/10.1103/hjvh-mvmh",
+      "access": "publisher record read",
+      "finding": "10.1103/hjvh-mvmh identifies the 12 March 2026 retraction notice, PRD 113 059901, rather than the original PRD 111 115005 (2025) paper.",
+      "claim": "DOI： 10.1103/hjvh-mvmh发表时间： 2025年"
+    },
+    {
+      "id": "F03-doubao",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/15287394.2026.2673183",
+      "access": "full publisher text indexed in search; direct open unavailable",
+      "finding": "The supplied DOI belongs to the 21 May 2026 Statement of Retraction. Original Gallagher/Goodman paper DOI is 10.1080/15287394.2010.519317.",
+      "claim": "DOI：10.1080/15287394.2026.2673183"
+    },
+    {
+      "id": "F04-doubao",
+      "url": "https://www.cambridge.org/core/journals/review-of-politics/article/abs/radical-goals-of-slave-morality-in-nietzsches-on-the-genealogy-of-morality/8CA02C053E4D65962A403489D60DF3A1",
+      "access": "publisher metadata and abstract read; full article not claimed",
+      "finding": "Article author is Thomas Meredith, published in The Review of Politics 82(2), 2020, DOI 10.1017/S0034670520000182, not Joao Constancio in Philosophy. The abstract extends a political account toward ontological critique; it does not support the response caricature of a purely political denial of value creation."
+    },
+    {
+      "id": "D04-primary-translation",
+      "url": "https://classics.mit.edu/Aristotle/nicomachaen.8.viii.html",
+      "access": "English primary translation Book VIII read",
+      "finding": "The utility passage says the friendship ends when advantage ends; confirms the utility/pleasure distinction relevant to this target. Section numbering differs by edition; no Greek-source validation claimed."
+    },
+    {
+      "id": "B01-primary-norm",
+      "url": "https://www.moe.gov.cn/srcsite/A25/s3144/201407/t20140709_171513.html",
+      "access": "official source search-index text read; direct open failed",
+      "finding": "2014 directive prohibits gifts/valuables received from students/parents without a universal low-value threshold; do not certify a price-based safe harbor."
+    },
+    {
+      "id": "F04-doubao-blog",
+      "finding": "No URL, named author or date is supplied for the claimed Nietzsche Blog article. Focused exact-title search did not locate a verifiable source. This is unverified, not proof that the article cannot exist.",
+      "status": "unverified"
+    },
+    {
+      "id": "D01-local",
+      "file": "backend/data/book_chapters/d9272a80942a/18.json",
+      "sha256": "989862eaddd8c73e74c62a39d9e9c734d4360fb41776edfe6b088b46ecf28af6",
+      "finding": "阳货篇 contains the target 礼云礼云 sentence followed by its 乐云乐云 counterpart. Confirms text only; no original browser link execution claim."
+    }
+  ],
+  "limits": "Reviewer rechecks never count as original provider search/read receipts; do not validate all unexamined citations."
+}

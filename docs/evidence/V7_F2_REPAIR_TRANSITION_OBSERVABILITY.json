@@ -1,0 +1,72 @@
+{
+ "V7_F2_REPAIR_TRANSITION_OBSERVABILITY": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V7_F2_REPAIR_TRANSITION_OBSERVABILITY_TASK.md",
+ "BASE_SHA": "a52678fc8fc4ce5dab100b63e8206f82ccc2d75c",
+ "CONTENT_HEAD": "1493542ad854af4e6d5e5c8f4bae455db55ea467",
+ "V7_MEASUREMENT_UNCHANGED": true,
+ "V7_SCHOLARLY_GATE_REMAINS_PASS": true,
+ "V7_DELIVERY_GATE_REMAINS_FAIL": true,
+ "DEV_ONLY": true,
+ "QUALIFICATION": false,
+ "FORBIDDEN_FROM_V8": true,
+ "PER_ROUND_SEMANTIC_OBSERVABILITY": {
+  "status": "IMPLEMENTED",
+  "mechanism": "_val_history 每轮新增 issue_details [{code, locator[:200], evidence_ref}]",
+  "runner_persistence": "done.validation.history → run record validation_history",
+  "verified_in": "V7-04 (3 rounds), V7-06 (3 rounds)"
+ },
+ "SEMANTIC_TRANSITION_CLASSIFIER": {
+  "status": "IMPLEMENTED",
+  "module": "backend/o7e_semantic_transition.py",
+  "deterministic": true,
+  "no_llm": true
+ },
+ "DEV_PROBE_RESULTS": {
+  "per_case": {
+   "V7-04": {
+    "published": true,
+    "repairs": 2,
+    "vh_rounds": 3
+   },
+   "V7-06": {
+    "published": true,
+    "repairs": 2,
+    "vh_rounds": 3
+   }
+  },
+  "semantic_transitions": {
+   "V7-04": {
+    "rounds": 3,
+    "introduced_transitions": []
+   },
+   "V7-06": {
+    "rounds": 3,
+    "introduced_transitions": [
+     {
+      "fingerprint": "f652871a3f992fd0",
+      "round": "R1",
+      "semantic": "NEEDS_CLASSIFICATION"
+     }
+    ]
+   }
+  }
+ },
+ "O7E_DELIVERY_METRIC_V2_PROPOSAL_REF": "docs/evidence/O7E_DELIVERY_METRIC_V2_PROPOSAL.json",
+ "FULL_TEST": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "FULL_TEST_SHA": "1493542ad854af4e6d5e5c8f4bae455db55ea467",
+  "passed": 843,
+  "failed": 0
+ },
+ "changed_files_git_diff_BASE_to_CONTENT": [
+  "backend/engine_langgraph.py",
+  "backend/tests/test_o7a_scholarly_evaluator.py",
+  "backend/tools/evaluation/o7e_production_calibration.py",
+  "docs/evidence/V7_F2_DELIVERY_REPAIR.json",
+  "docs/evidence/V7_F2_DP02_REGRESSION_RUN.json",
+  "docs/tasks/PHIAGENT_O7E_V7_F1_R1_HANDOFF.md",
+  "docs/tasks/PHIAGENT_O7E_V7_F2_DELIVERY_REPAIR_AUTH.md",
+  "docs/tasks/PHIAGENT_O7E_V7_F2_REPAIR_TRANSITION_OBSERVABILITY_TASK.md",
+  "docs/tasks/V7_F2_EXECUTION_PLAN_BUILDER.md"
+ ]
+}

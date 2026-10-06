@@ -1,0 +1,62 @@
+{
+ "O9_API_CONTRACT": true,
+ "as_of": "2026-09-12",
+ "metaso_official_sources": [
+  "https://www.modelscope.cn/mcp/servers/metasota/metaso-search（官方 @metasota MCP 页面, 内容源=https://metaso.cn/api/mcp, 更新 2026.09.11）",
+  "https://metaso.cn/api/mcp（官方 MCP 端点本体）",
+  "https://metaso.cn/search-api/api-keys（官方 API key 控制台, 需注册登录）",
+  "https://metaso.cn/（官方主站）"
+ ],
+ "protocol": "MCP over HTTP（JSON-RPC 2.0）",
+ "endpoint": "https://metaso.cn/api/mcp",
+ "authentication": {
+  "scheme": "Authorization: Bearer <API_KEY>",
+  "key_console": "https://metaso.cn/search-api/api-keys（需注册登录账号）",
+  "empirical_no_credential_probe": {
+   "tools/list without key": "{\"jsonrpc\":\"2.0\",\"id\":2,\"error\":{\"code\":-32603,\"message\":\"Internal error: API密钥无效\",\"data\":null}}",
+   "note": "端点存活, 无效 key 返回 JSON-RPC -32603; 请求被正常路由"
+  }
+ },
+ "tools": {
+  "metaso_web_search": {
+   "params": {
+    "q": "required string",
+    "scope": "webpage|document|paper|image|video|podcast",
+    "includeSummary": "boolean（网页摘要增强召回）",
+    "includeRawContent": "boolean（抓取来源页原文）",
+    "size": "int, default 10"
+   },
+   "structured_bibliographic_metadata": "官方文档未提供 DOI/作者/期刊/年份等结构化书目字段"
+  },
+  "metaso_web_reader": {
+   "params": {
+    "url": "required string",
+    "format": "json|markdown"
+   }
+  },
+  "metaso_chat": {
+   "params": {
+    "message": "required string",
+    "model": "default fast（RAG 问答）"
+   }
+  }
+ },
+ "quota": "官方提示存在 API 调用配额限制（具体数值未公开文档化）",
+ "cost": null,
+ "COST_SOURCE": "UNAVAILABLE",
+ "mcp_server_registry": "ModelScope 官方注册: metasota/metaso-search（52.0k 引用, 84 收藏）",
+ "phiagent_relevant_assessment": {
+  "strengths_contractual": [
+   "中文网页/文档/论文多域搜索",
+   "includeRawContent 网页原文抓取（可读证据层）",
+   "metaso_web_reader URL 阅读",
+   "中文生态覆盖（秘塔主站为中文搜索产品）"
+  ],
+  "gaps_contractual": [
+   "无结构化书目元数据（DOI/venue/year/authors 未文档化为结构化返回）",
+   "无年份过滤/排序合同字段（对比 Crossref filter、OpenAlex filter）",
+   "认证与配额未公开数值",
+   "metaso_chat 为 RAG 生成层——PhiAgent 架构原则要求 provider 只找材料不作答"
+  ]
+ }
+}

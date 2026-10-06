@@ -13,13 +13,17 @@
                                advisor_council/conceptual_map/school_arena/agent_council…）
   agent_sse.py                 SSE 流式路由（/api/agent/stream_lg）
 
-本文件职责: 聚合 import（工具模块 import 即注册到 TOOLS）→ 路由注册 → 
-SYSTEM_PROMPT 程序化生成 → 边缘路由（/api/agents /api/cite /api/drawio）。
+本文件职责: 聚合 import（工具模块 import 即注册到 TOOLS）→ 路由注册 →
+边缘路由（/api/agents /api/cite /api/drawio）。
 main.py 的 router 引用不变（from routes.agent import router）。
 外部消费者保持兼容: engine_langgraph（AG.TOOLS/llm_chat/MODEL/API_KEY/API_URL/DATA）、
 agents（TOOLS）、sync/knowledge（invalidate_agent_cache）、tests（_safe_bid/_int_arg/
 _embed_query/_exec_search_books/_exec_query_db…）均经本模块 re-export。
+（O5: SYSTEM_PROMPT / _SYS_TOOL_LIST 死常量已删除——引擎唯一主策略真源 =
+engine_langgraph.SYSTEM_PROMPT_LG, 经 AGENTS.AGENT_PROMPTS / get_system_prompt 分发。）
 """
+import re
+
 from fastapi import APIRouter
 
 # ── 聚合 import（顺序即加载顺序: env → 核心 → 工具域 → SSE）──
@@ -36,6 +40,7 @@ from routes.agent_core import (
 # 工具域模块（import 即注册到 TOOLS; 下划线符号仅测试/内部使用, 显式 re-export）
 from routes.agent_tools_retrieval import _exec_search_books, _exec_query_db
 import routes.agent_tools_retrieval  # noqa: F401  注册检索域工具
+import routes.agent_tools_scholarly  # noqa: F401  注册 O7-C 二手文献检索域（2 工具）
 import routes.agent_tools_memory     # noqa: F401  注册记忆/创作域工具
 import routes.agent_tools_eval       # noqa: F401  注册评估/分析域工具
 from routes.agent_sse import router as _sse_router, AgentChatRequest  # noqa: F401
@@ -46,8 +51,8 @@ from routes.agent_sse import router as _sse_router, AgentChatRequest  # noqa: F4
 router = APIRouter()
 router.include_router(_sse_router)
 
-# 保持 TOOLS 注册顺序与拆分前一致（SYSTEM_PROMPT 工具清单顺序不变;
-# 拆分后按域分组注册, 顺序变为分组序, 此处按原始注册序重建）
+# 保持 TOOLS 注册顺序与拆分前一致（拆分前按域分组注册会打乱顺序;
+# 此处按原始注册序重建, 消费方依赖注册序稳定）
 _TOOL_REGISTER_ORDER = [
     "search_books", "get_book_detail", "get_chapter", "query_graph", "get_philosopher",
     "list_books", "write_essay", "generate_image", "get_school", "phti_test",
@@ -69,38 +74,8 @@ del _TOOLS_BY_NAME, _TOOL_REGISTER_ORDER
 
 # ═══════════════════════════════════════════════════════
 # 编排: /api/agent/stream_lg（LangGraph 引擎, engine_langgraph.py; 旧 chat/stream 已删除 2026-08-14）
-# ═══════════════════════════════════════════════════════
-# 哲学家数以 backend/data/philosophers.json 实际条目数为准（N3 2026-08-18: 737，勿手写漂移值）
-SYSTEM_PROMPT = """你是"深哲"（PhiAgent）——一个严谨的哲学智能体，基于 403 本哲学原著（柏拉图到德里达）与 737 位哲学家资料库工作。
-
-## 工具调用格式（重要）
-需要调用工具时，在输出中嵌入工具标记（二选一）:
-- JSON 格式: {TOOL:{"name":"search_books","args":{"query":"..."}}}
-- XML 格式: <invoke name="search_books"><parameter name="query">...</parameter></invoke>
-禁止同时输出多个标记混淆; 工具结果返回后继续思考。
-
-## 工作方式（ReAct）
-按「思考 → 行动 → 观察」循环工作：
-1. 先思考：判断需要什么信息、该调用哪个工具。
-2. 行动：通过 function calling 调用工具（可并行调用多个）。
-3. 观察：根据工具返回结果继续思考，直到信息充分。
-4. 最终：输出完整回答。信息不足时继续调用工具，绝不凭记忆编造。
-
-## 可用工具
-（工具清单由 TOOLS 注册表在模块加载时自动生成, 见文件末尾——不再手写, 防清单漂移）
-
-## 铁律
-1. 凡涉及具体哲学主张/概念/出处，必须先调用 search_books 或 get_chapter 检索原文，用真实原文支撑，不得凭记忆编造引文。
-2. 回答必须标注引用来源: 【《书名》· 章节名】。
-3. 涉及哲学家关系（师承/影响/论敌）时调用 query_graph；涉及流派时调用 get_school；涉及哲人资料时调用 get_philosopher。
-4. 用户要求对比时调用 compare_views；写作文时调用 write_essay；辩论时调用 philosopher_debate；决策求助时调用 advisor_council。
-5. 引用原文时用引号，并说明是原典原文还是概括。
-6. 若检索无结果，如实说明"库中未检索到"，不硬答、不编造。
-7. 回答使用中文，严谨、清晰、有层次；适度苏格拉底式反问，但不回避问题。
-8. 避免"哲学废话"：每个论断要么有原文依据，要么明确标注为分析/推测。
-9. 用户要求扮演/以某哲学家口吻回答时调用 role_play（人格包返回后以其第一人称作答, 不必再检索原典）。
-10. 工具调用纪律: 同一检索工具不要连续重复调用; 累计检索 ≥3 次或材料已足够时, 必须停止调用工具, 直接基于已有材料输出最终回答（输出 {TOOL:...} 只用于确有必要的新检索, 禁止无意义重复）。"""
-
+# 主策略提示词唯一真源 = engine_langgraph.SYSTEM_PROMPT_LG（O5: 本文件旧
+# SYSTEM_PROMPT 死常量已删除——自研 ReAct 循环退役后即无任何消费者）。
 # ═══════════════════════════════════════════════════════
 # 智能体广场: 列出可用智能体（通用深哲 + 哲学家注册表）
 # ═══════════════════════════════════════════════════════
@@ -113,6 +88,8 @@ async def list_agents():
         out.append({"key": key, "name": spec.get("name", key),
                     "subtitle": spec.get("title", ""), "tagline": spec.get("tagline", ""),
                     "portrait": spec.get("portrait")})
+    from soul_agents import public_agents
+    out.extend(public_agents())
     return {"agents": out}
 
 # ═══════════════════════════════════════════════════════
@@ -121,11 +98,19 @@ async def list_agents():
 @router.get("/api/cite")
 async def api_cite(book: str = "", chapter: str = ""):
     from routes.agent import get_books, chapter_meta, read_chapter
+    from evidence_contract import _split_book_chapter
+
+    # 《书·章》变体归一: 模型常写【《康德著作集·序言》】（·在《》内）, 不拆分则书名查不到
+    book, chapter = _split_book_chapter(book, chapter)
 
     def _norm(s):
-        # 书名归一化: 去《》/括号(全角转半角后剥除)/去空白 (AI 引用全半角不定;
-        # 书名"从《理想国》到《正义论》"剥《》后无括号, 输入"(理想国)"带半角括号须同样剥除)
-        return (s or "").replace("《", "").replace("》", "").replace("（", "(").replace("）", ")").replace("(", "").replace(")", "").replace(" ", "").strip()
+        # 书名归一化: 去《》/括号(全角转半角后剥除)/去空白/破折号变体归一 (AI 引用全半角不定;
+        # 书名"从《理想国》到《正义论》"剥《》后无括号, 输入"(理想国)"带半角括号须同样剥除;
+        # 语料章节"第108—275节"(全角破折号) 与书库 toc"第108-275节"(连字符) 须对齐, 否则永不命中)
+        return ((s or "").replace("《", "").replace("》", "")
+                .replace("（", "(").replace("）", ")").replace("(", "").replace(")", "")
+                .replace("—", "-").replace("–", "-").replace("‐", "-").replace("－", "-")
+                .replace(" ", "").strip())
 
     bname = _norm(book)
     if not bname:
@@ -143,7 +128,7 @@ async def api_cite(book: str = "", chapter: str = ""):
     if not meta:
         return {"error": "该书无章节数据"}
     toc = meta.get("toc") or []
-    cname = (chapter or "").strip()
+    cname = _norm(chapter)   # 2026-08-30: 章节参数同样归一化（此前只 strip, 括号/破折号变体永不与 toc 对齐）
     idx = -1
     hit_title = ""
     matched = False   # 2026-08-14: 未匹配章节时不再静默跳第 0 章, 前端据此不渲染跳转
@@ -152,19 +137,46 @@ async def api_cite(book: str = "", chapter: str = ""):
     for pos, t in enumerate(toc):
         if isinstance(t, dict) and t.get("type") == "part":
             title = t.get("title")
-            if title and cname and (cname in title or title in cname or (base and base in title)) and part_fb < 0:
+            t_norm = _norm(title)
+            if title and cname and (cname in t_norm or t_norm in cname or (base and base in t_norm)) and part_fb < 0:
                 for t2 in toc[pos + 1:]:
                     if not (isinstance(t2, dict) and t2.get("type") == "part"):
                         part_fb = t2.get("index", 0) if isinstance(t2, dict) else toc.index(t2)
                         break
             continue  # 编/卷分组标题不可索引（无块文件）
         title = t.get("title") if isinstance(t, dict) else t
-        if cname and (cname in title or title in cname or (base and base in title)):
+        t_norm = _norm(title)
+        # 2026-08-30: 目录标题同样归一化（书库 toc 存全角破折号"第108—275节",
+        # 语料引用为"—"变体/半角混杂, 只归一化 cname 不归一化 title 则永不相等）
+        # 节数区间: 格言体著作 toc 无逐节条目, 引用【·125】落在"第108-275节"块内即命中
+        # （注意 toc 脏数据: 破折号有"-"/"—"/汉字"一"三种写法, 区间正则一并覆盖）
+        m_rng = re.search(r"第\s*(\d{1,4})\s*[-—–‐－一]\s*(\d{1,4})\s*节", str(title) or "")
+        if (not matched and m_rng and re.fullmatch(r"\d{1,4}", cname)
+                and int(m_rng.group(1)) <= int(cname) <= int(m_rng.group(2))):
+            idx = t.get("index", 0) if isinstance(t, dict) else toc.index(t)
+            hit_title = title
+            matched = True
+            break
+        if cname and (cname in t_norm or t_norm in cname or (base and base in t_norm)):
             # 层级 toc: 块 index 是条目自带 index（数组位置 ≠ 块序号, part 占位会错位）
             idx = t.get("index", 0) if isinstance(t, dict) else toc.index(t)
             hit_title = title
             matched = True
             break
+    if idx < 0 and cname:
+        # 2026-08-31: 合并块兜底——部分书 toc 粒度细于块文件（多目录条目共用一块）,
+        # 证据章节名是块标题（如"第一部分 希腊哲学"）, toc 无同名条目 → 反查块标题定位
+        try:
+            from routes.agent_core import block_titles
+            for n, bt in block_titles(hit["id"]).items():
+                btn = _norm(bt)
+                if btn and (btn in cname or cname in btn):
+                    idx = n
+                    hit_title = bt
+                    matched = True
+                    break
+        except Exception:
+            pass
     if idx < 0 and part_fb >= 0:
         idx = part_fb
         hit_title = f"{cname}（首章）"
@@ -190,11 +202,3 @@ async def api_drawio(req: dict):
     if not xml:
         return {"error": "无法转换为 draw.io 格式"}
     return {"xml": xml}
-
-# ═══════════════════════════════════════════════════════
-# 工具清单程序化生成（2026-08-14: 消除手写清单漂移——曾"23 个" vs 注册表 30 个）
-# ═══════════════════════════════════════════════════════
-_SYS_TOOL_LIST = "\n".join(f"- {n}: {TOOLS[n]['description'][:90]}" for n in TOOLS)
-SYSTEM_PROMPT = SYSTEM_PROMPT.replace(
-    "## 可用工具\n（工具清单由 TOOLS 注册表在模块加载时自动生成, 见文件末尾——不再手写, 防清单漂移）",
-    f"## 可用工具（{len(TOOLS)} 个）\n{_SYS_TOOL_LIST}\n- 读操作工具无副作用，可放心调用。")

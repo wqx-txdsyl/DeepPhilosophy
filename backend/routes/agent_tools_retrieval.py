@@ -8,24 +8,84 @@ list_books / get_school / concept_trace / websearch / query_database（10 个）
 import json, os, re, time, urllib.request, threading
 
 from routes.agent_core import (
-    TOOLS, register_tool, _int_arg,
+    TOOLS, register_tool, _int_arg, _str_arg,
     get_books, get_network, get_philosophers, book_by_id, chapter_meta, read_chapter,
     _book_chapter_texts, _load_vectors,
     PUBLIC, SCHOOLS_DIR,
 )
 
+# ── O6-Q1 §5: canonical 引用标签——由结果字段机械派生, 模型无需逆向 validator
+# 的标注语法（无任何"应引用这个"类语义文案）。章节缺失时只给书级标签, 不发明位置。
+def _cite_label(book_title, chapter_title):
+    bt = (book_title or "").strip()
+    ct = (chapter_title or "").strip()
+    if not bt:
+        return ""
+    return f"【《{bt}》·{ct}】" if ct else f"【《{bt}》】"
+
+
+# ── O7-B §14-17: 书目元数据 additive 暴露（work/edition/digital_source 三分离）──
+# 数据源 = backend/data/book_bibliography.json（dp_biblio_build.py 产出, 仅 pilot 书）。
+# 模型可见精简视图（verified/source_type/granularity）; 完整 provenance 留在数据层。
+# 缺失字段保持 null——不生成「未知出版社/第?页」类占位文本（§16）。
+_BIBLIO_PATH = os.path.join(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))), "data", "book_bibliography.json")
+_biblio_cache = None
+
+def _load_biblio():
+    global _biblio_cache
+    if _biblio_cache is None:
+        try:
+            with open(_BIBLIO_PATH, encoding="utf-8") as f:
+                _biblio_cache = json.load(f).get("books", {})
+        except FileNotFoundError:
+            _biblio_cache = {}
+    return _biblio_cache
+
+def _biblio_payload(bid):
+    """pilot 书 → 模型可见书目元数据（additive）; 非 pilot 书 → None（零改动）。
+
+    O7-B RP1 §15: 冲突字段模型可见值 = null（不把竞争候选猜一个给模型）;
+    production 字段层已保证 CONFLICT_UNRESOLVED → null。"""
+    rec = _load_biblio().get(bid)
+    if not rec:
+        return None
+    ed, wk = rec.get("edition", {}), rec.get("work", {})
+    return {
+        "work": {"author": wk.get("author"),
+                 "canonical_title": wk.get("canonical_title"),
+                 "original_title": wk.get("original_title"),
+                 "original_language": wk.get("original_language")},
+        "edition": {"translator": ed.get("translator"),       # null = 未验证/冲突/未收录
+                    "publisher": ed.get("publisher"),
+                    "publication_year": ed.get("publication_year"),
+                    "isbn": ed.get("isbn"),
+                    "edition_identity": ed.get("edition_identity")},
+        "citation_capability": rec.get("citation_capability"),
+        "metadata_status": {
+            "source_type": "embedded_front_matter",   # 数据层 Tier1（版权页/扉页内嵌于数字源）
+            "verified_fields": [k for k, v in rec.get("field_provenance", {}).items()
+                                if v.get("verified") and not v.get("conflict")],
+            "conflict_fields": [k for k, v in rec.get("field_provenance", {}).items()
+                                if v.get("conflict")],
+            "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"},
+    }
+
+
 # ── 工具 1: search_books（书级过滤 + 章级关键词扫描）──
 def _match_score(text, terms):
-    """简单关键词评分: 命中数 + 位置权重"""
+    """简单关键词评分: 命中数 + 位置权重（大小写不敏感: 文本与词统一小写比较）"""
     score = 0
     low = text.lower()
     for t in terms:
-        c = low.count(t)
+        c = low.count(t.lower())
         score += c * 2 if c else 0
     return score
 
 def _exec_search_books(args):
-    query = args.get("query", "")
+    query = _str_arg(args, "query")
+    if not query:
+        return {"error": "缺少检索词 query"}
     limit = _int_arg(args, "limit", 5, 1, 10)
     # 向量优先（索引就绪时）; 经 routes.agent 门面运行时取回 _embed_query——
     # 保持拆分前的 monkeypatch 契约（tests/test_agent.py 以 agent._embed_query 强制走关键词兜底路径）
@@ -52,10 +112,14 @@ def _exec_search_books(args):
                         continue
                     b = book_by_id(it["bid"])
                     text = ch["text"]
+                    _bt = b.get("title") if b else it["bid"]
+                    _ct = ch.get("title", "")
                     results.append({
-                        "book_id": it["bid"], "book_title": b.get("title") if b else it["bid"],
+                        "book_id": it["bid"], "book_title": _bt,
                         "author": b.get("author", "") if b else "",
-                        "chapter_idx": it["idx"], "chapter_title": ch.get("title", ""),
+                        "chapter_idx": it["idx"], "chapter_title": _ct,
+                        # O6-Q1 §5: canonical 引用标签（机械派生, 见 _cite_label）
+                        "citation_label": _cite_label(_bt, _ct),
                         "snippet": text[:220].replace(chr(10), " "), "score": round(float(sims[ti]), 3),
                     })
                 if results:
@@ -64,11 +128,11 @@ def _exec_search_books(args):
     terms = [t for t in re.split(r"[\s,，。；;：:、]+", query) if len(t) >= 2]
     if not terms:
         return {"error": "查询词过短"}
-    # 1) 书级过滤（书名/作者/简介命中）
+    # 1) 书级过滤（书名/作者/简介/tags 命中; tags 是 books.json 通用元数据字段）
     books = get_books()
     hits = []
     for b in books:
-        hay = f"{b.get('title','')} {b.get('author','')} {b.get('summary','')}"
+        hay = f"{b.get('title','')} {b.get('author','')} {b.get('summary','')} {' '.join(b.get('tags') or [])}"
         s = _match_score(hay, terms)
         if s > 0:
             hits.append((s, b))
@@ -80,7 +144,9 @@ def _exec_search_books(args):
         for i, title, text in _book_chapter_texts(b["id"]):
             if not text:
                 continue
-            cs = _match_score(text[:2000] + title, terms)
+            # 章内正文/标题零命中时继承书级得分: 书级元数据（含 tags）命中的书,
+            # 其章节仍可召回（否则原典为外文的书对 CN/Latin 别名查询永远不出结果）
+            cs = _match_score(text[:2000] + title, terms) or s
             if cs > 0:
                 best.append((s + cs, i, b, title, text))
         best.sort(key=lambda x: -x[0])
@@ -100,6 +166,8 @@ def _exec_search_books(args):
         clean.append({
             "book_id": b["id"], "book_title": b.get("title"), "author": b.get("author"),
             "chapter_idx": i, "chapter_title": title,
+            # O6-Q1 §5: canonical 引用标签（机械派生自本条结果的 书名/章节 字段）
+            "citation_label": _cite_label(b.get("title"), title),
             "snippet": snippet, "score": score,
         })
     return {"results": clean[:limit * 3], "query": query, "method": "lexical",
@@ -107,51 +175,125 @@ def _exec_search_books(args):
 
 register_tool(
     "search_books",
-    "在 403 本哲学原著中全文检索（书名/作者/章节内容关键词命中）。用于回答哲学问题时找原文依据、引言、概念出处。",
+    "在 403 本哲学原著中全文检索（书名/作者/章节内容关键词命中）。用于回答哲学问题时找原文依据、引言、概念出处。"
+    "对于按格言号/节号/篇章编号组织的作品（如尼采《快乐的科学》、马基雅维利《君主论》），"
+    "若检索结果无法直接定位编号，可先查询作品详情/目录确认章节结构再读取。",
     {"type": "object", "properties": {"query": {"type": "string", "description": "检索关键词（哲学概念/人名/书名/句子片段）"}, "limit": {"type": "integer", "description": "返回结果数上限"}}, "required": ["query"]},
     _exec_search_books,
 )
 
 # ── 工具 2: get_book_detail ──────────────────────────
+def _book_name_candidates(name):
+    """书名/作者模糊解析 → 最佳匹配 book 或 None。
+    背景（2026-08-30）: 轻量模型（glm-4-flash）常无视"先搜后查"纪律, 直接把书名当
+    book_id 传入——工具层自愈解析, 不依赖模型自觉, 对所有供应商模型生效。
+    2026-09-01: "书名·篇名"变体回退（模型常传"论语·先进"式参数）——整体解析失败时
+    取 ·/（ 前的主书名部分重试一次。"""
+    name = (name or "").strip().strip("《》\"'“”　 ")
+    if len(name) < 2:
+        return []
+    def norm(s):
+        return re.sub(r'\s+','',s).replace('《','').replace('》','').replace('（','(').replace('）',')').casefold()
+    exact = [b for b in get_books() if norm(b.get('title','')) == norm(name)]
+    if exact:
+        return exact
+    authors = [b for b in get_books() if norm(name) in norm(b.get('author',''))]
+    if authors:
+        return authors
+    terms = [t for t in re.split(r"[\s,，。；;：:、]+", name) if len(t) >= 2] or [name]
+    hits = []
+    for b in get_books():
+        hay = f"{b.get('title', '')} {b.get('author', '')}"
+        s = _match_score(hay, terms)
+        if s > 0:
+            hits.append((s, b))
+    if not hits:
+        for sep in ("·", "（", "("):
+            if sep in name:
+                main = name.split(sep, 1)[0].strip()
+                if len(main) >= 2:
+                    alt = _book_name_candidates(main)
+                    if alt:
+                        return alt
+        return []
+    hits.sort(key=lambda x: -x[0])
+    return [b for score,b in hits if score == hits[0][0]]
+
+
+def _resolve_book_by_name(name):
+    candidates = _book_name_candidates(name)
+    return candidates[0] if len(candidates) == 1 else None
+
+
 def _exec_book_detail(args):
-    bid = args.get("book_id", "")
+    bid = _str_arg(args, "book_id")
     b = book_by_id(bid)
     if not b:
-        return {"error": f"未找到书籍 {bid}"}
+        alt = _resolve_book_by_name(bid)          # 书名宽容解析
+        if alt:
+            b, bid = alt, alt.get("id", bid)
+    if not b:
+        return {"error": f"未找到书籍 {bid}（提示: 先用 search_books 检索获取 book_id）"}
     meta = chapter_meta(bid)
-    return {"id": b.get("id"), "title": b.get("title"), "author": b.get("author"),
-            "region": b.get("region"), "file_type": b.get("file_type"),
-            "summary": b.get("summary", "")[:500], "rank": b.get("rank"),
-            "chapterCount": meta.get("chapterCount", 0) if meta else 0,
-            "toc": [t.get("title") if isinstance(t, dict) else t for t in (meta.get("toc") or [])][:30]}
+    out = {"id": b.get("id"), "title": b.get("title"), "author": b.get("author"),
+           "region": b.get("region"), "file_type": b.get("file_type"),
+           "summary": b.get("summary", "")[:500], "rank": b.get("rank"),
+           "chapterCount": meta.get("chapterCount", 0) if meta else 0,
+           "toc": [t.get("title") if isinstance(t, dict) else t for t in (meta.get("toc") or [])][:30]}
+    # O7-B: additive 书目元数据（pilot 书才有; 已有字段零改动）
+    bib = _biblio_payload(b.get("id", bid))
+    if bib:
+        out["bibliographic_metadata"] = bib
+    return out
 
 register_tool(
     "get_book_detail",
-    "获取一本书的详情（简介/作者/目录/章节数）。",
-    {"type": "object", "properties": {"book_id": {"type": "string"}}, "required": ["book_id"]},
+    "获取一本书的详情（简介/作者/目录/章节数）。对于按格言号/节号/篇章编号组织的作品（如尼采《快乐的科学》、"
+    "马基雅维利《君主论》），若检索结果无法直接定位编号，可先查询作品详情/目录确认章节结构再读取。",
+    {"type": "object", "properties": {"book_id": {"type": "string", "description": "书名或 search_books 返回的 book_id"}}, "required": ["book_id"]},
     _exec_book_detail,
 )
 
 # ── 工具 3: get_chapter ──────────────────────────────
 def _exec_chapter(args):
-    bid = args.get("book_id", "")
+    bid = _str_arg(args, "book_id")
     idx = _int_arg(args, "chapter_idx", 0, 0)
     ch = read_chapter(bid, idx)
     if not ch:
-        return {"error": f"章节不存在 {bid}/{idx}"}
-    return {"book_id": bid, "chapter_idx": idx, "title": ch["title"],
-            "text": ch["text"][:6000]}
+        alt = _resolve_book_by_name(bid)          # 书名宽容解析（同 get_book_detail）
+        if alt:
+            bid = alt.get("id", bid)
+            ch = read_chapter(bid, idx)
+    if not ch:
+        return {"error": f"章节不存在 {bid}/{idx}（提示: 先用 search_books 检索获取 book_id）"}
+    # O6-Q1 §5: canonical 引用标签——由读取结果的 书名/章节 机械派生
+    # （置于 text 之前, 防 ToolMessage 截断丢失; 无语义文案）
+    _b = book_by_id(bid) or {}
+    _bt = _b.get("title") or bid
+    out = {"book_id": bid, "chapter_idx": idx, "title": ch["title"],
+           "book_title": _bt,
+           "citation_label": _cite_label(_bt, ch["title"]),
+           "text": ch["text"][:6000]}
+    # O7-B: additive 书目元数据可见性（pilot 书; §16 缺失=null 不占位）
+    bib = _biblio_payload(bid)
+    if bib:
+        out["bibliographic_metadata"] = bib
+    return out
 
 register_tool(
     "get_chapter",
-    "读取某本书指定章节的全文（用于深入引用原文、分析论证）。",
-    {"type": "object", "properties": {"book_id": {"type": "string"}, "chapter_idx": {"type": "integer"}}, "required": ["book_id", "chapter_idx"]},
+    "读取某本书指定章节的全文（用于深入引用原文、分析论证）。出处/原话核验的必经步骤: "
+    "search_books 只提供片段定位线索, 确认出处、措辞与上下文必须读取对应章节原文——"
+    "检索命中候选后应读取该章再下结论, 不得仅凭检索片段或记忆给出原文引用。",
+    {"type": "object", "properties": {"book_id": {"type": "string", "description": "书名或 search_books 返回的 book_id"}, "chapter_idx": {"type": "integer"}}, "required": ["book_id", "chapter_idx"]},
     _exec_chapter,
 )
 
 # ── 工具 4: query_graph（哲学家星丛/师承/论敌/影响）──
 def _exec_graph(args):
-    name = args.get("philosopher", "").strip()
+    name = _str_arg(args, "philosopher")
+    if not name:
+        return {"error": "缺少哲学家名", "hint": "可尝试: 尼采/康德/海德格尔/柏拉图"}
     net = get_network()
     # 图谱格式: {哲学家名: {rank, region, connections: [{name, type, note}]}}
     target_key = None
@@ -178,7 +320,9 @@ register_tool(
 
 # ── 工具 5: get_philosopher（生平/流派/时期）─────────
 def _exec_philosopher(args):
-    name = args.get("name", "").strip()
+    name = _str_arg(args, "name")
+    if not name:
+        return {"error": "缺少哲学家名"}
     phils = get_philosophers()
     entries = phils if isinstance(phils, list) else list(phils.values())
     for p in entries:
@@ -191,16 +335,16 @@ def _exec_philosopher(args):
 
 register_tool(
     "get_philosopher",
-    "获取哲学家生平资料（时期/流派/代表作/简介）。",
+    "获取哲学家生平资料（时期/流派/代表作/简介）。回答涉及时期/流派归属/代表作等事实资料时先查本工具核对, 避免凭记忆给出可能失准的资料。",
     {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]},
     _exec_philosopher,
 )
 
 # ── 工具 6: list_books（书单筛选）────────────────────
 def _exec_list_books(args):
-    author = args.get("author", "")
-    region = args.get("region", "")
-    school = args.get("school", "")
+    author = _str_arg(args, "author")
+    region = _str_arg(args, "region")
+    school = _str_arg(args, "school")
     out = []
     for b in get_books():
         if author and author not in b.get("author", ""):
@@ -213,31 +357,48 @@ def _exec_list_books(args):
                     "region": b.get("region"), "rank": b.get("rank"),
                     "summary": (b.get("summary") or "")[:150]})
     out.sort(key=lambda x: -(x.get("rank") or 0))
-    return {"books": out[:20], "total": len(out)}
+    offset = _int_arg(args, 'offset', 0, 0)
+    limit = _int_arg(args, 'limit', 20, 1, 40)
+    end = min(offset + limit, len(out))
+    return {"books": out[offset:end], "total": len(out), 'offset':offset,
+            'has_more':end < len(out),'next_offset':end if end < len(out) else None}
 
 register_tool(
     "list_books",
     "按作者/地区/流派筛选书籍列表（用于推荐阅读、书目检索）。",
-    {"type": "object", "properties": {"author": {"type": "string"}, "region": {"type": "string"}, "school": {"type": "string"}}, "required": []},
+    {"type": "object", "properties": {"author": {"type": "string"}, "region": {"type": "string"}, "school": {"type": "string"},
+       'offset':{'type':'integer','description':'分页起点，使用next_offset'},'limit':{'type':'integer','description':'每页1至40本，默认20本'}}, "required": []},
     _exec_list_books,
 )
 
 # ── 工具 9: get_school（哲学流派/谱系详情）──
 def _exec_school(args):
-    name = args.get("name", "").strip()
+    name = _str_arg(args, "name")
+    if not name:
+        return {"error": "缺少流派名", "hint": "可尝试: 存在主义/儒家/分析哲学/现象学/斯多葛"}
     if not SCHOOLS_DIR.exists():
         return {"error": "流派数据不存在"}
     files = os.listdir(SCHOOLS_DIR)
     hit = None
+    candidates = []
+    def school_key(value):
+        return re.sub(r"(?:学派|主义)$", "", (value or "").strip())
     for f in files:
         if f.endswith(".json"):
             try:
                 d = json.load(open(SCHOOLS_DIR / f, encoding="utf-8"))
-                if name in d.get("name", "") or d.get("name", "") in name:
+                title = d.get("name") or ""
+                if title == name:
                     hit = d
                     break
+                if title and (name in title or title in name or school_key(title) == school_key(name)):
+                    candidates.append(d)
             except Exception:
                 continue
+    if not hit and len(candidates) == 1:
+        hit = candidates[0]
+    if not hit and len(candidates) > 1:
+        return {"error": "流派名称不唯一", "candidates": [d['name'] for d in candidates]}
     if not hit:
         return {"error": f"未找到流派: {name}", "hint": "可尝试: 存在主义/儒家/分析哲学/现象学/斯多葛"}
     return {"name": hit.get("name"), "region": hit.get("region", ""),
@@ -255,7 +416,7 @@ register_tool(
 
 # ── 工具: concept_trace（概念溯源——403 本书中的出现分布与演变）──
 def _exec_concept_trace(args):
-    concept = args.get("concept", "").strip()
+    concept = _str_arg(args, "concept")
     if not concept:
         return {"error": "缺少概念"}
     result = TOOLS["search_books"]["execute"]({"query": concept, "limit": 15})
@@ -285,25 +446,25 @@ register_tool("concept_trace",
     {"type": "object", "properties": {"concept": {"type": "string", "description": "哲学概念（如: 自由意志/存在/权力意志）"}}, "required": ["concept"]},
     _exec_concept_trace)
 
-# ── 工具 17: websearch（Wikipedia 中文——免费无需 key, 上网补充）──
+# ── 工具 17: websearch（DeepSeek 原生搜索 + 网页/百科兜底）──
 def _exec_websearch(args):
-    """联网搜索: Bing 优先（中文结果+真实链接, 国内可达）→ 英文维基 → 中文维基
-    2026-08-14: 加 TTL 缓存（同 query 10 分钟内不重复联网, 防 Bing 反爬/重复抓取）"""
-    query = args.get("query", "")
+    """原生搜索优先；只缓存无来源错误的命中，缓存时明确标注。"""
+    query = _str_arg(args, "query")
     if not query:
         return {"error": "缺少查询词"}
-    qkey = query.strip()[:80]
+    qkey = query.strip()
     now = time.time()
     with _web_cache_lock:
         hit = _web_cache.get(qkey)
         if hit and now - hit[0] < _WEB_TTL:
-            return hit[1]
+            return {**hit[1], "cached": True}
     result = _websearch_inner(query)
     with _web_cache_lock:
         if len(_web_cache) > 200:   # 防无限增长
             for k in list(_web_cache.keys())[:100]:
                 _web_cache.pop(k, None)
-        _web_cache[qkey] = (time.time(), result)
+        if result.get("results") and not result.get("provider_errors"):
+            _web_cache[qkey] = (time.time(), result)
     return result
 
 _web_cache = {}
@@ -311,69 +472,12 @@ _web_cache_lock = threading.Lock()
 _WEB_TTL = 600   # 10 分钟
 
 def _websearch_inner(query):
-    import urllib.parse
-    import re as _re
-    import html as _html
-
-    def _clean(s):
-        return _html.unescape(_re.sub(r"<[^>]+>", "", s or "")).strip()
-
-    # ① Bing 网页搜索（b_algo 结果块解析）
-    try:
-        q = urllib.parse.quote(query)
-        req = urllib.request.Request(f"https://cn.bing.com/search?q={q}", headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Accept-Language": "zh-CN,zh;q=0.9"})
-        with urllib.request.urlopen(req, timeout=15) as r:
-            html_content = r.read().decode("utf-8", errors="ignore")
-        out = []
-        for b in _re.findall(r'<li class="b_algo".*?</li>', html_content, _re.DOTALL)[:5]:
-            m = _re.search(r'<a[^>]+href="([^"]+)"[^>]*>(.*?)</a>', b, _re.DOTALL)
-            if not m:
-                continue
-            url = m.group(1)
-            title = _clean(m.group(2))
-            p = _re.search(r'<p[^>]*>(.*?)</p>', b, _re.DOTALL)
-            snippet = _clean(p.group(1))[:500] if p else ""
-            if title and url.startswith("http"):
-                out.append({"title": title, "snippet": snippet, "url": url})
-        if out:
-            return {"results": out, "query": query, "source": "bing"}
-    except Exception:
-        pass
-    # ② 英文维基百科（API, 结构化）
-    try:
-        url = ("https://en.wikipedia.org/w/api.php?action=query&list=search"
-               f"&srsearch={urllib.parse.quote(query)}&format=json&srlimit=4")
-        with urllib.request.urlopen(url, timeout=12) as r:
-            d = json.loads(r.read().decode())
-        titles = [it["title"] for it in d.get("query", {}).get("search", [])]
-        if titles:
-            out = [{"title": t, "snippet": "",
-                    "url": f"https://en.wikipedia.org/wiki/{urllib.parse.quote(t.replace(' ', '_'))}"}
-                   for t in titles[:4]]
-            return {"results": out, "query": query, "source": "en.wikipedia.org"}
-    except Exception:
-        pass
-    # ③ 中文维基百科（API）
-    try:
-        url = ("https://zh.wikipedia.org/w/api.php?action=query&list=search"
-               f"&srsearch={urllib.parse.quote(query)}&format=json&srlimit=3")
-        with urllib.request.urlopen(url, timeout=12) as r:
-            d = json.loads(r.read().decode())
-        titles = [it["title"] for it in d.get("query", {}).get("search", [])]
-        if titles:
-            out = [{"title": t, "snippet": "",
-                    "url": f"https://zh.wikipedia.org/wiki/{urllib.parse.quote(t)}"}
-                   for t in titles[:3]]
-            return {"results": out, "query": query, "source": "zh.wikipedia.org"}
-    except Exception:
-        pass
-    return {"results": [], "query": query, "note": "联网无结果（Bing 与维基百科均不可达）"}
+    from deep_web_search import search
+    return search(query)
 
 register_tool(
     "websearch",
-    "上网搜索（维基百科中文, 含摘要）。用于补充原典库之外的信息: 外部标准/政策/最新研究/现代评论/词条解释。",
+    "上网搜索（DeepSeek 原生搜索优先，网页/百科兜底；返回来源链接和摘录，不等于已读取网页全文）。用于补充原典库之外的信息: 外部标准/政策/最新研究/现代评论/词条解释。",
     {"type": "object", "properties": {"query": {"type": "string", "description": "搜索词"}}, "required": ["query"]},
     _exec_websearch,
 )
@@ -425,3 +529,152 @@ register_tool(
     {"type": "object", "properties": {"table": {"type": "string", "enum": ["books", "philosophers", "network", "schools"]}, "key": {"type": "string"}, "limit": {"type": "integer"}}, "required": ["table"]},
     _exec_query_db,
 )
+
+
+# ═══════════════════════════════════════════════════════
+# Phase T.1 (T1.1-B): 全库逐字定位（出处核验 search→read 升级的确定性原语）
+#   - 不改 search_books 的向量/排序路径（DO NOT TOUCH: embedding/ranking 原样）
+#   - 只服务于出处核验: 定位候选篇章 → get_chapter 读取原文 → 逐字核验
+#   - 词法精确匹配（norm 连续包含）, 命中即真; 原典经典优先于研究汇编
+# ═══════════════════════════════════════════════════════
+_LOCATE_NORM_RE = re.compile(r"[^\w\u4e00-\u9fff]+")
+# 经典原典书名（同为逐字命中时排序加权——「论语」应排在「南怀瑾经典合集」前面）
+_CANONICAL_TITLES = {
+    "论语", "孟子", "大学", "中庸", "老子", "道德经", "庄子", "周易", "易经",
+    "诗经", "尚书", "礼记", "春秋", "左传", "荀子", "墨子", "韩非子", "管子",
+    "理想国", "会饮篇", "斐多", "形而上学", "尼各马可伦理学", "忏悔录",
+}
+# 研究/汇编/合集体裁（命中优先级降低——它们只是转述或引用原典）
+_LOCATE_PENALTY_RE = re.compile(
+    r"合集|全集|套装|大全集|著作集|文集|文选|辞典|词典|简史|史|讲|课|教程|答案|"
+    r"底层逻辑|进化论|导论|入门|读本|选读|漫话|图解|一本就懂|极简")
+
+_locate_norm_cache = {}      # bid -> [(idx, ntext)]
+_locate_cache_built = set()
+_locate_lock = threading.Lock()
+
+
+def _locate_norm(s):
+    return _LOCATE_NORM_RE.sub("", s or "")
+
+
+def _canon_score(book_title):
+    t = (book_title or "").strip()
+    score = 0
+    if 0 < len(t) <= 6:
+        score += 3
+    if t in _CANONICAL_TITLES:
+        score += 6
+    if _LOCATE_PENALTY_RE.search(t):
+        score -= 5
+    return score
+
+
+def _locate_passage(raw_text, term):
+    """命中章内提取可读原文片段（行=章段单位优先; 长段落按句界取窗口）"""
+    tn = _locate_norm(term)
+    best_line = ""
+    for ln in (raw_text or "").split("\n"):
+        s = ln.strip()
+        if not s:
+            continue
+        if term in s or (len(tn) >= 4 and tn in _locate_norm(s)):
+            best_line = s
+            break
+    if not best_line:
+        return ""
+    if len(best_line) <= 360:
+        return best_line
+    pos = best_line.find(term)
+    if pos < 0:
+        pos = max(0, len(best_line) // 4)
+    left = max(best_line.rfind("。", 0, pos), best_line.rfind("！", 0, pos),
+               best_line.rfind("？", 0, pos), best_line.rfind("；", 0, pos))
+    right = len(best_line)
+    for punct in ("。", "！", "？", "；"):
+        p = best_line.find(punct, pos + len(term) if pos >= 0 else 0)
+        if 0 < p < right:
+            right = p + 1
+    return best_line[max(0, left + 1 if left >= 0 else 0):right].strip()[:360]
+
+
+def locate_exact_phrase(term, prefer_title=None, max_hits=6):
+    """全库逐字定位（T1.1-B; 同步函数——调用方放线程池）
+
+    返回 {"term", "found", "prefer_found", "prefer_absent", "prefer_unreadable",
+          "hits": [{book_id, book_title, author, chapter_idx, chapter_title,
+                    passage, canonical}], "scanned_books"}
+    - 词法连续包含（norm 后）, 不经 embedding; 进程级缓存 norm 文本（首扫 ~9s, 后续 ~0.2s）
+    - prefer_title: 用户提到的《书》——优先在该书内定位; 明确不在时 prefer_absent=True
+      （R4 类"是不是《X》里的"纠错的事实依据）; 该书文本不可读时 prefer_unreadable=True
+    """
+    t = (term or "").strip()
+    tn = _locate_norm(t)
+    out = {"term": t, "found": False, "prefer_found": None, "prefer_absent": False,
+           "prefer_unreadable": False, "hits": [], "scanned_books": 0}
+    if len(tn) < 2:
+        return out
+    books = get_books()
+    by_title = {}
+    for b in books:
+        bt = (b.get("title") or "").replace("《", "").replace("》", "").strip()
+        if bt and bt not in by_title:
+            by_title[bt] = b
+    prefer_book = None
+    if prefer_title:
+        pref_key = prefer_title.replace("《", "").replace("》", "").strip()
+        prefer_book = by_title.get(pref_key) or by_title.get(_locate_norm(pref_key))
+        if prefer_book is None:
+            for bt, b in by_title.items():
+                if pref_key and (pref_key in bt or bt in pref_key):
+                    prefer_book = b
+                    break
+
+    def _scan_book(b):
+        bid = b.get("id")
+        if not bid:
+            return []
+        with _locate_lock:
+            if bid not in _locate_cache_built:
+                try:
+                    _locate_norm_cache[bid] = [
+                        (i, _locate_norm(text)) for i, _t, text in _book_chapter_texts(bid)]
+                except Exception:
+                    _locate_norm_cache[bid] = []
+                _locate_cache_built.add(bid)
+        norms = _locate_norm_cache.get(bid) or []
+        hits = []
+        for i, ntext in norms:
+            if ntext and tn in ntext:
+                # 命中才读原文（避免全库 raw 文本反复进出 LRU——实测 4s 抖动根因）
+                ch = read_chapter(bid, i) or {}
+                hits.append({"book_id": bid, "book_title": b.get("title") or "",
+                             "author": b.get("author") or "", "chapter_idx": i,
+                             "chapter_title": ch.get("title", ""),
+                             "passage": _locate_passage(ch.get("text", ""), t),
+                             "canonical": _canon_score(b.get("title"))})
+        return hits
+
+    hits = []
+    # ① 用户提到的书优先（明确在该书内找不到 → prefer_absent, 纠错依据）
+    if prefer_book is not None:
+        out["scanned_books"] += 1
+        ph = _scan_book(prefer_book)
+        total_text = sum(len(x) for _i, x in _locate_norm_cache.get(prefer_book.get("id"), []))
+        if total_text < 100:
+            out["prefer_unreadable"] = True
+        if ph:
+            out["prefer_found"] = prefer_book.get("title")
+            hits.extend(ph)
+        else:
+            out["prefer_absent"] = True
+    # ② 全库扫描（命中按原典经典度排序; 稳定次序）
+    for b in books:
+        if prefer_book is not None and b.get("id") == prefer_book.get("id"):
+            continue
+        out["scanned_books"] += 1
+        hits.extend(_scan_book(b))
+    hits.sort(key=lambda h: -h["canonical"])
+    out["hits"] = hits[:max_hits]
+    out["found"] = bool(out["hits"])
+    return out

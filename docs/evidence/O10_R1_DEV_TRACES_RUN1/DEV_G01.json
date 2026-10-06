@@ -1,0 +1,181 @@
+{
+ "case_id": "DEV_G01",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请介绍学界对「虚构悖论」（paradox of fiction：我们为何会为明知虚构的人物动情）的主要研究与代表论文，给出研究文献而不是百科式解释。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_rXLRVkn5Vsbtk5228WQp8669"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_ZyqPLNvES4dHOA0FDAeR3722"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_fTxnIToqtomaDNNo2l8r9360"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_JdyrZRsElfSMAAg61kXl5796",
+   "result_head": "{'query': 'Walton make-believe quasi-emotion fiction', 'results': [], 'READABLE_RESULT_COUNT': 0, 'READABLE_SOURCE_IDS': [], 'providers_queried': ['LOCAL_CURATE"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_P953R0HIX9l1lUN4aarS9710"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_6XHihXZqflmpyDVW6BQq1106"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_47QG1sEoIcCihm1G9wZs5200",
+   "result_head": "{'results': [], 'query': 'paradox of fiction Radford Walton emotional response fictional characters', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_ASCs9t393BcWf0BjtBsN8935"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_rnRanPALnIpGpTiqufE30785",
+   "result_head": "{'results': [{'book_id': '91bddbb32dce', 'book_title': '小说理论', 'author': '格奥尔格·卢卡奇', 'chapter_idx': 8, 'chapter_title': '第二部分\\u3000一、抽象的理想主义', 'citation_label':"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "虚构悖论（paradox of fiction / 我们对虚构人物的情感反应）的学界主要研究路线与代表文献的真实书目与内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "虚构悖论代表文献（Radford/Walton/Currie/Gendler 等）的真实书目存在性与可读内容证据——scholarly provider 阻塞，需网络通道补书目事实",
+    "gap_filled": false,
+    "budget_extension_reason": "首次检索因 crossref/openalex URL_BLOCKED 几乎零命中，证据缺口完全未补，需换通道重试",
+    "unresolved_evidence_gap": "虚构悖论主要研究路线对应的真实文献（作者/年份/刊名/主张）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2327,
+ "final_answer": "我先如实说明证据状态，再给研究图景——但必须把\"我记住了什么\"和\"我核验了什么\"严格分开。\n\n## 一、检索状态（先说清楚，避免误导）\n\n你要求的是\"研究文献而非百科式解释\"，这本来正该走二手文献通道。但本次会话中：\n\n- **文献数据库通道全部失效**：`search_scholarship` 对“paradox of fiction / Radford / Walton / make-believe”等多组关键词的检索，Crossref 与 OpenAlex 两个 provider 均返回 `URL_BLOCKED`，0 条可读记录；\n- **网络通道不可达**：`websearch` 报\"Bing 与维基百科均不可达\"，同样 0 结果；\n- **本地原典库**：以\"虚构/情感/文学\"检索，命中的是卢卡奇《小说理论》、叔本华论文学的美学、《S/Z》等，均与虚构悖论无关——本库是柏拉图到德里达的**原典**库，本就不收现代分析美学论文。\n\n所以我**无法**提供经本次检索核验的二手文献。下面第二部分是**我记忆中该领域的研究图景与书目线索**，按学术规范标记为「未核验」；作者、年份、刊名请以你所在机构的数据库（PhilPapers / JSTOR / 牛津分析美学书目）复核。我不会把记忆包装成已读文献，也不会给它挂原典引用标注。\n\n## 二、问题结构与主要研究路线（记忆书目，未核验）\n\n**标准定式**：虚构悖论通常被表述为三个各自合理、却彼此冲突的命题——\n1. 我们对虚构人物（安娜·卡列尼娜、恐怖片里的怪物）的命运产生了**真实**的情感反应；\n2. 我们**相信**这些人物并不存在；\n3. 只有对被认为真实存在（或至少我们相信其存在）的对象，才可能有真正的情感。\n\nRadford 由这组张力得出\"我们对虚构的情感是不一致的、非理性的\"这一结论。学界记忆中的**提出者**是 Colin Radford 1975 年的文章，标题通常作 *How Can We Be Moved by the Fate of Anna Karenina?*（一般载于 *Proceedings of the Aristotelian Society*, Supplementary Volume）。这一点我把握较高，但仍属未核验。\n\n**路线一：假装论 / 准情绪（make-believe）**\n代表是 **Kendall Walton**，1978 年 *Fearing Fictions*（我记忆中载 *Journal of Philosophy*）与 1990 年专著 *Mimesis as Make-Believe*（哈佛大学出版社）。核心主张：虚构欣赏是一场\"假装游戏\"，作品是生成虚构真理的\"道具\"；观众对虚构产生的不是真恐惧，而是\"在假装中恐惧\"——即 **quasi-emotion（准情绪）**。这条路线实质上**否定命题 1**。\n- 争议焦点：准情绪能否解释我们为虚构人物真实流泪、心跳加速的身体性反应。\n\n**路线二：真实情感论 / 情感对象论**\n主张情感是真的，但**对象不是那个不存在的人物**，而是\"被描述的处境/命题内容/虚构世界\"。记忆中相关的有 Noël Carroll、Peter Lamarque、Robert J. Yanal（其文题近似 *The Paradox of Emotion and Fiction*，记忆载 *Pacific Philosophical Quarterly*，1994）。此路保留命题 1、否认对\"虚构个体\"本身动情。\n\n**路线三：否认命题 3（情感不必然要求存在信念）**\n部分认知主义美学论者认为，情感反应并不需要关于对象存在的信念，因此\"悖论\"从根上不成立。记忆中涉及 Flint Schier *Deeper into Pictures*（1983）、Gregory Currie *The Nature of Fiction*（1990）等。\n\n**路线四：心理学/认知进路**\n最常被引用的是 **Tamar Gendler** 的\"alief（信念性直觉）\"概念（记忆中文题 *Alief and Belief*，一般载 *Journal of Philosophy*，2008），用以解释为何理性信念（\"这是假的\"）压不住自动化的情绪反应。另有发展心理学（如 Paul Bloom 关于儿童如何理解虚构）的实证支线。\n\n**路线五：元批评——\"悖论\"是否成其为悖论**\n一部分论者（记忆中如 Derek Matravers *Art and Emotion*、Berys Gaut、Matthew Kieran 等）质疑命题 1 的表述本身含混，\"悖论\"是被构造出来的。这条路线近年较受重视。\n\n## 三、可以怎样继续\n\n由于本会话无法给你可靠书目，最稳妥的下一步是：在 **PhilPapers** 的 \"Paradox of Fiction\" 主题页、或 *Stanford Encyclopedia of Philosophy* 的 \"Fiction\" 与 \"Emotion in Art\" 词条中先取权威二手综述，再顺 Radford → Walton → Carroll/Yanal → Gendler 这条主线核对原文。**待你联网后**，我可以帮你逐条核验上列文献的作者、年份、刊名与论证内容——那一步我绝不能凭记忆代劳。\n\n要不要我（在你网络恢复后）按\"假装论 vs 真实情感论\"这条最核心的争论线，逐篇读取并做正式的文献综述？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 1,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "虚构悖论代表文献（Radford/Walton/Currie/Gendler 等）的真实书目存在性与可读内容证据——scholarly provider 阻塞，需网络通道补书目事实",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:16:32",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "虚构悖论（paradox of fiction / 我们对虚构人物的情感反应）的学界主要研究路线与代表文献的真实书目与内容证据"
+   },
+   {
+    "ts": "2026-09-13 11:16:39",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "虚构悖论代表文献（Radford/Walton/Currie/Gendler 等）的真实书目存在性与可读内容证据——scholarly provider 阻塞，需网络通道补书目事实",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:16:39",
+    "reason": "首次检索因 crossref/openalex URL_BLOCKED 几乎零命中，证据缺口完全未补，需换通道重试",
+    "unresolved_gap": "虚构悖论主要研究路线对应的真实文献（作者/年份/刊名/主张）"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 8,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 58813,
+   "output_tokens": 4834,
+   "total_tokens": 63647
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 4387,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11624,
+     "output_tokens": 443,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13614,
+     "output_tokens": 1141,
+     "tool_chars_added": 4063
+    },
+    {
+     "round": 3,
+     "input_tokens": 14693,
+     "output_tokens": 623,
+     "tool_chars_added": 2380
+    },
+    {
+     "round": 4,
+     "input_tokens": 18882,
+     "output_tokens": 2627,
+     "tool_chars_added": 8000
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 58813,
+  "output_tokens": 4834,
+  "total_tokens": 63647
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 38.0
+}

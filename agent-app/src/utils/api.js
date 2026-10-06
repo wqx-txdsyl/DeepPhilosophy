@@ -19,3 +19,9 @@ export async function resolveCite(book, chapter = '') {
   const r = await fetch(`${getApiBase()}/api/cite?book=${encodeURIComponent(book)}&chapter=${encodeURIComponent(chapter || '')}`);
   return r.json();
 }
+
+export async function resolvePrimaryLink(book, chapter = '') {
+  const r = await fetch(`${getApiBase()}/api/primary-link?book=${encodeURIComponent(book)}&chapter=${encodeURIComponent(chapter)}`);
+  if (!r.ok) throw new Error('Source lookup failed');
+  return r.json();
+}

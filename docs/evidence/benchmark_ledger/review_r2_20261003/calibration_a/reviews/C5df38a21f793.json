@@ -1,0 +1,181 @@
+{
+  "id": "C5df38a21f793",
+  "ratings": {
+    "C1": 0,
+    "C2": 0,
+    "C3": 0,
+    "C4": 0,
+    "C5": 1,
+    "R1": 0,
+    "R2": 0,
+    "R3": 0
+  },
+  "reasons": {
+    "C1": {
+      "reason": "未按required_work对齐研究对象与指标；A001把不同构念（运动前思考时长/耐力 vs 颜色偏好/记忆）和不同效应类型（相关 vs 调节）当作同一比较对象，得出S2否定S1。",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "evidence": "S1；S2；required_work",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+      ]
+    },
+    "C2": {
+      "reason": "A001将“未达显著”直接等同于“否定/反方向”，并混淆相关与调节、不同变量，概念区分错误且该错误决定结论。",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "evidence": "S2原文：颜色偏好对记忆表现的调节效应未达显著",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+      ]
+    },
+    "C3": {
+      "reason": "从S2无显著效应不能推出S2否定S1；A001的桥接无效，且S1与S2指标不同，不能构成矛盾。",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "evidence": "S1；S2；required_work",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+      ]
+    },
+    "C4": {
+      "reason": "未处理最相关边界：非显著不等于反方向、不同样本/任务/指标不能只因正负字面相反就当互斥；也未考虑方法未给。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "required_work；S1；S2",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。",
+        "它们都有DOI，也不能告诉我们哪项正确。"
+      ]
+    },
+    "C5": {
+      "reason": "表达简短清楚，但没有满足“比较是否矛盾”所需的两个关键任务，反而给出相反结论，任务适配不足。",
+      "answer_unit_ids": [
+        "A001",
+        "A002"
+      ],
+      "evidence": "current_question；required_work",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。",
+        "它们都有DOI，也不能告诉我们哪项正确。"
+      ]
+    },
+    "R1": {
+      "reason": "在给定摘要范围内不忠实解释S2：S2仅报告调节效应未达显著，A001却解释为已经否定S1。",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "evidence": "S2",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+      ]
+    },
+    "R2": {
+      "reason": "给定材料不支持“两项互相矛盾/S2否定S1”这一步；A001虽提到字面结果，但材料贡献被错误使用。",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "evidence": "S1；S2",
+      "answer_spans": [
+        "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+      ]
+    },
+    "R3": {
+      "reason": "A002声称两项都有DOI，但给定来源未提供DOI或出版信息，超出可复核范围。",
+      "answer_unit_ids": [
+        "A002"
+      ],
+      "evidence": "S1；S2",
+      "answer_spans": [
+        "它们都有DOI，也不能告诉我们哪项正确。"
+      ]
+    }
+  },
+  "audit": {
+    "condition_changes": [
+      {
+        "unit_id": "A001",
+        "issue": "把S1与S2的不同研究对象、指标和效应类型当作同一可比较命题，并改写为S2否定S1"
+      }
+    ],
+    "unsupported_bridges": [
+      {
+        "unit_id": "A001",
+        "issue": "从S2调节效应未达显著跳到S2否定S1并断定两项矛盾",
+        "decisive": true
+      }
+    ],
+    "source_scope_issues": [
+      {
+        "unit_id": "A002",
+        "issue": "在仅给摘要/未给全文的条件下声称两项都有DOI，超出给定来源"
+      },
+      {
+        "unit_id": "A001",
+        "issue": "仅凭摘要结果断言两项互相矛盾并断定S2否定S1，超出材料范围"
+      }
+    ]
+  },
+  "errors": [
+    {
+      "code": "E2",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "reference_or_condition": "required_work：对齐研究对象与指标；S1为运动前思考时长与耐力，S2为颜色偏好对记忆表现的调节",
+      "reason": "把不同研究对象和指标的摘要强行当作同一命题来比较，改变决定性比较对象，决定主结论。",
+      "answer_span": "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+    },
+    {
+      "code": "E3",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A001"
+      ],
+      "reference_or_condition": "S2：调节效应未达显著；required_work：不把非显著当反方向",
+      "reason": "将“未达显著”偷换为“否定/反方向”，从S2不能推出否定S1。",
+      "answer_span": "两项互相矛盾：S1发现负相关，S2发现不显著，因此S2已经否定了S1。"
+    },
+    {
+      "code": "E4",
+      "status": "confirmed",
+      "answer_unit_ids": [
+        "A002"
+      ],
+      "reference_or_condition": "给定来源S1、S2均未提供DOI或出版信息",
+      "reason": "声称两项都有DOI，捏造给定材料未提供的元数据。",
+      "answer_span": "它们都有DOI，也不能告诉我们哪项正确。"
+    }
+  ],
+  "strength": "文字简洁，并复述了S1负相关、S2未达显著的表面结果。",
+  "limits": [
+    "无法核验DOI、p值、效应量、方法及指标可比性；给定材料仅摘要或未提供全文。"
+  ],
+  "family": "R",
+  "attempt": 1,
+  "packet_sha256": "db643a0f291a0d60057bde7823d506da270896cfc263f8647d4ddca26071a1d1",
+  "response_file": "docs/evidence/benchmark_ledger/review_r2_20261003/calibration_a/responses/C5df38a21f793-a1.json",
+  "response_sha256": "52711f979591d8e12cb3f7eceaa5cafc6278f361349d552bcac8b7393d5ceb56",
+  "model_returned": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "usage": {
+    "prompt_tokens": 2449,
+    "completion_tokens": 3991,
+    "total_tokens": 6440,
+    "prompt_tokens_details": {
+      "cached_tokens": 1920
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 3038
+    },
+    "prompt_cache_hit_tokens": 1920,
+    "prompt_cache_miss_tokens": 529
+  },
+  "protocol_normalization": "v2_uniform_structural_validation"
+}
