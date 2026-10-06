@@ -431,6 +431,12 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
           ctx.globalAlpha = 1;
         }
       }
+      // 固定提示卡跟随选中星
+      if (selected && tipRef.current) {
+        const [sx, sy] = toScreen(selected.fx, selected.fy);
+        tipRef.current.style.left = Math.min(Math.max(sx + 14, 8), W - 248) + 'px';
+        tipRef.current.style.top = Math.max(8, sy - 14) + 'px';
+      }
       if (!reduced) raf = requestAnimationFrame(draw);
     }
     let raf = requestAnimationFrame(draw);
@@ -443,6 +449,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     function onMove(e) {
       if (!activeRef.current) return;
       lastActiveRef.current = performance.now();
+      if (selected) { canvas.style.cursor = 'pointer'; return; } // 提示卡已钉在选中星上
       if (dragging && lastP) {
         const dx = e.clientX - lastP.x, dy = e.clientY - lastP.y;
         moved += Math.abs(dx) + Math.abs(dy);
@@ -458,27 +465,30 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
       if (hit !== hovered) {
         hovered = hit;
         canvas.style.cursor = hit ? 'pointer' : 'default';
-        if (hit && tipRef.current) {
-          const meta = hit.t === 'philosopher' ? [hit.region, (hit.school || '').split(/[、，,;/]+/)[0]].filter(Boolean).join(' · ')
-            : hit.t === 'school' ? `${hit.nq} 金句 · ${hit.nc} 辞海`
-            : hit.t === 'sub' ? `属于「${hit.parent}」`
-            : hit.t === 'quote' ? (hit.author ? `—— ${hit.author}` : '')
-            : hit.sub || '';
-          const title = hit.t === 'quote' && hit.name.length > 42 ? hit.name.slice(0, 42) + '……' : hit.name;
-          tipRef.current.innerHTML = `<em>${TYPE_LABEL[hit.t]}</em><strong>${title}</strong>${meta ? `<span>${meta}</span>` : ''}<i>${hit.t === 'quote' ? '点击查看出处' : hit.t === 'cihai' ? '点击查看辞条' : '点击点亮'}</i>`;
-          tipRef.current.style.opacity = '1';
-        } else if (tipRef.current) tipRef.current.style.opacity = '0';
+        if (hit) setTip(hit); else if (tipRef.current) tipRef.current.style.opacity = '0';
       }
-      if (tipRef.current && hovered) {
-        tipRef.current.style.left = Math.min(mx + 16, W - 240) + 'px';
+      if (tipRef.current && hovered && !selected) {
+        tipRef.current.style.left = Math.min(mx + 16, W - 248) + 'px';
         tipRef.current.style.top = Math.max(10, my - 14) + 'px';
       }
+    }
+
+    function setTip(hit) {
+      if (!tipRef.current) return;
+      const meta = hit.t === 'philosopher' ? [hit.region, (hit.school || '').split(/[、，,;/]+/)[0]].filter(Boolean).join(' · ')
+        : hit.t === 'school' ? `${hit.nq} 金句 · ${hit.nc} 辞海`
+        : hit.t === 'sub' ? `属于「${hit.parent}」`
+        : hit.t === 'quote' ? (hit.author ? `—— ${hit.author}` : '')
+        : hit.sub || '';
+      const title = hit.t === 'quote' && hit.name.length > 42 ? hit.name.slice(0, 42) + '……' : hit.name;
+      tipRef.current.innerHTML = `<em>${TYPE_LABEL[hit.t]}</em><strong>${title}</strong>${meta ? `<span>${meta}</span>` : ''}<i>${hit.t === 'quote' ? '点击查看出处' : hit.t === 'cihai' ? '点击查看辞条' : '点击点亮'}</i>`;
+      tipRef.current.style.opacity = '1';
     }
     function onUp() { dragging = false; canvas.style.cursor = hovered ? 'pointer' : 'default'; }
     function onLeave() {
       dragging = false; hovered = null;
       canvas.style.cursor = 'default';
-      if (tipRef.current) tipRef.current.style.opacity = '0';
+      if (!selected && tipRef.current) tipRef.current.style.opacity = '0';
     }
     function onWheel(e) {
       if (!activeRef.current) return;
@@ -500,6 +510,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
       const hit = findHover(e.clientX - r.left, e.clientY - r.top);
       if (!hit) { // 点中选中星系之外的任何地方 → 取消选中，恢复全亮（拖动除外）
         selected = null; litPairs = []; litMap = new Map();
+        if (tipRef.current) tipRef.current.style.opacity = '0';
         return;
       }
       if (hit === selected) { // 二次点击同一颗 → 跳转
@@ -513,10 +524,11 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         selected = null;
         return;
       }
-      // 首次点击：点亮关系链
+      // 首次点击：点亮关系链，提示卡固定在这颗星上
       selected = hit;
       const { pairs, lit } = adjacency(hit);
       litPairs = pairs; litMap = lit; litAt = performance.now();
+      setTip(hit);
     }
     canvas.addEventListener('pointerdown', onDown);
     canvas.addEventListener('pointermove', onMove);
