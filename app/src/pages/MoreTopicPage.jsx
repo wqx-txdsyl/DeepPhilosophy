@@ -48,7 +48,7 @@ function ChristianityHub({ data }) {
             {data.branches.map(br => (
               <button key={br.id} type="button" className="mtd-branch-card"
                 onClick={() => navigate(`/more/religion/${br.id}`)}>
-                <img src={br.hero} alt="" className="mtd-branch-hero" loading="lazy" />
+                <img src={br.hero} alt="" loading="lazy" style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block' }} />
                 <h3>{br.name}</h3>
                 <small>{br.en}</small>
                 <p>{br.desc}</p>
