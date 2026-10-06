@@ -312,7 +312,8 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     // ---- 画布 ----
     let W = 0, H = 0, dpr = 1;
     const resize = () => {
-      dpr = Math.min(2, window.devicePixelRatio || 1);
+      // 高分屏（4K/dpr2）下 8100 星点全帧重绘会掉帧：dpr 上限 1.5，光晕精灵几乎无损
+      dpr = Math.min(1.5, window.devicePixelRatio || 1);
       W = wrap.clientWidth; H = wrap.clientHeight;
       canvas.width = W * dpr; canvas.height = H * dpr;
       canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
@@ -416,9 +417,12 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         const litBoost = selected && (isSel || litMap.has(n)) ? 1.3 : 1;
         const size = n.fr * (isHover || isSel ? 5 : n.soft ? 4 : 3.6) * (0.55 + 0.45 * Math.min(3.2, z)) * (0.6 + 0.4 * dim) * 1.15 * litBoost;
 
-        ctx.globalAlpha = Math.max(0.03, Math.min(1, alpha)) * dim;
-        ctx.drawImage(sprite(n.rgb, n.fr, n.soft), sx - size / 2, sy - size / 2, size, size);
-        ctx.globalAlpha = 1;
+        const fa = Math.max(0.03, Math.min(1, alpha)) * dim;
+        if (fa >= 0.045) { // 透明度过低的星跳过绘制（高分屏性能）
+          ctx.globalAlpha = fa;
+          ctx.drawImage(sprite(n.rgb, n.fr, n.soft), sx - size / 2, sy - size / 2, size, size);
+          ctx.globalAlpha = 1;
+        }
       }
       if (!reduced) raf = requestAnimationFrame(draw);
     }

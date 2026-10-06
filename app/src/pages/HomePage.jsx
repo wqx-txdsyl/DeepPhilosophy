@@ -132,8 +132,8 @@ function HomePage() {
       }
     }
 
-    // 3) 飞行动画：短暂颤动 → 弧线飞向星位 → 缩小没入星图
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    // 3) 飞行动画：短暂颤动 → 弧线飞向星位 → 缩小没入星图（dpr 上限 1.5 保帧率）
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
     canvas.width = W * dpr; canvas.height = H * dpr;
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
