@@ -455,7 +455,11 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         lastP = { x: e.clientX, y: e.clientY };
         cam.cx -= dx / (W * cam.zoom); cam.cy -= dy / (H * cam.zoom);
         clampCam();
-        if (moved > 5) { hovered = null; if (tipRef.current) tipRef.current.style.opacity = '0'; canvas.style.cursor = 'grabbing'; }
+        if (moved > 5) {
+          hovered = null;
+          if (!selected && tipRef.current) tipRef.current.style.opacity = '0'; // 选中期间固定卡保持
+          canvas.style.cursor = 'grabbing';
+        }
         return;
       }
       if (selected) { canvas.style.cursor = 'default'; return; } // 选中期间提示卡固定，无悬停
