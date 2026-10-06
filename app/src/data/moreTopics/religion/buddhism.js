@@ -8,7 +8,7 @@ export const buddhism = {
   name: '佛教',
   en: 'Buddhism',
   subtitle: '从释迦牟尼的觉悟到五大洲的正念运动——一条以"离苦"为起点、以"觉悟"为终点的修行之道，两千五百年间长成了全球性文明体系。',
-  heroImage: null,
+  heroImage: '/more/buddhism-hero.webp',
   heroQuote: '诸行无常，诸法无我，涅槃寂静。',
   heroQuoteSource: '三法印',
   meta: [
