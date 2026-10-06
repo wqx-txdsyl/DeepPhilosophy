@@ -4,7 +4,7 @@
  * 有专用详情布局的题材走 DETAIL_REGISTRY（如神话体系），
  * 其余题材回退到"规划中"占位页——新详情完成后在此登记即可。
  */
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import { getTopic } from '../data/moreContent';
 import { ALL_DETAILS } from '../data/moreTopics';
@@ -14,10 +14,60 @@ import './MorePage.css';
 
 /* 神话体系十二页：同一 MythologyDetail 布局，各体系数据模块驱动 */
 const RELIGION_PREFIX = 'religion/';
+
+function ChristianityHub({ data, navigate }) {
+  return (
+    <div className="school-detail mtd">
+      <section className="school-hero-section school-hero">
+        {data.heroImage && <img className="school-hero-art" src={data.heroImage} alt="" fetchPriority="high" />}
+        <header className="school-masthead">
+          <Link className="school-brand" to="/">DeepPhilosophy</Link>
+          <Link className="school-back" to="/more/religion">← 返回宗教</Link>
+        </header>
+        <div className="school-hero-copy">
+          <p className="school-kicker">{data.en}</p>
+          <h1>{data.name}</h1>
+          <p className="school-hero-quote">{data.heroQuote ? `\u201C${data.heroQuote}\u201D` : ''}</p>
+          <p className="school-hero-author">{data.heroQuoteSource || ''}</p>
+        </div>
+        <div className="school-hero-foot">
+          <span>{data.subtitle}</span>
+          <a href="#branches" className="school-start" aria-label="查看三分支">↓</a>
+          <span>东正 · 天主 · 新教</span>
+        </div>
+      </section>
+      <div className="school-reading">
+        <section id="branches" className="school-section">
+          <header className="school-section-heading centered">
+            <span className="school-kicker">THREE BRANCHES</span>
+            <h2>三大分支</h2>
+          </header>
+          <div className="mtd-branch-cards">
+            {data.branches.map(br => (
+              <button key={br.id} type="button" className="mtd-branch-card"
+                onClick={() => navigate(`/more/religion/${br.id}`)}>
+                <img src={br.hero} alt="" className="mtd-branch-hero" loading="lazy" />
+                <h3>{br.name}</h3>
+                <small>{br.en}</small>
+                <p>{br.desc}</p>
+                <span className="mtd-branch-arrow">→</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
 const DETAIL_REGISTRY = Object.fromEntries(
   Object.entries(ALL_DETAILS).map(([key, data]) => [
     key,
-    { component: key.startsWith(RELIGION_PREFIX) ? ReligionDetail : MythologyDetail, data },
+    (() => {
+      if (key === 'religion/christianity') return { component: ChristianityHub, data };
+      if (key.startsWith(RELIGION_PREFIX)) return { component: ReligionDetail, data };
+      return { component: MythologyDetail, data };
+    })(),
   ]),
 );
 

@@ -296,3 +296,47 @@ html.dark-mode .mtd-kw-pop {
   margin: 8px 0 0; padding-top: 8px;
   border-top: 1px dashed var(--border);
 }
+
+/* ── 基督教三分支枢纽页 ── */
+.mtd-branch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 960px; margin: 0 auto;
+}
+.mtd-branch-card {
+  background: none; border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; cursor: pointer; text-align: left; padding: 0;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  font-family: var(--font-sans);
+}
+.mtd-branch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--ochre);
+}
+.mtd-branch-hero {
+  width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;
+}
+.mtd-branch-card h3 {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 22px; color: var(--ink); margin: 14px 16px 4px;
+}
+.mtd-branch-card small {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ochre); display: block; margin: 0 16px 8px;
+}
+.mtd-branch-card p {
+  font-size: 12.5px; color: var(--text-dim); line-height: 1.85;
+  margin: 0 16px 14px;
+}
+.mtd-branch-arrow {
+  display: block; text-align: right;
+  font-size: 18px; color: var(--ochre);
+  padding: 0 16px 14px;
+  transition: transform 0.2s;
+}
+.mtd-branch-card:hover .mtd-branch-arrow { transform: translateX(4px); }
+@media (max-width: 720px) {
+  .mtd-branch-cards { grid-template-columns: 1fr; }
+}
