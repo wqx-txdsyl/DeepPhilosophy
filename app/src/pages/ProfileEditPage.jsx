@@ -35,7 +35,7 @@ function ProfileEditPage() {
         localStorage.setItem('dp_username', newUsername.trim());
         renameReadingOwner(newUsername.trim());
         setUsername(newUsername.trim());
-        showMsg('✅ 用户名已更新', 'success');
+        showMsg('用户名已更新', 'success');
       } else {
         const d = await r.json().catch(() => ({}));
         showMsg(d.detail || '更新失败', 'error');
@@ -55,7 +55,7 @@ function ProfileEditPage() {
         signal: AbortSignal.timeout(8000),
       });
       if (r.ok) {
-        showMsg('✅ 密码已修改，请重新登录', 'success');
+        showMsg('密码已修改，请重新登录', 'success');
         setOldPw(''); setNewPw(''); setConfirmPw('');
         localStorage.removeItem('dp_token');
         setTimeout(() => navigate('/profile'), 1500);
@@ -91,7 +91,7 @@ function ProfileEditPage() {
       <div className="card" style={{ cursor: 'default', padding: '16px 0' }}>
         <div onClick={() => setShowPwSection(!showPwSection)}
           style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>🔒 修改密码</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}><Icon name="icon-lock" size={13} style={{ marginRight: 4 }} />修改密码</span>
           <span style={{ fontSize: 18, color: 'var(--text-dim)', transition: 'transform 0.2s', transform: showPwSection ? 'rotate(90deg)' : '' }}>›</span>
         </div>
         {showPwSection && (

@@ -7,6 +7,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import { getTopic } from '../data/moreContent';
+import { ossImg, ossFallback } from '../data/ossUrls';
 import { ALL_DETAILS } from '../data/moreTopics';
 import ReligionDetail from '../components/more/ReligionDetail';
 import MythologyDetail from '../components/more/MythologyDetail';
@@ -21,7 +22,7 @@ function ChristianityHub({ data }) {
   return (
     <div className="school-detail mtd">
       <section className="school-hero-section school-hero">
-        {data.heroImage && <img className="school-hero-art" src={data.heroImage} alt="" fetchPriority="high" />}
+        {data.heroImage && <img className="school-hero-art" src={ossImg(data.heroImage, { w: 1280 })} alt="" fetchPriority="high" onError={ossFallback} />}
         <header className="school-masthead">
           <Link className="school-brand" to="/">DeepPhilosophy</Link>
           <Link className="school-back" to="/more/religion">← 返回宗教</Link>

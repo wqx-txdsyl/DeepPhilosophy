@@ -1,35 +1,60 @@
 /* ═══════════════════════════════════════════════════════════
-   DeepPhilosophy HomePage — Editorial Philosophy Atlas
-   羊皮纸手稿 × 极简编辑排版 × Apple/Linear 式滚动叙事
+   DeepPhilosophy HomePage — 哲学宇宙（全屏星图，一屏即全部）
    ═══════════════════════════════════════════════════════════ */
 
-/* ── Hero ── */
+/* ── Hero · 哲学宇宙（纯黑星空，一屏即全部） ── */
 .home-hero {
-  min-height: 100vh; min-height: 100dvh;
+  height: 100vh; height: 100dvh;
+  position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: center;
   align-items: center; text-align: center;
   padding: 80px 32px;
-  position: relative; overflow: hidden;
+  background: #000;
 }
-.home-hero-bg {
-  position: absolute; inset: 0;
-  /* 2026-08-11: 走 OSS 直链（同源 CF 边缘 3-6s → OSS 0.1s）; resize 压缩到 1280 宽 */
-  background-image: url('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/schools/世界哲学总览.webp?x-oss-process=image/resize,w_1280');
-  background-size: cover; background-position: center;
-  will-change: transform;
+.home-page { max-height: 100vh; max-height: 100dvh; overflow: hidden; }
+.home-cosmos { position: absolute; inset: 0; }
+.home-cosmos canvas { position: absolute; inset: 0; display: block; }
+.home-cosmos-tip {
+  position: absolute; z-index: 6; pointer-events: none;
+  max-width: 230px; padding: 10px 13px;
+  background: rgba(10, 8, 16, 0.58);
+  border: 1px solid rgba(217, 179, 108, 0.28);
+  border-radius: 6px;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  text-align: left; opacity: 0; transition: opacity 0.15s;
+  display: flex; flex-direction: column; gap: 3px;
 }
+.home-cosmos-tip em {
+  font-style: normal; font-family: var(--font-sans);
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ochre);
+}
+.home-cosmos-tip strong {
+  font-family: var(--font-serif); font-size: 14px; font-weight: 500;
+  color: #E8E3D9; line-height: 1.45;
+}
+.home-cosmos-tip span { font-family: var(--font-sans); font-size: 10px; color: rgba(232, 227, 217, 0.55); line-height: 1.5; }
+.home-cosmos-tip i { font-style: normal; font-family: var(--font-sans); font-size: 9px; color: rgba(217, 179, 108, 0.75); margin-top: 2px; }
 .home-hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(var(--scrim-rgb), 0.92) 0%,
-    rgba(var(--scrim-rgb), 0.55) 40%,
-    rgba(var(--scrim-rgb), 0.15) 100%
-  );
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 48% 40% at 50% 50%, rgba(11, 9, 18, 0.72) 0%, rgba(11, 9, 18, 0.28) 58%, transparent 100%);
+  transition: opacity 1.2s ease;
 }
+/* 揭示后：中央遮罩淡出，宇宙完全裸露 */
+.home-hero.veiled .home-hero-overlay { opacity: 0; }
+.home-hero-burst { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+
 .home-hero-content {
-  position: relative; z-index: 1;
+  position: relative; z-index: 6;
   animation: hero-reveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transition: opacity 0.22s ease;
+}
+/* 点击「立即探索」后：入场动画的 forwards 填充会钉住 opacity:1，必须一并解除，
+   文字立刻让位给离子化光点 */
+.home-hero.veiled .home-hero-content {
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
 }
 @keyframes hero-reveal {
   from { opacity: 0; transform: translateY(24px); }
@@ -50,11 +75,12 @@
   font-family: var(--font-serif);
   font-size: clamp(3.5rem, 10vw, 8rem);
   font-weight: 400; font-style: italic;
-  color: var(--ink);
+  color: #E8E3D9;
   letter-spacing: 0.02em; line-height: 1.12;
   margin: 0 0 24px;
   /* italic 下延字母（y/g/j）预留，避免被 line-height 裁切 */
   padding-bottom: 0.08em;
+  text-shadow: 0 4px 60px rgba(0, 0, 0, 0.55);
   animation: fade-in-up 0.8s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .home-hero-divider {
@@ -62,15 +88,6 @@
   background: var(--ochre);
   margin: 0 auto 28px; opacity: 0.7;
   animation: fade-in-up 0.8s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.home-hero-subtitle {
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
-  font-weight: 500; color: var(--ink);
-  line-height: 1.85; max-width: 540px;
-  margin: 0 auto 44px;
-  text-shadow: 0 0 40px rgba(var(--scrim-rgb), 0.8);
-  animation: fade-in-up 0.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(16px); }
@@ -82,7 +99,7 @@
   font-family: var(--font-sans);
   font-size: 14px; font-weight: 500;
   letter-spacing: 0.08em;
-  color: #fff; background: var(--ink);
+  color: #16120B; background: var(--ochre);
   border: none; border-radius: 6px;
   padding: 15px 40px; cursor: pointer;
   position: relative; overflow: hidden;
@@ -95,194 +112,32 @@
   transform: translateX(-100%);
 }
 .home-hero-cta:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
-.home-hero-cta:hover { background: var(--ochre); transform: translateY(-2px); box-shadow: var(--shadow-gold); }
+.home-hero-cta:hover { background: #E8E3D9; transform: translateY(-2px); box-shadow: var(--shadow-gold); }
 .home-hero-cta:active { transform: translateY(0) scale(0.98); }
 .home-hero-cta:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
-html.dark-mode .home-hero-cta { background: var(--ochre); color: #fff; }
-html.dark-mode .home-hero-cta:hover { background: var(--ink); }
 
-/* 滚动指示器 */
-.home-hero-scroll-hint {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  opacity: 0.45;
-  animation: scroll-bounce 2s ease-in-out infinite;
+/* 导航栏：星空上全程骨白，常驻保留 */
+.home-page .navbar-floating { transition: var(--color-transition); }
+.navbar-floating.nav-on-dark .site-nav-brand { color: #E8E3D9; }
+.navbar-floating.nav-on-dark .nav-btn { color: rgba(232, 227, 217, 0.66); }
+.navbar-floating.nav-on-dark .nav-btn:hover { color: #E8E3D9; background: rgba(232, 227, 217, 0.08); }
+.navbar-floating.nav-on-dark .nav-btn.active { color: #E8E3D9; }
+.navbar-floating.nav-on-dark .site-room-link { color: rgba(232, 227, 217, 0.55); }
+.navbar-floating.nav-on-dark .site-room-link.is-active { color: #E8E3D9; }
+.navbar-floating.nav-on-dark .navbar-login-btn {
+  color: #E8E3D9;
+  background: rgba(232, 227, 217, 0.08);
+  border-color: rgba(232, 227, 217, 0.25);
 }
-@keyframes scroll-bounce {
-  0%, 100% { transform: translate(-50%, 0); }
-  50% { transform: translate(-50%, 8px); }
-}
-
-/* ── 每日金句 ── */
-.home-quote {
-  padding: 100px 32px; text-align: center;
-  background: var(--card-bg); max-width: 100%;
-  cursor: pointer; position: relative; overflow: hidden;
-}
-.home-quote-eyebrow {
-  font-family: var(--font-sans);
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--fade); margin-bottom: 24px;
-}
-.home-quote:hover .home-quote-text { opacity: 0.7; }
-.home-quote-text {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  color: var(--text-dim); line-height: 1.9;
-  font-weight: 300; margin: 0 0 20px;
-  transition: opacity 0.2s;
-}
-.home-quote-author {
-  font-family: var(--font-sans);
-  font-size: 13px; color: var(--ochre); font-weight: 500;
-}
-/* 金句背景装饰 —— 位置下移，避免与正文第一行挤压 */
-.home-quote::before {
-  content: '"'; position: absolute; top: 26px; left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-serif);
-  font-size: 180px; color: var(--border); opacity: 0.15;
-  line-height: 1; pointer-events: none;
-}
-
-/* ── 统计数据 ── */
-.home-stats {
-  padding: 64px 32px;
-  max-width: 800px; margin: 0 auto;
-}
-.home-stats-grid {
-  display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; text-align: center;
-}
-.home-stat-number {
-  font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
-  font-weight: 400; color: var(--ink);
-  margin: 0 0 6px;
-  /* 2026-08-12: 移除 tabular-nums — Playfair 默认旧式数字(onum)高低错落是原版观感,
-     2026-07-16 重设计为 CountUp 滚动对齐引入等高压制; 旧式数字才是用户记忆中的样子 */
-}
-.home-stat-label {
-  font-family: var(--font-sans);
-  font-size: 12px; color: var(--text-dim);
-  font-weight: 300; letter-spacing: 0.08em; margin: 0;
-}
-
-/* ── 入口卡片 ── */
-.home-showcase {
-  padding: 64px 32px 88px;
-  max-width: 1100px; margin: 0 auto;
-}
-.home-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 36px;
-}
-.home-showcase-card {
-  cursor: pointer; padding: 36px 28px;
-  border-bottom: 2px solid var(--border);
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  border-radius: 4px;
-  background: transparent;
-}
-.home-showcase-card:hover {
-  border-bottom-color: var(--ochre);
-  background: var(--card-bg);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-}
-.home-showcase-card.card-philosophers:hover {
-  border-bottom-color: var(--prussian);
-}
-.home-showcase-eyebrow {
-  font-family: var(--font-sans);
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.home-showcase-title {
-  font-family: var(--font-serif);
-  font-size: 26px; font-weight: 400;
-  color: var(--ink); margin: 6px 0 10px;
-  letter-spacing: 0.03em;
-}
-.home-showcase-desc {
-  font-family: var(--font-sans);
-  font-size: 14px; font-weight: 300;
-  color: var(--text-dim); line-height: 1.8; margin: 0;
-}
-
-/* ── 段落揭示动画 ── */
-.section-reveal {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.section-reveal.visible {
-  opacity: 1; transform: translateY(0);
-}
-
-/* ── Footer ── */
-.home-footer {
-  border-top: 1px solid var(--border);
-  background: var(--card-bg);
-  padding: 0;
-}
-.home-footer-inner {
-  max-width: 1100px; margin: 0 auto;
-  padding: 56px 32px 40px;
-  display: flex; gap: 64px;
-  flex-wrap: wrap;
-}
-.home-footer-brand {
-  flex: 1 1 280px; min-width: 200px;
-}
-.home-footer-logo {
-  font-family: var(--font-serif); font-size: 18px; font-style: italic;
-  color: var(--ink); cursor: pointer; margin: 0 0 10px; letter-spacing: 0.03em;
-}
-.home-footer-brand-desc {
-  font-family: var(--font-sans); font-size: 12px; color: var(--text-dim);
-  line-height: 1.7; margin: 0; max-width: 260px;
-}
-.home-footer-columns {
-  flex: 2 1 500px; display: flex; gap: 48px; flex-wrap: wrap;
-}
-.home-footer-col {
-  display: flex; flex-direction: column; gap: 8px; min-width: 100px;
-}
-.home-footer-col-title {
-  font-family: var(--font-sans); font-size: 12px; font-weight: 600;
-  color: var(--ink); margin: 0 0 4px; letter-spacing: 0.04em;
-}
-.home-footer-link {
-  font-family: var(--font-sans); font-size: 12px; color: var(--text-dim);
-  cursor: pointer; transition: color 0.2s; line-height: 1.6;
-}
-.home-footer-link:hover { color: var(--ochre); }
-.home-footer-bottom {
-  border-top: 1px solid var(--border);
-  padding: 14px 32px;
-  max-width: 1100px; margin: 0 auto;
-}
-.home-footer-copy {
-  font-family: var(--font-sans); font-size: 11px; color: var(--text-dim);
-  margin: 0;
-}
-
-/* ── 章节 HTML 渲染 ── */
-.chapter-html { line-height: 2.0; text-align: justify; }
-.chapter-html p { margin: 0 0 0.8em; text-indent: 2em; }
-.chapter-html h1,.chapter-html h2,.chapter-html h3,.chapter-html h4 { text-align: center; margin: 1.2em 0 0.6em; font-weight: 500; }
-.chapter-html blockquote { margin: 0.8em 1.5em; padding: 0.4em 1em; border-left: 3px solid var(--ochre); color: var(--text-dim); }
-.chapter-html img { max-width: 100%; display: block; margin: 12px auto; border-radius: 4px; }
-.chapter-html div,.chapter-html section { margin: 0.5em 0; }
+.navbar-floating.nav-on-dark .navbar-login-btn:hover { background: rgba(232, 227, 217, 0.16); border-color: var(--ochre); }
 
 /* ── 响应式 ── */
 @media (max-width: 640px) {
   .home-hero { padding: 60px 20px; }
-  .home-stats-grid { gap: 32px; }
-  .home-showcase-grid { grid-template-columns: 1fr; gap: 24px; }
-  .home-quote { padding: 64px 20px; }
-  .home-quote::before { font-size: 100px; }
+  .home-hero-title { font-size: clamp(2.4rem, 11.5vw, 3.4rem); }
+  .home-cosmos-tip { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-content, .home-hero-eyebrow, .home-hero-title, .home-hero-divider,
+  .home-hero-cta { animation: none; transition: none; }
 }

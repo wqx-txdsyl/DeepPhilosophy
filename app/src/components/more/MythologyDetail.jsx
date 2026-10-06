@@ -1,3 +1,4 @@
+import { ossImg, ossFallback } from '../../data/ossUrls';
 /**
  * MythologyDetail — 神话体系详情页（"更多"三级页，数据驱动，适用于全部神话体系）
  * 全部采用流派页（SchoolDetailPage）的设计语言：
@@ -111,7 +112,7 @@ export default function MythologyDetail({ data, topic }) {
 
       {/* ═══ HERO ═══ */}
       <section className="school-hero-section school-hero" aria-label={`${data.name}封面`}>
-        <img className="school-hero-art" src={data.heroImage || '/schools/default.webp'} alt="" fetchPriority="high" />
+        <img className="school-hero-art" src={ossImg(data.heroImage || '/schools/default.webp', { w: 1280 })} alt="" fetchPriority="high" onError={ossFallback} />
         <header className="school-masthead">
           <Link className="school-brand" to="/">DeepPhilosophy</Link>
           <Link className="school-back" to={`/more/${d.id}`}>← 返回{d.name}</Link>
@@ -327,7 +328,7 @@ export default function MythologyDetail({ data, topic }) {
 
         {/* ═══ 尾声 ═══ */}
         <section className="school-ending">
-          {data.heroImage && <img className="school-ending-art" src={data.heroImage} alt="" />}
+          {data.heroImage && <img className="school-ending-art" src={ossImg(data.heroImage, { w: 900 })} alt="" loading="lazy" onError={ossFallback} />}
           <p className="school-kicker">EPILOGUE · 尾声</p>
           <p className="school-closing-quote">{data.epilogue}</p>
           <div className="school-ending-links">
