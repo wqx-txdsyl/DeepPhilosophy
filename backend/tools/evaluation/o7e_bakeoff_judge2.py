@@ -23,9 +23,12 @@ import o7_scholarly_judge as O7A   # canonical judge constitution（冻结）
 import quote_bound as QB
 
 _key = None
-for line in open(os.path.join(ROOT, ".env"), encoding="utf-8"):
-    if line.strip().startswith("ZHIPU_API_KEY="):
-        _key = line.split("=", 1)[1].strip().strip('"').strip("'")
+# CI 无 .env（密钥文件不入库）; 缺文件时 _key 保持 None, 调用处以 (_key or "") 兼容
+_env_path = os.path.join(ROOT, ".env")
+if os.path.exists(_env_path):
+    for line in open(_env_path, encoding="utf-8"):
+        if line.strip().startswith("ZHIPU_API_KEY="):
+            _key = line.split("=", 1)[1].strip().strip('"').strip("'")
 
 
 class JudgeCallFailure(Exception):
