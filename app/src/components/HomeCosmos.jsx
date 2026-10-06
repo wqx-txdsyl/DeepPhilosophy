@@ -184,7 +184,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
             const fy = field ? rand() : clamp01(c[1] + gauss(rand) * 0.032);
             nodes.push({
               t: 'quote', name: q[0], author: q[1], phil: q[2], book: q[3], parent: s.n,
-              fx, fy,
+              fx, fy, low: rand() < 0.4,
               fr: 0.85 + rand() * 0.45, rgb: QUOTE_RGB, phase: rand() * 6.28, tw: 0.4, pri: 0.6, dim: true,
             });
           }
@@ -194,7 +194,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
             const fy = field ? rand() : clamp01(c[1] + gauss(rand) * 0.036);
             nodes.push({
               t: 'cihai', name: w[0], sub: w[1], phil: w[2], book: w[3], parent: s.n,
-              fx, fy,
+              fx, fy, low: rand() < 0.4,
               fr: 1.25 + rand() * 0.4, rgb: CIHAI_RGB, phase: rand() * 6.28, tw: 0.55, pri: 0.7,
             });
           }
@@ -325,6 +325,9 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
 
     // ---- 交互状态 ----
     let hovered = null, selected = null;
+    let lastActiveRef = { current: 0 };
+    let frames = 0;
+    const isLit = n => litMap.has(n);
     let litPairs = [], litMap = new Map(), litAt = 0;
     let network = null;
     fetch('/philosopher_network.json').then(r => r.ok ? r.json() : null).then(d => { network = d; }).catch(() => {});
@@ -398,7 +401,11 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         sub: 0.45 + 0.55 * smooth(1, 2, z),
       };
 
+      const idle = t - lastActiveRef.current > 1200; // 闲置时降到 ~15fps，微飘仍动
+      frames++;
       for (const n of nodes) {
+        if (idle && n.low && frames % 3 !== 0) continue;         // 闲置抽稀
+        if (z < 1.9 && n.low && !isLit(n)) continue;             // 概貌抽稀（放大浮现）
         const [sx, sy] = toScreen(n.fx, n.fy);
         const margin = 60 * z;
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
@@ -435,6 +442,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     }
     function onMove(e) {
       if (!activeRef.current) return;
+      lastActiveRef.current = performance.now();
       if (dragging && lastP) {
         const dx = e.clientX - lastP.x, dy = e.clientY - lastP.y;
         moved += Math.abs(dx) + Math.abs(dy);
@@ -474,6 +482,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     }
     function onWheel(e) {
       if (!activeRef.current) return;
+      lastActiveRef.current = performance.now();
       e.preventDefault();
       const r = canvas.getBoundingClientRect();
       const mx = e.clientX - r.left, my = e.clientY - r.top;
@@ -485,6 +494,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     }
     function onClick(e) {
       if (!activeRef.current) return;
+      lastActiveRef.current = performance.now();
       if (moved > 5) return; // 拖拽不算点击
       const r = canvas.getBoundingClientRect();
       const hit = findHover(e.clientX - r.left, e.clientY - r.top);
