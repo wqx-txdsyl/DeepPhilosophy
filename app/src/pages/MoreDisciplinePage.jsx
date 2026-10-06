@@ -88,35 +88,7 @@ export default function MoreDisciplinePage() {
         </section>
       )}
 
-      {/* ══════════ 同区其他学科 ══════════ */}
-      <section className="more-index" style={{ paddingTop: 0 }}>
-        <div className="more-index-head">
-          <h2>Also Explore</h2>
-          <span>其他学科</span>
-        </div>
-        {siblings.map(s => (
-          <div
-            key={s.id}
-            className="more-row"
-            style={{ '--disc': s.color }}
-            onClick={() => navigate(`/more/${s.id}`)}
-            role="link"
-            tabIndex={0}
-            onKeyDown={e => { if (e.key === 'Enter') navigate(`/more/${s.id}`); }}
-          >
-            <div className="more-row-code">{s.code}</div>
-            <div className="more-row-body">
-              <div className="more-row-name-line">
-                <h3 className="more-row-name">{s.name}</h3>
-                <span className="more-row-en">{s.en}</span>
-              </div>
-            </div>
-            <div className="more-row-meta">
-              <span className="more-row-arrow">&rarr;</span>
-            </div>
-          </div>
-        ))}
-      </section>
+
 
       <p className="more-footnote">{d.en} · 主题持续收录中</p>
     </div>

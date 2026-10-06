@@ -46,6 +46,21 @@ export const DISCIPLINES = [
     ],
   },
   {
+    id: 'literature',
+    code: 'Li',
+    name: '文学',
+    en: 'Literature',
+    desc: '文学是哲学的叙事化——从史诗到小说，从悲剧到诗歌，文学用形象回答哲学用概念追问的问题。',
+    topics: [
+      { id: 'classical-chinese', name: '中国古典文学', note: '从诗经楚辞到唐诗宋词——中国文学三千年的审美传统' },
+      { id: 'western-classics', name: '西方经典文学', note: '从荷马史诗到现代主义——西方文学的宏大叙事传统' },
+      { id: 'russian-lit', name: '俄国文学', note: '从普希金到陀思妥耶夫斯基——俄国文学的灵魂拷问传统' },
+      { id: 'latin-american', name: '拉美文学', note: '从博尔赫斯到马尔克斯——魔幻现实主义的拉美 explosion' },
+      { id: 'japanese-lit', name: '日本文学', note: '从源氏物语到村上春树——日本文学的物哀与孤独' },
+      { id: 'comparative', name: '比较文学', note: '跨越语言与文明的文学对话——影响研究·平行研究·译介学' },
+    ],
+  },
+  {
     id: 'psychology',
     code: 'Ps',
     name: '心理',
