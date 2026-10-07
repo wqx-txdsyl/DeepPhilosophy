@@ -17,7 +17,6 @@ const columns = [
     title: '更多',
     links: [
       { label: '我的书房', path: '/profile' },
-      { label: '设置', path: '/settings' },
       { label: '关于本站', path: '/about' },
     ],
   },
