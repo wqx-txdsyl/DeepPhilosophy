@@ -35,7 +35,7 @@ export const DISCIPLINES = [
     desc: '信仰与理性两千年的对话——中世纪经院哲学、佛教因明与道教玄学，皆是哲学与宗教互相成就的现场；不了解宗教，就读不懂一半的哲学史。',
     topics: [
       { id: 'buddhism', heroImage: '/more/buddhism-hero.webp', name: '佛教', note: '四圣谛、缘起与性空——从释迦牟尼的觉悟到大小乘论师们的因明思辨' },
-      { id: 'christianity', heroImage: '/more/catholic-hero.webp', name: '基督教', note: '三位一体与道成肉身——尼西亚信经以降的信仰体系，经院哲学的母体',
+      { id: 'christianity', heroImage: '/more/christianity-hero.webp', name: '基督教', note: '三位一体与道成肉身——尼西亚信经以降的信仰体系，经院哲学的母体',
         children: ['东正教', '天主教', '新教'] },
       { id: 'orthodox', hidden: true, heroImage: '/more/orthodox-hero.webp', name: '东正教', note: '圣像与静默——拜占庭传统的守护者，七次大公会议的正统继承' },
       { id: 'catholic', hidden: true, heroImage: '/more/catholic-hero.webp', name: '天主教', note: '彼得之座与圣统制——从君士坦丁到宗教改革前的西方信仰中枢' },

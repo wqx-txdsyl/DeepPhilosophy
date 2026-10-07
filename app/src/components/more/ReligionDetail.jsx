@@ -48,6 +48,9 @@ function LinkChip({ link, navigate }) {
 export default function ReligionDetail({ data, topic }) {
   const navigate = useNavigate();
   const d = topic.discipline;
+  const isChristianBranch = ['orthodox', 'catholic', 'protestant'].includes(data.id);
+  const backTo = isChristianBranch ? '/more/religion/christianity' : moreAlbumPath(d.id, data.id);
+  const backName = isChristianBranch ? '基督教' : d.name;
   useSEO(`${data.name} — ${d.name} | DeepPhilosophy`, data.subtitle);
 
   return (
@@ -56,7 +59,7 @@ export default function ReligionDetail({ data, topic }) {
       {/* ═══ HERO ═══ */}
       <HeroSection name={data.name} englishName={data.en} subtitle={data.subtitle}
         heroImage={data.heroImage} quote={data.heroQuote} quoteKind="quote" quoteAuthor={data.heroQuoteSource || ''}
-        backTo={moreAlbumPath(d.id, data.id)} backLabel={`返回${d.name}`}
+        backTo={backTo} backLabel={`返回${backName}`}
         startId={CHAPTERS[0].id} startLabel="开始阅读概述" chapters={CHAPTERS}
         footerMeta={(data.meta || []).map(m => m.value).slice(0, 2).join(' · ')} />
 
@@ -234,7 +237,7 @@ export default function ReligionDetail({ data, topic }) {
           <div className="school-ending-links">
             <a href="#sec-overview">回到概述 ↑</a>
             <a href="#" onClick={e => { e.preventDefault(); navigate('/more'); }}>更多索引 →</a>
-            <a href="#" onClick={e => { e.preventDefault(); navigate(moreAlbumPath(d.id, data.id)); }}>返回{d.name} →</a>
+            <a href="#" onClick={e => { e.preventDefault(); navigate(backTo); }}>返回{backName} →</a>
           </div>
         </section>
 

@@ -9,7 +9,8 @@ import './MoreExplorer.css';
 const wrap = index => ((index % 8) + 8) % 8;
 function initialState(params) {
   const index = Math.max(0, MORE_FIELDS.findIndex(field => field.id === params.get('discipline')));
-  const topic = Math.max(0, MORE_FIELDS[index].topics.findIndex(t => t.id === params.get('topic')));
+  const requestedTopic = MORE_FIELDS[index].id === 'religion' && ['orthodox', 'catholic', 'protestant'].includes(params.get('topic')) ? 'christianity' : params.get('topic');
+  const topic = Math.max(0, MORE_FIELDS[index].topics.findIndex(t => t.id === requestedTopic));
   return { index, angle: -index * 45, expanded: params.get('album') === 'open', topic, dragging: false, visited: [index] };
 }
 function reducer(state, action) {
@@ -35,7 +36,7 @@ export default function MorePage() {
   const [state, dispatch] = useReducer(reducer, searchParams, initialState);
   const bounds = useRef(null), fan = useRef(null), drag = useRef(null), suppressClick = useRef(false);
   const current = useRef(state);
-  const openButton = useRef(null);
+  const openButton = useRef(null), albumRef = useRef(null);
   useLayoutEffect(() => { current.current = state; }, [state]);
   const field = MORE_FIELDS[state.index];
   const topics = field.topics, topic = topics[state.topic];
@@ -80,6 +81,24 @@ export default function MorePage() {
     const observer = new ResizeObserver(prepare);
     observer.observe(element);
     return () => observer.disconnect();
+  }, [state.expanded, state.index]);
+
+  useEffect(() => {
+    if (!state.expanded || !albumRef.current) return;
+    const album = albumRef.current;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let finished = false;
+    const scrollToBottom = () => {
+      if (finished) return;
+      finished = true;
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: reducedMotion ? 'instant' : 'smooth' });
+    };
+    const afterExpand = event => {
+      if (event.target === album && event.propertyName === 'grid-template-rows') scrollToBottom();
+    };
+    album.addEventListener('transitionend', afterExpand);
+    const timer = setTimeout(scrollToBottom, reducedMotion ? 0 : 950);
+    return () => { clearTimeout(timer); album.removeEventListener('transitionend', afterExpand); };
   }, [state.expanded, state.index]);
 
   const startDrag = event => {
@@ -152,7 +171,7 @@ export default function MorePage() {
               <button ref={openButton} type="button" className="folio-action" aria-expanded={state.expanded} aria-controls="more-topic-album" onClick={() => dispatch({ type: 'open' })}>{state.expanded ? '合上学科卡册 ↑' : field.ready ? `展开${field.name}卡册 ↗` : '查看拟定方向 ↗'}</button></div>
           </section>
         </section>
-        <section id="more-topic-album" className={`folio-open${state.expanded ? ' is-open' : ''}`} aria-label="学科卡册" aria-hidden={!state.expanded} inert={!state.expanded}>
+        <section ref={albumRef} id="more-topic-album" className={`folio-open${state.expanded ? ' is-open' : ''}`} aria-label="学科卡册" aria-hidden={!state.expanded} inert={!state.expanded}>
           <div className="folio-open-inner"><div className="folio-open-content" key={field.id}>
             <header className="folio-open-heading"><div><p className="motion-kicker">{field.code} / {field.en}</p><h3>{field.name} · {philosophy ? '代表流派' : field.ready ? '主题卡册' : '拟定方向'}</h3>
               <p>{philosophy ? '从几个代表流派开始，再沿时间、关系与问题继续探索。' : field.ready ? `共 ${topics.length} 个主题，选择一张画卡进入阅读。` : '本学科正在整理，以下为拟定方向。'}</p></div><button type="button" onClick={close}>合上卡册 ↑</button></header>
@@ -162,7 +181,7 @@ export default function MorePage() {
               return <button type="button" className="topic-fan-card" key={t.id} aria-label={`选择${t.name}`} aria-pressed={state.topic === i} onClick={() => dispatch({ type: 'topic', index: i })}
                 style={{ '--splay': `${(column - center) * 14}deg`, '--delay': `${column * 60 + row * 80}ms`, '--arc': `${Math.abs(column - center) / Math.max(1, center) * 28}px`, '--rest-y': state.topic === i ? '-9px' : '0px' }}>
                 <div className="topic-fan-photo"><CdnImage src={t.image || field.image} imageWidth={400} alt={`${t.name}配图`} draggable={false} loading="lazy" /></div>
-                <div className="topic-fan-copy"><small>{String(i + 1).padStart(2, '0')} / {field.code}</small><h4>{t.name}</h4>{t.parentName && <span className="topic-parent">{t.parentName}</span>}</div></button>;
+                <div className="topic-fan-copy"><small>{String(i + 1).padStart(2, '0')} / {field.code}</small><h4>{t.name}</h4></div></button>;
             })}</div>
             <div className="postcard-detail" aria-live="polite"><div><p className="motion-kicker">{String(state.topic + 1).padStart(2, '0')} / {field.code}</p><h4>{topic.name}</h4><p>{topic.note || '主题资料正在整理。'}</p></div>
               {field.ready ? <Link to={topic.path || `/more/${field.id}/${topic.id}`}>进入{topic.name} ↗</Link> : <span>筹备中</span>}</div>
