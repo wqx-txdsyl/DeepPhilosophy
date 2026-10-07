@@ -16,7 +16,6 @@ import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
 import GenealogyPage from './pages/GenealogyPage';
 import HomePage from './pages/HomePage';
-import SettingsPage from './pages/SettingsPage';       // 3.5KB, 常用
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 // 中型页面（lazy：点击才加载）
 const BookDetailPage = lazy(() => import('./pages/BookDetailPage'));
@@ -106,12 +105,15 @@ function App() {
 function MainLayout() {
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('dp_dark_mode') === '1');
-  const [mobileMode, setMobileMode] = useState(() => localStorage.getItem('dp_mobile_mode') === '1');
 
   // Auto-save
   useEffect(() => { startAutoSave(); return () => stopAutoSave(); }, []);
   useEffect(() => { if (darkMode) document.documentElement.classList.add('dark-mode'); else document.documentElement.classList.remove('dark-mode'); }, [darkMode]);
-  useEffect(() => { if (mobileMode) document.documentElement.classList.add('mobile-mode'); else document.documentElement.classList.remove('mobile-mode'); }, [mobileMode]);
+  // Retire the forced mobile preview, including preferences saved by older versions.
+  useEffect(() => {
+    document.documentElement.classList.remove('mobile-mode');
+    try { localStorage.removeItem('dp_mobile_mode'); } catch { /* Storage may be unavailable. */ }
+  }, []);
   useEffect(() => { window.scrollTo(0, 0); const m = document.querySelector('.app-main'); if (m) m.style.transform = 'translateY(0)'; }, [location.pathname]);
 
   // Candlelight cursor glow
@@ -167,9 +169,7 @@ function MainLayout() {
       <NavBar
         variant={hideHeader ? 'hidden' : 'sticky'}
         darkMode={darkMode}
-        mobileMode={mobileMode}
         onToggleDarkMode={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}
-        onToggleMobileMode={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }}
       />
 
       <main id="main-content" className={`app-main${immersive ? ' reader-mode' : ''}`} style={immersive ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
@@ -194,7 +194,7 @@ function MainLayout() {
           <Route path="/qa" element={<Navigate to="/books" replace />} />
           <Route path="/games/*" element={<Navigate to="/books" replace />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings" element={<Navigate to="/profile?tab=account" replace />} />
           <Route path="/DEVELOPER_IS_TXDSYL" element={<DeveloperPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
