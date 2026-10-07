@@ -62,6 +62,15 @@ function makeSprite(rgb, size, soft) {
 }
 
 const escapeHTML = value => String(value || '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+// This quiet sky is rendered with the opening itself, before any CDN data arrives.
+const openingRand=mulberry32(20261008);
+const OPENING_STARS=Array.from({length:480},(_,i)=>({
+  x:openingRand()*1440,y:openingRand()*900,
+  r:i%47===0?1.05+openingRand()*.55:.28+openingRand()*.50,
+  alpha:i%47===0?.58+openingRand()*.22:.20+openingRand()*.30,
+  color:i%13===0?'#d7c6ab':'#dce3ea',
+}));
+
 const TYPE_LABEL = { philosopher: '哲人', school: '流派', sub: '子流派', book: '著作', question: '思想之问', quote: '金句', cihai: '辞海' };
 
 export default function HomeCosmos({ philosophers, books, active = false, interactive = true, sceneRef, birthStarsRef }) {
@@ -568,7 +577,10 @@ export default function HomeCosmos({ philosophers, books, active = false, intera
   }, [philosophers, books, navigate, sceneRef, birthStarsRef]);
 
   return (
-    <div className="home-cosmos" ref={wrapRef} aria-label="哲学宇宙星图：滚轮缩放，拖拽平移，点击星星点亮关系链">
+    <div className={`home-cosmos${active && philosophers?.length && books?.length ? ' is-active' : ''}`} ref={wrapRef} aria-label="哲学宇宙星图：滚轮缩放，拖拽平移，点击星星点亮关系链">
+      <svg className="home-opening-sky" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        {OPENING_STARS.map((star,i)=><circle key={i} cx={star.x} cy={star.y} r={star.r} fill={star.color} opacity={star.alpha}/>)}
+      </svg>
       <canvas ref={canvasRef} />
       <div className="home-cosmos-labels" ref={labelsRef} />
       <div className="home-cosmos-tip" ref={tipRef} role="status" hidden />

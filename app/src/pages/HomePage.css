@@ -9,10 +9,12 @@
   display: flex; flex-direction: column; justify-content: center;
   align-items: center; text-align: center;
   padding: 80px 32px;
-  background: #000;
+  background: #030507;
 }
 .home-page { max-height: 100vh; max-height: 100dvh; overflow: hidden; }
 .home-cosmos { position: absolute; inset: 0; }
+.home-opening-sky {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:1;mask-image:radial-gradient(ellipse 38% 34% at 50% 47%,rgba(0,0,0,.10),rgba(0,0,0,.5) 55%,#000 100%);transition:opacity 1.8s ease;}
+.home-cosmos.is-active .home-opening-sky {opacity:0;}
 .home-cosmos canvas { position: absolute; inset: 0; display: block; }
 .home-cosmos-tip {
   position:absolute;z-index:7;left:34px;bottom:32px;
@@ -31,7 +33,7 @@
 .home-cosmos-labels button:hover {color:var(--ochre);}
 .home-hero-overlay {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(ellipse 48% 40% at 50% 50%, rgba(11, 9, 18, 0.72) 0%, rgba(11, 9, 18, 0.28) 58%, transparent 100%);
+  background: radial-gradient(ellipse 48% 40% at 50% 50%, rgba(3, 5, 7, 0.78) 0%, rgba(3, 5, 7, 0.26) 58%, transparent 100%);
   transition: opacity 1.2s ease;
 }
 /* 揭示后：中央遮罩淡出，宇宙完全裸露 */
@@ -133,6 +135,7 @@
   .home-cosmos-tip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .home-opening-sky {transition:none;}
   .home-hero-content, .home-hero-eyebrow, .home-hero-title, .home-hero-divider,
   .home-hero-cta,.home-hero-invitation,.home-hero-continue { animation: none; transition: none; }
 }
