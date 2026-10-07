@@ -361,6 +361,10 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     }
 
     function draw(t) {
+      // 闲置降频：整帧跳过（含清屏），画面保持上一帧内容——节流且无频闪
+      const idle = t - lastActiveRef.current > 1200;
+      frames++;
+      if (idle && !reduced && frames % 3 !== 0) { raf = requestAnimationFrame(draw); return; }
       ctx.clearRect(0, 0, W, H);
       if (!activeRef.current) { if (!reduced) raf = requestAnimationFrame(draw); return; }
       const raw = Math.min(1, Math.max(0, (t - activateAtRef.current) / 2000));
@@ -401,17 +405,14 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         sub: 0.45 + 0.55 * smooth(1, 2, z),
       };
 
-      const idle = t - lastActiveRef.current > 1200; // 闲置时降到 ~15fps，微飘仍动
-      frames++;
       for (const n of nodes) {
-        if (idle && n.low && frames % 3 !== 0) continue;         // 闲置抽稀
         if (z < 1.9 && n.low && !isLit(n)) continue;             // 概貌抽稀（放大浮现）
         const [sx, sy] = toScreen(n.fx, n.fy);
         const margin = 60 * z;
         if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
         const isHover = n === hovered, isSel = n === selected;
         let alpha = (n.dim ? 0.55 : n.t === 'sub' ? 0.62 : n.soft ? 0.9 : 0.78) * (layerAlpha[n.t] ?? 1);
-        alpha += reduced ? 0 : Math.sin(t * 0.0011 * n.tw + n.phase) * 0.08;
+        alpha += reduced ? 0 : Math.sin(t * 0.0011 * n.tw + n.phase) * 0.045;
         if (isHover || isSel) alpha = 1;
         // 选中态（参照谱系页「按关联」）：选中的与关系链上的高亮放大，其余退为暗星
         if (selected) {
