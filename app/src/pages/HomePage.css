@@ -9,35 +9,34 @@
   display: flex; flex-direction: column; justify-content: center;
   align-items: center; text-align: center;
   padding: 80px 32px;
-  background: #000;
+  background: #030507;
 }
 .home-page { max-height: 100vh; max-height: 100dvh; overflow: hidden; }
 .home-cosmos { position: absolute; inset: 0; }
+.home-cosmos-atmosphere {position:absolute;inset:-12%;pointer-events:none;opacity:.60;background:radial-gradient(ellipse 32% 52% at 27% 41%,rgba(49,70,89,.075),transparent 78%),radial-gradient(ellipse 35% 44% at 76% 67%,rgba(69,58,44,.05),transparent 78%);will-change:transform;transition:opacity 1.8s ease;}
+.home-cosmos.is-active .home-cosmos-atmosphere {opacity:1;}
+.opening-star-near {filter:drop-shadow(0 0 2px rgba(216,226,235,.25));}
+.home-opening-sky {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:1;mask-image:radial-gradient(ellipse 38% 34% at 50% 47%,rgba(0,0,0,.10),rgba(0,0,0,.5) 55%,#000 100%);transition:opacity 1.8s ease;}
+.home-cosmos.is-active .home-opening-sky {opacity:0;}
 .home-cosmos canvas { position: absolute; inset: 0; display: block; }
 .home-cosmos-tip {
-  position: absolute; z-index: 6; pointer-events: none;
-  max-width: 230px; padding: 10px 13px;
-  background: rgba(10, 8, 16, 0.58);
-  border: 1px solid rgba(217, 179, 108, 0.28);
-  border-radius: 6px;
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  text-align: left; opacity: 0; transition: opacity 0.15s;
-  display: flex; flex-direction: column; gap: 3px;
+  position:absolute;z-index:7;left:34px;bottom:32px;
+  width:280px;max-width:calc(100% - 40px);padding:17px 19px;
+  background:rgba(11,16,18,.68);border:1px solid rgba(184,149,106,.19);border-radius:4px;
+  box-shadow:0 9px 30px rgba(0,0,0,.25);text-align:left;
+  display:flex;flex-direction:column;gap:6px;
 }
-.home-cosmos-tip em {
-  font-style: normal; font-family: var(--font-sans);
-  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--ochre);
-}
-.home-cosmos-tip strong {
-  font-family: var(--font-serif); font-size: 14px; font-weight: 500;
-  color: #E8E3D9; line-height: 1.45;
-}
-.home-cosmos-tip span { font-family: var(--font-sans); font-size: 10px; color: rgba(232, 227, 217, 0.55); line-height: 1.5; }
-.home-cosmos-tip i { font-style: normal; font-family: var(--font-sans); font-size: 9px; color: rgba(217, 179, 108, 0.75); margin-top: 2px; }
+.home-cosmos-tip[hidden] {display:none;}
+.home-cosmos-tip em {font:400 11px/1.5 var(--font-sans);letter-spacing:.12em;color:var(--ochre);font-style:normal;}
+.home-cosmos-tip strong {font:400 16px/1.55 var(--font-serif);color:#E8E3D9;overflow-wrap:anywhere;}
+.home-cosmos-tip span,.home-cosmos-tip i {font:400 11px/1.75 var(--font-sans);color:rgba(232,227,217,.68);font-style:normal;}
+.home-cosmos-open {font:400 12px/1.6 var(--font-sans);background:none;color:var(--ochre);border:0;border-top:1px solid rgba(232,227,217,.13);text-align:left;padding:10px 0 0;margin-top:5px;cursor:pointer;}
+.home-cosmos-labels {position:absolute;inset:0;z-index:6;pointer-events:none;}
+.home-cosmos-labels button {position:absolute;pointer-events:auto;max-width:174px;padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:400 12px/1.5 var(--font-serif);color:#E8E3D9;background:none;border:0;text-align:left;text-shadow:0 1px 5px #000,0 0 12px #000;cursor:pointer;}
+.home-cosmos-labels button:hover {color:var(--ochre);}
 .home-hero-overlay {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: radial-gradient(ellipse 48% 40% at 50% 50%, rgba(11, 9, 18, 0.72) 0%, rgba(11, 9, 18, 0.28) 58%, transparent 100%);
+  background: radial-gradient(ellipse 48% 40% at 50% 50%, rgba(3, 5, 7, 0.78) 0%, rgba(3, 5, 7, 0.26) 58%, transparent 100%);
   transition: opacity 1.2s ease;
 }
 /* 揭示后：中央遮罩淡出，宇宙完全裸露 */
@@ -47,7 +46,7 @@
 .home-hero-content {
   position: relative; z-index: 6;
   animation: hero-reveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  transition: opacity 0.22s ease;
+  transition: none;
 }
 /* 点击「立即探索」后：入场动画的 forwards 填充会钉住 opacity:1，必须一并解除，
    文字立刻让位给离子化光点 */
@@ -83,12 +82,13 @@
   text-shadow: 0 4px 60px rgba(0, 0, 0, 0.55);
   animation: fade-in-up 0.8s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.home-hero-divider {
-  width: 64px; height: 1.5px;
-  background: var(--ochre);
-  margin: 0 auto 28px; opacity: 0.7;
-  animation: fade-in-up 0.8s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+.home-hero-invitation {
+  font:400 17px/1.8 var(--font-serif);letter-spacing:.15em;color:rgba(232,227,217,.82);
+  margin:0 0 30px;animation:fade-in-up .8s .3s both;
 }
+.home-hero-continue {display:flex;align-items:center;justify-content:center;gap:10px;margin-top:19px;padding:6px 0;color:rgba(232,227,217,.65);font:400 12px/1.6 var(--font-sans);text-decoration:none;animation:fade-in-up .8s .6s both;}
+.home-hero-continue span {color:var(--ochre);max-width:min(40vw,340px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.home-hero-continue:hover span {color:#E8E3D9;}
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -138,6 +138,7 @@
   .home-cosmos-tip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .home-opening-sky,.home-cosmos-atmosphere {transition:none;}
   .home-hero-content, .home-hero-eyebrow, .home-hero-title, .home-hero-divider,
-  .home-hero-cta { animation: none; transition: none; }
+  .home-hero-cta,.home-hero-invitation,.home-hero-continue { animation: none; transition: none; }
 }
