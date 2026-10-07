@@ -1,3 +1,5 @@
+import EntryHeader from '../components/EntryHeader';
+import { ENTRY_PAGES } from '../data/entryPages';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { loadBooks } from '../data';
@@ -28,7 +30,7 @@ export default function BooksPage() {
   const browseRef = useRef(null);
   const location = useLocation();
   const bookLinkState = { libraryReturn: location.pathname + location.search };
-  useSEO('哲学书库', '浏览哲学经典与研究著作，按思想范围、讨论主题、思想传统与文献类型寻找下一本书。');
+  useSEO(ENTRY_PAGES.books.title, ENTRY_PAGES.books.description);
   useEffect(() => {
     let cancelled = false;
     loadBooks().then(data => { if (!cancelled) { setBooks(Array.isArray(data) ? data : []); setLoading(false); } }).catch(() => { if (!cancelled) setLoading(false); });
@@ -57,7 +59,7 @@ export default function BooksPage() {
     })}</select></label>;
   }
   return <div id="dp-library-page">
-    <header className="dp-library-intro"><div><p className="dp-eyebrow">The philosophy library</p><h1 className="dp-serif">书 库</h1><p className="dp-muted">在书页之间，与思想相遇。</p></div><div className="dp-edition"><em>A place for a slower thought.</em><p className="dp-muted">{loading ? '正在整理藏书…' : `${books.length} 部馆藏 · ${catalog.filter(b => b.facets.readable).length} 部可在线阅读`}</p></div></header>
+    <EntryHeader page="books" meta={loading ? '正在整理藏书…' : `${books.length} 部馆藏 · ${catalog.filter(b => b.facets.readable).length} 部可在线阅读`} />
     {!hasFilters && <section className="dp-feature" aria-label="本期选读"><div className="dp-feature-copy"><p className="dp-eyebrow">本期选读 / 存在与生活</p><h2 className="dp-serif">我们如何<br />成为我们自己？</h2><p>从日常生活出发，走近此在、自由与荒诞。让一个问题，带你进入一本书。</p><Link className="dp-link" to="/book/c5013f33fe01" state={bookLinkState}>翻开《存在与时间》<span aria-hidden="true">↗</span></Link></div><div className="dp-still-life">{featureBooks.map(book => <Link key={book.id} to={`/book/${book.id}`} state={bookLinkState} aria-label={`查看《${book.title}》`}><BookCover book={book} featured /></Link>)}</div></section>}
     <section className="dp-browse" ref={browseRef} aria-label="浏览藏书"><div className="dp-browse-head"><h2 className="dp-serif">浏览藏书</h2><LibrarySearch query={filters.q} onSearch={q => change('q', q)} /></div>
       <div className="dp-filters"><div className="dp-pills" role="group" aria-label="快捷主题">{[{ id: '', label: '全部' }, ...BOOK_TOPICS.slice(0,3)].map(f => <button type="button" key={f.id} aria-pressed={filters.topic === f.id} onClick={() => change('topic', f.id)}>{f.label}</button>)}</div><select className="dp-select" aria-label="所有主题" value={filters.topic} onChange={e => change('topic', e.target.value)}><option value="">所有主题</option>{BOOK_TOPICS.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}</select></div>

@@ -1,3 +1,5 @@
+import EntryHeader from '../components/EntryHeader';
+import { ENTRY_PAGES } from '../data/entryPages';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigationType, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
@@ -56,7 +58,7 @@ export default function GenealogyPage() {
   const [width, setWidth] = useState(960);
   const canvasRef = useRef(null);
   const focusId = hovered || selected?.id;
-  useSEO('哲学谱系', '按时间、关联与哲学问题浏览哲学流派。');
+  useSEO(ENTRY_PAGES.genealogy.title, ENTRY_PAGES.genealogy.description);
 
   function update(values) {
     if (Object.hasOwn(values, 'q')) setSearchText(values.q || '');
@@ -123,9 +125,7 @@ export default function GenealogyPage() {
       <section className="atlas-hero">
         <img className="atlas-hero-image" src={ossImg('/schools/理性主义.webp', { w: 1400 })} onError={ossFallback} alt="" fetchPriority="high" />
         <div className="atlas-hero-wash" aria-hidden="true" />
-        <div className="atlas-kicker">{kicker}</div>
-        <h1>{heading}</h1>
-        <p className="atlas-hero-count">{catalog.length || '—'} 个流派 <span>·</span> {QUESTIONS.length} 个问题</p>
+        <EntryHeader page="genealogy" meta={`${catalog.length || '—'} 个流派 · ${QUESTIONS.length} 个问题`} />
       </section>
 
       <div className="atlas-content">
@@ -138,6 +138,8 @@ export default function GenealogyPage() {
             <label><span className="sr-only">筛选地区</span><select aria-label="筛选地区" value={tradition} onChange={event => update({ region: event.target.value })}>{TRADITIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
           </div>
         </div>
+
+        <p className="atlas-view-label"><span>{heading}</span><small>{kicker}</small></p>
 
         {mode === 'question' && <div className="atlas-question-bar">
           <label className="atlas-question-select"><span>哲学问题</span><select aria-label="选择哲学问题" value={question.id} onChange={event => update({ question: event.target.value })}>{questionCategories.map(category => <optgroup key={category} label={category}>{QUESTIONS.filter(item => item.category === category).map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</optgroup>)}</select></label>
