@@ -1,3 +1,4 @@
+import { moreAlbumPath } from '../../data/moreExplorer';
 import HeroSection from '../school/HeroSection';
 import { ossImg, ossFallback } from '../../data/ossUrls';
 /**
@@ -114,7 +115,7 @@ export default function MythologyDetail({ data, topic }) {
       {/* ═══ HERO ═══ */}
       <HeroSection name={data.name} englishName={data.en} subtitle={data.subtitle}
         heroImage={data.heroImage} quote={data.heroQuote} quoteKind="quote" quoteAuthor={data.heroQuoteAuthor || data.subtitle}
-        backTo={`/more/${d.id}`} backLabel={`返回${d.name}`}
+        backTo={moreAlbumPath(d.id, data.id)} backLabel={`返回${d.name}`}
         startId={CHAPTERS[0].id} startLabel="开始阅读概述" chapters={CHAPTERS}
         footerMeta={(data.meta || []).map(m => m.value).slice(0, 2).join(' · ')} />
 
@@ -318,7 +319,7 @@ export default function MythologyDetail({ data, topic }) {
           <div className="school-ending-links">
             <a href="#sec-overview">回到概述 ↑</a>
             <a href="#" onClick={e => { e.preventDefault(); navigate('/more'); }}>更多索引 →</a>
-            <a href="#" onClick={e => { e.preventDefault(); navigate(`/more/${d.id}`); }}>返回{d.name} →</a>
+            <a href="#" onClick={e => { e.preventDefault(); navigate(moreAlbumPath(d.id, data.id)); }}>返回{d.name} →</a>
           </div>
         </section>
 

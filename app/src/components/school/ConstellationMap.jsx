@@ -76,7 +76,7 @@ export default function ConstellationMap({ thinkers = [], relations = [], refere
           </div>
           <div className="school-star-legend" aria-label="关系图例">{[['lineage', '师承'], ['influence', '影响'], ['criticism', '批判'], ['context', '交流与关联']].map(([kind, label]) => <span key={kind}><i className={`school-star-swatch school-star-swatch--${kind}`} />{label}</span>)}</div>
         </div>
-        <aside className={`school-star-profile ${person?.portrait ? 'has-portrait' : ''}`} aria-live="polite" aria-label="节点详情">
+        <aside key={selected.name} className={`school-star-profile ${person?.portrait ? 'has-portrait' : ''}`} aria-live="polite" aria-label="节点详情">
           {person?.portrait && <Portrait key={person.portrait} src={person.portrait} name={selected.name} className="school-star-profile-photo" />}
           <div className="school-star-profile-intro"><span className="school-star-profile-school">{selected.sub || (selected.relatedOnly ? '相关节点' : '')}</span><h3>{selected.name}</h3>{selected.era && <span className="school-star-profile-era">{selected.era}</span>}{selected.key && <p className="school-star-key">{selected.key}</p>}</div>
           {selectedRelations.length > 0 && <div className="school-star-profile-block"><h4>思想联系</h4><div className="school-star-connections">{selectedRelations.map((relation, index) => {

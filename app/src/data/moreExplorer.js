@@ -101,3 +101,9 @@ export const MORE_FIELDS = [philosophy, ...DISCIPLINES.map(d => ({
   topics: (d.topics?.filter(t => !t.hidden) || d.seeds.map((name, i) => ({ id: String(i), name })))
     .map(t => ({ ...t, image: t.heroImage, note: t.note?.replace('拉美 explosion', '拉美文学浪潮') })),
 }))].map(f => ({ ...f, image: `/more/discipline-art-v1/${f.code}.webp` }));
+
+export function moreAlbumPath(discipline, topic) {
+  const params = new URLSearchParams({ discipline, album: 'open' });
+  if (topic) params.set('topic', topic);
+  return `/more?${params}`;
+}

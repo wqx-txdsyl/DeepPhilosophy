@@ -1,0 +1,30 @@
+/* Homepage's quiet rise-and-fade rhythm, with no paint blur or image delay. */
+.dp-motion-pending{opacity:0}
+@keyframes dp-panel-enter{from{opacity:0}to{opacity:1}}
+@keyframes dp-text-enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dp-reading-cue{0%,100%{transform:translateY(-2px);opacity:.75}50%{transform:translateY(2px);opacity:1}}
+.dp-presence{animation:dp-panel-enter 220ms ease-out backwards;transition:opacity 140ms ease-out}
+.dp-presence.is-leaving{animation:none;opacity:0;pointer-events:none}
+.school-hero-copy>.school-kicker{animation:dp-text-enter 650ms 50ms cubic-bezier(.22,1,.36,1) backwards}
+.school-hero-copy>h1{animation:dp-text-enter 720ms 100ms cubic-bezier(.22,1,.36,1) backwards}
+.school-hero-copy>.school-hero-quote{animation:dp-text-enter 650ms 170ms cubic-bezier(.22,1,.36,1) backwards}
+.school-hero-copy>.school-hero-author{animation:dp-text-enter 600ms 230ms cubic-bezier(.22,1,.36,1) backwards}
+.school-start>span{display:block;animation:dp-reading-cue 2.8s ease-in-out infinite}
+.school-detail .school-branch-detail{display:grid;grid-template-rows:0fr;opacity:0;padding-top:0;transition:grid-template-rows 320ms cubic-bezier(.22,1,.36,1),opacity 220ms ease}
+.school-detail .school-branch.is-open>.school-branch-detail{grid-template-rows:1fr;opacity:1}
+.school-branch-detail-inner{min-height:0;overflow:hidden;padding-top:0;transition:padding-top 320ms cubic-bezier(.22,1,.36,1)}
+.school-branch.is-open>.school-branch-detail>.school-branch-detail-inner{padding-top:17px}
+.school-detail .school-river-reveal{opacity:0;transition:grid-template-rows 340ms cubic-bezier(.22,1,.36,1),opacity 200ms ease}
+.school-detail .school-river-event.is-open .school-river-reveal{opacity:1}
+#author-portrait .hp-milestone .hp-life-reading{opacity:0;transition:grid-template-rows 340ms cubic-bezier(.22,1,.36,1),opacity 200ms ease}
+#author-portrait .hp-milestone.is-open .hp-life-reading{opacity:1}
+.school-glossary-popover,.school-quote-popover,.hp-term-popover,.mtd-kw-pop,
+.school-star-profile,.hp-person,.dp-concept-note,.postcard-detail{animation:dp-panel-enter 260ms ease-out backwards}
+.school-star-profile,.hp-person{transition:border-color 220ms ease,background-color 220ms ease}
+.school-branch-trigger,.s-profile-tabs button,.dp-concept-terms button,.motion-controls button{transition:color 220ms ease,background-color 220ms ease,border-color 220ms ease}
+@media(prefers-reduced-motion:reduce){
+  .dp-motion-pending{opacity:1!important}
+  .dp-presence,.school-hero-copy>*,.school-start>span,.school-branch-detail,.school-branch-detail-inner,
+  .school-river-reveal,.hp-life-reading,.school-glossary-popover,.school-quote-popover,.hp-term-popover,
+  .mtd-kw-pop,.school-star-profile,.hp-person,.dp-concept-note,.postcard-detail{animation:none!important;transition:none!important}
+}
