@@ -311,9 +311,10 @@ export default function SchoolDetailPage() {
     ['school-works', '典籍', data.works.length], ['school-conclusion', '结语', data.conclusion],
   ].filter(([, , visible]) => visible);
   return <div className="school-detail">
-    <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} quoteKind={data.quoteKind} heroImage={loaded.image} englishName={ENG_NAMES[data.name]} />
+    <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} quoteKind={data.quoteKind} heroImage={loaded.image} englishName={ENG_NAMES[data.name]}
+      chapters={chapters.map(([id, label], index) => ({ id, name: label, num: ['I','II','III','IV','V','VI','VII','VIII'][index] }))}
+      onChapterSelect={goToSection} />
     <div className="school-reading" id="school-content">
-      <nav className="school-chapter-nav" aria-label="流派章节">{chapters.map(([id, label], index) => <a key={id} href={`#${id}`} onClick={event => { event.preventDefault(); goToSection(id); }}><small>{['I','II','III','IV','V','VI','VII','VIII'][index]}</small>{label}</a>)}</nav>
       {loaded.branch && <p className="school-branch-context">正在{data.name}中阅读“{loaded.branch}”。<Link to={`/school/${encodeURIComponent(data.name)}`}>查看所属流派</Link></p>}
       <OverviewSection overview={data.overview} />
       <SubSchoolsSection key={loaded.branch || data.name} schoolName={data.name} subSchools={data.subSchools} thinkers={data.thinkers} cihai={data.cihai} references={references} initialBranch={loaded.branch} onSelectPerson={openPerson} onSelectConcept={openConcept} />

@@ -1,3 +1,4 @@
+import HeroSection from '../school/HeroSection';
 import { ossImg, ossFallback } from '../../data/ossUrls';
 /**
  * MythologyDetail — 神话体系详情页（"更多"三级页，数据驱动，适用于全部神话体系）
@@ -13,7 +14,7 @@ import { ossImg, ossFallback } from '../../data/ossUrls';
  */
 import { Fragment, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSEO } from '../../utils/seo';
 import PantheonSection from './PantheonSection';
 import '../school/ConstellationMap.css';
@@ -111,30 +112,13 @@ export default function MythologyDetail({ data, topic }) {
     <div className="school-detail mtd">
 
       {/* ═══ HERO ═══ */}
-      <section className="school-hero-section school-hero" aria-label={`${data.name}封面`}>
-        <img className="school-hero-art" src={ossImg(data.heroImage || '/schools/default.webp', { w: 1280 })} alt="" fetchPriority="high" onError={ossFallback} />
-        <header className="school-masthead">
-          <Link className="school-brand" to="/">DeepPhilosophy</Link>
-          <Link className="school-back" to={`/more/${d.id}`}>← 返回{d.name}</Link>
-        </header>
-        <div className="school-hero-copy">
-          <p className="school-kicker">{data.en}</p>
-          <h1>{data.name}</h1>
-          <p className="school-hero-quote">{data.heroQuote ? `“${data.heroQuote}”` : ''}</p>
-          <p className="school-hero-author">{data.heroQuoteAuthor || data.subtitle}</p>
-        </div>
-        <div className="school-hero-foot">
-          <span>{data.subtitle}</span>
-          <a href={`#${CHAPTERS[0].id}`} className="school-start" aria-label="开始阅读概述">↓</a>
-          <span>{(data.meta || []).map(m => m.value).slice(0, 2).join(' · ')}</span>
-        </div>
-      </section>
+      <HeroSection name={data.name} englishName={data.en} subtitle={data.subtitle}
+        heroImage={data.heroImage} quote={data.heroQuote} quoteKind="quote" quoteAuthor={data.heroQuoteAuthor || data.subtitle}
+        backTo={`/more/${d.id}`} backLabel={`返回${d.name}`}
+        startId={CHAPTERS[0].id} startLabel="开始阅读概述" chapters={CHAPTERS}
+        footerMeta={(data.meta || []).map(m => m.value).slice(0, 2).join(' · ')} />
 
       <div className="school-reading">
-
-        <nav className="school-chapter-nav" aria-label="章节导航">
-          {CHAPTERS.map(c => <a key={c.id} href={`#${c.id}`}><small>{c.num}</small>{c.name}</a>)}
-        </nav>
 
         {/* ═══ I · 概述 ═══ */}
         <section id={CHAPTERS[0].id} className="school-section school-overview">

@@ -1,3 +1,4 @@
+import HeroSection from '../school/HeroSection';
 import { ossImg, ossFallback } from '../../data/ossUrls';
 /**
  * ReligionDetail — 宗教体系详情页（"更多"三级页，宗教专用布局）
@@ -6,7 +7,7 @@ import { ossImg, ossFallback } from '../../data/ossUrls';
  *   → V 仪式与实践 → VI 宗派与分支 → VII 哲学勾连 → VIII 交叉入口
  * 共用 school-detail 主题（与流派/神话同一设计语言）
  */
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSEO } from '../../utils/seo';
 import '../../pages/SchoolDetailPage.css';
 import './more-detail.css';
@@ -52,29 +53,13 @@ export default function ReligionDetail({ data, topic }) {
     <div className="school-detail mtd">
 
       {/* ═══ HERO ═══ */}
-      <section className="school-hero-section school-hero" aria-label={`${data.name}封面`}>
-        {data.heroImage && <img className="school-hero-art" src={ossImg(data.heroImage, { w: 1280 })} alt="" fetchPriority="high" onError={ossFallback} />}
-        <header className="school-masthead">
-          <Link className="school-brand" to="/">DeepPhilosophy</Link>
-          <Link className="school-back" to={`/more/${d.id}`}>← 返回{d.name}</Link>
-        </header>
-        <div className="school-hero-copy">
-          <p className="school-kicker">{data.en}</p>
-          <h1>{data.name}</h1>
-          <p className="school-hero-quote">{data.heroQuote ? `“${data.heroQuote}”` : ''}</p>
-          <p className="school-hero-author">{data.heroQuoteSource || ''}</p>
-        </div>
-        <div className="school-hero-foot">
-          <span>{data.subtitle}</span>
-          <a href={`#${CHAPTERS[0].id}`} className="school-start" aria-label="开始阅读概述">↓</a>
-          <span>{(data.meta || []).map(m => m.value).slice(0, 2).join(' · ')}</span>
-        </div>
-      </section>
+      <HeroSection name={data.name} englishName={data.en} subtitle={data.subtitle}
+        heroImage={data.heroImage} quote={data.heroQuote} quoteKind="quote" quoteAuthor={data.heroQuoteSource || ''}
+        backTo={`/more/${d.id}`} backLabel={`返回${d.name}`}
+        startId={CHAPTERS[0].id} startLabel="开始阅读概述" chapters={CHAPTERS}
+        footerMeta={(data.meta || []).map(m => m.value).slice(0, 2).join(' · ')} />
 
       <div className="school-reading">
-        <nav className="school-chapter-nav" aria-label="章节导航">
-          {CHAPTERS.map(c => <a key={c.id} href={`#${c.id}`}><small>{c.num}</small>{c.name}</a>)}
-        </nav>
 
         {/* ═══ I · 概述 ═══ */}
         <section id={CHAPTERS[0].id} className="school-section school-overview">
@@ -99,7 +84,6 @@ export default function ReligionDetail({ data, topic }) {
             <div className="mtd-river-spine" aria-hidden="true" />
             <div className="school-river-events">
               {data.lineage.events.map(ev => {
-                const open = false; // static for now
                 return (
                   <div key={ev.title} className={`school-river-event ${ev.major ? 'is-major' : ''}`} style={{ '--event-color': ev.color || 'var(--ochre)' }}>
                     <span className="school-river-node" />

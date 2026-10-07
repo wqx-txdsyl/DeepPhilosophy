@@ -1,13 +1,13 @@
+import HeroSection from '../components/school/HeroSection';
 /**
  * 更多 — 主题详情页（三级）
  * /more/:discipline/:topic
  * 有专用详情布局的题材走 DETAIL_REGISTRY（如神话体系），
  * 其余题材回退到"规划中"占位页——新详情完成后在此登记即可。
  */
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import { getTopic } from '../data/moreContent';
-import { ossImg, ossFallback } from '../data/ossUrls';
 import { ALL_DETAILS } from '../data/moreTopics';
 import ReligionDetail from '../components/more/ReligionDetail';
 import MythologyDetail from '../components/more/MythologyDetail';
@@ -21,24 +21,10 @@ function ChristianityHub({ data }) {
   const navigate = useNavigate();
   return (
     <div className="school-detail mtd">
-      <section className="school-hero-section school-hero">
-        {data.heroImage && <img className="school-hero-art" src={ossImg(data.heroImage, { w: 1280 })} alt="" fetchPriority="high" onError={ossFallback} />}
-        <header className="school-masthead">
-          <Link className="school-brand" to="/">DeepPhilosophy</Link>
-          <Link className="school-back" to="/more/religion">← 返回宗教</Link>
-        </header>
-        <div className="school-hero-copy">
-          <p className="school-kicker">{data.en}</p>
-          <h1>{data.name}</h1>
-          <p className="school-hero-quote">{data.heroQuote ? `\u201C${data.heroQuote}\u201D` : ''}</p>
-          <p className="school-hero-author">{data.heroQuoteSource || ''}</p>
-        </div>
-        <div className="school-hero-foot">
-          <span>{data.subtitle}</span>
-          <a href="#branches" className="school-start" aria-label="查看三分支">↓</a>
-          <span>东正 · 天主 · 新教</span>
-        </div>
-      </section>
+      <HeroSection name={data.name} englishName={data.en} subtitle={data.subtitle}
+        heroImage={data.heroImage} quote={data.heroQuote} quoteKind="quote" quoteAuthor={data.heroQuoteSource}
+        backTo="/more/religion" backLabel="返回宗教" startId="branches" startLabel="查看三大分支"
+        footerMeta="东正 · 天主 · 新教" chapters={[{ id: 'branches', num: 'I', name: '三大分支' }]} />
       <div className="school-reading">
         <section id="branches" className="school-section">
           <header className="school-section-heading centered">
