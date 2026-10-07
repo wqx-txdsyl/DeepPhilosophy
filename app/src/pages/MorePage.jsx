@@ -26,7 +26,7 @@ function wedge(start, end) {
 }
 
 export default function MorePage() {
-  useSEO('更多 — 思想的八个入口 | DeepPhilosophy', '转动学科圆盘，探索哲学、神话、宗教、文学、心理、社会、历史与政治。');
+  useSEO('更多 — 思想的八个入口', '转动学科圆盘，探索哲学、神话、宗教、文学、心理、社会、历史与政治。');
   const [state, dispatch] = useReducer(reducer, initial);
   const bounds = useRef(null), fan = useRef(null), drag = useRef(null), suppressClick = useRef(false);
   const current = useRef(state);
