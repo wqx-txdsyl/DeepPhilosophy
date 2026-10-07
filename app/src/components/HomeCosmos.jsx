@@ -361,6 +361,10 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
     }
 
     function draw(t) {
+      // 闲置降频：整帧跳过（含清屏），画面保持上一帧内容——节流且无频闪
+      const idle = t - lastActiveRef.current > 1200;
+      frames++;
+      if (idle && !reduced && frames % 3 !== 0) { raf = requestAnimationFrame(draw); return; }
       ctx.clearRect(0, 0, W, H);
       if (!activeRef.current) { if (!reduced) raf = requestAnimationFrame(draw); return; }
       const raw = Math.min(1, Math.max(0, (t - activateAtRef.current) / 2000));
@@ -401,9 +405,6 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         sub: 0.45 + 0.55 * smooth(1, 2, z),
       };
 
-      const idle = t - lastActiveRef.current > 1200; // 闲置时整帧降频到 ~20fps（无频闪）
-      frames++;
-      if (idle && !reduced && frames % 3 !== 0) { raf = requestAnimationFrame(draw); return; }
       for (const n of nodes) {
         if (z < 1.9 && n.low && !isLit(n)) continue;             // 概貌抽稀（放大浮现）
         const [sx, sy] = toScreen(n.fx, n.fy);
