@@ -13,6 +13,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { QUESTIONS } from '../data/genealogyTopics';
+import { layoutHomeSkyLabels } from './homeSkyLabels';
 
 const REGION_COLOR = { '西方': [217, 179, 108], '东方': [127, 163, 204], '世界': [143, 185, 143] };
 const BONE = 'rgba(232, 227, 217,';
@@ -25,7 +26,6 @@ function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h
 function mulberry32(seed) { let a = seed; return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 function gauss(rand) { return (rand() + rand() + rand()) / 1.5 - 1; }
 const clamp01 = (v, lo = 0.02, hi = 0.98) => Math.min(hi, Math.max(lo, v));
-const smooth = (a, b, v) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
 
 // 均匀有机团簇中心（无疏密斑驳）
 function clusterCenters(count, rand) {
@@ -52,8 +52,8 @@ function makeSprite(rgb, size, soft) {
     g.addColorStop(0.55, `rgba(${r},${gc},${b},0.18)`);
   } else {
     g.addColorStop(0, 'rgba(255,252,245,1)');
-    g.addColorStop(0.38, `rgba(${r},${gc},${b},0.95)`);
-    g.addColorStop(0.7, `rgba(${r},${gc},${b},0.28)`);
+    g.addColorStop(0.12, `rgba(${r},${gc},${b},0.35)`);
+    g.addColorStop(0.4, `rgba(${r},${gc},${b},0.055)`);
   }
   g.addColorStop(1, `rgba(${r},${gc},${b},0)`);
   ctx.fillStyle = g;
@@ -61,24 +61,30 @@ function makeSprite(rgb, size, soft) {
   return c;
 }
 
+const escapeHTML = value => String(value || '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const TYPE_LABEL = { philosopher: '哲人', school: '流派', sub: '子流派', book: '著作', question: '思想之问', quote: '金句', cihai: '辞海' };
 
-export default function HomeCosmos({ philosophers, books, active = false }) {
+export default function HomeCosmos({ philosophers, books, active = false, interactive = true, sceneRef, birthStarsRef }) {
   const navigate = useNavigate();
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
   const tipRef = useRef(null);
   const activeRef = useRef(active);
+  const interactiveRef = useRef(interactive);
+  const labelsRef = useRef(null);
+  useEffect(() => { interactiveRef.current = interactive; }, [interactive]);
   const activateAtRef = useRef(0);
   useEffect(() => {
     if (active && !activeRef.current) activateAtRef.current = performance.now();
     activeRef.current = active;
-  }, [active]);
+    sceneRef?.current?.renderFrame();
+  }, [active, sceneRef]);
 
   useEffect(() => {
     const wrap = wrapRef.current, canvas = canvasRef.current;
     if (!wrap || !canvas || !philosophers?.length || !books?.length) return;
     const ctx = canvas.getContext('2d');
+    const tipElement=tipRef.current,labelsElement=labelsRef.current;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const rand = mulberry32(20261006);
 
@@ -209,6 +215,16 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         });
       });
 
+      for (const n of nodes) {
+        const visual=mulberry32(hashStr(n.t+':'+n.name));const p=visual();
+        const fine=n.t==='quote'||n.t==='cihai'||n.t==='book';
+        n.core=fine?.40+p*p*.48:n.t==='sub'?.35+p*.38:n.t==='school'?.83+p*.52:.38+p*p*p*1.08;
+        n.light=fine?.43+Math.pow(visual(),1.5)*.47:.58+visual()*.37;
+        if(n.t==='philosopher'&&n.fr>2.45){n.core=1.30+visual()*.7;n.light=1.12;}
+        n.skyRGB=visual()<.075?[211,222,236]:visual()<.08?[227,211,182]:[224,225,226];
+        n.skyTwinkle=visual()<.035;
+      }
+
       grid = new Map();
       for (const n of nodes) {
         const k = cellKey(n.fx, n.fy);
@@ -298,8 +314,8 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
 
     // ---- 尘埃 ----
     const dust = [];
-    for (let i = 0; i < 650; i++) dust.push({ fx: rand(), fy: rand(), r: 0.6 + rand() * 1.1, phase: rand() * 6.28 });
-    for (let i = 0; i < 14; i++) dust.push({ fx: rand(), fy: rand(), r: 1.7 + rand() * 0.8, phase: rand() * 6.28 });
+    for (let i = 0; i < 1800; i++) dust.push({ fx: rand(), fy: rand(), r: 0.28 + rand() * 0.55, phase: rand() * 6.28 });
+    for (let i = 0; i < 14; i++) dust.push({ fx: rand(), fy: rand(), r: 0.8 + rand() * 0.5, phase: rand() * 6.28 });
 
     // ---- 精灵 ----
     const spriteCache = new Map();
@@ -325,6 +341,8 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
 
     // ---- 交互状态 ----
     let hovered = null, selected = null;
+    let labelNodes=[],labelKey='';
+    const hideTip=()=>{if(tipRef.current)tipRef.current.hidden=true;};
     let lastActiveRef = { current: 0 };
     let frames = 0;
     const isLit = n => litMap.has(n);
@@ -360,15 +378,14 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
       return best;
     }
 
-    function draw(t) {
+    function draw(t, schedule = true) {
       // 闲置降频：整帧跳过（含清屏），画面保持上一帧内容——节流且无频闪
-      const idle = t - lastActiveRef.current > 1200;
+      const idle = interactiveRef.current && t - lastActiveRef.current > 1200;
       frames++;
-      if (idle && !reduced && frames % 3 !== 0) { raf = requestAnimationFrame(draw); return; }
+      if (schedule && idle && !reduced && frames % 3 !== 0) { raf = requestAnimationFrame(draw); return; }
       ctx.clearRect(0, 0, W, H);
-      if (!activeRef.current) { if (!reduced) raf = requestAnimationFrame(draw); return; }
       const raw = Math.min(1, Math.max(0, (t - activateAtRef.current) / 2000));
-      const dim = 0.35 + 0.65 * (raw * raw * (3 - 2 * raw));
+      const dim = activeRef.current ? 0.20 + 0.80 * (raw * raw * (3 - 2 * raw)) : 0.20;
       const z = cam.zoom;
 
       const visible = [[0, 0], [1, 1]];
@@ -397,58 +414,46 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         }
       }
 
-      // 全层级从概貌起可见（微星为暗星底纹），缩放使其变亮变大——密密麻麻铺满
-      const layerAlpha = {
-        quote: 0.30 + 0.70 * smooth(1, 3, z),
-        cihai: 0.32 + 0.68 * smooth(1, 3, z),
-        book: 0.38 + 0.62 * smooth(1, 2.5, z),
-        sub: 0.45 + 0.55 * smooth(1, 2, z),
-      };
-
-      for (const n of nodes) {
-        if (z < 1.9 && n.low && !isLit(n)) continue;             // 概貌抽稀（放大浮现）
-        const [sx, sy] = toScreen(n.fx, n.fy);
-        const margin = 60 * z;
-        if (sx < -margin || sx > W + margin || sy < -margin || sy > H + margin) continue;
-        const isHover = n === hovered, isSel = n === selected;
-        let alpha = (n.dim ? 0.55 : n.t === 'sub' ? 0.62 : n.soft ? 0.9 : 0.78) * (layerAlpha[n.t] ?? 1);
-        alpha += reduced ? 0 : Math.sin(t * 0.0011 * n.tw + n.phase) * 0.045;
-        if (isHover || isSel) alpha = 1;
-        // 选中态（参照谱系页「按关联」）：选中的与关系链上的高亮放大，其余退为暗星
-        if (selected) {
-          const related = litMap.has(n);
-          const k = Math.min(1, Math.max(0, ((t - litAt) / 1000) / 0.4));
-          if (related) alpha = 1;
-          else alpha *= 1 - 0.75 * k; // 淡至 25%，仍可见
-        }
-
-        const litBoost = selected && (isSel || litMap.has(n)) ? 1.3 : 1;
-        const size = n.fr * (isHover || isSel ? 5 : n.soft ? 4 : 3.6) * (0.55 + 0.45 * Math.min(3.2, z)) * (0.6 + 0.4 * dim) * 1.15 * litBoost;
-
-        const fa = Math.max(0.03, Math.min(1, alpha)) * dim;
-        if (fa >= 0.045) { // 透明度过低的星跳过绘制（高分屏性能）
-          ctx.globalAlpha = fa;
-          ctx.drawImage(sprite(n.rgb, n.fr, n.soft), sx - size / 2, sy - size / 2, size, size);
-          ctx.globalAlpha = 1;
-        }
+      for(const star of birthStarsRef?.current||[]){
+        const [x,y]=toScreen(star.fx,star.fy);if(x<0||x>W||y<0||y>H)continue;
+        ctx.fillStyle=`rgba(${star.rgb.join(',')},${star.a*dim})`;
+        ctx.beginPath();ctx.arc(x,y,star.r*(.8+.2*Math.sqrt(z/star.zoom)),0,Math.PI*2);ctx.fill();
       }
-      // 固定提示卡跟随选中星
-      if (selected && tipRef.current) {
-        const [sx, sy] = toScreen(selected.fx, selected.fy);
-        tipRef.current.style.left = Math.min(Math.max(sx + 14, 8), W - 248) + 'px';
-        tipRef.current.style.top = Math.max(8, sy - 14) + 'px';
+      for(const n of nodes){
+        const [x,y]=toScreen(n.fx,n.fy);if(x<-20||x>W+20||y<-20||y>H+20)continue;
+        const lit=isLit(n),hot=n===hovered||n===selected;
+        const density=.54+.24*Math.min(1.8,Math.exp(-((n.fx-.25)**2/.025+(n.fy-.30)**2/.045))+Math.exp(-((n.fx-.72)**2/.07+(n.fy-.66)**2/.015))+Math.exp(-((n.fx-.58)**2/.05+(n.fy-.22)**2/.027)))+.075*Math.sin(18*n.fx+5*n.fy)*Math.sin(13*n.fy-3*n.fx);
+        let alpha=n.light*density*1.8*dim;
+        if(selected&&!lit)alpha*=.72;
+        if(n.skyTwinkle&&!reduced)alpha*=.88+.12*Math.sin(t*.0007+n.phase);
+        let radius=n.core*(.85+.23*Math.sqrt(z));
+        if(lit){alpha=.98*dim;radius=Math.max(1.4,radius*1.3);}
+        if(hot)radius*=1.22;
+        if(radius>.9){const size=(radius*9+3)*.85;ctx.globalAlpha=Math.min(1,alpha)*(lit?.7:.4);ctx.drawImage(sprite(n.skyRGB,n.fr,false),x-size/2,y-size/2,size,size);ctx.globalAlpha=1;}
+        ctx.fillStyle=`rgba(${lit?'232,210,165':n.skyRGB.join(',')},${Math.min(.96,alpha)})`;
+        ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
       }
-      if (!reduced) raf = requestAnimationFrame(draw);
+      if(selected&&labelsRef.current&&tipRef.current){
+        const key=[cam.cx,cam.cy,cam.zoom,W,H,tipRef.current.offsetHeight].join('/');
+        if(key!==labelKey){labelKey=key;layoutHomeSkyLabels(labelsRef.current,tipRef.current,labelNodes,W,H,toScreen);}
+      }
+      if (schedule && !reduced) raf = requestAnimationFrame(draw);
     }
+    const bridge={
+      getStars:()=>nodes.map(n=>{const [x,y]=toScreen(n.fx,n.fy);return{x,y,r:Math.max(.5,Math.min(1.25,n.core*(.85+.23*Math.sqrt(cam.zoom)))),a:Math.max(.45,Math.min(.88,n.light)),rgb:n.skyRGB};}).filter(p=>p.x>20&&p.x<W-20&&p.y>102&&p.y<H-75),
+      toWorld,zoom:()=>cam.zoom,renderFrame:()=>draw(performance.now(),false),
+    };
+    if(sceneRef)sceneRef.current=bridge;
     let raf = requestAnimationFrame(draw);
 
     // ---- 指针交互：拖拽平移 / 滚轮缩放 / 悬停 / 点击 ----
     let dragging = false, moved = 0, lastP = null;
     function onDown(e) {
+      if(!activeRef.current||!interactiveRef.current)return;
       dragging = true; moved = 0; lastP = { x: e.clientX, y: e.clientY };
     }
     function onMove(e) {
-      if (!activeRef.current) return;
+      if (!activeRef.current || !interactiveRef.current) return;
       lastActiveRef.current = performance.now();
       if (dragging && lastP) {
         const dx = e.clientX - lastP.x, dy = e.clientY - lastP.y;
@@ -458,7 +463,7 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         clampCam();
         if (moved > 5) {
           hovered = null;
-          if (!selected && tipRef.current) tipRef.current.style.opacity = '0'; // 选中期间固定卡保持
+          if (!selected && tipRef.current) hideTip(); // 选中期间固定卡保持
           canvas.style.cursor = 'grabbing';
         }
         return;
@@ -470,12 +475,9 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
       if (hit !== hovered) {
         hovered = hit;
         canvas.style.cursor = hit ? 'pointer' : 'default';
-        if (hit) setTip(hit); else if (tipRef.current) tipRef.current.style.opacity = '0';
+        if (hit) setTip(hit); else if (tipRef.current) hideTip();
       }
-      if (tipRef.current && hovered && !selected) {
-        tipRef.current.style.left = Math.min(mx + 16, W - 248) + 'px';
-        tipRef.current.style.top = Math.max(10, my - 14) + 'px';
-      }
+
     }
 
     function setTip(hit) {
@@ -486,17 +488,37 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
         : hit.t === 'quote' ? (hit.author ? `—— ${hit.author}` : '')
         : hit.sub || '';
       const title = hit.t === 'quote' && hit.name.length > 42 ? hit.name.slice(0, 42) + '……' : hit.name;
-      tipRef.current.innerHTML = `<em>${TYPE_LABEL[hit.t]}</em><strong>${title}</strong>${meta ? `<span>${meta}</span>` : ''}<i>${hit.t === 'quote' ? '点击查看出处' : hit.t === 'cihai' ? '点击查看辞条' : '点击点亮'}</i>`;
-      tipRef.current.style.opacity = '1';
+      tipRef.current.hidden=false;
+      tipRef.current.style.pointerEvents=selected?'auto':'none';
+      tipRef.current.innerHTML=`<em>${TYPE_LABEL[hit.t]}</em><strong>${escapeHTML(title)}</strong>${meta?`<span>${escapeHTML(meta)}</span>`:''}${selected?'<button class="home-cosmos-open" type="button" data-open>查看'+(hit.t==='quote'?'出处':hit.t==='cihai'?'辞条':TYPE_LABEL[hit.t])+' ↗</button>':'<i>点击点亮关系</i>'}`;
     }
+    function selectStar(hit){
+      selected=hit;const {pairs,lit}=adjacency(hit);litPairs=pairs;litMap=lit;litAt=performance.now();setTip(hit);
+      labelNodes=[...lit.keys()].filter(n=>n!==hit);labelKey='';
+      labelsRef.current.innerHTML=labelNodes.map((n,i)=>`<button type="button" data-node="${i}" aria-label="点亮${escapeHTML(n.name)}">${escapeHTML(n.name)}</button>`).join('');
+      draw(performance.now(),false);
+    }
+    function destination(hit){
+      if(hit.t==='philosopher')return `/author/${encodeURIComponent(hit.name)}`;
+      if(hit.t==='school')return `/school/${encodeURIComponent(hit.name)}`;
+      if(hit.t==='book')return `/book/${hit.id}`;
+      if(hit.t==='question')return `/genealogy?view=question&question=${hit.id}`;
+      return `/school/${encodeURIComponent(hit.parent)}`+(hit.t==='quote'?'#school-quotes':hit.t==='cihai'?'#school-concepts':'');
+    }
+    const onTipClick=e=>{if(e.target.closest('[data-open]')&&selected)navigate(destination(selected));};
+    const onLabelClick=e=>{const button=e.target.closest('[data-node]');if(button)selectStar(labelNodes[Number(button.dataset.node)]);};
+    const onEscape=e=>{if(e.key==='Escape'){selected=null;litPairs=[];litMap=new Map();hideTip();labelsRef.current.innerHTML='';draw(performance.now(),false);}};
+    tipRef.current.addEventListener('click',onTipClick);
+    labelsRef.current.addEventListener('click',onLabelClick);
+    wrap.addEventListener('keydown',onEscape);
     function onUp() { dragging = false; canvas.style.cursor = hovered ? 'pointer' : 'default'; }
     function onLeave() {
       dragging = false; hovered = null;
       canvas.style.cursor = 'default';
-      if (!selected && tipRef.current) tipRef.current.style.opacity = '0';
+      if (!selected && tipRef.current) hideTip();
     }
     function onWheel(e) {
-      if (!activeRef.current) return;
+      if (!activeRef.current || !interactiveRef.current) return;
       lastActiveRef.current = performance.now();
       e.preventDefault();
       const r = canvas.getBoundingClientRect();
@@ -508,32 +530,19 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
       clampCam();
     }
     function onClick(e) {
-      if (!activeRef.current) return;
+      if (!activeRef.current || !interactiveRef.current) return;
       lastActiveRef.current = performance.now();
       if (moved > 5) return; // 拖拽不算点击
       const r = canvas.getBoundingClientRect();
       const hit = findHover(e.clientX - r.left, e.clientY - r.top);
       if (!hit) { // 点中选中星系之外的任何地方 → 取消选中，恢复全亮（拖动除外）
-        selected = null; litPairs = []; litMap = new Map();
-        if (tipRef.current) tipRef.current.style.opacity = '0';
+        selected = null; litPairs = []; litMap = new Map(); labelsRef.current.innerHTML='';
+        if (tipRef.current) hideTip();
         return;
       }
-      if (hit === selected) { // 二次点击同一颗 → 跳转
-        if (hit.t === 'philosopher') navigate(`/author/${encodeURIComponent(hit.name)}`);
-        else if (hit.t === 'school') navigate(`/school/${encodeURIComponent(hit.name)}`);
-        else if (hit.t === 'sub') navigate(`/school/${encodeURIComponent(hit.parent)}`);
-        else if (hit.t === 'book') navigate(`/book/${hit.id}`);
-        else if (hit.t === 'quote') navigate(`/school/${encodeURIComponent(hit.parent)}#school-quotes`);
-        else if (hit.t === 'cihai') navigate(`/school/${encodeURIComponent(hit.parent)}#school-concepts`);
-        else if (hit.t === 'question') navigate(`/genealogy?view=question&question=${hit.id}`);
-        selected = null;
-        return;
-      }
-      // 首次点击：点亮关系链，提示卡固定在这颗星上
-      selected = hit;
-      const { pairs, lit } = adjacency(hit);
-      litPairs = pairs; litMap = lit; litAt = performance.now();
-      setTip(hit);
+      if(hit===selected){navigate(destination(hit));return;}
+      selectStar(hit);
+
     }
     canvas.addEventListener('pointerdown', onDown);
     canvas.addEventListener('pointermove', onMove);
@@ -544,6 +553,10 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
 
     return () => {
       cancelAnimationFrame(raf);
+      if(sceneRef?.current===bridge)sceneRef.current=null;
+      tipElement?.removeEventListener('click',onTipClick);
+      labelsElement?.removeEventListener('click',onLabelClick);
+      wrap.removeEventListener('keydown',onEscape);
       ro.disconnect();
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointermove', onMove);
@@ -552,12 +565,13 @@ export default function HomeCosmos({ philosophers, books, active = false }) {
       canvas.removeEventListener('wheel', onWheel);
       canvas.removeEventListener('click', onClick);
     };
-  }, [philosophers, books, navigate]);
+  }, [philosophers, books, navigate, sceneRef, birthStarsRef]);
 
   return (
     <div className="home-cosmos" ref={wrapRef} aria-label="哲学宇宙星图：滚轮缩放，拖拽平移，点击星星点亮关系链">
       <canvas ref={canvasRef} />
-      <div className="home-cosmos-tip" ref={tipRef} role="status" />
+      <div className="home-cosmos-labels" ref={labelsRef} />
+      <div className="home-cosmos-tip" ref={tipRef} role="status" hidden />
     </div>
   );
 }
