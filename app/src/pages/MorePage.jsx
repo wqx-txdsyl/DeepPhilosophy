@@ -1,3 +1,5 @@
+import EntryHeader from '../components/EntryHeader';
+import { ENTRY_PAGES } from '../data/entryPages';
 import { useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
@@ -31,7 +33,7 @@ function wedge(start, end) {
 }
 
 export default function MorePage() {
-  useSEO('更多 — 思想的八个入口', '转动学科圆盘，探索哲学、神话、宗教、文学、心理、社会、历史与政治。');
+  useSEO(ENTRY_PAGES.more.title, ENTRY_PAGES.more.description);
   const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(reducer, searchParams, initialState);
   const bounds = useRef(null), fan = useRef(null), drag = useRef(null), suppressClick = useRef(false);
@@ -126,11 +128,10 @@ export default function MorePage() {
   };
   const close = () => { dispatch({ type: 'open', value: false }); openButton.current?.focus(); };
 
-  return <div id="dp-rotating-folio">
+  return <div id="dp-rotating-folio" className="entry-surface">
     <div className="motion-app" style={{ '--active-color': field.color }}>
       <div className="motion-shell">
-        <header className="motion-heading"><div><p className="motion-kicker">DeepPhilosophy · Disciplines</p><h1>思想的八个入口</h1></div>
-          <p>转动圆盘，让一个学科来到眼前。<br />Ph / My / Re / Li / Ps / So / Hi / Po</p></header>
+        <EntryHeader page="more" meta={`${MORE_FIELDS.length} 个学科入口`} secondary="Ph / My / Re / Li / Ps / So / Hi / Po" />
         <section className="motion-hero">
           <div className="motion-stage">
             <div ref={bounds} className={`disc-bounds${state.dragging ? ' is-dragging' : ''}`}

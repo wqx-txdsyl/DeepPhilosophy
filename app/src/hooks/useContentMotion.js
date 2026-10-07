@@ -2,7 +2,7 @@ import { useLayoutEffect } from 'react';
 
 // Animate reading blocks, never graph canvases, sticky shells, or the reader text.
 const READING_BLOCKS = [
-  '.school-section-heading', '.school-prose > p', '.school-branch', '.school-work',
+  '.entry-header', '.school-section-heading', '.school-prose > p', '.school-branch', '.school-work',
   '.school-star-heading', '.school-river-heading', '.school-river-trigger',
   '.school-glossary-heading', '.school-quotes-heading', '.school-sources > h2',
   '.mtd-overview-sec > h3', '.mtd-dialogue', '.mtd-cross-card',
