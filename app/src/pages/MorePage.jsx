@@ -83,22 +83,12 @@ export default function MorePage() {
     return () => observer.disconnect();
   }, [state.expanded, state.index]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!state.expanded || !albumRef.current) return;
-    const album = albumRef.current;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let finished = false;
-    const scrollToBottom = () => {
-      if (finished) return;
-      finished = true;
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: reducedMotion ? 'instant' : 'smooth' });
-    };
-    const afterExpand = event => {
-      if (event.target === album && event.propertyName === 'grid-template-rows') scrollToBottom();
-    };
-    album.addEventListener('transitionend', afterExpand);
-    const timer = setTimeout(scrollToBottom, reducedMotion ? 0 : 950);
-    return () => { clearTimeout(timer); album.removeEventListener('transitionend', afterExpand); };
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+    });
+    return () => cancelAnimationFrame(frame);
   }, [state.expanded, state.index]);
 
   const startDrag = event => {
