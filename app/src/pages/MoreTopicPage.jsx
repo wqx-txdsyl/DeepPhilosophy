@@ -1,3 +1,4 @@
+import { moreAlbumPath } from '../data/moreExplorer';
 import HeroSection from '../components/school/HeroSection';
 /**
  * 更多 — 主题详情页（三级）
@@ -23,7 +24,7 @@ function ChristianityHub({ data }) {
     <div className="school-detail mtd">
       <HeroSection name={data.name} englishName={data.en} subtitle={data.subtitle}
         heroImage={data.heroImage} quote={data.heroQuote} quoteKind="quote" quoteAuthor={data.heroQuoteSource}
-        backTo="/more/religion" backLabel="返回宗教" startId="branches" startLabel="查看三大分支"
+        backTo={moreAlbumPath('religion', 'christianity')} backLabel="返回宗教" startId="branches" startLabel="查看三大分支"
         footerMeta="东正 · 天主 · 新教" chapters={[{ id: 'branches', num: 'I', name: '三大分支' }]} />
       <div className="school-reading">
         <section id="branches" className="school-section">
@@ -104,7 +105,7 @@ export default function MoreTopicPage() {
     <div className="page-container" style={{ paddingBottom: 0 }}>
 
       <section className="more-topic-hero" style={{ '--disc': d.color }}>
-        <button className="more-back" onClick={() => navigate(`/more/${d.id}`)}>← 返回{d.name}</button>
+        <button className="more-back" onClick={() => navigate(moreAlbumPath(d.id, t.id))}>← 返回{d.name}</button>
         <p className="more-hero-eyebrow" style={{ color: d.color, marginTop: 26 }}>{d.en} · {d.code}</p>
         <h1>{t.name}</h1>
         <div className="more-disc-divider" style={{ background: d.color }} />

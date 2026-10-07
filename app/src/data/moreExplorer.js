@@ -98,6 +98,12 @@ const philosophy = {
 
 export const MORE_FIELDS = [philosophy, ...DISCIPLINES.map(d => ({
   ...d, ...metadata[d.id],
-  topics: (d.topics?.filter(t => !t.hidden) || d.seeds.map((name, i) => ({ id: String(i), name })))
-    .map(t => ({ ...t, image: t.heroImage, note: t.note?.replace('拉美 explosion', '拉美文学浪潮') })),
+  topics: (d.topics || d.seeds.map((name, i) => ({ id: String(i), name })))
+    .map(t => ({ ...t, image: t.heroImage, parentName: t.hidden && d.id === 'religion' ? '基督教分支' : undefined, note: t.note?.replace('拉美 explosion', '拉美文学浪潮') })),
 }))].map(f => ({ ...f, image: `/more/discipline-art-v1/${f.code}.webp` }));
+
+export function moreAlbumPath(discipline, topic) {
+  const params = new URLSearchParams({ discipline, album: 'open' });
+  if (topic) params.set('topic', topic);
+  return `/more?${params}`;
+}

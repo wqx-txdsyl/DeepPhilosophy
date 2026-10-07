@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useReducer, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import CdnImage from '../components/CdnImage';
 import { ossImg } from '../data/ossUrls';
@@ -7,7 +7,11 @@ import { MORE_FIELDS } from '../data/moreExplorer';
 import './MoreExplorer.css';
 
 const wrap = index => ((index % 8) + 8) % 8;
-const initial = { index: 0, angle: 0, expanded: false, topic: 0, dragging: false, visited: [0] };
+function initialState(params) {
+  const index = Math.max(0, MORE_FIELDS.findIndex(field => field.id === params.get('discipline')));
+  const topic = Math.max(0, MORE_FIELDS[index].topics.findIndex(t => t.id === params.get('topic')));
+  return { index, angle: -index * 45, expanded: params.get('album') === 'open', topic, dragging: false, visited: [index] };
+}
 function reducer(state, action) {
   if (action.type === 'open') return { ...state, expanded: action.value ?? !state.expanded };
   if (action.type === 'topic') return { ...state, topic: action.index };
@@ -27,14 +31,22 @@ function wedge(start, end) {
 
 export default function MorePage() {
   useSEO('更多 — 思想的八个入口', '转动学科圆盘，探索哲学、神话、宗教、文学、心理、社会、历史与政治。');
-  const [state, dispatch] = useReducer(reducer, initial);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [state, dispatch] = useReducer(reducer, searchParams, initialState);
   const bounds = useRef(null), fan = useRef(null), drag = useRef(null), suppressClick = useRef(false);
   const current = useRef(state);
   const openButton = useRef(null);
   useLayoutEffect(() => { current.current = state; }, [state]);
   const field = MORE_FIELDS[state.index];
-  const topics = field.topics.slice(0, 6), topic = topics[state.topic];
+  const topics = field.topics, topic = topics[state.topic];
   const philosophy = field.id === 'philosophy';
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (state.index !== 0 || state.expanded) params.set('discipline', field.id);
+    if (state.expanded) { params.set('album', 'open'); params.set('topic', topic.id); }
+    if (params.toString() !== searchParams.toString()) setSearchParams(params, { replace: true });
+  }, [state.index, state.expanded, field.id, topic.id, searchParams, setSearchParams]);
 
   useEffect(() => {
     const element = bounds.current;
@@ -143,17 +155,18 @@ export default function MorePage() {
         <section id="more-topic-album" className={`folio-open${state.expanded ? ' is-open' : ''}`} aria-label="学科卡册" aria-hidden={!state.expanded} inert={!state.expanded}>
           <div className="folio-open-inner"><div className="folio-open-content" key={field.id}>
             <header className="folio-open-heading"><div><p className="motion-kicker">{field.code} / {field.en}</p><h3>{field.name} · {philosophy ? '代表流派' : field.ready ? '主题卡册' : '拟定方向'}</h3>
-              <p>{philosophy ? '从几个代表流派开始，再沿时间、关系与问题继续探索。' : field.ready ? '选择一张画卡，走近它的主题。' : '本学科正在整理，以下为拟定方向。'}</p></div><button type="button" onClick={close}>合上卡册 ↑</button></header>
+              <p>{philosophy ? '从几个代表流派开始，再沿时间、关系与问题继续探索。' : field.ready ? `共 ${topics.length} 个主题，选择一张画卡进入阅读。` : '本学科正在整理，以下为拟定方向。'}</p></div><button type="button" onClick={close}>合上卡册 ↑</button></header>
             <div ref={fan} className="topic-fan" aria-label={`${field.name}主题画卡`}>{topics.map((t, i) => {
-              const center = (topics.length - 1) / 2;
+              const row = Math.floor(i / 6), column = i % 6;
+              const center = (Math.min(6, topics.length - row * 6) - 1) / 2;
               return <button type="button" className="topic-fan-card" key={t.id} aria-label={`选择${t.name}`} aria-pressed={state.topic === i} onClick={() => dispatch({ type: 'topic', index: i })}
-                style={{ '--splay': `${(i - center) * 14}deg`, '--delay': `${i * 60}ms`, '--arc': `${Math.abs(i - center) / Math.max(1, center) * 28}px`, '--rest-y': state.topic === i ? '-9px' : '0px' }}>
+                style={{ '--splay': `${(column - center) * 14}deg`, '--delay': `${column * 60 + row * 80}ms`, '--arc': `${Math.abs(column - center) / Math.max(1, center) * 28}px`, '--rest-y': state.topic === i ? '-9px' : '0px' }}>
                 <div className="topic-fan-photo"><CdnImage src={t.image || field.image} imageWidth={400} alt={`${t.name}配图`} draggable={false} loading="lazy" /></div>
-                <div className="topic-fan-copy"><small>{String(i + 1).padStart(2, '0')} / {field.code}</small><h4>{t.name}</h4></div></button>;
+                <div className="topic-fan-copy"><small>{String(i + 1).padStart(2, '0')} / {field.code}</small><h4>{t.name}</h4>{t.parentName && <span className="topic-parent">{t.parentName}</span>}</div></button>;
             })}</div>
             <div className="postcard-detail" aria-live="polite"><div><p className="motion-kicker">{String(state.topic + 1).padStart(2, '0')} / {field.code}</p><h4>{topic.name}</h4><p>{topic.note || '主题资料正在整理。'}</p></div>
               {field.ready ? <Link to={topic.path || `/more/${field.id}/${topic.id}`}>进入{topic.name} ↗</Link> : <span>筹备中</span>}</div>
-            {field.ready && <div className="topic-fan-ending"><Link className="folio-action" to={philosophy ? '/genealogy' : `/more/${field.id}`}>{philosophy ? '探索更多 · 进入哲学谱系' : '探索更多 · 完整主题画廊'} ↗</Link></div>}
+            {philosophy && <div className="topic-fan-ending"><Link className="folio-action" to="/genealogy">探索更多 · 进入哲学谱系 ↗</Link></div>}
           </div></div>
         </section>
       </div>
