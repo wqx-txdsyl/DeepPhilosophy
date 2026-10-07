@@ -5,8 +5,16 @@
 ## 环境与纪律
 
 - 工作目录：`/Users/sen/.codex/worktrees/genealogy-atlas/DeepPhilosophy`（git worktree）。**绝对不要碰 `/Users/sen/DeepPhilosophy`**。
-- 只创建两个新文件（证据记录 + 草稿），**不得修改** `app/public/`、`scripts/` 下任何文件，不得改 `philosophers.json`，不得运行 sync/audit/test。
+- 只创建自己的证据记录、草稿和阶段检查点，**不得修改** `app/public/`、`scripts/` 下任何文件，不得改 `philosophers.json`，不得运行 sync/audit/test。
 - JSON 一律 UTF-8、`ensure_ascii=False`、`indent=2`、文件末尾一个换行。
+
+## 单人执行与阶段落盘
+
+每次只接收一位人物的任务，按其真实姓名查证。只读当前对象、内容标准和必要的结构样例；历史失败汇总与其他人物的材料不作为本次输入。
+
+在身份核对、来源证据、草稿各阶段，先保存已有成果，再将 `name/batch/stage/updatedAt/savedFiles/nextAction` 写入 `docs/author-research/<batch>/checkpoints/<人名>.json`；`savedFiles` 不列尚未写成的文件。该检查点是第三类允许写入的文件，不能修改总台账或正式源。
+
+发生 turn 级 1301 后，模型可能已不能执行后续操作。原请求不自动重发，由外层操作人或调度器保留检查点、记录错误并转交人工复核；本对象不计入已完成。不要为了通过审核改名、隐藏事实或编造出处。重启时从已有阶段接续，不重复整批研究。
 
 ## 第一步：必读文件
 
