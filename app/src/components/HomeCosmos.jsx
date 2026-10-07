@@ -8,7 +8,7 @@
  *   点击星星：选中亮起，关系链逐跳点亮相邻星星；再次点击同一颗才跳转
  *
  * 节点：流派175 子流派355 哲人652 著作410 金句2684 辞海3831 思想之问12
- * 布局：均匀有机团簇（无疏密斑驳、无条带）；无鼠标视差；常显文字已移除
+ * 布局：均匀有机团簇（无疏密斑驳、无条带）；环境星层随相机产生轻微视差；常显文字已移除
  */
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,6 @@ import { QUESTIONS } from '../data/genealogyTopics';
 import { layoutHomeSkyLabels } from './homeSkyLabels';
 
 const REGION_COLOR = { '西方': [217, 179, 108], '东方': [127, 163, 204], '世界': [143, 185, 143] };
-const BONE = 'rgba(232, 227, 217,';
 const SUB_RGB = [206, 196, 176];
 const QUOTE_RGB = [226, 220, 208];
 const CIHAI_RGB = [196, 162, 112];
@@ -81,6 +80,7 @@ export default function HomeCosmos({ philosophers, books, active = false, intera
   const activeRef = useRef(active);
   const interactiveRef = useRef(interactive);
   const labelsRef = useRef(null);
+  const atmosphereRef = useRef(null);
   useEffect(() => { interactiveRef.current = interactive; }, [interactive]);
   const activateAtRef = useRef(0);
   useEffect(() => {
@@ -323,8 +323,14 @@ export default function HomeCosmos({ philosophers, books, active = false, intera
 
     // ---- 尘埃 ----
     const dust = [];
-    for (let i = 0; i < 1800; i++) dust.push({ fx: rand(), fy: rand(), r: 0.28 + rand() * 0.55, phase: rand() * 6.28 });
-    for (let i = 0; i < 14; i++) dust.push({ fx: rand(), fy: rand(), r: 0.8 + rand() * 0.5, phase: rand() * 6.28 });
+    // Far dust moves slowly; a few nearby stars move slightly faster than content nodes.
+    for (let i = 0; i < 2200; i++) dust.push({fx:rand(),fy:rand(),r:.22+rand()*.32,phase:rand()*6.28,depth:.32+rand()*.12,near:false});
+    for (let i = 0; i < 110; i++) dust.push({fx:rand(),fy:rand(),r:.85+rand()*.62,phase:rand()*6.28,depth:1.12+rand()*.10,near:true});
+    const ambientScreen=star=>{
+      const scale=1+(cam.zoom-1)*star.depth;
+      return [(star.fx-.5)*W*scale+W/2-(cam.cx-.5)*W*cam.zoom*star.depth,(star.fy-.5)*H*scale+H/2-(cam.cy-.5)*H*cam.zoom*star.depth];
+    };
+    let atmosphereKey='';
 
     // ---- 精灵 ----
     const spriteCache = new Map();
@@ -397,17 +403,19 @@ export default function HomeCosmos({ philosophers, books, active = false, intera
       const dim = activeRef.current ? 0.20 + 0.80 * (raw * raw * (3 - 2 * raw)) : 0.20;
       const z = cam.zoom;
 
-      const visible = [[0, 0], [1, 1]];
-      const [wx0, wy0] = toWorld(0, 0), [wx1, wy1] = toWorld(W, H);
-      visible[0] = [wx0, wy0]; visible[1] = [wx1, wy1];
-
-      // 尘埃（缩放时按视野裁剪）
-      for (const d of dust) {
-        if (d.fx < visible[0][0] - 0.02 || d.fx > visible[1][0] + 0.02 || d.fy < visible[0][1] - 0.02 || d.fy > visible[1][1] + 0.02) continue;
-        const a = (0.20 + 0.10 * Math.sin(t * 0.0009 + d.phase)) * dim;
-        ctx.fillStyle = `${BONE}${a})`;
-        const [sx, sy] = toScreen(d.fx, d.fy);
-        ctx.fillRect(sx, sy, d.r * Math.min(2, z * 0.8), d.r * Math.min(2, z * 0.8));
+      const depthKey=[cam.cx,cam.cy,cam.zoom,W,H].join('/');
+      if(atmosphereRef.current&&depthKey!==atmosphereKey){
+        atmosphereKey=depthKey;
+        const scale=1+Math.min(.14,Math.max(0,z-2.6)*.012);
+        atmosphereRef.current.style.transform=`translate(${(.5-cam.cx)*W*.16}px,${(.5-cam.cy)*H*.16}px) scale(${scale})`;
+      }
+      for(const star of dust){
+        const [x,y]=ambientScreen(star);if(x<-24||x>W+24||y<-24||y>H+24)continue;
+        const alpha=(star.near?.56:.22)*(reduced?1:.96+.04*Math.sin(t*.0004+star.phase))*dim;
+        const radius=star.r*(star.near?Math.min(1.7,.95+Math.sqrt(z)*.15):1+Math.log2(z)*.10);
+        if(star.near){const size=22+radius*8;ctx.globalAlpha=alpha*.32;ctx.drawImage(sprite([221,226,232],2,false),x-size/2,y-size/2,size,size);ctx.globalAlpha=1;}
+        ctx.fillStyle=`rgba(${star.near?'237,230,214':'156,181,205'},${alpha})`;
+        ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
       }
 
       // 选中：关系线延伸动画（无圆圈；非相关星星整体变淡——参照谱系页「按关联」）
@@ -578,8 +586,9 @@ export default function HomeCosmos({ philosophers, books, active = false, intera
 
   return (
     <div className={`home-cosmos${active && philosophers?.length && books?.length ? ' is-active' : ''}`} ref={wrapRef} aria-label="哲学宇宙星图：滚轮缩放，拖拽平移，点击星星点亮关系链">
+      <div className="home-cosmos-atmosphere" ref={atmosphereRef} aria-hidden="true" />
       <svg className="home-opening-sky" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-        {OPENING_STARS.map((star,i)=><circle key={i} cx={star.x} cy={star.y} r={star.r} fill={star.color} opacity={star.alpha}/>)}
+        {OPENING_STARS.map((star,i)=><circle className={i%47===0?'opening-star-near':undefined} key={i} cx={star.x} cy={star.y} r={star.r} fill={star.color} opacity={star.alpha}/>)}
       </svg>
       <canvas ref={canvasRef} />
       <div className="home-cosmos-labels" ref={labelsRef} />

@@ -13,6 +13,9 @@
 }
 .home-page { max-height: 100vh; max-height: 100dvh; overflow: hidden; }
 .home-cosmos { position: absolute; inset: 0; }
+.home-cosmos-atmosphere {position:absolute;inset:-12%;pointer-events:none;opacity:.60;background:radial-gradient(ellipse 32% 52% at 27% 41%,rgba(49,70,89,.075),transparent 78%),radial-gradient(ellipse 35% 44% at 76% 67%,rgba(69,58,44,.05),transparent 78%);will-change:transform;transition:opacity 1.8s ease;}
+.home-cosmos.is-active .home-cosmos-atmosphere {opacity:1;}
+.opening-star-near {filter:drop-shadow(0 0 2px rgba(216,226,235,.25));}
 .home-opening-sky {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:1;mask-image:radial-gradient(ellipse 38% 34% at 50% 47%,rgba(0,0,0,.10),rgba(0,0,0,.5) 55%,#000 100%);transition:opacity 1.8s ease;}
 .home-cosmos.is-active .home-opening-sky {opacity:0;}
 .home-cosmos canvas { position: absolute; inset: 0; display: block; }
@@ -135,7 +138,7 @@
   .home-cosmos-tip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home-opening-sky {transition:none;}
+  .home-opening-sky,.home-cosmos-atmosphere {transition:none;}
   .home-hero-content, .home-hero-eyebrow, .home-hero-title, .home-hero-divider,
   .home-hero-cta,.home-hero-invitation,.home-hero-continue { animation: none; transition: none; }
 }
