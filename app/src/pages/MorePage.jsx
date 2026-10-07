@@ -173,7 +173,7 @@ export default function MorePage() {
                 <div className="topic-fan-photo"><CdnImage src={t.image || field.image} imageWidth={400} alt={`${t.name}配图`} draggable={false} loading="lazy" /></div>
                 <div className="topic-fan-copy"><small>{String(i + 1).padStart(2, '0')} / {field.code}</small><h4>{t.name}</h4></div></button>;
             })}</div>
-            <div className="postcard-detail" aria-live="polite"><div><p className="motion-kicker">{String(state.topic + 1).padStart(2, '0')} / {field.code}</p><h4>{topic.name}</h4><p>{topic.note || '主题资料正在整理。'}</p></div>
+            <div key={`${field.id}-${topic.id}`} className="postcard-detail" aria-live="polite"><div><p className="motion-kicker">{String(state.topic + 1).padStart(2, '0')} / {field.code}</p><h4>{topic.name}</h4><p>{topic.note || '主题资料正在整理。'}</p></div>
               {field.ready ? <Link to={topic.path || `/more/${field.id}/${topic.id}`}>进入{topic.name} ↗</Link> : <span>筹备中</span>}</div>
             {philosophy && <div className="topic-fan-ending"><Link className="folio-action" to="/genealogy">探索更多 · 进入哲学谱系 ↗</Link></div>}
           </div></div>

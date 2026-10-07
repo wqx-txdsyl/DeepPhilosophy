@@ -1,3 +1,4 @@
+import FadePresence from '../FadePresence';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import './QuotesGallery.css';
 
@@ -90,14 +91,14 @@ export default function QuotesGallery({ quotes = [] }) {
           </button>;
         })}
       </div>
-      {selected && <div ref={popoverRef} className="school-quote-popover" id={`${uid}-popover`} role="region" aria-label="金句释义" aria-live={pinned ? 'polite' : 'off'}>
+      <FadePresence>{selected && <div key={active} ref={popoverRef} className="school-quote-popover" id={`${uid}-popover`} role="region" aria-label="金句释义" aria-live={pinned ? 'polite' : 'off'}>
         <button type="button" className="school-quote-close" aria-label="关闭金句释义" onClick={() => close(true)}>×</button>
         {selected.kind === 'paraphrase' && <span className="school-quote-kind">思想概述</span>}
         <blockquote>{selected.kind === 'paraphrase' ? selected.text : `“${selected.text}”`}</blockquote>
         {selected.author && <cite>— {selected.author}</cite>}
         {selected.source && <div className="school-quote-source">{selected.source}</div>}
         {selected.exp && <p>{selected.exp}</p>}
-      </div>}
+      </div>}</FadePresence>
     </div>
   </section>;
 }

@@ -19,12 +19,12 @@ export default function SubSchoolsSection({ schoolName, subSchools = [], thinker
         <button type="button" className="school-branch-trigger" aria-expanded={open} aria-controls={`school-branch-${index}`} onClick={() => setOpened(open ? null : sub.name)}>
           <span className="school-branch-focus" aria-hidden="true">{focus}</span><small>{sub.era}{sub.kind ? ` · ${sub.kind}` : ''}</small><h3>{sub.name}</h3><p>{sub.desc}</p><span className="school-branch-hint"><span>{people.map(person => person.name).join(' · ') || '阅读分支脉络'}</span><span aria-hidden="true">{open ? '−' : '＋'}</span></span>
         </button>
-        <div id={`school-branch-${index}`} className="school-branch-detail" hidden={!open}>
+        <div id={`school-branch-${index}`} className="school-branch-detail" inert={!open} aria-hidden={!open}><div className="school-branch-detail-inner">
           {people.length > 0 && <div className="school-branch-people">{people.map(person => { const ref = references?.findPerson?.(person.name, person.era); return <button key={person.name} type="button" onClick={() => onSelectPerson?.(person.name)}>{ref?.portrait && <img src={ossImg(ref.portrait, { w: 100 })} onError={ossFallback} alt="" loading="lazy" />}<span>{person.name} ↗</span></button>; })}</div>}
           {terms.length > 0 && <div className="school-branch-terms">{terms.map((term, i) => <button type="button" key={`${term.word}-${i}`} onClick={() => onSelectConcept?.(term.word)}>{termName(term.word)} ↗</button>)}</div>}
           {target && target.name !== schoolName && <Link className="school-text-link" to={`/school/${encodeURIComponent(target.name)}`}>进入{target.name} →</Link>}
           {!people.length && !terms.length && !target && <p className="school-branch-note">本页简介、时间轴与原典共同呈现这一分支的背景。</p>}
-        </div>
+        </div></div>
       </article>;
     })}</div>
   </section>;

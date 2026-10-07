@@ -1,3 +1,4 @@
+import FadePresence from '../FadePresence';
 import { formatBookTitle } from '../../data/bookTitles';
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -106,7 +107,7 @@ export default function GlossaryCloud({ cihai = [], references, selectedConcept,
         })}
         {!matches.length && <p className="school-glossary-empty">没有找到匹配的词语</p>}
       </div>
-      {active && <aside className="school-glossary-popover" id={panelId} ref={panelRef} style={position} aria-label={`${active.name}的释义`} aria-live={pinned ? 'polite' : 'off'}>
+      <FadePresence>{active && <aside key={active.key} className="school-glossary-popover" id={panelId} ref={panelRef} style={position} aria-label={`${active.name}的释义`} aria-live={pinned ? 'polite' : 'off'}>
         <button className="school-glossary-close" type="button" aria-label="关闭释义" onClick={() => close(true)}>×</button>
         <h3>{active.name}</h3>{original && <div className="school-glossary-original">{original}</div>}
         {item.def && <p className="school-glossary-definition">{item.def}</p>}
@@ -114,7 +115,7 @@ export default function GlossaryCloud({ cihai = [], references, selectedConcept,
         {active.items.length > 1 && <details className="school-glossary-variants"><summary>其他解释 · {active.items.length - 1}</summary>{active.items.slice(1).map((alternative, index) => <div key={index}><h4>{alternative.word}</h4><p>{alternative.def}</p>{alternative.source && <small>{alternative.source}</small>}</div>)}</details>}
         {sourceBook?.href && <Link to={sourceBook.href} className="school-glossary-book">{sourceBook.cover && <img src={sourceBook.cover} alt="" loading="lazy" onError={event => { event.currentTarget.style.display = 'none'; }} />}<span><strong>{formatBookTitle(sourceBook.title)}</strong>{sourceBook.author && <small>{sourceBook.author}</small>}<em>{sourceBook.chapterCount > 0 ? '打开原典' : '查看书目'} <span aria-hidden="true">↗</span></em></span></Link>}
         {onLocatePerson && item.source && <button className="school-glossary-person" type="button" onClick={() => onLocatePerson(item.source)}>在星图中寻找作者 <span aria-hidden="true">→</span></button>}
-      </aside>}
+      </aside>}</FadePresence>
     </div>
   </section>;
 }

@@ -30,7 +30,7 @@ export default function HeroSection({ name, quote, quoteAuthor, quoteKind, heroI
       {quoteAuthor && <p className="school-hero-author">{quoteKind === 'paraphrase' && <span>思想概述 · </span>}{quoteAuthor}</p>}
     </div>
     <div className="school-hero-bottom">
-      <div className="school-hero-foot"><span>{subtitle}</span><a href={`#${startId}`} className="school-start" aria-label={startLabel} onClick={event => jump(event, startId)}>↓</a><span>{footerMeta}</span></div>
+      <div className="school-hero-foot"><span>{subtitle}</span><a href={`#${startId}`} className="school-start" aria-label={startLabel} onClick={event => jump(event, startId)}><span aria-hidden="true">↓</span></a><span>{footerMeta}</span></div>
       {chapters.length > 0 && <nav ref={indexRef} className="school-chapter-nav" aria-label="章节导航">{chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`} onClick={event => jump(event, chapter.id)}><small>{chapter.num}</small>{chapter.name}</a>)}</nav>}
     </div>
   </section>;

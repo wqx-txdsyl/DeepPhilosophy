@@ -1,3 +1,5 @@
+import useContentMotion from './hooks/useContentMotion';
+import './components/ContentMotion.css';
 /**
  * DeepPhilosophy - 哲学爱好者移动应用
  * 开发者: @txdsyl_
@@ -103,6 +105,7 @@ function App() {
 }
 
 function MainLayout() {
+  const contentRef = useRef(null);
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('dp_dark_mode') === '1');
 
@@ -157,6 +160,7 @@ function MainLayout() {
   const isMoreTopic = /^\/more\/[^/]+\/.+/.test(location.pathname);
   const immersive = isReader || isHome || isSchool || isAuthor || isMoreTopic;
   const hideHeader = immersive;
+  useContentMotion(contentRef, location.pathname, !isHome && !isReader);
 
   return (
     <>
@@ -172,7 +176,7 @@ function MainLayout() {
         onToggleDarkMode={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}
       />
 
-      <main id="main-content" className={`app-main${immersive ? ' reader-mode' : ''}`} style={immersive ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main ref={contentRef} id="main-content" className={`app-main${immersive ? ' reader-mode' : ''}`} style={immersive ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">
