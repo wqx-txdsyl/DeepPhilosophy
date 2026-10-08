@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "name": "毛泽东",
+  "batch": "2026-10-03-balanced-31",
+  "researchedAt": "2026-10-08",
+  "method": "预案B/C（政治敏感人物，主会话离线研究，不派在线代理）：Bash curl 下载 + python 正则仅提取书目化事实与定向句窗；模型只读提取后的安全子集。出版事实以 Open Library / archive.org 编目为准，篇内文字以 FLP《选集》英译的公开转录（Marxists Internet Archive）核对并在 readScope 披露。",
+  "identity": {
+    "verdict": "confirmed",
+    "findings": "站内键「毛泽东」即本人：data/毛泽东.json era 1893-1976年、country 中国、listingKind=thinker。Open Library 作者档 OL6829A（Mao Zedong，1893-12-26 生，1976-09-09 卒，著作记录 1317 条）与站内 era 一致，无同名混淆。英文通行拼写作 Mao Zedong / Mao Tse-tung（编目两种形式并存）。",
+    "legacyIssues": [
+      "legacy bio 为叙事性长文，未用作事实源（仅与站内键/era 校验）",
+      "wiki_url 指向维基百科，按来源卫生规则弃用不引",
+      "legacy books 为空数组，书目全部按本轮编目与文本证据重建"
+    ]
+  },
+  "sources": [
+    {"id": "ol-author", "title": "Open Library 作者档 OL6829A（Mao Zedong）", "url": "https://openlibrary.org/authors/OL6829A", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "作者生卒月日（1893-12-26 / 1976-09-09）、著作记录数、代表作品列表线索；未读全部作品明细"},
+    {"id": "ia-onpractice-ip1950", "title": "On Practice（International Publishers, New York, 1950, 16 页单行本）archive.org 编目", "url": "https://archive.org/details/onpractice00maoz", "type": "book-edition-catalog", "accessedAt": "2026-10-08", "readScope": "MARC 编目：出版年 1950、篇幅 16 页、封面题名；编目摘要句『Written in 1937, this critical essay attacked misconceptions about the role of theory and practice prevalent at the time among certain circles of the Chinese Communist Party』"},
+    {"id": "ia-onpractice-flp1966", "title": "On Practice: On the Relation Between Knowledge and Practice, Between Knowing and Doing（外文出版社单行本编目）", "url": "https://archive.org/details/onpracticeonrela00maoz", "type": "book-edition-catalog", "accessedAt": "2026-10-08", "readScope": "题名页信息：副题即《实践论》副题『论认识和实践的关系——知和行的关系』的英译；出版社 Peking: Foreign Languages Press，编目年 1966"},
+    {"id": "ia-oncontradiction-flp1964", "title": "On Contradiction（外文出版社单行本编目）", "url": "https://archive.org/details/contradiction0000unse", "type": "book-edition-catalog", "accessedAt": "2026-10-08", "readScope": "出版社 Peking: Foreign Languages Press，编目年 1964；另 International Publishers 1953 年单行本编目在档"},
+    {"id": "ia-sw1-flp1965", "title": "Selected Works of Mao Tse-Tung, Volume 1（外文出版社英文版卷一编目）", "url": "https://archive.org/details/selectedworksofm0001maot", "type": "book-edition-catalog", "accessedAt": "2026-10-08", "readScope": "出版社 Foreign Languages Press，编目年 1965，卷次 1"},
+    {"id": "ia-sw3-flp1965", "title": "Selected Works of Mao Tse-Tung, Vol. 3（外文出版社英文版卷三编目）", "url": "https://archive.org/details/selectedworksofm0003unse", "type": "book-edition-catalog", "accessedAt": "2026-10-08", "readScope": "出版社 Peking: Foreign Languages Press，编目年 1965，卷次 3"},
+    {"id": "ia-sw4-flp1967", "title": "Selected Works of Mao Tse-Tung, Volume 4（外文出版社英文版卷四编目）", "url": "https://archive.org/details/selectedworksofm0000maoz_a3h2", "type": "book-edition-catalog", "accessedAt": "2026-10-08", "readScope": "出版社 Foreign Languages Press，编目年 1967，卷次 4"},
+    {"id": "ol-correct-1957", "title": "On the Correct Handling of Contradictions Among the People（Open Library 作品记录）", "url": "https://openlibrary.org/works/OL345476W", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "作品记录 first_publish_year 1957、题名与中文名对照（关于正确处理人民内部矛盾的问题）；记录附带的百科式描述未采用"},
+    {"id": "ol-protracted", "title": "On Protracted War（Open Library 作品记录）", "url": "https://openlibrary.org/works/OL345442W", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "作品记录：first_publish_year 1966（另有 1954 年版本记录）；篇署年代以转录源编者注为准"},
+    {"id": "sw1-op-transcript", "title": "On Practice（《毛泽东选集》英文版卷一文本的公开转录页）", "url": "https://www.marxists.org/reference/archive/mao/selected-works/volume-1/mswv1_16.htm", "type": "text-transcript", "accessedAt": "2026-10-08", "readScope": "读取通道性质：页眉标注 Selected Works of Mao Tse-tung。核对了篇首编者注（教条主义/经验主义两倾向的诊断）、篇署 July 1937、副题行、列宁引文句（『practice is higher…』『The abstraction of…』）与马克思主义不是教条句；未通读全篇"},
+    {"id": "sw1-oc-transcript", "title": "On Contradiction（《毛泽东选集》英文版卷一文本的公开转录页）", "url": "https://www.marxists.org/reference/archive/mao/selected-works/volume-1/mswv1_17.htm", "type": "text-transcript", "accessedAt": "2026-10-08", "readScope": "读取通道性质：页眉标注 Selected Works of Mao Tse-tung。核对了篇首编者注（原为延安抗日军政大学讲稿、收入选集时经作者修订）、篇署 August 1937、开篇论题（对立统一规律为唯物辩证法根本规律）、列宁『辩证法本来就是研究矛盾的本质』句、恩格斯『运动本身就是矛盾』句、章节标题（II 普遍性、IV 主要矛盾与矛盾主要方面）；未通读全篇"},
+    {"id": "sw2-pw-transcript", "title": "On Protracted War（《毛泽东选集》英文版卷二文本的公开转录页）", "url": "https://www.marxists.org/reference/archive/mao/selected-works/volume-2/mswv2_09.htm", "type": "text-transcript", "accessedAt": "2026-10-08", "readScope": "读取通道性质。核对了篇首编者注（1938 年 5 月 26 日至 6 月 3 日在延安抗日战争研究会的系列讲演）、篇署 May 1938、首节标题『提出问题』（STATEMENT OF THE PROBLEM）；未通读全篇"},
+    {"id": "ol-schram-1989", "title": "Stuart R. Schram, The Thought of Mao Tse-Tung（Open Library 作品记录）", "url": "https://openlibrary.org/works/OL4976506W", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "编目层：first_publish_year 1989、主题词（Communism; History; Political and social views）；内文未读，未采其论点"},
+    {"id": "ol-knight-2005", "title": "Nick Knight, Marxist Philosophy in China（Open Library 作品记录）", "url": "https://openlibrary.org/works/OL8324570W", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "编目层：著者 Nick Knight，first_publish_year 2005；内文未读"},
+    {"id": "ol-knight-dialmat-2016", "title": "Dialectical Materialism（Open Library 作品记录，联合署名 Mao Zedong; Nick Knight）", "url": "https://openlibrary.org/works/OL27396137W", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "编目层：联合著者记录，first_publish_year 2016；该记录将毛泽东列为第一署名著者、Knight 为译介者，属 Knight 系列译介之一；内文与文本性质细节未读"},
+    {"id": "ol-zizek-2007", "title": "On Practice and Contradiction (Revolutions)（Open Library 作品记录，含 Žižek 评论）", "url": "https://openlibrary.org/works/OL9029585W", "type": "book-catalog", "accessedAt": "2026-10-08", "readScope": "编目层：first_publish_year 2007，丛书名 (Revolutions)；出版说明段（Žižek 评论及其『unsettling conclusions about the place of Mao's thought』表述）；内文未读"},
+    {"id": "zhanglibo", "title": "张立波（北师大学报）：《大众哲学》版本与文本变迁研究", "url": "https://wkxb.bnu.edu.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=363", "type": "scholarly-journal-article", "accessedAt": "2026-10-08", "readScope": "与艾思奇包同源引用（镜像关系）：1936-10-22 电告叶剑英、刘鼎选购《大众哲学》与柳湜《街头讲话》、1937 年致信评《哲学与生活》等史实层；本轮未重读全文，采既有包已核表述"},
+    {"id": "cass", "title": "崔唯航《艾思奇：贴近大众的人民哲学家》，《中国社会科学报》2021-08-31（中国社会科学院网站转载）", "url": "https://www.cass.cn/xueshuchengguo/wenzhexuebulishixuebu/202109/t20210901_5356998.shtml", "type": "scholarly-newspaper-article", "accessedAt": "2026-10-08", "readScope": "与艾思奇包同源引用（镜像关系）：多次自言从艾思奇著作中『得益很多』等表述；本轮未重读全文，采既有包已核表述"}
+  ],
+  "checks": [
+    {"field": "identity.era", "claim": "生 1893-12-26，卒 1976-09-09", "sourceId": "ol-author", "locator": "作者档 birth_date/death_date 字段", "verdict": "confirmed", "notes": "与站内 era 1893-1976年 一致"},
+    {"field": "profile.life[出生]", "claim": "1893 年 12 月 26 日出生", "sourceId": "ol-author", "locator": "birth_date", "verdict": "confirmed", "notes": "出生地（湖南韶山）仅站内 legacy 线索，未独立核验，草稿不写地点"},
+    {"field": "profile.life[卒]", "claim": "1976 年 9 月 9 日卒", "sourceId": "ol-author", "locator": "death_date", "verdict": "confirmed", "notes": "卒地未核，不写"},
+    {"field": "profile.life[1937-07]", "claim": "《实践论》篇署 1937 年 7 月；篇首编者注诊断党内教条主义与经验主义两倾向", "sourceId": "sw1-op-transcript", "locator": "篇首题署行与方括号编者注", "verdict": "confirmed", "notes": "International Publishers 1950 单行本 MARC 摘要亦证 1937 年写作（ia-onpractice-ip1950）"},
+    {"field": "profile.life[1937-08]", "claim": "《矛盾论》篇署 1937 年 8 月；编者注明载原为延安抗日军政大学讲稿、收入选集时经作者修订", "sourceId": "sw1-oc-transcript", "locator": "篇首题署行与方括号编者注（『Originally delivered as lectures at the Anti-Japanese Military and Political College in Yenan, it was revised by the author on its inclusion in his Selected Works』）", "verdict": "confirmed"},
+    {"field": "profile.life[1938-05]", "claim": "《论持久战》编者注：1938 年 5 月 26 日至 6 月 3 日在延安抗日战争研究会系列讲演；篇署 May 1938", "sourceId": "sw2-pw-transcript", "locator": "篇首方括号编者注与题署行", "verdict": "confirmed"},
+    {"field": "profile.life[传播节点]", "claim": "英文单行本：International Publishers 1950（《实践论》，16 页）；FLP 1964（《矛盾论》）、1966（《实践论》）", "sourceId": "ia-onpractice-ip1950", "locator": "三个 archive.org 编目记录（ia-onpractice-ip1950 / ia-oncontradiction-flp1964 / ia-onpractice-flp1966）", "verdict": "confirmed"},
+    {"field": "profile.life[选集节点]", "claim": "《选集》英文版卷一 1965、卷三 1965、卷四 1967（FLP）", "sourceId": "ia-sw1-flp1965", "locator": "三个 archive.org 编目记录", "verdict": "confirmed", "notes": "卷二未单独核到 FLP 编目；Pergamon 1961 年发行本编目在档；汉文原版各卷初版年份未在本轮编目内核验，不写"},
+    {"field": "profile.life[1957]", "claim": "《关于正确处理人民内部矛盾的问题》1957 年", "sourceId": "ol-correct-1957", "locator": "作品记录 first_publish_year", "verdict": "confirmed"},
+    {"field": "profile.concepts[实践论]", "claim": "副题『论认识和实践的关系——知和行的关系』；篇中引列宁『实践高于（理论的）认识』", "sourceId": "ia-onpractice-flp1966", "locator": "FLP 1966 单行本题名页（副题英译）+ sw1-op-transcript（列宁引文句）", "verdict": "confirmed"},
+    {"field": "profile.concepts[对立统一]", "claim": "《矛盾论》开篇：矛盾律即对立统一律，是唯物辩证法的根本规律；引列宁『辩证法本来就是研究矛盾的本质』", "sourceId": "sw1-oc-transcript", "locator": "开篇首段", "verdict": "confirmed"},
+    {"field": "profile.concepts[普遍性/特殊性/主要矛盾]", "claim": "章节标题：II 矛盾的普遍性、IV 主要矛盾和矛盾的主要方面；特殊性节在目录句中出现", "sourceId": "sw1-oc-transcript", "locator": "节次标题行", "verdict": "confirmed"},
+    {"field": "profile.concepts[两类矛盾]", "claim": "1957 年论文题名所示：矛盾分析延伸至『人民内部』社会关系层面", "sourceId": "ol-correct-1957", "locator": "作品题名", "verdict": "confirmed", "notes": "仅题名层；内文论证未核读，概念定义保守表述"},
+    {"field": "profile.bibliography[实践论]", "claim": "1937 年成文；IP 1950 单行本 16 页；FLP 1966 单行本", "sourceId": "ia-onpractice-ip1950", "locator": "编目记录三处", "verdict": "confirmed"},
+    {"field": "profile.bibliography[矛盾论]", "claim": "1937 年讲稿；FLP 1964 单行本；International Publishers 1953", "sourceId": "ia-oncontradiction-flp1964", "locator": "编目记录", "verdict": "confirmed"},
+    {"field": "profile.bibliography[论持久战]", "claim": "1938 年讲演；英文版本记录 1954/1966", "sourceId": "ol-protracted", "locator": "OL 作品记录", "verdict": "confirmed"},
+    {"field": "profile.bibliography[选集]", "claim": "FLP 英文版四卷编目可稽（卷一 1965/卷三 1965/卷四 1967）", "sourceId": "ia-sw1-flp1965", "locator": "编目记录", "verdict": "confirmed", "notes": "kind=edited（著述汇编）；汉文版卷次年份未核"},
+    {"field": "profile.relations[马克思]", "claim": "两论以马克思主义认识论与辩证法为立论出发点，篇中直接援引马克思、列宁论断", "sourceId": "sw1-op-transcript", "locator": "篇首编者注与正文引文", "verdict": "confirmed", "notes": "卡尔·马克思既有包无毛泽东侧关系，本包单侧新增（同批次30 巴利巴尔单侧先例）"},
+    {"field": "profile.relations[恩格斯]", "claim": "《矛盾论》引恩格斯『运动本身就是矛盾』（SW 注释标注原出处，具体篇目未核读）", "sourceId": "sw1-oc-transcript", "locator": "正文引文句与注释标记", "verdict": "confirmed"},
+    {"field": "profile.relations[艾思奇]", "claim": "读《大众哲学》并推介（1936 电告选购；1937 致信评《哲学与生活》；自言『得益很多』）", "sourceId": "zhanglibo", "locator": "张立波文与社科院文（与艾思奇包同源）", "verdict": "confirmed", "notes": "镜像既有包：毛泽东→艾思奇｜reading｜《大众哲学》的读者与推介，同向同语义"},
+    {"field": "debate[研究文献]", "claim": "Schram 1989 专著、Knight 2005/2016 译介、2007 年两论合刊本（Žižek 评论）编目在档", "sourceId": "ol-schram-1989", "locator": "OL 作品记录四处", "verdict": "confirmed", "notes": "编目层；各内文论点未读，争议模块不转述其具体论点"}
+  ],
+  "uncertainties": [
+    "出生地与卒地（legacy 作湖南韶山/北京）未独立核验，正文只写生卒月日",
+    "《毛泽东选集》汉文原版各卷初版年份未在本轮编目内核验，只写英文版编目事实",
+    "Knight/Schram/Žižek 诸研究内文的具体论点未读，争议模块只述研究文献存在与出版说明层表述",
+    "《矛盾论》引恩格斯句的 SW 注释所指原篇目（通行说法为《反杜林论》）未核读注释全文，正文不点名篇目",
+    "OL 作者档 top_work 语录条目（编者细节）未展开核验，不入传世书目",
+    "《论持久战》1954 年英文版本记录与 1966 年记录并存，单行本版本史未细考"
+  ],
+  "portraitNote": "unverified"
+}
