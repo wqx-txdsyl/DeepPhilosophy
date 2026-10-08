@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "name": "马库伊尔肖奇特尔",
+  "batch": "2026-10-09-source-repairs",
+  "researchedAt": "2026-10-09",
+  "repairOf": "source-use-findings.json#马库伊尔肖奇特尔（未读的 Bierhorst/Mexicolore 检索线索被用于人物与书目；核出版社或馆藏著录，区分作者、手稿、译者）",
+  "identity": {
+    "verdict": "confirmed",
+    "findings": "Macuilxochitzin（马库伊尔肖奇特尔，约15世纪中叶，特拉卡埃莱尔之女）身份维持原包裁决：其名下存世诗作仅《Cantares Mexicanos》写本所收战歌一首，归属与转写层保留存疑。",
+    "legacyIssues": []
+  },
+  "sources": [
+    {
+      "id": "ia-dict",
+      "title": "Archive.org 馆藏元数据：A Nahuatl-English Dictionary and Concordance to the Cantares mexicanos（Bierhorst, Stanford UP 1985, ISBN 0804711836）",
+      "url": "https://archive.org/details/nahuatlenglishdi0000bier",
+      "type": "library-catalog",
+      "accessedAt": "2026-10-09",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "仅著录层（archive.org metadata API）：题名、著者 Bierhorst, John、出版项 Stanford, Calif.: Stanford University Press、1985年、ISBN 0804711836、751页、描述『Based on an analytic transcription of the codex Cantares mexicanos』、语种 eng/nah。该著录证实1985年斯坦福出版计划以 Cantares Mexicanos 写本（codex）为基础，区分了写本（codex）与 Bierhorst 的分析性转写/工具书层。词典与 Concordance 正文未读。"
+    },
+    {
+      "id": "ol-cantares",
+      "title": "OpenLibrary 检索著录：Cantares mexicanos（Bierhorst 三种，1985，Stanford University Press）",
+      "url": "https://openlibrary.org/search.json?q=cantares+mexicanos+bierhorst",
+      "type": "library-catalog",
+      "accessedAt": "2026-10-09",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "仅著录层（OpenLibrary search API 实读返回）：①Cantares mexicanos = Songs of the Aztecs（1985，Stanford UP，John Bierhorst）；②Cantares Mexicanos（1985，Stanford UP）；③A Nahuatl-English dictionary and concordance（1985，Stanford UP）。三条著录把英译卷、写本刊布卷与工具书卷分开，支持书目层的题名/年份/出版社事实；各卷正文均未读。"
+    },
+    {
+      "id": "quince-poetas",
+      "title": "《Quince poetas del mundo náhuatl》第VIII章（enriquedussel.com 文库影印/排印本）",
+      "url": "https://docs.enriquedussel.com/txt/Textos_200_Obras/PyF_pueblos_originarios/Quince_poetas-Miguel_Leon_Portilla.pdf",
+      "type": "primary-source-edition",
+      "accessedAt": "2026-10-06",
+      "accessScope": "partial-text",
+      "readScope": "目录与第VIII章正文（复核已读至章末注释）：收录15位纳瓦特尔诗人（约1400–1550）且含本条目人物（章题『Macuilxochitzin，特拉卡埃莱尔之女诗人』）；章内载约1435年生、Tezozómoc『十二子女之八』引文、战役系年『10-燧石（1476）』、归属论证四点（注146）与该歌在写本中的位置 fol.53v。"
+    },
+    {
+      "id": "pueblos-macuil",
+      "title": "Pueblos Originarios 人物条目：Macuilxochitzin",
+      "url": "https://pueblosoriginarios.com/biografias/macuilxochitzin.html",
+      "type": "scholarly-reference-site",
+      "accessedAt": "2026-10-06",
+      "accessScope": "full-text",
+      "readScope": "生年、命名、父女诸说、三朝、伊斯特利尔索奇特尔赞语、存世之歌及其战役情节与引诗。"
+    },
+    {
+      "id": "sincronia",
+      "title": "Sincronía（瓜达拉哈拉大学）：yaocuícatl 与纳瓦特尔女诗人研究（条目页）",
+      "url": "https://revistasincronia.cucsh.udg.mx/index.php/sincronia/article/view/412",
+      "type": "scholarly-article",
+      "accessedAt": "2026-10-06",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "仅摘要层：yaocuícatl 战歌定位、莱昂-波尔蒂利亚框架下唯一被承认的女诗人、歌—史契合与断裂、匿名妇女的记忆。正文PDF未读，仅支持框架定位。"
+    }
+  ],
+  "checks": [
+    {
+      "field": "profile.bibliography[1]",
+      "claim": "Cantares Mexicanos 写本为其诗作存世的文献载体；Bierhorst 1985年斯坦福出版计划『Based on an analytic transcription of the codex Cantares mexicanos』",
+      "sourceId": "ia-dict",
+      "locator": "archive.org 著录描述字段",
+      "verdict": "confirmed",
+      "notes": "写本（codex）与转写/译本层的区分获馆藏著录支撑"
+    },
+    {
+      "field": "profile.bibliography[2]",
+      "claim": "Cantares Mexicanos: Songs of the Aztecs（Bierhorst英译，1985，Stanford UP）为通行英译",
+      "sourceId": "ol-cantares",
+      "locator": "OpenLibrary 著录①（题名/年份/出版社）",
+      "verdict": "confirmed",
+      "notes": "出版社与馆藏著录层；『通行』定性据同一出版年的三卷本计划（译卷+刊布卷+工具书卷）"
+    },
+    {
+      "field": "profile.people[3]",
+      "claim": "Bierhorst 为 Cantares Mexicanos 的英译者与分析性转写者（1985，Stanford UP 三卷）",
+      "sourceId": "ia-dict",
+      "locator": "著录著者与描述字段",
+      "verdict": "confirmed",
+      "notes": "原仅检索线索支撑，现以两条馆藏著录支撑；译注正文未读维持"
+    }
+  ],
+  "uncertainties": [
+    "Mexicolore 页面（原检索线索的宿主）：403未读，不再列入来源",
+    "Bierhorst 译注与导言的学术观点：三卷正文均未读，不作任何内容转述",
+    "该歌在写本中的具体对勘细节（fol.53v 之外的文本史）：维持原包存疑处理"
+  ],
+  "portraitNote": "unverified"
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "name": "仁钦·乔玛",
+  "batch": "2026-10-09-source-repairs",
+  "researchedAt": "2026-10-09",
+  "repairOf": "source-use-findings.json#仁钦·乔玛（Rigpa 社区百科作为多项史实与概述论据；以可读学术传记核对，保留身份与年代的证据限制）",
+  "identity": {
+    "verdict": "confirmed",
+    "findings": "仁钦·桑波（Rinchen Zangpo，rin chen bzang po，958—1055）身份无误：古格大译师、Tabo（996）创建归名者、阿底峡时代的前辈译师。目录键『仁钦·乔玛』为站内既有译名，条目内以仁钦桑波行文。",
+    "legacyIssues": []
+  },
+  "sources": [
+    {
+      "id": "tol",
+      "title": "The Treasury of Lives: \"Rinchen Zangpo\"（Alexander Gardner 撰，2011年7月；正文经 Wayback Machine 2013 快照全文读取）",
+      "url": "https://treasuryoflives.org/biographies/view/Rinchen%20Zangpo/10199",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-09",
+      "accessScope": "full-text",
+      "readScope": "2026-10-09经 web.archive.org 2013 快照全文通读（现网版本被站点防火墙拦截，直接抓取403）：958年生、早期来源未载出生地而后世传记给出古格 Nyungwam Ratna/Khyungwang 区 Khatse Wingir；13岁从堪布益西赞波（mkhan po ye shes bzang po）出家；975年说服父母赴印（『later histories have it that he was sent to India by royal decree』）；益西沃遣二十一名青年赴印学梵文、唯仁钦桑波与勒贝喜饶生还（后者号小译师、又名 Drakjor Sherab）；先迦湿弥罗后毗讫罗摩尸罗、约987年归（在印十三年）；从那罗巴受 Guhyasamāja；『said to have studied with over seventy-five Indian paṇḍitas』；『some sources have it that he went three times』；师承有名可举者 Ratnavajra、Dīpaṅkarabhadra、Jinākara、Duryacandra、Śrāddhakaravarman；『When Rinchen Zangpo was eighty-five he met Atisha at Toling』、阿底峡先赞（『If there are men like you in Tibet, then there was no need for me to come here!』）后闻其分楼修法斥『Rotten translator!』并教合修；一百零八寺之数为藏语『众多』之惯用；『credited with establishing the famous Tabo Monastery in Spiti in 996』；『Most of the attributions to Rinchen Zangpo must be taken with some suspicion, as they are the invention of later tradition』；弟子：勒贝喜饶、Ma Lotsāwa Gewa Lodro、Ngok Loden Sherab 与《青史》所载四心子（Drakrin、Gya Yetsuk、Gungpa Yeshe、Konchok Tsek）。"
+    },
+    {
+      "id": "atisha-pkg",
+      "title": "站内阿底峡尊者包（其 people/relations 镜像条目与 ToL 阿底峡条引文）",
+      "url": "https://treasuryoflives.org/biographies/view/Rinchen%20Zangpo/10199",
+      "type": "internal-package",
+      "accessedAt": "2026-10-06",
+      "accessScope": "partial-text",
+      "readScope": "该包 people[] 有『仁钦桑波』条（958—1055，古格大译师；eraSource editorial-peer），relations 有 context『阿底峡尊者->仁钦桑波｜托林寺会面的老译师』（historical-contact），detail 转引 ToL 仁钦桑波条八十五岁会面句；与本次 ToL 快照直读一致。"
+    }
+  ],
+  "checks": [
+    {
+      "field": "profile.life[0]",
+      "claim": "958年生；早期来源未载出生地、后世传记给出 Nyungwam Ratna/Khyungwang 区 Khatse Wingir；不作聚落级断言",
+      "sourceId": "tol",
+      "locator": "开头两段（2013快照）",
+      "verdict": "confirmed",
+      "notes": "Rigpa 所记 rad ni 变体移入 uncertainties"
+    },
+    {
+      "field": "profile.life[1]",
+      "claim": "13岁从堪布益西赞波（mkhan po ye shes bzang po）出家",
+      "sourceId": "tol",
+      "locator": "『He was ordained at the age of thirteen by Khenpo Yeshe Zangpo』（2013快照）",
+      "verdict": "confirmed",
+      "notes": "原仅rigpa支撑，本轮升级为ToL正文支撑"
+    },
+    {
+      "field": "profile.life[2]",
+      "claim": "975年说服父母赴迦湿弥罗；『奉诏派遣』系后出传记（later histories）；二十一说属后出传记传统；那罗巴受Guhyasamāja、七十五位以上班智达、三赴之说均为ToL原句",
+      "sourceId": "tol",
+      "locator": "赴印段（2013快照）",
+      "verdict": "corrected",
+      "notes": "『受益西沃派遣』改为ToL的措辞分层；『率十名译师』（rigpa）无学术来源，移除"
+    },
+    {
+      "field": "profile.life[3]",
+      "claim": "85岁在托林寺会见阿底峡（ToL原句）；先赞后斥『Rotten translator!』并教合修——对话属叙事层",
+      "sourceId": "tol",
+      "locator": "阿底峡会面段（2013快照）",
+      "verdict": "corrected",
+      "notes": "原『补授胜乐类教法』无ToL依据，改为『教其合修』并注叙事层"
+    },
+    {
+      "field": "profile.people[1]",
+      "claim": "益西沃改革佛教、遣二十一名青年赴印、唯二人生还（后出传记传统）",
+      "sourceId": "tol",
+      "locator": "赴印段（2013快照）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[3]",
+      "claim": "勒贝喜饶为伯叔父之子、生还两人之一、号小译师、又名Drakjor Sherab；弟子另有Ma Lotsāwa Gewa Lodro、Ngok Loden Sherab与四心子（《青史》）",
+      "sourceId": "tol",
+      "locator": "弟子段（2013快照）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[0]",
+      "claim": "ToL对寺院归名的原话是『Most of the attributions to Rinchen Zangpo must be taken with some suspicion, as they are the invention of later tradition』",
+      "sourceId": "tol",
+      "locator": "寺院段（2013快照）",
+      "verdict": "corrected",
+      "notes": "原包引作『almost all of the attributions are tenuous』与本快照措辞不符，已按实读原文改正"
+    },
+    {
+      "field": "profile.debate.paragraphs[1]",
+      "claim": "年代骨架（958/1042/1055）与轶事细节分层；Martin 2008《Veil of Kashmir》研究15世纪诗歌体传记重构（见ToL书目）",
+      "sourceId": "tol",
+      "locator": "条目书目（2013快照）",
+      "verdict": "confirmed"
+    }
+  ],
+  "uncertainties": [
+    "出生聚落级转写（Rigpa 所记 rad ni 变体）：无学术来源独立印证，不写入正文",
+    "『三赴迦湿弥罗』『校订150余种译本』『率十名译师』『译密续108函』：传统传记计数，ToL 仅收录三赴之说（some sources have it），余者无学术来源独立印证，按传统计数层保留于正文或移除",
+    "阿底峡会面的对话语句与『Rotten translator!』故事：ToL 记载的传记叙事层，非可独立核实的史料",
+    "Alchi 寺归名：本轮ToL快照未提 Alchi，正文维持归名存疑处理"
+  ],
+  "portraitNote": "unverified"
+}

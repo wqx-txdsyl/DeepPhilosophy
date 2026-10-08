@@ -6,6 +6,7 @@ import unittest
 from collections import Counter
 from pathlib import Path
 from audit_author_assets import assess
+from check_author_source_evidence import evaluate as evaluate_source_evidence
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC = Path(BASE) / 'app/public'
@@ -104,6 +105,110 @@ class AuthorAssetsTests(unittest.TestCase):
         packet['profile'].pop('debate', None)
         packet['debateAssessment'] = {'status': 'not-required', 'scope': 'No relevant sourced controversy to add.'}
         self.assertEqual(assess(packet['profile'], packet)['level'], 'source-backed')
+
+
+def source(id, url, type='scholarly-encyclopedia', accessScope='full-text', readScope='读了相关章节'):
+    return {'id': id, 'title': '来源', 'url': url, 'type': type, 'accessedAt': '2026-10-09',
+            'accessScope': accessScope, 'readScope': readScope, 'coverage': '覆盖范围'}
+
+
+class SourceEvidenceGateTests(unittest.TestCase):
+    @staticmethod
+    def packet(*sources, referencing='sep'):
+        editorial = {'name': '门禁测试人物', 'overviewSourceRefs': [referencing]}
+        profile = {
+            'name': '门禁测试人物',
+            'sources': list(sources),
+            'life': [{'year': '1900', 'title': '节点', 'body': '内容', 'sourceRefs': [referencing]}],
+            'bibliography': [{'title': '书', 'year': '1900', 'kind': 'authored', 'description': '描述', 'sourceRefs': [referencing]}],
+        }
+        return profile, editorial
+
+    def test_packets_without_access_scope_stay_exempt(self):
+        legacy = source('leads', 'https://zh.wikipedia.org/wiki/%E8%B0%AD%E5%97%A3%E5%90%8C')
+        legacy.pop('accessScope')
+        profile, editorial = self.packet(legacy)
+        self.assertEqual(evaluate_source_evidence(profile, editorial, '门禁测试人物'), [])
+
+    def test_search_summaries_and_wikipedia_never_support_body_claims(self):
+        snippet = source('leads', 'https://example.org/x', accessScope='search-summary', readScope='仅检索摘要')
+        profile, editorial = self.packet(snippet, referencing='leads')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('life[0]:clue-source-referenced:leads', errors)
+        wiki = source('wiki', 'https://zh.wikipedia.org/wiki/%E8%B0%AD%E5%97%A3%E5%90%8C')
+        profile, editorial = self.packet(wiki, referencing='wiki')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('life[0]:clue-source-referenced:wiki', errors)
+        self.assertIn('overviewSourceRefs:clue-source-referenced:wiki', errors)
+
+    def test_authoritative_domains_do_not_turn_unread_excerpts_into_full_text(self):
+        mislabeled = source('gov', 'https://www.gov.uk/', type='encyclopedia-clue', accessScope='full-text')
+        profile, editorial = self.packet(mislabeled, referencing='gov')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('sources[0]:clue-source-marked-readable', errors)
+        self.assertIn('life[0]:clue-source-referenced:gov', errors)
+
+    def test_primary_text_transcriptions_are_not_plain_wikipedia(self):
+        transcription = source('ws', 'https://zh.wikisource.org/wiki/%E4%BB%81%E5%AD%B8', type='primary-text-transcription')
+        evidence = {'sources': [{'id': 'ws'}],
+                    'checks': [{'field': 'profile.life[0]', 'claim': '断言', 'sourceId': 'ws', 'locator': '§1', 'verdict': 'confirmed'}]}
+        profile, editorial = self.packet(transcription)
+        self.assertEqual(evaluate_source_evidence(profile, editorial, '门禁测试人物', evidence), [])
+
+    def test_catalog_metadata_supports_title_facts_but_search_summaries_support_nothing(self):
+        catalog = source('oclc', 'https://search.example.org/record', accessScope='abstract-or-catalog', readScope='仅编目著录')
+        profile, editorial = self.packet(catalog, referencing='oclc')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertNotIn('life[0]:clue-source-referenced:oclc', errors)
+        snippet = source('leads', 'https://search.example.org/hit', accessScope='search-summary', readScope='仅检索摘要')
+        profile, editorial = self.packet(snippet, referencing='leads')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('bibliography[0]:clue-source-referenced:leads', errors)
+        self.assertIn('life[0]:clue-source-referenced:leads', errors)
+
+    def test_access_scope_must_be_declared_for_every_source(self):
+        undeclared = source('ws', 'https://zh.wikisource.org/wiki/%E4%BB%81%E5%AD%B8', type='primary-text-transcription')
+        undeclared.pop('accessScope')
+        readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
+        profile, editorial = self.packet(undeclared, readable, referencing='sep')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('sources[0]:invalid-access-scope', errors)
+        undeclared['accessScope'] = 'full-text'
+        undeclared.pop('readScope')
+        undeclared.pop('coverage')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('sources[0]:missing-read-scope-note', errors)
+
+    def test_read_sources_need_an_evidence_record_with_locators(self):
+        readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
+        profile, editorial = self.packet(readable)
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('missing-source-evidence-record', errors)
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字', {'sources': [], 'checks': []})
+        self.assertIn('evidence-record-missing-source:sep', errors)
+        self.assertIn('evidence-record-without-checks', errors)
+        thin = {'sources': [{'id': 'sep'}], 'checks': [{'field': 'life[0]', 'claim': '断言', 'sourceId': 'sep', 'locator': '', 'verdict': 'confirmed'}]}
+        errors = evaluate_source_evidence(profile, editorial, '门禁测试人物', thin)
+        self.assertIn('evidence-checks[0]:missing-locator', errors)
+        bad = {'sources': [{'id': 'sep'}], 'checks': [{'field': 'life[0]', 'claim': '断言', 'sourceId': 'sep', 'locator': '§2', 'verdict': 'surely-fine'}]}
+        errors = evaluate_source_evidence(profile, editorial, '门禁测试人物', bad)
+        self.assertIn('evidence-checks[0]:invalid-verdict', errors)
+
+    def test_uncertain_checks_do_not_require_a_locator(self):
+        readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
+        evidence = {'sources': [{'id': 'sep'}],
+                    'checks': [{'field': 'profile.life[0].year', 'claim': '生年', 'sourceId': 'sep', 'locator': '', 'verdict': 'uncertain'}]}
+        profile, editorial = self.packet(readable)
+        self.assertEqual(evaluate_source_evidence(profile, editorial, '门禁测试人物', evidence), [])
+
+    def test_gated_packets_fail_the_asset_audit_through_the_same_path(self):
+        readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
+        profile, editorial = self.packet(readable)
+        editorial.update({'schemaVersion': 1, 'reviewedAt': '2026-10-09', 'reviewMethod': 'per-source review',
+                          'overviewSourceRefs': ['sep'], 'debateAssessment': {'status': 'not-required', 'scope': '无'}})
+        assessment = assess(profile, editorial)
+        self.assertIn('missing-source-evidence-record', assessment['errors'])
+        self.assertEqual(assessment['level'], 'needs-review')
 
 
 if __name__ == '__main__':

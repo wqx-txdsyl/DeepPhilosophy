@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "name": "卡罗琳·汉弗莱",
+  "batch": "2026-10-09-source-repairs",
+  "researchedAt": "2026-10-09",
+  "repairOf": "source-use-findings.json#卡罗琳·汉弗莱（gov.uk 首页与授勋检索摘要不能替代具体公告；定位可核查出处）",
+  "identity": {
+    "verdict": "confirmed",
+    "findings": "Caroline Humphrey（Dame Caroline Humphrey, DBE, FBA）身份无误：剑桥社会人类学家、蒙古与内亚研究单元（MIASU）创建人之一。",
+    "legacyIssues": []
+  },
+  "sources": [
+    {
+      "id": "gov-ny2011",
+      "title": "GOV.UK 官方名单：2011年新年授勋名单（New Year Honours 2011，官方CSV全文）",
+      "url": "https://www.gov.uk/csv-preview/5a7f96f640f0b6230269065a/NY_2011.csv",
+      "type": "government-registry",
+      "accessedAt": "2026-10-09",
+      "accessScope": "full-text",
+      "readScope": "下载官方CSV（9749行数据表）并检索：『Professor Caroline HUMPHREY』条目完整字段为——New Year｜2011｜Dames Commander of the Order of the British Empire｜DBE｜Dame Commander of the Order of the British Empire｜Professor Caroline HUMPHREY｜『Professor of Collaborative Anthropology, University of Cambridge. For services to Scholarship.』｜Cambridgeshire。授勋等级、年份与事由至此有官方全文出处；名单其余条目未逐条通读。"
+    },
+    {
+      "id": "clarehall",
+      "title": "Clare Hall（剑桥）名录页：Caroline Humphrey",
+      "url": "https://www.clarehall.cam.ac.uk/directory/caroline-humphrey-dbe-fba/",
+      "type": "institutional-page",
+      "accessedAt": "2026-10-09",
+      "accessScope": "full-text",
+      "readScope": "2026-10-09回访复核：页称『Professor Dame Caroline Humphrey FBA』（Dame 称号在册，但未给年份与授勋事由）；2010年10月以 Sigrid Rausing Professor of Collaborative Anthropology 荣休、后任 MIASU 主任；1973年剑桥博士（布里亚特巫画，导师 Edmund Leach）；与 Onon 1986年共建 MIASU；田野地域列表。"
+    },
+    {
+      "id": "miasu",
+      "title": "MIASU（剑桥蒙古与内亚研究单元）官网",
+      "url": "https://www.miasu.socanth.cam.ac.uk/",
+      "type": "institutional-page",
+      "accessedAt": "2026-10-06",
+      "accessScope": "full-text",
+      "readScope": "MIASU 1986年由 Humphrey 与 Onon 创建；单元隶属剑桥社会人类学系。2026-10-09回访其 People 页：仅一处提及她为 Where Rising Powers Meet 项目作报告，无授勋信息。"
+    },
+    {
+      "id": "openlibrary-humphrey",
+      "title": "OpenLibrary著录：Caroline Humphrey 书目串",
+      "url": "https://openlibrary.org/search.json?q=author%3A%22caroline+humphrey%22&limit=40",
+      "type": "library-catalog",
+      "accessedAt": "2026-10-06",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "仅书目著录层：专著/合著/编作的年代与出版社（1983–2021），含同名作者干扰条目的剔除；本包书目主要依据。"
+    },
+    {
+      "id": "jstor-shamans",
+      "title": "JSTOR 书目记录：Shamans and Elders（Humphrey with Onon, 1996）",
+      "url": "https://www.jstor.org/",
+      "type": "library-catalog",
+      "accessedAt": "2026-10-06",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "仅书目记录层：署名形式『By CAROLINE HUMPHREY with URGUNGE ONON』与丛书归属；JSTOR 正文未读——只支持题名/署名/丛书等著录事实，不支持书内观点。"
+    }
+  ],
+  "checks": [
+    {
+      "field": "profile.life[6]",
+      "claim": "2011年新年授勋封DBE（Dame Commander），事由『Professor of Collaborative Anthropology, University of Cambridge. For services to Scholarship.』",
+      "sourceId": "gov-ny2011",
+      "locator": "官方CSV数据表 HUMPHREY 行",
+      "verdict": "confirmed",
+      "notes": "替换原『gov.uk首页检索摘要层』——授勋名单正文至此实读；荣誉头衔的『Dame』称谓另获Clare Hall页在册印证"
+    },
+    {
+      "field": "profile.life[6]",
+      "claim": "2010年10月以 Sigrid Rausing Professor of Collaborative Anthropology 荣休并出任 MIASU 主任",
+      "sourceId": "clarehall",
+      "locator": "荣休与MIASU句",
+      "verdict": "confirmed"
+    }
+  ],
+  "uncertainties": [
+    "FBA当选年份：本轮来源未载，不写入",
+    "JSTOR书目记录之外的《Shamans and Elders》书内论证：正文未读，维持不作内容转述"
+  ],
+  "portraitNote": "unverified"
+}

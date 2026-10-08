@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "name": "维雷杜·维雷杜",
+  "batch": "2026-10-09-source-repairs",
+  "researchedAt": "2026-10-09",
+  "repairOf": "任务书第八项：目录键『维雷杜·维雷杜』——核实 Kwasi Wiredu 规范名称、已有别名与前端读取逻辑；保持原公共路径与旧链接可用；无法安全迁移时记录准确方案",
+  "identity": {
+    "verdict": "confirmed",
+    "findings": "人物身份无误：Kwasi Wiredu（1931—2022年1月6日），加纳哲学家，先后执教加纳大学莱贡（23年）与南佛罗里达大学（1987–2010，杰出大学教授）。『维雷杜·维雷杜』是站内历史目录键（姓氏重复形态），并非另一位人物；其规范中文名为『夸西·维雷杜』（已有目录别名），corrections.displayName 已设为『夸西·维雷杜』。",
+    "legacyIssues": [
+      "目录键『维雷杜·维雷杜』为姓氏重复的遗留工件，本轮不作改键迁移（理由见 migrationPlan）"
+    ]
+  },
+  "sources": [
+    {
+      "id": "iep",
+      "title": "IEP（Internet Encyclopedia of Philosophy）：Kwasi Wiredu (1931—2022)",
+      "url": "https://iep.utm.edu/wiredu/",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-09",
+      "accessScope": "full-text",
+      "readScope": "2026-10-09回访复核：条目标题作 Kwasi Wiredu (1931—2022)；1952年入学莱贡读哲学（受西学训练）；概念去殖民化（『the purging of African philosophical thinking of all uncritical assimilation of Western ways of thinking』）；阿坎语无一『真理』对应词的语言学论证；阿坎政制为协商一致的民主；心灵（adwene）不属人格构成实体、okra（灵魂）与 adwene 之分；主要著作 Philosophy and an African Culture (1980)、Conceptual Decolonization in African Philosophy (1995)、Cultural Universals and Particulars (1996)。全篇主体未逐节通读的部分为后期伦理学与政治哲学节。"
+    },
+    {
+      "id": "usf",
+      "title": "南佛罗里达大学哲学系：Kwasi Wiredu 纪念页",
+      "url": "https://www.usf.edu/arts-sciences/departments/philosophy/news/wiredu.aspx",
+      "type": "institutional-reference",
+      "accessedAt": "2026-10-09",
+      "accessScope": "full-text",
+      "readScope": "2026-10-09回访复核：Distinguished University Professor；1987年到任、2010年退休；1931–2022、『died Thursday, January 6, 2022, at the age of 90』；加纳大学学士（1958）、牛津 B.Phil 师从吉尔伯特·赖尔（1960）、莱贡执教23年；访问职位（UCLA 1979–80、Ibadan 1984、Richmond 1985、Carleton 1986、Duke 1994–95/1999–2001）与 Wilson Center（1985）、National Humanities Center（1986）任职；概念去殖民化与阿坎心灵观的描述；主要著作（Philosophy and an African Culture, Cambridge 1980；与 Gyekye 合编 Person and Community 1992；Cultural Universals and Particulars, Indiana UP 1996；A Companion to African Philosophy, Blackwell 2004）。"
+    }
+  ],
+  "checks": [
+    {
+      "field": "identity.englishName",
+      "claim": "规范英文名 Kwasi Wiredu，生卒 1931—2022",
+      "sourceId": "iep",
+      "locator": "条目标题与首段",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "catalogKey",
+      "claim": "目录键『维雷杜·维雷杜』为站内历史键；规范中文名『夸西·维雷杜』已是目录别名且为 corrections.displayName；两路径均可达详情页",
+      "sourceId": "usf",
+      "locator": "（结构性核查，非页面断言：catalog.aliases['夸西·维雷杜']='维雷杜·维雷杜'；data/夸西·维雷杜.json={aliasOf}；authorContent.js canonicalAuthor+aliasOf 解析链）",
+      "verdict": "confirmed",
+      "notes": "前端显示层（详情页标题/SEO/星丛节点/搜索）一律优先 displayName='夸西·维雷杜'，旧键仅存在于 URL 与目录键"
+    }
+  ],
+  "migrationPlan": {
+    "verdict": "本轮不迁移，记录准确方案与剩余影响",
+    "properCanonicalName": "夸西·维雷杜",
+    "whyBlocked": "安全改键需要把 app/public/philosopher/editorial/维雷杜·维雷杜.json 移动为 夸西·维雷杜.json：sync_author_catalog 按 editorial 内部 name 键合入（内部 name 改后可过），但 audit_author_assets 按目录键文件名查找 editorial——文件不移动则资料包对审计不可见、状态将从 source-backed 跌回 needs-review；而移动=删除旧公共路径，被本工作树检查器的『不得删除公共路径』规则禁止。 philosophers.json 的既有先例（威拉德·范·奥曼·蒯因/奎因）同样以旧键为规范键、常用名为别名。",
+    "safeMigrationSteps": [
+      "1. roster.json aliases 改为 {'维雷杜·维雷杜': '夸西·维雷杜'}（现有 {'夸西·维雷杜': '维雷杜·维雷杜'} 反转，避免别名链）",
+      "2. editorial 文件移动为 夸西·维雷杜.json（内部 name 同步改）",
+      "3. corrections.json 键名同步改并保留 displayName",
+      "4. 运行 sync_author_catalog.py 重建：data/夸西·维雷杜.json 为正文、data/维雷杜·维雷杜.json 自动改写为 {aliasOf} 别名文件（旧 URL 不 404）",
+      "5. 更新 app/tests/authorContent.test.mjs 中对 roster['维雷杜·维雷杜'] 的断言为别名解析断言",
+      "6. guard 需由外层放行这一次性的 editorial 文件移动（或以正常 git rename 在主线工作区执行）"
+    ],
+    "remainingImpact": "URL 与目录键仍为『维雷杜·维雷杜』（用户可见页面标题、SEO、星丛、搜索均显示『夸西·维雷杜』）；两套中文名均可检索与解析；无 404、无身份混淆。"
+  },
+  "uncertainties": [
+    "FBA/其他荣誉与后期伦理学细节：本轮来源未展开，不写入"
+  ],
+  "portraitNote": "unverified"
+}

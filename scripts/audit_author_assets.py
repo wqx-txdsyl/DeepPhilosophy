@@ -7,6 +7,8 @@ from urllib.parse import urlparse
 from collections import Counter
 from pathlib import Path
 
+from check_author_source_evidence import evaluate as evaluate_source_evidence
+
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC = Path(BASE) / 'app/public'
 FIELDS = ('overview', 'life', 'concepts', 'people', 'relations', 'bibliography', 'sources', 'readingRoutes')
@@ -69,6 +71,7 @@ def assess(profile, editorial=None, kind='thinker'):
             errors.append('missing-chronology-explanation')
         if editorial.get('worksPolicy') in ['no-autographs', 'single-surviving-corpus'] and not editorial.get('evidenceLimits'):
             errors.append('missing-textual-evidence-explanation')
+    errors.extend(evaluate_source_evidence(profile, editorial, (editorial or {}).get('name', '')))
     level = 'source-backed' if editorial and not gaps and not errors else 'needs-review'
     if kind == 'review':
         level = 'identity-unresolved'
