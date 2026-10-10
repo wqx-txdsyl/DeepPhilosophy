@@ -132,7 +132,7 @@ Output ONLY the prompt, no other text."""}
         return
     print(f"  [OK] {url}")
 
-    # 下载保存（使用 ASCII 文件名，避免 Render 404）
+    # 下载保存（沿用脚本既有的 ASCII 文件命名映射）
     IMG_MAP = {'萨满哲学':'shaman','北极原住民哲学':'arctic','南岛哲学':'austronesian','高加索哲学':'caucasus','高加索-草原哲学':'caucasus-steppe','太平洋原住民哲学':'pacific'}
     safe = IMG_MAP.get(school_name) or school_name.replace("/", "-").replace("\\", "-")
     print(f"[3/3] 保存为 {safe}.jpg...")
