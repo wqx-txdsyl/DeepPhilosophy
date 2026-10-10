@@ -142,7 +142,7 @@ def main():
     # ── 2. 远端清单 ──
     print("列出远端 ...")
     remote = {}
-    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/", "philosopher/")
+    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/", "philosopher/", "more/")
     for obj in oss2.ObjectIterator(bucket, prefix=""):
         # 只看本脚本管理的前缀: 根两个 json + covers/ + app/assets/ + schools/ + gene/
         if selected(obj.key) and (obj.key in ("books.json", "covers.json", "philosophers.json") or obj.key.startswith(prefixes)):

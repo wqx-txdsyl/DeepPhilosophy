@@ -21,8 +21,7 @@ export default function HeroSection({ name, quote, quoteAuthor, quoteKind, heroI
   const jump = (event, id) => {
     if (onChapterSelect) { event.preventDefault(); onChapterSelect(id); }
   };
-  return <section ref={heroRef} className={`school-hero-section school-hero hero-tone-${artwork.tone} hero-copy-center${artwork.fullPainting ? ' hero-full-painting' : ''}`} style={{ '--hero-position': artwork.position }} aria-label={`${name}封面`}>
-    {artwork.fullPainting && <CdnImage className="school-hero-art-backdrop" src={image} imageWidth={480} alt="" aria-hidden="true" decoding="async" />}
+  return <section ref={heroRef} className={`school-hero-section school-hero hero-tone-${artwork.tone} hero-copy-center`} style={{ '--hero-position': artwork.position }} aria-label={`${name}封面`}>
     <CdnImage className="school-hero-art" src={image} imageWidth={1920} width={artwork.width} height={artwork.height}
       alt="" fetchPriority="high" decoding="async" />
     <header className="school-masthead"><Link className="school-brand" to="/">DeepPhilosophy</Link><Link className="school-back" to={backTo}>← {backLabel}</Link></header>
