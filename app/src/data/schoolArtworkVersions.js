@@ -1,8 +1,8 @@
-// Content hashes for approved artwork replacements; canonical public paths stay unchanged.
+// Content hashes for artwork replacements; canonical public paths stay unchanged.
 export const SCHOOL_ARTWORK_VERSIONS = {
-  "/schools/名家.webp": "55f8a90bd4eb",
+  "/schools/名家.webp": "007717a92772",
   "/schools/两汉经学.webp": "adfcc806b65d",
-  "/schools/宋明理学.webp": "f66b7f132d87",
+  "/schools/宋明理学.webp": "56757cc8364a",
   "/schools/明清实学.webp": "2ecf7087d1f6",
   "/schools/乾嘉朴学.webp": "0ad73dfd59ec",
   "/schools/天演论.webp": "322b8bab2571",
@@ -20,5 +20,11 @@ export const SCHOOL_ARTWORK_VERSIONS = {
   "/schools/犹太哲学.webp": "346e940a3282",
   "/schools/魏晋玄学.webp": "dbf5d1878d63",
   "/schools/隋唐佛学.webp": "062345e4db0b",
-  "/schools/教父哲学.webp": "bfe1e10365b5"
+  "/schools/教父哲学.webp": "45c2ac96e880",
+  "/schools/认识论.webp": "c7f918c9ff04",
+  "/more/christianity-hero.webp": "8afddf920336",
+  "/more/chinese-hero.webp": "ad8d5576bf43",
+  "/schools/墨家.webp": "1b9db5c70384",
+  "/schools/精神分析学.webp": "c0e28ad460f1",
+  "/more/discipline-art-v1/Ph.webp": "e8e62c7c483a"
 };
