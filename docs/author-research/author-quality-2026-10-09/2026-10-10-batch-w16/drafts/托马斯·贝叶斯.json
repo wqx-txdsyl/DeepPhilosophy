@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "name": "托马斯·贝叶斯",
+  "reviewedAt": "2026-10-10",
+  "chronologyPolicy": "limited-evidence",
+  "worksPolicy": "authored",
+  "evidenceLimits": "生年（约1701/1702）与卒年1761为通行记载；SEP仅记其为英国牧师、身后出版——生卒月日、出生地、早年生平均不在SEP文本内。《Essay》原文极难阅读（论证使用非标准符号），本轮未逐行分析原文。SEP无Bayes个人专条——来源为Bayes' Theorem条目（James Joyce ©2003），侧重定理的数学与哲学后续发展。",
+  "overviewSourceRefs": ["sep-bayes"],
+  "debateAssessment": {
+    "status": "included",
+    "scope": "①主观主义vs频率论概率解释之争；②先验概率的选择问题（主观设定vs客观依据）；③贝叶斯确认理论在科学哲学中的应用。历史学说争论，无在世人物敏感事实。"
+  },
+  "identity": {
+    "era": "约1701—1761",
+    "country": "英国",
+    "identitySourceRefs": ["sep-bayes"]
+  },
+  "regionCohort": "古希腊与欧洲思想",
+  "batch": "2026-10-10-batch-w16",
+  "reviewMethod": "SEP Bayes' Theorem条目全文实读（James Joyce ©2003，历史/公式/先验后验/主观主义/确认理论逐节定位）；Archive.org著录支撑其原始论文书目。SEP无Bayes个人专条（404）已如实记录。全部来源带 accessScope。",
+  "profile": {
+    "englishName": "Thomas Bayes",
+    "question": "如果你永远无法直接观测到一个假说为真，你还能有理性地更新对它的信心吗？",
+    "overview": [
+      "托马斯·贝叶斯（约1701—1761）是英国长老会牧师与业余数学家——他生前只发表了两篇匿名著作，死后由朋友理查德·普莱斯将其最重要的论文《机遇理论中一个问题的解》提交给皇家学会刊行于Philosophical Transactions（1764）。这篇论文回答了一个当时新生的概率论尚未触及的反向问题：给定某事件已经发生的证据，如何计算该事件背后假设的概率。答案就是后来所称的贝叶斯定理——一个将先验概率、条件概率与后验概率联系在一起的简单代数关系式。",
+      "贝叶斯定理的数学形式极其简洁：PE(H) = [P(H)/P(E)]PH(E)。但它的哲学意义是革命性的：如果主观主义者坚持『理性信念受概率法则支配』（SEP导语），那么一个理想理性人的分级信念可以由主观概率函数P表示——学习就是在证据E到来后从先验P(H)到后验PE(H)的更新。这使得归纳推理有了形式化的表述：科学假说的确证不再是不可分析的直觉，而是假说使其真值可能的数据对信心的精确修正。SEP称之为『所有主观主义方法论的基石』。",
+      "贝叶斯本人从未使用『贝叶斯定理』这个名称（拉普拉斯后来独立发现并将其数学化），他也没有讨论主观主义解释——这些是20世纪拉姆齐、德菲内蒂与萨维奇的发展。但贝叶斯的方法论遗产已经渗透到统计学、机器学习、认知科学与科学哲学：每当一个AI系统用先验分布更新后验分布时，每当一个科学家用贝叶斯因子比较两个假说时，1763年那篇身后出版的论文的方法论就在运作。"
+    ],
+    "sources": [
+      {"id": "sep-bayes", "title": "SEP：Bayes' Theorem（James Joyce 撰，University of Michigan ©2003）", "url": "https://plato.stanford.edu/entries/bayes-theorem/", "type": "scholarly-encyclopedia", "accessedAt": "2026-10-10", "accessScope": "full-text", "coverage": "全文通读：§1历史与公式（等式1.1-1.3）；§3主观主义解释与确认理论（§3贝叶斯确认理论、2.1c假设-演绎、2.1e弱似然原则）；§4先验/后验/简单条件化"}
+    ],
+    "life": [
+      {"year": "约1701", "title": "生于英国（通行记载）", "body": "生年通行作约1701年；出生地（通行作伦敦）与家庭背景（长老会牧师家庭）为通行传记记载，SEP仅称British cleric。", "sourceRefs": ["sep-bayes"], "tag": "生平"},
+      {"year": "1763", "title": "身后出版：贝叶斯定理", "body": "Bayes于1761年去世后，其朋友理查德·普莱斯将其论文《机遇理论中一个问题的解》提交给皇家学会，1764年刊行于Philosophical Transactions 53（SEP §1引文）——论文回答了一个反向概率问题：给定证据，如何计算其原因的概率。", "sourceRefs": ["sep-bayes"], "tag": "身后"}
+    ],
+    "concepts": [
+      {"name": "贝叶斯定理", "original": "Bayes' Theorem", "definition": "PE(H) = [P(H)/P(E)]PH(E)：后验概率等于似然度乘以先验概率除以证据概率。第二形式将分母展开为全概率公式。定理本身是条件概率定义的代数推论——但其哲学意义在于：它为归纳推理提供了一个精确的形式框架。", "source": "SEP Bayes' Theorem §1等式1.2与1.3", "sourceRefs": ["sep-bayes"]},
+      {"name": "先验概率与信念修正", "original": "prior probability / belief revision", "definition": "主观主义者将学习建模为信念修正：一个理想理性人的分级信念由主观概率函数P表示——在证据E到来后，先验P被后验PE替代，简单条件化规则Q(H) = PE(H)给出新的信心水平。先验从哪里来是贝叶斯主义的核心争论。", "source": "SEP §4、§3", "sourceRefs": ["sep-bayes"]},
+      {"name": "贝叶斯确认理论", "original": "Bayesian confirmation theory", "definition": "假说被其真值使其可能的数据确认——这是所有主观主义方法论的基石。弱似然原则：E为H提供增量证据当且仅当PH(E) > P~H(E)。这使科学假说的比较从定性变为定量——两个竞争假说的似然比决定证据支持哪一个。", "source": "SEP §3（2.1c假设-演绎模型的主观主义辩护；2.1e弱似然原则）", "sourceRefs": ["sep-bayes"]}
+    ],
+    "bibliography": [
+      {"title": "机遇理论中一个问题的解", "originalTitle": "An Essay towards solving a Problem in the Doctrine of Chances", "year": "1764（身后由Richard Price刊行于Philosophical Transactions 53）", "kind": "posthumous", "description": "贝叶斯定理的原始出处：反向概率问题的首次形式化解答——身后由普莱斯提交皇家学会刊行。", "sourceRefs": ["sep-bayes"]},
+      {"title": "神学论文（Tractatus）", "originalTitle": "Divine Benevolence: An Attempt to Prove That the Principal End of the Divine Providence and Government Is the Happiness of His Creatures", "year": "1731", "kind": "authored", "description": "生前唯一以真名发表的著作：对神的善意的数学-神学论证（通行记载；SEP未载）。", "sourceRefs": ["sep-bayes"]}
+    ],
+    "people": [
+      {"name": "理查德·普莱斯", "era": "1723—1791", "eraSource": "unspecified", "role": "身后论文的刊行者", "summary": "普莱斯将贝叶斯的论文提交给皇家学会并负责其刊行于Philosophical Transactions（SEP §1引文）——没有普莱斯的干预，贝叶斯定理可能永远不会被发表。生卒为通行记载。", "entityType": "philosopher", "evidenceKind": "documented", "sourceRefs": ["sep-bayes"]}
+    ],
+    "relations": [
+      {"from": "托马斯·贝叶斯", "to": "理查德·普莱斯", "type": "context", "label": "身后论文的刊行者", "detail": "真实历史接触：普莱斯作为贝叶斯的朋友受托整理其遗稿并提交皇家学会刊行（SEP §1引文）。", "evidenceKind": "historical-contact", "sourceRefs": ["sep-bayes"]}
+    ],
+    "readingRoutes": [
+      {"title": "从定理本身进入：一个代数恒等式的哲学后果", "description": "读SEP §1的三个等式（1.1-1.3），理解条件概率定义如何蕴含贝叶斯定理；再读§4的信念修正规则。问题线：一个数学恒等式为什么能承载归纳推理的哲学重量——它是发现了理性的结构还是仅仅定义了理性的标准？", "sourceRefs": ["sep-bayes"], "evidenceKind": "editorial-reading-guide"},
+      {"title": "从先验问题进入：贝叶斯主义的核心困难", "description": "读SEP §4对先验与后验的区分，再思考：在没有任何证据之前，理性人的先验分布应该是什么——均匀分布（无差异原则）还是信息论最大熵分布？这个问题没有公认答案，但它决定了贝叶斯方法在每一个应用中的初始设置。", "sourceRefs": ["sep-bayes"], "evidenceKind": "editorial-reading-guide"}
+    ],
+    "debate": {
+      "title": "先验从哪里来：贝叶斯主义的核心争论",
+      "year": "辨析（1763年起持续至今）",
+      "paragraphs": [
+        "主观主义vs客观主义先验之争。主观主义者认为先验反映个人的信心程度（德菲内蒂：『概率不存在于外部世界』），客观主义者要求先验有客观依据（无差异原则、最大熵、参考分析）。SEP §4将贝叶斯定理的哲学意义定位于主观主义传统——但它不解决先验选择问题，只是提供了证据到来后如何更新的规则。先验选择是贝叶斯统计与贝叶斯认识论至今未决的核心问题。",
+        "贝叶斯vs频率论之争。频率论者（内曼-皮尔逊传统）拒绝先验概率的概念——概率只能是长期频率而非信念度。贝叶斯方法的优势（直觉清晰、允许直接量化假说概率、天然处理序列更新）与劣势（对先验的依赖、计算成本）至今是统计学与机器学习的基本分野。20世纪末机器学习的贝叶斯复兴使这场争论有了新的战场。"
+      ],
+      "sourceRefs": ["sep-bayes"]
+    }
+  }
+}
