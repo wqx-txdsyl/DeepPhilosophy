@@ -36,7 +36,7 @@ for item in manifest['entries']:
     versions[item['image']] = digest[:12]
     dimensions[item['image']] = [1600,900]
     row = next(r for r in progress['entries'] if r['image'] == item['image'])
-    row.update(status='completed-local', generator=manifest['generator'], batch='01',
+    row.update(status='completed-local', generator=manifest['generator'], batch=manifest.get('batch','01'),
                sourceImage=str(source), sourceDimensions=source_size, outputDimensions=[1600,900],
                baselineSha256=baseline_hash, newSha256=digest, bytes=target.stat().st_size,
                publication='not-published')
@@ -45,6 +45,9 @@ for item in manifest['entries']:
     results.append({'name':item['name'],'image':item['image'],'sha256':digest,'source':str(source),'bytes':target.stat().st_size})
 versions_path.write_text('// Content hashes for artwork replacements; canonical public paths stay unchanged.\nexport const SCHOOL_ARTWORK_VERSIONS = ' + json.dumps(versions, ensure_ascii=False, indent=2) + ';\n')
 layout_path.write_text(layout[:match.start(1)] + json.dumps(dimensions, ensure_ascii=False, separators=(',',':')) + layout[match.end(1):])
-progress['completed'] = sum(r['status']=='completed-local' for r in progress['entries'])
+progress['completed'] = sum(r['status'] in ['completed-local','completed-layout'] for r in progress['entries'])
+from collections import Counter
+progress['counts'] = dict(Counter(r['status'] for r in progress['entries']))
+progress['remainingSizeRepairs'] = sum(r['sizeNeedsRepair'] and r['status'] not in ['completed-local','completed-layout','preserve-reference','preserve-reviewed'] for r in progress['entries'])
 progress_path.write_text(json.dumps(progress, ensure_ascii=False, indent=2))
-print(json.dumps({'completed':progress['completed'],'results':results},ensure_ascii=False))
+print(json.dumps({'completed':progress['completed'],'batch':manifest.get('batch','01'),'names':[r['name'] for r in results]},ensure_ascii=False))
