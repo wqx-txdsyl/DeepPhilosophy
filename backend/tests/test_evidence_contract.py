@@ -8,6 +8,11 @@
   回归:     general / nietzsche 引用均可见; 跨作者引用不被作者门控过滤;
             /api/cite 点击解析真实章节; done 事件带 evidence 契约
 """
+
+import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 import os
 import sys
 import asyncio

@@ -14,6 +14,11 @@
   S13/S14 精确脚本化 Strawson 记录 / Boeker 摘要端到端存活
   S15    缺失的 scholarly 记录保持缺失（无机械"现实救援"）
 """
+
+import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 import asyncio
 import json
 import os

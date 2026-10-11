@@ -17,6 +17,7 @@ import os
 import sys
 import threading
 import time
+import json
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -29,8 +30,37 @@ import routes.agent_core as agent_core
 
 # ── 公共设施 ─────────────────────────────────────────
 @pytest.fixture(autouse=True)
-def _clean_state():
+def _clean_state(tmp_path, monkeypatch, request):
     """每个用例独立状态: bundle 域缓存 + 检索索引缓存 + embedding 熔断器复位"""
+    if request.node.name != 'test_r2_real_api_smoke':
+        import numpy as np
+        # Exercise real file loading, vector ranking and byte-offset reads with
+        # deterministic local data, not a developer's untracked 1.6 GB corpus.
+        payloads = {key: {} for key in AGENTS.PHILO_AGENTS['nietzsche']['bundle']}
+        payloads['memories'] = {'memories': [{'event':'尼采患病', 'description':'离开教职后的生活'}]}
+        payloads['graph'] = {'entities':[{'name':'永恒轮回'}, {'name':'权力意志'}], 'relations':[]}
+        payloads['misconceptions'] = {'misconceptions':[{'id':'fixture', 'claim':'超人即强者', 'fact':'需区分概念'}]}
+        payloads['corpus'] = [{'book':'测试著作', 'chapter':'测试章', 'tier':'S', 'text':'权力意志与永恒轮回。'}]
+        files = {}
+        for key, data in payloads.items():
+            path = tmp_path / ('persona_model.json' if key == 'persona' else key + '.json')
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
+            files[key] = path
+        monkeypatch.setitem(AGENTS.PHILO_AGENTS['nietzsche'], 'bundle', files)
+        vectors = np.random.default_rng(42).normal(size=(6488, 16)).astype('float32')
+        vectors /= np.linalg.norm(vectors, axis=1, keepdims=True)
+        np.save(tmp_path / 'vectors.npy', vectors)
+        rows = []
+        with (tmp_path / 'chunks.jsonl').open('wb') as stream:
+            for row in range(len(vectors)):
+                text = f'测试语料{row}：权力意志与永恒轮回。查拉图斯特拉的深渊。'
+                raw = (json.dumps({'text':text}, ensure_ascii=False) + '\n').encode()
+                rows.append(['测试著作', f'章{row}', 'S', 'text', 'offline-fixture', 'late', 1883, len(text), stream.tell(), len(raw)])
+                stream.write(raw)
+        (tmp_path / 'meta.json').write_text(json.dumps({'count':len(rows), 'rows':rows}), encoding='utf-8')
+        for name, path in [('VEC_FILE','vectors.npy'), ('META_FILE','meta.json'), ('JSONL_FILE','chunks.jsonl')]:
+            monkeypatch.setattr(pr, name, tmp_path / path)
+        monkeypatch.setattr(agent_core, '_embed_query', lambda query: None)
     AGENTS.reset_bundle_cache()
     pr.reset_state()
     with agent_core._EMBED_CIRCUIT_LOCK:
@@ -295,6 +325,8 @@ def test_r3_texts_resident_after_degraded_load(monkeypatch):
 # 真实 API 冒烟（有 key 才跑; 429 也算通过——降级语义即验收项之一）
 # ═══════════════════════════════════════════════════════
 def test_r2_real_api_smoke():
+    if os.getenv('RUN_LIVE_SERVICE_TESTS') != '1':
+        pytest.skip('live provider smoke is opt-in: RUN_LIVE_SERVICE_TESTS=1')
     try:                      # 先尝试加载 .env（ZHIPU_API_KEY 可能只存在于 .env）
         from routes.agent import _load_env
         _load_env()

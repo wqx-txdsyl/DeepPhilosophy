@@ -7,6 +7,11 @@
   P3 LOCAL_PATCH_ADAPTER_OWNER=1——评测 runner 与生产共用同一 adapter 类
   P4 LOCAL_PATCH_PRODUCTION_ENABLED 生产默认 true
 """
+
+import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 import asyncio
 import os
 import sys

@@ -12,6 +12,9 @@ import sys
 
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from routes import agent as agent_mod   # noqa: E402
 
@@ -26,11 +29,11 @@ ACCEPTANCE_QUERIES = {
 
 # 真实 READ 探针: chapter_idx → 原典 QUESTION 标记（q48/q49 + q93/q94/q95）
 QUESTION_READS = {
-    1: "QUESTION 48",
-    2: "QUESTION 49",
-    6: "QUESTION 93",
-    7: "QUESTION 94",
-    8: "QUESTION 95",
+    0: "QUESTION 48",
+    1: "QUESTION 49",
+    5: "QUESTION 93",
+    6: "QUESTION 94",
+    7: "QUESTION 95",
 }
 
 
@@ -69,6 +72,6 @@ def test_search_hit_then_real_read_q48_q49_q93_q94_q95():
 
 def test_primary_body_metadata_contamination_false():
     """q48 原典正文纯净: 直接以 QUESTION 48 开头, 无 CN retrieval 简介段污染。"""
-    ch = agent_mod.TOOLS["get_chapter"]["execute"]({"book_id": AQUINAS_BID, "chapter_idx": 1})
+    ch = agent_mod.TOOLS["get_chapter"]["execute"]({"book_id": AQUINAS_BID, "chapter_idx": 0})
     text = (ch.get("text") or "").lstrip()
     assert text.startswith("QUESTION 48"), f"q48 正文头部被污染: {text[:80]!r}"

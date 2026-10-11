@@ -116,9 +116,11 @@ RETRIEVAL_TOOLS = {"verify_quote", "search_books", "get_chapter", "get_philosoph
 TOKEN_INTERVAL = 0.002
 
 # 哲学家数以 backend/data/philosophers.json 实际条目数为准（N3 2026-08-18: 737，勿手写漂移值）
-# Round 1, 2026-10-02: one system message; tool scheduling stays autonomous.
+# The default bare loop uses agent_release. The opt-in controlled graph keeps
+# its own protocol-compatible policy (last controlled policy before f2ad456af).
 from agent_release import prompt_spec
-SYSTEM_PROMPT_LG = prompt_spec('zh')['text']
+from pathlib import Path
+SYSTEM_PROMPT_LG = (Path(__file__).parent / 'prompts/controlled-legacy.md').read_text().rstrip('\n')
 
 # ── 工具平移: TOOLS 注册表 → StructuredTool（execute(args) → func(**kwargs)）──
 def _general_executor(name, execute):
@@ -473,7 +475,10 @@ def _candidate_policy():
 
 def get_system_prompt(agent):
     if agent == "general":
-        return SYSTEM_PROMPT_LG
+        if os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
+            return prompt_spec('zh')['text']
+        candidate = _candidate_policy()
+        return candidate.SYSTEM if candidate else SYSTEM_PROMPT_LG
     return AGENTS.AGENT_PROMPTS.get(agent, SYSTEM_PROMPT_LG)
 
 
@@ -516,8 +521,8 @@ def _build_context_messages(agent, language, custom_instructions=None,
     时期上下文只随完整上下文注入（persona/context snapshot, 不逐轮重复）。"""
     # General prompt has one canonical source. No legacy policy, scholarly
     # contract, custom-instruction or repair system text is appended.
-    if agent == "general":
-        return [] if reinforce else [SystemMessage(content=SYSTEM_PROMPT_LG)]
+    if agent == "general" and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
+        return [] if reinforce else [SystemMessage(content=prompt_spec(language)['text'])]
     if reinforce:
         parts = []
         candidate = _candidate_policy() if agent == "general" else None
@@ -718,8 +723,7 @@ async def agent_node(state):
         # hard 预算（机械资源上限）: 终止工具循环 → graceful answer completion。
         # 保留工具绑定（解绑会导致 LLM 退化为写 XML 文本调用）; 硬提示让 LLM 直接回答。
         # 后续 tools 轮中新宣告的调用将被机械拒绝（RESOURCE_CEILING_REACHED）。
-        if agent != "general":
-            msgs.append(SystemMessage(content=AR.HARD_BUDGET_DIRECTIVE))
+        msgs.append(SystemMessage(content=AR.HARD_BUDGET_DIRECTIVE))
         forced = True
     # ── O1: 引擎不再代执行任何认知性工具（原 _ensure_primary_read auto-read 已删除）。
     # 主文本读取由 Main Agent 自己宣告; 引擎只保留确定性校验（quote/citation validator,
@@ -1968,7 +1972,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     custom_instructions: 用户自定义指令（个性化, 追加到 system prompt）
     language: zh/en——输出与思考流语言（覆盖 system 内的语言要求）
     conversation_id/message_id: Phase A (A1) 观测上下文（可选, 缺省自动生成）"""
-    if agent == 'nietzsche':
+    if agent == 'nietzsche' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
         from deep_bare_agent import stream_bare_agent
         events = stream_bare_agent(req_message, history, language=language,
                                   conversation_id=conversation_id, message_id=message_id,

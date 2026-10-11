@@ -20,6 +20,11 @@ T13 零工具可行（质量 policy 不机械强制工具）
 T14 Evidence Appetite 保留（无"最少工具"替换）
 T15 validator 矩阵不变（O6-RP1 20 例矩阵原样通过）
 """
+
+import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 import inspect
 import os
 import sys
@@ -30,6 +35,7 @@ import engine_langgraph as EG
 import final_validator as FV
 import quote_bound as QB
 import routes.agent_tools_retrieval as RET
+import deep_agent_tools as DEEP
 
 
 # ── 共享合成证据（与 test_o6_rp1_mechanical 同一构造风格）──────────
@@ -82,7 +88,7 @@ class TestT1T2QuoteVsParaphrasePolicy:
 # ═══════════════════════════════════════════════════════
 class TestT3T4CitationMetadataVisibility:
     def test_t3_search_result_exposes_canonical_label(self):
-        res = RET._exec_search_books({"query": "言必有中", "limit": 3})
+        res = DEEP.search_books({"query": "言必有中", "limit": 3})
         hits = res.get("results") or []
         assert hits, "真实书库应命中候选"
         for item in hits:
@@ -94,7 +100,7 @@ class TestT3T4CitationMetadataVisibility:
             assert item["citation_label"].startswith("【《")
 
     def test_t3_chapter_read_exposes_canonical_label(self):
-        res = RET._exec_search_books({"query": "言必有中", "limit": 1})
+        res = DEEP.search_books({"query": "言必有中", "limit": 1})
         hit = (res.get("results") or [None])[0]
         assert hit, "需要真实命中以取得 book_id/chapter_idx"
         ch = RET.TOOLS["get_chapter"]["execute"](

@@ -94,11 +94,13 @@ def test_anonymous_ownership_is_namespaced_and_does_not_reuse_logged_in_scope(cl
     assert general_memory_key(None, "203.0.113.1", "same") != general_memory_key(None, "203.0.113.2", "same")
 
 
-def test_persona_route_and_unscoped_memory_behavior_remain_legacy(client):
+def test_persona_route_uses_owned_conversation_and_unscoped_memory_remains_legacy(client):
     persona = post(client, agent="nietzsche")
-    assert persona["scope"] is None and persona["identity"] is None
-    assert persona["key"] == "default"
-    assert post(client)["previous"] is None
+    assert persona["identity"]["id"] == 11
+    assert persona["scope"] == persona["key"]
+    assert persona["key"].startswith("u:general:")
+    assert post(client)["previous"] == "first"
+    assert post(client, user=12, agent="nietzsche")["previous"] is None
     token = guard.current_user.set({"id": 91, "ip": "203.0.113.1"})
     try:
         assert guard.user_memory_key() == "u91"

@@ -20,6 +20,9 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 from langchain_core.messages import AIMessageChunk, ToolMessage
 
 from evaluation_suite import PremiseVerifier   # O4-RP1: 离线评分自带副本（原 guard 模块已删）

@@ -1,6 +1,9 @@
 import json
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 import final_validator as validator
 import quote_bound as quotes
 

@@ -22,6 +22,11 @@ T14 Public Thinking 非 Runtime 清单（工作笔记 = 自然句因果判断, �
 T15 单一认知策略 owner（SystemMessage 注入 = builder + hard 预算机械位）
 T16 validator 默认兼容（明确关闭新解析时，旧 quote/citation 行为与矩阵不变）
 """
+
+import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 import inspect
 import os
 import sys

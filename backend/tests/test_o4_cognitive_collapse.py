@@ -29,6 +29,9 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 from tests.o10r1_compliance import comply as _comply
 
 import agent_runtime as AR

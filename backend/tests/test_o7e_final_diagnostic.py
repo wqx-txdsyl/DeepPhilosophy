@@ -19,6 +19,9 @@ from types import SimpleNamespace
 
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 from tests.o10r1_compliance import comply as _comply
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

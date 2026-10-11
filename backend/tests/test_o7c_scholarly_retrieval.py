@@ -16,6 +16,9 @@ import urllib.request
 
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 BACKEND = os.path.join(ROOT, "backend")
 sys.path.insert(0, BACKEND)
@@ -437,10 +440,14 @@ def test_t19_a8_no_fetch_not_read():
     assert not r["access"].get("content_hash")
 
 
-def test_t20_report_contains_real_gate_sha():
-    report = open(os.path.join(ROOT, "docs", "PHIAGENT_O7C_SCHOLARLY_RETRIEVAL.md"),
-                  encoding="utf-8").read()
-    assert "本节 gate 产物 commit" not in report, "占位 SHA 未回填"
+def test_t20_recorded_gate_contains_concrete_results():
+    # The prose report was retired; the tracked structured gate is authoritative.
+    with open(os.path.join(ROOT, 'docs/evidence/PHIAGENT_O7C_SCHOLARLY_RETRIEVAL_GATE.json'), encoding='utf-8') as stream:
+        report = json.load(stream)
+    assert report['started_at']
+    live = report['phase_results']['A']
+    assert live['live'] is True and live['queries'] == len(live['detail'])
+    assert any(row['ids'] for row in live['detail'])
 
 
 @pytest.mark.historical_snapshot

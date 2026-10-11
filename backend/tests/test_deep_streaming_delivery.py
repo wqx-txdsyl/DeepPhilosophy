@@ -11,6 +11,9 @@ import sys
 import threading
 
 import pytest
+
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessageChunk
 from langchain_core.outputs import ChatGenerationChunk

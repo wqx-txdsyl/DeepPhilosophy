@@ -1,4 +1,4 @@
-"""Offline replay against real books and saved embedding-2 query vectors.
+"""Offline replay against real books and saved embedding-2 query/corpus vectors.
 
 No remote API calls. The fixture makes bad non-empty retrieval observable;
 assertions check source identity, actual passages and honest negative results.
@@ -23,6 +23,15 @@ def replay_embeddings(monkeypatch):
     if not deep.core.get_books() or not (deep.core.CHAPTERS_DIR / "d9272a80942a").exists():
         pytest.skip("requires the local philosophy corpus")
     monkeypatch.setattr(agent, "_embed_query", lambda query: QUERIES.get(query, {}).get("embedding"))
+    # A provenance-recorded sample of the matching real corpus index is tracked
+    # alongside query vectors; a clean checkout needs no local embeddings cache.
+    import numpy as np
+    directory = Path(__file__).parent / 'fixtures'
+    sample = json.loads((directory / 'retrieval_corpus_sample.json').read_text())
+    assert sample['source_vectors_sha256'] == FIXTURE['vectors_sha256']
+    with np.load(directory / 'retrieval_corpus_sample.npz') as data:
+        vectors = data['vectors']
+    monkeypatch.setattr(deep.core, '_load_vectors', lambda: (vectors, sample['index']))
 
 
 @pytest.mark.parametrize("query", [

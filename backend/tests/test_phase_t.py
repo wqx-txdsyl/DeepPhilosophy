@@ -24,6 +24,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pytest  # noqa: E402
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 import tool_contracts as TC  # noqa: E402
 import evidence_contract as EC  # noqa: E402
 import final_validator as FV  # noqa: E402

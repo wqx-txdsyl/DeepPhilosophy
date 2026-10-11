@@ -29,6 +29,7 @@ def test_unknown_arguments_are_not_silently_ignored():
 
 
 def test_candidate_prompt_does_not_leak_old_reinforcement(monkeypatch):
+    monkeypatch.setenv('DEEP_AGENT_RUNTIME', 'controlled')
     from engine_langgraph import _build_context_messages,get_system_prompt
     old=get_system_prompt('general')
     monkeypatch.setenv('DEEP_PROMPT_VERSION','v2')

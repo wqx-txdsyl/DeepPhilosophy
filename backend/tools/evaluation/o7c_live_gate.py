@@ -56,13 +56,17 @@ QUERIES = [
     ("kant unpublished manuscript 1789 never existed fragment xyzq", "N2"),
 ]
 
-_key = None
-for line in open(os.path.join(ROOT, ".env"), encoding="utf-8"):
-    if line.strip().startswith("ZHIPU_API_KEY="):
-        _key = line.split("=", 1)[1].strip().strip('"').strip("'")
+_key = os.environ.get('ZHIPU_API_KEY')
+if not _key and os.path.exists(os.path.join(ROOT, '.env')):
+    with open(os.path.join(ROOT, '.env'), encoding='utf-8') as env_file:
+        for line in env_file:
+            if line.strip().startswith('ZHIPU_API_KEY='):
+                _key = line.split('=', 1)[1].strip().strip('"').strip("'")
 
 
 def call_judge(prompt, system):
+    if not _key:
+        raise RuntimeError('Live judge requires ZHIPU_API_KEY; offline imports do not.')
     payload = {"model": "glm-4.6", "temperature": 0, "max_tokens": 2000,
                "thinking": {"type": "disabled"},
                "response_format": {"type": "json_object"},
