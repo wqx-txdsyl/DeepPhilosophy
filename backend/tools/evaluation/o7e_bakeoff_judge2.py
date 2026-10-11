@@ -412,6 +412,7 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
     man = {m["case_id"]: m for m in (_man_cases or [])}
     tag = out_tag or f"o7e_bakeoff_judge2_{mid.replace('.','_')}"
     out_path = os.path.join(ROOT, "backend/tools/_tmp", f"{tag}.json")
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
     judged = []
     if os.path.exists(out_path):
         judged = json.load(open(out_path, encoding="utf-8"))

@@ -42,26 +42,19 @@ def _raise_timeout(req, timeout=None):
     raise TimeoutError("timed out")
 
 
-def test_http_error_429_classified():
-    J2._orig_urlopen = J2.urllib.request.urlopen
-    J2.urllib.request.urlopen = _raise_http_429
-    try:
-        with pytest.raises(J2.JudgeCallFailure) as ei:
-            J2._call("prompt")
-    finally:
-        J2.urllib.request.urlopen = J2._orig_urlopen
+def test_http_error_429_classified(monkeypatch):
+    monkeypatch.setattr(J2.urllib.request, 'urlopen', _raise_http_429)
+    with pytest.raises(J2.JudgeCallFailure) as ei:
+        J2._call("prompt")
     assert ei.value.failure_class == "HTTP_ERROR"
     assert ei.value.http_status == 429
     assert ei.value.exception_class == "HTTPError"
 
 
-def test_timeout_classified():
-    J2.urllib.request.urlopen = _raise_timeout
-    try:
-        with pytest.raises(J2.JudgeCallFailure) as ei:
-            J2._call("prompt")
-    finally:
-        J2.urllib.request.urlopen = J2._orig_urlopen
+def test_timeout_classified(monkeypatch):
+    monkeypatch.setattr(J2.urllib.request, 'urlopen', _raise_timeout)
+    with pytest.raises(J2.JudgeCallFailure) as ei:
+        J2._call("prompt")
     assert ei.value.failure_class == "TIMEOUT"
     assert ei.value.exception_class == "TimeoutError"
 
@@ -128,6 +121,9 @@ _VALID_VERDICT = {"dimensions": {"textual_grounding": {"applicability": "OPTIONA
 def pipeline_env(monkeypatch, tmp_path):
     """judge_candidate 隔离环境: tmp runs/manifest/out; canonical validate_verdict
     用真实 O7A 实现（pipeline 测试与 canonical 校验零耦合点）。"""
+    # A fresh output root proves the pipeline creates its own directories and
+    # prevents tests from writing into the developer's runtime workspace.
+    monkeypatch.setattr(J2, 'ROOT', str(tmp_path))
     runs_p = tmp_path / "runs.json"
     man_p = tmp_path / "man.json"
     runs_p.write_text(json.dumps(_RUNS), encoding="utf-8")
