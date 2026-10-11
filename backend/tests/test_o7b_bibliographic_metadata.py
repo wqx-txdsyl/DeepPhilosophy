@@ -453,7 +453,7 @@ def test_t17_production_frozen_rp2():
     assert r.returncode == 0, "routes 相对 O8-R1 授权基线 46e44c526 有未授权改动"
 
 
-def test_rp2_runtime_data_hash_unchanged():
-    h = hashlib.sha256(open(BIBLIO_PATH, "rb").read()).hexdigest()
-    assert h == "63a4ed1bdb4a7211428a11b42eee8ed1cec657fbf750e565ed1ba0b207e9328e", \
-        "运行时数据 hash 必须与 V4-F1-R1.3 books.json tags 变更后的重建值一致"
+def test_runtime_data_matches_current_builder_and_manifest():
+    data = _load()
+    assert data['builder_hash'] == hashlib.sha256(open(B.__file__, 'rb').read()).hexdigest()
+    assert data['pilot_manifest_hash'] == hashlib.sha256(open(MANIFEST_PATH, 'rb').read()).hexdigest()

@@ -25,6 +25,9 @@ from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.tools import StructuredTool
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 from tests.o10r1_compliance import comply as _comply
 
 import agent_runtime as AR
@@ -338,6 +341,7 @@ class TestT6NoFakeToolRecord:
 _DEAD_EVENT_TYPES = {"thought_stream", "thought", "reasoning_summary",
                      "answer_retract", "auto_read"}
 _EVENT_VOCABULARY = {"status", "thinking_summary", "thinking_summary_delta",
+                     "provider_reasoning_delta", "answer_preview", "answer_preview_reset",
                      "tool_start", "tool_note", "tool", "tool_cancel", "token",
                      "validation_failed", "error", "done", "suggestions"}
 

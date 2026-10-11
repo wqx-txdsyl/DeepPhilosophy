@@ -365,6 +365,7 @@ def _sel(fields, name):
 
 
 def build(out_data=None):
+    write_manifest = out_data is None or os.path.abspath(out_data) == os.path.abspath(DEFAULT_OUT_DATA)
     out_data = out_data or DEFAULT_OUT_DATA
     books = json.load(open(BOOKS_JSON, encoding="utf-8"))
     by_id = {b["id"]: b for b in books}
@@ -484,10 +485,13 @@ def build(out_data=None):
                      "book_universe_hash": universe_h,
                      "corpus_snapshot_hash": corpus_h.hexdigest()},
     }
-    os.makedirs(os.path.dirname(OUT_MANIFEST), exist_ok=True)
-    json.dump(manifest, open(OUT_MANIFEST, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    manifest_bytes = json.dumps(manifest, ensure_ascii=False, indent=1).encode('utf-8')
+    if write_manifest:
+        os.makedirs(os.path.dirname(OUT_MANIFEST), exist_ok=True)
+        with open(OUT_MANIFEST, 'wb') as stream:
+            stream.write(manifest_bytes)
     # 回填 manifest hash（语义内容: 去掉回填字段本身）
-    data["pilot_manifest_hash"] = hashlib.sha256(open(OUT_MANIFEST, "rb").read()).hexdigest()
+    data["pilot_manifest_hash"] = hashlib.sha256(manifest_bytes).hexdigest()
     json.dump(data, open(out_data, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 
     vf = sum(1 for r in records for v in r["field_provenance"].values()

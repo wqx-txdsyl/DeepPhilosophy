@@ -19,6 +19,9 @@ from langchain_core.messages import AIMessage, AIMessageChunk
 from langchain_core.tools import StructuredTool
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 import engine_langgraph as EG
 import routes.agent as AG
 

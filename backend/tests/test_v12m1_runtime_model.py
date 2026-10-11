@@ -14,6 +14,17 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TARGET = "deepseek-flash"
 
 
+@pytest.fixture(autouse=True)
+def offline_client_credentials(monkeypatch):
+    """Construct the real SDK client without requiring a deploy secret.
+
+    These tests inspect configuration only; they never invoke the provider.
+    """
+    from routes import agent, agent_llm
+    monkeypatch.setattr(agent, "API_KEY", "offline-client-construction-only")
+    monkeypatch.setattr(agent_llm, "API_KEY", "offline-client-construction-only")
+
+
 def test_default_or_deployed_runtime_model_is_deepseek_flash(monkeypatch):
     """repo 默认（无 AGENT_MODEL env）即 canonical: routes.agent_llm.MODEL == deepseek-flash"""
     import routes.agent_llm as L

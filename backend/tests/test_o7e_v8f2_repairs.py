@@ -13,6 +13,9 @@ import sys
 
 import pytest
 
+# This suite exercises the retained evidence-validation/budget runtime.
+pytestmark = pytest.mark.usefixtures("controlled_runtime")
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import engine_langgraph as EG
 import scholarly_sources as SS
@@ -332,6 +335,7 @@ def test_r1_chinese_query_bilingual_canonical_variant(monkeypatch, stub_cache):
 
     monkeypatch.setattr(SS, "_local_results", fake_local)
     monkeypatch.setattr(SS, "search_crossref", fake_crossref)
+    monkeypatch.setattr(SS, "search_openalex", lambda *args, **kwargs: [])
 
     out = SS.search_scholarship("平庸之恶 批评")
     assert out["query_reformulation"]["triggered"] is True

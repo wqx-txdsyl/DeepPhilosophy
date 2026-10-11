@@ -63,6 +63,8 @@ DIRS = [
     ("philosopher/editorial", "philosopher/editorial"),
     # 更多频道 hero 背景图（2026-10-06 双轨提速: 同源 CF 边缘 3-6s → OSS 0.1s）
     ("more", "more"),
+    # 学科卡册位于子目录；上方目录清单只枚举直接子文件。
+    ("more/discipline-art-v1", "more/discipline-art-v1"),
 ]
 
 
@@ -142,7 +144,7 @@ def main():
     # ── 2. 远端清单 ──
     print("列出远端 ...")
     remote = {}
-    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/", "philosopher/")
+    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/", "philosopher/", "more/")
     for obj in oss2.ObjectIterator(bucket, prefix=""):
         # 只看本脚本管理的前缀: 根两个 json + covers/ + app/assets/ + schools/ + gene/
         if selected(obj.key) and (obj.key in ("books.json", "covers.json", "philosophers.json") or obj.key.startswith(prefixes)):
