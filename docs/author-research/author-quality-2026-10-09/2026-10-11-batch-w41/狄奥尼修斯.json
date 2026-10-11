@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "name": "狄奥尼修斯",
+  "batch": "2026-10-11-batch-w41",
+  "reviewedAt": "2026-10-11",
+  "reviewType": "identity",
+  "verdict": "unresolvable",
+  "proposedIdentity": null,
+  "findings": "站内该条目对应不到任何可核实的哲学家，判为仍无法确认。证据链：(1) 站内现状 app/public/philosopher/data/狄奥尼修斯.json 为 review 占位（listingKind=review，books=[]，book_count=0，portrait=null），无书籍关联可作意图锚点。(2) git 历史还原原始简介（commit c82a28516，2026-07-10）：把『狄奥尼修斯』写成约公元前6世纪、属『前苏格拉底哲学/奥尔菲斯教』的神秘主义思想家，并赋予其『万物源于一又复归于一』『宇宙蛋』『原罪与救赎雏形』『残篇』等断言。对照 doxographic 传统（第欧根尼·拉尔修、SEP）不存在任何名为 Dionysius 的前苏格拉底哲学家或奥尔菲斯教哲人；这些内容实为俄耳甫斯教这一宗教传统（酒神狄奥尼索斯/Zagreus 神话、宇宙蛋、灵魂轮回净化、秘仪狂喜）的典型要素——判断原始简介是把神名 Dionysos 与俄耳甫斯教崇拜讹变、拟构成一位『哲学家』的生成讹变（AI confabulation），且站内 wiki_url 指向的 zh.wikipedia.org/wiki/狄奥尼修斯_(哲学家) 现返回 404（可能因半角括号与 zh.wp 全角括号命名不符），无有效指向。(3) 消歧排查：philosophers.json（737 键）中同时存在独立的『伪狄奥尼修斯』与『伪狄奥尼修斯（托名）』正式条目（era 约5-6世纪，基督教神秘主义/新柏拉图主义/否定神学，已有完整 editorial 包，coverage 提及普罗提诺到普罗克洛转写、马克西姆、埃里乌吉纳等镜像），且早在生成本条目的同一 commit 中即为独立键——本条目不是伪狄奥尼修斯的别名或重定向来源。(4) 书籍关联排查：grep app/public/books.json 『狄奥尼修斯』0 命中（无书名含此名）；grep app/public/book_detail/ 仅 1 文件命中（4a4a200536bd.json《西方哲学史（第9版）》目录含章节『7.2 伪狄奥尼修斯』），该语境归属已独立成键的伪狄奥尼修斯，不构成本条目的锚点；站内柏拉图条目 bio 提及小狄奥尼修斯仅是柏拉图书信语境中的人物关系，并非本键的书籍关联。(5) 历史候选核对：哲学史上真实可考的 Dionysius 有——赫拉克利亚（本都）的狄奥尼修斯（芝诺弟子，因眼疾弃斯多亚转向快乐论，得号 Metathemenos『变节者』，DL 卷七有传）；伊壁鸠鲁学园继承人序列中的狄奥尼修斯（DL 卷十）；叙拉古僭主老/小狄奥尼修斯（僭主而非哲学作者，SEP Plato 条目第10节仅述柏拉图试图教育 Dionysius II）；阿雷奥帕古斯的狄奥尼修斯（《使徒行传》17:34 议员，伪托传统的托名对象，站内已由伪狄奥尼修斯条目覆盖）；哈利卡纳苏斯的狄奥尼修斯（历史学家、修辞学家）；亚历山大的教父狄奥尼修斯。原始简介的身份主张（前6世纪奥尔菲斯教哲人）与上述任一候选均不匹配，也无法从站内 books/书名/关联推出生成时意图指涉何者；四选一标准下判 unresolvable。",
+  "sources": [
+    {
+      "id": "sep-pseudo-dionysius",
+      "title": "Pseudo-Dionysius the Areopagite (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/pseudo-dionysius-areopagite/",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-11",
+      "readScope": "WebFetch 全文定向提问：确认托名对象为1世纪雅典阿雷奥帕古斯议员 Dionysius（经 St. Paul 皈依）、成书窗口 485–518/28、真实姓名与生平均不可考（可能叙利亚出身、很可能是普罗克洛学生）；条目完全没有提到任何名为 Dionysius 的前苏格拉底哲学家或奥尔菲斯教人物。未逐字通读全文。"
+    },
+    {
+      "id": "dl-book7",
+      "title": "Diogenes Laertius, Lives of the Eminent Philosophers, Book VII (Hicks 英译, Wikisource)",
+      "url": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_VII",
+      "type": "primary-source-edition",
+      "accessedAt": "2026-10-11",
+      "readScope": "确认卷七斯多亚学统中有赫拉克利亚的狄奥尼修斯（芝诺弟子，§37 明言其因眼疾『变节』转向快乐论，其乡里为 Heraclea；§17 有其与芝诺问答；目录列其为卷七第四章独立传记节，但该节正文（约 §166-167）在抓取内容中被截断未读到）；卷七名单中无任何前苏格拉底/奥尔菲斯背景的 Dionysius。卷十伊壁鸠鲁系谱中的狄奥尼修斯未直接读到原文。"
+    },
+    {
+      "id": "sep-plato",
+      "title": "Plato (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/plato/",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-11",
+      "readScope": "仅读 §3（书信集归属与叙拉古政治）、§5（第七封书信真伪争议）、§10（柏拉图自述欲教育叙拉古统治者 Dionysius II）：确认叙拉古的 Dionysius 是僭主而非哲学作者，书信真伪有大争议。其余章节未读。"
+    },
+    {
+      "id": "britannica-orphism",
+      "title": "Orphism (Encyclopaedia Britannica) — 访问失败记录",
+      "url": "https://www.britannica.com/topic/Orphism-ancient-Greek-religion",
+      "type": "encyclopedia",
+      "accessedAt": "2026-10-11",
+      "readScope": "HTTP 403 拒绝访问；换等价 URL（/topic/Orphism）再试仍 403，web_reader 亦 500。未读到任何内容，不作证据引用。俄耳甫斯教性质的判断改由 DL 卷七负面证据（无此哲人）+ SEP 伪狄奥尼修斯条目负面证据 + 原始简介内容与俄耳甫斯教已知母题（宇宙蛋、轮回、秘仪）的一致性间接支撑。"
+    }
+  ],
+  "publicFileRecommendation": "保持 review 占位不动：listingKind=review、portrait 停用、bio 不补写（按 mission §5『不靠模板补生卒、作品、师承』）。不建议并入伪狄奥尼修斯——该键是独立的已确认条目且与本条目原始简介内容无涉。两条可选的后续处置供外层裁决，本次均不执行：(a) 若平台需要俄耳甫斯教/狄奥尼索斯秘仪的背景材料，应以独立 context-material 键（如『俄耳甫斯教』）另立并单独审读，同时移除或关闭『狄奥尼修斯』这一生成讹变键；(b) 若确需收录某位真实 Dionysius，须外层显式消歧（最可考为赫拉克利亚的狄奥尼修斯）并以别名入口/新键处理，再走正常研究流程。",
+  "uncertainties": [
+    "生成时的『原始意图』无法完全排除：仅能证明原始简介无可考身份、且内容与俄耳甫斯教传统母题高度重合；不能证明生成者一定意指神名讹变而非某位候选人物。",
+    "zh.wikipedia 目标页（wiki_url）返回 404：可能因半角/全角括号命名差异，未进一步核实该歧义页是否存在及原指向。",
+    "DL 卷七中狄奥尼修斯的完整传记节（约 §166-167）正文被截断未读到，其『赫拉克利亚（本都）』乡里的直接原文未亲见（§37 可见文本已含 Heraclea）；另有『亚历山大的狄奥尼修斯』一说见于部分转述，未核实。",
+    "伊壁鸠鲁系谱中的狄奥尼修斯（DL 卷十）未直接查证原文，仅作候选列出。",
+    "Britannica 被访问拒绝，俄耳甫斯教性质缺少直接权威条目支撑，相关判断含间接推理成分。"
+  ]
+}
