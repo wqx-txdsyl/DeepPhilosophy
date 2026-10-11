@@ -63,6 +63,8 @@ DIRS = [
     ("philosopher/editorial", "philosopher/editorial"),
     # 更多频道 hero 背景图（2026-10-06 双轨提速: 同源 CF 边缘 3-6s → OSS 0.1s）
     ("more", "more"),
+    # 学科卡册位于子目录；上方目录清单只枚举直接子文件。
+    ("more/discipline-art-v1", "more/discipline-art-v1"),
 ]
 
 
