@@ -68,6 +68,51 @@ def environment():
             fail(relative + ' 尚为 LFS 指针；先按任务书取回数据。')
     return lock
 
+def round_authorization(lock):
+    """Verify the registered round authorization against the signed queues file.
+
+    The lock may only narrow, never widen, what the authorization queues file
+    grants: the registered repair list, its name-set digest, the context
+    application list, the task book path and the untouched original repair
+    list must all match the file; any mismatch is a hard failure.
+    """
+    auth = lock.get('roundAuthorization')
+    if not auth:
+        return set(), set()
+    rel = auth.get('authorizationQueues') or ''
+    queues_path = ROOT / rel
+    if not rel or not queues_path.exists():
+        fail('roundAuthorization 缺少可读的授权队列文件。')
+    try:
+        queues = read(queues_path)
+    except (json.JSONDecodeError, OSError):
+        fail('授权队列文件无法解析：' + rel)
+    source_auth = queues.get('authorization') or {}
+    repair = sorted(set(auth.get('additionalRepairNames') or []))
+    context = sorted(set(auth.get('contextApplicationNames') or []))
+    digest = hashlib.sha256(json.dumps(repair, ensure_ascii=False, separators=(',', ':')).encode('utf-8')).hexdigest()
+    if digest != auth.get('nameSetSha256') or digest != source_auth.get('nameSetSha256'):
+        fail('roundAuthorization 名单摘要与授权队列文件不符；不得用改表扩大权限。')
+    if repair != sorted(set(source_auth.get('additionalRepairNames') or [])):
+        fail('roundAuthorization 修复名单与授权队列文件不一致。')
+    if context != sorted(set(source_auth.get('contextApplicationNames') or [])):
+        fail('contextApplicationNames 与授权队列文件不一致。')
+    if auth.get('taskBook') != queues.get('taskBook') or '':
+        fail('roundAuthorization.taskBook 与授权队列文件不一致。')
+    protected = queues.get('originalLockProtection') or {}
+    if set(lock.get('repairExistingPackets') or []) != set(protected.get('existingRepairNames') or []):
+        fail('原有 repairExistingPackets 名单被改动。')
+    return set(repair), set(context)
+
+def catalog_key_for_stem(stem, known):
+    """Decode the project's filename encoding ('/'→'-', ':'→'：') back to the catalog key."""
+    if stem in known:
+        return stem
+    for key in known:
+        if key.replace('/', '-').replace(':', '：') == stem:
+            return key
+    return None
+
 def claims():
     return [read(p) for p in (TASK / 'claims').glob('*.json')]
 
@@ -81,6 +126,7 @@ def change_claim(args, lock):
     canonical = name if name in catalog else aliases.get(name)
     if canonical not in catalog and (args.claim or not claim_file(name).exists()):
         fail('姓名不是当前目录键或可解析别名。')
+    authorized_repair, _ = round_authorization(lock)
     folder = TASK / 'claims'
     folder.mkdir(exist_ok=True)
     path = claim_file(name)
@@ -100,7 +146,7 @@ def change_claim(args, lock):
             indexed = {p['name'] for p in read(ROOT / 'app/public/philosopher/editorial-index.json')['profiles'] if p.get('status') == 'source-backed'}
             if canonical in indexed and args.mode not in ('repair', 'mirror', 'portrait'):
                 fail('已有资料包，不能以新研究覆盖。')
-            if args.mode == 'repair' and name not in lock['repairExistingPackets']:
+            if args.mode == 'repair' and canonical not in authorized_repair | set(lock['repairExistingPackets']) and name not in authorized_repair | set(lock['repairExistingPackets']):
                 fail('不在本轮既有包修复白名单。')
             if args.mode == 'mirror' and not args.reason:
                 fail('镜像追加必须先登记相关新包和证据理由。')
@@ -122,6 +168,8 @@ def change_claim(args, lock):
         semaphore.unlink(missing_ok=True)
 
 def check(args, lock):
+    authorized_repair, authorized_context = round_authorization(lock)
+    rewrite_allowed = authorized_repair | authorized_context | set(lock['repairExistingPackets'])
     upstream = 'origin/master'
     base = git('merge-base', 'HEAD', upstream)
     changed = set(filter(None, git('diff', '--name-only', '--no-renames', base).splitlines()))
@@ -153,12 +201,13 @@ def check(args, lock):
         if Path(path).parent.as_posix() == 'app/public/philosopher' and Path(path).suffix.lower() in ('.webp', '.jpg', '.png') and Path(path).stem not in file_names:
             fail('肖像未先领取：' + path)
         if path.startswith('app/public/philosopher/editorial/'):
-            name = Path(path).stem
-            if name not in file_names:
+            stem = Path(path).stem
+            name = catalog_key_for_stem(stem, known) or stem
+            if stem not in file_names:
                 fail('正式资料包未先领取：' + path)
-            if name not in known and name not in lock['repairExistingPackets']:
+            if name not in known and name not in rewrite_allowed:
                 fail('正式资料包不是目录人物：' + path)
-            if path in frozen and name not in lock['repairExistingPackets']:
+            if path in frozen and name not in rewrite_allowed:
                 old = json.loads(git('show', base + ':' + path))
                 new = read(ROOT / path)
                 if name not in mirrors or not append_only(old, new):

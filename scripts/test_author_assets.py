@@ -71,7 +71,11 @@ class AuthorAssetsTests(unittest.TestCase):
             for field, value in packet['profile'].items():
                 self.assertEqual(compiled[field], value, f'{name}: {field}')
             assessment = assess(compiled, packet)
-            self.assertEqual(assessment['level'], 'source-backed', f'{name}: {assessment}')
+            expected = 'needs-review' if (assessment['gaps'] or assessment['errors']) else 'source-backed'
+            self.assertEqual(assessment['level'], expected, f'{name}: {assessment}')
+            if assessment['level'] == 'needs-review':
+                # 待审必须给出可定位的错误，不允许无因降级（2026-10-12 门禁修复后编译状态同规则）。
+                self.assertTrue(assessment['errors'], f'{name}: 待审缺少可定位错误: {assessment}')
 
     def test_full_fields_without_editorial_review_do_not_pass(self):
         self.assertEqual(assess(self.packets[0]['profile'])['level'], 'needs-review')
@@ -124,11 +128,67 @@ class SourceEvidenceGateTests(unittest.TestCase):
         }
         return profile, editorial
 
-    def test_packets_without_access_scope_stay_exempt(self):
-        legacy = source('leads', 'https://zh.wikipedia.org/wiki/%E8%B0%AD%E5%97%A3%E5%90%8C')
+    @staticmethod
+    def frozen_lock(name, content):
+        import hashlib
+        from check_author_source_evidence import editorial_relpath
+        rel = editorial_relpath(name)
+        return {'frozenEditorialHashes': {rel: hashlib.sha256(content).hexdigest()}, 'roundAuthorization': {'additionalRepairNames': [], 'nameSetSha256': ''}}
+
+    def legacy_profile(self):
+        legacy = source('leads', 'https://example.org/legacy', accessScope='full-text')
         legacy.pop('accessScope')
-        profile, editorial = self.packet(legacy)
-        self.assertEqual(evaluate_source_evidence(profile, editorial, '门禁测试人物'), [])
+        return self.packet(legacy)
+
+    def test_unchanged_frozen_baseline_stays_historically_compatible(self):
+        import json as _json
+        profile, editorial = self.legacy_profile()
+        content = (_json.dumps({'profile': profile}, ensure_ascii=False, sort_keys=True) + '\n').encode()
+        lock = self.frozen_lock('门禁测试人物', content)
+        from check_author_source_evidence import packet_is_gated
+        self.assertFalse(packet_is_gated(profile, '门禁测试人物', lock=lock, content=content))
+        self.assertEqual(evaluate_source_evidence(profile, editorial, '门禁测试人物', lock=lock, content=content), [])
+
+    def test_new_packets_without_any_access_scope_fail(self):
+        profile, editorial = self.legacy_profile()
+        errors = evaluate_source_evidence(profile, editorial, '门禁测试人物')
+        self.assertIn('sources[0]:missing-required-field:accessScope', errors)
+
+    def test_revised_frozen_packet_does_not_inherit_exemption(self):
+        import json as _json
+        profile, editorial = self.legacy_profile()
+        stale = (_json.dumps({'profile': {'sources': []}}, ensure_ascii=False, sort_keys=True) + '\n').encode()
+        lock = self.frozen_lock('门禁测试人物', stale)
+        from check_author_source_evidence import packet_is_gated
+        self.assertTrue(packet_is_gated(profile, '门禁测试人物', lock=lock))
+        errors = evaluate_source_evidence(profile, editorial, '门禁测试人物', lock=lock)
+        self.assertIn('sources[0]:missing-required-field:accessScope', errors)
+
+    def test_round_listed_packets_are_gated_even_if_frozen(self):
+        import hashlib
+        import json as _json
+        from check_author_source_evidence import packet_is_gated
+        profile, editorial = self.legacy_profile()
+        content = (_json.dumps({'profile': profile}, ensure_ascii=False, sort_keys=True) + '\n').encode()
+        lock = self.frozen_lock('齐格蒙特·鲍曼', content)
+        lock['roundAuthorization'] = {
+            'additionalRepairNames': ['齐格蒙特·鲍曼'],
+            'nameSetSha256': hashlib.sha256(_json.dumps(['齐格蒙特·鲍曼'], ensure_ascii=False, separators=(',', ':')).encode()).hexdigest(),
+        }
+        self.assertTrue(packet_is_gated(profile, '齐格蒙特·鲍曼', lock=lock, content=content))
+        errors = evaluate_source_evidence(profile, editorial, '齐格蒙特·鲍曼', lock=lock)
+        self.assertIn('sources[0]:missing-required-field:accessScope', errors)
+
+    def test_missing_lock_baseline_is_an_error_not_an_exemption(self):
+        import copy
+        import check_author_source_evidence as gate
+        lock = copy.deepcopy(gate.load_lock())
+        # 模拟锁文件只覆盖别人：目标包不在冻结表 → 新包必须门禁，而非自动豁免
+        lock['frozenEditorialHashes'] = {}
+        profile, editorial = self.legacy_profile()
+        self.assertTrue(gate.packet_is_gated(profile, '门禁测试人物', lock=lock))
+        self.assertIn('sources[0]:missing-required-field:accessScope',
+                      evaluate_source_evidence(profile, editorial, '门禁测试人物', lock=lock))
 
     def test_search_summaries_and_wikipedia_never_support_body_claims(self):
         snippet = source('leads', 'https://example.org/x', accessScope='search-summary', readScope='仅检索摘要')
@@ -155,11 +215,20 @@ class SourceEvidenceGateTests(unittest.TestCase):
         profile, editorial = self.packet(transcription)
         self.assertEqual(evaluate_source_evidence(profile, editorial, '门禁测试人物', evidence), [])
 
-    def test_catalog_metadata_supports_title_facts_but_search_summaries_support_nothing(self):
+    def test_catalog_metadata_supports_only_bibliography_facts(self):
         catalog = source('oclc', 'https://search.example.org/record', accessScope='abstract-or-catalog', readScope='仅编目著录')
         profile, editorial = self.packet(catalog, referencing='oclc')
         errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('life[0]:abstract-catalog-supports-bibliography-only:oclc', errors)
         self.assertNotIn('life[0]:clue-source-referenced:oclc', errors)
+        editorial_bib = {'name': '门禁测试人物', 'overviewSourceRefs': []}
+        bib_profile = {
+            'name': '门禁测试人物',
+            'sources': [catalog],
+            'bibliography': [{'title': '书', 'year': '1900', 'kind': 'authored', 'description': '描述', 'sourceRefs': ['oclc']}],
+        }
+        errors = evaluate_source_evidence(bib_profile, editorial_bib, '不存在于研究目录的名字')
+        self.assertNotIn('bibliography[0]:abstract-catalog-supports-bibliography-only:oclc', errors)
         snippet = source('leads', 'https://search.example.org/hit', accessScope='search-summary', readScope='仅检索摘要')
         profile, editorial = self.packet(snippet, referencing='leads')
         errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
@@ -172,12 +241,21 @@ class SourceEvidenceGateTests(unittest.TestCase):
         readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
         profile, editorial = self.packet(undeclared, readable, referencing='sep')
         errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
-        self.assertIn('sources[0]:invalid-access-scope', errors)
+        self.assertIn('sources[0]:missing-required-field:accessScope', errors)
         undeclared['accessScope'] = 'full-text'
         undeclared.pop('readScope')
         undeclared.pop('coverage')
         errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
         self.assertIn('sources[0]:missing-read-scope-note', errors)
+        partial = source('sep', 'https://plato.stanford.edu/entries/renxue/')
+        partial.pop('accessedAt')
+        profile, editorial = self.packet(readable, partial, referencing='sep')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('sources[1]:missing-required-field:accessedAt', errors)
+        not_read = source('book', 'https://press.example.org/book', accessScope='maybe-scanned')
+        profile, editorial = self.packet(not_read, referencing='book')
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字')
+        self.assertIn('sources[0]:invalid-access-scope', errors)
 
     def test_read_sources_need_an_evidence_record_with_locators(self):
         readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
@@ -194,6 +272,18 @@ class SourceEvidenceGateTests(unittest.TestCase):
         errors = evaluate_source_evidence(profile, editorial, '门禁测试人物', bad)
         self.assertIn('evidence-checks[0]:invalid-verdict', errors)
 
+    def test_fact_verdicts_cannot_rest_on_unread_or_snippet_sources(self):
+        snippet = source('leads', 'https://example.org/x', accessScope='search-summary', readScope='仅检索摘要')
+        unread = source('paywall', 'https://press.example.org/paywalled', accessScope='unread', readScope='403 未读')
+        profile, editorial = self.packet(snippet, unread, referencing='leads')
+        evidence = {'sources': [{'id': 'leads'}, {'id': 'paywall'}], 'checks': [
+            {'field': 'profile.life[0].year', 'claim': '生年', 'sourceId': 'leads', 'locator': '摘要第1行', 'verdict': 'confirmed'},
+            {'field': 'profile.bibliography[0].year', 'claim': '出版年', 'sourceId': 'paywall', 'locator': '版权页', 'verdict': 'corrected'},
+        ]}
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字', evidence)
+        self.assertIn('evidence-checks[0]:verdict-source-not-readable:leads', errors)
+        self.assertIn('evidence-checks[1]:verdict-source-not-readable:paywall', errors)
+
     def test_uncertain_checks_do_not_require_a_locator(self):
         readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
         evidence = {'sources': [{'id': 'sep'}],
@@ -209,6 +299,46 @@ class SourceEvidenceGateTests(unittest.TestCase):
         assessment = assess(profile, editorial)
         self.assertIn('missing-source-evidence-record', assessment['errors'])
         self.assertEqual(assessment['level'], 'needs-review')
+
+
+class GuardRoundAuthorizationTests(unittest.TestCase):
+    """The lock may narrow but never widen what the authorization queues file grants."""
+
+    @classmethod
+    def setUpClass(cls):
+        import guard_author_quality_worktree as guard
+        cls.guard = guard
+        cls.lock = guard.read(guard.LOCK)
+
+    def test_registered_authorization_matches_the_queues_file(self):
+        repair, context = self.guard.round_authorization(self.lock)
+        self.assertEqual(len(repair), 73)
+        self.assertEqual(context, {'汉谟拉比'})
+        self.assertTrue('齐格蒙特·鲍曼' in repair and '弗里德里克·格鲁' in repair)
+
+    def test_original_repair_list_is_preserved(self):
+        import json as _json
+        queues = self.guard.read(self.guard.ROOT / self.lock['roundAuthorization']['authorizationQueues'])
+        protected = queues['originalLockProtection']['existingRepairNames']
+        self.assertEqual(set(self.lock['repairExistingPackets']), set(protected))
+        self.assertEqual(len(protected), 11)
+
+    def test_tampered_lists_fail_closed(self):
+        import copy
+        cases = []
+        wider = copy.deepcopy(self.lock)
+        wider['roundAuthorization']['additionalRepairNames'].append('孔子')
+        cases.append(('widen-repair', wider))
+        shrink = copy.deepcopy(self.lock)
+        shrink['repairExistingPackets'] = shrink['repairExistingPackets'][:10]
+        cases.append(('drop-original', shrink))
+        widen_ctx = copy.deepcopy(self.lock)
+        widen_ctx['roundAuthorization']['contextApplicationNames'] = ['汉谟拉比', '老子']
+        cases.append(('widen-context', widen_ctx))
+        for label, tampered in cases:
+            with self.subTest(label=label):
+                with self.assertRaises(SystemExit):
+                    self.guard.round_authorization(tampered)
 
 
 if __name__ == '__main__':

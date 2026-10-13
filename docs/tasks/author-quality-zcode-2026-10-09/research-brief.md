@@ -37,11 +37,13 @@
 {
   "schemaVersion": 1, "name": "<人名>", "batch": "<batch>", "researchedAt": "<当天日期>",
   "identity": {"verdict": "confirmed|corrected|uncertain", "findings": "...", "legacyIssues": ["旧数据问题..."]},
-  "sources": [{"id": "sep", "title": "...", "url": "https://...", "type": "scholarly-encyclopedia", "accessedAt": "<当天>", "readScope": "读了哪些章节、支持哪些断言、未读到的部分"}],
+  "sources": [{"id": "sep", "title": "...", "url": "https://...", "type": "scholarly-encyclopedia", "accessedAt": "<当天>", "accessScope": "full-text|partial-text|abstract-or-catalog|search-summary|unread", "readScope": "读了哪些章节、支持哪些断言、未读到的部分"}],
   "checks": [{"field": "profile.life[0].year", "claim": "...", "sourceId": "sep", "locator": "章节/小节/经号", "verdict": "confirmed|corrected|uncertain", "notes": "..."}],
   "uncertainties": ["..."], "portraitNote": "unverified"
 }
 ```
+
+来源元数据硬规则（2026-10-12 起门禁强制）：每条来源必须填 `accessScope`（枚举见 `docs/author-data-standard.md`）；普通维基百科只是发现线索，不得进入任何 `sourceRefs`，不得标为可读正文来源；`search-summary`/`unread` 不支撑任何正文断言；`abstract-or-catalog` 只支撑书目题名/版本/年代；`confirmed/corrected/inferred` 的 checks 不得引用这类来源。访问范围如实记录，未读到就写 `unread`/`search-summary` 并说明原因，不得伪造。
 
 checks 必须覆盖：生卒/era、每个时间节点、每部书目（题名/年代/kind 性质）、每个概念的著作归属、每条人物关系依据、概述与争议中的关键断言。uncertain 的项不得在草稿中写成确定事实。
 
@@ -52,7 +54,7 @@ checks 必须覆盖：生卒/era、每个时间节点、每部书目（题名/�
 - 顶层：`schemaVersion:1`、`name`、`reviewedAt:"<当天>"`、`chronologyPolicy`（documented/limited-evidence）、`worksPolicy`（authored/no-autographs/single-surviving-corpus）、`evidenceLimits`（limited-evidence 或 no-autographs/single-surviving-corpus 时必须非空；其他情况也建议写）、`overviewSourceRefs`、`debateAssessment:{status:"included|not-required|insufficient-evidence",scope:"..."}`、`identity`（仅有据修正时，附 `identitySourceRefs`）、`regionCohort`（人物提示给出）、`batch`、`reviewMethod`
 - `profile`：
   - `englishName`、`question`（一个具体问题，不空泛）、`overview`（≥3 段，每段 150–300 字：背景/主张与论证/影响与局限；不用"划时代巨人"式赞词）
-  - `sources`（≥2 项：`id`（包内唯一）/`title`/`url`（必须 https）/`type`/`accessedAt`/`coverage`）
+  - `sources`（≥2 项：`id`（包内唯一）/`title`/`url`（必须 https）/`type`/`accessedAt`/`accessScope`（枚举必填，见上）/`coverage`）
   - `life`（≥4 节点；limited-evidence 时 ≥2 个有意义的文本史节点；每项 `year`/`title`/`body`/`sourceRefs`，可加 `tag`；区分生平/讲授/成书/出版/身后编订；叙事性节点注明史料性质）
   - `concepts`（≥4 项：`name`/`original`（适用时）/`definition`/`source`（具体著述与篇章）/`sourceRefs`；**禁止** `book` 字段；`year` 仅在确有对应时间节点时用；不得把整个流派的通用词算作此人原创）
   - `bibliography`（≥3 项；no-autographs/single-surviving-corpus 时 ≥1 项：`title`/`originalTitle`（适用时）/`year`（可为年代范围并注明）/`kind`（authored/coauthored/edited/testimony/posthumous/attributed）/`description`/`sourceRefs`；**no-autographs 时 kind 不得为 authored/coauthored/edited**；同一书的不同译名不算三本书；研究著作不列入传世书目）
