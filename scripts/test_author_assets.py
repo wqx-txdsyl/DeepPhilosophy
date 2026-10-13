@@ -284,6 +284,17 @@ class SourceEvidenceGateTests(unittest.TestCase):
         self.assertIn('evidence-checks[0]:verdict-source-not-readable:leads', errors)
         self.assertIn('evidence-checks[1]:verdict-source-not-readable:paywall', errors)
 
+    def test_catalog_records_back_verdicts_on_bibliography_fields_only(self):
+        catalog = source('authority', 'https://authority.example.org/gros', accessScope='abstract-or-catalog', readScope='仅著录层')
+        profile, editorial = self.packet(catalog, referencing='authority')
+        evidence = {'sources': [{'id': 'authority'}], 'checks': [
+            {'field': 'profile.bibliography[2].year', 'claim': '出版年2005', 'sourceId': 'authority', 'locator': '著录行', 'verdict': 'corrected'},
+            {'field': 'profile.life[2].body', 'claim': '生平事件', 'sourceId': 'authority', 'locator': '著录行', 'verdict': 'confirmed'},
+        ]}
+        errors = evaluate_source_evidence(profile, editorial, '不存在于研究目录的名字', evidence)
+        self.assertNotIn('evidence-checks[0]:verdict-source-not-readable:authority', errors)
+        self.assertIn('evidence-checks[1]:verdict-source-not-readable:authority', errors)
+
     def test_uncertain_checks_do_not_require_a_locator(self):
         readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
         evidence = {'sources': [{'id': 'sep'}],

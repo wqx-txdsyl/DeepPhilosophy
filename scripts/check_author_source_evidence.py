@@ -211,7 +211,13 @@ def evaluate(profile, editorial, name, evidence=None, lock=None, content=None):
         if verdict in EVIDENCE_VERDICTS_REQUIRING_READABLE_SOURCE:
             cited = by_id.get(check.get('sourceId'))
             if cited is not None and not source_is_readable(cited):
-                errors.append(f'evidence-checks[{index}]:verdict-source-not-readable:{check.get("sourceId")}')
+                # abstract-or-catalog may stand behind verdicts on bibliography fields only
+                # (titles, editions, years); any other field needs an actually read source.
+                field = str(check.get('field') or '')
+                catalog_ok = (source_access(cited) in BIBLIOGRAPHY_ONLY_SCOPES
+                              and 'bibliography' in field)
+                if not catalog_ok:
+                    errors.append(f'evidence-checks[{index}]:verdict-source-not-readable:{check.get("sourceId")}')
         if not str(check.get('field') or '').strip() or not str(check.get('claim') or '').strip():
             errors.append(f'evidence-checks[{index}]:missing-field-or-claim')
     return errors

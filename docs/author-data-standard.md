@@ -52,7 +52,7 @@
 - **资格按包判定，不按字段是否已填判定**：基线之后新建的包、内容被修订过的基线包、本轮授权修复名单中的包一律进入门禁；只有字节级未变、能通过锁文件 `frozenEditorialHashes` 摘要验证的历史基线包豁免，且明确记为「历史基线兼容」。锁文件缺失或不可读时报错，不自动全免。
 - 普通维基百科（wikipedia.org）按本项目标准只是发现线索：即使读了全文也不得标为可读正文来源，不得出现在任何 `sourceRefs` 中支撑断言。经校勘与身份确认的原典转录（如 Wikisource，type `primary-text-transcription`）另行判断，不与普通百科混同。
 - 官方域名、正规出版社、SEP/IEP 网址不自动等于已读；`accessedAt` 与 `accessScope` 记录真实阅读事实，不伪造、不用本次日期替代历史阅读事实。
-- 研究证据记录须含真实阅读范围、对应 source ID、断言或字段、核对结论及定位；`confirmed/corrected/inferred` 结论不得引用 `search-summary`、`unread`、线索级来源。
+- 研究证据记录须含真实阅读范围、对应 source ID、断言或字段、核对结论及定位；`confirmed/corrected/inferred` 结论不得引用 `search-summary`、`unread`、线索级来源；唯一例外是字段限于书目（`profile.bibliography`）时，可用 `abstract-or-catalog` 支撑题名/版本/年份类结论。
 - 门禁失败的包在索引中标 `needs-review`，正文与路由保持可用；不以删字段、换 URL 或改标签方式恢复数字。
 
 ## 质量状态
