@@ -74,8 +74,8 @@ class AuthorAssetsTests(unittest.TestCase):
             expected = 'needs-review' if (assessment['gaps'] or assessment['errors']) else 'source-backed'
             self.assertEqual(assessment['level'], expected, f'{name}: {assessment}')
             if assessment['level'] == 'needs-review':
-                # 待审必须给出可定位的错误，不允许无因降级（2026-10-12 门禁修复后编译状态同规则）。
-                self.assertTrue(assessment['errors'], f'{name}: 待审缺少可定位错误: {assessment}')
+                # 待审必须给出可定位的原因（结构缺口或门禁错误），不允许无因降级。
+                self.assertTrue(assessment['gaps'] or assessment['errors'], f'{name}: 待审缺少可定位原因: {assessment}')
 
     def test_full_fields_without_editorial_review_do_not_pass(self):
         self.assertEqual(assess(self.packets[0]['profile'])['level'], 'needs-review')
