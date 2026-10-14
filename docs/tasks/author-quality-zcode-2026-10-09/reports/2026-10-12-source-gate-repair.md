@@ -132,3 +132,12 @@
 2. 每批5-8人，沿用本报告的处置模式（实读替换/重指向/降级uncertain/诚实缩减+uncertainties）。
 3. 胡汉民替代源、合并人物实体裁决、身份25项、背景58项、肖像阶段按任务书继续。
 4. 预存缺陷：安提斯泰尼 worksPolicy 修复需列入下轮授权（修复建议见 2026-10-11-release-reconciliation.md）。
+
+## 阶段C续（2026-10-14）：批次4/5
+
+- **批次4（d91af8153）**：格雷林（Northeastern官方新闻实读承接NCH收购；删wiki级导师条、检索层民主条）、卡根官网源升级、28包批量双引用清理与无实读checks降级uncertain、7包清零（波兹曼/明斯基/德雷福斯/朗西埃/达马西奥/温奇/麦克弗森）。
+- **批次5（f5f9b16fd）**：卡迈克尔清零（Britannica承接；删书目层出版节点/汉密尔顿条）、热奈特清零（Švelch, *Game Studies* 全文承接副文本与跨文本性）、芒福德清零（LibrarianShipwreck综述承接巨机器）、德波顿（官方CV实读承接出生/处女作/人生学校；教育链仍待审）、杜兰特复归。修复格雷林 relations 端点（批次4引入的测试失败）。
+- **最终状态：56包本轮复归 source-backed；授权名单余21包（417错），全部为整包依赖单一非实读源（维基/GND-lobid权威著录/出版社目录/书目快照）——需按格鲁样本强度逐包实读，各包证据记录已写 needsReviewReason。**
+- 发布：master f5f9b16fd；OSS 增量31对象；OSS==提交字节与索引两端集合一致（verify ALL PASS 2026-10-14T14:05Z）。
+- 事故记录：/tmp 辅助脚本 inspect.py 曾遮蔽标准库 inspect 致 OSS 脚本一次中止，改名后重跑成功；检查脚本与发布脚本已分离存放。
+- 胡汉民：替代源再次检索无果（cssn.cn/people/xinhuanet/cass 无匹配 https 页面），维持外部阻断待续。
