@@ -43,7 +43,8 @@ test('portrait requests use sized CDN images with the unchanged original path as
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 652);
+  // 2026-10-15：四名身份裁决对象迁入 review 后 thinkers=648（a8509c51d；任务书2026-10-15交接基线口径）
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 648);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);

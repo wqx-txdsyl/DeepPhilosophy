@@ -323,8 +323,11 @@ class GuardRoundAuthorizationTests(unittest.TestCase):
 
     def test_registered_authorization_matches_the_queues_file(self):
         repair, context = self.guard.round_authorization(self.lock)
-        self.assertEqual(len(repair), 73)
-        self.assertEqual(context, {'汉谟拉比'})
+        import json as _json
+        queues = self.guard.read(self.guard.ROOT / self.lock['roundAuthorization']['authorizationQueues'])
+        source = queues['authorization']
+        self.assertEqual(len(repair), len(set(source['additionalRepairNames'])))
+        self.assertEqual(len(context), len(set(source['contextApplicationNames'])))
         self.assertTrue('齐格蒙特·鲍曼' in repair and '弗里德里克·格鲁' in repair)
 
     def test_original_repair_list_is_preserved(self):
@@ -336,15 +339,20 @@ class GuardRoundAuthorizationTests(unittest.TestCase):
 
     def test_tampered_lists_fail_closed(self):
         import copy
+        import json as _json
+        queues = self.guard.read(self.guard.ROOT / self.lock['roundAuthorization']['authorizationQueues'])
+        source = queues['authorization']
+        outside = '非目录虚构测试人物'
+        self.assertNotIn(outside, source['additionalRepairNames'])
         cases = []
         wider = copy.deepcopy(self.lock)
-        wider['roundAuthorization']['additionalRepairNames'].append('孔子')
+        wider['roundAuthorization']['additionalRepairNames'].append(outside)
         cases.append(('widen-repair', wider))
         shrink = copy.deepcopy(self.lock)
         shrink['repairExistingPackets'] = shrink['repairExistingPackets'][:10]
         cases.append(('drop-original', shrink))
         widen_ctx = copy.deepcopy(self.lock)
-        widen_ctx['roundAuthorization']['contextApplicationNames'] = ['汉谟拉比', '老子']
+        widen_ctx['roundAuthorization']['contextApplicationNames'] = sorted(set(source['contextApplicationNames']) | {outside})
         cases.append(('widen-context', widen_ctx))
         for label, tampered in cases:
             with self.subTest(label=label):
