@@ -118,6 +118,15 @@
    "type": "quote-aggregator",
    "accessedAt": "2026-10-11",
    "readScope": "未直接抓取具体页面（无稳定深链）；经两次检索摘要交叉读到：『Civilization is social order promoting cultural creation. Four elements constitute it: economic provision, political organization, moral traditions, and the pursuit of knowledge and the arts.』与『Inequality is not only natural and inborn, it grows with the complexity of civilization.』及『Civilization is not inherited; it has to be learned and earned by each generation anew.』（多个独立引文库一致，标注为《历史的教训》）。与已抓取的 wd-civilization 辑文互证四要素定义。"
+  },
+  {
+   "id": "clir-durant-citation",
+   "title": "Richard Detweiler, Ensuring Humanity’s Legacy（CLIR Issues 35, 2003）",
+   "url": "https://www.clir.org/2003/09/clir-issues-number-35/",
+   "type": "research-institution-essay",
+   "accessedAt": "2026-10-16",
+   "accessScope": "partial-text",
+   "readScope": "实读Ensuring Humanity’s Legacy整段；明确将“文明非继承、需每代学习”归为Will and Ariel Durant在The Lessons of History所写。使用为可靠机构的具名转引，不宣称本次核到原著末章页码。"
   }
  ],
  "checks": [
@@ -251,11 +260,11 @@
   },
   {
    "field": "profile.concepts[3]",
-   "claim": "『文明非继承而来，每代须重新学习与赢得』出自《历史的教训》",
-   "sourceId": "quotes-lessons",
-   "locator": "引文库标注 The Lessons of History",
+   "claim": "CLIR的Richard Detweiler具名转引杜兰特夫妇《历史的教训》，强调文明需由每一代学习与传承。",
+   "sourceId": "clir-durant-citation",
+   "locator": "Ensuring Humanity’s Legacy：Eminent historians…Will and Ariel Durant…引入后的引文块",
    "verdict": "confirmed",
-   "notes": "多源一致但未读原书，按引文转引处理；旧数据『文明不是天赋，而是习得』无出处版本不采用"
+   "notes": "2026-10-16实际正文转引核对；不是原典通读或引文库互抄。"
   },
   {
    "field": "profile.bibliography[3]",
@@ -328,6 +337,14 @@
    "locator": "传记页（女儿 Ethel 的出生促成他与父母和解）",
    "verdict": "confirmed",
    "notes": "不入 people（非思想关系人物），仅背景"
+  },
+  {
+   "field": "profile.concepts[3]",
+   "claim": "教育是文化传递的条件，列明知识、道德、技术等内容。",
+   "sourceId": "wd-civilization",
+   "locator": "And finally there must be education段",
+   "verdict": "confirmed",
+   "notes": "2026-10-16已读该短文正文，保留与转引来源的分工。"
   }
  ],
  "uncertainties": [
@@ -342,5 +359,227 @@
   "Seton Hall 1907—1911 任教经历：维基线索，未入草稿。"
  ],
  "portraitNote": "unverified",
- "needsReviewReason": "部分条目/checks仅以线索、检索或著录层来源支撑且无实读替代（对应checks已降为uncertain）；包保持needs-review，待逐条实读替换后翻回"
+ "needsReviewReason": "部分条目/checks仅以线索、检索或著录层来源支撑且无实读替代（对应checks已降为uncertain）；包保持needs-review，待逐条实读替换后翻回",
+ "historicalCheckCorrections": [
+  {
+   "date": "2026-10-16",
+   "reason": "修复已删除来源仍承担确定结论的问题；只修定位所及断言，不宣称全包本轮语义验收。",
+   "checksBefore": [
+    {
+     "field": "era",
+     "claim": "1885-11-05 生于马萨诸塞州北亚当斯；1981-11-07 卒于洛杉矶",
+     "sourceId": "britannica",
+     "locator": "条目快照字段 Born/Died（检索摘要）",
+     "verdict": "uncertain",
+     "notes": "wd-bio（1885 生、1981 卒、九十六岁）与维基一致；精确月日以 Britannica 摘要为准；2026-10-14门禁纠偏：该断言的britannica源未达实读层级，按不确定保留"
+    },
+    {
+     "field": "identity.findings（家世）",
+     "claim": "法裔加拿大裔天主教家庭，非爱尔兰移民家庭",
+     "sourceId": "wd-bio",
+     "locator": "传记页开篇『pious French-Canadian mother』",
+     "verdict": "corrected",
+     "notes": "旧数据『爱尔兰天主教移民家庭』纠正；Britannica 摘要亦作 French-Canadian Catholic"
+    },
+    {
+     "field": "profile.life（1903—1911 教育与神学院）",
+     "claim": "读达尔文、赫胥黎、斯宾塞动摇神职之志；1911 年离开神学院",
+     "sourceId": "wd-bio",
+     "locator": "传记页教育段（Reading Darwin, Huxley, Spencer and Haeckel in 1903 … left the seminary in 1911 with four books and $40）",
+     "verdict": "confirmed",
+     "notes": "『十二岁被逐出教会学校』旧说无据，不采用"
+    },
+    {
+     "field": "profile.life（圣彼得学院）",
+     "claim": "就读泽西城圣彼得学院（耶稣会士执教）",
+     "sourceId": "wd-bio",
+     "locator": "传记页（St. Peter's Academy and College in Jersey City, taught by Jesuits）",
+     "verdict": "confirmed",
+     "notes": "1907 年毕业一说仅维基/聚合页，草稿不写具体年份"
+    },
+    {
+     "field": "profile.life[费勒现代学校]",
+     "claim": "1911 年起任教于纽约费勒现代学校（自由主义教育实验）",
+     "sourceId": "wd-bio",
+     "locator": "传记页（in 1911 … teacher at the Ferrer Modern School）",
+     "verdict": "corrected",
+     "notes": "旧数据作『1912 年出任校长』，实读来源无校长说；维基线索作 1911—1913 任教"
+    },
+    {
+     "field": "profile.life[哥大]",
+     "claim": "弗里曼资助入哥伦比亚大学研究院，师从约翰·杜威等人；1917 年获博士",
+     "sourceId": "wd-bio",
+     "locator": "传记页（Freeman paid his tuition … studied under John Dewey and others … receiving his degree in 1917）",
+     "verdict": "confirmed",
+     "notes": "旧数据『在杜威指导下』弱化为『师从杜威等人』"
+    },
+    {
+     "field": "profile.life[1913 婚]",
+     "claim": "1913 年与费勒学校学生阿里尔（原姓 Kaufman）结婚",
+     "sourceId": "wd-bio",
+     "locator": "传记页（In 1913 he married his pupil Ariel）",
+     "verdict": "confirmed",
+     "notes": "阿里尔生年 1898、成婚时十五岁为维基线索，草稿不写年龄"
+    },
+    {
+     "field": "profile.bibliography[0]",
+     "claim": "Philosophy and the Social Problem（1917），首部著作、博士论文成书",
+     "sourceId": "wd-biblio",
+     "locator": "书目页 1917 年条",
+     "verdict": "confirmed",
+     "notes": "wd-bio 称 doctoral book；出版社再版简介（检索摘要）支持其主旨"
+    },
+    {
+     "field": "profile.life[劳动讲堂]",
+     "claim": "长期在纽约劳动讲堂讲授，1921 年组建其成人学校；1922—1925 年小蓝书十一种",
+     "sourceId": "wd-bio",
+     "locator": "传记页（lectured at Labor Temple … organized Labor Temple School in 1921；Eleven Little Blue Booklets）",
+     "verdict": "confirmed",
+     "notes": "维基作 1914—1927 主持，与基金会『1921 组建学校』并存，草稿按基金会口径并模糊起讫"
+    },
+    {
+     "field": "profile.bibliography[1]",
+     "claim": "The Story of Philosophy（1926，西蒙—舒斯特），畅销",
+     "sourceId": "wd-biblio",
+     "locator": "书目页 1926 年条",
+     "verdict": "confirmed",
+     "notes": "『售出 2,000,000 册』为基金会口径；旧数据『首年加印 22 次、译成 18 种语言』未核实，不采用"
+    },
+    {
+     "field": "profile.bibliography[2]",
+     "claim": "The Story of Civilization 十一卷，1935—1975，卷七（1961）起阿里尔共同署名",
+     "sourceId": "wd-biblio",
+     "locator": "书目页逐卷年份 1935/1939/1944/1950/1953/1957/1961/1963/1965/1967/1975",
+     "verdict": "confirmed",
+     "notes": "wd-bio 明言 Ariel collaborating from Volume VII；维基『后六卷共同署名』一致"
+    },
+    {
+     "field": "profile.life[普利策]",
+     "claim": "卷十 Rousseau and Revolution（1967）获 1968 年普利策普通非虚构奖（夫妇共同）",
+     "sourceId": "pulitzer",
+     "locator": "获奖条目（检索摘要：General Nonfiction, Simon & Schuster）",
+     "verdict": "uncertain",
+     "notes": "wd-bio『awarded the Pulitzer Prize for the tenth volume』互证；2026-10-14门禁纠偏：该断言的pulitzer源未达实读层级，按不确定保留"
+    },
+    {
+     "field": "profile.bibliography[5]",
+     "claim": "The Lessons of History（1968，与阿里尔合著）",
+     "sourceId": "wd-biblio",
+     "locator": "书目页 1968 年条（with Ariel）",
+     "verdict": "confirmed",
+     "notes": ""
+    },
+    {
+     "field": "profile.life[勋章]",
+     "claim": "1977-01-10 福特总统授总统自由勋章，杜兰特夫妇同获",
+     "sourceId": "ucsb-medal",
+     "locator": "致辞全文受勋名单与授勋词（Writer, historian and philosopher …）",
+     "verdict": "confirmed",
+     "notes": "第一手总统文献，含双方授勋词原文"
+    },
+    {
+     "field": "profile.concepts[0]",
+     "claim": "哲学=总体视角，自铸 sub specie totius 化用斯宾诺莎 sub specie aeternitatis",
+     "sourceId": "wd-wisdom",
+     "locator": "散文 What is Wisdom?（原刊 Wisdom II:8, 1957）",
+     "verdict": "confirmed",
+     "notes": "wd-philosophy 互证；此为杜兰特本人的一贯表述，非流派通用词"
+    },
+    {
+     "field": "profile.concepts[2]",
+     "claim": "文明=促进文化创造的社会秩序，四要素",
+     "sourceId": "wd-civilization",
+     "locator": "散文 What is Civilization?",
+     "verdict": "confirmed",
+     "notes": "《历史的教训》引文库多源一致（quotes-lessons）"
+    },
+    {
+     "field": "profile.concepts[3]",
+     "claim": "『文明非继承而来，每代须重新学习与赢得』出自《历史的教训》",
+     "sourceId": "quotes-lessons",
+     "locator": "引文库标注 The Lessons of History",
+     "verdict": "confirmed",
+     "notes": "多源一致但未读原书，按引文转引处理；旧数据『文明不是天赋，而是习得』无出处版本不采用"
+    },
+    {
+     "field": "profile.bibliography[3]",
+     "claim": "The Case for India（1930）",
+     "sourceId": "wd-biblio",
+     "locator": "书目页 1930 年条",
+     "verdict": "confirmed",
+     "notes": "该书性质（为印度辩护、批评殖民）据维基线索，草稿表述从简"
+    },
+    {
+     "field": "profile.bibliography[4]",
+     "claim": "On the Meaning of Life（1932）",
+     "sourceId": "wd-biblio",
+     "locator": "书目页 1932 年条（2004 年重印）",
+     "verdict": "confirmed",
+     "notes": "旧数据《生命的意义》(1932) 即此书"
+    },
+    {
+     "field": "profile.people[阿里尔]",
+     "claim": "阿里尔·杜兰特（原姓 Kaufman），卒于 1981-10-25",
+     "sourceId": "britannica",
+     "locator": "条目快照（Née: Ada Ka…；Ariel 卒 1981-10-25，检索摘要）",
+     "verdict": "uncertain",
+     "notes": "原名 Ida/Chaya Kaufman 的拼式以维基线索，草稿只作『原姓考夫曼』；生年 1898 不入正文；2026-10-14门禁纠偏：该断言的britannica源未达实读层级，按不确定保留"
+    },
+    {
+     "field": "profile.relations[杜威]",
+     "claim": "杜威是其哥大老师之一",
+     "sourceId": "wd-bio",
+     "locator": "传记页（studied under John Dewey and others）",
+     "verdict": "confirmed",
+     "notes": "叙述性来源，historical-contact；站内目录键『约翰·杜威』"
+    },
+    {
+     "field": "profile.relations[卢梭]",
+     "claim": "《文明的故事》卷十以卢梭为枢纽",
+     "sourceId": "wd-biblio",
+     "locator": "书目页 Vol. X: Rousseau and Revolution, 1967",
+     "verdict": "confirmed",
+     "notes": "编辑性研究关系，非历史接触；站内目录键『让-雅克·卢梭』"
+    },
+    {
+     "field": "profile.relations[斯宾诺莎]",
+     "claim": "sub specie totius 系化用斯宾诺莎 sub specie aeternitatis",
+     "sourceId": "wd-wisdom",
+     "locator": "散文 What is Wisdom?",
+     "verdict": "confirmed",
+     "notes": "杜兰特本人明言对举；站内目录键『巴鲁赫·斯宾诺莎』"
+    },
+    {
+     "field": "profile.debate[芬利书评]",
+     "claim": "Finley 在 PSQ 56 (1941) 127–129 评论 The Life of Greece",
+     "sourceId": "muse-finley",
+     "locator": "A Finley Chronology, 1912–1954 所录条目",
+     "verdict": "uncertain",
+     "notes": "批评要旨（种族式解释、伟人史观）为转述，草稿注明『据研究文献转述』；2026-10-14门禁纠偏：该断言的muse-finley源未达实读层级，按不确定保留"
+    },
+    {
+     "field": "profile.life[身后]",
+     "claim": "1981 年住院—阿里尔 10-25 去世—杜兰特 11-07 去世，并葬洛杉矶",
+     "sourceId": "wd-bio",
+     "locator": "传记页末段（hospitalized with heart problems … learned of Ariel's death … buried side by side in Los Angeles）",
+     "verdict": "confirmed",
+     "notes": "旧数据『逝世前一天仍在改〈落叶〉校样』无据，不采用；《落叶》1980 年出版说纠正（身后出版，年份未核实）"
+    },
+    {
+     "field": "profile.people[女儿]",
+     "claim": "育有女儿 Ethel",
+     "sourceId": "wd-bio",
+     "locator": "传记页（女儿 Ethel 的出生促成他与父母和解）",
+     "verdict": "confirmed",
+     "notes": "不入 people（非思想关系人物），仅背景"
+    }
+   ]
+  }
+ ],
+ "lastMappingReviewAt": "2026-10-16",
+ "codexFocusedReview": {
+  "scope": "幽灵来源定位所及断言",
+  "fullPacketSemanticReview": "pending in full-completion queues",
+  "owner": "codex-author-quality-takeover-20261016"
+ }
 }
