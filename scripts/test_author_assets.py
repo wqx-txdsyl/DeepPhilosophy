@@ -284,6 +284,17 @@ class SourceEvidenceGateTests(unittest.TestCase):
         self.assertIn('evidence-checks[0]:verdict-source-not-readable:leads', errors)
         self.assertIn('evidence-checks[1]:verdict-source-not-readable:paywall', errors)
 
+    def test_fact_verdict_cannot_cite_a_deleted_or_misspelled_source(self):
+        readable = source('sep', 'https://plato.stanford.edu/entries/renxue/')
+        profile, editorial = self.packet(readable)
+        evidence = {'sources': [{'id': 'sep'}], 'checks': [
+            {'field': 'profile.life[0].year', 'claim': '生年1900',
+             'sourceId': 'old-removed-source', 'locator': 'Biographical note',
+             'verdict': 'corrected'},
+        ]}
+        assessment = evaluate_source_evidence(profile, editorial, '门禁测试人物', evidence)
+        self.assertIn('evidence-checks[0]:unknown-source:old-removed-source', assessment)
+
     def test_catalog_records_back_verdicts_on_bibliography_fields_only(self):
         catalog = source('authority', 'https://authority.example.org/gros', accessScope='abstract-or-catalog', readScope='仅著录层')
         profile, editorial = self.packet(catalog, referencing='authority')

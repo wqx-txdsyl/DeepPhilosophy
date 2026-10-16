@@ -210,7 +210,9 @@ def evaluate(profile, editorial, name, evidence=None, lock=None, content=None):
             errors.append(f'evidence-checks[{index}]:missing-locator')
         if verdict in EVIDENCE_VERDICTS_REQUIRING_READABLE_SOURCE:
             cited = by_id.get(check.get('sourceId'))
-            if cited is not None and not source_is_readable(cited):
+            if cited is None:
+                errors.append(f'evidence-checks[{index}]:unknown-source:{check.get("sourceId")}')
+            elif not source_is_readable(cited):
                 # abstract-or-catalog may stand behind verdicts on bibliography fields only
                 # (titles, editions, years); any other field needs an actually read source.
                 field = str(check.get('field') or '')
