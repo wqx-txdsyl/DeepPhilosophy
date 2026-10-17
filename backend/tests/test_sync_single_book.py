@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 
-def fixture_library(tmp_path, monkeypatch):
+def fixture_library(tmp_path, monkeypatch, toc_type="chapter"):
     spec = importlib.util.spec_from_file_location(
         "single_book_sync", Path(__file__).parents[1] / "tools/dp_sync_books.py"
     )
@@ -26,7 +26,7 @@ def fixture_library(tmp_path, monkeypatch):
         {"id": "restored", "title": "原书名", "chapterCount": 0, "rank": 40, "cover": "/covers/original.webp", "file_type": "txt"},
     ]
     write(public / "books.json", books)
-    meta = {"bookId": "restored", "title": "原书名", "author": "作者", "chapterCount": 1, "chapterTitles": ["第一章"], "toc": [{"type": "chapter", "title": "第一章", "index": 0, "level": 1}]}
+    meta = {"bookId": "restored", "title": "原书名", "author": "作者", "chapterCount": 1, "chapterTitles": ["第一章"], "toc": [{"type": toc_type, "title": "第一章", "index": 0, "level": 1}]}
     write(chapter_dir / "meta.json", meta)
     write(chapter_dir / "0.json", {"index": 0, "title": "第一章", "content": [{"type": "text", "value": "实际正文"}]})
     write(detail_dir / "restored.json", {**meta, "file_type": "epub", "language": "zh-CN", "translator": "译者"})
@@ -39,8 +39,9 @@ def fixture_library(tmp_path, monkeypatch):
     return module, public, chapter_dir, books
 
 
-def test_restoring_one_book_preserves_other_entries_and_existing_identity(tmp_path, monkeypatch):
-    sync, public, chapter_dir, before = fixture_library(tmp_path, monkeypatch)
+@pytest.mark.parametrize("toc_type", ["chapter", "section"])
+def test_restoring_one_book_preserves_other_entries_and_existing_identity(tmp_path, monkeypatch, toc_type):
+    sync, public, chapter_dir, before = fixture_library(tmp_path, monkeypatch, toc_type)
     sync.sync_existing_book("restored")
     after = json.loads((public / "books.json").read_text())
     assert after[0] == before[0]

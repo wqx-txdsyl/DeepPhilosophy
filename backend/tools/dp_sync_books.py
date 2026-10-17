@@ -139,7 +139,7 @@ def sync_existing_book(bid):
     toc = meta.get("toc")
     if not isinstance(toc, list) or not toc or any(not isinstance(entry, dict) for entry in toc):
         raise ValueError("toc must be a nonempty object array")
-    if {entry.get("index") for entry in toc if entry.get("type") == "chapter"} != set(range(count)):
+    if {entry.get("index") for entry in toc if entry.get("type") in ("chapter", "section")} != set(range(count)):
         raise ValueError("toc must cover every chapter")
     for index in range(count):
         chapter = json.loads((chapters / f"{index}.json").read_text(encoding="utf-8"))
