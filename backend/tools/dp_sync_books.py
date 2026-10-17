@@ -10,7 +10,8 @@ dp_sync_books.py — 汇总生成 app/public/books.json（PDF 入库后同步）
 排序: rank 降序（无 rank 排最后）
 输出: app/public/books.json + backend/data/books_catalog.json
 """
-import os, sys, io, json, hashlib, re
+import os, sys, io, json, hashlib, re, argparse, shutil
+from pathlib import Path
 
 if sys.platform == "win32":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -110,7 +111,65 @@ DEMOTE_RULES = {
 }
 
 
+def sync_existing_book(bid):
+    """Sync one restored book from its public detail without rescanning the library."""
+    root = Path(BASE)
+    books_path = Path(BOOKS_FILE)
+    books = json.loads(books_path.read_text(encoding="utf-8"))
+    matches = [book for book in books if book.get("id") == bid]
+    if len(matches) != 1:
+        raise ValueError("--only requires exactly one existing book id")
+    detail_path = Path(PUBLIC_DETAIL_DIR) / f"{bid}.json"
+    detail = json.loads(detail_path.read_text(encoding="utf-8"))
+    chapters = root / "backend/data/book_chapters" / bid
+    meta = json.loads((chapters / "meta.json").read_text(encoding="utf-8"))
+    count = meta.get("chapterCount", 0)
+    if not isinstance(count, int) or count <= 0 or detail.get("chapterCount") != count:
+        raise ValueError("detail and meta must have the same positive chapterCount")
+    for field in ("bookId", "title", "author", "toc", "chapterTitles"):
+        if detail.get(field) != meta.get(field):
+            raise ValueError(f"detail/meta mismatch: {field}")
+    if meta.get("bookId") != bid or detail.get("file_type") not in ("epub", "pdf"):
+        raise ValueError("restored book must retain its id and specify a readable source format")
+    expected = {"meta.json", *(f"{index}.json" for index in range(count))}
+    if {path.name for path in chapters.glob("*.json")} != expected:
+        raise ValueError("chapter files must cover precisely 0..chapterCount-1")
+    if len(meta.get("chapterTitles", [])) != count:
+        raise ValueError("chapterTitles length mismatch")
+    toc = meta.get("toc")
+    if not isinstance(toc, list) or not toc or any(not isinstance(entry, dict) for entry in toc):
+        raise ValueError("toc must be a nonempty object array")
+    if {entry.get("index") for entry in toc if entry.get("type") == "chapter"} != set(range(count)):
+        raise ValueError("toc must cover every chapter")
+    for index in range(count):
+        chapter = json.loads((chapters / f"{index}.json").read_text(encoding="utf-8"))
+        if not isinstance(chapter, dict) or chapter.get("index") != index or chapter.get("title") != meta["chapterTitles"][index] or not isinstance(chapter.get("content"), list) or not chapter["content"]:
+            raise ValueError(f"invalid chapter: {index}")
+    mirror = root / "app/public/backend/data/book_chapters" / bid
+    if mirror.exists() and {path.name for path in mirror.glob("*.json")} - expected:
+        raise ValueError("development mirror has stale chapters; reconcile explicitly before syncing")
+    # All validation precedes writes. Preserve other books, order, rank and cover.
+    fields = ("title", "author", "region", "file_type", "file_size", "chapterCount", "tags", "cover", "summary", "language", "translator", "edition", "source")
+    matches[0].update({field: detail[field] for field in fields if field in detail})
+    books_path.write_text(json.dumps(books, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    Path(DETAIL_DIR).mkdir(parents=True, exist_ok=True)
+    shutil.copy2(detail_path, Path(DETAIL_DIR) / detail_path.name)
+    Path(CATALOG_FILE).parent.mkdir(parents=True, exist_ok=True)
+    Path(CATALOG_FILE).write_text(json.dumps({"books": books, "total": len(books)}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    shutil.copytree(chapters, mirror, dirs_exist_ok=True)
+    legacy = root / "app/src/assets/books.json"
+    if legacy.exists():
+        shutil.copy2(books_path, legacy)
+    print(f"单本同步: {bid} / {count}章；其余{len(books)-1}条书目保持不变")
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--only", metavar="BOOK_ID", help="仅同步已有书籍的public详情及章节，不扫描旧磁盘书库")
+    args = parser.parse_args()
+    if args.only:
+        sync_existing_book(args.only)
+        return
     # 大问题留新
     skip = set()
     if all(os.path.exists(os.path.join(PHILOSOPHY_DIR, r)) for r in DUP_GROUP):

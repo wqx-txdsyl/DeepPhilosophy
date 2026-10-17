@@ -14,9 +14,10 @@
 """
 import json, hashlib, os, sys, urllib.request
 
-BASE = r'F:/program/Python/DeepPhilosophy'
+BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 BID = sys.argv[1] if len(sys.argv) > 1 else ''
 VITE = '--vite-check' in sys.argv
+VITE_BASE = os.environ.get('DP_VITE_BASE', 'http://localhost:5173').rstrip('/')
 if not BID:
     print('用法: python verify_book.py <bid> [--vite-check]')
     sys.exit(1)
@@ -98,11 +99,11 @@ else:
 
 # 7. vite 读取链 (可选)
 if VITE:
-    for path, name in [('/backend/data/book_chapters/%s/meta.json' % BID, '5173 meta.json'),
-                       ('/book_detail/%s.json' % BID, '5173 book_detail.json'),
-                       ('/backend/data/book_chapters/%s/0.json' % BID, '5173 0.json')]:
+    for path, name in [('/backend/data/book_chapters/%s/meta.json' % BID, 'Vite meta.json'),
+                       ('/book_detail/%s.json' % BID, 'Vite book_detail.json'),
+                       ('/backend/data/book_chapters/%s/0.json' % BID, 'Vite 0.json')]:
         try:
-            r = urllib.request.urlopen('http://localhost:5173' + path, timeout=5)
+            r = urllib.request.urlopen(VITE_BASE + path, timeout=5)
             body = r.read(200)
             check(name, r.status == 200 and not body.startswith(b'<!doctype'), '%dB' % len(body))
         except Exception as e:
