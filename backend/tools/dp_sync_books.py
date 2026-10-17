@@ -10,7 +10,7 @@ dp_sync_books.py — 汇总生成 app/public/books.json（PDF 入库后同步）
 排序: rank 降序（无 rank 排最后）
 输出: app/public/books.json + backend/data/books_catalog.json
 """
-import os, sys, io, json, hashlib, re, argparse, shutil
+import os, sys, io, json, hashlib, re, argparse, shutil, subprocess
 from pathlib import Path
 
 if sys.platform == "win32":
@@ -160,6 +160,11 @@ def sync_existing_book(bid):
     legacy = root / "app/src/assets/books.json"
     if legacy.exists():
         shutil.copy2(books_path, legacy)
+    # The reference bibliography fingerprints the entire book universe, including
+    # non-pilot books. Keep its deterministic manifest in sync with this edit.
+    builder = root / "backend/tools/dp_biblio_build.py"
+    if builder.exists() and (root / "backend/data/book_bibliography.json").exists():
+        subprocess.run([sys.executable, str(builder)], cwd=root, check=True)
     print(f"单本同步: {bid} / {count}章；其余{len(books)-1}条书目保持不变")
 
 
