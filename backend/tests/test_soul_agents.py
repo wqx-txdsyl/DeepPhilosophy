@@ -9,7 +9,7 @@ from langchain_core.messages import AIMessageChunk
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from soul_agents import ROOT, catalog, soul_prompt, is_soul_agent
 from soul_agent_tools import PrimaryTexts
-from soul_agent_runtime import stream_soul_agent, used_citations
+from soul_agent_runtime import stream_soul_agent, used_citations, persona_history, PublicPerspective, split_perspective
 
 
 def test_complete_roster_with_independent_souls_and_no_nietzsche():
@@ -116,7 +116,7 @@ def test_stream_uses_soul_not_general_or_nietzsche_and_returns_tool_errors(monke
     assert json.loads(tool['result'])['error'] == 'OUTSIDE_AUTHOR_CORPUS'
     done = next(e for e in events if e['type'] == 'done')
     assert done['agent_id'] == 'kant' and done['primary_passages_read'] == 0 and done['complete']
-    assert done['release']['prompt_version'] == 'soul-persona-2'
+    assert done['release']['prompt_version'] == 'soul-persona-4'
 
 
 async def _collect(key):
@@ -156,8 +156,123 @@ def test_shared_stream_preserves_deltas_and_interim_without_exploration(monkeypa
     events=asyncio.run(_collect('kant'))
     assert [e['content'] for e in events if e['type']=='answer_preview']==['先回答一部分。','第一句。','第二句。']
     assert any(e['type']=='assistant_commentary' and e['content']=='先回答一部分。' for e in events)
-    assert len({e['id'] for e in events if e['type']=='provider_reasoning_delta'})==2
+    assert not any(e['type']=='provider_reasoning_delta' for e in events)
     done=next(e for e in events if e['type']=='done')
     assert done['suggestions_status']=='disabled' and done['runtime_profile']=='bare'
     assert done['content']=='第一句。第二句。'
     assert not any(e['type']=='suggestions' for e in events)
+
+
+def test_other_responders_are_not_personal_memories():
+    original = [
+        {'role':'user','content':'聊聊你自己'},
+        {'role':'assistant','agent_id':'general','content':'我是深哲，没有眼睛。'},
+        {'role':'assistant','agent_id':'sartre','content':'谈谈我的作品。'},
+        {'role':'assistant','content':'旧版本没有身份字段的回答'},
+    ]
+    converted = persona_history(original,'sartre')
+    assert converted[0] == original[0]
+    assert converted[1]['role']=='user'
+    assert '仅作引用资料' in converted[1]['content'] and '深哲' in converted[1]['content']
+    assert converted[2] == original[2] and converted[3] == original[3]
+    assert original[1]['role']=='assistant'  # No mutation of saved history.
+
+
+def test_body_questions_and_platform_identity_are_distinct_in_souls():
+    for key in catalog():
+        prompt = soul_prompt(key)
+        assert '你的眼睛' in prompt
+        assert '已知的生平可以用第一人称叙述' in prompt
+        assert '只有明确询问屏幕后' in prompt
+    sartre = soul_prompt('sartre')
+    assert '1975年' in sartre and '三岁' in sartre
+
+
+@pytest.mark.parametrize('step', [1, 2, 5, 13, 1000])
+@pytest.mark.parametrize('opening,closing', [('<perspective>','</perspective>'), ('<Perspective>','</PERSPECTIVE>')])
+def test_public_perspective_protocol_at_arbitrary_chunk_boundaries(step, opening, closing):
+    raw = '\n'+opening+'赞许不能使一个准则成为正当。'+closing+'\n先问这个准则能否普遍成立。'
+    output = PublicPerspective()
+    events = []
+    for start in range(0, len(raw), step):
+        events += output.events({'type':'answer_preview', 'id':'one', 'content':raw[start:start+step]})
+    for kind in ('token', 'done'):
+        events += output.events({'type':kind, 'id':'one', 'content':raw})
+    assert ''.join(e['content'] for e in events if e['type']=='answer_preview') == '先问这个准则能否普遍成立。'
+    assert [e['content'] for e in events if e['type']=='persona_perspective'] == ['赞许不能使一个准则成为正当。']
+    assert next(e for e in events if e['type']=='done')['content'] == '先问这个准则能否普遍成立。'
+    assert not any('<perspective>' in e.get('content','') for e in events)
+
+
+def test_plain_exact_output_and_broken_protocol_do_not_lose_text():
+    for raw in (' {"message":"<perspective>示例</perspective>"}', '<other>正文</other>',
+                '<perspective>没有结束', '<perspective>'+'x'*2100+'</perspective>正文'):
+        output = PublicPerspective()
+        for char in raw:
+            output.events({'type':'answer_preview','id':'a','content':char})
+        done = output.events({'type':'done','id':'a','content':raw})[-1]
+        assert done['content'] == raw
+    assert split_perspective('正文内 <perspective>引述</perspective>', final=True)[1].startswith('正文内 ')
+
+
+def test_perspective_tools_and_answer_are_from_same_actor_without_duplicate_notes(monkeypatch):
+    import deep_bare_agent
+    class Model:
+        turn = 0
+        def bind_tools(self, tools): return self
+        async def astream(self, messages):
+            self.turn += 1
+            yield AIMessageChunk(content='', additional_kwargs={'reasoning_content':'用户要求我扮演康德。'})
+            if self.turn == 1:
+                yield AIMessageChunk(content='<perspective>这句话的出处关系到我的判断。</perspective>\n先核对原文。')
+                yield AIMessageChunk(content='', tool_call_chunks=[{'name':'read_primary_text',
+                    'args':'{"book_id":"outside"}', 'id':'p1', 'index':0}])
+            else:
+                yield AIMessageChunk(content='<perspective>赞许不能作为正当性的根据。</perspective>\n')
+                yield AIMessageChunk(content='这个理由不够。', response_metadata={'finish_reason':'stop'})
+    model=Model()
+    monkeypatch.setattr(deep_bare_agent, 'load_model', lambda:model)
+    events=asyncio.run(_collect('kant'))
+    assert model.turn == 2  # One tool turn and one answer; no note-writing model.
+    assert [e['content'] for e in events if e['type']=='persona_perspective'] == [
+        '这句话的出处关系到我的判断。','赞许不能作为正当性的根据。']
+    assert any(e['type']=='tool' and e['status']=='error' for e in events)
+    assert any(e['type']=='assistant_commentary' and e['content']=='先核对原文。' for e in events)
+    assert next(e for e in events if e['type']=='done')['content']=='这个理由不够。'
+    assert not any(e['type']=='provider_reasoning_delta' for e in events)
+    assert all('<perspective>' not in e.get('content','') for e in events)
+
+
+def test_perspective_is_not_a_cited_answer_and_cancelled_prefix_is_not_published(monkeypatch):
+    import deep_bare_agent
+    from soul_agent_tools import PrimaryTexts
+    def read_tools(self):
+        self.reads.append({'book_id':'abc','book_title':'论语','chapter_title':'学而','chapter_idx':0,
+                          'citation_label':'【《论语》·学而】','source_type':'primary_text','text':'学而时习之'})
+        return []
+    class Model:
+        def bind_tools(self, tools): return self
+        async def astream(self, messages):
+            yield AIMessageChunk(content='<perspective>《论语》值得核对。</perspective>\n你好。', response_metadata={'finish_reason':'stop'})
+    monkeypatch.setattr(deep_bare_agent, 'load_model', Model)
+    monkeypatch.setattr(PrimaryTexts, 'tools', read_tools)
+    done=next(e for e in asyncio.run(_collect('confucius')) if e['type']=='done')
+    assert done['citations']==[] and done['content']=='你好。'
+    output=PublicPerspective()
+    assert output.events({'type':'answer_preview','id':'a','content':'<perspective>尚未写完'})==[]
+    assert output.events({'type':'error','content':'已停止'})==[{'type':'error','content':'已停止'}]
+
+
+@pytest.mark.parametrize('content', ['', '<perspective>尚无充分根据。</perspective>'])
+def test_provider_stop_without_public_answer_is_not_reported_as_success(monkeypatch, content):
+    import deep_bare_agent
+    class Model:
+        def bind_tools(self, tools): return self
+        async def astream(self, messages):
+            yield AIMessageChunk(content=content, additional_kwargs={'reasoning_content':'工作规划'},
+                                 response_metadata={'finish_reason':'stop'})
+    monkeypatch.setattr(deep_bare_agent, 'load_model', Model)
+    events=asyncio.run(_collect('peter_singer'))
+    done=next(e for e in events if e['type']=='done')
+    assert not done['complete'] and done['finish_reason']=='empty_public_answer'
+    assert any(e['type']=='error' for e in events)

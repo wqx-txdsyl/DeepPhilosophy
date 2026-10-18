@@ -320,7 +320,8 @@ export default function AgentWorkspace() {
     // 历史快照: 发送前 20 条（含两种 Agent 的公开回答, §8 共享）
     const conversationHistory = convNow?.messages || [];
     const history = (sharedRuntime(agent) ? conversationHistory : conversationHistory.slice(-20))
-      .map(m => ({ role: m.role, content: sharedRuntime(agent) ? (m.context_content || m.content) : m.content }));
+      .map(m => ({ role: m.role, content: sharedRuntime(agent) ? (m.context_content || m.content) : m.content,
+        ...(m.role === 'assistant' && m.agent_id ? { agent_id: m.agent_id } : {}) }));
 
     const controller = new AbortController();
     markStream(convId, mid, controller, agent);

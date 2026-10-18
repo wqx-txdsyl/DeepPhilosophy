@@ -18,12 +18,12 @@ const STATUS = {
   blocked: ['未执行', 'Not executed'], reused: ['复用已有结果', 'Reused result'], cancelled: ['已停止', 'Stopped'], running: ['进行中', 'Running'],
 };
 
-export function ProviderReasoning({ message }) {
+export function ProviderReasoning({ message, persona = false }) {
   const { lang, toolLabel } = useLang();
-  return <ReasoningTimeline message={message} lang={lang} toolLabel={toolLabel} />;
+  return <ReasoningTimeline message={message} lang={lang} toolLabel={toolLabel} persona={persona} />;
 }
 
-export function ReasoningBlock({ text, active, zh }) {
+export function ReasoningBlock({ text, active, zh, perspective = false }) {
   const [choice, setChoice] = useState(null);
   const open = choice?.phase === active ? choice.open : active;
   const body = useRef(null);
@@ -35,7 +35,7 @@ export function ReasoningBlock({ text, active, zh }) {
   return <section className="general-think-block" data-active={active || undefined}>
     <button className="general-think-toggle" aria-expanded={open} onClick={() => setChoice({ phase: active, open: !open })}>
       {active ? <Loader2 size={13} className="cw-spinner" /> : <Check size={13} />}
-      <span>{zh ? (active ? '思考中' : '已思考') : (active ? 'Thinking' : 'Thought')}</span>
+      <span title={perspective ? (zh ? '基于人物文献的公开思考摘记，由同一回答者生成' : 'A public perspective based on the figure’s writings, generated with the reply') : undefined}>{perspective ? (zh ? '思考摘记' : 'Perspective') : zh ? (active ? '思考中' : '已思考') : (active ? 'Thinking' : 'Thought')}</span>
       {!open && <span className="general-think-preview">{summary.replaceAll('**', '').slice(0, 90)}</span>}
       {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
     </button>
@@ -46,17 +46,22 @@ export function ReasoningBlock({ text, active, zh }) {
   </section>;
 }
 
-export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name }) {
+export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name, persona = false }) {
   const zh = lang !== 'en';
   const toolOpen = useLocalPref('toolTraceOpen');
-  const events = (message.events || message.tool_events || []).filter(e => (['provider_reasoning', 'assistant_commentary', 'tool_start', 'tool', 'tool_cancel'].includes(e?.t)
+  const events = (message.events || message.tool_events || []).filter(e => (['provider_reasoning', 'persona_perspective', 'assistant_commentary', 'tool_start', 'tool', 'tool_cancel'].includes(e?.t)
     || (['bare', 'soul_preview'].includes(message.runtime_profile) && e?.t === 'thinking_summary'))
     && (e.t !== 'provider_reasoning' || e.source === 'deepseek')
+    && (!persona || !['provider_reasoning', 'thinking_summary'].includes(e.t))
+    && (e.t !== 'persona_perspective' || e.source === 'persona_public')
     && (e.tc?.name || e.name) !== 'declare_research_need');
   if (!events.length && !message.streaming) return null;
   return <div className="general-process">
     {!events.length && <span className="general-activity-count">{zh ? '等待模型响应' : 'Waiting for model'}</span>}
       {events.map((event, i) => {
+        if (event.t === 'persona_perspective') {
+          return <ReasoningBlock key={`perspective:${event.id}:${i}`} text={event.content} active={false} zh={zh} perspective />;
+        }
         if (event.t === 'assistant_commentary' || event.t === 'thinking_summary') {
           return <div className="general-answer general-interim-answer" key={event.id || `commentary-${i}`}>
             {renderMarkdown(event.content || '', undefined, undefined, key => key, { general: true, citations: message.citations || [] })}
@@ -115,7 +120,7 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
   };
   useEffect(() => { if (!copied) return; const timer = setTimeout(() => setCopied(false), 1800); return () => clearTimeout(timer); }, [copied]);
   return <>
-    <ProviderReasoning message={m} />
+    <ProviderReasoning message={m} persona={primaryOnly} />
     <div className="general-answer" aria-busy={!!m.streaming}>
       {renderMarkdown(content, code => onDrawioEdit(m.message_id, code), m.drawioXml, key => plainText(t(key)), {
         citations, onCitation: setSource, streaming: !!m.streaming, general: true,
