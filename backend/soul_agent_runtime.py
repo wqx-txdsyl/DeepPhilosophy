@@ -78,6 +78,10 @@ def persona_history(history, key):
 async def stream_soul_agent(question, history, key, language='zh', custom_instructions=None,
                             conversation_id=None, message_id=None):
     from deep_bare_agent import stream_bare_agent
+    from soul_agents import is_retired_agent
+    if is_retired_agent(key):
+        yield {'type':'error', 'code':'agent_retired', 'content':'该智能体已下架，请选择其他回答者。'}
+        return
     texts = PrimaryTexts(key)
     output = PublicPerspective()
 

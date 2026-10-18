@@ -7,7 +7,7 @@ import pytest
 from langchain_core.messages import AIMessageChunk
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from soul_agents import ROOT, catalog, soul_prompt, is_soul_agent
+from soul_agents import ROOT, catalog, active_catalog, soul_prompt, is_soul_agent
 from soul_agent_tools import PrimaryTexts
 from soul_agent_runtime import stream_soul_agent, used_citations, persona_history, PublicPerspective, split_perspective
 
@@ -123,7 +123,7 @@ async def _collect(key):
     return [e async for e in stream_soul_agent('请讨论自由', [], key)]
 
 
-@pytest.mark.parametrize('key', list(catalog()))
+@pytest.mark.parametrize('key', list(active_catalog()))
 def test_each_registered_agent_can_complete_a_turn(monkeypatch, key):
     import deep_bare_agent
     class Model:
@@ -272,7 +272,7 @@ def test_provider_stop_without_public_answer_is_not_reported_as_success(monkeypa
             yield AIMessageChunk(content=content, additional_kwargs={'reasoning_content':'工作规划'},
                                  response_metadata={'finish_reason':'stop'})
     monkeypatch.setattr(deep_bare_agent, 'load_model', Model)
-    events=asyncio.run(_collect('peter_singer'))
+    events=asyncio.run(_collect('epicurus'))
     done=next(e for e in events if e['type']=='done')
     assert not done['complete'] and done['finish_reason']=='empty_public_answer'
     assert any(e['type']=='error' for e in events)

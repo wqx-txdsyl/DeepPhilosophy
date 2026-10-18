@@ -24,7 +24,7 @@ engine_langgraph.SYSTEM_PROMPT_LG, 经 AGENTS.AGENT_PROMPTS / get_system_prompt 
 """
 import re
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
 
 # ── 聚合 import（顺序即加载顺序: env → 核心 → 工具域 → SSE）──
 from routes.agent_llm import llm_chat, API_KEY, API_URL, MODEL, _load_env
@@ -80,15 +80,18 @@ del _TOOLS_BY_NAME, _TOOL_REGISTER_ORDER
 # 智能体广场: 列出可用智能体（通用深哲 + 哲学家注册表）
 # ═══════════════════════════════════════════════════════
 @router.get("/api/agents")
-async def list_agents():
+async def list_agents(response: Response):
+    response.headers['Cache-Control'] = 'no-store'
     import agents as agents_mod
+    from soul_agents import public_agents, is_published_agent
     out = [{"key": "general", "name": "深哲", "subtitle": "通用哲学智能体 · 全工具",
             "tagline": "检索/思辨/辩论/生图/写作/疏导", "portrait": None}]
     for key, spec in agents_mod.PHILO_AGENTS.items():
+        if not is_published_agent(key):
+            continue
         out.append({"key": key, "name": spec.get("name", key),
                     "subtitle": spec.get("title", ""), "tagline": spec.get("tagline", ""),
                     "portrait": spec.get("portrait")})
-    from soul_agents import public_agents
     out.extend(public_agents())
     return {"agents": out}
 

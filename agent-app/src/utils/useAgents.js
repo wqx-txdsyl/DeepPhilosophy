@@ -14,14 +14,19 @@ export default function useAgents() {
   useEffect(() => {
     let cancelled = false;
     let retries = 0;
+    let sequence = 0;
     const load = () => {
+      if (cancelled) return;
+      const request = ++sequence;
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 5000);
-      fetch(`${getApiBase()}/api/agents`, { signal: ctrl.signal })
-        .then(r => r.json())
+      fetch(`${getApiBase()}/api/agents`, { signal: ctrl.signal, cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error('Agent roster unavailable'); return r.json(); })
         .then(d => {
           clearTimeout(timer);
+          if (request !== sequence) return;
           if (!cancelled && d.agents?.length) {
+            retries = 0;
             setAgents(d.agents);
             setLoading(false);
           } else if (!cancelled) {
@@ -30,6 +35,7 @@ export default function useAgents() {
         })
         .catch(() => {
           clearTimeout(timer);
+          if (request !== sequence) return;
           if (!cancelled && retries < 10) {
             retries += 1;
             setTimeout(load, 2000);   // 2s 后重试（最多 10 次, 覆盖后端启动窗口）
@@ -38,8 +44,15 @@ export default function useAgents() {
           }
         });
     };
+    const refreshVisible = () => { if (document.visibilityState === 'visible') load(); };
     load();
-    return () => { cancelled = true; };
+    window.addEventListener('focus', load);
+    document.addEventListener('visibilitychange', refreshVisible);
+    return () => {
+      cancelled = true;
+      window.removeEventListener('focus', load);
+      document.removeEventListener('visibilitychange', refreshVisible);
+    };
   }, []);
 
   return { agents, agentsLoading: loading };

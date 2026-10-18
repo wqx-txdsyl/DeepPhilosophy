@@ -27,7 +27,29 @@ def catalog():
 
 
 def is_soul_agent(key):
-    return key in catalog()
+    return key in active_catalog()
+
+
+@lru_cache(maxsize=1)
+def published_philosophers():
+    """Publication is separate from retained persona files and old transcripts."""
+    keys = json.loads((ROOT / 'published.json').read_text(encoding='utf-8'))['philosophers']
+    if (len(keys) != 40 or len(set(keys)) != 40 or 'nietzsche' not in keys
+            or any(key not in catalog() and key != 'nietzsche' for key in keys)):
+        raise ValueError('The published roster must contain the approved 40 philosophers')
+    return tuple(keys)
+
+
+def active_catalog():
+    return {key:catalog()[key] for key in published_philosophers() if key != 'nietzsche'}
+
+
+def is_published_agent(key):
+    return key == 'general' or key in published_philosophers()
+
+
+def is_retired_agent(key):
+    return key in catalog() and key not in published_philosophers()
 
 
 def soul_prompt(key, language='zh'):
@@ -60,7 +82,7 @@ def local_books(key):
 def public_agents():
     from routes.agent_core import CHAPTERS_DIR
     out = []
-    for key, spec in catalog().items():
+    for key, spec in active_catalog().items():
         books = local_books(key)
         readable = [b for b in books if (CHAPTERS_DIR / b['id']).is_dir()
                     and any((CHAPTERS_DIR / b['id']).glob('[0-9]*.json'))]

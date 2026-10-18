@@ -11,12 +11,27 @@ import {
   groupConversationsByDay, legacyMessagesToConversations, toPersistedMessage, normalizeMessage,
   resolveIdentityVisible, normalizeAttachments, toolShortSummary, toolShortArgs,
   toolHumanSummary, isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
+  isAvailableResponder,
 } from '../src/data/conversationLogic.js';
 import { LocalConversationStore } from '../src/data/conversationStore.js';
 import { pickUsedEvidence } from '../src/utils/evidence.js';
 
 let passed = 0;
 const ok = (name, fn) => { fn(); passed += 1; console.log('  ✓', name); };
+
+ok('delisted responder history stays intact while follow-up invocation is unavailable', () => {
+  const agents = [{key:'general'}, {key:'kant'}, {key:'hume'}, {key:'arendt',status:'retired'}];
+  assert.equal(isAvailableResponder('kant',agents),true);
+  assert.equal(isAvailableResponder('arendt',agents),false);
+  assert.equal(isAvailableResponder('rawls',agents),false);
+  const source = {role:'assistant',agent_id:'rawls',content:'已有的历史答复',message_id:'archived'};
+  assert.equal(toPersistedMessage(source).content,source.content);
+  assert.equal(toPersistedMessage(source).agent_id,'rawls');
+  const next = resolveFollowupAgent(false,'kant',source.agent_id);
+  assert.equal(next,'rawls');
+  assert.equal(isAvailableResponder(next,agents),false);
+  assert.equal(isAvailableResponder(resolveFollowupAgent(true,'kant',source.agent_id),agents),true);
+});
 
 /* ── mock localStorage（Map 实现 length/key 语义） ── */
 function mockStorage() {

@@ -10,7 +10,7 @@ import asyncio
 import os
 from typing import Optional, List, Literal
 
-from fastapi import APIRouter, Depends, Header, Request
+from fastapi import APIRouter, Depends, Header, Request, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict
 
@@ -64,7 +64,11 @@ class AgentChatRequest(BaseModel):
 
 
 def agent_access(req: AgentChatRequest, request: Request, authorization: str = Header(None)):
-    from soul_agents import is_soul_agent
+    from soul_agents import is_soul_agent, is_published_agent, is_retired_agent
+    key = req.agent or 'general'
+    if not is_published_agent(key):
+        raise HTTPException(status_code=410 if is_retired_agent(key) else 404,
+                            detail='该智能体已下架，请选择其他回答者。' if is_retired_agent(key) else '未找到该智能体。')
     if is_soul_agent(req.agent) or (req.agent or 'general') == 'nietzsche' or ((req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare'):
         # Keep identity resolution and per-user memory isolation, but no
         # experiment request rate or daily usage quota.

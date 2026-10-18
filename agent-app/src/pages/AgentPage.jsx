@@ -4,7 +4,7 @@ import { getApiBase } from '../utils/api';
 import { useAuth } from '../auth';
 import { useLang } from '../utils/i18n';
 import { conversationStore } from '../data/conversationStore';
-import { genConversationTitle, resolveComposerAgent, resolveFollowupAgent, resolveFinalSuggestions, DRAFT_ID } from '../data/conversationLogic';
+import { genConversationTitle, resolveComposerAgent, resolveFollowupAgent, resolveFinalSuggestions, isAvailableResponder, DRAFT_ID } from '../data/conversationLogic';
 import { getPref, setPref } from '../data/localPrefs';
 import useAgents from '../utils/useAgents';
 import ConversationSidebar from '../components/conversation/ConversationSidebar';
@@ -258,6 +258,10 @@ export default function AgentWorkspace() {
     if (!accountReady || (!newConversation && activeConv?.messages_loaded === false)) return;
     const requestOwner = conversationStore.owner;
     const agent = agentOverride || composerAgentRef.current;
+    if (!agentsLoading && !isAvailableResponder(agent, agents)) {
+      setComposerAgent(agent); // Show the unavailable banner; do not silently impersonate another responder.
+      return;
+    }
     const text = typeof message === 'string' ? message : String(message || '');
     const shown = typeof display === 'string' ? display : text;
     const hasAttach = Array.isArray(attachments) && attachments.length > 0;
@@ -739,7 +743,7 @@ export default function AgentWorkspace() {
   }
 
   const messages = (activeConv?.messages || []).filter(m => m && m.content !== undefined);
-  const unavailable = !agentsLoading && !(agents || []).some(a => a.key === composerAgent);
+  const unavailable = !agentsLoading && !isAvailableResponder(composerAgent, agents);
 
   return (
     <div className="cw-root">

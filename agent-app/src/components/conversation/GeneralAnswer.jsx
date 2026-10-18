@@ -120,7 +120,7 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
   };
   useEffect(() => { if (!copied) return; const timer = setTimeout(() => setCopied(false), 1800); return () => clearTimeout(timer); }, [copied]);
   return <>
-    <ProviderReasoning message={m} persona={primaryOnly} />
+    <ProviderReasoning message={m} persona={primaryOnly || (!!m.agent_id && !['general', 'nietzsche'].includes(m.agent_id))} />
     <div className="general-answer" aria-busy={!!m.streaming}>
       {renderMarkdown(content, code => onDrawioEdit(m.message_id, code), m.drawioXml, key => plainText(t(key)), {
         citations, onCitation: setSource, streaming: !!m.streaming, general: true,

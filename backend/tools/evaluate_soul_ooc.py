@@ -91,7 +91,7 @@ def flags(question, answer):
 
 
 async def evaluate(args):
-    from soul_agents import catalog, ROOT
+    from soul_agents import active_catalog, ROOT
     from engine_langgraph import stream_agent
     if args.identity_encoding:
         # The provider/proxy currently corrupts some zstd-encoded SSE streams.
@@ -107,11 +107,11 @@ async def evaluate(args):
             model.client = model.root_client.chat.completions
             return model
         bare.load_model = load_uncompressed
-    keys = list(catalog()) if args.suite == 'roster' else list(FOCUS)
+    keys = list(active_catalog()) if args.suite == 'roster' else list(FOCUS)
     if args.agents:
         keys = args.agents.split(',')
     for key in keys:
-        if key not in catalog(): raise ValueError(f'Unknown agent {key}')
+        if key not in active_catalog(): raise ValueError(f'Unknown or retired agent {key}')
     cases = scenarios(args.suite, keys)
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)

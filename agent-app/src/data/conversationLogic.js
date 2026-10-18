@@ -11,6 +11,10 @@
 
 export const GENERAL_AGENT = 'general';
 
+/** Availability never rewrites the responder identity of a historical message. */
+export const isAvailableResponder = (key, agents) =>
+  (agents || []).some(agent => agent.key === key && agent.status !== 'retired');
+
 /** Persisted records are JSON data; older mobile browsers lack structuredClone. */
 export function clonePersisted(value) {
   return typeof structuredClone === 'function' ? structuredClone(value)
