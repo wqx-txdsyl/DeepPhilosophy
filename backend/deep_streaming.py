@@ -12,6 +12,24 @@ def clean_public_text(text):
     return _EMOJI.sub("", text or "")
 
 
+def attachment_request(message):
+    """Read the explicit request; never infer one from attachment contents."""
+    prefix = '【本轮用户要求与附件材料】\n'
+    if not isinstance(message, str) or not message.startswith(prefix):
+        return None
+    try:
+        packet = json.loads(message[len(prefix):])
+        if (isinstance(packet, dict) and packet.get('schema') == 'phiagent-input-v1'
+                and isinstance(packet.get('user_request'), str)
+                and isinstance(packet.get('attachments'), list) and packet['attachments']
+                and all(isinstance(a, dict) and isinstance(a.get('filename'), str)
+                        and isinstance(a.get('content'), str) for a in packet['attachments'])):
+            return packet['user_request']
+    except (ValueError, TypeError):
+        pass
+    return None
+
+
 def suggestion_question(message):
     """A follow-up envelope's old opt-outs do not override the current question."""
     opening = '请围绕下列指定回答继续讨论。\n<general_followup_context>\n'
@@ -23,15 +41,9 @@ def suggestion_question(message):
                 message = context['本次追问']
         except (ValueError, TypeError):
             pass
-    prefix = '【本轮用户要求与附件材料】\n'
-    if isinstance(message, str) and message.startswith(prefix):
-        try:
-            packet = json.loads(message[len(prefix):])
-            if (isinstance(packet, dict) and packet.get('schema') == 'phiagent-input-v1'
-                    and isinstance(packet.get('user_request'), str) and isinstance(packet.get('attachments'), list)):
-                return packet['user_request']
-        except (ValueError, TypeError):
-            pass
+    request = attachment_request(message)
+    if request is not None:
+        return request
     return message
 
 

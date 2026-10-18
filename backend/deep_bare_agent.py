@@ -128,9 +128,24 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
     model = None
     round_usage = []
     returned_models = set()
-    yield {'type': 'status', 'content': '开始思考' if language != 'en' else 'Thinking',
+    from deep_streaming import attachment_request
+    request = attachment_request(question)
+    confirm_input = (persona is None and not history and request is not None and not request.strip()
+                     and release.get('confirm_unrequested_attachments'))
+    status = ('收到附件' if language != 'en' else 'Attachment received') if confirm_input else ('开始思考' if language != 'en' else 'Thinking')
+    yield {'type': 'status', 'content': status,
            'runtime_profile': 'bare', 'release':release}
     try:
+        if confirm_input:
+            # No request means no authority to start a review or infer its goal.
+            # This is input clarification, not a fabricated model completion.
+            content = ('你希望围绕这份材料讨论什么问题？可以说明想澄清的概念、假设或判断依据。'
+                       if language != 'en' else 'What would you like to discuss about this material? You can name a concept, assumption, or reason you want to examine.')
+            yield {'type':'done','content':content,'complete':True,'runtime_profile':'bare',
+                   'release':release,'response_origin':'input_clarification','main_model_invoked':False,
+                   'finish_reason':'input_clarification','citations':[],'suggestions':[],
+                   'suggestions_status':'disabled','duration_seconds':round(time.monotonic()-started,3)}
+            return
         tools = await persona.tools() if persona else await load_tools()
         contracts=[{'name':t.name,'description':t.description,
             'schema':t.args_schema.model_json_schema() if hasattr(t.args_schema,'model_json_schema')
