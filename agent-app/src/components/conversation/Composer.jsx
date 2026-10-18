@@ -5,6 +5,7 @@ import { useLang } from '../../utils/i18n';
 import AgentSelector from './AgentSelector';
 import AttachmentCard from './AttachmentCard';
 import { useAuth } from '../../auth';
+import { attachmentMessage } from '../../data/attachmentMessage';
 
 /**
  * Composer — 输入区（spec §11, 最高优先级组件）
@@ -141,7 +142,7 @@ export default function Composer({
     const snapshot = ready.map(a => ({ filename: a.filename, kind: a.kind, size: a.size, ...(general ? { truncated: !!a.truncated } : {}) }));
     setAttachments([]);
     setInput('');
-    onSend({ message: attachText + text, display, attachments: snapshot });
+    onSend({ message: general ? attachmentMessage(text, ready) : attachText + text, display, attachments: snapshot });
   };
 
   const onKeyDown = (e) => {

@@ -20,7 +20,16 @@ def suggestion_question(message):
         try:
             context = json.loads(message[len(opening):-len(closing)])
             if isinstance(context, dict) and set(context) == {'原问题与附件', '指定回答对应问题', '指定回答', '本次追问'} and all(isinstance(v, str) for v in context.values()):
-                return context['本次追问']
+                message = context['本次追问']
+        except (ValueError, TypeError):
+            pass
+    prefix = '【本轮用户要求与附件材料】\n'
+    if isinstance(message, str) and message.startswith(prefix):
+        try:
+            packet = json.loads(message[len(prefix):])
+            if (isinstance(packet, dict) and packet.get('schema') == 'phiagent-input-v1'
+                    and isinstance(packet.get('user_request'), str) and isinstance(packet.get('attachments'), list)):
+                return packet['user_request']
         except (ValueError, TypeError):
             pass
     return message
@@ -28,6 +37,8 @@ def suggestion_question(message):
 
 def wants_suggestions(message):
     """Honor explicit requests to omit follow-ups, without classifying question intent."""
+    if not (suggestion_question(message) or '').strip():
+        return False
     return not re.search(
         r"(?:不要|不需要|无需|别|不加|不附|不提供)[^。！？;；\n，,]{0,40}"
         r"(?:追问|延伸|后续|建议|推荐)|"
