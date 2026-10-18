@@ -168,3 +168,21 @@ def test_retry_does_not_resend_records_deleted_during_first_generation(db, monke
     monkeypatch.setattr(home,'_model_questions',model)
     assert home.generate_home_questions(1)['status']=='empty'
     assert len(calls)==1
+
+
+@pytest.mark.parametrize('change', ['delete_discussion','edit_note'])
+def test_changed_or_deleted_context_is_not_resent_through_previous_questions(db, monkeypatch, change):
+    auth.save_reading_progress(1,'book','保留的书','作者',1,5)
+    auth.save_book_note(1,'book','将被移除的私人笔记内容')
+    account_data.save_conversation(1,'old',{'messages':[{'role':'user','content':'将被移除的讨论内容'}]},0)
+    previous_seen=[]
+    def model(signals, language, previous):
+        previous_seen.append(previous)
+        return [{'question':f'第{len(previous_seen)}次生成中这项判断根据是什么？','source_id':signals[0]['source_id']},
+                {'question':f'第{len(previous_seen)}次生成的另一个条件能否改变判断？','source_id':signals[0]['source_id']}]
+    monkeypatch.setattr(home,'_model_questions',model)
+    assert home.generate_home_questions(1)['status']=='ready'
+    if change=='delete_discussion': account_data.delete_conversation(1,'old')
+    else: auth.save_book_note(1,'book','只保留这段新文字')
+    assert home.generate_home_questions(1)['status']=='ready'
+    assert previous_seen[-1]==[]

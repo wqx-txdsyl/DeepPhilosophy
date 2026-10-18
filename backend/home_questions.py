@@ -229,11 +229,17 @@ def generate_home_questions(user_id, language="zh", refresh=False):
     if not signals:
         return {"status": "empty", "suggestions": [], "cached": False}
     fingerprint = hashlib.sha256(json.dumps(signals, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+    snapshot = {signal['source_id']: hashlib.sha256(json.dumps(
+        {k:v for k,v in signal.items() if k != 'recorded_at'}, sort_keys=True,
+        ensure_ascii=False).encode()).hexdigest() for signal in signals}
     key = (user_id, language, fingerprint)
     now = time.monotonic()
     with _cache_lock:
+        # Prior questions can contain mixed-source details. Reuse them only
+        # when every original source still exists with the same contents.
         last = next((entry[1] for old_key,entry in reversed(_cache.items())
-                     if old_key[:2] == key[:2]), [])
+                     if old_key[:2] == key[:2] and len(entry) > 2
+                     and all(snapshot.get(source) == digest for source,digest in entry[2].items())), [])
         for old_key in list(_cache):
             if _cache[old_key][0] <= now:
                 del _cache[old_key]
@@ -264,7 +270,7 @@ def generate_home_questions(user_id, language="zh", refresh=False):
     if not suggestions:
         return {"status": "unavailable", "suggestions": [], "cached": False}
     with _cache_lock:
-        _cache[key] = (time.monotonic() + CACHE_TTL, deepcopy(suggestions))
+        _cache[key] = (time.monotonic() + CACHE_TTL, deepcopy(suggestions), snapshot)
         _cache.move_to_end(key)
         while len(_cache) > CACHE_SIZE:
             _cache.popitem(last=False)
