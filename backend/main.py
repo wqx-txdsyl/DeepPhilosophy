@@ -94,7 +94,9 @@ async def global_middleware(request: Request, call_next):
             "object-src 'none'; base-uri 'self'; frame-src 'none'; form-action 'self'"
         )
     # 静态资源强缓存（1年）
-    if path in ('/sw.js', '/manifest.webmanifest'):
+    if path == '/api/projects' or path.startswith('/api/projects/'):
+        response.headers['Cache-Control'] = 'private, no-store'
+    elif path in ('/sw.js', '/manifest.webmanifest'):
         response.headers['Cache-Control'] = 'no-cache'
         if path == '/sw.js':
             response.headers['Service-Worker-Allowed'] = '/'
@@ -150,6 +152,7 @@ from routes.upload import router as upload_router
 from routes.account import router as account_router
 from routes.research import router as research_router
 from routes.agent_history import router as agent_history_router
+from routes.projects import router as projects_router
 
 app.include_router(health_router)
 app.include_router(auth_router)
@@ -167,6 +170,7 @@ app.include_router(upload_router)
 app.include_router(account_router)
 app.include_router(research_router)
 app.include_router(agent_history_router)
+app.include_router(projects_router)
 from routes.openai_compat import router as openai_compat_router
 app.include_router(openai_compat_router)
 

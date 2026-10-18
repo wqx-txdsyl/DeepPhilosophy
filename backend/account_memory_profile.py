@@ -1,7 +1,7 @@
 """Account-scoped narrative memory. History is evidence, never instructions.
 
-Generated summaries update automatically until the user edits them. Later
-summaries become proposals; they never overwrite a manual correction.
+Enabled summaries merge automatically, including after a correction. Explicit
+corrections are separate evidence; an in-flight edit always wins its revision.
 """
 import asyncio
 import hashlib
@@ -11,7 +11,7 @@ import account_data as data
 
 _locks = {}
 _pending = set()
-SUMMARY_VERSION = 2
+SUMMARY_VERSION = 3
 LEGACY_LABELS = {'background': '个人背景', 'reading': '阅读与研究',
                  'interests': '长期关注', 'preferences': '交流偏好'}
 
@@ -75,13 +75,19 @@ def save_profile(user_id, text, enabled, expected_revision, metadata=None, corre
         elif text != current['text']:
             meta = current['proposal_metadata'] if text == current['proposal'] else {}
         corrections = list(current['corrections'])
+        if current['manual'] and current['text'].strip() and not corrections:
+            corrections.append({'request':current['text'], 'kind':'legacy_manual_document', 'created_at':data.now()})
         if correction:
             corrections.append({'request': correction, 'created_at': data.now()})
+        elif text != current['text'] and text.strip():
+            corrections.append({'request': '用户直接编辑后的记忆正文如下。保留其中明确的更正；不要从旧历史补回已删除的旧段落。新对话仍须合并更新，不得冻结整份正文。\n'+text,
+                                'kind': 'manual_document', 'created_at': data.now()})
         conn.execute('''INSERT INTO agent_memory_profile_details(user_id,metadata,corrections)
             VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET metadata=excluded.metadata,
             corrections=excluded.corrections''', (user_id,json.dumps(meta,ensure_ascii=False),json.dumps(corrections,ensure_ascii=False)))
         if text != current['text']:
             conn.execute("UPDATE agent_memory_profile_details SET proposal_metadata='{}' WHERE user_id=?", (user_id,))
+            conn.execute("UPDATE agent_memory_profile SET source_hash='' WHERE user_id=?", (user_id,))
         if sources is not None:
             conn.execute('UPDATE agent_memory_profile SET sources=? WHERE user_id=?', (json.dumps(sources,ensure_ascii=False),user_id))
         conn.commit()
@@ -183,7 +189,7 @@ async def correct_profile(user_id, request, expected_revision):
     sources, _ = await asyncio.to_thread(history_sources, user_id)
     if current['text'].strip():
         sources.append({'id':'manual-profile','text':current['text'],
-                        'origin':'user_correction' if current['manual'] else 'previous_summary'})
+                        'origin':'user_correction' if current['manual'] and not current['corrections'] else 'previous_summary'})
     for index, correction in enumerate(current['corrections']):
         sources.append({'id':f'correction:{index}','text':correction['request'],'origin':'user_correction'})
     sources.append({'id':'current-correction','text':request,'origin':'correction_request'})
@@ -226,9 +232,12 @@ async def _refresh_once(user_id, force=False):
         summary_sources = list(sources)
         if current['text'].strip():
             summary_sources.append({'id': 'previous-summary', 'text': current['text'], 'origin': 'previous_summary'})
-        if current['manual'] and current['text'].strip():
-            summary_sources.append({'id': 'manual-profile', 'text': current['text'], 'origin': 'user_correction'})
-        for index, correction in enumerate(current['corrections']):
+        corrections = list(current['corrections'])
+        # One-time bridge for older direct edits without a correction ledger.
+        # Never promote the next automatically generated document to an edit.
+        if current['manual'] and current['text'].strip() and not corrections:
+            corrections.append({'request':current['text'], 'kind':'legacy_manual_document', 'created_at':data.now()})
+        for index, correction in enumerate(corrections):
             summary_sources.append({'id': f'correction:{index}', 'text': correction['request'], 'origin': 'user_correction'})
         text, provenance = await summarize(summary_sources) if summary_sources else ('', [])
         if isinstance(provenance, MemoryEvidence):
@@ -244,15 +253,25 @@ async def _refresh_once(user_id, force=False):
                 conn.execute("UPDATE agent_memory_profile SET status='idle' WHERE user_id=?", (user_id,))
                 conn.commit()
                 return latest['enabled'] and latest_digest != digest
-            # A manual edit always wins, including an intentionally blank one.
-            target = 'proposal' if latest['manual'] else 'text'
-            conn.execute(f'''UPDATE agent_memory_profile SET {target}=?, sources=?, source_hash=?,
+            # Do not publish a result generated before a manual save/correction.
+            if latest['revision'] != current['revision']:
+                conn.execute("UPDATE agent_memory_profile SET status='idle' WHERE user_id=?", (user_id,))
+                conn.commit()
+                _pending.discard(user_id)
+                return False
+            # A deliberate blank stays blank until the user explicitly refreshes.
+            if latest['manual'] and not latest['text'].strip() and not force:
+                conn.execute("UPDATE agent_memory_profile SET status='idle' WHERE user_id=?", (user_id,))
+                conn.commit()
+                return False
+            conn.execute('''UPDATE agent_memory_profile SET text=?, proposal='', manual=0, sources=?, source_hash=?,
                 status='idle',revision=revision+1,updated_at=? WHERE user_id=?''',
-                (text if not latest['manual'] or latest['text'].strip() or force else '',
-                 json.dumps(provenance, ensure_ascii=False), digest, data.now(), user_id))
+                (text, json.dumps(provenance, ensure_ascii=False), digest, data.now(), user_id))
             meta = getattr(provenance, 'metadata', {})
-            field = 'proposal_metadata' if latest['manual'] else 'metadata'
-            conn.execute(f"INSERT INTO agent_memory_profile_details(user_id,{field}) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET {field}=excluded.{field}", (user_id,json.dumps(meta,ensure_ascii=False)))
+            conn.execute('''INSERT INTO agent_memory_profile_details(user_id,metadata,proposal_metadata,corrections)
+                VALUES(?,?,'{}',?) ON CONFLICT(user_id) DO UPDATE SET metadata=excluded.metadata,
+                proposal_metadata='{}',corrections=excluded.corrections''',
+                (user_id,json.dumps(meta,ensure_ascii=False),json.dumps(corrections,ensure_ascii=False)))
             conn.commit()
     except Exception:
         # No raw provider messages or private history in logs/UI. Retry is

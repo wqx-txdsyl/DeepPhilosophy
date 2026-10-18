@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Loader2, Brain, Pencil, RefreshCw, Check, ChevronDown, ArrowUpRight, Send, Sparkles } from 'lucide-react';
+import { Loader2, Brain, Pencil, RefreshCw, Check, ArrowUpRight, Send, Sparkles } from 'lucide-react';
 import { useAuth } from '../../auth';
 import { memorySections, memoryDirty } from '../../data/memoryProfile';
 
@@ -65,9 +65,8 @@ export default function AccountMemory({ lang, onSignIn, draftState, onDraftChang
         restored.current=true;
       }
       setItems(d.memories || []);
-      if (d.profile.status === 'updating') {
-        clearTimeout(timer.current); timer.current=setTimeout(()=>read(signal,true),2000);
-      }
+      clearTimeout(timer.current);
+      timer.current=setTimeout(()=>read(signal,true),d.profile.status === 'updating' ? 2000 : 10000);
     } catch {
       if (alive.current && !signal?.aborted) setNotice(L('记忆暂未读取，草稿已保留。','Memory could not be loaded. Your draft is kept.'));
     }
@@ -139,7 +138,7 @@ export default function AccountMemory({ lang, onSignIn, draftState, onDraftChang
     finally { if(alive.current)setBusy(false); }
   }
   return <section className="cw-settings-memory">
-    <p className="cw-settings-desc">{L('记忆会随着对话更新，可以探索、询问或更正。','A personal summary that develops with your conversations. Explore a thread or tell DeepPhilosophy what to correct.')}</p>
+    <p className="cw-settings-desc">{L('新对话会自动合并进这份记忆，并保留你明确提交的更正。可以随时编辑或继续更正。','New conversations merge into this memory automatically, with your explicit corrections retained. You can edit or correct it at any time.')}</p>
     {!token ? <div className="cw-settings-empty"><Brain size={26}/><h3>{L('记忆随账号保存','Memory follows your account')}</h3><p>{L('登录后可查看和修改记忆摘要。','Sign in to view and edit your memory summary.')}</p><button className="cw-settings-button cw-settings-primary" onClick={onSignIn}>{L('登录','Sign in')}</button></div> : !profile ? <div className="cw-settings-notice" role="status"><Loader2 size={15} className="cw-spinner"/>{notice || L('正在读取记忆…','Loading memory…')}{notice && <button className="cw-settings-button" onClick={()=>read()}>{L('重试','Retry')}</button>}</div> : <>
       <div className="cw-setting-row"><div className="cw-setting-copy"><div className="cw-settings-label">{L('启用长期记忆','Use memory')}</div><p className="cw-settings-sub">{L('根据历史自动整理，在相关对话中参考。关闭后保留摘要。','Summarize history and use it when relevant. Turning this off keeps saved content but stops updates and recall.')}</p></div><button className="cw-toggle" role="switch" aria-label={L('启用长期记忆','Use memory')} aria-checked={enabled} disabled={busy||editing} onClick={()=>save(profile.text,!enabled)}><span className="cw-toggle-knob"/></button></div>
       <div className="cw-memory-document-head"><span><Brain size={17}/>{L('关于你','About you')}</span><div><button className="cw-settings-button" disabled={busy || editing || !enabled || profile.status==='updating'} onClick={refresh} title={L('重新整理历史对话','Refresh from conversations')}><RefreshCw size={14}/>{L('更新','Update')}</button><button className="cw-settings-button" disabled={busy} onClick={()=>{setEditing(!editing);setNotice('');}}><Pencil size={14}/>{editing ? L('预览','Preview') : L('编辑','Edit')}</button></div></div>
@@ -149,7 +148,6 @@ export default function AccountMemory({ lang, onSignIn, draftState, onDraftChang
       {editing ? <form className="cw-settings-form" onSubmit={e=>{e.preventDefault();save();}}><label>{L('记忆正文','Memory text')}<textarea aria-label={L('记忆正文','Memory text')} className="cw-memory-editor" rows={13} value={draft} onChange={e=>setDraft(e.target.value)} placeholder={L('写下你希望深哲了解的背景、长期项目与关注的问题。小标题和段落可以自由安排。','Describe your background, ongoing projects and interests. Organize headings and paragraphs freely.')} /><small>{L('可以自由调整小标题和段落。不想保留的内容可以直接删除。','Headings are optional. Remove any paragraph you do not want; the current question takes priority.')}</small></label><div className="cw-settings-form-footer"><button className="cw-settings-button cw-settings-primary" disabled={busy||conflict||!memoryDirty(profile,draft,enabled)}><Check size={14}/>{L('保存更正','Save corrections')}</button><button type="button" className="cw-settings-button" onClick={()=>{setDraft(profile.text);setEnabled(profile.enabled);setEditing(false);setConflict(false);setNotice('');}}>{L('取消','Cancel')}</button></div></form> : draft.trim() ? <MemoryProse text={draft} focus={focus}/> : <div className="cw-memory-empty"><p>{profile.manual ? L('记忆正文已清空','Memory text is cleared') : L('还没有形成摘要','No summary yet')}</p><span>{L('可以直接编辑，或等待历史对话整理。','Edit directly or wait for a summary from history.')}</span></div>}
       {notice && <div className="cw-settings-notice" role="status">{notice}{conflict && <button className="cw-settings-button" onClick={()=>reviewLatest().catch(()=>setNotice(L('最新版本暂未读取。','Could not load the latest version.')))}>{L('查看最新版本','Review latest')}</button>}</div>}
       {remote && editing && <details className="cw-memory-details" open><summary>{L('最新保存版本','Latest saved version')}</summary><MemoryProse text={remote.text}/></details>}
-      {profile.proposal && profile.proposal!==profile.text && <details className="cw-memory-details"><summary><ChevronDown size={14}/>{L('新对话带来的更新','Updates from recent conversations')}</summary><MemoryProse text={profile.proposal}/><p className="cw-settings-desc">{L('你的更正未被覆盖。采用后可继续修改。','Your corrections are preserved. You can edit this update before saving.')}</p><button className="cw-settings-button" disabled={busy||editing} onClick={()=>{setDraft(profile.proposal);setEditing(true);}}>{L('在编辑器中查看','Review in editor')}</button></details>}
       {!editing && draft.trim() && <>
         {exploration.length>0 && <section className="cw-memory-exploration"><h3><Sparkles size={15}/>{L('深入探索','Explore further')}</h3>{exploration.map(item=><button key={item.question} disabled={busy||conversationBusy||!enabled||!onExplore} onClick={()=>explore(item.question)}><ArrowUpRight size={16}/><span>{item.question}</span></button>)}</section>}
         {onExplore && <form className="cw-memory-ask" onSubmit={e=>{e.preventDefault();explore(question);}}><input aria-label={L('围绕记忆提问','Ask about your memory')} placeholder={L('围绕这些记忆继续提问…','Ask about a thread in your summary…')} value={question} onChange={e=>setQuestion(e.target.value)}/><button title={L('询问深哲','Ask DeepPhilosophy')} aria-label={L('询问深哲','Ask DeepPhilosophy')} disabled={busy||conversationBusy||!enabled||!question.trim()}><Send size={16}/></button></form>}

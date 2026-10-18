@@ -58,17 +58,22 @@ def test_manual_correction_survives_update_and_blank_clear(database, monkeypatch
     saved=memory.get_profile(1)
     ok, saved=memory.save_profile(1,'我是在比较观点，不认同康德。',True,saved['revision'])
     assert ok and saved['manual']
+    async def merged(sources):
+        assert any('不认同康德' in s['text'] and s.get('origin')=='user_correction' for s in sources)
+        return '## 阅读与研究\n你比较观点而不认同康德，并开始比较经验主义。', []
+    monkeypatch.setattr(memory,'summarize',merged)
     history(text='请比较经验主义',cid='two')
     asyncio.run(memory.refresh(1))
-    assert memory.get_profile(1)['text']=='我是在比较观点，不认同康德。'
-    assert memory.get_profile(1)['proposal']=='## 阅读与研究\n自动摘要'
+    assert '开始比较经验主义' in memory.get_profile(1)['text']
+    assert '不认同康德' in memory.get_profile(1)['text']
+    assert memory.get_profile(1)['proposal']==''
     assert not memory.save_profile(1,'旧设备',True,saved['revision'])[0]
     p=memory.get_profile(1)
     assert memory.save_profile(1,'',True,p['revision'])[0]
     asyncio.run(memory.refresh(1))
     assert memory.get_profile(1)['text']==memory.get_profile(1)['proposal']==''
     asyncio.run(memory.refresh(1,force=True))
-    assert memory.get_profile(1)['text']=='' and memory.get_profile(1)['proposal']
+    assert '开始比较经验主义' in memory.get_profile(1)['text'] and not memory.get_profile(1)['proposal']
 
 
 def test_disabled_stops_generation_recall_and_preserves_data(database, monkeypatch):
@@ -138,7 +143,7 @@ def test_edit_during_generation_remains_manual_and_concurrent_calls_coalesce(dat
     monkeypatch.setattr(memory,'summarize',summarize)
     asyncio.run(memory.refresh(1))
     p=memory.get_profile(1)
-    assert p['text']=='正在编辑的更正' and p['proposal']=='新生成内容'
+    assert p['text']=='正在编辑的更正' and p['proposal']==''
 
 
 def test_api_private_revision_conflicts_and_identity(database, monkeypatch):
@@ -214,7 +219,7 @@ def test_natural_correction_is_saved_and_survives_future_updates(database, monke
             'exploration':[{'section':'阅读立场','question':'康德与休谟的哪一个论证需要继续比较？'}]},sources)
     monkeypatch.setattr(memory,'summarize',summarize)
     ok,p=asyncio.run(memory.correct_profile(1,'我只是比较，并不赞同康德',p['revision']))
-    assert ok and p['manual'] and p['corrections'][0]['request']=='我只是比较，并不赞同康德'
+    assert ok and p['manual'] and p['corrections'][-1]['request']=='我只是比较，并不赞同康德'
     assert p['metadata']['exploration'] and data.account_context(1)['memory_profile']==p['text']
     assert not asyncio.run(memory.correct_profile(1,'旧设备',0))[0]
     async def later(sources):
@@ -223,7 +228,7 @@ def test_natural_correction_is_saved_and_survives_future_updates(database, monke
     monkeypatch.setattr(memory,'summarize',later)
     asyncio.run(memory.refresh(1,True))
     latest=memory.get_profile(1)
-    assert latest['text']==p['text'] and latest['proposal'] and latest['corrections']==p['corrections']
+    assert latest['text']=='## 新探索\n你的更正仍被保留' and not latest['proposal'] and latest['corrections']==p['corrections']
     data.delete_account_data(1)
     with data.connection() as conn:assert not conn.execute('SELECT 1 FROM agent_memory_profile_details WHERE user_id=1').fetchone()
 
@@ -256,3 +261,26 @@ def test_unreviewed_generated_summary_is_not_promoted_to_user_correction(databas
             'evidence':[{'source_id':'current-correction','quote':'只在比较观点'}]}]},sources)
     monkeypatch.setattr(memory,'summarize',corrected)
     assert asyncio.run(memory.correct_profile(1,'我只在比较观点',current['revision']))[0]
+
+
+def test_legacy_proposal_is_rebuilt_and_auto_text_does_not_become_a_correction(database,monkeypatch):
+    history()
+    with data.connection() as conn:
+        conn.execute("INSERT INTO agent_memory_profile(user_id,text,proposal,manual) VALUES(1,'旧手工更正','旧待采用提案',1)")
+        conn.commit()
+    calls=[]
+    async def summary(sources):
+        calls.append(sources)
+        return '合并后的第一份新摘要',[]
+    monkeypatch.setattr(memory,'summarize',summary)
+    asyncio.run(memory.refresh(1))
+    p=memory.get_profile(1)
+    assert p['text']=='合并后的第一份新摘要' and p['proposal']=='' and not p['manual']
+    assert p['corrections'][0]['request']=='旧手工更正'
+    history(text='后来开始阅读庄子',cid='new')
+    asyncio.run(memory.refresh(1))
+    assert all(s['text']!='合并后的第一份新摘要' for s in calls[-1] if s.get('origin')=='user_correction')
+    data.delete_conversation(1,'new')
+    # The generated part remains derived, even when an older correction exists.
+    assert memory.get_profile(1)['text']==''
+    assert memory.get_profile(1)['corrections'][0]['request']=='旧手工更正'

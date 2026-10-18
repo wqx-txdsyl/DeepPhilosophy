@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PanelLeft, PanelLeftOpen, Menu, EllipsisVertical } from 'lucide-react';
 import { useLang } from '../../utils/i18n';
 import { ConfirmModal, RenameModal, ContextMenu, anchorFromEvent } from './Modal';
+import AreaNav from '../AreaNav';
 
 /**
  * ConversationHeader — 右侧顶部（spec §6）: conversation.title 而非巨大标题;
@@ -17,6 +18,7 @@ export default function ConversationHeader({
   const [deleting, setDeleting] = useState(false);
   return (
     <div className="cw-header">
+      <AreaNav />
       <button className="cw-nav-btn cw-icon-btn" onClick={onOpenNav} title={t('conversations')} aria-label={t('conversations')} aria-expanded={!!navOpen} aria-controls="cw-history-sidebar">
         <Menu size={16} />
       </button>
