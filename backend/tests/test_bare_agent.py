@@ -11,6 +11,24 @@ import deep_bare_agent as bare
 import pytest
 
 
+def test_provider_sse_does_not_negotiate_corrupt_zstd(monkeypatch):
+    from langchain_openai import ChatOpenAI
+    import engine_langgraph
+    from routes import agent_llm
+    base = ChatOpenAI(model='offline-model',api_key='offline-test',temperature=0.7)
+    monkeypatch.setattr(engine_langgraph,'_llm_for_agent',lambda _:base)
+    monkeypatch.setattr(agent_llm,'API_KEY','offline-test')
+    monkeypatch.setattr(agent_llm,'API_URL','https://example.invalid/v1')
+    model=bare.load_model()
+    try:
+        assert model.root_client.default_headers['Accept-Encoding']=='identity'
+        assert model.root_async_client.default_headers['Accept-Encoding']=='identity'
+        assert model.model_name==base.model_name and model.temperature==base.temperature
+    finally:
+        model.root_client.close();base.root_client.close()
+        asyncio.run(model.root_async_client.close());asyncio.run(base.root_async_client.close())
+
+
 @pytest.fixture(autouse=True)
 def no_real_exploration_requests(monkeypatch):
     async def no_suggestions(*args):return {'suggestions':[], 'status':'unavailable'}

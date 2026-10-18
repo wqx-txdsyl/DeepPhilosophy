@@ -31,6 +31,14 @@ export function reduceGeneralEvent(state, evt) {
   const displayText = state.runtime_profile === 'bare' || evt.runtime_profile === 'bare'
     ? value => String(value ?? '') : plainText;
   const text = displayText(evt.content);
+  if (evt.type === 'persona_perspective') {
+    if (state.done_received || evt.source !== 'persona_public' || !evt.id || !text) return state;
+    const events = [...state.events];
+    const entry = { t:'persona_perspective', id:evt.id, source:evt.source, content:text };
+    const i = events.findIndex(e => e.t === entry.t && e.id === entry.id);
+    if (i < 0) events.push(entry); else events[i] = entry;
+    return { ...state, events };
+  }
   if (evt.type === 'assistant_commentary') {
     if (state.done_received || !evt.id || !text) return state;
     const events = [...state.events];

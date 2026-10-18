@@ -32,7 +32,9 @@ def load_model():
     return type(base)(model=base.model_name, api_key=agent_llm.API_KEY,
                       base_url=agent_llm.API_URL, temperature=base.temperature,
                       extra_body=base.extra_body, max_tokens=None,
-                      max_retries=0, timeout=httpx.Timeout(None), stream_usage=True)
+                      max_retries=0, timeout=httpx.Timeout(None), stream_usage=True,
+                      default_headers={**(getattr(base, 'default_headers', None) or {}),
+                                       'Accept-Encoding': 'identity'})
 
 
 async def execute(tool, args, question, agent='general'):
@@ -178,7 +180,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                     if isinstance(chunk.content, str) and chunk.content:
                         text += chunk.content
                         if not call_started:
-                            yield {'type': 'answer_preview', 'content': chunk.content}
+                            yield {'type': 'answer_preview', 'id': f'{group}:note:{segment}', 'content': chunk.content}
                         else:
                             yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
             finally:
@@ -205,13 +207,13 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 # Compatibility consumers use token events; the website has
                 # already painted preview deltas and will not duplicate them.
                 if text:
-                    yield {'type': 'token', 'content': text}
+                    yield {'type': 'token', 'id': f'{group}:note:{segment}', 'content': text}
                 from deep_streaming import wants_suggestions
                 suggest = agent == 'general' and complete and wants_suggestions(question) and bool(text.strip())
                 usage = None
                 if round_usage and all(isinstance(item,dict) for item in round_usage):
                     usage = {key:sum(item.get(key,0) for item in round_usage) for key in ('input_tokens','output_tokens','total_tokens')}
-                yield {'type': 'done', 'content': text, 'complete': complete, 'runtime_profile': 'bare',
+                yield {'type': 'done', 'id': f'{group}:note:{segment}', 'content': text, 'complete': complete, 'runtime_profile': 'bare',
                        'release':release,'main_model_usage':{'scope':'main_agent_only','usage':usage,
                          'round_count':len(round_usage),'reported_rounds':sum(isinstance(u,dict) for u in round_usage),
                          'includes_auxiliary_tool_models':False,'provider_model_names':sorted(returned_models)},

@@ -9,6 +9,29 @@ const reduce = events => events.reduce(reduceGeneralEvent, createGeneralStream()
 const sseResponse = chunks => new Response(new ReadableStream({ start(controller) { chunks.forEach(chunk => controller.enqueue(chunk)); controller.close(); } }), { headers: { 'content-type': 'text/event-stream; charset=utf-8' } });
 const bytes = text => new TextEncoder().encode(text);
 
+await test('public persona perspective stays separate from answer and survives reload and stop', () => {
+  let state = reduce([
+    {type:'status',runtime_profile:'bare'},
+    {type:'persona_perspective',source:'persona_public',id:'p1',content:'赞许不能作为正当性的根据。'},
+    {type:'tool_start',name:'read_primary_text',call_id:'t1'},
+    {type:'tool',name:'read_primary_text',call_id:'t1',status:'error',result:'未读到原文'},
+    {type:'persona_perspective',source:'persona_public',id:'p2',content:'还需要区分判断的根据。'},
+    {type:'answer_preview',content:'我不同意。'},
+  ]);
+  assert.equal(state.content,'我不同意。');
+  assert.deepEqual(state.events.map(e=>e.t),['persona_perspective','tool','persona_perspective']);
+  const stopped=finishGeneralStream(state,{aborted:true});
+  assert.equal(stopped.stream_state,'stopped');
+  assert.equal(stopped.events[0].content,'赞许不能作为正当性的根据。');
+  state=reduceGeneralEvent(state,{type:'done',content:'我不同意。',complete:true});
+  const restored=normalizeMessage(toPersistedMessage({...state,role:'assistant',agent_id:'kant',message_id:'public-perspective'}));
+  assert.equal(restored.content,'我不同意。');
+  assert.equal(restored.tool_events[0].source,'persona_public');
+  assert.equal(restored.tool_events[0].content,'赞许不能作为正当性的根据。');
+  assert.deepEqual(reduceGeneralEvent(state,{type:'persona_perspective',source:'persona_public',id:'late',content:'迟到'}),state);
+  assert.equal(reduce([{type:'persona_perspective',source:'deepseek',id:'raw',content:'工作规划'}]).events.length,0);
+});
+
 await test('interim answers remain in timeline order across tools, final text and reload', () => {
   let state = reduce([
     {type:'status',runtime_profile:'bare'},
