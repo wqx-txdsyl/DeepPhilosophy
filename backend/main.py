@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from routes.agent_assets import router as agent_assets_router
 import uvicorn
@@ -68,6 +68,12 @@ async def request_timer_middleware(request: Request, call_next):
 @app.middleware("http")
 async def global_middleware(request: Request, call_next):
     """统一中间件：访问统计 + 静态资源缓存 + CSP（S9）"""
+    # Project withdrawn. Block old clients and deep links before any project
+    # handler, authentication, database access or model work can run.
+    path = request.url.path
+    if path == '/api/projects' or path.startswith('/api/projects/'):
+        return JSONResponse({'detail': 'Project 已下线'}, status_code=410,
+                            headers={'Cache-Control': 'private, no-store'})
     import admin as admin_module
     response = await call_next(request)
     path = request.url.path
@@ -152,7 +158,6 @@ from routes.upload import router as upload_router
 from routes.account import router as account_router
 from routes.research import router as research_router
 from routes.agent_history import router as agent_history_router
-from routes.projects import router as projects_router
 
 app.include_router(health_router)
 app.include_router(auth_router)
@@ -170,7 +175,6 @@ app.include_router(upload_router)
 app.include_router(account_router)
 app.include_router(research_router)
 app.include_router(agent_history_router)
-app.include_router(projects_router)
 from routes.openai_compat import router as openai_compat_router
 app.include_router(openai_compat_router)
 

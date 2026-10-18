@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import AgentWorkspace from './pages/AgentPage';
-import ProjectPage from './pages/ProjectPage';
 import ErrorBoundary from './components/conversation/ErrorBoundary';
 import { AuthProvider } from './auth';
 import { LangProvider } from './utils/i18n';
@@ -16,7 +15,7 @@ import { initTheme } from './utils/theme';
 const router = createBrowserRouter([
   { path: '/', element: <Navigate to="/agent" replace /> },
   { path: '/agent/*', element: <AgentWorkspace /> },
-  { path: '/projects/*', element: <ProjectPage /> },
+  { path: '/projects/*', element: <Navigate to="/agent" replace /> },
   { path: '*', element: <Navigate to="/agent" replace /> },
 ]);
 
