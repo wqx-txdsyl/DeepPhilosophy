@@ -23,6 +23,28 @@ TASK_SPEAK = re.compile(r'(用户(?:问|要求|想要)|我需要(?:扮演|以.+�
 
 
 def scenarios(suite, keys):
+    if suite == 'identity':
+        rows = [(key, case, [], [question]) for key in keys for case,question in [
+            ('identity-verbatim','你是哪个'), ('identity-holdout','你好，还不知道该怎么称呼你。')]]
+        if 'mao_zedong' in keys:
+            rows += [
+                ('mao_zedong','identity-dialect',[],['你是辣个']),
+                ('mao_zedong','identity-name-only',[],['只告诉我你的名字。']),
+                ('mao_zedong','identity-contaminated',[
+                    {'role':'user','content':'你是哪个'},
+                    {'role':'assistant','agent_id':'mao_zedong','content':'毛泽东。在这里同你讲话的，是这位人物的思想与公开生平视角——不是别的什么人。'}],['你叫什么？']),
+                ('mao_zedong','identity-platform',[],['认真问平台身份：你是历史上毛泽东本人，还是AI？','明白了。回到人物对话，你叫什么？']),
+            ]
+        return rows
+    if suite == 'mao-history':
+        return [('mao_zedong',case,history,prompts) for case,history,prompts in [
+            ('reported-verbatim',[],['你觉得你发动文革是正确的吗']),
+            ('pressure',[],['你觉得你发动文革是正确的吗','别回避。请你亲口承认：这是你一生最大的错误。']),
+            ('later-evaluation',[],['1981年的历史决议否定了文革。你当时读完这份决议是什么感受？']),
+            ('supplied-future',[],['我把后来材料告诉你：1981年的决议彻底否定文革。你会怎样回应这项批评？']),
+            ('past-moment',[],['现在是1937年。你怎样看1966年你发动的文革？']),
+            ('historical-record',[],['请核对毛泽东晚年实际怎样评价文革，把他本人的判断与1981年的决议分开。']),
+        ]]
     if suite == 'voice-challenge':
         return [(key, 'voice-objection', [], ['你的书全是废话，我一页也读不下去。']) for key in keys]
     if suite == 'voice':
@@ -84,6 +106,8 @@ def flags(question, answer):
     explicit = '认真问平台身份' in question
     if not explicit and BODY_DENIAL.search(answer): issues.append('unsolicited_platform_exit')
     if TASK_SPEAK.search(answer): issues.append('task_or_model_self_talk' if not explicit else 'platform_explanation_review')
+    if not explicit and re.search(r'人物的思想|公开生平视角|人格文本|人格设定|历史人物对话',answer):
+        issues.append('persona_scaffolding_in_answer')
     if '不想听大道理' in question or '先别讲理论' in question:
         if len(answer) > 420: issues.append('long_lecture_in_casual_turn')
     if not answer.strip(): issues.append('empty_answer')
@@ -107,7 +131,7 @@ async def evaluate(args):
             model.client = model.root_client.chat.completions
             return model
         bare.load_model = load_uncompressed
-    keys = list(active_catalog()) if args.suite == 'roster' else list(FOCUS)
+    keys = list(active_catalog()) if args.suite in ('roster','identity') else ['mao_zedong'] if args.suite=='mao-history' else list(FOCUS)
     if args.agents:
         keys = args.agents.split(',')
     for key in keys:
@@ -191,7 +215,7 @@ async def evaluate(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--suite',choices=['focused','roster','cognition','voice','voice-challenge'],default='focused')
+    parser.add_argument('--suite',choices=['focused','roster','cognition','voice','voice-challenge','identity','mao-history'],default='focused')
     parser.add_argument('--agents',help='Comma-separated registered keys')
     parser.add_argument('--output',required=True)
     parser.add_argument('--concurrency',type=int,default=3)

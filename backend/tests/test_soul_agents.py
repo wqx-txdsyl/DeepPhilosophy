@@ -116,7 +116,7 @@ def test_stream_uses_soul_not_general_or_nietzsche_and_returns_tool_errors(monke
     assert json.loads(tool['result'])['error'] == 'OUTSIDE_AUTHOR_CORPUS'
     done = next(e for e in events if e['type'] == 'done')
     assert done['agent_id'] == 'kant' and done['primary_passages_read'] == 0 and done['complete']
-    assert done['release']['prompt_version'] == 'soul-persona-4'
+    assert done['release']['prompt_version'] == 'soul-persona-5'
 
 
 async def _collect(key):

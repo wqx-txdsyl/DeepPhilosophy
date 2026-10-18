@@ -50,6 +50,8 @@ export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
   const initial = (used.length ? used : research.sources).slice(0, compact ? 1 : 3);
   const visible = expanded ? research.sources : initial;
   const quoteChecks = research.quote_checks || [];
+  if (message.agent_id && message.agent_id !== 'general' && !research.sources.length
+      && !other.length && !quoteChecks.some(check => check.found === false)) return null;
   const empty = {
     not_requested: zh ? '本轮未检索原典。可以从刚才的观点出发，查找原文并核对语境。' : 'No primary-text search was made this turn. Find passages and examine their context below.',
     empty: zh ? '本轮检索未找到合适的原典片段，可以换一个概念或线索继续查找。' : 'No suitable primary passage was found. Try another concept or lead.',

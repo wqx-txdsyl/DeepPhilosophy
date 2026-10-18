@@ -38,8 +38,8 @@ def test_signals_include_real_conversations_and_memory_but_not_other_account(db,
     counter = []
     def model(signals, language, previous):
         counter.append(previous)
-        return [{'question':'康德的因果范畴回应了休谟的哪个前提？','source_id':signals[0]['source_id']},
-                {'question':'如果经验总是有例外，因果必然性还成立吗？','source_id':signals[0]['source_id'],'basis':'编造标签'},
+        return [{'question':f'康德的因果范畴回应了休谟的哪个前提{len(counter)}？','source_id':signals[0]['source_id']},
+                {'question':f'如果经验总是有例外，因果必然性还成立吗{len(counter)}？','source_id':signals[0]['source_id'],'basis':'编造标签'},
                 {'question':'一条编造的问题能通过核验吗？','source_id':'fake'}]
     monkeypatch.setattr(home,'_model_questions',model)
     first = home.generate_home_questions(1)
@@ -116,3 +116,55 @@ def test_deletion_on_cache_hit_cannot_return_cached_discussion(db, monkeypatch):
         return original(*args)
     monkeypatch.setattr(home,'load_signals',race)
     assert home.generate_home_questions(1)=={'status':'empty','suggestions':[],'cached':False}
+
+
+def test_latest_discussion_moves_ahead_of_old_reading_and_changes_questions(db, monkeypatch):
+    auth.save_reading_progress(1,'book','旧阅读','作者',1,5)
+    with auth._get_conn() as conn:
+        conn.execute("UPDATE reading_history SET last_read_at='2020-01-01T00:00:00Z' WHERE user_id=1")
+    seen=[]
+    def model(signals, language, previous):
+        seen.append((signals, previous))
+        return [{'question':f'材料{len(seen)}里的判断是根据什么作出的？','source_id':signals[0]['source_id']},
+                {'question':f'如果材料{len(seen)}的条件变化，这个结论还成立吗？','source_id':signals[0]['source_id']}]
+    monkeypatch.setattr(home,'_model_questions',model)
+    old=home.generate_home_questions(1)
+    account_data.save_conversation(1,'new',{'messages':[{'role':'user','message_id':'u','content':'我想讨论历史人物如何看待后人的批评'}]},0)
+    new=home.generate_home_questions(1)
+    assert new['status']=='ready' and not new['cached']
+    assert seen[-1][0][0]['kind']=='discussion'
+    assert seen[-1][1]==[s['question'] for s in old['suggestions']]
+    assert all(s['basis']=='最近讨论' for s in new['suggestions'])
+
+
+def test_refresh_cannot_report_same_questions_as_a_new_set(db, monkeypatch):
+    account_data.remember(1,'正在读伦理学')
+    calls=[]
+    def model(signals, *_):
+        calls.append(1)
+        return [{'question':'伦理学如何解释人的自由？','source_id':signals[0]['source_id']},
+                {'question':'情感与理性是否必然对立？','source_id':signals[0]['source_id']}]
+    monkeypatch.setattr(home,'_model_questions',model)
+    assert home.generate_home_questions(1)['status']=='ready'
+    assert home.generate_home_questions(1,refresh=True)['status']=='unavailable'
+    assert len(calls)==3  # Initial result plus one refresh and its bounded retry.
+
+
+def test_only_old_book_questions_cannot_ignore_latest_discussion():
+    signals=[{'source_id':'new','kind':'discussion','basis':'最近讨论'},
+             {'source_id':'old','kind':'reading','basis':'旧阅读'}]
+    questions=[{'question':'第一条旧书目问题是否成立？','source_id':'old'},
+               {'question':'第二条旧书目问题是否成立？','source_id':'old'}]
+    assert home._validated_suggestions(questions,signals)==[]
+
+
+def test_retry_does_not_resend_records_deleted_during_first_generation(db, monkeypatch):
+    account_data.save_conversation(1,'old',{'messages':[{'role':'user','content':'删除前的讨论'}]},0)
+    calls=[]
+    def model(*args):
+        calls.append(1)
+        account_data.delete_conversation(1,'old')
+        return []
+    monkeypatch.setattr(home,'_model_questions',model)
+    assert home.generate_home_questions(1)['status']=='empty'
+    assert len(calls)==1

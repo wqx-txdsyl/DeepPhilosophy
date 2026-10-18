@@ -11,11 +11,11 @@ import ConversationSidebar from '../components/conversation/ConversationSidebar'
 import ConversationHeader from '../components/conversation/ConversationHeader';
 import MessageList from '../components/conversation/MessageList';
 import PersonalizedQuestions from '../components/conversation/PersonalizedQuestions';
+import ConversationWelcome from '../components/conversation/ConversationWelcome';
 import Composer from '../components/conversation/Composer';
 import AgentPlaza from '../components/conversation/AgentPlaza';
 import SettingsPanel from '../components/conversation/SettingsPanel';
 import DrawioModal from '../components/DrawioModal';
-import Icon from '../components/Icon';
 import { TriangleAlert } from 'lucide-react';
 import { createGeneralStream, reduceGeneralEvent, finishGeneralStream, readEventStream, prepareGeneralTurn, ownsGeneralRequest, releaseGeneralAnswer, prepareGeneralRequest } from '../data/generalStream';
 import '../conversation.css';
@@ -40,7 +40,7 @@ export default function AgentWorkspace() {
   const conversationId = pathname.startsWith('/agent/c/')
     ? decodeURIComponent(pathname.slice('/agent/c/'.length))
     : null;
-  const { t, lang, agentName, agentSub } = useLang();
+  const { t, lang, agentName } = useLang();
   const { token, profile, accountReady, historyStatus, retryHistory, authError, retryAccount, logout, ensureConversation,
     beginHistoryStream, endHistoryStream } = useAuth();
   const { agents, agentsLoading } = useAgents();
@@ -678,22 +678,10 @@ export default function AgentWorkspace() {
   const emptyState = (() => {
     const spec = agents.find(a => a.key === composerAgent);
     const name = agentName(composerAgent, spec) || '深哲';
-    const sub = agentSub(composerAgent) || spec?.subtitle || '';
-    if (composerAgent !== 'general') {
-      return (
-        <div className="cw-empty">
-          <Icon name="icon-brain" size={38} />
-          <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
-          {sub && <div className="cw-empty-sub">{sub}</div>}
-        </div>
-      );
-    }
     return (
-      <div className="cw-empty cw-empty-general">
-        <h1 className="cw-brand-wordmark" aria-label="PhiAgent 深哲">PHIAGENT</h1>
-        <div className="cw-brand-caption"><span>{name}</span><span aria-hidden="true">·</span><span>{t('emptyGreeting')}</span></div>
+      <ConversationWelcome name={name} greeting={t('emptyGreeting')}>
         <PersonalizedQuestions lang={lang} onPick={q => dispatchSend({ message: q, display: q })} />
-      </div>
+      </ConversationWelcome>
     );
   })();
 
@@ -761,7 +749,7 @@ export default function AgentWorkspace() {
           streaming={activeStreaming} onOpenNav={() => setNavOpen(true)} onToggleSidebar={handleToggleSidebar}
           onRename={(newTitle) => activeConv && handleRename(activeConv, newTitle)}
           onDelete={() => activeConv && handleDelete(activeConv)} />
-        <div className={`cw-messages${!messages.length && composerAgent === 'general' ? ' cw-messages-home' : ''}`}>
+        <div className={`cw-messages${!messages.length ? ' cw-messages-home' : ''}`}>
           {activeConv?.messages_loaded === false && <div className="cw-history-loading" role="status">
             {conversationReadError ? (lang === 'zh' ? '这段对话加载失败。' : 'Could not load this conversation.') : (lang === 'zh' ? '正在读取对话…' : 'Loading conversation…')}
             {conversationReadError && <button onClick={() => setReadRetry(n=>n+1)}>{t('retry')}</button>}

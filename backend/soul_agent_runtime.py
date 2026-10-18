@@ -86,7 +86,7 @@ async def stream_soul_agent(question, history, key, language='zh', custom_instru
     output = PublicPerspective()
 
     class Persona:
-        prompt_version = 'soul-persona-4'
+        prompt_version = 'soul-persona-5'
 
         def system_text(self, language, question):
             return soul_prompt(key, language)

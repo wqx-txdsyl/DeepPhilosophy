@@ -122,6 +122,16 @@ try {
   const researchPanel = message => renderToStaticMarkup(createElement(AnswerResearch, { message, lang: 'zh', onSend() {}, onSource() {} }));
   const emptyResearch = researchPanel({});
   assert.ok(emptyResearch.includes('原典检索') && emptyResearch.includes('本轮未检索原典') && emptyResearch.includes('检索相关原典'));
+  assert.equal(researchPanel({agent_id:'mao_zedong',content:'毛泽东。'}),'','ordinary philosopher chat has no empty research advertisement');
+  assert.equal(researchPanel({agent_id:'confucius',evidence:{primary_research:{status:'not_requested',sources:[]}}}),'');
+  assert.ok(researchPanel({agent_id:'general'}).includes('本轮未检索原典'),'general research entry stays available');
+  assert.ok(researchPanel({agent_id:'mao_zedong',citations:[primaryCitation]}).includes('原典检索'),'actually cited passages stay visible');
+  const {default:ConversationWelcome}=await server.ssrLoadModule('/src/components/conversation/ConversationWelcome.jsx');
+  for (const name of ['深哲','孔子','毛泽东']) {
+    const welcome=renderToStaticMarkup(createElement(ConversationWelcome,{name,greeting:'今天想探索什么？'},createElement('div',null,'接着你的思考')));
+    assert.ok(welcome.includes('cw-brand-wordmark') && welcome.includes('PHIAGENT') && welcome.includes(name));
+    assert.ok(welcome.includes('接着你的思考') && !welcome.includes('icon-brain'));
+  }
   const research = researchPanel({ citations: [primaryCitation], evidence: { primary_research: { status: 'complete', total: 2, sources: [primaryCitation, { ...primaryCitation, book: '相关著作', book_id: 'other', used: false, access_level: 'SEARCH_EXCERPT' }] } } });
   assert.ok(research.includes('本回答引用') && research.includes('另有 1 处检索材料') && research.includes('阅读原典'));
   assert.ok(researchPanel({ evidence: { primary_research: { sources: [{ ...primaryCitation, used: false }] } } }).includes('相关材料 · 未引用'));
