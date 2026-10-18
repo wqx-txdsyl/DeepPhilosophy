@@ -4,6 +4,7 @@ import { useAuth } from '../../auth';
 import { useLang } from '../../utils/i18n';
 import { groupConversationsByDay } from '../../data/conversationLogic';
 import { ConfirmModal, RenameModal, ContextMenu, anchorFromEvent } from './Modal';
+import PwaInstall from './PwaInstall';
 
 /**
  * ConversationSidebar — 会话历史侧栏（spec §5）
@@ -85,6 +86,7 @@ export default function ConversationSidebar({
           </div>
           {/* One entry for preferences and account management. */}
           <div className="cw-side-footer">
+            <PwaInstall />
             <button className="cw-side-row cw-account-entry" aria-label={lang === 'zh' ? '设置与账户' : 'Settings and account'} onClick={() => { onClose(); onOpenSettings(); }}>
               {username ? <span className="cw-account-avatar">{(profile?.nickname || username).slice(0,1).toUpperCase()}</span> : <CircleUserRound size={23} aria-hidden="true" />}
               <span className="cw-account-entry-copy"><span>{profile?.nickname || username || t('settings')}</span><small>{lang === 'zh' ? (username ? '设置与账户' : '登录与偏好') : (username ? 'Settings and account' : 'Sign in & preferences')}</small></span>

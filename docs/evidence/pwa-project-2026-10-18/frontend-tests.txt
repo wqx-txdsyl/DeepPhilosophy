@@ -1,0 +1,83 @@
+
+> phiagent@0.1.5 test
+> node tests/conversationLogic.test.mjs && node tests/conversationSync.test.mjs && node tests/clipboard.test.mjs && node tests/o9Research.test.mjs && node tests/generalStream.test.mjs && node tests/generalMarkdown.test.mjs && node tests/toolResultView.test.mjs && node tests/streamNotice.test.mjs && node tests/accountSettings.test.mjs && node tests/memoryProfile.test.mjs && node tests/pwa.test.mjs
+
+  ✓ delisted responder history stays intact while follow-up invocation is unavailable
+conversationLogic:
+  ✓ genConversationTitle 截 18 字 + …
+  ✓ resolveComposerAgent: last_used → default → general
+  ✓ resolveFollowupAgent: 主动切换 → composer; 未切换 → 来源回答 agent_id（§10）
+  ✓ resolveFinalSuggestions: LLM 版优先, 未到达才用规则版兜底（2026-08-29 闪跳修复）
+  ✓ groupConversationsByDay: 分组空组过滤 + 新→旧
+  ✓ groupConversationsByDay: 空分组不显示
+  ✓ legacyMessagesToConversations: 每 Agent 一键 + assistant 标注来源 agent_id（§5）
+  ✓ toPersistedMessage: tool_start→tool_cancel + 截断 + citation/agent 保留
+LocalConversationStore:
+  ✓ CRUD + 排序 + 标题/默认/最后使用 Agent
+  ✓ appendMessage 保留 agent_id / citations / tool_events; 缺失会话不复活（§9）
+  ✓ updateMessage: 仅更新指定消息; reasoning_summary 保留
+  ✓ migrateLegacy: 旧键迁移 + 一键一 Agent + 旧键清理 + 幂等
+  ✓ Phase 3: 引用面板只展示 used_evidence（used:false 的检索候选不进面板）
+  ✓ Codex-Parity: resolveIdentityVisible（§10 消息级身份规则, 不依赖全局 currentAgent）
+  ✓ Codex-Parity: normalizeAttachments 过滤非法 + 保留 size/kind
+  ✓ Codex-Parity: toolShortSummary/toolShortArgs（§18 紧凑 trace, 无 JSON 噪音）
+  ✓ P0: toolHumanSummary 人话摘要（Level 1, 无内部字段）
+  ✓ P0: isRetrievalTool / retrievalGroupSummary（连续检索合并文案）
+  ✓ P0: toolShortSummary 不泄露 book_id/chapter_idx（raw 隐藏回归）
+  ✓ P0-3: cleanUserMessageForRender（附件 serialization 前缀保守 dedupe, 不删用户文本）
+  ✓ Codex-Parity: user 消息 attachments 持久化往返（发送瞬间 snapshot, §12）
+  ✓ Phase 3: 非 general 消息保留 citations + evidence（历史引用不丢, UAT-06 门控回归）
+
+23 checks passed
+Older mobile browser storage fallback passed
+[HistorySync] save offline
+[HistorySync] save offline
+Account sync: relogin, second browser, conflicts, deletions, isolation, offline recovery, quota and stale responses passed
+Browser native fetch receiver regression passed
+[HistorySync] restore fixture network drop
+Mobile restoration: failed initial GET retries, lazy detail loading and missing-cache deletion protection passed
+Mobile upload: stream checkpoints are coalesced and final reply saves immediately
+Clipboard: mobile selection copy, native fallback, denied permission and focus cleanup passed
+RESEARCH_PHASE_MAPPING_TEST=PASS
+LAYER_OF_TEST=PASS
+DEPTH_CONTROLS_ZH_TEST=PASS
+DEPTH_CONTROLS_EN_TEST=PASS
+O9 RESEARCH/DEPTH TESTS ALL GREEN
+  ✓ public persona perspective stays separate from answer and survives reload and stop
+  ✓ interim answers remain in timeline order across tools, final text and reload
+  ✓ bare mode preserves provider text and persists its rendering mode
+  ✓ provider preview paints each delta without duplicating validated tokens
+  ✓ tool or repair reset removes previews and retains only validated text
+  ✓ legacy success cannot hide empty results or failed search providers
+  ✓ answer completion keeps question generation pending until metadata arrives
+  ✓ failed validation clears the live draft; stopping retains partial text
+  ✓ same-name parallel tools resolve independently and out of order
+  ✓ legacy calls use FIFO and completion without a start remains visible
+  ✓ public summary IDs route interleaved deltas; private reasoning is not stored
+  ✓ authoritative done.content repairs missing final tokens
+  ✓ provider reasoning preserves exact deltas, separate rounds and interrupted history
+  ✓ stop, partial EOF and explicit failure retain answer and distinguish unfinished calls
+  ✓ done.complete=false is incomplete; safety replacement overrides pending text
+  ✓ stopping optional metadata after a confirmed done keeps a complete answer
+  ✓ done unlocks the next turn; late old suggestions/finalize cannot affect a new request
+  ✓ retraction only removes a matching answer suffix
+  ✓ UTF-8 bytes, CRLF boundaries, SSE comments and EOF data survive arbitrary chunks
+  ✓ malformed data, HTTP errors and non-SSE responses do not look like success
+  ✓ tool outcomes do not mislabel blocked and empty results as success
+  ✓ no fabricated followups; explicit empty suggestions clears prior metadata
+  ✓ general full answer, outcome, call IDs and duration survive storage round trip
+  ✓ late updates cannot resurrect a deleted conversation or write into another one
+  ✓ followup points at the selected old answer, not the latest conversation turn
+  ✓ old attachment answer survives exploration, storage reload and the next twenty-message history
+  ✓ ordinary or malformed context is preserved as text, never parsed as followup control
+  ✓ general UI strips pictographs without removing mathematical symbols
+28 general stream delivery checks passed
+  ✓ Nietzsche stores the same complete tool timeline and interrupted state
+8 general markdown/source delivery checks passed
+Answer structure, primary-text links and exploration checks passed
+Tool result presentation: evidence scope, failures, raw preservation and link safety passed
+Memory, history, persona, generic analysis and failed operation presentations passed
+Error notices: quota, retry scope, bilingual UI, diagnostics and raw-error preservation passed
+Account settings: profile identity, empty-field clearing, safe cache cleanup and real conversation tombstones passed
+Memory document parsing and draft checks passed
+PWA: install manifest, real icon dimensions, safe caching, offline fallback, non-interrupting updates and early install capture passed

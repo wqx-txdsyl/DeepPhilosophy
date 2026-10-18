@@ -94,7 +94,14 @@ async def global_middleware(request: Request, call_next):
             "object-src 'none'; base-uri 'self'; frame-src 'none'; form-action 'self'"
         )
     # 静态资源强缓存（1年）
-    if path.startswith(("/gene/", "/assets/", "/icons/")) and not path.startswith("/api/"):
+    if path in ('/sw.js', '/manifest.webmanifest'):
+        response.headers['Cache-Control'] = 'no-cache'
+        if path == '/sw.js':
+            response.headers['Service-Worker-Allowed'] = '/'
+            response.headers['Content-Type'] = 'text/javascript; charset=utf-8'
+        else:
+            response.headers['Content-Type'] = 'application/manifest+json'
+    elif path.startswith(("/gene/", "/assets/", "/icons/")) and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     elif path.startswith("/schools/") and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=3600"
@@ -169,6 +176,13 @@ app.include_router(openai_compat_router)
 app.include_router(agent_assets_router)
 _STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(_STATIC_DIR) and os.path.isfile(os.path.join(_STATIC_DIR, "index.html")):
+    @app.get('/api/pwa/worker')
+    async def serve_pwa_worker():
+        # This deployment's CDN imposes a TTL on *.js. The public API path
+        # bypasses that rule; broad scope is explicitly allowed for this file.
+        return FileResponse(os.path.join(_STATIC_DIR, 'sw.js'), media_type='text/javascript',
+                            headers={'Cache-Control':'no-store','Service-Worker-Allowed':'/'})
+
     # 先挂 assets，再挂根路由
     app.mount("/assets", StaticFiles(directory=os.path.join(_STATIC_DIR, "assets")), name="spa_assets")
     if os.path.isdir(os.path.join(_STATIC_DIR, "gene")):

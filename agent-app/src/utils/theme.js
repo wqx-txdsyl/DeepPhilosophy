@@ -17,6 +17,7 @@ export function setTheme(theme) {
 export function applyTheme(theme) {
   const dark = theme === 'dark' || (theme === 'auto' && darkQuery.matches);
   document.body.classList.toggle('dark-mode', dark);
+  document.querySelector?.('meta[name="theme-color"]')?.setAttribute('content',dark?'#151515':'#ffffff');
 }
 
 export function initTheme() {

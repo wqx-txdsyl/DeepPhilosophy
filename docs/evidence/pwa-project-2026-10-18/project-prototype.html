@@ -1,0 +1,133 @@
+<div id="phi-project-v2">
+  <div class="pp-top"><div class="pp-brand">PHIAGENT <span>设计预览</span></div><nav aria-label="工作分区"><button data-action="surface" data-value="chat">Chat 对话</button><button data-action="surface" data-value="project">Project 项目</button></nav><span class="pp-account">我的空间</span></div>
+  <div id="pp-view"></div>
+</div>
+<style>
+#phi-project-v2{--pp-bg:light-dark(#fff,#171717);--pp-text:light-dark(#202020,#eee);--pp-muted:light-dark(#737373,#aaa);--pp-line:light-dark(#e7e7e7,#363636);--pp-soft:light-dark(#f7f7f7,#232323);--pp-selected:light-dark(#202020,#e8e8e8);--pp-selected-text:light-dark(#fff,#171717);color-scheme:light dark;background:var(--pp-bg);color:var(--pp-text);font:14px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;width:100%;border:1px solid var(--pp-line);border-radius:12px;overflow:hidden}
+#phi-project-v2 *{box-sizing:border-box}
+#phi-project-v2 button,#phi-project-v2 select,#phi-project-v2 textarea{font:inherit;color:inherit}
+#phi-project-v2 button{background:transparent;border:0;border-radius:6px;padding:7px 10px;text-align:left}
+#phi-project-v2 button:hover{background:var(--pp-soft)}
+#phi-project-v2 button[aria-pressed=true],#phi-project-v2 button.pp-primary{background:var(--pp-selected);color:var(--pp-selected-text)}
+#phi-project-v2 .pp-top{display:flex;align-items:center;gap:26px;padding:15px 22px;border-bottom:1px solid var(--pp-line);padding-right:100px;flex-wrap:wrap}
+#phi-project-v2 .pp-brand{font-size:16px;font-weight:700;letter-spacing:.08em}
+#phi-project-v2 .pp-brand span{font-size:11px;font-weight:400;letter-spacing:0;color:var(--pp-muted);margin-left:8px}
+#phi-project-v2 nav{display:flex;gap:5px;flex-wrap:wrap}
+#phi-project-v2 .pp-mobile-switch{display:none}
+#phi-project-v2 .pp-account{margin-left:auto;font-size:12px;color:var(--pp-muted)}
+#phi-project-v2 .pp-shell{display:grid;grid-template-columns:162px minmax(0,1fr) minmax(225px,var(--pp-discussion,29%));min-height:600px}
+#phi-project-v2 .pp-shell[data-navigator=false]{grid-template-columns:minmax(0,1fr) minmax(225px,var(--pp-discussion,29%))}
+#phi-project-v2 .pp-shell[data-navigator=false] .pp-nav{display:none}
+#phi-project-v2 .pp-nav{padding:22px 13px;border-right:1px solid var(--pp-line);background:var(--pp-soft)}
+#phi-project-v2 .pp-nav h2{font-size:13px;margin:0 0 24px;font-weight:600}
+#phi-project-v2 .pp-nav small{display:block;color:var(--pp-muted);margin:21px 8px 5px;font-size:11px}
+#phi-project-v2 .pp-nav button{display:flex;align-items:center;gap:8px;width:100%;margin-bottom:5px;font-size:12px;overflow-wrap:anywhere}
+#phi-project-v2 .pp-nav button[aria-pressed=true]{background:var(--pp-bg);color:var(--pp-text);box-shadow:0 1px 4px light-dark(#00000008,#00000044)}
+#phi-project-v2 .pp-object{min-width:0;padding:20px 24px}
+#phi-project-v2 .pp-breadcrumb{font-size:11px;color:var(--pp-muted);margin-bottom:17px}
+#phi-project-v2 .pp-tools{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--pp-line)}
+#phi-project-v2 .pp-tools nav button{font-size:12px;padding:5px 10px}
+#phi-project-v2 .pp-revision{font-size:11px;color:var(--pp-muted)}
+#phi-project-v2 h1{font-family:Georgia,"Songti SC",serif;font-size:27px;line-height:1.45;font-weight:500;margin:27px 0 12px}
+#phi-project-v2 h3{font-size:13px;font-weight:600;margin:20px 0 10px}
+#phi-project-v2 .pp-description{font-size:12px;color:var(--pp-muted);margin-bottom:20px}
+#phi-project-v2 textarea{display:block;resize:vertical;width:100%;border:1px solid var(--pp-line);border-radius:8px;background:var(--pp-bg);padding:15px;line-height:1.95;min-height:220px}
+#phi-project-v2 .pp-note{color:var(--pp-muted);font-size:11px;margin:9px 0 16px}
+#phi-project-v2 .pp-issue{padding:15px 0;border-top:1px solid var(--pp-line)}
+#phi-project-v2 .pp-issue small{color:var(--pp-muted);font-size:11px}
+#phi-project-v2 .pp-issue p{margin:6px 0 10px}
+#phi-project-v2 .pp-actions{display:flex;gap:7px;flex-wrap:wrap;margin:13px 0}
+#phi-project-v2 .pp-actions button{font-size:12px;border:1px solid var(--pp-line)}
+#phi-project-v2 .pp-discuss{border-left:1px solid var(--pp-line);padding:21px 19px;min-width:0}
+#phi-project-v2 .pp-discuss header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:22px}
+#phi-project-v2 select{max-width:130px;background:var(--pp-bg);border:1px solid var(--pp-line);border-radius:6px;padding:5px}
+#phi-project-v2 .pp-bound{padding-bottom:15px;border-bottom:1px solid var(--pp-line);font-size:11px;color:var(--pp-muted)}
+#phi-project-v2 .pp-speaker{font-size:12px;font-weight:600;margin-top:23px}
+#phi-project-v2 .pp-speech{font-size:13px;line-height:1.9;margin:8px 0 20px}
+#phi-project-v2 .pp-proposal{margin-top:22px;border-top:1px solid var(--pp-line);padding-top:17px}
+#phi-project-v2 .pp-proposal blockquote{margin:12px 0;padding-left:12px;border-left:2px solid var(--pp-line);font-size:12px}
+#phi-project-v2 .pp-status{font-size:12px;color:var(--pp-muted);margin-top:20px;overflow-wrap:anywhere}
+#phi-project-v2 .pp-feedback{min-height:95px}
+#phi-project-v2 .pp-chat{max-width:760px;margin:auto;padding:50px 30px 40px;min-height:600px}
+#phi-project-v2 .pp-wordmark{font-family:Didot,"Bodoni MT",Georgia,serif;font-size:clamp(48px,9vw,108px);font-weight:900;letter-spacing:-.06em;text-align:center;margin:0 0 5px;line-height:1.2}
+#phi-project-v2 .pp-chat-caption{text-align:center;color:var(--pp-muted);margin-bottom:40px}
+#phi-project-v2 .pp-chat-prompt{padding:20px 0;border-top:1px solid var(--pp-line);border-bottom:1px solid var(--pp-line);margin:30px 0 20px}
+#phi-project-v2 .pp-chip{display:inline-block;padding:2px 7px;background:var(--pp-soft);border-radius:4px;font-size:11px;color:var(--pp-muted)}
+@media(max-width:800px){#phi-project-v2 .pp-shell,#phi-project-v2 .pp-shell[data-navigator=false]{grid-template-columns:145px minmax(0,1fr)}#phi-project-v2 .pp-discuss{grid-column:1/-1;border-left:0;border-top:1px solid var(--pp-line)}#phi-project-v2 .pp-top{gap:12px}#phi-project-v2 .pp-account{display:none}}
+@media(max-width:520px){#phi-project-v2 .pp-mobile-switch{display:flex;gap:6px;padding:10px 13px;border-bottom:1px solid var(--pp-line)}#phi-project-v2 .pp-shell[data-pane=object] .pp-discuss{display:none}#phi-project-v2 .pp-shell[data-pane=discussion] .pp-object,#phi-project-v2 .pp-shell[data-pane=discussion] .pp-nav{display:none}#phi-project-v2 .pp-shell,#phi-project-v2 .pp-shell[data-navigator=false]{display:block}#phi-project-v2 .pp-nav{display:flex;flex-wrap:wrap;gap:4px;border-right:0;border-bottom:1px solid var(--pp-line);padding:12px}#phi-project-v2 .pp-nav h2{width:100%;margin:0 0 6px}#phi-project-v2 .pp-nav small{display:none}#phi-project-v2 .pp-nav button{width:auto;margin:0}#phi-project-v2 .pp-object{padding:17px}#phi-project-v2 .pp-top{padding:15px 90px 15px 15px}#phi-project-v2 h1{font-size:23px}#phi-project-v2 .pp-chat{padding:30px 18px;min-height:0}}
+@media(pointer:coarse){#phi-project-v2 button{min-height:44px}}
+</style>
+<script>
+(() => {
+  const root=document.getElementById('phi-project-v2');
+  const view=root.querySelector('#pp-view');
+  const sample={
+    research:{title:'作者责任：问题与论证',object:'文稿 · 作者责任',description:'成果：一篇能回到材料、回应异议的研究短文。',text:'当前主张\nAI 可以分担写作劳动，但不能仅凭工具的参与，把作者对公开主张的责任一并转交。\n\n尚待论证\n披露工具使用，是不是已经充分说明了作者的责任？对结果的检查义务从哪里来？\n\n需要补查\n“亲自写下”“认可一个主张”与“能够为它辩护”，是否是同一种作者身份？',speech:'这里需要分清：是谁写出了句子，与是谁把它作为自己的判断公开提出，并非同一件事。若作者认领这个判断，他还得能够给出理由。',proposal:'当前主张\nAI 可以分担写作劳动。公开认领一个主张的人，仍需说明采纳它的理由、核查其关键依据，并回应可预见的异议。\n\n未解决的问题\n这是否意味着作者必须逐句独立重建全部论证？披露工具使用应承担什么作用？'},
+    debate:{title:'披露使用 AI，是否已经足够？',object:'争点 · 披露与责任',description:'研讨记录：真人发言和哲学家模拟发言分别署名。',text:'暂定主张\n只要充分披露 AI 的参与，作者就已尽到责任。\n\n异议\n披露说明了制作过程，却未说明作者为何认可文中的判断。\n\n待回应\n如果读者已知文字由 AI 生成，作者还需承担怎样的核查义务？',speech:'告诉别人我使用了工具，还没有说明我凭什么让别人相信这个结论。披露可以是诚实的一部分；它不能单独替代对判断的负责。',proposal:'仍未解决的分歧\n一方认为，透明披露使读者能够自行判断。另一方认为，作者还应提供足够的核查与辩护。\n\n下一步\n比较两种情形：清楚标示的试验草稿，以及要求读者据此采取行动的正式文章。各自的责任是否相同？'},
+    practice:{title:'写作工作坊：责任说明试行',object:'行动方案 · 工作坊',description:'从价值分歧走向可以观察、可以修订的小规模实践。',text:'要试的方案\n邀请愿意参加的同学，为一次 AI 辅助写作附上简短说明：工具做了什么、作者核查了什么、哪些部分仍不确定。\n\n观察什么\n参与者能否分清披露、核查和认可判断？记录实际遇到的困难，不预设试行一定有效。\n\n调整条件\n如果说明表只增加负担、没有帮助判断责任，就修改它，而不是要求参与者配合证明方案正确。',speech:'参与者的同意与判断能力应当是方案的一部分。不能只是为了取得一份好看的效果记录，让他们成为这项试验的工具。',proposal:'修订后的试行方案\n先请参与者选择一处自己真正需要判断的段落，再记录工具参与、核查经过和保留的问题。允许拒绝参与，并记录说明表本身造成的困难。\n\n复盘条件\n根据实际记录修改说明表；没有观察结果时，不写“已经提高了责任意识”。'}
+  };
+  const restore=window.openai?.widgetState;
+  const initial=restore?.modelContent||restore||{};
+  const privateState=restore?.privateContent||{};
+  const state={surface:'project',focus:['research','debate','practice'].includes(initial.workspaceFocus)?initial.workspaceFocus:'research',
+    pane:privateState.pane==='discussion'?'discussion':'object',agent:['深哲','康德','庄子','萨特'].includes(initial.selectedResponder)?initial.selectedResponder:'康德',
+    adopted:!!initial.adoptedDraftRevision,disagreement:!!initial.recordedDisagreement,
+    drafts:{...Object.fromEntries(Object.entries(sample).map(([key,value])=>[key,value.text])),...privateState.drafts},
+    feedback:privateState.feedback||'',feedbackSaved:!!privateState.feedbackSaved,revisions:{research:1,debate:1,practice:1,...privateState.revisions},proposal:null,source:false,fromChat:false,status:'',sideWidth:29,showNavigator:true};
+  const escape=text=>String(text).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const sender=Math.random().toString(36).slice(2);
+  function save(){window.openai?.setWidgetState?.({modelContent:{schema:2,workspaceFocus:state.focus,selectedResponder:state.agent,adoptedDraftRevision:state.adopted,recordedDisagreement:state.disagreement,surface:state.surface},privateContent:{sender,pane:state.pane,drafts:state.drafts,revisions:state.revisions,feedback:state.feedback,feedbackSaved:state.feedbackSaved}})?.catch(()=>{});}
+  function render(){
+    root.style.setProperty('--pp-discussion',state.sideWidth+'%');
+    root.querySelectorAll('[data-action=surface]').forEach(button=>button.setAttribute('aria-pressed',button.dataset.value===state.surface));
+    if(state.surface==='chat'){
+      view.innerHTML='<section class="pp-chat"><div class="pp-wordmark">PHIAGENT</div><div class="pp-chat-caption">深哲 · 今天想探索什么？</div><div class="pp-chat-prompt"><span class="pp-chip">对话示例</span><p>AI 参与写作，作者的责任能不能交给工具？</p></div><p class="pp-description">可以先自由聊。值得持续推进时，再把问题和相关发言带入项目。</p><button class="pp-primary" data-action="bring">把这个问题带入项目</button></section>';return;
+    }
+    const current=sample[state.focus];
+    const modes=[['research','研究'],['debate','研讨'],['practice','实践']];
+    const sourceBody='<h1>资料：道德形而上学奠基</h1><p class="pp-description">康德 · 原典书目示例</p><div class="pp-issue"><p>相关问题：判断、自律与对理由的负责。</p><p>尚未导入原文与版本定位；不能作为已核对引文。</p></div><button data-action="back-object">返回当前工作对象</button>';
+    const objectBody='<h1>'+current.title+'</h1><p class="pp-description">'+current.description+'</p><label class="pp-note" for="pp-draft">当前正文 · 可在此修改预览</label><textarea id="pp-draft" data-field="draft" rows="10" maxlength="2000">'+escape(state.drafts[state.focus])+'</textarea><div class="pp-note">草稿 v'+state.revisions[state.focus]+' · 讨论不会自动改写正文</div>'+
+      (state.focus==='debate'?'<div class="pp-issue"><small>陈宁 · 真人发言示例</small><p>“读者知道用了 AI，就可以自己决定是否相信文章。额外的核查要求会不会太重？”</p><button data-action="disagree" aria-pressed="'+state.disagreement+'">'+(state.disagreement?'已保留为未解决分歧':'保留这项分歧')+'</button></div>':'')+
+      (state.focus==='practice'?'<h3>真实反馈</h3><p class="pp-note">'+(state.feedbackSaved?'你录入的一条观察，尚未据此自动下结论。':'尚未收集。模拟讨论不能充作实际调查结果。')+'</p><textarea class="pp-feedback" data-field="feedback" maxlength="500" rows="3" aria-label="录入观察" placeholder="执行后，把实际观察与材料记在这里。">'+escape(state.feedback)+'</textarea><div class="pp-actions"><button data-action="feedback">录入这条观察</button></div>':'')+
+      '<div class="pp-issue"><small>下一步</small><p>'+(state.focus==='research'?'为“披露已经足够”寻找一个有力反例。':state.focus==='debate'?'说明哪些条件会使双方改变判断。':'用真实记录检查方案的一个关键假设。')+'</p></div>';
+    const proposal=state.proposal?.focus===state.focus?'<div class="pp-proposal"><strong>修改建议示例</strong><blockquote>'+escape(state.proposal.text).replace(/\n/g,'<br>')+'</blockquote><div class="pp-actions"><button class="pp-primary" data-action="adopt">采纳为新版本</button><button data-action="dismiss">舍弃</button></div><span class="pp-note">采纳前会比较原文是否已变化。</span></div>':'';
+    view.innerHTML='<div class="pp-mobile-switch" aria-label="项目区域"><button data-action="pane" data-value="object" aria-pressed="'+(state.pane==='object')+'">工作对象</button><button data-action="pane" data-value="discussion" aria-pressed="'+(state.pane==='discussion')+'">讨论</button></div><div class="pp-shell" data-pane="'+state.pane+'" data-navigator="'+state.showNavigator+'"><aside class="pp-nav"><h2>AI 写作与作者责任</h2><small>项目</small><button data-action="brief"><i data-lucide="compass" aria-hidden="true"></i>项目简报</button><small>资料</small><button data-action="source" aria-pressed="'+state.source+'"><i data-lucide="book-open" aria-hidden="true"></i>原典与阅读笔记</button>'+(state.fromChat?'<button data-action="chat-source">Chat 对话摘录</button>':'')+'<small>工作对象</small>'+modes.map(([key,label])=>'<button data-action="focus" data-value="'+key+'" aria-pressed="'+(state.focus===key&&!state.source)+'"><i data-lucide="'+({research:'file-text',debate:'messages-square',practice:'clipboard-list'}[key])+'" aria-hidden="true"></i>'+({research:'作者责任 · 文稿',debate:'披露与责任 · 争点',practice:'工作坊 · 行动方案'}[key])+'</button>').join('')+'<small>状态</small><p class="pp-note">'+(state.disagreement?'保留一项未解决分歧':'结论仍可修订')+'</p></aside><main class="pp-object"><div class="pp-breadcrumb">Project / AI 写作与作者责任 / '+current.object+'</div><div class="pp-tools"><nav aria-label="工作方式">'+modes.map(([key,label])=>'<button data-action="focus" data-value="'+key+'" aria-pressed="'+(state.focus===key)+'">'+label+'</button>').join('')+'</nav><span class="pp-revision">设计预览 · 示例内容</span></div>'+(state.source?sourceBody:objectBody)+'</main><aside class="pp-discuss"><header><strong>围绕此处讨论</strong><select aria-label="回答者" data-field="agent">'+['深哲','康德','庄子','萨特'].map(agent=>'<option '+(agent===state.agent?'selected':'')+'>'+agent+'</option>').join('')+'</select></header><div class="pp-bound">本次对象：'+current.object+' · v'+state.revisions[state.focus]+'<br>取用：当前正文、关联资料'+(state.feedbackSaved?'、你的观察记录':'')+'</div><div class="pp-speaker">'+escape(state.agent)+' · '+(state.agent==='深哲'?'研究伙伴':'模拟发言')+'示例</div><p class="pp-speech">'+(state.agent==='康德'?current.speech:state.agent==='庄子'?'先不急着给这一件事定死名字。同样一句“负责”，换到作者与读者的位置，指的还是同一件事吗？':state.agent==='萨特'?'你可以把工作交给工具；但当你把这个判断认作自己的，那个选择仍然是你作的。': '可以把争议留在对象旁：标明现有根据、最强异议，以及下一步需要检查的材料。')+'</p><div class="pp-actions"><button data-action="suggest">查看一处修改示例</button></div>'+proposal+'<p class="pp-status" aria-live="polite">'+escape(state.status||'意见先成为建议，是否采纳由你决定。')+'</p></aside></div>';
+    if(typeof lucide!=='undefined')lucide.createIcons({attrs:{width:16,height:16}});
+  }
+  root.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-action]');if(!button)return;
+    const action=button.dataset.action;
+    if(action==='pane')state.pane=button.dataset.value;
+    if(action==='surface'){state.surface=button.dataset.value;state.status='';}
+    if(action==='focus'){state.pane='object';state.focus=button.dataset.value;state.source=false;state.status='';}
+    if(action==='bring'){state.surface='project';state.focus='research';state.fromChat=true;state.status='对话已成为项目起点示例，尚未把讨论当作研究结论。';}
+    if(action==='source')state.source=true;
+    if(action==='back-object')state.source=false;
+    if(action==='brief'){state.source=false;state.status='项目问题：AI 参与写作时，作者应承担什么责任？目标：形成可辩护的短文，并试行一场写作工作坊。';}
+    if(action==='chat-source')state.status='来源是 Chat 的模拟对话摘录，供继续讨论；它不是原典证据。';
+    if(action==='suggest'){state.source=false;state.proposal={focus:state.focus,base:state.drafts[state.focus],text:sample[state.focus].proposal};state.status='建议绑定当前对象和版本，正文尚未改变。';}
+    if(action==='dismiss'){state.proposal=null;state.status='建议已舍弃，正文未改。';}
+    if(action==='adopt'&&state.proposal){const proposal=state.proposal;if(state.drafts[proposal.focus]!==proposal.base){state.status='原文已变化，未覆盖你的编辑。请重新比较建议。';}else{state.drafts[proposal.focus]=proposal.text;state.revisions[proposal.focus]++;state.adopted=true;state.status='已形成新版本示例，保留了这次修改的来由。';state.proposal=null;}}
+    if(action==='disagree'){state.disagreement=!state.disagreement;state.status=state.disagreement?'已保留分歧，不强行生成共识。':'已取消分歧标记，发言仍保留。';}
+    if(action==='feedback'){state.feedbackSaved=!!state.feedback.trim();state.status=state.feedbackSaved?'已录入你的观察；下一版方案还需据此判断。':'尚未录入反馈，没有生成任何调查结果。';}
+    render();save();
+  });
+  root.addEventListener('change',event=>{if(event.target.dataset.field==='agent'){state.agent=event.target.value;render();save();}});
+  root.addEventListener('input',event=>{
+    const field=event.target.dataset.field;
+    if(field==='draft')state.drafts[state.focus]=event.target.value;
+    if(field==='feedback')state.feedback=event.target.value;
+    if(field==='draft'||field==='feedback')save();
+  });
+  window.addEventListener('openai:set_globals',event=>{
+    const next=event.detail?.globals?.widgetState;const content=next?.modelContent||next;
+    if(!content||next?.privateContent?.sender===sender)return;
+    if(['research','debate','practice'].includes(content.workspaceFocus))state.focus=content.workspaceFocus;
+    if(['深哲','康德','庄子','萨特'].includes(content.selectedResponder))state.agent=content.selectedResponder;
+    if(next?.privateContent?.drafts)Object.assign(state.drafts,next.privateContent.drafts);
+    render();
+  });
+  render();
+  if(globalThis.Tweak){const controls=new Tweak({container:root,onChange:render});controls.addSlider(state,'sideWidth',{label:'讨论区域宽度',min:24,max:38,unit:'%'});controls.addToggle(state,'showNavigator',{label:'显示对象导航'});}
+})();
+</script>

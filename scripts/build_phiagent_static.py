@@ -19,7 +19,8 @@ DIST = os.path.join(AGENT_APP, "dist")
 STATIC = os.path.join(BASE, "backend", "static")
 
 # 仅拷贝 phiagent 实际引用的路径（assets/icons/covers.json/covers）; 其余为平台数据副本, 不入静态目录
-ESSENTIALS = ["assets", "icons", "covers.json", "covers", "index.html"]
+ESSENTIALS = ["assets", "icons", "covers.json", "covers", "index.html",
+              "manifest.webmanifest", "sw.js", "offline.html", "pwa"]
 
 
 def main():
