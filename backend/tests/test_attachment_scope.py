@@ -27,6 +27,7 @@ def test_empty_first_attachment_never_loads_tools_or_calls_a_model(monkeypatch):
 
 
 def test_explicit_request_and_prior_authorization_still_use_the_model(monkeypatch):
+    import followup_scope
     from langchain_core.messages import AIMessageChunk
     seen=[]
     async def tools():return []
@@ -36,9 +37,11 @@ def test_explicit_request_and_prior_authorization_still_use_the_model(monkeypatc
             seen.append(messages)
             yield AIMessageChunk(content='模型与实在不是同一回事。',response_metadata={'finish_reason':'stop'})
     async def no_aux(*args):return {'suggestions':[],'status':'disabled'}
+    async def in_scope(*args):return {'status':'complete','verdict':'in_scope'}
     monkeypatch.setattr(bare,'load_tools',tools);monkeypatch.setattr(bare,'load_model',Model)
     monkeypatch.setattr(bare,'exploration_questions',no_aux)
     monkeypatch.setattr(bare,'source_metadata',lambda *args:([],None))
+    monkeypatch.setattr(followup_scope,'assess',in_scope)
     async def run():
         for question,history in [(packet('讨论模型的假设，不检索。'),[]),
                 (packet(),[{'role':'user','content':'我接下来会发笔记，请讨论其中的认识论假设。'}]),

@@ -128,6 +128,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
     model = None
     round_usage = []
     returned_models = set()
+    scope_check = None
     from deep_streaming import attachment_request
     request = attachment_request(question)
     confirm_input = (persona is None and not history and request is not None and not request.strip()
@@ -146,6 +147,28 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                    'finish_reason':'input_clarification','citations':[],'suggestions':[],
                    'suggestions_status':'disabled','duration_seconds':round(time.monotonic()-started,3)}
             return
+        from followup_scope import assess, needs_check
+        if persona is None and release.get('followup_scope_check') and needs_check(question,history):
+            yield {'type':'status','content':'确认本轮问题' if language!='en' else 'Checking the current question',
+                   'runtime_profile':'bare','release':release}
+            scope_check = await assess(question,history)
+            if scope_check['status']!='complete':
+                yield {'type':'error','code':'followup_scope_unavailable','runtime_profile':'bare',
+                       'content':'暂时无法确认本轮续问的范围，请重试，或直接说明要讨论的哲学问题。' if language!='en'
+                       else 'The follow-up check is temporarily unavailable. Please retry or state the philosophical question directly.'}
+                return
+            if scope_check['verdict']!='in_scope':
+                if scope_check['verdict']=='out_of_scope':
+                    content=('这轮要延续的内容超出了哲学探究的范围，我不继续展开那项任务。若想讨论相关的概念、假设或判断依据，可以说明具体问题。'
+                             if language!='en' else 'That continuation would resume work outside philosophical inquiry. If you want to examine its concepts, assumptions, or justification, please state the question.')
+                else:
+                    content=('你希望继续解释哪一个哲学问题？请指出想澄清的概念、论证或材料段落。' if language!='en'
+                             else 'Which philosophical question would you like to continue? Please identify the concept, argument, or passage.')
+                yield {'type':'done','content':content,'complete':True,'runtime_profile':'bare','release':release,
+                       'response_origin':'followup_scope_check','main_model_invoked':False,'scope_check':scope_check,
+                       'finish_reason':'scope_boundary','citations':[],'suggestions':[],'suggestions_status':'disabled',
+                       'duration_seconds':round(time.monotonic()-started,3)}
+                return
         tools = await persona.tools() if persona else await load_tools()
         contracts=[{'name':t.name,'description':t.description,
             'schema':t.args_schema.model_json_schema() if hasattr(t.args_schema,'model_json_schema')
@@ -229,7 +252,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 if round_usage and all(isinstance(item,dict) for item in round_usage):
                     usage = {key:sum(item.get(key,0) for item in round_usage) for key in ('input_tokens','output_tokens','total_tokens')}
                 yield {'type': 'done', 'id': f'{group}:note:{segment}', 'content': text, 'complete': complete, 'runtime_profile': 'bare',
-                       'release':release,'main_model_usage':{'scope':'main_agent_only','usage':usage,
+                       'release':release,'scope_check':scope_check,'main_model_usage':{'scope':'main_agent_only','usage':usage,
                          'round_count':len(round_usage),'reported_rounds':sum(isinstance(u,dict) for u in round_usage),
                          'includes_auxiliary_tool_models':False,'provider_model_names':sorted(returned_models)},
                        'citations': citations, 'evidence': evidence, 'suggestions': [],

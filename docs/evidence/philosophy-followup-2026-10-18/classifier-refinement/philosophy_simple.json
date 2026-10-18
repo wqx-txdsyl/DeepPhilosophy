@@ -1,0 +1,27 @@
+{
+  "id": "philosophy_simple",
+  "expected": "in_scope",
+  "scope_check": {
+    "status": "complete",
+    "verdict": "in_scope",
+    "model": "deepseek-flash",
+    "usage": {
+      "prompt_tokens": 551,
+      "completion_tokens": 8,
+      "total_tokens": 559,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 167
+    }
+  },
+  "main_model_invoked": true,
+  "complete": true,
+  "answer": "用一个生活例子：**地铁线路图**。\n\n它明显“不真实”：所有站间距画成一样长，线路拉成直线或45度角，地面上的弯曲、远近全被抹掉。你若拿尺子量，它说的距离是错的。但没人会说它没用：它保留了换乘关系、先后顺序、哪条线接哪条线，而这些正是“我该怎么坐车”需要的信息。它故意放弃真实距离，换来一眼看清结构。\n\n所以模型仍算知识，关键不在“每个假设都真”，而在三点：\n\n1. **它保留了对你要问的问题要紧的关系**。问换乘，线路图够了；问步行多久，它就不够。\n2. **照它做，结果能对得上**。按图换乘，真能到站。\n3. **你知道它在哪儿失真**。你不会拿它量距离。\n\n“理想条件不真实”往往就是这种故意失真：为了让你看清一个关系，先把干扰因素按住。就像物理题里“忽略空气阻力”，不是断言世上没有空气，而是先把主要关系单独拿出来看。\n\n所以答案是：**模型知识的可靠性，不要求它处处照抄现实，而要求它的失真处与你的问题无关，并且你能说清它在哪儿靠不住。** 一旦忘了后半句——拿地铁图去量公里数——模型就从知识变成了误导。",
+  "tool_calls": [],
+  "errors": [],
+  "prompt_sha256": "a73f0d2769eb7e64d49f9da719c051c5aa7eb146c659525db0b327f30f12a379",
+  "effective_prompt_sha256": "8d060e9c7996142237d288181337961eefa2fcadcdac89da142b682d6199727c",
+  "seconds": 5.1
+}

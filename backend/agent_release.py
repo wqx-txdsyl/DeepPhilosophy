@@ -27,7 +27,8 @@ def prompt_spec(language='zh', profile=None):
     return {'text':text,'version':version,'template_sha256':hashlib.sha256(template.encode()).hexdigest(),
             'effective_sha256':hashlib.sha256(text.encode()).hexdigest(),
             'manifest_hash_matches':hashlib.sha256(template.encode()).hexdigest()==item['sha256'],
-            'confirm_unrequested_attachments':bool(item.get('confirm_unrequested_attachments'))}
+            'confirm_unrequested_attachments':bool(item.get('confirm_unrequested_attachments')),
+            'followup_scope_check':bool(item.get('followup_scope_check'))}
 
 
 def fingerprint(metadata):
@@ -65,5 +66,6 @@ def release_descriptor(language='zh', profile=None):
         'legacy_selector_used_by_bare':False,
         'historical_prompt_override':prompt['version']!=MANIFEST['active_prompt_version']}
     metadata['confirm_unrequested_attachments'] = prompt['confirm_unrequested_attachments']
+    metadata['followup_scope_check'] = prompt['followup_scope_check']
     metadata['configuration_fingerprint']=fingerprint(metadata)
     return metadata

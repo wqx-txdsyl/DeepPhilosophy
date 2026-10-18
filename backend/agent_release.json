@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "release_version": "0.1.6",
-  "release_tag": "phiagent-v0.1.6",
+  "release_version": "0.1.7",
+  "release_tag": "phiagent-v0.1.7",
   "status": "development_preview_quality_unverified",
-  "active_prompt_version": "0.1.6",
+  "active_prompt_version": "0.1.7",
   "tool_contract_version": "0.1.2",
   "runtime_profile": "bare",
   "tool_budget": null,
@@ -91,8 +91,16 @@
       "path": "prompts/general-0.1.6.md",
       "sha256": "dd850a08f672ab4cc74c69d0ece5b5ea7bd80b249b83be34787cd27a8aab63b6",
       "characters": 2380,
-      "role": "active_not_benchmark_tested",
+      "role": "historical_scope_fix",
       "confirm_unrequested_attachments": true
+    },
+    "0.1.7": {
+      "path": "prompts/general-0.1.7.md",
+      "sha256": "a73f0d2769eb7e64d49f9da719c051c5aa7eb146c659525db0b327f30f12a379",
+      "characters": 2550,
+      "role": "active_not_benchmark_tested",
+      "confirm_unrequested_attachments": true,
+      "followup_scope_check": true
     }
   },
   "runtime_sources": [
@@ -141,6 +149,7 @@
     "evidence_contract.py",
     "final_validator.py",
     "fix_bios.py",
+    "followup_scope.py",
     "guard.py",
     "home_questions.py",
     "local_patch_runtime.py",
