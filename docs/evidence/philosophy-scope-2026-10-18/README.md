@@ -30,3 +30,5 @@
 前端浏览器另以隔离访客和全量 API 拦截验证上传、空要求、附件指令保留为材料、显式哲学要求分离、可见气泡不暴露 JSON、刷新恢复。公开回答重放自上述独立真实模型用例，不冒称浏览器夹具另发了真实模型请求。见 `browser-checks.json`。
 
 首次空要求附件的协议分支另有离线断言：工具加载与模型调用一旦发生即失败；同时检查显式哲学要求和已有授权上下文仍使用模型。该分支仅对 v0.1.6 声明启用，历史提示词配置不改变。
+
+上线复核：公开 SSE 回执为 v0.1.6，首次空要求附件 main_model_invoked=false、response_origin=input_clarification，未调用工具或生成追问；Project API 仍为410。集成后的73项相关后端检查和前端回归通过。详见 deployed-check.json、backend-tests.txt 与 frontend-tests.txt。
