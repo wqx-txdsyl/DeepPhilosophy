@@ -4,7 +4,7 @@
   "owner": "ZCode (session sess_4d96af07, continuing original book-audit writer; no second writer active)",
   "taskDocument": "2026-10-19-rework.md",
   "inputQueue": "2026-10-19-rework-queues.json",
-  "activeTask": "R02",
+  "activeTask": "R03",
   "activeBookId": null,
   "activeChapterIndex": null,
   "activeBlockRange": null,
@@ -33,11 +33,24 @@
         "verify": "verify_book.py 7705448a01b4 --vite-check: all data checks pass incl. books.json chapterCount books=30 (the exact audit failure); only Vite 404 remain (dev server not running, environmental)",
         "pendingPublication": "books.json LFS + detail/meta/chapters need OSS sync in R02 (OSS already correct for catalog; chapter files unchanged)"
       },
-      "commit": "(this commit)"
+      "commit": "fb4517ec1 (formal) / 488686991 (branch)"
     },
     {
       "id": "R02",
-      "status": "pending"
+      "status": "completed",
+      "completedAt": "2026-10-19T22:43:21+08:00",
+      "evidence": {
+        "divergenceReconciliation": "formal e27a73d85 applied the adjudicated 10 Kant paths (net tree diff formal-vs-branch = 0 afterwards); cherry-pick of 78cb15062 conflicted on detail serialization so net content was committed directly per R00 per-path adjudication",
+        "ossDelta": "dp_sync_oss_chapters.py dry-run: 12,799 local files, 5,479 matched, 7,320 stale-or-missing (confirming audit: previous round never synced OSS) -> real sync 24 workers: 7,320 uploaded / 0 failed (log 2026-10-19-r02-oss-upload.log)",
+        "ossConvergence": "post-sync dry-run: 需上传 0; 12,799/12,799 byte-identical (ETag=MD5 match)",
+        "samples8": "all 8 audit samples byte-identical to formal (md5 OK); content markers: 251 3(3/4)镑 HIT, 346 弗列罗夫斯基 HIT + garbage >fm]fj_ absent, 351 5月8日 HIT, kant50 编者注 HIT",
+        "liveReader": "deepphilosophy.top real DOM: 251 fixed text present/old absent; 346 restored name present/garbage absent; kant50 ok; candide ch0+ch29 open (R01 reader acceptance)",
+        "nav": "下一章 button 251→252 works, chapter content loads",
+        "catalog": "live books.json restored: 410 total / 334 readable / 12,465 chapters / candide epub-30章",
+        "ch251disposition": "published as approved-formal; derived values 3(3/4)/2(1/2) remain flagged pending_source_check line 140 for 人民社通行本 verification (R05)",
+        "notDone": "OSS meta/detail/books.json not needed by reader (meta injected at build; catalog served from LFS by CF Pages); 3 orphan OSS objects left unpruned (harmless, --prune慎用)"
+      },
+      "commit": "e27a73d85 (formal reconciliation) + OSS upload session 2026-10-19"
     },
     {
       "id": "R03",
@@ -60,8 +73,8 @@
       "status": "pending"
     }
   ],
-  "nextAction": "R02: recompute approved-increment chapter list vs OSS, upload stale OSS chapters (samples 251/283/331/346/351, 49/50, 580), verify live reader",
-  "lastCheckpointAt": "2026-10-19T22:32:11+08:00",
+  "nextAction": "R03: repair findings.jsonl conflict lines 261/262/267/268/270/271, dedupe, recompute ledger SHA/backfill",
+  "lastCheckpointAt": "2026-10-19T22:43:21+08:00",
   "ownerConfirmedAt": "2026-10-19T22:27:55+08:00",
   "uncommittedDispositions": {
     "backend/data/book_chapters/390398aff8d0/50.json": "evidence-backed fix (科学院版编者→科学院版编者注): COMMIT this round",
