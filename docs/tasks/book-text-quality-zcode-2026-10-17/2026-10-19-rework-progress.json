@@ -4,7 +4,7 @@
   "owner": "ZCode (session sess_4d96af07, continuing original book-audit writer; no second writer active)",
   "taskDocument": "2026-10-19-rework.md",
   "inputQueue": "2026-10-19-rework-queues.json",
-  "activeTask": "R04",
+  "activeTask": "R04a",
   "activeBookId": null,
   "activeChapterIndex": null,
   "activeBlockRange": null,
@@ -69,7 +69,15 @@
     },
     {
       "id": "R04",
-      "status": "pending"
+      "status": "in_progress",
+      "checkpointAt": "2026-10-19T23:13:42+08:00",
+      "checkpoint": {
+        "book": "309de54e4392 康德著作集（蓝公武译本，81章8317块→ch6现为1294块）",
+        "done": "ch0-5全读complete（132块，批R04a-1，9修复）；ch6 blk0-409实读（批R04a-2，26修复：孤括号45/双写块1/希腊文2/拉丁5/德文3/OCR6/脱字1）",
+        "next": "ch6 blk409-1293续读（4窗）→ch7先验方法论211块→ch8+；生成器backend/tools/_tmp/gen_read_b334.py <a> <b>",
+        "oss": "6.json已单文件同步OSS（1924c09d）；批1涉及3/4/5.json待随书尾批量同步",
+        "pushes": "批1=5d589032e(formal) 批2=(formal同流程)"
+      }
     },
     {
       "id": "R05",
@@ -81,11 +89,12 @@
     },
     {
       "id": "R07",
-      "status": "pending"
+      "status": "in_progress",
+      "note": "确定性项已推进：42.json文件标题截断补全+meta/detail[49]错配纠正（commit 8d0048576 formal）；其余元数据/storedIndex/封面残留待R04主体后继续"
     }
   ],
-  "nextAction": "R04: start reading queue — first 康德著作集 309de54e4392 (81 chapters, 0 read), then 论法的精神 ch53, 纯粹理性批判 interleave blocks, then 308-book queue book by book",
-  "lastCheckpointAt": "2026-10-19T22:56:08+08:00",
+  "nextAction": "R04a续：康德著作集ch6 blk409-1293（4个250块窗）→ch7→ch8…直至81章读毕；每5章一检查点",
+  "lastCheckpointAt": "2026-10-19T23:13:42+08:00",
   "ownerConfirmedAt": "2026-10-19T22:27:55+08:00",
   "uncommittedDispositions": {
     "backend/data/book_chapters/390398aff8d0/50.json": "evidence-backed fix (科学院版编者→科学院版编者注): COMMIT this round",
