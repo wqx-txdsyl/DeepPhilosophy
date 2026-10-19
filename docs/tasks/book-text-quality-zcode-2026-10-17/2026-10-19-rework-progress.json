@@ -4,7 +4,7 @@
   "owner": "ZCode (session sess_4d96af07, continuing original book-audit writer; no second writer active)",
   "taskDocument": "2026-10-19-rework.md",
   "inputQueue": "2026-10-19-rework-queues.json",
-  "activeTask": "R03",
+  "activeTask": "R04",
   "activeBookId": null,
   "activeChapterIndex": null,
   "activeBlockRange": null,
@@ -54,7 +54,18 @@
     },
     {
       "id": "R03",
-      "status": "pending"
+      "status": "completed",
+      "completedAt": "2026-10-19T22:56:08+08:00",
+      "evidence": {
+        "findingsConflicts": "6 marker lines removed after verifying incoming side (78cb15062) contributed 0 unique records; HEAD-side 362l补/m/n/o/p kept; 364/364 lines parse; original preserved in git history (587c0a1d) + /tmp backup",
+        "ledgerSets": "chapter-audit 12,465 rows == frozen (bid,idx) set exactly, 0 dup/missing/extra; book-audit 334 distinct bookIds; all 10 JSONL parse",
+        "statusRebuild": "context-read-complete 1,734 (26 audit-accepted books 1,760ch minus 康德著作集81, plus 论法的精神54, 纯粹理性批判15, 上帝之城ch17-24 per nonstandard rows) + partial 8 (论法的精神53, 纯粹理性批判15-16, 柏拉图5) + machine-only 10,723 (308-book evidence-review queue + 康德著作集81) = 12,465 exact",
+        "shaBackfill": "4,458 stale SHAs updated to current formal file SHAs with sha256Prev preserved; status NOT flipped by SHA update alone (per-evidence only)",
+        "nonstandard26": "kept as evidence; 上帝之城 ch17-24 → complete per own status; 柏拉图/柏拉图哲学作品集 merged per own status; not counted as new chapters",
+        "repairs": "36 rows parse; 18 detailed before/after + 18 批次汇总 enriched with recountMethod (per-batch git show via book-audit batches + findings commits)",
+        "summaryUpdated": "summary.md prepended rework section replacing 收官 claim; honest remaining scope stated"
+      },
+      "commit": "(this commit)"
     },
     {
       "id": "R04",
@@ -73,8 +84,8 @@
       "status": "pending"
     }
   ],
-  "nextAction": "R03: repair findings.jsonl conflict lines 261/262/267/268/270/271, dedupe, recompute ledger SHA/backfill",
-  "lastCheckpointAt": "2026-10-19T22:43:21+08:00",
+  "nextAction": "R04: start reading queue — first 康德著作集 309de54e4392 (81 chapters, 0 read), then 论法的精神 ch53, 纯粹理性批判 interleave blocks, then 308-book queue book by book",
+  "lastCheckpointAt": "2026-10-19T22:56:08+08:00",
   "ownerConfirmedAt": "2026-10-19T22:27:55+08:00",
   "uncommittedDispositions": {
     "backend/data/book_chapters/390398aff8d0/50.json": "evidence-backed fix (科学院版编者→科学院版编者注): COMMIT this round",
