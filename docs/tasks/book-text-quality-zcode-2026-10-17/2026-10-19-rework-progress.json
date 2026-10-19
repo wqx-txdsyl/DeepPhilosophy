@@ -72,11 +72,12 @@
       "status": "in_progress",
       "checkpointAt": "2026-10-19T23:13:42+08:00",
       "checkpoint": {
-        "book": "309de54e4392 康德著作集（蓝公武译本，81章8317块→ch6现为1294块）",
-        "done": "ch0-5全读complete（132块，批R04a-1，9修复）；ch6 blk0-409实读（批R04a-2，26修复：孤括号45/双写块1/希腊文2/拉丁5/德文3/OCR6/脱字1）",
-        "next": "ch6 blk409-1293续读（4窗）→ch7先验方法论211块→ch8+；生成器backend/tools/_tmp/gen_read_b334.py <a> <b>",
-        "oss": "6.json已单文件同步OSS（1924c09d）；批1涉及3/4/5.json待随书尾批量同步",
-        "pushes": "批1=5d589032e(formal) 批2=(formal同流程)"
+        "book": "309de54e4392 康德著作集（81章，ch6修后1294块）",
+        "done": "ch0-5读毕complete（132块9修复，批R04a-1）；ch6 blk0-657实读（批R04a-2/3，38修复：孤括号45+双写块1+希腊文2+拉丁8+德文4+OCR形误11+脱字1+异译统一2）",
+        "remaining": "ch6 blk658-1293（2.5窗）→ch7（211块）→ch8-80",
+        "nextWindow": "gen_read_b334.py 6 6后切blk658起；每窗~250块；fixes循现有断言模式",
+        "oss": "3/4/5/6.json均已单文件同步并字节核对（815d1804）",
+        "pushed": "批1=5d589032e、批2/3同流程推送、R06项=8d0048576（皆formal）"
       }
     },
     {
@@ -93,8 +94,8 @@
       "note": "确定性项已推进：42.json文件标题截断补全+meta/detail[49]错配纠正（commit 8d0048576 formal）；其余元数据/storedIndex/封面残留待R04主体后继续"
     }
   ],
-  "nextAction": "R04a续：康德著作集ch6 blk409-1293（4个250块窗）→ch7→ch8…直至81章读毕；每5章一检查点",
-  "lastCheckpointAt": "2026-10-19T23:13:42+08:00",
+  "nextAction": "R04a续读ch6 blk658-1293；其后ch7-80；R04b（论法的精神53/纯粹理性批判交错）与R04c（308本）在此书读毕后接续",
+  "lastCheckpointAt": "2026-10-19T23:18:29+08:00",
   "ownerConfirmedAt": "2026-10-19T22:27:55+08:00",
   "uncommittedDispositions": {
     "backend/data/book_chapters/390398aff8d0/50.json": "evidence-backed fix (科学院版编者→科学院版编者注): COMMIT this round",
