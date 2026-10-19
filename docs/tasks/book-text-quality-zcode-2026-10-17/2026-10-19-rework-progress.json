@@ -1,111 +1,111 @@
 {
-  "schemaVersion": 1,
-  "status": "in_progress",
-  "owner": "ZCode (session sess_4d96af07, continuing original book-audit writer; no second writer active)",
-  "taskDocument": "2026-10-19-rework.md",
-  "inputQueue": "2026-10-19-rework-queues.json",
-  "activeTask": "R04a",
-  "activeBookId": null,
-  "activeChapterIndex": null,
-  "activeBlockRange": null,
-  "tasks": [
-    {
-      "id": "R00",
-      "status": "completed",
-      "completedAt": "2026-10-19T22:27:55+08:00",
-      "evidence": {
-        "writerCheck": "formal master tip unchanged at 587c0a1dc since audit (2026-10-19 13:52 +0800); no writer processes; stale cherry-pick worktree /private/tmp/b27za removed after verifying its HEAD 4425452dd is ancestor of origin/master",
-        "branch": "codex/book-candide-readable @ c70cd4c7e (worktree-only commits 607e1db78 批362p, 6106928ce 批362q, 78cb15062 批362l补 never reached formal)",
-        "formal": "origin/master @ 587c0a1dc (formal-only 90f7287c2 批362l meta/detail title restore — content-equivalent state already present in worktree; no conflict)",
-        "divergence10paths": "all 10 paths (Kant 390398aff8d0: 49/51/52/55/58/59/60/61 chapters + meta.json + public detail): worktree side is the corrected version. Evidence: 49 content first block = 关于一种世界公民观点… (title was mismatched to ch48 Schulz review); 51/52/58 doubled titles deduped; 55 Vattel born 1714 (public record) + en-dash + Konx-Ompax apostrophe; 59 Latin postquam/ventum est (formal side had OCR corruption postquan/venturmest); 60 fullwidth comma; 61 Stämme umlaut",
-        "candidateFormal": "branch tip + this round commits, pushed via established cherry-pick worktree flow"
-      }
-    },
-    {
-      "id": "R01",
-      "status": "completed",
-      "completedAt": "2026-10-19T22:32:11+08:00",
-      "evidence": {
-        "rootCause": "books.json (LFS) regressed entry 7705448a01b4 to txt/0章 on formal master (SHA 6bce7759); OSS retained correct epub/30章 version (SHA 9f9c4ea9); git history never contained the epub entry (import session published to OSS without committing catalog)",
-        "fix": "python3 backend/tools/dp_sync_books.py --only 7705448a01b4 — rebuilt entry from official public detail; restored entry is field-for-field identical to OSS original (epub/102551/30章/傅雷/zh-CN/edition/source block)",
-        "catalogState": "334 readable / 12,465 chapters restored (frozen baseline); LFS pointer now SHA 9f9c4ea9",
-        "biblioRegen": "dp_biblio_build rerun by sync (deterministic manifest in sync with catalog edit); foreign uncommitted hash values superseded — backups in /tmp/r00_backup",
-        "verify": "verify_book.py 7705448a01b4 --vite-check: all data checks pass incl. books.json chapterCount books=30 (the exact audit failure); only Vite 404 remain (dev server not running, environmental)",
-        "pendingPublication": "books.json LFS + detail/meta/chapters need OSS sync in R02 (OSS already correct for catalog; chapter files unchanged)"
-      },
-      "commit": "fb4517ec1 (formal) / 488686991 (branch)"
-    },
-    {
-      "id": "R02",
-      "status": "completed",
-      "completedAt": "2026-10-19T22:43:21+08:00",
-      "evidence": {
-        "divergenceReconciliation": "formal e27a73d85 applied the adjudicated 10 Kant paths (net tree diff formal-vs-branch = 0 afterwards); cherry-pick of 78cb15062 conflicted on detail serialization so net content was committed directly per R00 per-path adjudication",
-        "ossDelta": "dp_sync_oss_chapters.py dry-run: 12,799 local files, 5,479 matched, 7,320 stale-or-missing (confirming audit: previous round never synced OSS) -> real sync 24 workers: 7,320 uploaded / 0 failed (log 2026-10-19-r02-oss-upload.log)",
-        "ossConvergence": "post-sync dry-run: 需上传 0; 12,799/12,799 byte-identical (ETag=MD5 match)",
-        "samples8": "all 8 audit samples byte-identical to formal (md5 OK); content markers: 251 3(3/4)镑 HIT, 346 弗列罗夫斯基 HIT + garbage >fm]fj_ absent, 351 5月8日 HIT, kant50 编者注 HIT",
-        "liveReader": "deepphilosophy.top real DOM: 251 fixed text present/old absent; 346 restored name present/garbage absent; kant50 ok; candide ch0+ch29 open (R01 reader acceptance)",
-        "nav": "下一章 button 251→252 works, chapter content loads",
-        "catalog": "live books.json restored: 410 total / 334 readable / 12,465 chapters / candide epub-30章",
-        "ch251disposition": "published as approved-formal; derived values 3(3/4)/2(1/2) remain flagged pending_source_check line 140 for 人民社通行本 verification (R05)",
-        "notDone": "OSS meta/detail/books.json not needed by reader (meta injected at build; catalog served from LFS by CF Pages); 3 orphan OSS objects left unpruned (harmless, --prune慎用)"
-      },
-      "commit": "e27a73d85 (formal reconciliation) + OSS upload session 2026-10-19"
-    },
-    {
-      "id": "R03",
-      "status": "completed",
-      "completedAt": "2026-10-19T22:56:08+08:00",
-      "evidence": {
-        "findingsConflicts": "6 marker lines removed after verifying incoming side (78cb15062) contributed 0 unique records; HEAD-side 362l补/m/n/o/p kept; 364/364 lines parse; original preserved in git history (587c0a1d) + /tmp backup",
-        "ledgerSets": "chapter-audit 12,465 rows == frozen (bid,idx) set exactly, 0 dup/missing/extra; book-audit 334 distinct bookIds; all 10 JSONL parse",
-        "statusRebuild": "context-read-complete 1,734 (26 audit-accepted books 1,760ch minus 康德著作集81, plus 论法的精神54, 纯粹理性批判15, 上帝之城ch17-24 per nonstandard rows) + partial 8 (论法的精神53, 纯粹理性批判15-16, 柏拉图5) + machine-only 10,723 (308-book evidence-review queue + 康德著作集81) = 12,465 exact",
-        "shaBackfill": "4,458 stale SHAs updated to current formal file SHAs with sha256Prev preserved; status NOT flipped by SHA update alone (per-evidence only)",
-        "nonstandard26": "kept as evidence; 上帝之城 ch17-24 → complete per own status; 柏拉图/柏拉图哲学作品集 merged per own status; not counted as new chapters",
-        "repairs": "36 rows parse; 18 detailed before/after + 18 批次汇总 enriched with recountMethod (per-batch git show via book-audit batches + findings commits)",
-        "summaryUpdated": "summary.md prepended rework section replacing 收官 claim; honest remaining scope stated"
-      },
-      "commit": "(this commit)"
-    },
-    {
-      "id": "R04",
-      "status": "in_progress",
-      "checkpointAt": "2026-10-19T23:13:42+08:00",
-      "checkpoint": {
-        "book": "309de54e4392 康德著作集（81章）",
-        "done": "ch0-33读毕（审美判断力分析全章完，批35零修复证宗白华卷首各章排印质量）；累计约201修复+18结构修复全推送并OSS核对",
-        "remaining": "ch34-80（约4,690块）",
-        "nextWindow": "gen_read_b334.py 34 34起",
-        "pending累计": "22条"
-      }
-    },
-    {
-      "id": "R05",
-      "status": "pending"
-    },
-    {
-      "id": "R06",
-      "status": "pending"
-    },
-    {
-      "id": "R07",
-      "status": "in_progress",
-      "note": "确定性项已推进：42.json文件标题截断补全+meta/detail[49]错配纠正（commit 8d0048576 formal）；其余元数据/storedIndex/封面残留待R04主体后继续"
-    }
-  ],
-  "nextAction": "R04a续：ch34起逐章实读；R04b/c、R05、R06余项、R07随后",
-  "lastCheckpointAt": "2026-10-20T00:33:56+08:00",
-  "ownerConfirmedAt": "2026-10-19T22:27:55+08:00",
-  "uncommittedDispositions": {
-    "backend/data/book_chapters/390398aff8d0/50.json": "evidence-backed fix (科学院版编者→科学院版编者注): COMMIT this round",
-    "backend/data/book_chapters/390398aff8d0/79.json": "evidence-backed fixes (Aepyorius→Aepyornis maximus 象鸟属名; Chales→Charles Maria de La Condamine): COMMIT this round",
-    "backend/data/book_chapters/bedc9c78dfdf/580.json": "serialization-only reflow (0 content blocks differ): normalize back to compact single-line, drops out of status",
-    "app/public/book_detail/ 47 files cover-only + 4 serial-only": "foreign cover-pipeline migration (/covers/→/api/books/.../image/), NOT this mission: keep untouched, decide in R06",
-    "app/public/book_detail/7729ccdecb0f.json": "author separator /→、 + cover migration: foreign, R06",
-    "backend/data/book_detail/ 8 files": "reverse-direction cover changes (committed=/api, working=/covers/) + bbac1be0bb4b titles/toc: tool-regen residue, R06",
-    "backend/data/book_bibliography.json + docs/evidence/PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json": "bibliographic pilot hash regeneration (O7B workstream, current_book_count 410): foreign, R06",
-    "untracked app/src/assets/books.json": "foreign workstream artifact: leave untracked",
-    "untracked backend/tools/_tmp/": "temp scripts per AGENTS.md: never commit",
-    "untracked 2026-10-19-rework*.md/.json": "Codex task inputs for this round: commit with first rework batch"
+ "schemaVersion": 1,
+ "status": "in_progress",
+ "owner": "ZCode (session sess_4d96af07, continuing original book-audit writer; no second writer active)",
+ "taskDocument": "2026-10-19-rework.md",
+ "inputQueue": "2026-10-19-rework-queues.json",
+ "activeTask": "R04a",
+ "activeBookId": null,
+ "activeChapterIndex": null,
+ "activeBlockRange": null,
+ "tasks": [
+  {
+   "id": "R00",
+   "status": "completed",
+   "completedAt": "2026-10-19T22:27:55+08:00",
+   "evidence": {
+    "writerCheck": "formal master tip unchanged at 587c0a1dc since audit (2026-10-19 13:52 +0800); no writer processes; stale cherry-pick worktree /private/tmp/b27za removed after verifying its HEAD 4425452dd is ancestor of origin/master",
+    "branch": "codex/book-candide-readable @ c70cd4c7e (worktree-only commits 607e1db78 批362p, 6106928ce 批362q, 78cb15062 批362l补 never reached formal)",
+    "formal": "origin/master @ 587c0a1dc (formal-only 90f7287c2 批362l meta/detail title restore — content-equivalent state already present in worktree; no conflict)",
+    "divergence10paths": "all 10 paths (Kant 390398aff8d0: 49/51/52/55/58/59/60/61 chapters + meta.json + public detail): worktree side is the corrected version. Evidence: 49 content first block = 关于一种世界公民观点… (title was mismatched to ch48 Schulz review); 51/52/58 doubled titles deduped; 55 Vattel born 1714 (public record) + en-dash + Konx-Ompax apostrophe; 59 Latin postquam/ventum est (formal side had OCR corruption postquan/venturmest); 60 fullwidth comma; 61 Stämme umlaut",
+    "candidateFormal": "branch tip + this round commits, pushed via established cherry-pick worktree flow"
+   }
+  },
+  {
+   "id": "R01",
+   "status": "completed",
+   "completedAt": "2026-10-19T22:32:11+08:00",
+   "evidence": {
+    "rootCause": "books.json (LFS) regressed entry 7705448a01b4 to txt/0章 on formal master (SHA 6bce7759); OSS retained correct epub/30章 version (SHA 9f9c4ea9); git history never contained the epub entry (import session published to OSS without committing catalog)",
+    "fix": "python3 backend/tools/dp_sync_books.py --only 7705448a01b4 — rebuilt entry from official public detail; restored entry is field-for-field identical to OSS original (epub/102551/30章/傅雷/zh-CN/edition/source block)",
+    "catalogState": "334 readable / 12,465 chapters restored (frozen baseline); LFS pointer now SHA 9f9c4ea9",
+    "biblioRegen": "dp_biblio_build rerun by sync (deterministic manifest in sync with catalog edit); foreign uncommitted hash values superseded — backups in /tmp/r00_backup",
+    "verify": "verify_book.py 7705448a01b4 --vite-check: all data checks pass incl. books.json chapterCount books=30 (the exact audit failure); only Vite 404 remain (dev server not running, environmental)",
+    "pendingPublication": "books.json LFS + detail/meta/chapters need OSS sync in R02 (OSS already correct for catalog; chapter files unchanged)"
+   },
+   "commit": "fb4517ec1 (formal) / 488686991 (branch)"
+  },
+  {
+   "id": "R02",
+   "status": "completed",
+   "completedAt": "2026-10-19T22:43:21+08:00",
+   "evidence": {
+    "divergenceReconciliation": "formal e27a73d85 applied the adjudicated 10 Kant paths (net tree diff formal-vs-branch = 0 afterwards); cherry-pick of 78cb15062 conflicted on detail serialization so net content was committed directly per R00 per-path adjudication",
+    "ossDelta": "dp_sync_oss_chapters.py dry-run: 12,799 local files, 5,479 matched, 7,320 stale-or-missing (confirming audit: previous round never synced OSS) -> real sync 24 workers: 7,320 uploaded / 0 failed (log 2026-10-19-r02-oss-upload.log)",
+    "ossConvergence": "post-sync dry-run: 需上传 0; 12,799/12,799 byte-identical (ETag=MD5 match)",
+    "samples8": "all 8 audit samples byte-identical to formal (md5 OK); content markers: 251 3(3/4)镑 HIT, 346 弗列罗夫斯基 HIT + garbage >fm]fj_ absent, 351 5月8日 HIT, kant50 编者注 HIT",
+    "liveReader": "deepphilosophy.top real DOM: 251 fixed text present/old absent; 346 restored name present/garbage absent; kant50 ok; candide ch0+ch29 open (R01 reader acceptance)",
+    "nav": "下一章 button 251→252 works, chapter content loads",
+    "catalog": "live books.json restored: 410 total / 334 readable / 12,465 chapters / candide epub-30章",
+    "ch251disposition": "published as approved-formal; derived values 3(3/4)/2(1/2) remain flagged pending_source_check line 140 for 人民社通行本 verification (R05)",
+    "notDone": "OSS meta/detail/books.json not needed by reader (meta injected at build; catalog served from LFS by CF Pages); 3 orphan OSS objects left unpruned (harmless, --prune慎用)"
+   },
+   "commit": "e27a73d85 (formal reconciliation) + OSS upload session 2026-10-19"
+  },
+  {
+   "id": "R03",
+   "status": "completed",
+   "completedAt": "2026-10-19T22:56:08+08:00",
+   "evidence": {
+    "findingsConflicts": "6 marker lines removed after verifying incoming side (78cb15062) contributed 0 unique records; HEAD-side 362l补/m/n/o/p kept; 364/364 lines parse; original preserved in git history (587c0a1d) + /tmp backup",
+    "ledgerSets": "chapter-audit 12,465 rows == frozen (bid,idx) set exactly, 0 dup/missing/extra; book-audit 334 distinct bookIds; all 10 JSONL parse",
+    "statusRebuild": "context-read-complete 1,734 (26 audit-accepted books 1,760ch minus 康德著作集81, plus 论法的精神54, 纯粹理性批判15, 上帝之城ch17-24 per nonstandard rows) + partial 8 (论法的精神53, 纯粹理性批判15-16, 柏拉图5) + machine-only 10,723 (308-book evidence-review queue + 康德著作集81) = 12,465 exact",
+    "shaBackfill": "4,458 stale SHAs updated to current formal file SHAs with sha256Prev preserved; status NOT flipped by SHA update alone (per-evidence only)",
+    "nonstandard26": "kept as evidence; 上帝之城 ch17-24 → complete per own status; 柏拉图/柏拉图哲学作品集 merged per own status; not counted as new chapters",
+    "repairs": "36 rows parse; 18 detailed before/after + 18 批次汇总 enriched with recountMethod (per-batch git show via book-audit batches + findings commits)",
+    "summaryUpdated": "summary.md prepended rework section replacing 收官 claim; honest remaining scope stated"
+   },
+   "commit": "(this commit)"
+  },
+  {
+   "id": "R04",
+   "status": "in_progress",
+   "checkpointAt": "2026-10-20T00:48:19+08:00",
+   "checkpoint": {
+    "book": "309de54e4392 康德著作集（81章）",
+    "done": "ch0-34读毕（辩证论章1修复：KU§55注拉丁括注复原iudicium ratiocinatum；'反味着的直观'经双独立引文证实为商务版原文）；累计约202修复+18结构修复全推送并OSS核对",
+    "remaining": "ch35-80（约4,630块）",
+    "nextWindow": "gen_read_b334.py 35 35起",
+    "pending累计": "23条"
+   }
+  },
+  {
+   "id": "R05",
+   "status": "pending"
+  },
+  {
+   "id": "R06",
+   "status": "pending"
+  },
+  {
+   "id": "R07",
+   "status": "in_progress",
+   "note": "确定性项已推进：42.json文件标题截断补全+meta/detail[49]错配纠正（commit 8d0048576 formal）；其余元数据/storedIndex/封面残留待R04主体后继续"
   }
+ ],
+ "nextAction": "R04a续：ch35起逐章实读；R04b/c、R05、R06余项、R07随后",
+ "lastCheckpointAt": "2026-10-20T00:48:19+08:00",
+ "ownerConfirmedAt": "2026-10-19T22:27:55+08:00",
+ "uncommittedDispositions": {
+  "backend/data/book_chapters/390398aff8d0/50.json": "evidence-backed fix (科学院版编者→科学院版编者注): COMMIT this round",
+  "backend/data/book_chapters/390398aff8d0/79.json": "evidence-backed fixes (Aepyorius→Aepyornis maximus 象鸟属名; Chales→Charles Maria de La Condamine): COMMIT this round",
+  "backend/data/book_chapters/bedc9c78dfdf/580.json": "serialization-only reflow (0 content blocks differ): normalize back to compact single-line, drops out of status",
+  "app/public/book_detail/ 47 files cover-only + 4 serial-only": "foreign cover-pipeline migration (/covers/→/api/books/.../image/), NOT this mission: keep untouched, decide in R06",
+  "app/public/book_detail/7729ccdecb0f.json": "author separator /→、 + cover migration: foreign, R06",
+  "backend/data/book_detail/ 8 files": "reverse-direction cover changes (committed=/api, working=/covers/) + bbac1be0bb4b titles/toc: tool-regen residue, R06",
+  "backend/data/book_bibliography.json + docs/evidence/PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json": "bibliographic pilot hash regeneration (O7B workstream, current_book_count 410): foreign, R06",
+  "untracked app/src/assets/books.json": "foreign workstream artifact: leave untracked",
+  "untracked backend/tools/_tmp/": "temp scripts per AGENTS.md: never commit",
+  "untracked 2026-10-19-rework*.md/.json": "Codex task inputs for this round: commit with first rework batch"
+ }
 }
