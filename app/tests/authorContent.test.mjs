@@ -43,8 +43,8 @@ test('portrait requests use sized CDN images with the unchanged original path as
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
-  // 2026-10-20：原合并署名保留为共同对话作者组，总记录737不变。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 647);
+  // 2026-10-20：共同署名组与Elaine Russell艺术家裁决保留旧入口，总记录737不变。
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 646);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -52,6 +52,16 @@ test('every canonical entry has its own matching detail, category and existing i
     if (person.portrait) assert.ok(fs.existsSync(new URL(person.portrait.slice(1), publicRoot)), person.name);
     for (const school of person.profile.schoolLinks) assert.ok(fs.existsSync(new URL(`schools/data/${schools.find(item => item.name === school.name)?.detailFile}`, publicRoot)), school.name);
   }
+});
+test('Elaine Russell keeps her legacy route as an artist, without the fabricated US philosopher identity', () => {
+  const person = details.find(item => item.name === '伊莲·拉塞尔');
+  assert.equal(person.listingKind, 'context');
+  assert.equal(person.country, '澳大利亚');
+  assert.match(person.era, /1941/);
+  assert.ok(person.bio.includes('艺术家'));
+  assert.ok(person.profile.bibliography.some(work => work.originalTitle === 'The shack that Dad built'));
+  assert.ok(!person.profile.bibliography.some(work => work.originalTitle === 'Consciousness and Representation'));
+  assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'digital.nga.gov.au'));
 });
 test('the Revel and Ricard legacy entry keeps the joint book and distinguishes both authors', () => {
   const name = '让-弗朗索瓦何维勒/马修理查德';
