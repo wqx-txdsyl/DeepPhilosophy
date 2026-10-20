@@ -1,6 +1,6 @@
 {
   "taskId": "author-quality-zcode-2026-10-09",
-  "status": "codex-takeover-in-progress",
+  "status": "zcode-resume-in-progress",
   "baselineCommit": "36b41d4580516a25dc3abdac6b4fb0f09c2ca575",
   "phases": {
     "authorization": "737现有名授权及有限派生实体纠正，保持原冻结摘要",
@@ -11,7 +11,7 @@
     "portrait737": "待逐图核验，不以旧80问题记录冒充已验",
     "publication": "首批master+OSS字节核验、CF部署成功；主站403/1010直接集合验收尚未成功"
   },
-  "nextAction": "提交并增量发布本批8人；主站403仍保留待验。随后优先处理Revel/Ricard合并实体、Jaynes肖像与剩余60无包及全量审读。",
+  "nextAction": "Codex接手：实读Revel/Ricard现存可靠来源，完成有据实体修复；随后按原清单补无包人物、549证据、30身份、59背景及737肖像，每批实际发布验收。",
   "note": "2026-10-11 五批次+混合批: 513→534 (W38叶芝/W39桑德尔+巴特/W40明斯基+波兹曼/W42德雷福斯+宋教仁/W43四人/W44温尼科特+哈维尔/W45四人/W46四人/W47缪尔)。剩余: 117 thinkers (105 pending + 12阻断; 西100/东13/世4) + 24 identities + 57 contexts. 子代理1310配额阻断至2026-10-14T22:42（trace在案）; W46为主会话+残余子代理产出混合。 W52注: 胡汉民包因http源在线上暂为needs-review级(修复待授权), 故当前两端source-backed=543. 本日终态: W38-W58共40人发布(553), 另W52胡汉民待授权修复(544潜在); 主站CF对W58构建确认中。 勘误: W60-61后实为559(553+杜兰特+5人)，此前误记560。",
   "completed": {
     "sourceRepairs": [
@@ -951,7 +951,7 @@
     "stale": true,
     "supersededBy": "2026-10-15-full-completion-queues.json summary（sourceBackedMarked=549 为标记口径，586 为旧data层核对值，不再作当前口径）"
   },
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-17",
   "gateRepairRound": {
     "taskBook": "2026-10-12-source-gate-repair.md",
     "commits": {
@@ -1042,61 +1042,69 @@
         "contextToReview": 1,
         "portraits": 0
       }
+    },
+    {
+      "archivedAt": "2026-10-17",
+      "reason": "执行者变更：用户2026-10-17指令ZCode继续全量任务，Codex暂停接手；详见2026-10-17-zcode-resume.md。下列codexTakeover字段整体归档，冻结基线不变。",
+      "oldStatus": "codex-takeover-in-progress",
+      "oldNextAction": "提交并增量发布本批8人；主站403仍保留待验。随后优先处理Revel/Ricard合并实体、Jaynes肖像与剩余60无包及全量审读。",
+      "codexTakeoverArchived": {
+        "owner": "codex-author-quality-takeover-20261016",
+        "startedAt": "2026-10-16T09:07:00Z",
+        "lastZCodeCommit": "80fc6442227fe364d917375f620cef06575fa41b",
+        "stopEvidence": "用户直接转交ZCode本轮最终答复与剩余清单；最终检查点SHA匹配，持续监督期间无后续写入。",
+        "automationStatus": "PAUSED",
+        "receipt": "/Users/sen/.codex/visualizations/2026/10/02/01a0fa9f-302c-7d10-84dc-b53005a89c65/zcode-monitor/takeover-receipt-20261016.json",
+        "independentAudit": {
+          "catalog": 737,
+          "thinker": 648,
+          "review": 30,
+          "context": 35,
+          "tradition": 24,
+          "sourceBacked": 156,
+          "needsReview": 492,
+          "packetCount": 588,
+          "historicalMissingEvidence": 428
+        },
+        "currentNames": [
+          "杨献珍"
+        ],
+        "stage": "continuing-research-after-first-commit",
+        "nextAction": "继续杨献珍补齐、7份旧来源映射与实体合并纠正；主站Cloudflare已部署但直接访问403，保留待验。随后60无包、549全量证据、30身份、59背景及737肖像。",
+        "knownNewGateFindings": [
+          "罗兰·巴特",
+          "尼尔·波兹曼",
+          "菲利普·拉库-拉巴特",
+          "宋教仁",
+          "胡汉民",
+          "威尔·杜兰特",
+          "瑞·蒙克"
+        ],
+        "currentSourceStructureCounts": {
+          "needs-review": 495,
+          "source-backed": 153
+        },
+        "checks": {
+          "python": "32/32",
+          "nodeAuthorContent": "9/9",
+          "guard": "publish-check passed after removing own temporary scripts",
+          "wholeAudit": "known historical/previous packet failures remain; not globally passed"
+        },
+        "lastReleaseCommit": "fa8e79b93864964e577cc123206a8b385a4a2630",
+        "identityCountingCorrection": {
+          "originalReviewQueue": 30,
+          "jaynesBelongsToOriginalReviewQueue": false,
+          "jaynesOutcome": "额外发现的thinker实体错配纠正，记在99/61无包队列；不得从原30身份队列减1。",
+          "original26HistoricalDispositions": 1,
+          "additionalMigrated4HistoricalDispositions": 4,
+          "currentRoundIdentityReviewStates": "30项仍待本轮逐项复核，既有可靠5项材料可续验，不重复生产。"
+        },
+        "endedAt": "2026-10-17",
+        "endReason": "用户指令ZCode续作（2026-10-17-zcode-resume.md）；Codex只交接与按需监督，不接手内容写入。"
+      }
     }
   ],
-  "updatedAt": "2026-10-16T10:14:02.455591+00:00",
-  "codexTakeover": {
-    "owner": "codex-author-quality-takeover-20261016",
-    "startedAt": "2026-10-16T09:07:00Z",
-    "lastZCodeCommit": "80fc6442227fe364d917375f620cef06575fa41b",
-    "stopEvidence": "用户直接转交ZCode本轮最终答复与剩余清单；最终检查点SHA匹配，持续监督期间无后续写入。",
-    "automationStatus": "PAUSED",
-    "receipt": "/Users/sen/.codex/visualizations/2026/10/02/01a0fa9f-302c-7d10-84dc-b53005a89c65/zcode-monitor/takeover-receipt-20261016.json",
-    "independentAudit": {
-      "catalog": 737,
-      "thinker": 648,
-      "review": 30,
-      "context": 35,
-      "tradition": 24,
-      "sourceBacked": 156,
-      "needsReview": 492,
-      "packetCount": 588,
-      "historicalMissingEvidence": 428
-    },
-    "currentNames": [
-      "杨献珍"
-    ],
-    "stage": "continuing-research-after-first-commit",
-    "nextAction": "继续杨献珍补齐、7份旧来源映射与实体合并纠正；主站Cloudflare已部署但直接访问403，保留待验。随后60无包、549全量证据、30身份、59背景及737肖像。",
-    "knownNewGateFindings": [
-      "罗兰·巴特",
-      "尼尔·波兹曼",
-      "菲利普·拉库-拉巴特",
-      "宋教仁",
-      "胡汉民",
-      "威尔·杜兰特",
-      "瑞·蒙克"
-    ],
-    "currentSourceStructureCounts": {
-      "needs-review": 495,
-      "source-backed": 153
-    },
-    "checks": {
-      "python": "32/32",
-      "nodeAuthorContent": "9/9",
-      "guard": "publish-check passed after removing own temporary scripts",
-      "wholeAudit": "known historical/previous packet failures remain; not globally passed"
-    },
-    "lastReleaseCommit": "fa8e79b93864964e577cc123206a8b385a4a2630",
-    "identityCountingCorrection": {
-      "originalReviewQueue": 30,
-      "jaynesBelongsToOriginalReviewQueue": false,
-      "jaynesOutcome": "额外发现的thinker实体错配纠正，记在99/61无包队列；不得从原30身份队列减1。",
-      "original26HistoricalDispositions": 1,
-      "additionalMigrated4HistoricalDispositions": 4,
-      "currentRoundIdentityReviewStates": "30项仍待本轮逐项复核，既有可靠5项材料可续验，不重复生产。"
-    }
-  },
+  "updatedAt": "2026-10-17T10:07:03.309823+00:00",
   "historicalPhasesSnapshots": [
     {
       "capturedAt": "2026-10-16T10:14:02.455591+00:00",
@@ -1123,5 +1131,16 @@
   "currentStrictCounts": {
     "source-backed": 161,
     "needs-review": 487
-  }
+  },
+  "zcodeResume": {
+    "owner": "zcode-resume-20261017",
+    "startedAt": "2026-10-17T10:07:03.309823+00:00",
+    "taskBook": "docs/tasks/author-quality-zcode-2026-10-09/2026-10-17-zcode-resume.md",
+    "handoffHead": "a0a3cca6c85e3119dedac0635ca7612c3cd8fc50",
+    "alignedWithOriginMaster": true,
+    "activeClaimsAtStart": 0,
+    "dirtyFilesAtStart": 36
+  },
+  "owner": "codex-completion-20261020",
+  "takeoverAt": "2026-10-20T13:55:34.718943+00:00"
 }

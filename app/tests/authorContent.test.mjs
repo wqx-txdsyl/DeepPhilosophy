@@ -43,8 +43,8 @@ test('portrait requests use sized CDN images with the unchanged original path as
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
-  // 2026-10-15：四名身份裁决对象迁入 review 后 thinkers=648（a8509c51d；任务书2026-10-15交接基线口径）
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 648);
+  // 2026-10-20：原合并署名保留为共同对话作者组，总记录737不变。
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 647);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -52,6 +52,17 @@ test('every canonical entry has its own matching detail, category and existing i
     if (person.portrait) assert.ok(fs.existsSync(new URL(person.portrait.slice(1), publicRoot)), person.name);
     for (const school of person.profile.schoolLinks) assert.ok(fs.existsSync(new URL(`schools/data/${schools.find(item => item.name === school.name)?.detailFile}`, publicRoot)), school.name);
   }
+});
+test('the Revel and Ricard legacy entry keeps the joint book and distinguishes both authors', () => {
+  const name = '让-弗朗索瓦何维勒/马修理查德';
+  const group = details.find(person => person.name === name);
+  const raw = roster[name];
+  assert.equal(raw.entityType, 'dialogue-author-group');
+  assert.equal(raw.listingKind, 'context');
+  assert.equal(raw.portrait, null);
+  assert.ok(raw.bio.startsWith('本条是让-弗朗索瓦·何维勒与马修·理查德的共同对话专题'));
+  assert.deepEqual(group.profile.people.map(person => person.name), ['让-弗朗索瓦·何维勒', '马修·理查德']);
+  assert.ok(authorBooks(group, catalog).some(book => book.id === '077532e4515e'));
 });
 test('all former aliases still resolve to an existing canonical detail', () => {
   for (const [old, target] of Object.entries(catalog.aliases)) {
