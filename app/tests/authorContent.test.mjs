@@ -61,7 +61,7 @@ test('portrait requests use sized CDN images with the unchanged original path as
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
-  // 2026-10-20：共同署名组与Elaine Russell艺术家裁决保留旧入口，总记录737不变。
+  // 保留737入口；艺术家归属及Nyikina河流学者身份按来源纠正，不迁类清零。
   assert.equal(details.filter(person => person.listingKind === 'thinker').length, 646);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
@@ -70,6 +70,18 @@ test('every canonical entry has its own matching detail, category and existing i
     if (person.portrait) assert.ok(fs.existsSync(new URL(person.portrait.slice(1), publicRoot)), person.name);
     for (const school of person.profile.schoolLinks) assert.ok(fs.existsSync(new URL(`schools/data/${schools.find(item => item.name === school.name)?.detailFile}`, publicRoot)), school.name);
   }
+});
+test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikina and river-council identity', () => {
+  const person = details.find(item => item.name === '安妮·波伊特');
+  assert.equal(person.listingKind, 'thinker');
+  assert.equal(person.displayName, 'Anne Poelina');
+  assert.equal(person.country, '澳大利亚');
+  assert.equal(person.portrait, null);
+  assert.ok(person.bio.includes('Nyikina'));
+  assert.ok(!person.bio.includes('1940-2021'));
+  assert.ok(!person.profile.bibliography.some(work => /身体与差异|存在与性别|伦理与差异/.test(work.title)));
+  assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'www.notredame.edu.au'));
+  assert.equal(details.filter(item => item.listingKind === 'review').length, 30);
 });
 test('Elaine Russell keeps her legacy route as an artist, without the fabricated US philosopher identity', () => {
   const person = details.find(item => item.name === '伊莲·拉塞尔');
