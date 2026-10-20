@@ -62,7 +62,7 @@ test('portrait requests use sized CDN images with the unchanged original path as
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
   // 保留737入口；艺术家归属及Nyikina河流学者身份按来源纠正，不迁类清零。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 644);
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 643);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -85,6 +85,16 @@ test('Ani retains the ancient teaching attribution without a fabricated modern I
   assert.match(context.summary, /传统署名/);
   assert.ok(!context.summary.includes('死后审判'));
   assert.equal(details.filter(item => item.listingKind === 'review' && item.name !== '弗朗西斯·吉姆').length, 30);
+});
+test('Amorgen preserves the legacy route as an Irish literary tradition without the fabricated continental biography', () => {
+  const person = details.find(item => item.name === '德鲁伊·阿莫尔根');
+  assert.equal(person.listingKind, 'tradition');
+  assert.equal(person.displayName, '阿莫尔根（爱尔兰传说）');
+  assert.equal(person.portrait, null);
+  assert.ok(person.bio.includes('Amorgen Glúingel'));
+  assert.ok(!person.bio.includes('哈贝马斯'));
+  assert.ok(!person.profile.bibliography.some(work => /欲望机器|数字幽灵/.test(work.title)));
+  assert.equal(details.filter(item => item.listingKind === 'tradition').length, 26);
 });
 test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikina and river-council identity', () => {
   const person = details.find(item => item.name === '安妮·波伊特');
