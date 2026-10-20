@@ -76,6 +76,12 @@ test('all former aliases still resolve to an existing canonical detail', () => {
   assert.equal(references.findPerson('维特根斯坦').name, '路德维希·维特根斯坦');
 });
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
+  assert.equal(roster['丹尼斯·林德利'].era, '1923—2013');
+  assert.equal(roster['理查德·杰弗里'].era, '1926—2002');
+  for (const name of ['丹尼斯·林德利', '理查德·杰弗里']) {
+    assert.equal(roster[name].portrait, null, `${name}: 错配图不得恢复`);
+    assert.equal(roster[name].portraitReview.allowAsPortrait, false);
+  }
   assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
   assert.equal(roster['卡蒂尼'].era, '1879–1904');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
