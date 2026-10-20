@@ -11,8 +11,8 @@
   "quotaPolicy": {
     "stopWhenRemainingPercentBelow": 30,
     "checkAt": "每个对象开始、提交前及长对象每15分钟；任一可见适用窗口剩余低于30%即停止实质工作，保存当前检查点，不创建自动续跑。",
-    "lastObservedRemainingPercent": 88,
-    "checkedAt": "2026-10-20T18:38:46.280620+00:00"
+    "lastObservedRemainingPercent": 87,
+    "checkedAt": "2026-10-20T18:43:59.923989+00:00"
   },
   "statistics": {
     "canonicalObjects": 737,
@@ -63,9 +63,9 @@
     "note": "队列重叠，不相加为人数；165只代表当前来源/结构门禁，不能代替原549逐断言复核。"
   },
   "cursor": {
-    "ordinal": 21,
-    "name": "弗兰茨·舒尔曼",
-    "stage": "publication"
+    "ordinal": 22,
+    "name": "弗朗西斯·吉姆",
+    "stage": "publish-identity-warning"
   },
   "items": [
     {
@@ -299,8 +299,9 @@
         "missing-editorial-packet",
         "original-99-unfinished-acceptance"
       ],
-      "state": "validated-pending-publication",
-      "indexedStatus": "no-packet"
+      "state": "published",
+      "indexedStatus": "no-packet",
+      "commit": "c2a19de311d2a04cd40f1c26b0db3a38522dbb9c"
     },
     {
       "ordinal": 22,
@@ -309,8 +310,11 @@
         "missing-editorial-packet",
         "original-99-unfinished-acceptance"
       ],
-      "state": "pending",
-      "indexedStatus": "no-packet"
+      "state": "identity-unresolved",
+      "indexedStatus": "no-packet",
+      "resolved": false,
+      "publicationState": "warning-pending-publication",
+      "completionCredit": 0
     },
     {
       "ordinal": 23,
@@ -7588,8 +7592,36 @@
     "龙钦巴"
   ],
   "deferredBooks": "康德已读原文和精确待修位置保存在本会话外部恢复材料；本次不写入书库。ZCode仍独立负责无正文增量。",
-  "updatedAt": "2026-10-20T18:38:46.280620+00:00",
+  "updatedAt": "2026-10-20T18:44:00.106846+00:00",
   "currentStrictCounts": {
+    "records": 644,
+    "levels": {
+      "needs-review": 460,
+      "source-backed": 184
+    },
+    "coverage": {
+      "overview": 644,
+      "life": 615,
+      "concepts": 619,
+      "people": 632,
+      "relations": 631,
+      "bibliography": 629,
+      "sources": 611,
+      "readingRoutes": 611
+    },
+    "debate": 584,
+    "missing": {
+      "sources": 33,
+      "readingRoutes": 33,
+      "editorial-review": 33,
+      "life": 32,
+      "concepts": 31,
+      "bibliography": 32,
+      "people": 12
+    }
+  },
+  "sourceClaimMappingNote": "本批8份研究记录已按具体子断言拆分来源。若重跑旧生成脚本，须重新执行外部clarify_claims.py并作逐字段复核；不重算为新研究完成。",
+  "publishedStrictCounts": {
     "records": 645,
     "levels": {
       "needs-review": 461,
@@ -7616,33 +7648,13 @@
       "people": 12
     }
   },
-  "sourceClaimMappingNote": "本批8份研究记录已按具体子断言拆分来源。若重跑旧生成脚本，须重新执行外部clarify_claims.py并作逐字段复核；不重算为新研究完成。",
-  "publishedStrictCounts": {
-    "records": 646,
-    "levels": {
-      "needs-review": 465,
-      "source-backed": 181
-    },
-    "coverage": {
-      "overview": 646,
-      "life": 612,
-      "concepts": 616,
-      "people": 632,
-      "relations": 631,
-      "bibliography": 628,
-      "sources": 608,
-      "readingRoutes": 608
-    },
-    "debate": 581,
-    "missing": {
-      "sources": 38,
-      "readingRoutes": 38,
-      "editorial-review": 38,
-      "life": 37,
-      "concepts": 36,
-      "bibliography": 37,
-      "people": 14
+  "identityResearchMethod": "Review original school, book and historical source context before treating negative searches of a later generated biography as an identity verdict.",
+  "additionalUnresolvedIdentityObjects": [
+    {
+      "ordinal": 22,
+      "name": "弗朗西斯·吉姆",
+      "original30QueueReduction": 0,
+      "status": "identity-unresolved"
     }
-  },
-  "identityResearchMethod": "Review original school, book and historical source context before treating negative searches of a later generated biography as an identity verdict."
+  ]
 }
