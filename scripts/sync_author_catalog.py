@@ -176,6 +176,12 @@ def main():
                 target = member_names.get(relation.get('to'))
                 if not source or not target or name not in [source, target] or source == target:
                     continue
+                # A corrected identity may not acquire historical links from an
+                # unreviewed school graph. Its authored relations remain below;
+                # shared school membership stays explicitly labelled context.
+                if any(editorial.get(endpoint, {}).get('schoolRelationPolicy') == 'editorial-only'
+                       for endpoint in (source, target)):
+                    continue
                 label = relation.get('label') or relation.get('type') or '思想关联'
                 # Retain source direction and wording, including explicitly disputed traditions.
                 kind = 'teacher' if '师承' in label else 'reading' if any(word in label for word in ['批判', '争论', '解读']) else 'influence'

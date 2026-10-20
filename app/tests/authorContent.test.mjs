@@ -74,6 +74,17 @@ test('the Revel and Ricard legacy entry keeps the joint book and distinguishes b
   assert.deepEqual(group.profile.people.map(person => person.name), ['让-弗朗索瓦·何维勒', '马修·理查德']);
   assert.ok(authorBooks(group, catalog).some(book => book.id === '077532e4515e'));
 });
+test('recovering Narokobi does not turn an unverified school dialogue into historical evidence', () => {
+  const recovered = details.find(person => person.name === '伯纳德·纳罗科比');
+  assert.equal(recovered.country, '巴布亚新几内亚');
+  assert.ok(recovered.bio.startsWith('伯纳德·纳罗科比是巴布亚新几内亚'));
+  assert.ok(!recovered.profile.bibliography.some(work => work.originalTitle === 'De Universalibus'));
+  const peer = details.find(person => person.name === '维利索尼·赫雷尼科');
+  const shared = peer.profile.relations.filter(relation =>
+    [relation.from, relation.to].includes('伯纳德·纳罗科比'));
+  assert.ok(shared.length > 0);
+  assert.ok(shared.every(relation => relation.type === 'context' && relation.label === '共同思想背景'));
+});
 test('all former aliases still resolve to an existing canonical detail', () => {
   for (const [old, target] of Object.entries(catalog.aliases)) {
     assert.equal(canonicalAuthor(old, catalog), target);
