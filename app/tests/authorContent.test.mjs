@@ -62,7 +62,7 @@ test('portrait requests use sized CDN images with the unchanged original path as
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
   // 保留737入口；教材共同署名另作作者组，不把两个人合成一个思想者。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 639);
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 638);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -84,7 +84,7 @@ test('Ani retains the ancient teaching attribution without a fabricated modern I
   const context = details.find(item => item.name === '阿肯那顿').profile.people.find(item => item.name === '安尼');
   assert.match(context.summary, /传统署名/);
   assert.ok(!context.summary.includes('死后审判'));
-  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特', '罗克珊·维纳', '达格·奥斯特罗姆'].includes(item.name)).length, 30);
+  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特', '罗克珊·维纳', '达格·奥斯特罗姆', '阿布·穆斯林·阿特-图尔基'].includes(item.name)).length, 30);
 });
 test('Amorgen preserves the legacy route as an Irish literary tradition without the fabricated continental biography', () => {
   const person = details.find(item => item.name === '德鲁伊·阿莫尔根');
@@ -106,7 +106,7 @@ test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikin
   assert.ok(!person.bio.includes('1940-2021'));
   assert.ok(!person.profile.bibliography.some(work => /身体与差异|存在与性别|伦理与差异/.test(work.title)));
   assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'www.notredame.edu.au'));
-  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特', '罗克珊·维纳', '达格·奥斯特罗姆'].includes(item.name)).length, 30);
+  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特', '罗克珊·维纳', '达格·奥斯特罗姆', '阿布·穆斯林·阿特-图尔基'].includes(item.name)).length, 30);
 });
 test('Elaine Russell keeps her legacy route as an artist, without the fabricated US philosopher identity', () => {
   const person = details.find(item => item.name === '伊莲·拉塞尔');
@@ -146,6 +146,12 @@ test('unresolved identities do not acquire near-name people or unverified univer
   assert.equal(person.profile.concepts.length, 0);
   assert.ok(!person.bio.includes('斯坦福'));
   assert.ok(!person.bio.includes('Mauna Kea'));
+  const turki = details.find(item => item.name === '阿布·穆斯林·阿特-图尔基');
+  assert.equal(turki.listingKind, 'review');
+  assert.equal(turki.portrait, null);
+  assert.ok(turki.reviewReason);
+  assert.equal(turki.profile.concepts.length, 0);
+  assert.doesNotMatch(turki.bio, /开罗|欧美|1965|舒拉/);
   const dag = details.find(item => item.name === '达格·奥斯特罗姆');
   assert.equal(dag.listingKind, 'review');
   assert.equal(dag.portrait, null);
