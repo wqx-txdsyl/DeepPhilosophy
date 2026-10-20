@@ -200,6 +200,7 @@ test('corrected identities do not inherit unrelated portraits or fabricated biog
   const maffie = details.find(person => person.name === '詹姆斯·莫菲特');
   assert.equal(maffie.profile.englishName, 'James Maffie');
   assert.equal(maffie.era, '当代');
+  assert.deepEqual(maffie.centuries, ['20世纪', '21世纪']);
   assert.doesNotMatch(maffie.bio, /1940|2019|4E认知/);
   assert.match(maffie.profile.life.find(event => event.year === '1988年').body, /Michigan Ann Arbor博士/);
   assert.ok(maffie.profile.bibliography.some(work => work.originalTitle === 'Aztec Philosophy: Understanding a World in Motion'));
@@ -208,6 +209,7 @@ test('corrected identities do not inherit unrelated portraits or fabricated biog
   assert.equal(dodson.country, '澳大利亚');
   assert.match(dodson.era, /^1950/);
   assert.equal(dodson.portrait, null);
+  assert.deepEqual(dodson.centuries, ['20世纪', '21世纪']);
   assert.ok(dodson.profile.life.some(event => event.year === '1993—1998年'));
   assert.ok(dodson.profile.bibliography.some(work => work.originalTitle === 'Bringing Them Home' && work.kind === 'collective-institutional-inquiry-report'));
   for (const person of details.filter(person => person.listingKind === 'review')) {
