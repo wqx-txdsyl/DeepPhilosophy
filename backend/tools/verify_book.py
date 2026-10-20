@@ -69,6 +69,17 @@ ct = meta.get('chapterTitles', [])
 check('chapterTitles 字符串数组且长度 == chapterCount',
       isinstance(ct, list) and all(isinstance(t, str) for t in ct) and len(ct) == n,
       '%d 项' % len(ct))
+title_mismatches = []
+for i in range(n):
+    path = D + '/%d.json' % i
+    if not os.path.exists(path):
+        continue
+    with open(path, encoding='utf-8') as f:
+        chapter = json.load(f)
+    if not isinstance(chapter, dict) or i >= len(ct) or chapter.get('title') != ct[i]:
+        title_mismatches.append(i)
+check('meta.chapterTitles 与实际章节标题逐项一致', not title_mismatches,
+      '不一致: %s' % title_mismatches[:10] if title_mismatches else '')
 
 # 5. book_detail 条目 (详情页 /book_detail/<bid>.json)
 bd = BASE + '/app/public/book_detail/%s.json' % BID
@@ -84,6 +95,8 @@ if os.path.exists(bd):
           '缺 %s' % sorted(dmiss)[:6] if dmiss else '')
     check('book_detail chapterCount 一致', d.get('chapterCount') == n,
           'detail=%s meta=%s' % (d.get('chapterCount'), n))
+    check('book_detail chapterTitles 与 meta 逐项一致', d.get('chapterTitles') == ct)
+    check('book_detail toc 与 meta 逐项一致', dtoc == toc)
     check('book_detail title/author', d.get('title') == meta.get('title') and d.get('author') == meta.get('author'))
 else:
     check('book_detail/<bid>.json 存在', False, '缺失 → 详情页无目录')
