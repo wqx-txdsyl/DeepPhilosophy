@@ -155,8 +155,13 @@ test('recovering Narokobi does not turn an unverified school dialogue into histo
   const peer = details.find(person => person.name === '维利索尼·赫雷尼科');
   const shared = peer.profile.relations.filter(relation =>
     [relation.from, relation.to].includes('伯纳德·纳罗科比'));
-  assert.ok(shared.length > 0);
-  assert.ok(shared.every(relation => relation.type === 'context' && relation.label === '共同思想背景'));
+  // Both biographies now have authored packets; a school graph cannot restore
+  // a dialogue that neither packet has verified.
+  assert.equal(shared.length, 0);
+  assert.equal(peer.profile.englishName, 'Vilsoni Hereniko');
+  assert.equal(peer.era, '1954—');
+  assert.deepEqual(peer.centuries, ['20世纪', '21世纪']);
+  assert.ok(!peer.bio.includes('对话性还原'));
 });
 test('all former aliases still resolve to an existing canonical detail', () => {
   for (const [old, target] of Object.entries(catalog.aliases)) {
