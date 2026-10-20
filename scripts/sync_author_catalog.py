@@ -93,7 +93,7 @@ def main():
         if person['listingKind'] == 'review':
             person['reviewReason'] = roster['reviewReason']
             person.update(bio=roster['reviewReason'], era='身份待核实', country='', school='资料待核实', rank=0)
-        if person['listingKind'] == 'tradition' and name not in ['相里氏之墨', '萨阿贡记录的匿名智者', '传道者', '约伯', '奇兰·巴兰']:
+        if person['listingKind'] == 'tradition' and name not in ['相里氏之墨', '萨阿贡记录的匿名智者', '传道者', '约伯', '奇兰·巴兰', '安尼']:
             person['dateKind'] = 'tradition'
 
     index = {clean(name): name for name in people}
@@ -167,7 +167,7 @@ def main():
             # A shared school is an intellectual context, not evidence of a personal encounter.
             for other, other_name in members:
                 if other_name != name and not any(item['name'] == other_name for item in profile['people']):
-                    profile['people'].append({'name': other_name, 'era': people[other_name]['era'], 'influence': other.get('influence', 5), 'role': f"共同思想背景 · {school['name']}", 'summary': other.get('key', ''), 'sourceSchool': school['name']})
+                    profile['people'].append({'name': other_name, 'era': people[other_name]['era'], 'influence': other.get('influence', 5), 'role': f"共同思想背景 · {school['name']}", 'summary': editorial.get(other_name, {}).get('contextSummary', other.get('key', '')), 'sourceSchool': school['name']})
                     profile['relations'].append({'from': name, 'to': other_name, 'type': 'context', 'label': '共同思想背景', 'sourceSchool': school['name']})
 
             member_names = {other['name']: other_name for other, other_name in members}

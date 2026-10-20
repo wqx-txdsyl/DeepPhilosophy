@@ -62,7 +62,7 @@ test('portrait requests use sized CDN images with the unchanged original path as
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
   // 保留737入口；艺术家归属及Nyikina河流学者身份按来源纠正，不迁类清零。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 646);
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 645);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -70,6 +70,21 @@ test('every canonical entry has its own matching detail, category and existing i
     if (person.portrait) assert.ok(fs.existsSync(new URL(person.portrait.slice(1), publicRoot)), person.name);
     for (const school of person.profile.schoolLinks) assert.ok(fs.existsSync(new URL(`schools/data/${schools.find(item => item.name === school.name)?.detailFile}`, publicRoot)), school.name);
   }
+});
+test('Ani retains the ancient teaching attribution without a fabricated modern Indian biography or mythical dating', () => {
+  const person = details.find(item => item.name === '安尼');
+  assert.equal(person.listingKind, 'tradition');
+  assert.equal(person.country, '古埃及');
+  assert.equal(person.dateKind, 'text-tradition');
+  assert.equal(person.portrait, null);
+  assert.ok(person.bio.includes('传统署名'));
+  assert.equal(person.profile.bibliography.length, 1);
+  assert.match(person.profile.bibliography[0].originalTitle, /Instruction of Ani/);
+  assert.ok(!person.bio.includes('瓦拉纳西'));
+  const context = details.find(item => item.name === '阿肯那顿').profile.people.find(item => item.name === '安尼');
+  assert.match(context.summary, /传统署名/);
+  assert.ok(!context.summary.includes('死后审判'));
+  assert.equal(details.filter(item => item.listingKind === 'review').length, 30);
 });
 test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikina and river-council identity', () => {
   const person = details.find(item => item.name === '安妮·波伊特');
