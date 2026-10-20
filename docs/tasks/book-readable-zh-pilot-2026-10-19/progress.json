@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "status": "done",
+ "status": "superseded_by_repair",
  "owner": "ZCode",
  "preferredBookId": "cf93d305f407",
  "selectedBookId": "cf93d305f407",
@@ -18,5 +18,29 @@
   "P07": "done:publication.json+receipt.md落盘"
  },
  "lastCheckpointAt": "2026-10-19T23:45:56+08:00",
- "nextAction": "本轮收官：剩余75本等下一轮范围安排"
+ "nextAction": "本轮收官：剩余75本等下一轮范围安排",
+ "corrections": [
+  {
+   "correctedAt": "2026-10-20T22:06:21+08:00",
+   "reason": "独立审计（book-zh-completion evidence/enchiridion-independent-audit.md）证实47节漏译/33节指代问题与P02/P03状态冲突；book-zh-completion任务R00要求校正",
+   "corrections": [
+    {
+     "field": "status",
+     "was": "done",
+     "now": "superseded_by_repair(zh-completion R00)",
+     "note": "原done表述撤回：完整全译验收未通过"
+    },
+    {
+     "field": "phases.P02",
+     "was": "in_progress",
+     "now": "reopened: 审计证实源段落保全≠原著无漏译（47节缺穷人节俭比较句）"
+    },
+    {
+     "field": "phases.P03",
+     "was": "pending",
+     "now": "reopened: 33节指代混乱漏检，全53节逐段对照由zh-completion R02重做"
+    }
+   ]
+  }
+ ]
 }
