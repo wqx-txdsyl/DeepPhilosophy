@@ -62,7 +62,7 @@ test('portrait requests use sized CDN images with the unchanged original path as
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
   // 保留737入口；教材共同署名另作作者组，不把两个人合成一个思想者。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 642);
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 641);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -84,7 +84,7 @@ test('Ani retains the ancient teaching attribution without a fabricated modern I
   const context = details.find(item => item.name === '阿肯那顿').profile.people.find(item => item.name === '安尼');
   assert.match(context.summary, /传统署名/);
   assert.ok(!context.summary.includes('死后审判'));
-  assert.equal(details.filter(item => item.listingKind === 'review' && item.name !== '弗朗西斯·吉姆').length, 30);
+  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特'].includes(item.name)).length, 30);
 });
 test('Amorgen preserves the legacy route as an Irish literary tradition without the fabricated continental biography', () => {
   const person = details.find(item => item.name === '德鲁伊·阿莫尔根');
@@ -106,7 +106,7 @@ test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikin
   assert.ok(!person.bio.includes('1940-2021'));
   assert.ok(!person.profile.bibliography.some(work => /身体与差异|存在与性别|伦理与差异/.test(work.title)));
   assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'www.notredame.edu.au'));
-  assert.equal(details.filter(item => item.listingKind === 'review' && item.name !== '弗朗西斯·吉姆').length, 30);
+  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特'].includes(item.name)).length, 30);
 });
 test('Elaine Russell keeps her legacy route as an artist, without the fabricated US philosopher identity', () => {
   const person = details.find(item => item.name === '伊莲·拉塞尔');
@@ -137,6 +137,15 @@ test('the Stumpf and Fieser legacy credit retains its readable book without beco
   assert.equal(roster[name].portrait, null);
   assert.deepEqual(group.profile.people.map(person => person.name), ['Samuel Enoch Stumpf', 'James Fieser']);
   assert.ok(authorBooks(group, catalog).some(book => book.id === '4a4a200536bd'));
+});
+test('the unresolved Case-Davenport entry does not acquire a near-name person or the old Stanford biography', () => {
+  const person = details.find(item => item.name === '普阿·凯斯-达文波特');
+  assert.equal(person.listingKind, 'review');
+  assert.equal(person.portrait, null);
+  assert.ok(person.reviewReason);
+  assert.equal(person.profile.concepts.length, 0);
+  assert.ok(!person.bio.includes('斯坦福'));
+  assert.ok(!person.bio.includes('Mauna Kea'));
 });
 test('recovering Narokobi does not turn an unverified school dialogue into historical evidence', () => {
   const recovered = details.find(person => person.name === '伯纳德·纳罗科比');
