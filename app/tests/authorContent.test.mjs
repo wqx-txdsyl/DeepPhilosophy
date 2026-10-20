@@ -203,6 +203,13 @@ test('corrected identities do not inherit unrelated portraits or fabricated biog
   assert.doesNotMatch(maffie.bio, /1940|2019|4E认知/);
   assert.match(maffie.profile.life.find(event => event.year === '1988年').body, /Michigan Ann Arbor博士/);
   assert.ok(maffie.profile.bibliography.some(work => work.originalTitle === 'Aztec Philosophy: Understanding a World in Motion'));
+  const dodson = details.find(person => person.name === '迈克尔·多德森');
+  assert.equal(dodson.profile.englishName, 'Michael (Mick) Dodson');
+  assert.equal(dodson.country, '澳大利亚');
+  assert.match(dodson.era, /^1950/);
+  assert.equal(dodson.portrait, null);
+  assert.ok(dodson.profile.life.some(event => event.year === '1993—1998年'));
+  assert.ok(dodson.profile.bibliography.some(work => work.originalTitle === 'Bringing Them Home' && work.kind === 'collective-institutional-inquiry-report'));
   for (const person of details.filter(person => person.listingKind === 'review')) {
     assert.equal(person.bio, person.reviewReason);
     assert.equal(person.portrait, null);
