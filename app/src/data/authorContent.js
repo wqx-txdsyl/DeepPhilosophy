@@ -45,3 +45,16 @@ export function normalizeAuthor(raw) {
     schoolLinks: profile.schoolLinks || [], sources: profile.sources || raw.sources || [],
   } };
 }
+
+// Section citations require declared IDs and an actually read text scope.
+// Catalogues and unread leads remain available in the full references list.
+export function authorSectionSources(author, section) {
+  const profile = author?.profile || {};
+  const references = section === 'overview'
+    ? profile.editorial?.overviewSourceRefs
+    : profile[section]?.sourceRefs;
+  if (!Array.isArray(references)) return [];
+  return (profile.sources || []).filter(source =>
+    references.includes(source.id) &&
+    ['full-text', 'partial-text'].includes(source.accessScope));
+}

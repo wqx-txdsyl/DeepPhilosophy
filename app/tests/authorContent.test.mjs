@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { AUTHOR_KINDS, authorBooks, authorFile, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { AUTHOR_KINDS, authorBooks, authorFile, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
 import { buildSchoolReferences } from '../src/data/schoolContent.js';
@@ -12,6 +12,24 @@ const catalog = read('philosopher/catalog.json');
 const roster = read('philosophers.json');
 const schools = read('schools/catalog.json').schools;
 const details = Object.keys(roster).map(name => normalizeAuthor(read(decodeURIComponent(authorFile(name).slice(1)))));
+
+test('section citations honor declared sources instead of university-title guesses', () => {
+  const person = details.find(item => item.name === '傅佩荣');
+  assert.deepEqual(authorSectionSources(person, 'debate').map(source => source.id), ['ntu-nature']);
+  assert.ok(!authorSectionSources(person, 'overview').some(source => source.accessScope === 'abstract-or-catalog'));
+  assert.equal(person.profile.sources.length, 7);
+});
+
+test('catalogues, unread leads and missing declarations do not become body evidence', () => {
+  const person = { profile: { editorial: { overviewSourceRefs: ['text', 'catalog', 'unread', 'missing'] }, sources: [
+    { id: 'text', accessScope: 'partial-text' },
+    { id: 'catalog', accessScope: 'abstract-or-catalog', title: '大学资料' },
+    { id: 'unread', accessScope: 'unread' },
+  ] } };
+  assert.deepEqual(authorSectionSources(person, 'overview').map(source => source.id), ['text']);
+  assert.deepEqual(authorSectionSources(person, 'debate'), []);
+  assert.equal(person.profile.sources.length, 3);
+});
 
 test('detail and hero discovery are not blocked by a slow directory download, including old aliases', async () => {
   let finishCatalog;
