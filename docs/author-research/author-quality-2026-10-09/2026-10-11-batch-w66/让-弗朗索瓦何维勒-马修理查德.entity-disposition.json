@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "name": "让-弗朗索瓦何维勒/马修理查德",
+  "recordType": "entity-disposition-record",
+  "recordedAt": "2026-10-20",
+  "recordedBy": "codex-completion-20261020",
+  "entityQuestion": "该目录键合并了 Jean-François Revel（1924—2006，法国哲学家、法兰西学院院士）与 Matthieu Ricard（1946— ，藏传佛教僧侣、作家）两位真实人物（父子）。应作为两人分立、对话作者组、或其他集合记录？",
+  "findings": [
+    "两人为父子（Revel 之子），合著有《僧侣与哲学家》（Le Moine et le philosophe, 1997，尼加拉出版，被译为多语）；目录键的合并源于站内旧档以该对话录为关联书。",
+    "此前包内 confirmed 裁决未说明双人性质；包内全部正文引用建立在普通维基线索（wikipedia-revel）与单一官网（ricard-site）上，22项门禁错误，未达发布标准。",
+    "catalog 键、公共路径 data/让-弗朗索瓦何维勒-马修理查德.json（遗留条目）与书籍关联必须保留；不得凭空拆为两人以增加分母。"
+  ],
+  "decision": "dialogue-author-group",
+  "interimMeasures": [
+    "正式包移出发布管线：app/public/philosopher/editorial/让-弗朗索瓦何维勒-马修理查德.json → 本目录 drafts/让-弗朗索瓦何维勒-马修理查德.editorial-packet.json（内容未删改）",
+    "公共路径回退 HEAD 遗留条目，正文与路由保持可用；编译快照另存 checkpoints/（compiled-data-2026-10-13.json）",
+    "索引/目录中不再标记 source-backed；实体裁决完成前不得以 source-backed 提交"
+  ],
+  "optionsForNextRound": [
+    "A. 两人分立：新建两个目录键（何维勒/马修理查德），对话录挂合著；原键转别名。影响分母（thinkers 数），须在台账解释。",
+    "B. 对话作者组：按项目集合记录标准（类似 萨阿贡记录的匿名智者 等先例）标注为 dialogue-author-group，包内明确区分两人各自经历与学说。",
+    "C. 维持合并键但重写为『父子对话』专题条目，明确两人生平不得拼接。"
+  ],
+  "nextAction": "同步编译，来源/结构/回归检查后增量发布，核验旧入口、书籍关联及分开表述。",
+  "previousDecision": {
+    "decision": "pending-entity-decision",
+    "recordedAt": "2026-10-13"
+  },
+  "rationale": "采用原任务书允许的共同对话作者组方案。已逐人分开经历和观点，补入实读资料；不是只迁类清零。原737记录总量不变，thinker减少1、context增加1；未新建两个空壳个体或删除旧键。",
+  "publicPacket": "app/public/philosopher/editorial/让-弗朗索瓦何维勒-马修理查德.json"
+}
