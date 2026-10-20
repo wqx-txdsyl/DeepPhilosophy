@@ -61,8 +61,8 @@ test('portrait requests use sized CDN images with the unchanged original path as
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);
-  // 保留737入口；艺术家归属及Nyikina河流学者身份按来源纠正，不迁类清零。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 643);
+  // 保留737入口；教材共同署名另作作者组，不把两个人合成一个思想者。
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 642);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -128,6 +128,15 @@ test('the Revel and Ricard legacy entry keeps the joint book and distinguishes b
   assert.ok(raw.bio.startsWith('本条是让-弗朗索瓦·何维勒与马修·理查德的共同对话专题'));
   assert.deepEqual(group.profile.people.map(person => person.name), ['让-弗朗索瓦·何维勒', '马修·理查德']);
   assert.ok(authorBooks(group, catalog).some(book => book.id === '077532e4515e'));
+});
+test('the Stumpf and Fieser legacy credit retains its readable book without becoming one person', () => {
+  const name = '撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽';
+  const group = details.find(person => person.name === name);
+  assert.equal(roster[name].entityType, 'textbook-author-group');
+  assert.equal(roster[name].listingKind, 'context');
+  assert.equal(roster[name].portrait, null);
+  assert.deepEqual(group.profile.people.map(person => person.name), ['Samuel Enoch Stumpf', 'James Fieser']);
+  assert.ok(authorBooks(group, catalog).some(book => book.id === '4a4a200536bd'));
 });
 test('recovering Narokobi does not turn an unverified school dialogue into historical evidence', () => {
   const recovered = details.find(person => person.name === '伯纳德·纳罗科比');
