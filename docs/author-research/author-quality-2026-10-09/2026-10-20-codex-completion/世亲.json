@@ -1,0 +1,937 @@
+{
+  "schemaVersion": 1,
+  "name": "世亲",
+  "batch": "2026-10-03-balanced-02",
+  "researchedAt": "2026-10-21",
+  "identity": {
+    "era": "约4—5世纪（笈多时代；生卒不可考）"
+  },
+  "sources": [
+    {
+      "id": "sep",
+      "title": "斯坦福哲学百科 · Vasubandhu",
+      "url": "https://plato.stanford.edu/entries/vasubandhu/",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-21",
+      "coverage": "年代与一/多世亲之争、传记传统、著作目录、无我与刹那灭、二十论论证、三性、唯心论解释；具体材料见各项说明",
+      "accessScope": "partial-text",
+      "readScope": "年代与一/多世亲之争、传记传统、著作目录、无我与刹那灭、二十论论证、三性、唯心论解释；具体材料见各项说明 本轮普通GET200，实际重读§1.1/1.2、§2.2刹那与连续、§4三性象喻前后及§5约定/胜义限定段；并非重读全长文。电影静帧是现代讲解例，不是世亲原譬。"
+    },
+    {
+      "id": "iep",
+      "title": "IEP · Vasubandhu（K. T. S. Sarao 撰）",
+      "url": "https://iep.utm.edu/vasubandhu/",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-21",
+      "coverage": "断代方案谱、《婆薮槃豆法师传》叙事、著作目录（千部归目与今存47种）、种子与藏识、汉传三派与藏传教材地位；具体材料见各项说明",
+      "accessScope": "partial-text",
+      "readScope": "断代方案谱、《婆薮槃豆法师传》叙事、著作目录（千部归目与今存47种）、种子与藏识、汉传三派与藏传教材地位；具体材料见各项说明 本轮普通GET200重读§2家世/罽宾、§4争辩、§5断代、§6著作计数/成业/五蕴段。同母异父非异母，语言计数重叠；其“当代已不能成立”是该条作者判断，与SEP分歧并列。"
+    },
+    {
+      "id": "sep-yc",
+      "title": "斯坦福哲学百科 · Yogācāra Buddhist Philosophy",
+      "url": "https://plato.stanford.edu/entries/yogacara/",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-03",
+      "coverage": "瑜伽行学派语境、弥勒问题、三性与三十颂颂位、二十论证群与颂号、玄奘与《成唯识论》、中观—瑜伽行系统关系",
+      "accessScope": "partial-text",
+      "readScope": "瑜伽行学派语境、弥勒问题、三性与三十颂颂位、二十论证群与颂号、玄奘与《成唯识论》、中观—瑜伽行系统关系"
+    },
+    {
+      "id": "kosa",
+      "title": "The Treasury of Abhidharma and its (Auto)commentary（俱舍研读站）",
+      "url": "https://abhidharmakosa.wordpress.com/",
+      "type": "study-resource",
+      "accessedAt": "2026-10-03",
+      "coverage": "俱舍九品品目（界、根、世、业、随眠、道与贤圣、智、定、破我）与现代译史（Poussin 法译、Pruden 与2012年 Motilal 英译）",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "俱舍九品品目（界、根、世、业、随眠、道与贤圣、智、定、破我）与现代译史（Poussin 法译、Pruden 与2012年 Motilal 英译）"
+    },
+    {
+      "id": "lusthaus-chart",
+      "title": "The One Hundred Dharmas in Yogācāra（Dan Lusthaus 编）",
+      "url": "https://www.acmuller.net/yogacara/outlines/100dharmas.html",
+      "type": "scholarly-reference-page",
+      "accessedAt": "2026-10-03",
+      "coverage": "《大乘百法明门论》（T1614）传统题署世亲之题证与五位百法谱系（与阿毗达磨75法对照）",
+      "accessScope": "partial-text",
+      "readScope": "《大乘百法明门论》（T1614）传统题署世亲之题证与五位百法谱系（与阿毗达磨75法对照）"
+    },
+    {
+      "id": "oeaw",
+      "title": "Vasubandhu's Pañcaskandhaka（奥地利科学院 STTAR 丛书书页）",
+      "url": "https://www.oeaw.ac.at/en/ikga/publikationen/reihen/sanskrit-texts-from-the-tibetan-autonomous-region-sttar/vasubandhus-pancaskandhaka",
+      "type": "publisher-page",
+      "accessedAt": "2026-10-03",
+      "coverage": "《五蕴论》性质（与无著《集论》一致的瑜伽行经院概要）及其梵本孤本2008年校刊史",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "《五蕴论》性质（与无著《集论》一致的瑜伽行经院概要）及其梵本孤本2008年校刊史"
+    },
+    {
+      "id": "thirty-primary",
+      "title": "玄奘译唯识三十论颂（T31n1586，NTU所存CBETA2001版）",
+      "url": "https://dlbs.liberal.ntu.edu.tw/BDLM/sutra/html/T31/T31n1586.htm",
+      "type": "primary-text",
+      "accessedAt": "2026-10-21",
+      "accessScope": "full-text",
+      "readScope": "普通GET200实际读全页4301字符：题署/三十颂全部/夹入导语及分位说明。第20—22三性，23—25三无性及真如，26—30修行；恒转如瀑流/阿罗汉位舍在4。夹入释语不可全部归成世亲颂文；2001为电子版本日非古译年。未查梵藏所有异文。"
+    },
+    {
+      "id": "hundred-primary",
+      "title": "大乘百法明门论（维基文库转录）",
+      "url": "https://zh.wikisource.org/wiki/大乘百法明門論",
+      "type": "primary-text-traditional-attribution",
+      "accessedAt": "2026-10-21",
+      "accessScope": "full-text",
+      "readScope": "网页实际读117—131全部题署和短正文：天亲菩萨造/玄奘译、五类及8+51+11+24+6、两无我。转录上“大乘论第1206部”为另一目录编号，不能混为大正T号。只证传统署名，不能凭此裁定历史真作者。"
+    },
+    {
+      "id": "filliozat-review",
+      "title": "J.Filliozat：Frauwallner1951专著书评（1952，249页）",
+      "url": "https://www.persee.fr/doc/rhr_0035-1423_1952_num_142_2_5922",
+      "type": "contemporary-scholarly-book-review",
+      "accessedAt": "2026-10-21",
+      "accessScope": "full-text",
+      "readScope": "网页实际读28—29整篇短书评：320—380为无著之弟，400—480为俱舍作者，纠旧稿对调。不是读Frauwallner69页原书；不能据书评赞许认定今日共识。"
+    },
+    {
+      "id": "moriyama-gate",
+      "title": "Moriyama Shin’ya：The Gate of Praise in Vasubandhu’s Sukhavativyuhopadesa",
+      "url": "https://otani.repo.nii.ac.jp/record/8211/files/EB37_OCR_14.pdf",
+      "type": "scholarly-article",
+      "accessedAt": "2026-10-21",
+      "accessScope": "partial-text",
+      "readScope": "普通GET200下载PDF、pdftotext实读印235—237：导论、汉译存本问题、两个世亲方案及Schmithausen归类反例；未读后文全部净土论证。其重构包括把俱舍/成业/二十/三十置同作者，不能简写早期俱舍对晚期全部瑜伽行的机械二分。"
+    }
+  ],
+  "checks": [
+    {
+      "field": "profile.overview[0]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "iep",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[0]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "sep",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[1]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "sep",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[1]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "thirty-primary",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[2]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "sep",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[2]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "sep-yc",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[2]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "iep",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[3]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "sep",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[3]",
+      "claim": "传统/文本/解释层次",
+      "sourceId": "thirty-primary",
+      "locator": "指定段与颂位，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[0]",
+      "claim": "出身与出家（传统传记层）",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[1]",
+      "claim": "罽宾求学与毗婆沙训练（传统传记层）",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[1]",
+      "claim": "罽宾求学与毗婆沙训练（传统传记层）",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[2]",
+      "claim": "《俱舍论》成书与毗婆沙师的反击",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[2]",
+      "claim": "《俱舍论》成书与毗婆沙师的反击",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[3]",
+      "claim": "『回小向大』",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[3]",
+      "claim": "『回小向大』",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[4]",
+      "claim": "瑜伽行论书与身后接受",
+      "sourceId": "thirty-primary",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[4]",
+      "claim": "瑜伽行论书与身后接受",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[4]",
+      "claim": "瑜伽行论书与身后接受",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[4]",
+      "claim": "瑜伽行论书与身后接受",
+      "sourceId": "moriyama-gate",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[0]",
+      "claim": "补特伽罗无我",
+      "sourceId": "sep",
+      "locator": "《阿毗达磨俱舍论·破我品》（末品附录）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[1]",
+      "claim": "刹那灭",
+      "sourceId": "sep",
+      "locator": "《阿毗达磨俱舍论》自注（AKBh）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[2]",
+      "claim": "种子与阿赖耶识",
+      "sourceId": "thirty-primary",
+      "locator": "三十颂2—4、18—19；旧成业论学术阅读",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[2]",
+      "claim": "种子与阿赖耶识",
+      "sourceId": "iep",
+      "locator": "三十颂2—4、18—19；旧成业论学术阅读",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[2]",
+      "claim": "种子与阿赖耶识",
+      "sourceId": "sep-yc",
+      "locator": "三十颂2—4、18—19；旧成业论学术阅读",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[3]",
+      "claim": "唯识无境",
+      "sourceId": "sep",
+      "locator": "《唯识二十论》（颂2—4、11—15）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[3]",
+      "claim": "唯识无境",
+      "sourceId": "sep-yc",
+      "locator": "《唯识二十论》（颂2—4、11—15）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[3]",
+      "claim": "唯识无境",
+      "sourceId": "thirty-primary",
+      "locator": "《唯识二十论》（颂2—4、11—15）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[4]",
+      "claim": "三性",
+      "sourceId": "thirty-primary",
+      "locator": "三十颂20—25；SEP§4所译三性论27—30（分文献）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[4]",
+      "claim": "三性",
+      "sourceId": "sep",
+      "locator": "三十颂20—25；SEP§4所译三性论27—30（分文献）",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[5]",
+      "claim": "五位百法",
+      "sourceId": "hundred-primary",
+      "locator": "百法明门论短全文/题署；原Lusthaus图表",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[5]",
+      "claim": "五位百法",
+      "sourceId": "lusthaus-chart",
+      "locator": "百法明门论短全文/题署；原Lusthaus图表",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[0]",
+      "claim": "阿毗达磨俱舍论",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[0]",
+      "claim": "阿毗达磨俱舍论",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[0]",
+      "claim": "阿毗达磨俱舍论",
+      "sourceId": "kosa",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[1]",
+      "claim": "唯识二十论",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[1]",
+      "claim": "唯识二十论",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[2]",
+      "claim": "唯识三十颂",
+      "sourceId": "thirty-primary",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[2]",
+      "claim": "唯识三十颂",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[2]",
+      "claim": "唯识三十颂",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[3]",
+      "claim": "成业论",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[3]",
+      "claim": "成业论",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[4]",
+      "claim": "辨中边论释",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[4]",
+      "claim": "辨中边论释",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[4]",
+      "claim": "辨中边论释",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[5]",
+      "claim": "论轨",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[5]",
+      "claim": "论轨",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[0]",
+      "claim": "无著",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[0]",
+      "claim": "无著",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[1]",
+      "claim": "弥勒",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[1]",
+      "claim": "弥勒",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[2]",
+      "claim": "玄奘",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[2]",
+      "claim": "玄奘",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[3]",
+      "claim": "龙树",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[4]",
+      "claim": "众贤",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[4]",
+      "claim": "众贤",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[0]",
+      "claim": "兄长与引度（传统叙事）",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[0]",
+      "claim": "兄长与引度（传统叙事）",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[1]",
+      "claim": "传统归名之书的注释者",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[1]",
+      "claim": "传统归名之书的注释者",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[2]",
+      "claim": "译介与法相宗的经典化",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[2]",
+      "claim": "译介与法相宗的经典化",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[2]",
+      "claim": "译介与法相宗的经典化",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[3]",
+      "claim": "中观与瑜伽行的系统间对照（编辑性关联）",
+      "sourceId": "sep-yc",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.readingRoutes[0]",
+      "claim": "从唯识论证进入",
+      "sourceId": "thirty-primary",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.readingRoutes[0]",
+      "claim": "从唯识论证进入",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.readingRoutes[0]",
+      "claim": "从唯识论证进入",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.readingRoutes[1]",
+      "claim": "从『无我之后业力如何连续』进入",
+      "sourceId": "sep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.readingRoutes[1]",
+      "claim": "从『无我之后业力如何连续』进入",
+      "sourceId": "iep",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.readingRoutes[1]",
+      "claim": "从『无我之后业力如何连续』进入",
+      "sourceId": "thirty-primary",
+      "locator": "旧实际阅读/本轮指定段，传统史与现代解释分开，见readScope",
+      "verdict": "inferred"
+    },
+    {
+      "field": "profile.debate.paragraphs[0]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "iep",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[0]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "sep",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[1]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "filliozat-review",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[1]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "moriyama-gate",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[1]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "iep",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[1]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "sep",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[2]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "sep",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[2]",
+      "claim": "年代/归属/发展叙事",
+      "sourceId": "moriyama-gate",
+      "locator": "指定§1/§5/§6、249短评、237页",
+      "verdict": "confirmed"
+    }
+  ],
+  "uncertainties": [
+    "精确生卒、传统圣传情节与多作者假说继续分层，未核全部原始传记。",
+    "原三性论梵藏全本、成业论、俱舍全书本轮未通读；象喻按SEP指定译段，不冒称原著全部读毕。",
+    "百法题署已读但历史作者归属未以此裁定；二十论新CBETA请求网页404/普通406未取得正文，沿用旧实际研究。",
+    "Moriyama只读235—237，不冒报全篇净土论证；47种语言计数互有重叠，非相加。"
+  ],
+  "portraitNote": "unverified",
+  "historicalRecordPath": "docs/author-research/2026-10-03-balanced-02/世亲.json",
+  "historicalChecks": [
+    {
+      "archivedAt": "2026-10-21",
+      "reason": "保留旧来源，补三十颂全颂本核颂号、家世翻译、两个世亲方案顺序及论证归属。",
+      "checks": [
+        {
+          "field": "identity.era / 概述",
+          "claim": "活跃于4—5世纪（笈多时代）",
+          "sourceId": "sep",
+          "locator": "开篇年代句；断代依据之一为真谛所记『为 Vikramāditya（条目比定 Chandragupta II，约380—415在位）王太子与王后授教』",
+          "verdict": "confirmed",
+          "notes": "SEP 与 IEP 一致（IEP 作4或5世纪 in floruit）；旧数据『约公元4世纪至5世纪』维持，草稿 identity.era 作『约4—5世纪（笈多时代；生卒不可考）』"
+        },
+        {
+          "field": "identity（断代分歧）",
+          "claim": "生卒年不可确考，学术方案分歧极大",
+          "sourceId": "iep",
+          "locator": "年代学一节：Noul Pari/Shio Benkyoo 270—350、Anacker 316—396、宇井伯寿 320—400、高楠顺次郎/木村泰贤 420—500、Wogihara 390—470、Hikata 400—480；传统锚点为佛灭后900/1000/1100年诸说",
+          "verdict": "confirmed",
+          "notes": "chronologyPolicy 取 limited-evidence；任务提示之『约316—396』即 Anacker 方案，仅作诸方案之一呈现"
+        },
+        {
+          "field": "debate（一/多世亲：否定方）",
+          "claim": "IEP：Frauwallner 两世亲说已难成立",
+          "sourceId": "iep",
+          "locator": "Frauwallner：长者约320—380、幼者约400—480；『当前学术中不再成立（no longer tenable）』，所据汉文资料部分伪作；『晚近研究已排除多个世亲的假说』",
+          "verdict": "confirmed",
+          "notes": "与 SEP 口径不同（见下条）；草稿并列两说并如实呈现分歧"
+        },
+        {
+          "field": "debate（一/多世亲：存疑方）",
+          "claim": "SEP：两世亲说若干版本仍占优势，无叙事取得共识",
+          "sourceId": "sep",
+          "locator": "1950年代 Frauwallner 提出两世亲说，『若干版本在一些学术领域仍占优势（hold sway in some areas of the academy）』；多数学者怀疑庞大归目非一人所能为；另有渐进过渡说与 Kritzer『一直是瑜伽行派』说；『没有一种（思想发展）叙事取得学术共识』",
+          "verdict": "confirmed",
+          "notes": "任务提示所举宫崎守贤、袴谷宪昭、Ronald Davidson 等学者名未在本轮来源出现，草稿不点名（uncertainties 存档）"
+        },
+        {
+          "field": "profile.life[0]（出身出家）",
+          "claim": "生于富楼沙富罗（白沙瓦）婆罗门家庭、说一切有部出家",
+          "sourceId": "iep",
+          "locator": "传记节：父为 Kauśika gotra 婆罗门王师；entered the Sarvāstivāda order；母名两传（Viriñci/Prasannaśīla）、藏史称无著异母兄、另有幼弟 Viriñcivatsa",
+          "verdict": "confirmed",
+          "notes": "属传统传记层（汉藏两系互有出入）；草稿 life[0] 标注传记性质"
+        },
+        {
+          "field": "profile.life[1]（罽宾求学）",
+          "claim": "赴罽宾深研毗婆沙义理",
+          "sourceId": "iep",
+          "locator": "初读《大毗婆沙论》（Mahāvibhāṣā）而服、后疑毗婆沙形上学；普光记其『佯狂』入罽宾四年",
+          "verdict": "confirmed",
+          "notes": "SEP 亦记罽宾为毗婆沙系统中心、学徒誓不外传；师承两传（Buddhamitra/Manoratha）记入同节点"
+        },
+        {
+          "field": "profile.life[2]（俱舍成书）",
+          "claim": "日讲夜颂成600余颂本颂；自注转以经量部立场批判毗婆沙",
+          "sourceId": "iep",
+          "locator": "『600-plus verses (kārikās) formed the Abhidharmakośa』；自注为『从经量部观点对毗婆沙教条的根本批判』（破三世实有等）",
+          "verdict": "confirmed",
+          "notes": "SEP 亦载罽宾人初喜本颂、复怒于自注之批判；断代取『约4世纪末—5世纪』并注明性质；任务提示『约500偈』与来源『600余颂』不一致，按来源"
+        },
+        {
+          "field": "profile.life[2]（众贤挑战）",
+          "claim": "众贤（Saṅghabhadra）著二论驳俱舍、赴阿踰陀求辩，世亲辞而不应",
+          "sourceId": "iep",
+          "locator": "二论历时约十二年、偈颂合计甚巨；世亲答『吾今老矣，任汝所说（I am already old, so I will let you say what you wish）』",
+          "verdict": "confirmed",
+          "notes": "SEP 亦载（著二论反驳并赴 Ayodhyā 挑战、世亲拒）；两论汉译名（《顺正理论》《显宗论》）未在来源出现，不写"
+        },
+        {
+          "field": "profile.life[3]（回小向大）",
+          "claim": "讥无著之学『如象负载』、无著托疾召归、闻大乘义欲割舌悔过",
+          "sourceId": "iep",
+          "locator": "Bu-ston 载其讥语；真谛传记之改宗叙事；改宗地点两传（富楼沙富罗/阿踰陀）",
+          "verdict": "confirmed",
+          "notes": "叙事性质为圣传；SEP 记现代学者以渐进过渡与诸著共性重述此转变、Kritzer 一系主『一直是瑜伽行派』——草稿分层表述，节点年份标『传统叙事（年代不可考）』"
+        },
+        {
+          "field": "profile.people（无著关系）",
+          "claim": "无著为兄（藏史作异母兄），世亲为其《摄大乘论》作注",
+          "sourceId": "iep",
+          "locator": "藏史 Prasannaśīla 条与真谛 Viriñci 条；著作目录 Mahāyānasaṃgraha 注",
+          "verdict": "confirmed",
+          "notes": "兄弟关系为汉藏两系传统一致记载（细节两传）；『引度』属传记叙事；文本层面确定者为世亲作注——关系条取 teacher 而在 detail 注明双层性质；无著不在站内目录（已查 philosophers.json），作站外人物"
+        },
+        {
+          "field": "profile.people（弥勒）",
+          "claim": "弥勒为《辨中边论》传统归名作者；无著定中从弥勒受『弥勒五法』",
+          "sourceId": "sep-yc",
+          "locator": "『传统为未来佛、无著之师；现代学术认为弥勒……是历史人物』；著作『传统上或归无著或归弥勒』",
+          "verdict": "confirmed",
+          "notes": "信仰/传统性质在人物与关系条注明；弥勒不在站内目录，作站外人物"
+        },
+        {
+          "field": "profile.people/relations（玄奘）",
+          "claim": "玄奘糅译《三十颂》十家注为《成唯识论》、以护法释为正解；与窥基7世纪立法相宗",
+          "sourceId": "sep-yc",
+          "locator": "护法一系『由玄奘传入中国』；《成唯识论》为『三十颂十家注之总结（a summary of ten commentaries）』、玄奘『以护法之注为正解』",
+          "verdict": "confirmed",
+          "notes": "玄奘在站内目录（602—664，existing-catalog）；IEP 补玄奘窥基7世纪创法相（Faxiang）宗、三十颂为根本文本；十家论师名目未在所读来源逐名列出，草稿不列名单"
+        },
+        {
+          "field": "profile.bibliography[0]（俱舍结构）",
+          "claim": "九品：界、根、世（世间）、业、随眠、道与贤圣、智、定（等至）+附录破我（pudgala-viniścaya）",
+          "sourceId": "kosa",
+          "locator": "站内品目（1 Dhātu、2 Indriya、3 Loka、4 Karma、5 Anuśaya、6 Marga-pudgala、7 Jnana、8 Samapatti、9 Pudgala-viniscaya）；译史 Poussin 法译→Pruden 英译→2012 Motilal 四卷英译",
+          "verdict": "confirmed",
+          "notes": "汉译品名（界品乃至破我品）为汉传习称，与梵本品名对读未逐字核对（uncertainties）；SEP 亦证末品为『破我』"
+        },
+        {
+          "field": "profile.concepts（补特伽罗无我）",
+          "claim": "末品论证『人』为假立施设（prajñapti）；始终反对犊子部",
+          "sourceId": "sep",
+          "locator": "末品 Refutation of the Person；牛奶之喻（『乳』为心构）、蚁队列喻；『唯一始终反对的学派是 Vātsīputrīyas/Personalists』",
+          "verdict": "confirmed",
+          "notes": "术语 pudgala-nairātmya 为学界通行表述；概念条据 SEP 所述论证内容撰写"
+        },
+        {
+          "field": "profile.concepts（刹那灭）",
+          "claim": "灭不待因、法必自灭（AKBh 193.9-10）；von Rospatt 1995 视为世亲创新",
+          "sourceId": "sep",
+          "locator": "刹那灭一节：『destruction cannot be caused』、『it is not acceptable that it differs from itself』、银幕静帧喻",
+          "verdict": "confirmed",
+          "notes": "概念条 source 写『《俱舍论》自注（AKBh）』并括注研究依据"
+        },
+        {
+          "field": "profile.concepts（唯识无境）",
+          "claim": "二十论证群：梦（时空限定）、狱卒/饿鬼共有所见（主体间性）、梦遗（因果效力）；极微无分不成聚",
+          "sourceId": "sep-yc",
+          "locator": "颂2—4三难三答；颂11—15破极微与胜论整体；颂6—7裁去中间物理步骤",
+          "verdict": "confirmed",
+          "notes": "SEP 世亲条另记『堪能耐地狱者必不生于地狱故狱卒非有情』与『近侧即其远侧』；两百科论证群一致，颂号取 SEP 瑜伽行条"
+        },
+        {
+          "field": "profile.concepts（三性）",
+          "claim": "三十颂第23—25颂立三性并重说为三无性；圆成实释为依他起上遍计所执之无；幻师象喻",
+          "sourceId": "sep-yc",
+          "locator": "trisvabhāva 节：parikalpita/paratantra/pariniṣpanna；『圆成实为依他起上遍计所执之不存在』",
+          "verdict": "confirmed",
+          "notes": "幻师象喻（咒如根本识、木块如真如）取 SEP 世亲条；《三性论》归目有争议（Kapstein 2018），草稿不列为确定著作"
+        },
+        {
+          "field": "profile.concepts（种子与阿赖耶识）",
+          "claim": "种子（bīja）潜伏续流后时现行；藏识解无心定、结生与业报连续，『免除设定常一作业受果之我的必要』",
+          "sourceId": "iep",
+          "locator": "学说节：『the seed (bija) of a previous experience is stored subliminally and released into a new experience』；『did away with the necessity of a permanent atman』",
+          "verdict": "confirmed",
+          "notes": "SEP 证成业论引入阿赖耶识、瑜伽行条载八证与河流喻——引入处写《成业论》、纲要处写《三十颂》"
+        },
+        {
+          "field": "profile.concepts（五位百法归属）",
+          "claim": "《大乘百法明门论》（T1614）传统题署世亲造",
+          "sourceId": "lusthaus-chart",
+          "locator": "图题『Based on Vasubandhu's Baifa mingmen lun 百法明門論 Mahāyāna śatadharmā-prakāśamukha śāstra (T 1614)』；五位百法谱系",
+          "verdict": "uncertain",
+          "notes": "页面只证传统题署与法目谱系；SEP 与 IEP 之世亲著作目录均未收此论——概念条按传统题署处理并明示归属谨慎；译者题署等细节未核对"
+        },
+        {
+          "field": "profile.bibliography（辨中边论释 kind）",
+          "claim": "世亲所撰为《辨中边论》（Madhyāntavibhāga）之注释（bhāṣya），颂文归弥勒",
+          "sourceId": "sep",
+          "locator": "著作目录『弥勒诸书之注』项：Dharmadharmatāvibhāgavṛtti、Madhyāntavibhāgabhāṣya、Mahāyānasūtrālaṃkārabhāṣya",
+          "verdict": "confirmed",
+          "notes": "kind 取 authored：所指书目题为『辨中边论释』即注释本身、注释为其亲撰，非 coauthored（非与弥勒合著）亦非 attributed（无来源疑其非亲撰）；颂文归属与弥勒身份之分层写入 description；IEP 记此注显示其对禅定技术之兴趣"
+        },
+        {
+          "field": "profile.bibliography（成业论）",
+          "claim": "近随经量部色彩之业力论：护刹那灭、引入阿赖耶识",
+          "sourceId": "iep",
+          "locator": "成业论条：『quasi-Hīnayāna treatise with Sautrāntika leanings』；SEP：总摄俱舍业说并增护藏识",
+          "verdict": "confirmed",
+          "notes": "定位为从俱舍批判通往唯识建构之枢纽文本"
+        },
+        {
+          "field": "profile.bibliography（论轨）",
+          "claim": "Vādavidhi 已佚存片段，为陈那、法称铺路",
+          "sourceId": "sep",
+          "locator": "『lost, but fragments show it foundational for the development of formal Buddhist logic and epistemology』",
+          "verdict": "confirmed",
+          "notes": "IEP 同（pre-Dignāga 论理学要籍）；旧 bio『因明革新为陈那法称继承』之判断获支持"
+        },
+        {
+          "field": "概述（藏传与汉传影响）",
+          "claim": "俱舍为藏传与东亚『声闻』哲学第一手教科书；汉传地论、摄论、法相三派",
+          "sourceId": "iep",
+          "locator": "影响节：俱舍『北方佛教诸国（包括西藏）一切学僧必修初级教材』；三派：地论（6世纪前半，据其十地经论）、摄论（6世纪后半，真谛译摄大乘论）、法相（7世纪玄奘窥基，三十颂）",
+          "verdict": "confirmed",
+          "notes": "SEP 证俱舍为藏传东亚『声闻』哲学第一手资源；旧 bio『五部大论之一』改写为来源表述"
+        },
+        {
+          "field": "概述（解释性判断）",
+          "claim": "『识』亦属约定——『世亲是唯心论者，但仅在约定层面』",
+          "sourceId": "sep",
+          "locator": "唯心论解释节结语",
+          "verdict": "confirmed",
+          "notes": "为旧 bio『并非主观唯心主义、旨在破对识之实执』判断提供学术表述；草稿措辞按来源收敛"
+        },
+        {
+          "field": "profile.life[4]（笈多王供养与卒年）",
+          "claim": "受 Vikramāditya（IEP 比定 Skandagupta）与 Balāditya（比定 Narasiṃhagupta）供养；胜数论得金建三寺；卒年八十",
+          "sourceId": "iep",
+          "locator": "传记后半诸段",
+          "verdict": "uncertain",
+          "notes": "传统层记载；王名比定诸说不一（SEP 以 Vikramāditya 比 Chandragupta II）——草稿不据王名断代、只作传统叙事呈现"
+        },
+        {
+          "field": "profile.life（那烂陀）",
+          "claim": "旧 bio『晚年活跃于那烂陀寺』",
+          "sourceId": "iep",
+          "locator": "未载（IEP 世亲条无 Nālandā；SEP 世亲条未载；SEP 瑜伽行条经定向复核确认全条无 Nālandā）",
+          "verdict": "corrected",
+          "notes": "所读来源所记活动地为富楼沙富罗、罽宾、沙迦罗、阿踰陀（卒地两传之一为阿踰陀、另一传作『泥婆罗』）；草稿删那烂陀，改记有据地名"
+        },
+        {
+          "field": "profile.bibliography（佛性论归属）",
+          "claim": "《佛性论》（Foxinglun）归世亲、中日影响大",
+          "sourceId": "iep",
+          "locator": "著作目录末：『the Foxinglun (Treatise on Buddha Nature, tathāgata-garbha), influential in Sino-Japanese Buddhism』",
+          "verdict": "uncertain",
+          "notes": "IEP 列于存目47种；归属属传统题署层面且仅此一句提及——草稿书目不单列，研究记录存档"
+        },
+        {
+          "field": "profile.bibliography（摄大乘论旧目）",
+          "claim": "旧 bibliography 列《摄大乘论》",
+          "sourceId": "sep",
+          "locator": "著作目录：Mahāyānasaṃgrahabhāṣya（对无著《摄大乘论》之注，归世亲名下）",
+          "verdict": "corrected",
+          "notes": "《摄大乘论》为无著造；旧目混淆世亲自著与所注之书——草稿书目不列，于无著人物条与关系条说明注释关系"
+        },
+        {
+          "field": "profile.relations（龙树）",
+          "claim": "中观与瑜伽行为印度大乘两大哲学传统；系统间关系诸说并陈",
+          "sourceId": "sep-yc",
+          "locator": "『Alongside Madhyamaka, Yogācāra is one of the two major philosophical traditions of Mahāyāna Buddhism』；《解深密经》与《辨中边论》以中道自居、视中观普空为断边；早期 Mādhyamika 批判瑜伽行、Śāntarakṣita/Kamalaśīla 以之为方便",
+          "verdict": "confirmed",
+          "notes": "旧数据『龙树→世亲 reading 批判』改为 context 系统间对照并注明无可考个人交往；龙树在站内有资料包（editorial/龙树.json）"
+        },
+        {
+          "field": "profile.life[4]（相对断代依据）",
+          "claim": "Schmithausen：《楞伽经》预设《三十颂》《二十论》已存在",
+          "sourceId": "sep-yc",
+          "locator": "二十论/三十颂断代讨论（Schmithausen 持论）",
+          "verdict": "confirmed",
+          "notes": "转述性依据、未读原著（uncertainties）；用于三十颂书目条 year 说明"
+        },
+        {
+          "field": "identity（著作总量）",
+          "claim": "传统归目千部（大小乘各五百），今存47种（梵9、汉27、藏33）",
+          "sourceId": "iep",
+          "locator": "著作节开首",
+          "verdict": "confirmed",
+          "notes": "9+27+33 大于47（有重出），按来源原样记录；worksPolicy 取 authored 之理由见 identity.findings"
+        },
+        {
+          "field": "profile.question（核心问题）",
+          "claim": "『无我之后经验与责任如何连续』为俱舍与唯识共同处理的主线",
+          "sourceId": "iep",
+          "locator": "种子/藏识节：种子说『免除设定常一作业受果之我的必要』；破我品之论证（SEP 末品节）",
+          "verdict": "confirmed",
+          "notes": "问题表述据两源学理综合拟定，非逐字引文"
+        }
+      ]
+    }
+  ],
+  "reviewType": "full-public-assertion-audit",
+  "actuallyReadThisRound": [
+    "T31n1586全30颂及页内导语",
+    "百法明门论题署及117—131全短文",
+    "SEP§1/2.2、三性象喻及约定/胜义段",
+    "IEP§2/4/5/6指定段",
+    "Filliozat1952整篇短书评249",
+    "Moriyama235—237"
+  ],
+  "originalEvidencePath": "docs/author-research/2026-10-03-balanced-02/世亲.json"
+}
