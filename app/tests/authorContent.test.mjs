@@ -207,7 +207,7 @@ test('corrected identities do not inherit unrelated portraits or fabricated biog
     assert.equal(roster[name].portraitReview.allowAsPortrait, false);
   }
   assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
-  assert.equal(roster['卡蒂尼'].era, '1879–1904');
+  assert.equal(roster['卡蒂尼'].era, '1879年4月21日—1904年9月17日（爪哇）');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
   const maffie = details.find(person => person.name === '詹姆斯·莫菲特');
   assert.equal(maffie.profile.englishName, 'James Maffie');
