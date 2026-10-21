@@ -170,6 +170,23 @@ def change_claim(args, lock):
 def check(args, lock):
     authorized_repair, authorized_context = round_authorization(lock)
     rewrite_allowed = authorized_repair | authorized_context | set(lock['repairExistingPackets'])
+    cleanup = lock.get('authorCleanupAuthorization')
+    cleanup_paths, cleanup_names, supplemental_paths = set(), set(), []
+    if cleanup:
+        manifest_path = ROOT / cleanup['path']
+        if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != cleanup['sha256']:
+            fail('作者清理授权清单摘要不符')
+        manifest = read(manifest_path)
+        cleanup_names = set(manifest['retired'])
+        cleanup_paths = set(manifest['deletePublicPaths'])
+        expected = {f"app/public/philosopher/{folder}/{name.replace('/', '-').replace(':', '：')}.json"
+                    for name in cleanup_names for folder in ['data', 'editorial']}
+        expected |= {f"app/public/philosopher/data/{name.replace('/', '-').replace(':', '：')}.json"
+                     for name in manifest['removedAliasTargets']}
+        if not cleanup_paths <= expected:
+            fail('作者清理删除路径超出列名作者JSON范围')
+        supplemental_paths = cleanup.get('supplementalPaths', [])
+        rewrite_allowed |= cleanup_names
     upstream = 'origin/master'
     base = git('merge-base', 'HEAD', upstream)
     changed = set(filter(None, git('diff', '--name-only', '--no-renames', base).splitlines()))
@@ -188,9 +205,9 @@ def check(args, lock):
     known = set(read(ROOT / 'app/public/philosophers.json'))
     frozen = set(filter(None, git('ls-tree', '-r', '--name-only', base, 'app/public/philosopher/editorial').splitlines()))
     for path in sorted(changed):
-        if not allowed(path, lock['allowedPaths']):
+        if not allowed(path, lock['allowedPaths'] + supplemental_paths):
             fail('越界路径：' + path)
-        if path in deleted and path.startswith('app/public/'):
+        if path in deleted and path.startswith('app/public/') and path not in cleanup_paths:
             fail('不得删除公共路径：' + path)
         if (ROOT / path).exists() and ROOT not in (ROOT / path).resolve().parents:
             fail('改动指向工作树之外：' + path)
@@ -201,6 +218,8 @@ def check(args, lock):
         if Path(path).parent.as_posix() == 'app/public/philosopher' and Path(path).suffix.lower() in ('.webp', '.jpg', '.png') and Path(path).stem not in file_names:
             fail('肖像未先领取：' + path)
         if path.startswith('app/public/philosopher/editorial/'):
+            if path in deleted and path in cleanup_paths:
+                continue
             stem = Path(path).stem
             name = catalog_key_for_stem(stem, known) or stem
             if stem not in file_names:

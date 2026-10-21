@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseSchoolYear, normalizeSchool, schoolWorkTitles, buildSchoolReferences } from '../src/data/schoolContent.js';
+import { isRetiredAuthor } from '../src/data/retiredAuthors.js';
 
 const publicDir = fileURLToPath(new URL('../public/', import.meta.url));
 const read = file => JSON.parse(fs.readFileSync(path.join(publicDir, file), 'utf8'));
@@ -34,9 +35,13 @@ test('all published schools retain their image, route data, readable chapters an
   assert.equal(catalog.schools.length,files.length);
   for (const entry of catalog.schools) {
     assert.ok(fs.existsSync(path.join(publicDir,entry.image)),entry.name+' image');
-    const school=normalizeSchool(read('schools/data/'+entry.detailFile));
+    const raw=read('schools/data/'+entry.detailFile), school=normalizeSchool(raw);
     assert.ok(school.overview&&school.conclusion,entry.name+' prose');
-    for(const field of ['thinkers','timeline','cihai','quotes','works','subSchools']) assert.ok(school[field].length,entry.name+' '+field);
+    for(const field of ['timeline','cihai','quotes','works','subSchools']) assert.ok(school[field].length,entry.name+' '+field);
+    const retainedThinkers = raw.thinkers.filter(person => !isRetiredAuthor(person.name));
+    assert.equal(school.thinkers.length, retainedThinkers.length,entry.name+' retained thinkers');
+    if (retainedThinkers.length) assert.ok(school.thinkers.length,entry.name+' thinkers');
+    else assert.ok(raw.thinkers.every(person => isRetiredAuthor(person.name)),entry.name+' only authorized removals may empty a graph');
     for(const sub of school.subSchools) assert.ok(catalog.branches[sub.name]?.includes(entry.name),sub.name+' parent');
   }
 });

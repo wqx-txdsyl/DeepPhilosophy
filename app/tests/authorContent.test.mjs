@@ -4,13 +4,16 @@ import fs from 'node:fs';
 import { AUTHOR_KINDS, authorBooks, authorFile, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
-import { buildSchoolReferences } from '../src/data/schoolContent.js';
+import { buildSchoolReferences, normalizeSchool } from '../src/data/schoolContent.js';
+import { bookAuthors } from '../src/data/bookDetail.js';
+import { isRetiredAuthor } from '../src/data/retiredAuthors.js';
 
 const publicRoot = new URL('../public/', import.meta.url);
 const read = path => JSON.parse(fs.readFileSync(new URL(path, publicRoot), 'utf8'));
 const catalog = read('philosopher/catalog.json');
 const roster = read('philosophers.json');
 const schools = read('schools/catalog.json').schools;
+const retirement = JSON.parse(fs.readFileSync(new URL('../../scripts/author-curation/retirement-2026-10-21.json', import.meta.url), 'utf8'));
 const details = Object.keys(roster).map(name => normalizeAuthor(read(decodeURIComponent(authorFile(name).slice(1)))));
 
 test('section citations honor declared sources instead of university-title guesses', () => {
@@ -60,9 +63,9 @@ test('portrait requests use sized CDN images with the unchanged original path as
 });
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
-  assert.equal(details.length, 737);
-  // 保留737入口；教材共同署名另作作者组，不把两个人合成一个思想者。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 637);
+  assert.equal(details.length, 737 - Object.keys(retirement.retired).length);
+  assert.equal(details.length, 639);
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, details.length);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -71,31 +74,23 @@ test('every canonical entry has its own matching detail, category and existing i
     for (const school of person.profile.schoolLinks) assert.ok(fs.existsSync(new URL(`schools/data/${schools.find(item => item.name === school.name)?.detailFile}`, publicRoot)), school.name);
   }
 });
-test('Ani retains the ancient teaching attribution without a fabricated modern Indian biography or mythical dating', () => {
-  const person = details.find(item => item.name === '安尼');
-  assert.equal(person.listingKind, 'tradition');
-  assert.equal(person.country, '古埃及');
-  assert.equal(person.dateKind, 'text-tradition');
-  assert.equal(person.portrait, null);
-  assert.ok(person.bio.includes('传统署名'));
-  assert.equal(person.profile.bibliography.length, 1);
-  assert.match(person.profile.bibliography[0].originalTitle, /Instruction of Ani/);
-  assert.ok(!person.bio.includes('瓦拉纳西'));
-  const context = details.find(item => item.name === '阿肯那顿').profile.people.find(item => item.name === '安尼');
-  assert.match(context.summary, /传统署名/);
-  assert.ok(!context.summary.includes('死后审判'));
-  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特', '罗克珊·维纳', '达格·奥斯特罗姆', '阿布·穆斯林·阿特-图尔基', '阿马菲乌斯'].includes(item.name)).length, 30);
+test('non-individual texts and mythological names are retired instead of relabelled as philosophers', () => {
+  const names = Object.entries(retirement.retired).filter(([, item]) => item.previousKind === 'tradition').map(([name]) => name);
+  assert.equal(names.length, 26);
+  for (const name of names) {
+    assert.ok(!roster[name]);
+    assert.ok(!catalog.people[name]);
+    assert.ok(!fs.existsSync(new URL(decodeURIComponent(authorFile(name).slice(1)), publicRoot)), name);
+  }
 });
-test('Amorgen preserves the legacy route as an Irish literary tradition without the fabricated continental biography', () => {
-  const person = details.find(item => item.name === '德鲁伊·阿莫尔根');
-  assert.equal(person.listingKind, 'tradition');
-  assert.equal(person.displayName, '阿莫尔根（爱尔兰传说）');
-  assert.equal(person.portrait, null);
-  assert.ok(person.bio.includes('Amorgen Glúingel'));
-  assert.ok(!person.bio.includes('哈贝马斯'));
-  assert.ok(!person.profile.bibliography.some(work => /欲望机器|数字幽灵/.test(work.title)));
-  assert.equal(details.filter(item => item.listingKind === 'tradition').length, 26);
+
+test('the wrong Hipparchia alias cannot reopen Hypatia while distinct profiles remain a recorded gap', async () => {
+  assert.ok(roster['希帕提娅']);
+  assert.equal(catalog.aliases['希帕基娅'], undefined);
+  assert.ok(retirement.invalidAliases['希帕基娅'].source.includes('iep.utm.edu/hipparch/'));
+  await assert.rejects(loadAuthorPage('希帕基娅', undefined, { jsonLoader: () => { throw new Error('stale detail fetched'); } }), { code: 'AUTHOR_RETIRED' });
 });
+
 test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikina and river-council identity', () => {
   const person = details.find(item => item.name === '安妮·波伊特');
   assert.equal(person.listingKind, 'thinker');
@@ -106,72 +101,50 @@ test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikin
   assert.ok(!person.bio.includes('1940-2021'));
   assert.ok(!person.profile.bibliography.some(work => /身体与差异|存在与性别|伦理与差异/.test(work.title)));
   assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'www.notredame.edu.au'));
-  assert.equal(details.filter(item => item.listingKind === 'review' && !['弗朗西斯·吉姆', '普阿·凯斯-达文波特', '罗克珊·维纳', '达格·奥斯特罗姆', '阿布·穆斯林·阿特-图尔基', '阿马菲乌斯'].includes(item.name)).length, 30);
+  assert.equal(details.filter(item => item.listingKind === 'review').length, 0);
 });
-test('Elaine Russell keeps her legacy route as an artist, without the fabricated US philosopher identity', () => {
-  const person = details.find(item => item.name === '伊莲·拉塞尔');
-  assert.equal(person.listingKind, 'context');
-  assert.equal(person.country, '澳大利亚');
-  assert.match(person.era, /1941/);
-  assert.ok(person.bio.includes('艺术家'));
-  assert.ok(person.profile.bibliography.some(work => work.originalTitle === 'The shack that Dad built'));
-  assert.ok(!person.profile.bibliography.some(work => work.originalTitle === 'Consciousness and Representation'));
-  assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'digital.nga.gov.au'));
+test('background artists are no longer philosopher records and retained philosophical authors have explicit sources', () => {
+  assert.ok(!roster['伊莲·拉塞尔']);
+  assert.equal(retirement.retired['伊莲·拉塞尔'].previousKind, 'context');
+  for (const name of ['李斯', '老普林尼']) {
+    assert.equal(roster[name].listingKind, 'thinker');
+    assert.ok(roster[name].sources.some(source => source.accessScope === 'partial-text'));
+    assert.equal(roster[name].eligibilityReview.completeInformationReview, false);
+  }
 });
-test('the Revel and Ricard legacy entry keeps the joint book and distinguishes both authors', () => {
+
+test('removing a joint-person node preserves the Revel and Ricard book without a dead author link', () => {
   const name = '让-弗朗索瓦何维勒/马修理查德';
-  const group = details.find(person => person.name === name);
-  const raw = roster[name];
-  assert.equal(raw.entityType, 'dialogue-author-group');
-  assert.equal(raw.listingKind, 'context');
-  assert.equal(raw.portrait, null);
-  assert.ok(raw.bio.startsWith('本条是让-弗朗索瓦·何维勒与马修·理查德的共同对话专题'));
-  assert.deepEqual(group.profile.people.map(person => person.name), ['让-弗朗索瓦·何维勒', '马修·理查德']);
-  assert.ok(authorBooks(group, catalog).some(book => book.id === '077532e4515e'));
+  assert.ok(!roster[name]);
+  const book = catalog.books.find(book => book.id === '077532e4515e');
+  assert.ok(book);
+  assert.ok(bookAuthors(book.author, catalog).every(author => !author.path || catalog.people[author.canonical]));
+  assert.ok(fs.existsSync(new URL(`book_detail/${book.id}.json`, publicRoot)));
 });
-test('the Stumpf and Fieser legacy credit retains its readable book without becoming one person', () => {
-  const name = '撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽';
-  const group = details.find(person => person.name === name);
-  assert.equal(roster[name].entityType, 'textbook-author-group');
-  assert.equal(roster[name].listingKind, 'context');
-  assert.equal(roster[name].portrait, null);
-  assert.deepEqual(group.profile.people.map(person => person.name), ['Samuel Enoch Stumpf', 'James Fieser']);
-  assert.ok(authorBooks(group, catalog).some(book => book.id === '4a4a200536bd'));
+
+test('removing a textbook author group preserves its readable book and records both distinct author gaps', () => {
+  assert.ok(!roster['撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽']);
+  const book = catalog.books.find(book => book.id === '4a4a200536bd');
+  assert.ok(readableBook(book));
+  assert.ok(bookAuthors(book.author, catalog).every(author => !author.path || catalog.people[author.canonical]));
+  assert.ok(retirement.missingDistinctProfiles.some(name => name.includes('Stumpf')));
+  assert.ok(retirement.missingDistinctProfiles.some(name => name.includes('Fieser')));
 });
-test('unresolved identities do not acquire near-name people or unverified university biographies', () => {
-  const person = details.find(item => item.name === '普阿·凯斯-达文波特');
-  assert.equal(person.listingKind, 'review');
-  assert.equal(person.portrait, null);
-  assert.ok(person.reviewReason);
-  assert.equal(person.profile.concepts.length, 0);
-  assert.ok(!person.bio.includes('斯坦福'));
-  assert.ok(!person.bio.includes('Mauna Kea'));
-  const amalfius = details.find(item => item.name === '阿马菲乌斯');
-  assert.equal(amalfius.listingKind, 'review');
-  assert.equal(amalfius.portrait, null);
-  assert.ok(amalfius.reviewReason);
-  assert.equal(amalfius.profile.concepts.length, 0);
-  assert.doesNotMatch(amalfius.bio, /1220|巴黎大学|Amafinius|伊壁鸠鲁/);
-  const turki = details.find(item => item.name === '阿布·穆斯林·阿特-图尔基');
-  assert.equal(turki.listingKind, 'review');
-  assert.equal(turki.portrait, null);
-  assert.ok(turki.reviewReason);
-  assert.equal(turki.profile.concepts.length, 0);
-  assert.doesNotMatch(turki.bio, /开罗|欧美|1965|舒拉/);
-  const dag = details.find(item => item.name === '达格·奥斯特罗姆');
-  assert.equal(dag.listingKind, 'review');
-  assert.equal(dag.portrait, null);
-  assert.ok(dag.reviewReason);
-  assert.equal(dag.profile.concepts.length, 0);
-  assert.doesNotMatch(dag.bio, /印第安纳|Østerberg|妻子/);
-  const viner = details.find(item => item.name === '罗克珊·维纳');
-  assert.equal(viner.listingKind, 'review');
-  assert.equal(viner.portrait, null);
-  assert.ok(viner.reviewReason);
-  assert.equal(viner.profile.concepts.length, 0);
-  assert.ok(!viner.bio.includes('纽约大学'));
-  assert.ok(!viner.bio.includes('Vandermause'));
+
+test('retired identities cannot reappear through stale details, school graphs or aliases', async () => {
+  const names = Object.entries(retirement.retired).filter(([, item]) => item.previousKind === 'review').map(([name]) => name);
+  assert.equal(names.length, 36);
+  for (const name of names) {
+    assert.ok(!roster[name]);
+    assert.ok(isRetiredAuthor(name));
+    await assert.rejects(loadAuthorPage(name, undefined, { jsonLoader: () => { throw new Error('stale detail fetched'); } }), { code: 'AUTHOR_RETIRED' });
+    const school = normalizeSchool({ thinkers: [{ name }, { name: '孔子' }], relations: [{ from: name, to: '孔子' }] });
+    assert.deepEqual(school.thinkers.map(item => item.name), ['孔子']);
+    assert.deepEqual(school.relations, []);
+  }
+  for (const target of Object.values(catalog.aliases)) assert.ok(roster[target]);
 });
+
 test('recovering Narokobi does not turn an unverified school dialogue into historical evidence', () => {
   const recovered = details.find(person => person.name === '伯纳德·纳罗科比');
   assert.equal(recovered.country, '巴布亚新几内亚');

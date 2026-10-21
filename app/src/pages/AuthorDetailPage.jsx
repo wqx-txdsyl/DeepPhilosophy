@@ -107,7 +107,7 @@ function AuthorPortraitPage({ authorName }) {
         setState({ author, catalog, loading: false });
         const preferred = author.profile.life.findIndex(event => String(event.year) === '1927');
         setOpenEvent(preferred >= 0 ? preferred : author.profile.life.length ? 0 : null);
-      } catch { if (!controller.signal.aborted) setState({ loading: false, error: true }); }
+      } catch (error) { if (!controller.signal.aborted) setState({ loading: false, error: true, retired: error.code === 'AUTHOR_RETIRED' }); }
     })();
     return () => controller.abort();
   }, [authorName]);
@@ -119,7 +119,7 @@ function AuthorPortraitPage({ authorName }) {
     requestAnimationFrame(() => eventRefs.current.get(index)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' }));
   };
   if (state.loading) return <div className="loading">正在打开人物专题…</div>;
-  if (!state.author) return <div className="page-container hp-error"><h1>暂时无法打开人物资料</h1><p>资料加载失败，请稍后再试。</p><Link to="/authors">返回哲人列表 →</Link></div>;
+  if (!state.author) return <div className="page-container hp-error"><h1>{state.retired ? '该条目已从哲人目录移除' : '暂时无法打开人物资料'}</h1><p>{state.retired ? '请从现有目录继续查找人物。' : '资料加载失败，请稍后再试。'}</p><Link to="/authors">返回哲人列表 →</Link></div>;
   const { author, catalog } = state, profile = author.profile;
   const books = authorBooks(author, catalog), otherWorks = bibliography(author, catalog);
   const relatedBooks = (profile.relatedBooks || []).map(id => catalog.books.find(book => book.id === id)).filter(Boolean);

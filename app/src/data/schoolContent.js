@@ -1,3 +1,4 @@
+import { isRetiredAuthor } from './retiredAuthors.js';
 import { ossImg } from './ossUrls.js';
 
 const text = value => typeof value === 'string' ? value.trim() : '';
@@ -27,8 +28,8 @@ export function normalizeSchool(raw = {}) {
   const list = field => objects(raw[field]);
   return {
     ...raw, name: text(raw.name), overview: text(raw.overview), conclusion: text(raw.conclusion),
-    thinkers: list('thinkers').filter(item => text(item.name)).map(item => ({ ...item, name: text(item.name), works: schoolWorkTitles(item.works) })),
-    relations: list('relations').filter(item => text(item.from) && text(item.to)),
+    thinkers: list('thinkers').filter(item => text(item.name) && !isRetiredAuthor(text(item.name))).map(item => ({ ...item, name: text(item.name), works: schoolWorkTitles(item.works) })),
+    relations: list('relations').filter(item => text(item.from) && text(item.to) && !isRetiredAuthor(text(item.from)) && !isRetiredAuthor(text(item.to))),
     timeline: list('timeline').filter(item => text(item.event)).map((item, index) => ({ ...item, _order: index })).sort((a, b) => (parseSchoolYear(a.year) ?? Infinity) - (parseSchoolYear(b.year) ?? Infinity) || a._order - b._order),
     cihai: list('cihai').filter(item => text(item.word) && text(item.def)),
     quotes: list('quotes').filter(item => text(item.text)),
@@ -39,7 +40,7 @@ export function normalizeSchool(raw = {}) {
 }
 
 export function buildSchoolReferences({ books = [], philosophers = [], schools = [], aliases: personAliases = {} } = {}) {
-  const people = Array.isArray(philosophers) ? philosophers : Object.entries(philosophers).map(([name, item]) => ({ ...item, name }));
+  const people = (Array.isArray(philosophers) ? philosophers : Object.entries(philosophers).map(([name, item]) => ({ ...item, name }))).filter(person => !isRetiredAuthor(person.name));
   const exactPeople = new Map(people.map(person => [key(person.name), person]));
   const spellingAliases = { '埃马纽埃尔·列维纳斯': '伊曼纽尔·列维纳斯', '爱德蒙德·胡塞尔': '埃德蒙德·胡塞尔' };
   const aliases = new Map();
@@ -48,6 +49,7 @@ export function buildSchoolReferences({ books = [], philosophers = [], schools =
     if (last !== person.name && last.length >= 2) aliases.set(key(last), [...(aliases.get(key(last)) || []), person]);
   }
   const findPerson = (name, era) => {
+    if (isRetiredAuthor(name)) return null;
     const canonical = exactPeople.get(key(personAliases[name] || spellingAliases[name] || name));
     const matches = aliases.get(key(name)) || [];
     const person = canonical || (matches.length === 1 ? matches[0] : null);

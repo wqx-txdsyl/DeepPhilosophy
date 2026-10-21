@@ -52,8 +52,13 @@ def main():
     args = parser.parse_args()
     people = read(PUBLIC / 'philosophers.json')
     roster = read(CURATION / 'roster.json')
+    retirement = read(CURATION / 'retirement-2026-10-21.json')
+    retired = set(retirement['retired'])
+    for name in retired:
+        people.pop(name, None)
     portrait_audit = read(PUBLIC / 'philosopher/portrait-audit.json').get('records', {})
-    aliases = roster['aliases']
+    aliases = {old: target for old, target in roster['aliases'].items()
+               if target not in retired and old not in retirement['invalidAliases']}
     merged = []
     for old, name in aliases.items():
         if old in people and name in people:
@@ -235,8 +240,22 @@ def main():
             write(PUBLIC / 'philosopher/data' / (old.replace('/', '-').replace(':', '：') + '.json'), {'name': name, 'aliasOf': name})
     write(PUBLIC / 'philosophers.json', people)
     counts = dict(Counter(person['listingKind'] for person in people.values()))
-    catalog = {'version': 1, 'counts': counts, 'aliases': aliases, 'people': {name: {key: value for key, value in person.items() if key not in ['bio', 'books', 'wiki_url']} for name, person in people.items()}, 'books': [{key: book.get(key) for key in ['id', 'title', 'author', 'cover', 'chapterCount', 'file_type']} for book in books]}
+    catalog = {'version': 1, 'counts': counts, 'aliases': aliases, 'retired': {**{name: item['reason'] for name, item in retirement['retired'].items()}, **{name: item['reason'] for name, item in retirement['invalidAliases'].items()}}, 'people': {name: {key: value for key, value in person.items() if key not in ['bio', 'books', 'wiki_url']} for name, person in people.items()}, 'books': [{key: book.get(key) for key in ['id', 'title', 'author', 'cover', 'chapterCount', 'file_type']} for book in books]}
     write(PUBLIC / 'philosopher/catalog.json', catalog)
+    school_catalog_path = PUBLIC / 'schools/catalog.json'
+    school_catalog = read(school_catalog_path)
+    school_catalog['philosophers'] = [item for item in school_catalog.get('philosophers', []) if item['name'] in people]
+    school_catalog['aliases'] = aliases
+    write(school_catalog_path, school_catalog)
+    routing = {name: name for name in people}
+    routing.update(aliases)
+    blocked = sorted(set(retirement['retired']) | set(retirement['removedAliasTargets']))
+    (ROOT / 'app/src/data/retiredAuthors.js').write_text(
+        'const retired = new Set(' + json.dumps(blocked, ensure_ascii=False) + ');\n'
+        + 'const targets = ' + json.dumps(routing, ensure_ascii=False) + ';\n'
+        + 'export const isRetiredAuthor = name => retired.has(name);\n'
+        + 'export const retiredAuthorNames = Object.freeze([...retired]);\n'
+        + 'export const hasAuthorRecord = name => Object.hasOwn(targets, name);\n', encoding='utf-8')
     audit = {'date': args.date, 'policy': roster['policy'], 'counts': counts, 'canonicalRecords': len(people), 'originalRecords': 744, 'duplicateRecordsMerged': {old: aliases[old] for old in list(aliases)[:7]}, 'legacyAliases': aliases, 'identityCorrections': list(corrections), 'classified': {kind: roster[kind] for kind in ['tradition', 'context', 'review']}, 'scope': '全目录查重与分类、全部详情结构及链接检查、重点身份错配纠正。普通旧简介未逐句完成学术核验；来源薄弱条目仍需持续审读。', 'relationshipPolicy': '不采用旧 AI 星丛作为历史证据；采用已整理的流派关系并保留语境，共同流派关系明确标作思想背景，海德格尔使用核验的人物关系。'}
     write(ROOT / 'docs/author-content-audit.json', audit)
     print(json.dumps({'records': len(people), 'counts': counts, 'detailProfiles': len(profiles), 'aliases': len(aliases)}, ensure_ascii=False))

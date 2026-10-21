@@ -1,4 +1,5 @@
 import { fetchSchoolJSON } from './schoolContent.js';
+import { isRetiredAuthor } from './retiredAuthors.js';
 
 export const AUTHOR_KINDS = { thinker: '哲学家与思想家', context: '历史与文化', tradition: '文本与传统', review: '待核实条目' };
 export const authorPath = name => `/author/${encodeURIComponent(name)}`;
@@ -14,6 +15,11 @@ export function canonicalAuthor(name, catalog) {
   return catalog?.aliases?.[name] || name;
 }
 export async function loadAuthorPage(name, signal, { catalogLoader = loadAuthorCatalog, jsonLoader = fetchSchoolJSON, onDetail } = {}) {
+  if (isRetiredAuthor(name)) {
+    const error = new Error('Author entry removed');
+    error.code = 'AUTHOR_RETIRED';
+    throw error;
+  }
   const detail = (async () => {
     let raw = await jsonLoader(authorFile(name), signal);
     if (raw.aliasOf) raw = await jsonLoader(authorFile(raw.aliasOf), signal);
