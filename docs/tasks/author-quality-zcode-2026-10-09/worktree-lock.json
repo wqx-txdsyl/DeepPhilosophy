@@ -494,7 +494,11 @@
     "scripts/author_quality_queue.py",
     "app/tests/authorContent.test.mjs",
     "scripts/sync_author_catalog.py",
-    "scripts/author-curation/full_completion_ledger.py"
+    "scripts/author-curation/full_completion_ledger.py",
+    "app/src/data/authorContent.js",
+    "app/src/pages/AuthorDetailPage.jsx",
+    "app/src/data/authorArtworkVersions.js",
+    "app/src/data/ossUrls.js"
   ],
   "roundAuthorization": {
     "taskId": "author-quality-zcode-2026-10-09",
@@ -2144,5 +2148,35 @@
       "changedAt": "2026-10-20T13:55:34.718943+00:00"
     }
   ],
-  "takeoverAuthorization": "2026-10-20 user explicitly requested direct completion of books and remaining philosopher work"
+  "takeoverAuthorization": "2026-10-20 user explicitly requested direct completion of books and remaining philosopher work",
+  "sourceRendererRepair": {
+    "at": "2026-10-20T16:56:25.514805+00:00",
+    "paths": [
+      "app/src/data/authorContent.js",
+      "app/src/pages/AuthorDetailPage.jsx"
+    ],
+    "reason": "傅佩荣正式页已观察到目录元数据被标题大学启发式挂在争议正文，必须在作者信息交付中按明确sourceRefs和已读范围选择正文来源；只改引用选择，不改页面设计、CSS、路由、组件名。",
+    "scope": "当前既有作者的引用内容与验证，不新增对象或扩大资料研究名单。"
+  },
+  "authorCleanupAuthorization": {
+    "path": "docs/tasks/author-quality-zcode-2026-10-09/2026-10-21-author-cleanup-authorization.json",
+    "sha256": "c7ade5ac29c038d61e732d29aacf955f8a33b4f85b91d4c1220b3747967574a9",
+    "purpose": "用户新授权：限定列名作者删除与必要引用修复，不改原冻结摘要",
+    "supplementalPaths": [
+      "scripts/author-curation/retirement-2026-10-21.json",
+      "app/src/data/retiredAuthors.js",
+      "app/src/data/schoolContent.js",
+      "app/src/pages/AuthorsPage.jsx",
+      "app/src/components/more/ReligionDetail.jsx",
+      "app/src/components/more/MythologyDetail.jsx",
+      "app/tests/schoolContent.test.mjs",
+      "README.md"
+    ]
+  },
+  "portraitReviewAuthorization": {
+    "path": "docs/tasks/author-quality-zcode-2026-10-09/2026-10-22-portrait-authorization.json",
+    "sha256": "c7d5bbc5adb49979bf38e8b17b95f8bde52b2b332b1cbde1a93b41da1d3f3f67",
+    "at": "2026-10-22",
+    "scope": "当前639人肖像核查、必要替换/停显、来源与使用条件，以及相关展示缓存一致性；不改人物学术正文、名单、书库或流派图设计。"
+  }
 }

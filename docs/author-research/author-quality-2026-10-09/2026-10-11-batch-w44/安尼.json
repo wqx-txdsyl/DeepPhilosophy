@@ -1,52 +1,261 @@
 {
   "schemaVersion": 1,
   "name": "安尼",
-  "batch": "2026-10-11-batch-w44",
-  "reviewedAt": "2026-10-11",
-  "reviewType": "identity",
-  "verdict": "unresolvable",
-  "proposedIdentity": null,
-  "findings": "站内「安尼」对应不到任何可辨识的真实思想者，判为生成讹变（unresolvable）。证据链：(1) 站内现状 app/public/philosopher/data/安尼.json 与 philosophers.json 同源：listingKind=thinker、books=[]、book_count=0、rank=17.5，wiki_url 指向 https://en.wikipedia.org/wiki/Anni_(philosopher) —— WebFetch 直访返回 HTTP 404，该维基百科页面不存在，无任何有效指向；简介无姓氏、无英文对应名、无生卒年（仅『生于20世纪中叶，卒于21世纪初』），无任何可定位信息。(2) 书籍关联排查：python 遍历 app/public/books.json（410 本）中含『安尼』者 0 命中——站内无任何书籍锚点可用于消歧。(3) 网络检索（英文多组关键词）：『Anni』+ Indian philosopher + Oxford/Heidelberg/Delhi University + comparative philosophy/ethics 无任何匹配人物；近似结果仅 Annie Besant（神智学者）、Anni Sun（Cornell 在读博士生，Meta-Ethics 方向，年代与履历均不符）等，无一对应站内简介。(4) 著作排查：现行简介三部『代表作』——《跨越边界：印度哲学与全球伦理》(1998)、《自我与他者：印度与欧洲视角下的主体性》(2003)、《达摩的生态学》(2010)——分别以英文题名（Crossing Boundaries / Self and Other / Ecology of Dharma）多组关键词检索均无此书存在于任何书目/学术索引；内容描述（以 karma 回应自由意志、以 moksha 批判功利主义、《薄伽梵歌》无执行动与环境哲学结合）是可拼贴的领域套话，无具体文本对应。(5) git 历史取证：本条目由 commit c82a28516（2026-07-10）引入，其原始简介与现行版本互相矛盾——原始版称『她』生于喀拉拉邦、德里大学本硕、牛津博士『师从伯纳德·威廉姆斯与玛莎·努斯鲍姆』、著《健康与美德：印度伦理学的身体基础》（该书英文题名 Health and Virtue 检索亦不存在；且 Nussbaum 从未在牛津任教，同时师从二人为不可能叙事）；现行版（经 72b5ce7f4 重写）改为『他』、瓦拉纳西梵文学院、牛津+海德堡、三部完全不同的书。同一键在两次生成中产出性别、籍贯、师承、著作全不相同的两套传记，是典型的 AI 编造（confabulation）特征。(6) 候选排除：最接近的实名候选 Annie Besant（Anni 为其常见昵称拼写变体）经 Britannica 核实生卒 1847-1933、英国人、神智学会国际主席（1907-1933），与站内『20世纪中叶-21世纪初』年代及德里大学哲学系/牛津海德堡深造/三部著作的主张全部不符，正式排除；站内无『贝桑特』键可作别名归并对象。任务提示中提到的 Annette \"Anni\" Beynon 亦无任何哲学家人格匹配证据。四选一标准下判 unresolvable：既不能确认对应真实人物，也不能证明是某真实人物的重译名或别名，其内容亦非任何确定文本传统的背景材料。",
+  "researchedAt": "2026-10-21",
+  "batch": "2026-10-20-codex-completion",
+  "identity": {
+    "verdict": "confirmed-textual-attribution-not-independent-personal-biography",
+    "legacyContext": "app/public/schools/data/school_古埃及哲学.json：新王国、书吏、《安尼的教诲》",
+    "oldW44AssessmentScope": "现代印度叙事；未调查古埃及文本，未覆盖本次正面证据。",
+    "classification": {
+      "before": "thinker",
+      "after": "tradition"
+    },
+    "individualHistoricity": "not independently established"
+  },
   "sources": [
     {
-      "id": "wikipedia-anni-404",
-      "title": "en.wikipedia.org/wiki/Anni_(philosopher) — 站内 wiki_url 直访",
-      "url": "https://en.wikipedia.org/wiki/Anni_(philosopher)",
-      "type": "negative-verification",
-      "accessedAt": "2026-10-11",
-      "readScope": "WebFetch 直访返回 HTTP 404 Not Found：站内条目所附 wiki_url 指向的维基百科页面不存在，无重定向正文可读。此为『无有效外部指向』的直接证据，非内容阅读。"
+      "id": "davies-transmission",
+      "title": "Huw Twiston Davies：The Transmission of the Instruction of Ani and the Instruction of Amenemope〔博士论文〕",
+      "url": "https://livrepository.liverpool.ac.uk/3017112/1/200515010_Sep2017.pdf",
+      "type": "scholarly-textual-study",
+      "accessedAt": "2026-10-21",
+      "accessScope": "partial-text",
+      "readScope": "下载9364963字节456页PDF并提取文本。实读印页1、4–7导论与出版史，174、353、360、367–368、394的指定传本对读与英译；未通读全456页、未读全部附录。封面2017-09，仓储博士记录2018，不混为古代文本年代。第5页转述Quack关于十九王朝的成文推定，不锁为作者出生年。英译由论文作者提供，本轮不自行声称翻译古埃及文。"
     },
     {
-      "id": "websearch-anni-name",
-      "title": "WebSearch 检索组1：\"Anni\" Indian philosopher / comparative philosophy / ethics / Oxford / Heidelberg / Delhi University",
-      "url": "https://en.wikipedia.org/wiki/Special:Search?search=Anni+philosopher+India",
-      "type": "search-result-survey",
-      "accessedAt": "2026-10-11",
-      "readScope": "多组英文关键词（Anni+philosopher+Oxford/Heidelberg/Delhi University+comparative philosophy/ethics）的检索结果摘要审读：无任何名为 Anni 的印度哲学家匹配；近似项仅 Annie Besant（core.ac.uk 教育哲学论文线索）、Anni Sun（Cornell 博士生）、Krishna Mani Pathak、Purushottama Bilimoria、J.L. Shaw 等姓名不同的人物。仅读检索摘要，未打开各结果全文。"
+      "id": "ucl-literature",
+      "title": "UCL Digital Egypt：New Kingdom and Third Intermediate Period文学目录",
+      "url": "https://www.ucl.ac.uk/museums-static/digitalegypt/literature/literaturelateegyptian.html",
+      "type": "institutional-literary-guide",
+      "accessedAt": "2026-10-21",
+      "accessScope": "partial-text",
+      "readScope": "实际读取短页正文：Teaching of Any列在从头至尾保存的teachings之中，说明文献类型与保存范围。不是该教诲全文翻译，不用于具体格言或个人生平。"
     },
     {
-      "id": "websearch-anni-books",
-      "title": "WebSearch 检索组2：两版简介共四部『著作』题名核查（Crossing Boundaries 1998 / Self and Other 2003 / Ecology of Dharma 2010 / Health and Virtue）",
-      "url": "https://books.google.com/",
-      "type": "search-result-survey",
-      "accessedAt": "2026-10-11",
-      "readScope": "分别以 \"Ecology of Dharma\" Bhagavad Gita environmental 2010、\"Self and Other\" Indian European subjectivity Descartes Shankara 2003、\"Crossing Boundaries\" Indian philosophy global ethics 1998 karma moksha、\"Health and Virtue\" Indian ethics Ayurveda Nyaya 多组检索：四书均无存在证据；近似真实文献为 Bilimoria 等编 Indian Ethics (Ashgate 2007)、Zahavi Self and Other (OUP 2014，纯现象学)、Cambridge Hindu Ethics and Ecology 章节、Pankaj Jain 宗教生态研究等，作者与题名均非『安尼』。仅读检索摘要与片段，未逐页翻检 WorldCat/Google Books 全量目录。"
+      "id": "braden-anthology",
+      "title": "Charles Samuel Braden：Egyptian Sacred Literature，The Scriptures of Mankind第3章",
+      "url": "https://www.religion-online.org/book-chapter/chapter-3i-iegyptian-sacred-literature/",
+      "type": "scholarly-anthology-with-primary-excerpts",
+      "accessedAt": "2026-10-21",
+      "accessScope": "partial-text",
+      "readScope": "200下载HTML并实读Instruction of Ani两段选文、其后关于传统署名未必等于实际作者的限定段、脚注22。引文来源明确为John A. Wilson译、Pritchard编Ancient Near Eastern Texts，420–421页。只读Ani指定部分，不沿用本章其他宗教史概括。另下载IGNCA扫描本但无文字层，未声称已读该PDF第49页；实际阅读据可读HTML。"
     },
     {
-      "id": "britannica-besant",
-      "title": "Annie Besant (Encyclopaedia Britannica)",
-      "url": "https://www.britannica.com/biography/Annie-Besant",
-      "type": "scholarly-encyclopedia",
-      "accessedAt": "2026-10-11",
-      "readScope": "WebFetch 直访 403，按纪律换等价读取方式（web-reader）一次成功，读得条目导语与生卒：Annie Besant 1847 年生于伦敦、1933 年卒于马德拉斯阿迪亚尔，英国社会改革者/费边社会主义者/神智学者/印度独立运动领袖，神智学会国际主席。支持排除结论：其年代（1847-1933）、国籍（英国）、身份（神智学者而非学院哲学家）与站内简介（20世纪中叶-21世纪初、印度学院哲学家、牛津/海德堡/德里大学）完全不符。未逐字通读全文长篇章节。"
+      "id": "quack-bibliography",
+      "title": "Heidelberg：Joachim Friedrich Quack著作目录，Die Lehren des Ani（1994）",
+      "url": "https://www.uni-heidelberg.de/fakultaeten/philosophie/zaw/aegy/institut/quack_publ.html",
+      "type": "scholarly-bibliography",
+      "accessedAt": "2026-10-21",
+      "accessScope": "abstract-or-catalog",
+      "readScope": "实读目录中1994年Die Lehren des Ani、OBO141及出版信息。只核现代校订本著录；未读该书正文，ResearchGate PDF403，没有下载或全文阅读声明。"
     }
   ],
-  "publicFileRecommendation": "按 mission §5 处理未确认身份者：本键从 thinker 队列除名，listingKind 改 review（或按平台流程由外层裁决直接移除该键），保留存疑提示；portrait /philosopher/安尼.webp 保持停用（38KB 来源不明文件，无任何身份依据，不得继续以 thinker 卡片展示）；bio 不再改写补写（两版均为编造，无真实底本可修）；不得为其硬凑生卒、著作、师承或并入任何真实人物。可选后续供外层裁决（本次不执行）：(a) 若印度比较哲学方向确需条目，应从真实人物（如 Bimal Krishna Matilal、Daya Krishna、Purushottama Bilimoria、J.L. Shaw 等）另行立键走正常研究流程，与『安尼』无承继关系；(b) 移除或关闭『安尼』键时须同步清理派生索引（philosopher/catalog.json、philosopher_network.json、cosmos/cosmos-data.json、gene/atlas.json 中的相应节点），由既有同步管线完成，不手改。",
+  "checks": [
+    {
+      "field": "profile.overview[0]",
+      "claim": "文本以书吏安尼与其子孔苏霍特普问答；条目限于文本传统，不拟造个人传记。",
+      "sourceId": "davies-transmission",
+      "locator": "印页174、367–368，p.Boulaq IV 22,13–18及23,7",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[0]",
+      "claim": "传统署名未必证明实际作者身份。",
+      "sourceId": "braden-anthology",
+      "locator": "Ani选文之后These may or may not...段",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[1]",
+      "claim": "《教诲》属于以劝诫传授行为准则的sbꜣyt文类，语言与风格置于新王国背景；现代研究转述将其成文推定在第十九王朝。这是文本断代，不是安尼的生卒年。",
+      "sourceId": "davies-transmission",
+      "locator": "印页5导论；十九王朝是Quack1994:62的推定",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview[2]",
+      "claim": "传本既包含日常行为和家庭责任的劝诫，也保存导师与孔苏霍特普之间的问答。阅读这些教诲，应区别文本塑造的父子角色、传统作者署名和实际抄写传承。",
+      "sourceId": "davies-transmission",
+      "locator": "印页353、360、367–368、394",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[0]",
+      "claim": "研究将作品放在新王国智慧文学中；十九王朝是成文推定，不能充当传统署名者的确定生平。",
+      "sourceId": "davies-transmission",
+      "locator": "印页5",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[1]",
+      "claim": "Mariette刊布现称p.Boulaq IV的传本图版；这是文献传播史，不是作者活动年代。",
+      "sourceId": "davies-transmission",
+      "locator": "印页6，1871:plates15–23",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[2]",
+      "claim": "Joachim Friedrich Quack出版新的文本校订，构成后续研究讨论传本与异文的重要依据。",
+      "sourceId": "davies-transmission",
+      "locator": "印页6末–7首",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[0]",
+      "claim": "一处劝诫以母亲曾经养育孩子的劳作为出发点，要求回报她的照料。它表达代际责任，不能据此推断署名者本人的家庭经历。",
+      "sourceId": "davies-transmission",
+      "locator": "印页353，p.Boulaq IV20,17 / p.Deir el-Medina6,3",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[1]",
+      "claim": "文本将饮酒纳入行为规劝，提醒受教者避免沉溺。这里据具体教诲概括节制主题，不把它包装成一套现代心理学理论。",
+      "sourceId": "davies-transmission",
+      "locator": "印页394，p.Boulaq IV17,6",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[2]",
+      "claim": "劝诫中有向安息于墓地的父母供水的要求，呈现亲属照料与祭奠实践的联系。",
+      "sourceId": "davies-transmission",
+      "locator": "印页360，p.Boulaq IV17,4",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[3]",
+      "claim": "结尾不只有单向命令，也让孔苏霍特普回应、让安尼答复。父子是文本中的发言角色；不能仅凭这种形式证明真实亲属关系。",
+      "sourceId": "davies-transmission",
+      "locator": "印页174、367–368，问答引入语与传本异文",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[0]",
+      "claim": "Instruction of Ani，古埃及新王国文类与多个传本。",
+      "sourceId": "davies-transmission",
+      "locator": "印页5–7",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.bibliography[0]",
+      "claim": "Teaching of Any列于首尾保存的教诲文本。",
+      "sourceId": "ucl-literature",
+      "locator": "teachings列表",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[0]",
+      "claim": "传本将其呈现为安尼的儿子，并安排双方问答。这是作品内的角色关系，个人历史性不能由此独立确证。",
+      "sourceId": "davies-transmission",
+      "locator": "印页174、367–368",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[0]",
+      "claim": "传本将其呈现为安尼的儿子，并安排双方问答。这是作品内的角色关系，个人历史性不能由此独立确证。",
+      "sourceId": "davies-transmission",
+      "locator": "印页174、367–368",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.people[1]",
+      "claim": "1994年刊行新的《安尼的教诲》校订本；与古代署名者的联系是现代研究，不是同时代交往。",
+      "sourceId": "davies-transmission",
+      "locator": "印页6末–7首",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.relations[1]",
+      "claim": "1994年刊行新的《安尼的教诲》校订本；与古代署名者的联系是现代研究，不是同时代交往。",
+      "sourceId": "davies-transmission",
+      "locator": "印页6末–7首",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.readingRoutes[0]",
+      "claim": "先读现代研究导论，了解文类、传本和刊布史；不要把现代出版日期和古代署名者生平混为一谈。",
+      "sourceId": "davies-transmission",
+      "locator": "印页4–7",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.readingRoutes[1]",
+      "claim": "从供水、照料母亲、饮酒与结尾问答几个具体段落入手，连同传本定位阅读，注意异文和翻译选择。",
+      "sourceId": "davies-transmission",
+      "locator": "印页353、360、367–368、394",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate",
+      "claim": "传统署名不能独立证明实际作者身份。",
+      "sourceId": "braden-anthology",
+      "locator": "Ani选文之后的署名限定段",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate",
+      "claim": "抄写变化可能包含语言更新与主动编辑，不全是抄错。",
+      "sourceId": "davies-transmission",
+      "locator": "印页4 Abstract",
+      "verdict": "confirmed"
+    }
+  ],
   "uncertainties": [
-    "生成时的『原始意图』无法完全复原：只能证明两版简介均无可考人物与著作对应，不能绝对排除生成者意指某位真实人物的名字片段（如某人之名 Anni/Annie 的讹变）。",
-    "负向证据的检索覆盖度：以英文多组关键词与书名检索为限，未逐页翻检 WorldCat/Google Books 全量目录、未做印地语（आनी）母语专门检索；若存在极小众同名地方学者，本轮手段可能漏检——但其与简介中『牛津+海德堡+德里大学+三部国际影响著作』的主张量级不符，不影响 unresolvable 判定。",
-    "Britannica Besant 条目经 web-reader 读得导语与生卒（403 后的等价替代），未读全文；Besant 排除所依赖的年代/身份对照不依赖未读部分。",
-    "『Nussbaum 从未在牛津任教』系通行学术常识（Brown→Chicago 履历），本轮未另开来源核实，仅作为原始版简介不可能性的辅助佐证而非主证据。",
-    "portrait 文件实际内容（图像画的是谁）未核验，本轮无身份依据可核，维持 unverified。"
-  ]
+    "原流派记录明确指向古埃及《安尼的教诲》，原现代印度简介的履历、三书与师承无可靠支撑。旧W44只调查印度叙事而忽略古埃及语境，不能据其空检索认定此条无文本对应。本轮按实际传本、大学文献研究和机构文学目录确认文本传统；传统作者是否可独立确认为历史个人、个人生卒及官职均保留不确定，不声称虚构或不存在。不将《亡灵书》纸草所有者同名Ani与本教诲署名者直接合并。生平栏实为明确标注的文本/刊布史；不为达标拟造个人年表。只列已核一部语料，非断言无其他创作。456页论文只读所列部分；Quack校订本只核著录，未读全文；不把正文中的父子关系当历史谱系。必要分类纠正为文本与传统，不抵扣原30身份队列，不计新增达标思想者；737入口和旧路径保留。旧肖像未核，图像阶段另行处理，本轮不替换图像文件。"
+  ],
+  "originalSnapshot": "/Users/sen/.codex/visualizations/2026/10/02/01a0fa9f-302c-7d10-84dc-b53005a89c65/codex-completion-20261020/backups/ordered-018/安尼.json",
+  "claimMappingPolicy": "文本断代不作个人生卒；教诲主题不作现代原创理论；文学角色不作历史谱系。",
+  "supersededHistoricalAssessment": {
+    "schemaVersion": 1,
+    "name": "安尼",
+    "batch": "2026-10-11-batch-w44",
+    "reviewedAt": "2026-10-11",
+    "reviewType": "identity",
+    "verdict": "unresolvable",
+    "proposedIdentity": null,
+    "findings": "站内「安尼」对应不到任何可辨识的真实思想者，判为生成讹变（unresolvable）。证据链：(1) 站内现状 app/public/philosopher/data/安尼.json 与 philosophers.json 同源：listingKind=thinker、books=[]、book_count=0、rank=17.5，wiki_url 指向 https://en.wikipedia.org/wiki/Anni_(philosopher) —— WebFetch 直访返回 HTTP 404，该维基百科页面不存在，无任何有效指向；简介无姓氏、无英文对应名、无生卒年（仅『生于20世纪中叶，卒于21世纪初』），无任何可定位信息。(2) 书籍关联排查：python 遍历 app/public/books.json（410 本）中含『安尼』者 0 命中——站内无任何书籍锚点可用于消歧。(3) 网络检索（英文多组关键词）：『Anni』+ Indian philosopher + Oxford/Heidelberg/Delhi University + comparative philosophy/ethics 无任何匹配人物；近似结果仅 Annie Besant（神智学者）、Anni Sun（Cornell 在读博士生，Meta-Ethics 方向，年代与履历均不符）等，无一对应站内简介。(4) 著作排查：现行简介三部『代表作』——《跨越边界：印度哲学与全球伦理》(1998)、《自我与他者：印度与欧洲视角下的主体性》(2003)、《达摩的生态学》(2010)——分别以英文题名（Crossing Boundaries / Self and Other / Ecology of Dharma）多组关键词检索均无此书存在于任何书目/学术索引；内容描述（以 karma 回应自由意志、以 moksha 批判功利主义、《薄伽梵歌》无执行动与环境哲学结合）是可拼贴的领域套话，无具体文本对应。(5) git 历史取证：本条目由 commit c82a28516（2026-07-10）引入，其原始简介与现行版本互相矛盾——原始版称『她』生于喀拉拉邦、德里大学本硕、牛津博士『师从伯纳德·威廉姆斯与玛莎·努斯鲍姆』、著《健康与美德：印度伦理学的身体基础》（该书英文题名 Health and Virtue 检索亦不存在；且 Nussbaum 从未在牛津任教，同时师从二人为不可能叙事）；现行版（经 72b5ce7f4 重写）改为『他』、瓦拉纳西梵文学院、牛津+海德堡、三部完全不同的书。同一键在两次生成中产出性别、籍贯、师承、著作全不相同的两套传记，是典型的 AI 编造（confabulation）特征。(6) 候选排除：最接近的实名候选 Annie Besant（Anni 为其常见昵称拼写变体）经 Britannica 核实生卒 1847-1933、英国人、神智学会国际主席（1907-1933），与站内『20世纪中叶-21世纪初』年代及德里大学哲学系/牛津海德堡深造/三部著作的主张全部不符，正式排除；站内无『贝桑特』键可作别名归并对象。任务提示中提到的 Annette \"Anni\" Beynon 亦无任何哲学家人格匹配证据。四选一标准下判 unresolvable：既不能确认对应真实人物，也不能证明是某真实人物的重译名或别名，其内容亦非任何确定文本传统的背景材料。",
+    "sources": [
+      {
+        "id": "wikipedia-anni-404",
+        "title": "en.wikipedia.org/wiki/Anni_(philosopher) — 站内 wiki_url 直访",
+        "url": "https://en.wikipedia.org/wiki/Anni_(philosopher)",
+        "type": "negative-verification",
+        "accessedAt": "2026-10-11",
+        "readScope": "WebFetch 直访返回 HTTP 404 Not Found：站内条目所附 wiki_url 指向的维基百科页面不存在，无重定向正文可读。此为『无有效外部指向』的直接证据，非内容阅读。"
+      },
+      {
+        "id": "websearch-anni-name",
+        "title": "WebSearch 检索组1：\"Anni\" Indian philosopher / comparative philosophy / ethics / Oxford / Heidelberg / Delhi University",
+        "url": "https://en.wikipedia.org/wiki/Special:Search?search=Anni+philosopher+India",
+        "type": "search-result-survey",
+        "accessedAt": "2026-10-11",
+        "readScope": "多组英文关键词（Anni+philosopher+Oxford/Heidelberg/Delhi University+comparative philosophy/ethics）的检索结果摘要审读：无任何名为 Anni 的印度哲学家匹配；近似项仅 Annie Besant（core.ac.uk 教育哲学论文线索）、Anni Sun（Cornell 博士生）、Krishna Mani Pathak、Purushottama Bilimoria、J.L. Shaw 等姓名不同的人物。仅读检索摘要，未打开各结果全文。"
+      },
+      {
+        "id": "websearch-anni-books",
+        "title": "WebSearch 检索组2：两版简介共四部『著作』题名核查（Crossing Boundaries 1998 / Self and Other 2003 / Ecology of Dharma 2010 / Health and Virtue）",
+        "url": "https://books.google.com/",
+        "type": "search-result-survey",
+        "accessedAt": "2026-10-11",
+        "readScope": "分别以 \"Ecology of Dharma\" Bhagavad Gita environmental 2010、\"Self and Other\" Indian European subjectivity Descartes Shankara 2003、\"Crossing Boundaries\" Indian philosophy global ethics 1998 karma moksha、\"Health and Virtue\" Indian ethics Ayurveda Nyaya 多组检索：四书均无存在证据；近似真实文献为 Bilimoria 等编 Indian Ethics (Ashgate 2007)、Zahavi Self and Other (OUP 2014，纯现象学)、Cambridge Hindu Ethics and Ecology 章节、Pankaj Jain 宗教生态研究等，作者与题名均非『安尼』。仅读检索摘要与片段，未逐页翻检 WorldCat/Google Books 全量目录。"
+      },
+      {
+        "id": "britannica-besant",
+        "title": "Annie Besant (Encyclopaedia Britannica)",
+        "url": "https://www.britannica.com/biography/Annie-Besant",
+        "type": "scholarly-encyclopedia",
+        "accessedAt": "2026-10-11",
+        "readScope": "WebFetch 直访 403，按纪律换等价读取方式（web-reader）一次成功，读得条目导语与生卒：Annie Besant 1847 年生于伦敦、1933 年卒于马德拉斯阿迪亚尔，英国社会改革者/费边社会主义者/神智学者/印度独立运动领袖，神智学会国际主席。支持排除结论：其年代（1847-1933）、国籍（英国）、身份（神智学者而非学院哲学家）与站内简介（20世纪中叶-21世纪初、印度学院哲学家、牛津/海德堡/德里大学）完全不符。未逐字通读全文长篇章节。"
+      }
+    ],
+    "publicFileRecommendation": "按 mission §5 处理未确认身份者：本键从 thinker 队列除名，listingKind 改 review（或按平台流程由外层裁决直接移除该键），保留存疑提示；portrait /philosopher/安尼.webp 保持停用（38KB 来源不明文件，无任何身份依据，不得继续以 thinker 卡片展示）；bio 不再改写补写（两版均为编造，无真实底本可修）；不得为其硬凑生卒、著作、师承或并入任何真实人物。可选后续供外层裁决（本次不执行）：(a) 若印度比较哲学方向确需条目，应从真实人物（如 Bimal Krishna Matilal、Daya Krishna、Purushottama Bilimoria、J.L. Shaw 等）另行立键走正常研究流程，与『安尼』无承继关系；(b) 移除或关闭『安尼』键时须同步清理派生索引（philosopher/catalog.json、philosopher_network.json、cosmos/cosmos-data.json、gene/atlas.json 中的相应节点），由既有同步管线完成，不手改。",
+    "uncertainties": [
+      "生成时的『原始意图』无法完全复原：只能证明两版简介均无可考人物与著作对应，不能绝对排除生成者意指某位真实人物的名字片段（如某人之名 Anni/Annie 的讹变）。",
+      "负向证据的检索覆盖度：以英文多组关键词与书名检索为限，未逐页翻检 WorldCat/Google Books 全量目录、未做印地语（आनी）母语专门检索；若存在极小众同名地方学者，本轮手段可能漏检——但其与简介中『牛津+海德堡+德里大学+三部国际影响著作』的主张量级不符，不影响 unresolvable 判定。",
+      "Britannica Besant 条目经 web-reader 读得导语与生卒（403 后的等价替代），未读全文；Besant 排除所依赖的年代/身份对照不依赖未读部分。",
+      "『Nussbaum 从未在牛津任教』系通行学术常识（Brown→Chicago 履历），本轮未另开来源核实，仅作为原始版简介不可能性的辅助佐证而非主证据。",
+      "portrait 文件实际内容（图像画的是谁）未核验，本轮无身份依据可核，维持 unverified。"
+    ]
+  },
+  "supersessionReason": "原判断仅核对后来的印度人物叙事；正面的古埃及语料与原流派上下文支持文本传统。本次实际来源、定位和检查补入门禁既有检索路径，完整原判断保留，未关闭或修改检查器。"
 }

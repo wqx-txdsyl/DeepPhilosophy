@@ -1,3 +1,4 @@
+import { hasAuthorRecord } from '../../data/retiredAuthors.js';
 import { moreAlbumPath } from '../../data/moreExplorer';
 import HeroSection from '../school/HeroSection';
 import { ossImg, ossFallback } from '../../data/ossUrls';
@@ -47,6 +48,7 @@ function SectionHeading({ num, en, title, note }) {
 }
 
 function LinkChip({ link, navigate }) {
+  if (link.type !== 'school' && !hasAuthorRecord(link.name)) return <span className="mtd-relation-link"><span>{link.name}</span><small>背景资料</small></span>;
   const path = link.type === 'school' ? `/school/${encodeURIComponent(link.name)}` : `/author/${encodeURIComponent(link.name)}`;
   return (
     <button type="button" className="mtd-relation-link" onClick={() => navigate(path)}>
@@ -296,7 +298,7 @@ export default function MythologyDetail({ data, topic }) {
           <div className="mtd-cross-links">
             <span className="school-kicker">Thinkers · 相关哲人</span>
             <div className="school-ending-links">
-              {data.crossLinks.authors.map(a => (
+              {data.crossLinks.authors.filter(a => hasAuthorRecord(a)).map(a => (
                 <button key={a} type="button" className="mtd-relation-link" onClick={() => navigate(`/author/${encodeURIComponent(a)}`)}>
                   <span>{a}</span><small>哲人</small><i aria-hidden="true">↗</i>
                 </button>

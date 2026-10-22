@@ -1,8 +1,16 @@
 import { fetchSchoolJSON } from './schoolContent.js';
+import { isRetiredAuthor } from './retiredAuthors.js';
 
 export const AUTHOR_KINDS = { thinker: '哲学家与思想家', context: '历史与文化', tradition: '文本与传统', review: '待核实条目' };
 export const authorPath = name => `/author/${encodeURIComponent(name)}`;
 export const authorFile = name => `/philosopher/data/${encodeURIComponent(name.replaceAll('/', '-').replaceAll(':', '：'))}.json`;
+export function authorPortraitImage(person) {
+  const path = person?.portrait;
+  const review = person?.portraitReview;
+  return path && review?.allowAsPortrait === true && review.path === path && /^[a-f0-9]{64}$/.test(review.observedSha256 || '')
+    ? `${path}${path.includes('?') ? '&' : '?'}v=${review.observedSha256.slice(0, 12)}`
+    : path;
+}
 export const readableBook = book => Number(book?.chapterCount) > 0 && book?.file_type !== 'txt';
 const key = text => String(text || '').replace(/[\s·•・.《》〈〉]/g, '').toLocaleLowerCase();
 let catalogPromise;
@@ -14,6 +22,11 @@ export function canonicalAuthor(name, catalog) {
   return catalog?.aliases?.[name] || name;
 }
 export async function loadAuthorPage(name, signal, { catalogLoader = loadAuthorCatalog, jsonLoader = fetchSchoolJSON, onDetail } = {}) {
+  if (isRetiredAuthor(name)) {
+    const error = new Error('Author entry removed');
+    error.code = 'AUTHOR_RETIRED';
+    throw error;
+  }
   const detail = (async () => {
     let raw = await jsonLoader(authorFile(name), signal);
     if (raw.aliasOf) raw = await jsonLoader(authorFile(raw.aliasOf), signal);
@@ -44,4 +57,17 @@ export function normalizeAuthor(raw) {
     life: profile.life || [], concepts: profile.concepts || [], people: profile.people || [], relations: profile.relations || [],
     schoolLinks: profile.schoolLinks || [], sources: profile.sources || raw.sources || [],
   } };
+}
+
+// Section citations require declared IDs and an actually read text scope.
+// Catalogues and unread leads remain available in the full references list.
+export function authorSectionSources(author, section) {
+  const profile = author?.profile || {};
+  const references = section === 'overview'
+    ? profile.editorial?.overviewSourceRefs
+    : profile[section]?.sourceRefs;
+  if (!Array.isArray(references)) return [];
+  return (profile.sources || []).filter(source =>
+    references.includes(source.id) &&
+    ['full-text', 'partial-text'].includes(source.accessScope));
 }

@@ -7,6 +7,7 @@ philosopher_network.json is deliberately not used as historical evidence.
 """
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import re
@@ -52,8 +53,13 @@ def main():
     args = parser.parse_args()
     people = read(PUBLIC / 'philosophers.json')
     roster = read(CURATION / 'roster.json')
+    retirement = read(CURATION / 'retirement-2026-10-21.json')
+    retired = set(retirement['retired'])
+    for name in retired:
+        people.pop(name, None)
     portrait_audit = read(PUBLIC / 'philosopher/portrait-audit.json').get('records', {})
-    aliases = roster['aliases']
+    aliases = {old: target for old, target in roster['aliases'].items()
+               if target not in retired and old not in retirement['invalidAliases']}
     merged = []
     for old, name in aliases.items():
         if old in people and name in people:
@@ -93,7 +99,7 @@ def main():
         if person['listingKind'] == 'review':
             person['reviewReason'] = roster['reviewReason']
             person.update(bio=roster['reviewReason'], era='身份待核实', country='', school='资料待核实', rank=0)
-        if person['listingKind'] == 'tradition' and name not in ['相里氏之墨', '萨阿贡记录的匿名智者', '传道者', '约伯', '奇兰·巴兰']:
+        if person['listingKind'] == 'tradition' and name not in ['相里氏之墨', '萨阿贡记录的匿名智者', '传道者', '约伯', '奇兰·巴兰', '安尼']:
             person['dateKind'] = 'tradition'
 
     index = {clean(name): name for name in people}
@@ -167,7 +173,7 @@ def main():
             # A shared school is an intellectual context, not evidence of a personal encounter.
             for other, other_name in members:
                 if other_name != name and not any(item['name'] == other_name for item in profile['people']):
-                    profile['people'].append({'name': other_name, 'era': people[other_name]['era'], 'influence': other.get('influence', 5), 'role': f"共同思想背景 · {school['name']}", 'summary': other.get('key', ''), 'sourceSchool': school['name']})
+                    profile['people'].append({'name': other_name, 'era': people[other_name]['era'], 'influence': other.get('influence', 5), 'role': f"共同思想背景 · {school['name']}", 'summary': editorial.get(other_name, {}).get('contextSummary', other.get('key', '')), 'sourceSchool': school['name']})
                     profile['relations'].append({'from': name, 'to': other_name, 'type': 'context', 'label': '共同思想背景', 'sourceSchool': school['name']})
 
             member_names = {other['name']: other_name for other, other_name in members}
@@ -175,6 +181,12 @@ def main():
                 source = member_names.get(relation.get('from'))
                 target = member_names.get(relation.get('to'))
                 if not source or not target or name not in [source, target] or source == target:
+                    continue
+                # A corrected identity may not acquire historical links from an
+                # unreviewed school graph. Its authored relations remain below;
+                # shared school membership stays explicitly labelled context.
+                if any(editorial.get(endpoint, {}).get('schoolRelationPolicy') == 'editorial-only'
+                       for endpoint in (source, target)):
                     continue
                 label = relation.get('label') or relation.get('type') or '思想关联'
                 # Retain source direction and wording, including explicitly disputed traditions.
@@ -229,8 +241,39 @@ def main():
             write(PUBLIC / 'philosopher/data' / (old.replace('/', '-').replace(':', '：') + '.json'), {'name': name, 'aliasOf': name})
     write(PUBLIC / 'philosophers.json', people)
     counts = dict(Counter(person['listingKind'] for person in people.values()))
-    catalog = {'version': 1, 'counts': counts, 'aliases': aliases, 'people': {name: {key: value for key, value in person.items() if key not in ['bio', 'books', 'wiki_url']} for name, person in people.items()}, 'books': [{key: book.get(key) for key in ['id', 'title', 'author', 'cover', 'chapterCount', 'file_type']} for book in books]}
+    catalog = {'version': 1, 'counts': counts, 'aliases': aliases, 'retired': {**{name: item['reason'] for name, item in retirement['retired'].items()}, **{name: item['reason'] for name, item in retirement['invalidAliases'].items()}}, 'people': {name: {key: value for key, value in person.items() if key not in ['bio', 'books', 'wiki_url']} for name, person in people.items()}, 'books': [{key: book.get(key) for key in ['id', 'title', 'author', 'cover', 'chapterCount', 'file_type']} for book in books]}
     write(PUBLIC / 'philosopher/catalog.json', catalog)
+    school_catalog_path = PUBLIC / 'schools/catalog.json'
+    school_catalog = read(school_catalog_path)
+    school_catalog['philosophers'] = [
+        {**item, 'portrait': people[item['name']].get('portrait')}
+        for item in school_catalog.get('philosophers', []) if item['name'] in people
+    ]
+    school_catalog['aliases'] = aliases
+    write(school_catalog_path, school_catalog)
+    portrait_versions = {}
+    for person in people.values():
+        path, review = person.get('portrait'), person.get('portraitReview') or {}
+        if not path or review.get('allowAsPortrait') is not True or review.get('path') != path:
+            continue
+        digest = hashlib.sha256((PUBLIC / path.lstrip('/')).read_bytes()).hexdigest()
+        if review.get('observedSha256') != digest:
+            raise ValueError(f'Verified portrait changed without an updated review: {path}')
+        portrait_versions[path] = digest[:12]
+    (ROOT / 'app/src/data/authorArtworkVersions.js').write_text(
+        '// Generated by sync_author_catalog.py from reviewed image digests.\n'
+        'export const AUTHOR_ARTWORK_VERSIONS = Object.freeze('
+        + json.dumps(dict(sorted(portrait_versions.items())), ensure_ascii=False, indent=2)
+        + ');\n', encoding='utf-8')
+    routing = {name: name for name in people}
+    routing.update(aliases)
+    blocked = sorted(set(retirement['retired']) | set(retirement['removedAliasTargets']))
+    (ROOT / 'app/src/data/retiredAuthors.js').write_text(
+        'const retired = new Set(' + json.dumps(blocked, ensure_ascii=False) + ');\n'
+        + 'const targets = ' + json.dumps(routing, ensure_ascii=False) + ';\n'
+        + 'export const isRetiredAuthor = name => retired.has(name);\n'
+        + 'export const retiredAuthorNames = Object.freeze([...retired]);\n'
+        + 'export const hasAuthorRecord = name => Object.hasOwn(targets, name);\n', encoding='utf-8')
     audit = {'date': args.date, 'policy': roster['policy'], 'counts': counts, 'canonicalRecords': len(people), 'originalRecords': 744, 'duplicateRecordsMerged': {old: aliases[old] for old in list(aliases)[:7]}, 'legacyAliases': aliases, 'identityCorrections': list(corrections), 'classified': {kind: roster[kind] for kind in ['tradition', 'context', 'review']}, 'scope': '全目录查重与分类、全部详情结构及链接检查、重点身份错配纠正。普通旧简介未逐句完成学术核验；来源薄弱条目仍需持续审读。', 'relationshipPolicy': '不采用旧 AI 星丛作为历史证据；采用已整理的流派关系并保留语境，共同流派关系明确标作思想背景，海德格尔使用核验的人物关系。'}
     write(ROOT / 'docs/author-content-audit.json', audit)
     print(json.dumps({'records': len(people), 'counts': counts, 'detailProfiles': len(profiles), 'aliases': len(aliases)}, ensure_ascii=False))

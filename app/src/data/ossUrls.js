@@ -9,14 +9,20 @@
  *   style={{ backgroundImage: `url(${ossImg('/schools/xx.webp', { w: 1280 })})` }}  // 背景无兜底, OSS 极稳可接受
  */
 import { SCHOOL_ARTWORK_VERSIONS } from './schoolArtworkVersions.js';
+import { AUTHOR_ARTWORK_VERSIONS } from './authorArtworkVersions.js';
 
 export const OSS_BASE = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com';
 
 function versionedImagePath(rel) {
   const [path, query] = rel.split('?');
-  const version = SCHOOL_ARTWORK_VERSIONS[path];
-  if (!version) return rel;
+  let key = path;
+  try { key = decodeURI(path); } catch { /* Keep malformed paths unchanged. */ }
   const params = new URLSearchParams(query);
+  const authorVersion = AUTHOR_ARTWORK_VERSIONS[key];
+  // A freshly fetched author record can be newer than this compiled fallback.
+  if (authorVersion && params.has('v')) return rel;
+  const version = SCHOOL_ARTWORK_VERSIONS[key] || authorVersion;
+  if (!version) return rel;
   params.set('v', version);
   return `${path}?${params}`;
 }
@@ -28,7 +34,13 @@ export function ossImg(rel, { w } = {}) {
 }
 
 export function staticImageSources(src, width = 192) {
-  const local = src?.startsWith(OSS_BASE + '/') ? src.slice(OSS_BASE.length).split('?')[0] : src;
+  let local = src;
+  if (src?.startsWith(OSS_BASE + '/')) {
+    const [path, query] = src.slice(OSS_BASE.length).split('?');
+    const params = new URLSearchParams(query);
+    params.delete('x-oss-process');
+    local = path + (params.size ? `?${params}` : '');
+  }
   if (!local?.startsWith('/') || local.startsWith('//')) return { primary: src, fallback: src };
   return { primary: `${ossImg(local, { w: width })}/format,webp/quality,q_82`, fallback: versionedImagePath(local) };
 }

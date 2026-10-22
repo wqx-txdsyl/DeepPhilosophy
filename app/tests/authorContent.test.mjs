@@ -1,17 +1,66 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { AUTHOR_KINDS, authorBooks, authorFile, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
-import { buildSchoolReferences } from '../src/data/schoolContent.js';
+import { buildSchoolReferences, normalizeSchool } from '../src/data/schoolContent.js';
+import { bookAuthors } from '../src/data/bookDetail.js';
+import { isRetiredAuthor } from '../src/data/retiredAuthors.js';
 
 const publicRoot = new URL('../public/', import.meta.url);
 const read = path => JSON.parse(fs.readFileSync(new URL(path, publicRoot), 'utf8'));
 const catalog = read('philosopher/catalog.json');
 const roster = read('philosophers.json');
 const schools = read('schools/catalog.json').schools;
+const retirement = JSON.parse(fs.readFileSync(new URL('../../scripts/author-curation/retirement-2026-10-21.json', import.meta.url), 'utf8'));
 const details = Object.keys(roster).map(name => normalizeAuthor(read(decodeURIComponent(authorFile(name).slice(1)))));
+
+test('verified replacement photos refresh both CDN and fallback without changing the stored public path', () => {
+  const person = roster['大卫·艾布拉姆'];
+  const image = authorPortraitImage(person);
+  const revision = person.portraitReview.observedSha256.slice(0, 12);
+  assert.equal(person.portrait, '/philosopher/大卫·艾布拉姆.webp');
+  assert.equal(image, `${person.portrait}?v=${revision}`);
+  const sources = staticImageSources(image, 192);
+  assert.equal(new URL(sources.primary).searchParams.get('v'), revision);
+  assert.equal(sources.fallback, image);
+  assert.equal(authorPortraitImage(roster['亨佩尔']), null);
+  assert.equal(authorPortraitImage({ portrait: person.portrait }), person.portrait);
+});
+
+test('school references honor withdrawn portraits and all shared image routes keep the current revision', () => {
+  const references = buildSchoolReferences({ philosophers: read('schools/catalog.json').philosophers });
+  assert.equal(references.findPerson('亨佩尔').portrait, null);
+  const person = references.findPerson('大卫·艾布拉姆');
+  const revision = roster[person.name].portraitReview.observedSha256.slice(0, 12);
+  assert.equal(new URL(staticImageSources(person.portrait).primary).searchParams.get('v'), revision);
+  const future = `${person.portrait}?v=next-reviewed-image`;
+  assert.equal(new URL(staticImageSources(future).primary).searchParams.get('v'), 'next-reviewed-image');
+  const absolute = `${OSS_BASE}${future}&x-oss-process=image/resize,w_50`;
+  const resized = new URL(staticImageSources(absolute, 192).primary);
+  assert.equal(resized.searchParams.get('v'), 'next-reviewed-image');
+  assert.equal(resized.searchParams.getAll('x-oss-process').length, 1);
+  assert.ok(resized.searchParams.get('x-oss-process').includes('w_192'));
+});
+
+test('section citations honor declared sources instead of university-title guesses', () => {
+  const person = details.find(item => item.name === '傅佩荣');
+  assert.deepEqual(authorSectionSources(person, 'debate').map(source => source.id), ['ntu-nature']);
+  assert.ok(!authorSectionSources(person, 'overview').some(source => source.accessScope === 'abstract-or-catalog'));
+  assert.equal(person.profile.sources.length, 7);
+});
+
+test('catalogues, unread leads and missing declarations do not become body evidence', () => {
+  const person = { profile: { editorial: { overviewSourceRefs: ['text', 'catalog', 'unread', 'missing'] }, sources: [
+    { id: 'text', accessScope: 'partial-text' },
+    { id: 'catalog', accessScope: 'abstract-or-catalog', title: '大学资料' },
+    { id: 'unread', accessScope: 'unread' },
+  ] } };
+  assert.deepEqual(authorSectionSources(person, 'overview').map(source => source.id), ['text']);
+  assert.deepEqual(authorSectionSources(person, 'debate'), []);
+  assert.equal(person.profile.sources.length, 3);
+});
 
 test('detail and hero discovery are not blocked by a slow directory download, including old aliases', async () => {
   let finishCatalog;
@@ -36,15 +85,15 @@ test('portrait requests use sized CDN images with the unchanged original path as
     const thumbnail = staticImageSources(person.portrait, 192);
     assert.ok(thumbnail.primary.startsWith(OSS_BASE + '/philosopher/'));
     assert.ok(thumbnail.primary.includes('image/resize,w_192/format,webp'));
-    assert.equal(thumbnail.fallback, person.portrait);
+    assert.equal(decodeURIComponent(new URL(thumbnail.fallback, 'https://deepphilosophy.top').pathname), person.portrait);
   }
   assert.deepEqual(staticImageSources('https://example.com/photo.jpg'), { primary: 'https://example.com/photo.jpg', fallback: 'https://example.com/photo.jpg' });
 });
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
-  assert.equal(details.length, 737);
-  // 2026-10-20：原合并署名保留为共同对话作者组，总记录737不变。
-  assert.equal(details.filter(person => person.listingKind === 'thinker').length, 647);
+  assert.equal(details.length, 737 - Object.keys(retirement.retired).length);
+  assert.equal(details.length, 639);
+  assert.equal(details.filter(person => person.listingKind === 'thinker').length, details.length);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
     assert.equal(person.name, roster[person.name].name);
@@ -53,16 +102,92 @@ test('every canonical entry has its own matching detail, category and existing i
     for (const school of person.profile.schoolLinks) assert.ok(fs.existsSync(new URL(`schools/data/${schools.find(item => item.name === school.name)?.detailFile}`, publicRoot)), school.name);
   }
 });
-test('the Revel and Ricard legacy entry keeps the joint book and distinguishes both authors', () => {
+test('non-individual texts and mythological names are retired instead of relabelled as philosophers', () => {
+  const names = Object.entries(retirement.retired).filter(([, item]) => item.previousKind === 'tradition').map(([name]) => name);
+  assert.equal(names.length, 26);
+  for (const name of names) {
+    assert.ok(!roster[name]);
+    assert.ok(!catalog.people[name]);
+    assert.ok(!fs.existsSync(new URL(decodeURIComponent(authorFile(name).slice(1)), publicRoot)), name);
+  }
+});
+
+test('the wrong Hipparchia alias cannot reopen Hypatia while distinct profiles remain a recorded gap', async () => {
+  assert.ok(roster['希帕提娅']);
+  assert.equal(catalog.aliases['希帕基娅'], undefined);
+  assert.ok(retirement.invalidAliases['希帕基娅'].source.includes('iep.utm.edu/hipparch/'));
+  await assert.rejects(loadAuthorPage('希帕基娅', undefined, { jsonLoader: () => { throw new Error('stale detail fetched'); } }), { code: 'AUTHOR_RETIRED' });
+});
+
+test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikina and river-council identity', () => {
+  const person = details.find(item => item.name === '安妮·波伊特');
+  assert.equal(person.listingKind, 'thinker');
+  assert.equal(person.displayName, 'Anne Poelina');
+  assert.equal(person.country, '澳大利亚');
+  assert.equal(person.portrait, null);
+  assert.ok(person.bio.includes('Nyikina'));
+  assert.ok(!person.bio.includes('1940-2021'));
+  assert.ok(!person.profile.bibliography.some(work => /身体与差异|存在与性别|伦理与差异/.test(work.title)));
+  assert.ok(person.profile.sources.some(source => new URL(source.url).hostname === 'www.notredame.edu.au'));
+  assert.equal(details.filter(item => item.listingKind === 'review').length, 0);
+});
+test('background artists are no longer philosopher records and retained philosophical authors have explicit sources', () => {
+  assert.ok(!roster['伊莲·拉塞尔']);
+  assert.equal(retirement.retired['伊莲·拉塞尔'].previousKind, 'context');
+  for (const name of ['李斯', '老普林尼']) {
+    assert.equal(roster[name].listingKind, 'thinker');
+    assert.ok(roster[name].sources.some(source => source.accessScope === 'partial-text'));
+    assert.equal(roster[name].eligibilityReview.completeInformationReview, false);
+  }
+});
+
+test('removing a joint-person node preserves the Revel and Ricard book without a dead author link', () => {
   const name = '让-弗朗索瓦何维勒/马修理查德';
-  const group = details.find(person => person.name === name);
-  const raw = roster[name];
-  assert.equal(raw.entityType, 'dialogue-author-group');
-  assert.equal(raw.listingKind, 'context');
-  assert.equal(raw.portrait, null);
-  assert.ok(raw.bio.startsWith('本条是让-弗朗索瓦·何维勒与马修·理查德的共同对话专题'));
-  assert.deepEqual(group.profile.people.map(person => person.name), ['让-弗朗索瓦·何维勒', '马修·理查德']);
-  assert.ok(authorBooks(group, catalog).some(book => book.id === '077532e4515e'));
+  assert.ok(!roster[name]);
+  const book = catalog.books.find(book => book.id === '077532e4515e');
+  assert.ok(book);
+  assert.ok(bookAuthors(book.author, catalog).every(author => !author.path || catalog.people[author.canonical]));
+  assert.ok(fs.existsSync(new URL(`book_detail/${book.id}.json`, publicRoot)));
+});
+
+test('removing a textbook author group preserves its readable book and records both distinct author gaps', () => {
+  assert.ok(!roster['撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽']);
+  const book = catalog.books.find(book => book.id === '4a4a200536bd');
+  assert.ok(readableBook(book));
+  assert.ok(bookAuthors(book.author, catalog).every(author => !author.path || catalog.people[author.canonical]));
+  assert.ok(retirement.missingDistinctProfiles.some(name => name.includes('Stumpf')));
+  assert.ok(retirement.missingDistinctProfiles.some(name => name.includes('Fieser')));
+});
+
+test('retired identities cannot reappear through stale details, school graphs or aliases', async () => {
+  const names = Object.entries(retirement.retired).filter(([, item]) => item.previousKind === 'review').map(([name]) => name);
+  assert.equal(names.length, 36);
+  for (const name of names) {
+    assert.ok(!roster[name]);
+    assert.ok(isRetiredAuthor(name));
+    await assert.rejects(loadAuthorPage(name, undefined, { jsonLoader: () => { throw new Error('stale detail fetched'); } }), { code: 'AUTHOR_RETIRED' });
+    const school = normalizeSchool({ thinkers: [{ name }, { name: '孔子' }], relations: [{ from: name, to: '孔子' }] });
+    assert.deepEqual(school.thinkers.map(item => item.name), ['孔子']);
+    assert.deepEqual(school.relations, []);
+  }
+  for (const target of Object.values(catalog.aliases)) assert.ok(roster[target]);
+});
+
+test('recovering Narokobi does not turn an unverified school dialogue into historical evidence', () => {
+  const recovered = details.find(person => person.name === '伯纳德·纳罗科比');
+  assert.equal(recovered.country, '巴布亚新几内亚');
+  assert.ok(recovered.bio.startsWith('伯纳德·纳罗科比是巴布亚新几内亚'));
+  assert.ok(!recovered.profile.bibliography.some(work => work.originalTitle === 'De Universalibus'));
+  const peer = details.find(person => person.name === '维利索尼·赫雷尼科');
+  const shared = peer.profile.relations.filter(relation =>
+    [relation.from, relation.to].includes('伯纳德·纳罗科比'));
+  // Both biographies now have authored packets; a school graph cannot restore
+  // a dialogue that neither packet has verified.
+  assert.equal(shared.length, 0);
+  assert.equal(peer.profile.englishName, 'Vilsoni Hereniko');
+  assert.equal(peer.era, '1954—');
+  assert.deepEqual(peer.centuries, ['20世纪', '21世纪']);
+  assert.ok(!peer.bio.includes('对话性还原'));
 });
 test('all former aliases still resolve to an existing canonical detail', () => {
   for (const [old, target] of Object.entries(catalog.aliases)) {
@@ -83,8 +208,23 @@ test('corrected identities do not inherit unrelated portraits or fabricated biog
     assert.equal(roster[name].portraitReview.allowAsPortrait, false);
   }
   assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
-  assert.equal(roster['卡蒂尼'].era, '1879–1904');
+  assert.equal(roster['卡蒂尼'].era, '1879年4月21日—1904年9月17日（爪哇）');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
+  const maffie = details.find(person => person.name === '詹姆斯·莫菲特');
+  assert.equal(maffie.profile.englishName, 'James Maffie');
+  assert.equal(maffie.era, '当代');
+  assert.deepEqual(maffie.centuries, ['20世纪', '21世纪']);
+  assert.doesNotMatch(maffie.bio, /1940|2019|4E认知/);
+  assert.match(maffie.profile.life.find(event => event.year === '1988年').body, /Michigan Ann Arbor博士/);
+  assert.ok(maffie.profile.bibliography.some(work => work.originalTitle === 'Aztec Philosophy: Understanding a World in Motion'));
+  const dodson = details.find(person => person.name === '迈克尔·多德森');
+  assert.equal(dodson.profile.englishName, 'Michael (Mick) Dodson');
+  assert.equal(dodson.country, '澳大利亚');
+  assert.match(dodson.era, /^1950/);
+  assert.equal(dodson.portrait, null);
+  assert.deepEqual(dodson.centuries, ['20世纪', '21世纪']);
+  assert.ok(dodson.profile.life.some(event => event.year === '1993—1998年'));
+  assert.ok(dodson.profile.bibliography.some(work => work.originalTitle === 'Bringing Them Home' && work.kind === 'collective-institutional-inquiry-report'));
   for (const person of details.filter(person => person.listingKind === 'review')) {
     assert.equal(person.bio, person.reviewReason);
     assert.equal(person.portrait, null);
