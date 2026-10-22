@@ -29,6 +29,21 @@ test('verified replacement photos refresh both CDN and fallback without changing
   assert.equal(authorPortraitImage({ portrait: person.portrait }), person.portrait);
 });
 
+test('school references honor withdrawn portraits and all shared image routes keep the current revision', () => {
+  const references = buildSchoolReferences({ philosophers: read('schools/catalog.json').philosophers });
+  assert.equal(references.findPerson('亨佩尔').portrait, null);
+  const person = references.findPerson('大卫·艾布拉姆');
+  const revision = roster[person.name].portraitReview.observedSha256.slice(0, 12);
+  assert.equal(new URL(staticImageSources(person.portrait).primary).searchParams.get('v'), revision);
+  const future = `${person.portrait}?v=next-reviewed-image`;
+  assert.equal(new URL(staticImageSources(future).primary).searchParams.get('v'), 'next-reviewed-image');
+  const absolute = `${OSS_BASE}${future}&x-oss-process=image/resize,w_50`;
+  const resized = new URL(staticImageSources(absolute, 192).primary);
+  assert.equal(resized.searchParams.get('v'), 'next-reviewed-image');
+  assert.equal(resized.searchParams.getAll('x-oss-process').length, 1);
+  assert.ok(resized.searchParams.get('x-oss-process').includes('w_192'));
+});
+
 test('section citations honor declared sources instead of university-title guesses', () => {
   const person = details.find(item => item.name === '傅佩荣');
   assert.deepEqual(authorSectionSources(person, 'debate').map(source => source.id), ['ntu-nature']);
@@ -70,7 +85,7 @@ test('portrait requests use sized CDN images with the unchanged original path as
     const thumbnail = staticImageSources(person.portrait, 192);
     assert.ok(thumbnail.primary.startsWith(OSS_BASE + '/philosopher/'));
     assert.ok(thumbnail.primary.includes('image/resize,w_192/format,webp'));
-    assert.equal(thumbnail.fallback, person.portrait);
+    assert.equal(decodeURIComponent(new URL(thumbnail.fallback, 'https://deepphilosophy.top').pathname), person.portrait);
   }
   assert.deepEqual(staticImageSources('https://example.com/photo.jpg'), { primary: 'https://example.com/photo.jpg', fallback: 'https://example.com/photo.jpg' });
 });
