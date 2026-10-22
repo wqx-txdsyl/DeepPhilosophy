@@ -6,19 +6,20 @@ import { staticImageSources } from '../data/ossUrls';
 import { useSEO } from '../utils/seo';
 import CdnImage from '../components/CdnImage';
 import { layoutConstellation, constellationCurve } from '../data/schoolConstellationLayout';
-import { AUTHOR_KINDS, authorPath, authorBooks, authorSectionSources, bibliography, loadAuthorPage, normalizeAuthor, readableBook } from '../data/authorContent';
+import { AUTHOR_KINDS, authorPath, authorBooks, authorPortraitImage, authorSectionSources, bibliography, loadAuthorPage, normalizeAuthor, readableBook } from '../data/authorContent';
 import './AuthorDetailPage.css';
 
 function Portrait({ person, className = '', priority = false }) {
   const [failed, setFailed] = useState(false);
   if (!person?.portrait || failed) return <div className={`hp-portrait-placeholder ${className}`} aria-label={`${person?.displayName || person?.name || ''}暂无已确认肖像`}><span>{person?.name?.split('·').at(-1)?.slice(0, 2)}</span><small>人物与思想</small></div>;
-  return <CdnImage className={className} imageWidth={priority ? 960 : 192} src={person.portrait} alt={`${person.displayName || person.name}肖像`} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" onError={() => setFailed(true)} />;
+  return <CdnImage className={className} imageWidth={priority ? 960 : 192} src={authorPortraitImage(person)} alt={`${person.displayName || person.name} · ${person.portraitReview?.imageLabel || '肖像'}`} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" onError={() => setFailed(true)} />;
 }
 function HeroVisual({ author, english }) {
   const [failed, setFailed] = useState(false);
   const background = !author.portrait && author.listingKind !== 'review' ? author.profile.schoolLinks[0] : null;
   const useBackground = background && !failed;
-  return <figure className="hp-hero-photo">{useBackground ? <CdnImage imageWidth={960} src={background.image} alt={`${background.name}思想背景图`} fetchPriority="high" onError={() => setFailed(true)} /> : <Portrait person={author} priority />}<figcaption className="hp-photo-caption">{useBackground ? `思想背景图 · ${background.name}` : author.listingKind === 'thinker' ? '人物 / 思想 / 原典' : AUTHOR_KINDS[author.listingKind]}</figcaption><span className="hp-photo-edge">{english || 'DEEP PHILOSOPHY'}</span></figure>;
+  const credit = author.portrait && author.portraitReview?.allowAsPortrait === true ? author.portraitReview : null;
+  return <figure className="hp-hero-photo">{useBackground ? <CdnImage imageWidth={960} src={background.image} alt={`${background.name}思想背景图`} fetchPriority="high" onError={() => setFailed(true)} /> : <Portrait person={author} priority />}<figcaption className="hp-photo-caption" style={{ maxWidth: 'calc(100% - 24px)', overflowWrap: 'anywhere' }}>{useBackground ? `思想背景图 · ${background.name}` : credit?.sourcePage ? <><span>{credit.imageLabel} · 档案署名：{credit.artist || '作者未详'}</span><br /><a href={credit.sourcePage} target="_blank" rel="noreferrer">图像来源</a>{credit.license && <> · {credit.licenseUrl ? <a href={credit.licenseUrl} target="_blank" rel="noreferrer">{credit.license}</a> : credit.license}</>}</> : author.listingKind === 'thinker' ? '人物 / 思想 / 原典' : AUTHOR_KINDS[author.listingKind]}</figcaption><span className="hp-photo-edge">{english || 'DEEP PHILOSOPHY'}</span></figure>;
 }
 function Cover({ book, className }) {
   const [failed, setFailed] = useState(false);
@@ -99,7 +100,7 @@ function AuthorPortraitPage({ authorName }) {
     (async () => {
       try {
         const { raw, catalog } = await loadAuthorPage(authorName, controller.signal, { onDetail: detail => {
-          const hero = detail.portrait || (detail.listingKind !== 'review' && detail.profile?.schoolLinks?.[0]?.image);
+          const hero = authorPortraitImage(detail) || (detail.listingKind !== 'review' && detail.profile?.schoolLinks?.[0]?.image);
           if (hero) preload(staticImageSources(hero, 960).primary, { as: 'image', fetchPriority: 'high' });
         } });
         if (controller.signal.aborted) return;

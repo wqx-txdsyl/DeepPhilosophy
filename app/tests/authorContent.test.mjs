@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { AUTHOR_KINDS, authorBooks, authorFile, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
 import { buildSchoolReferences, normalizeSchool } from '../src/data/schoolContent.js';
@@ -15,6 +15,19 @@ const roster = read('philosophers.json');
 const schools = read('schools/catalog.json').schools;
 const retirement = JSON.parse(fs.readFileSync(new URL('../../scripts/author-curation/retirement-2026-10-21.json', import.meta.url), 'utf8'));
 const details = Object.keys(roster).map(name => normalizeAuthor(read(decodeURIComponent(authorFile(name).slice(1)))));
+
+test('verified replacement photos refresh both CDN and fallback without changing the stored public path', () => {
+  const person = roster['大卫·艾布拉姆'];
+  const image = authorPortraitImage(person);
+  const revision = person.portraitReview.observedSha256.slice(0, 12);
+  assert.equal(person.portrait, '/philosopher/大卫·艾布拉姆.webp');
+  assert.equal(image, `${person.portrait}?v=${revision}`);
+  const sources = staticImageSources(image, 192);
+  assert.equal(new URL(sources.primary).searchParams.get('v'), revision);
+  assert.equal(sources.fallback, image);
+  assert.equal(authorPortraitImage(roster['亨佩尔']), null);
+  assert.equal(authorPortraitImage({ portrait: person.portrait }), person.portrait);
+});
 
 test('section citations honor declared sources instead of university-title guesses', () => {
   const person = details.find(item => item.name === '傅佩荣');

@@ -4,6 +4,13 @@ import { isRetiredAuthor } from './retiredAuthors.js';
 export const AUTHOR_KINDS = { thinker: '哲学家与思想家', context: '历史与文化', tradition: '文本与传统', review: '待核实条目' };
 export const authorPath = name => `/author/${encodeURIComponent(name)}`;
 export const authorFile = name => `/philosopher/data/${encodeURIComponent(name.replaceAll('/', '-').replaceAll(':', '：'))}.json`;
+export function authorPortraitImage(person) {
+  const path = person?.portrait;
+  const review = person?.portraitReview;
+  return path && review?.allowAsPortrait === true && review.path === path && /^[a-f0-9]{64}$/.test(review.observedSha256 || '')
+    ? `${path}${path.includes('?') ? '&' : '?'}v=${review.observedSha256.slice(0, 12)}`
+    : path;
+}
 export const readableBook = book => Number(book?.chapterCount) > 0 && book?.file_type !== 'txt';
 const key = text => String(text || '').replace(/[\s·•・.《》〈〉]/g, '').toLocaleLowerCase();
 let catalogPromise;
