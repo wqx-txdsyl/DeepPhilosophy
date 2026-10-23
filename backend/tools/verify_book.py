@@ -9,7 +9,8 @@
   5. meta.chapterTitles 字符串数组且长度 == chapterCount
   6. book_detail/<bid>.json 存在 (详情页目录/摘要来源) 且 toc 同结构
   7. books.json 里该书 chapterCount 一致
-  8. --vite-check: curl 5173 meta.json + book_detail 真内容 (vite public 预索引, 新文件须重启 vite)
+  8. 正文块必须为 dict，type 为阅读器支持的 text/image/html（防缺失类型导致整页崩溃）
+  9. --vite-check: curl 5173 meta.json + book_detail 真内容 (vite public 预索引, 新文件须重启 vite)
 全部通过才可宣布完成; 任何一项失败 → 修完重跑
 """
 import json, hashlib, os, sys, urllib.request
@@ -70,6 +71,7 @@ check('chapterTitles 字符串数组且长度 == chapterCount',
       isinstance(ct, list) and all(isinstance(t, str) for t in ct) and len(ct) == n,
       '%d 项' % len(ct))
 title_mismatches = []
+invalid_blocks = []
 for i in range(n):
     path = D + '/%d.json' % i
     if not os.path.exists(path):
@@ -78,8 +80,18 @@ for i in range(n):
         chapter = json.load(f)
     if not isinstance(chapter, dict) or i >= len(ct) or chapter.get('title') != ct[i]:
         title_mismatches.append(i)
+    content = chapter.get('content') if isinstance(chapter, dict) else None
+    if not isinstance(content, list) or not content:
+        invalid_blocks.append('%d.json: 正文块缺失' % i)
+    else:
+        for bi, block in enumerate(content):
+            if not isinstance(block, dict) or block.get('type') not in {'text', 'image', 'html'}:
+                invalid_blocks.append('%d.json:%d 缺少或未知块类型' % (i, bi))
 check('meta.chapterTitles 与实际章节标题逐项一致', not title_mismatches,
       '不一致: %s' % title_mismatches[:10] if title_mismatches else '')
+
+check('正文块具有阅读器支持的类型', not invalid_blocks,
+      '; '.join(invalid_blocks[:10]))
 
 # 5. book_detail 条目 (详情页 /book_detail/<bid>.json)
 bd = BASE + '/app/public/book_detail/%s.json' % BID
