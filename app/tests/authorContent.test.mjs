@@ -26,19 +26,13 @@ test('verified replacement photos refresh both CDN and fallback without changing
   const sources = staticImageSources(image, 192);
   assert.equal(new URL(sources.primary).searchParams.get('v'), revision);
   assert.equal(sources.fallback, image);
-  assert.equal(authorPortraitImage(roster['亨佩尔']), `${roster['亨佩尔'].portrait}?v=${roster['亨佩尔'].portraitReview.observedSha256.slice(0, 12)}`);
+  assert.equal(authorPortraitImage(roster['亨佩尔']), null);
   assert.equal(authorPortraitImage({ portrait: person.portrait }), person.portrait);
 });
 
 test('school references honor withdrawn portraits and all shared image routes keep the current revision', () => {
   const references = buildSchoolReferences({ philosophers: read('schools/catalog.json').philosophers });
-  const hempel = references.findPerson('亨佩尔');
-  assert.equal(new URL(staticImageSources(hempel.portrait).primary).searchParams.get('v'), roster['亨佩尔'].portraitReview.observedSha256.slice(0, 12));
-  assert.equal(roster['亨佩尔'].portraitReview.imageType, 'ai-generated-illustration');
-  assert.equal(roster['亨佩尔'].portraitReview.sourcePage, 'https://philosophy.princeton.edu/about/great-and-good/carl-g-hempel');
-  const hempelDigest = createHash('sha256').update(fs.readFileSync(new URL(roster['亨佩尔'].portrait.slice(1), publicRoot))).digest('hex');
-  assert.equal(hempelDigest, roster['亨佩尔'].portraitReview.observedSha256);
-  assert.notEqual(hempelDigest, '412f023b98bc4eb571f21371047bed23660d3a8da0310a7cb03284e1ce263814', '旧鸟类错配图片不得恢复');
+  assert.equal(references.findPerson('亨佩尔').portrait, null);
   const person = references.findPerson('大卫·艾布拉姆');
   const revision = roster[person.name].portraitReview.observedSha256.slice(0, 12);
   assert.equal(new URL(staticImageSources(person.portrait).primary).searchParams.get('v'), revision);
@@ -207,20 +201,28 @@ test('all former aliases still resolve to an existing canonical detail', () => {
   assert.equal(references.findPerson('奎因').name, '威拉德·范·奥曼·蒯因');
   assert.equal(references.findPerson('维特根斯坦').name, '路德维希·维特根斯坦');
 });
+test('AI fillers are withheld and Confucius uses the selected traditional image', () => {
+  for (const person of Object.values(roster)) {
+    if (person.portraitReview?.imageType === 'ai-generated-illustration') {
+      assert.equal(person.portrait, null, person.name);
+      assert.equal(person.portraitReview.allowAsPortrait, false, person.name);
+    }
+  }
+  const person = roster['孔子'];
+  assert.equal(person.portraitReview.imageType, 'historical-attributed-depiction');
+  assert.match(person.portraitReview.sourcePage, /%E5%AD%94%E5%AD%90|孔子/);
+  assert.doesNotMatch(person.portraitReview.sourcePage, /Western_Han_tomb/);
+  const digest = createHash('sha256').update(fs.readFileSync(new URL(person.portrait.slice(1), publicRoot))).digest('hex');
+  assert.equal(digest, person.portraitReview.observedSha256);
+  assert.notEqual(digest, '9a403bc4fce3f09a4809eb6ce5e97656b379ddb76a43d552b148a7897bfdbe88');
+});
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
   assert.equal(roster['丹尼斯·林德利'].era, '1923—2013');
   assert.equal(roster['理查德·杰弗里'].era, '1926—2002');
-  const lindley = roster['丹尼斯·林德利'];
-  assert.equal(lindley.portrait, '/philosopher/丹尼斯·林德利.webp');
-  assert.equal(lindley.portraitReview.allowAsPortrait, true);
-  assert.equal(lindley.portraitReview.imageType, 'ai-generated-illustration');
-  assert.match(lindley.portraitReview.imageLabel, /AI.*非档案照片/);
-  assert.equal(lindley.portraitReview.sourcePage, 'https://faculty.washington.edu/kenrice/sisgbayes/sisgbayes01.pdf#page=44');
-  const lindleyDigest = createHash('sha256').update(fs.readFileSync(new URL(lindley.portrait.slice(1), publicRoot))).digest('hex');
-  assert.equal(lindleyDigest, lindley.portraitReview.observedSha256);
-  assert.notEqual(lindleyDigest, 'fb65639104065abc4199ef2a5f33fca436e951d44e6f420e27e6a527ea49bfe5', '旧错配图不得恢复');
-  assert.equal(roster['理查德·杰弗里'].portrait, null);
-  assert.equal(roster['理查德·杰弗里'].portraitReview.allowAsPortrait, false);
+  for (const name of ['丹尼斯·林德利', '理查德·杰弗里']) {
+    assert.equal(roster[name].portrait, null, `${name}: 错配图不得恢复`);
+    assert.equal(roster[name].portraitReview.allowAsPortrait, false);
+  }
   assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
   assert.equal(roster['卡蒂尼'].era, '1879年4月21日—1904年9月17日（爪哇）');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
