@@ -339,6 +339,12 @@ export default function ChapterReader({
             const paras = [];
             let tail = null;   // 尾段(可能被下一页首段拼接)
             for (const blk of merged) {
+              // Direct text imports already have paragraph boundaries. OCR page
+              // continuation heuristics must not join their adjacent blocks.
+              if (ch.paragraphMode === 'source' && tail) {
+                paras.push(tail);
+                tail = null;
+              }
               if (blk.type !== 'text') {
                 if (tail) { paras.push(tail); tail = null; }
                 paras.push(blk);
@@ -353,7 +359,7 @@ export default function ChapterReader({
               let leadImg = (blk.value || '').startsWith('[IMG]') ? imgs[0] : null;
               let leadUsed = false;
               parts.forEach((p, j) => {
-                const segs = splitPageParas(p);
+                const segs = ch.paragraphMode === 'source' ? [p] : splitPageParas(p);
                 segs.forEach((seg, k) => {
                   if (!seg.trim()) return;   // 空段跳过
                   const hasImg = (j < parts.length - 1 && k === segs.length - 1 && imgs[j]);
