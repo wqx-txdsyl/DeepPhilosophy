@@ -21,3 +21,18 @@ test('editorial concepts resolve to real section anchors and recommendations nev
  for(const c of BOOK_EDITORIAL[book.id].concepts)assert.ok(toc.some(t=>t.type==='section'&&t.index===c.ch&&t.sec===c.sec),c.name);
  const related=relatedBooks(book,catalog,BOOK_EDITORIAL[book.id]);assert.equal(related.length,3);assert.ok(related.every(b=>b.id!==book.id&&catalog.some(x=>x.id===b.id)));assert.equal(new Set(related.map(x=>x.id)).size,related.length);
 });
+test('Hu Shi chapter headings contain their own sections without changing reading-file addresses',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/ef077e01b6ee.json',import.meta.url)));
+ const tree=groupBookToc(normalizeBookToc(book));
+ assert.equal(book.chapterCount,15);
+ const ending=tree.find(n=>n.title==='第十二篇 古代哲学的终局');
+ assert.deepEqual(ending.children.map(n=>n.title),['第一章 西历前三世纪之思潮','第二章 所谓法家','第三章 古代哲学之中绝']);
+ const legal=ending.children[1];
+ assert.deepEqual(legal.children.map(n=>n.title),['一、论“法家”之名','二、所谓“法家”的人物及其书','三、法','四、“法”的哲学','五、韩非']);
+ assert.equal(legal.index,14);assert.equal(bookReaderPath(book.id,legal,book.chapterCount),`/reader/${book.id}?ch=14&toc=${legal.tocIndex}`);
+ for(const node of flatten(tree).filter(n=>n.type==='section')){
+  const ch=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/${book.id}/${node.index}.json`,import.meta.url)));
+  assert.equal(ch.content[node.sec]?.value?.replace(/^§/,'').trim(),node.title,node.title);
+ }
+ for(const title of ['第二章 孟子','第二章 天与性','第三章 心理学与名学'])assert.equal(flatten(tree).filter(n=>n.title===title).length,1,title);
+});

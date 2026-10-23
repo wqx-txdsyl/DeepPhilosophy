@@ -11,7 +11,9 @@ import './BookDetailPage.css';
 
 async function readDetail(id, signal) {
   const path = `/book_detail/${encodeURIComponent(id)}.json`;
-  for (const url of [`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com${path}`, path]) {
+  const local = typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname);
+  const urls = local ? [path] : [`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com${path}`, path];
+  for (const url of urls) {
     try {
       const response = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(4500)]), cache: 'no-cache' });
       if (response.ok) { const value = await response.json(); if (value?.title) return value; }
@@ -27,8 +29,8 @@ function Cover({ book, hero = false }) {
 }
 function TocNode({ node, book, depth = 0 }) {
   const href = bookReaderPath(book.id, node, book.chapterCount);
-  if (node.type === 'part' || node.children.length) return <details className={node.type === 'part' ? 'dp-part' : 'dp-chapter'} id={`bd-toc-${node.tocIndex}`} open={depth === 0 && node.tocIndex === 0}>
-    <summary>{node.title}</summary><div className="bd-toc-children">{href && <Link className="bd-chapter-start" to={href}>从本章开始阅读 ↗</Link>}{node.children.map(child => <TocNode key={child.tocIndex} node={child} book={book} depth={depth+1} />)}</div>
+  if (node.type === 'part' || node.children.length) return <details className={`${node.type === 'part' ? 'dp-part' : 'dp-chapter'}${node.type === 'section' ? ' bd-toc-branch-section' : ''}`}  id={`bd-toc-${node.tocIndex}`} open={depth === 0 && node.tocIndex === 0}>
+    <summary>{node.title}</summary><div className="bd-toc-children">{href && <Link className="bd-chapter-start" to={href}>从此处开始阅读 ↗</Link>}{node.children.map(child => <TocNode key={child.tocIndex} node={child} book={book} depth={depth+1} />)}</div>
   </details>;
   return <div className={`bd-toc-leaf${node.type === 'section' ? ' bd-toc-section' : ''}`} id={`bd-toc-${node.tocIndex}`}>{href ? <Link to={href}><span>{node.title}</span><span aria-hidden="true">↗</span></Link> : <span>{node.title}</span>}</div>;
 }

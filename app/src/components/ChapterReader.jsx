@@ -712,7 +712,7 @@ export default function ChapterReader({
                     fontWeight: isPart ? 700 : (isCur ? 600 : 400),
                     color: isPart ? 'var(--ochre)' : (isCur ? 'var(--ochre)' : (isSection ? 'var(--text-dim)' : 'var(--text)')),
                     letterSpacing: isPart ? '0.15em' : '0',
-                    paddingLeft: isPart ? (isSubPart ? 28 : 0) : (isSection ? 42 : 14),
+                    paddingLeft: isPart ? (isSubPart ? 28 : 0) : (isSection ? 42 + (Math.max(2, Number(item.level) || 2) - 2) * 14 : 14),
                     opacity: isPart ? 0.85 : 1,
                   }} onClick={() => {
                     if (isPart) return;

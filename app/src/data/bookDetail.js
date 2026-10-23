@@ -12,14 +12,23 @@ export function normalizeBookToc(book) {
 export function groupBookToc(items) {
   const roots = [], stack = [];
   let chapter = null;
+  let sections = [];
   for (const item of items) {
     const node = { ...item, children: [] };
     if (item.type === 'part') {
       const level = Number(item.level) || 0;
       while (stack.length && (Number(stack.at(-1).level) || 0) >= level) stack.pop();
-      (stack.at(-1)?.children || roots).push(node); stack.push(node); chapter = null;
-    } else if (item.type === 'section' && chapter && item.index === chapter.index) chapter.children.push(node);
-    else { (stack.at(-1)?.children || roots).push(node); chapter = item.type === 'section' ? null : node; }
+      (stack.at(-1)?.children || roots).push(node); stack.push(node); chapter = null; sections = [];
+    } else if (item.type === 'section' && chapter && item.index === chapter.index) {
+      const level = Math.max(2, Number(item.level) || 2);
+      while (sections.length && sections.at(-1).level >= level) sections.pop();
+      (sections.at(-1)?.node || chapter).children.push(node);
+      sections.push({ level, node });
+    } else {
+      (stack.at(-1)?.children || roots).push(node);
+      chapter = item.type === 'section' ? null : node;
+      sections = [];
+    }
   }
   return roots;
 }
