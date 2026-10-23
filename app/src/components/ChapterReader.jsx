@@ -270,7 +270,7 @@ export default function ChapterReader({
           )
         ) : ch.content ? (
           (() => {
-            const isSmall = b => b.w && b.h
+            const isSmall = b => b.display !== 'block' && b.w && b.h
               && Math.max(b.w, b.h) < 300
               && (b.w / b.h) > 0.3 && (b.w / b.h) < 3;
             const merged = [];
@@ -555,7 +555,7 @@ export default function ChapterReader({
               });
             };
             return (
-              <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
+              <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em', whiteSpace: ch.paragraphMode === 'source' ? 'pre-line' : undefined }}>
                 {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderText(p)}</Fragment>)}
                 {(block.imgs || []).slice(imgCursor).map((img, j) => {
                   const isrc = toOssImage(img.src, 200);
