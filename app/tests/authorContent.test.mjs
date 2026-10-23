@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import { AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
@@ -203,10 +204,17 @@ test('all former aliases still resolve to an existing canonical detail', () => {
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
   assert.equal(roster['丹尼斯·林德利'].era, '1923—2013');
   assert.equal(roster['理查德·杰弗里'].era, '1926—2002');
-  for (const name of ['丹尼斯·林德利', '理查德·杰弗里']) {
-    assert.equal(roster[name].portrait, null, `${name}: 错配图不得恢复`);
-    assert.equal(roster[name].portraitReview.allowAsPortrait, false);
-  }
+  const lindley = roster['丹尼斯·林德利'];
+  assert.equal(lindley.portrait, '/philosopher/丹尼斯·林德利.webp');
+  assert.equal(lindley.portraitReview.allowAsPortrait, true);
+  assert.equal(lindley.portraitReview.imageType, 'ai-generated-illustration');
+  assert.match(lindley.portraitReview.imageLabel, /AI.*非档案照片/);
+  assert.equal(lindley.portraitReview.sourcePage, 'https://faculty.washington.edu/kenrice/sisgbayes/sisgbayes01.pdf#page=44');
+  const lindleyDigest = createHash('sha256').update(fs.readFileSync(new URL(lindley.portrait.slice(1), publicRoot))).digest('hex');
+  assert.equal(lindleyDigest, lindley.portraitReview.observedSha256);
+  assert.notEqual(lindleyDigest, 'fb65639104065abc4199ef2a5f33fca436e951d44e6f420e27e6a527ea49bfe5', '旧错配图不得恢复');
+  assert.equal(roster['理查德·杰弗里'].portrait, null);
+  assert.equal(roster['理查德·杰弗里'].portraitReview.allowAsPortrait, false);
   assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
   assert.equal(roster['卡蒂尼'].era, '1879年4月21日—1904年9月17日（爪哇）');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
