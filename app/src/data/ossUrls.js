@@ -10,6 +10,7 @@
  */
 import { SCHOOL_ARTWORK_VERSIONS } from './schoolArtworkVersions.js';
 import { AUTHOR_ARTWORK_VERSIONS } from './authorArtworkVersions.js';
+import { BOOK_COVER_VERSIONS } from './bookCoverVersions.js';
 
 export const OSS_BASE = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com';
 
@@ -19,9 +20,10 @@ function versionedImagePath(rel) {
   try { key = decodeURI(path); } catch { /* Keep malformed paths unchanged. */ }
   const params = new URLSearchParams(query);
   const authorVersion = AUTHOR_ARTWORK_VERSIONS[key];
+  const coverVersion = BOOK_COVER_VERSIONS[key];
   // A freshly fetched author record can be newer than this compiled fallback.
-  if (authorVersion && params.has('v')) return rel;
-  const version = SCHOOL_ARTWORK_VERSIONS[key] || authorVersion;
+  if ((authorVersion || coverVersion) && params.has('v')) return rel;
+  const version = SCHOOL_ARTWORK_VERSIONS[key] || authorVersion || coverVersion;
   if (!version) return rel;
   params.set('v', version);
   return `${path}?${params}`;
