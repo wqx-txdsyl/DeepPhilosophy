@@ -2,7 +2,7 @@
   "date": "2026-10-23",
   "owner": "codex-book-content-followup-20261023",
   "bookId": "929771a017d6",
-  "state": "validated-awaiting-publication",
+  "state": "published-verified",
   "source": {
     "url": "https://raw.githubusercontent.com/HarborLibrary/Political-Science/master/%E7%BA%A6%E7%BF%B0%C2%B7%E7%BD%97%E5%B0%94%E6%96%AF%EF%BC%9A%E6%AD%A3%E4%B9%89%E8%AE%BA%20%28%E6%89%AB%E6%8F%8F%E7%89%88%29.pdf",
     "bytes": 16376151,
@@ -325,5 +325,122 @@
     "officialMetadataDeterministicRebuild": "passed",
     "localReaderPhrases": 9,
     "horizontalOverflow": false
+  },
+  "publication": {
+    "commit": "cd4daaa903bf496684cb8e2d5ab1053606fa0f6b",
+    "cloudflareDeployment": "f3a4c8c7-1f7b-47a2-b092-09bfe2bb7dd7",
+    "ossObjects": 2,
+    "publicByteComparisons": 4,
+    "freshFrontendAssets": 45,
+    "readerChapter7Commit": "cd4daaa9",
+    "readerChapter7Checks": 7,
+    "readerChapter7HorizontalOverflow": false,
+    "screenshotChapter7": "/Users/sen/.codex/visualizations/2026/10/02/01a0fa9f-302c-7d10-84dc-b53005a89c65/book-content-followup-20261023/rawls10-main-seventh-continuity.png",
+    "ciFailure": {
+      "commit": "cd4daaa903bf496684cb8e2d5ab1053606fa0f6b",
+      "jobId": 120195010536,
+      "runId": 39886256423,
+      "failedTest": "tests/test_security.py::test_auth_guard_rate_limit",
+      "originalResult": "1 failed, 1853 passed, 16 skipped",
+      "focusedLocalResult": "1 passed in 0.11s",
+      "officialRerunRequested": true,
+      "backendOrTestCodeChanged": false,
+      "excerpt": "5:19.5777088Z =================================== FAILURES ===================================\n2026-10-23T01:55:19.5777648Z __________________________ test_auth_guard_rate_limit __________________________\n2026-10-23T01:55:19.5777990Z \n2026-10-23T01:55:19.5778134Z     def test_auth_guard_rate_limit():\n2026-10-23T01:55:19.5778929Z         \"\"\"注册/登录防刷: 突发容量内放行, 超出返回 429（按 IP 计桶 + 每日配额）\"\"\"\n2026-10-23T01:55:19.5779870Z         from guard import auth_guard, AUTH_BURST, _bucket_reset, _quota_reset\n2026-10-23T01:55:19.5780559Z         results = []\n2026-10-23T01:55:19.5780845Z         for _ in range(AUTH_BURST + 3):\n2026-10-23T01:55:19.5781218Z             resp = _call_guard(auth_guard, headers={})\n2026-10-23T01:55:19.5781620Z             results.append(resp.status_code)\n2026-10-23T01:55:19.5782111Z         # 突发容量内放行，超出返回 429（令牌桶随时间回填, 不精确断言放行数量）\n2026-10-23T01:55:19.5782681Z >       assert 200 in results and 429 in results\n2026-10-23T01:55:19.5783205Z E       assert (200 in [200, 200, 200, 200, 200, 200, ...] and 429 in [200, 200, 200, 200, 200, 200, ...])\n2026-10-23T01:55:19.5783513Z \n2026-10-23T01:55:19.5783614Z tests/test_security.py:110: AssertionError\n2026-10-23T01:55:19.5783888Z =============================== warnings summary ===============================\n2026-10-23T01:55:19.5784373Z tests/test_home_questions.py::test_reading_notes_and_saved_memory_are_separate_from_deleted_discussions\n2026-10-23T01:55:19.5784930Z tests/test_home_questions.py::test_deletion_while_model_generates_drops_mixed_reading_and_discussion_result\n2026-10-23T01:55:19.5785458Z tests/test_home_questions.py::test_latest_discussion_moves_ahead_of_old_reading_and_changes_questions\n2026-10-23T01:55:19.5786029Z tests/test_home_questions.py::test_changed_or_deleted_context_is_not_resent_through_previous_questions[delete_discussion]\n2026-10-23T01:55:19.5786606Z tests/test_home_questions.py::test_changed_or_deleted_context_is_not_resent_through_previous_questions[edit_note]\n2026-10-23T01:55:19.5787613Z   /home/runner/work/DeepPhilosophy/DeepPhilosophy/backend/auth.py:581: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n2026-10-23T01:55:19.5788516Z     now_utc = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')\n2026-10-23T01:55:19.5788711Z \n2026-10-23T01:55:19.5788906Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n2026-10-23T01:55:19.5789309Z =========================== short test summary info ============================\n2026-10-23T01:55:19.5789831Z FAILED tests/test_security.py::test_auth_guard_rate_limit - assert (200 in [200, 200, 200, 200, 200, 200, ...] and 429 in [200, 200, 200, 200, 200, 200, ...])\n2026-10-23T01:55:19.5790523Z 1 failed, 1853 passed, 16 skipped, 5 warnings in 142.78s (0:02:22)\n2026-10-23T01:55:20.8654976Z ##[error]Proce"
+    },
+    "ci": [
+      {
+        "name": "check",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "report-build-status",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Cloudflare Pages",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "ciRerun": {
+      "id": 120199538049,
+      "name": "check",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 39886256423,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Check metadata consistency",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run backend pytest",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    },
+    "readerChapter9Commit": "cd4daaa9",
+    "readerChapter9Checks": 2,
+    "readerChapter9HorizontalOverflow": false,
+    "screenshotChapter9": "/Users/sen/.codex/visualizations/2026/10/02/01a0fa9f-302c-7d10-84dc-b53005a89c65/book-content-followup-20261023/rawls10-main-ninth-continuity.png"
   }
 }

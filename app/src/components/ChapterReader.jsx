@@ -119,6 +119,11 @@ export default function ChapterReader({
       .filter(x => x.item && typeof x.item === 'object' && x.item.type === 'section' && x.item.index === currentChapter);
   }, [toc, currentChapter]);
 
+  // 切章先回顶部，再执行下方的目录/块定位，避免覆盖已找到的目标。
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, [currentChapter]);
+
   // 节(section)滚动定位: 优先标题级锚点 sec-{tocIdx}，回退块锚点 b-{text块序号}
   // tocIdx(URL &toc= 主路径 / TOC 浮层) 优先于 sec 数字(旧 URL 兼容)
   const pendingSecRef = useRef(
@@ -161,11 +166,6 @@ export default function ChapterReader({
     });
   }, []);
   const theme = BG_THEMES[settings.bg] || BG_THEMES.default;
-
-  // 切章时滚到顶部
-  useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  }, [currentChapter]);
 
   // 键盘：左右切章
   useEffect(() => {
