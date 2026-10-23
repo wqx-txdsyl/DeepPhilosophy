@@ -36,3 +36,11 @@ test('Hu Shi chapter headings contain their own sections without changing readin
  }
  for(const title of ['第二章 孟子','第二章 天与性','第三章 心理学与名学'])assert.equal(flatten(tree).filter(n=>n.title===title).length,1,title);
 });
+test('Kumarajiva Vimalakirti keeps its fourteen chapters under three original volumes',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/27d12f8ac6bd.json',import.meta.url)));
+ const roots=groupBookToc(normalizeBookToc(book));
+ assert.equal(book.chapterCount,15);assert.equal(roots[0].title,'版本与来源说明');
+ assert.deepEqual(roots.slice(1).map(n=>[n.title,n.children.length]),[['卷上',4],['卷中',5],['卷下',5]]);
+ assert.deepEqual(roots.slice(1).flatMap(n=>n.children.map(c=>c.index)),Array.from({length:14},(_,i)=>i+1));
+ assert.equal(roots[3].children.at(-1).title,'囑累品第十四');
+});
