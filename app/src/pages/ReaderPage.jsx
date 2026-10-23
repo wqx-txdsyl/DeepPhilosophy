@@ -34,12 +34,14 @@ const CDN_TIMEOUTS = [2000, 2000, 10000];
 async function fetchChapter(path) {
   let lastErr;
   const rel = path.startsWith('/') ? path.slice(1) : path;   // {bid}/{idx}.json
+  // OSS 对象会原位更新；按部署版本隔离浏览器缓存，避免新版页面复用旧章节。
+  const ossRevision = `?v=${encodeURIComponent(DP_COMMIT)}`;
   // 基地址与路径成对：OSS bucket 前缀 book_chapters/（dp_sync_oss_chapters 上传，无 backend/data）；
   // jsDelivr 镜像 git 仓库 → 保留 backend/data/book_chapters/ 前缀；本地 dev 走 vite public junction
   const tries = CDN_BASES.length > 1
     ? [
-        `${CDN_BASES[0]}/book_chapters/${rel}`,            // OSS
-        `${CDN_BASES[0]}/book_chapters/${rel}`,            // OSS 重试
+        `${CDN_BASES[0]}/book_chapters/${rel}${ossRevision}`,  // OSS
+        `${CDN_BASES[0]}/book_chapters/${rel}${ossRevision}`,  // OSS 重试
         `${CDN_BASES[1]}/backend/data/book_chapters/${rel}`,  // jsDelivr 兜底
       ]
     : [`${CDN_BASES[0]}/backend/data/book_chapters${path}`];   // 本地 dev 单 base
