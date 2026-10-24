@@ -8,7 +8,7 @@ import json, re, sys, os, hashlib
 WT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 RETIRED = set(json.load(open(os.path.join(os.path.dirname(__file__), 'retired-a.json')))) if os.path.exists(os.path.join(os.path.dirname(__file__), 'retired-a.json')) else set()
 
-AUDIT_TONE = re.compile(r'门禁|本轮|核得|未核|冻结|编译产物|镜像|1301|source-backed|partial-text|字段路径|游标|验收|coverage|已读回执|实读|待领取|review|context字段|开发')
+AUDIT_TONE = re.compile(r'门禁|本轮|核得|未核|冻结|编译产物|镜像(?!阶段|误认|\))|1301|source-backed|partial-text|字段路径|游标|验收|coverage|已读回执|实读|待领取|review|context字段|开发')
 
 def word_key(w):
     w = re.sub(r'[（(].*?[)）]', '', str(w or '')).strip()
