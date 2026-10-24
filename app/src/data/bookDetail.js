@@ -6,7 +6,7 @@ export function mergeBook(id, catalogBook, detail) {
 }
 /** Official edition links complement records whose local text is unavailable. */
 export function officialReadingLinks(book) {
-  const allowed = new Set(['www.cp.com.cn', 'www.sklib.cn', 'books.google.com']);
+  const allowed = new Set(['www.cp.com.cn', 'www.sklib.cn', 'books.google.com', 'ebook.dswxyjy.org.cn', 'www.theorychina.org.cn', 'www.sanmin.com.tw']);
   return (Array.isArray(book?.readingLinks) ? book.readingLinks : []).filter(link => {
     if (!link || typeof link.label !== 'string' || !link.label.trim()) return false;
     try {
