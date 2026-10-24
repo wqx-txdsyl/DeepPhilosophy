@@ -78,6 +78,10 @@ function ReaderPage() {
   const secParam = searchParams.get('sec');
   const secNum = secParam ? parseInt(secParam, 10) : NaN;
   const initialSec = !isNaN(secNum) ? secNum : null;
+  // URL 直达注释（note-contract v1）: &note={显示号} → 章末注释锚点 dp-note-{ch}-{disp}
+  const noteParam = searchParams.get('note');
+  const noteNum = noteParam ? parseInt(noteParam, 10) : NaN;
+  const initialNote = !isNaN(noteNum) ? noteNum : null;
 
   // Notes state
   const [showNotes, setShowNotes] = useState(false);
@@ -314,6 +318,7 @@ function ReaderPage() {
                 onToggleToc={() => setShowReaderToc(!showReaderToc)}
                 initialTocIdx={initialTocIdx}
                 initialSec={initialSec}
+                initialNote={initialNote}
                 onRetryChapter={retryChapter}
               />
             ) : error ? (

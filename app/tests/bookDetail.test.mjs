@@ -1,10 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,resumedChapter,bookAuthors,relatedBooks} from '../src/data/bookDetail.js';
+import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks} from '../src/data/bookDetail.js';
 import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
+test('new edition links require an exact trusted HTTPS host without embedded credentials',()=>{
+ const urls=['https://ebook.dswxyjy.org.cn/detail/67','https://www.theorychina.org.cn/ztjj/','https://www.sanmin.com.tw/product/index/012901236','http://www.sanmin.com.tw/product/1','https://www.sanmin.com.tw.evil.example/','https://user:pass@ebook.dswxyjy.org.cn/detail/67','javascript:alert(1)'];
+ const links=officialReadingLinks({readingLinks:urls.map(url=>({label:'版本入口',url}))});
+ assert.deepEqual(links.map(x=>x.url),urls.slice(0,3));
+});
 test('all book TOCs retain every source entry and its original reader anchor after nesting',()=>{
  for(const b of catalog){const d=JSON.parse(fs.readFileSync(new URL(`../public/book_detail/${b.id}.json`,import.meta.url)));const flat=normalizeBookToc(d);const tree=flatten(groupBookToc(flat));assert.deepEqual(tree.map(n=>n.tocIndex),flat.map(n=>n.tocIndex),b.title);for(const n of tree){const path=bookReaderPath(b.id,n,d.chapterCount);if(n.type==='part')assert.equal(path,null);if(path&&n.type==='section')assert.ok(path.endsWith(`&toc=${n.tocIndex}`));}}
 });
