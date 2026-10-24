@@ -204,7 +204,7 @@ test('all former aliases still resolve to an existing canonical detail', () => {
   assert.equal(references.findPerson('奎因').name, '威拉德·范·奥曼·蒯因');
   assert.equal(references.findPerson('维特根斯坦').name, '路德维希·维特根斯坦');
 });
-test('only reference-checked authorized paper portraits replace withdrawn AI fillers', () => {
+test('only reference-checked authorized pencil portraits replace withdrawn AI fillers', () => {
   const audit = read('philosopher/portrait-audit.json').records;
   for (const person of Object.values(roster)) {
     const review = person.portraitReview;
@@ -213,10 +213,15 @@ test('only reference-checked authorized paper portraits replace withdrawn AI fil
       assert.equal(person.portrait, null, person.name);
       continue;
     }
-    assert.equal(review.style, 'graphite-pencil-paper-v1', person.name);
+    assert.ok(['graphite-pencil-paper-v1', 'graphite-pencil-transparent-v1'].includes(review.style), person.name);
     assert.equal(review.authorizedRound, 'pencil-20261024', person.name);
     assert.equal(review.referenceVerified, true, person.name);
-    assert.equal(review.background, 'opaque-warm-paper', person.name);
+    if (review.style === 'graphite-pencil-paper-v1') assert.equal(review.background, 'opaque-warm-paper', person.name);
+    else {
+      assert.equal(review.background, 'transparent', person.name);
+      assert.equal(review.alphaVerified, true, person.name);
+      assert.equal(review.displayColorMode, 'grayscale', person.name);
+    }
     if (review.identityBasis === 'traditional-depiction') assert.equal(review.faceTreatment, 'lifelike-human-reconstruction', person.name);
     assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
     assert.equal(review.sourcePage, undefined);
@@ -229,7 +234,7 @@ test('only reference-checked authorized paper portraits replace withdrawn AI fil
   }
   const person = roster['孔子'];
   assert.equal(person.portraitReview.identityBasis, 'traditional-depiction');
-  assert.equal(person.portraitReview.style, 'graphite-pencil-paper-v1');
+  assert.equal(person.portraitReview.style, 'graphite-pencil-transparent-v1');
   assert.notEqual(person.portraitReview.observedSha256, '9a403bc4fce3f09a4809eb6ce5e97656b379ddb76a43d552b148a7897bfdbe88');
 });
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
