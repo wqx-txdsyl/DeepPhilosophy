@@ -62,6 +62,15 @@ def check(path, min_nodes=30, min_cihai=30):
     # 关系端点必须在节点集中（有效边）
     invalid = [f"{r['from']}→{r['to']}" for r in relations if r['from'] not in nodes or r['to'] not in nodes]
     if invalid: problems.append(f"无效边{len(invalid)}: {','.join(invalid[:5])}")
+    # 格式化关系检查：label 缺失、过短或与 type 完全相同（模板边无效信息）
+    generic = []
+    for r in relations:
+        lb, tp = str(r.get('label','')).strip(), str(r.get('type','')).strip()
+        if not lb or len(lb) < 10:
+            generic.append(f"{r['from']}→{r['to']}[label过短:{lb}]")
+        elif tp and lb == tp:
+            generic.append(f"{r['from']}→{r['to']}[label复述type:{lb}]")
+    if generic: problems.append(f"格式化关系边{len(generic)}: " + '; '.join(generic[:5]))
     # 正文完整性
     if len(str(d.get('overview','')).strip()) < 400: problems.append("overview过短(<400字)")
     if len(str(d.get('conclusion','')).strip()) < 150: problems.append("conclusion过短(<150字)")
