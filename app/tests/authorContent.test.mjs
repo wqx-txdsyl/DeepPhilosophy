@@ -92,8 +92,8 @@ test('portrait requests use sized CDN images with the unchanged original path as
 });
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
-  assert.equal(details.length, 737 - Object.keys(retirement.retired).length);
-  assert.equal(details.length, 639);
+  assert.equal(details.length, 644);
+  assert.deepEqual(Object.keys(catalog.people).sort(), Object.keys(roster).sort());
   assert.equal(details.filter(person => person.listingKind === 'thinker').length, details.length);
   for (const person of details) {
     assert.ok(AUTHOR_KINDS[person.listingKind]);
@@ -113,11 +113,14 @@ test('non-individual texts and mythological names are retired instead of relabel
   }
 });
 
-test('the wrong Hipparchia alias cannot reopen Hypatia while distinct profiles remain a recorded gap', async () => {
+test('Hipparchia and Hypatia resolve to distinct independently restored people', async () => {
   assert.ok(roster['希帕提娅']);
+  assert.ok(roster['希帕基娅']);
   assert.equal(catalog.aliases['希帕基娅'], undefined);
-  assert.ok(retirement.invalidAliases['希帕基娅'].source.includes('iep.utm.edu/hipparch/'));
-  await assert.rejects(loadAuthorPage('希帕基娅', undefined, { jsonLoader: () => { throw new Error('stale detail fetched'); } }), { code: 'AUTHOR_RETIRED' });
+  assert.notEqual(roster['希帕提娅'].era, roster['希帕基娅'].era);
+  assert.ok(details.find(person => person.name === '希帕基娅').profile.sources.some(source => source.url.includes('iep.utm.edu/hipparch/')));
+  const result = await loadAuthorPage('希帕基娅', undefined, { catalogLoader: async () => catalog, jsonLoader: async () => read(decodeURIComponent(authorFile('希帕基娅').slice(1))) });
+  assert.equal(result.raw.name, '希帕基娅');
 });
 
 test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikina and river-council identity', () => {
@@ -201,20 +204,33 @@ test('all former aliases still resolve to an existing canonical detail', () => {
   assert.equal(references.findPerson('奎因').name, '威拉德·范·奥曼·蒯因');
   assert.equal(references.findPerson('维特根斯坦').name, '路德维希·维特根斯坦');
 });
-test('AI fillers are withheld and Confucius uses the selected traditional image', () => {
+test('only reference-checked authorized paper portraits replace withdrawn AI fillers', () => {
+  const audit = read('philosopher/portrait-audit.json').records;
   for (const person of Object.values(roster)) {
-    if (person.portraitReview?.imageType === 'ai-generated-illustration') {
+    const review = person.portraitReview;
+    if (review?.imageType !== 'ai-generated-illustration') continue;
+    if (review.allowAsPortrait !== true) {
       assert.equal(person.portrait, null, person.name);
-      assert.equal(person.portraitReview.allowAsPortrait, false, person.name);
+      continue;
     }
+    assert.equal(review.style, 'graphite-pencil-paper-v1', person.name);
+    assert.equal(review.authorizedRound, 'pencil-20261024', person.name);
+    assert.equal(review.referenceVerified, true, person.name);
+    assert.equal(review.background, 'opaque-warm-paper', person.name);
+    if (review.identityBasis === 'traditional-depiction') assert.equal(review.faceTreatment, 'lifelike-human-reconstruction', person.name);
+    assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
+    assert.equal(review.sourcePage, undefined);
+    const digest = createHash('sha256').update(fs.readFileSync(new URL(person.portrait.slice(1), publicRoot))).digest('hex');
+    assert.equal(digest, review.observedSha256, person.name);
+    assert.deepEqual(audit[person.name], review);
+    assert.deepEqual(catalog.people[person.name].portraitReview, review);
+    assert.deepEqual(details.find(item => item.name === person.name).portraitReview, review);
+    assert.equal(read('schools/catalog.json').philosophers.find(item => item.name === person.name).portrait, person.portrait);
   }
   const person = roster['孔子'];
-  assert.equal(person.portraitReview.imageType, 'historical-attributed-depiction');
-  assert.match(person.portraitReview.sourcePage, /%E5%AD%94%E5%AD%90|孔子/);
-  assert.doesNotMatch(person.portraitReview.sourcePage, /Western_Han_tomb/);
-  const digest = createHash('sha256').update(fs.readFileSync(new URL(person.portrait.slice(1), publicRoot))).digest('hex');
-  assert.equal(digest, person.portraitReview.observedSha256);
-  assert.notEqual(digest, '9a403bc4fce3f09a4809eb6ce5e97656b379ddb76a43d552b148a7897bfdbe88');
+  assert.equal(person.portraitReview.identityBasis, 'traditional-depiction');
+  assert.equal(person.portraitReview.style, 'graphite-pencil-paper-v1');
+  assert.notEqual(person.portraitReview.observedSha256, '9a403bc4fce3f09a4809eb6ce5e97656b379ddb76a43d552b148a7897bfdbe88');
 });
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
   assert.equal(roster['丹尼斯·林德利'].era, '1923—2013');
