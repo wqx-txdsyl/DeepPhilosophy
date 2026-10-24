@@ -1,0 +1,32 @@
+{
+  "bookId": "9d28b41627ec",
+  "title": "西田几多郎哲学选辑Ⅰ",
+  "date": "2026-10-24",
+  "action": "rebuild_structure_from_source_pdf",
+  "source": {
+    "pdf": "/Users/sen/Downloads/raw/incoming-codex/raw-text-handoff-20261023/extras/extra-062/source.pdf",
+    "pdfSha256OfRawText": "578b176276a23989266654303a53db96b29460df7d05ee676fe2426e0218bd8f",
+    "translator": "黃文宏",
+    "pages": 207,
+    "nature": "公版PDF文字层（譯者自授權公開版），无OCR"
+  },
+  "problem": "旧8章把凡例条目（一/三/四/五/六/七）当章题；選文解說之后整本（五篇選文+年譜+後記）全部埋在一个806块章节中；页码/页眉/旁页码粘进段落。",
+  "rebuild": {
+    "method": "pdfplumber坐标级提取：14/16号字=大标题；12号=正文（居中行独立成块）；10号=章末脚注区（按注号分组）；9号=正文上标注号（按x精确回插）；10.6号=边栏NKZ旁页码（剔除）；11号=页脚页码（剔除）；//与////为旁页码锚点记号（剔除）",
+    "chapters": 10,
+    "sections": 36,
+    "chapterList": ["凡例", "一、生平與著作", "二、選文解說", "自著序(24篇序為節)", "〈絕對自由意志〉(40/41節)", "〈種種世界〉", "〈場所〉1926(第一至五章)", "〈場所邏輯與宗教的世界觀〉1945(第一至五章)", "西田幾多郎年譜(按年分塊)", "譯者後記"]
+  },
+  "conservation": {
+    "oldHanzi": 172876,
+    "newHanzi": 173004,
+    "note": "汉字零丢失（较旧基线净增128，旧导入曾丢字）；剔除751组旁页码、215个页脚页码、1030个//记号，均为版面apparatus非正文；脚注区（注号+注文）全部保留为独立块；正文上标注号按x坐标回插原位。"
+  },
+  " residuals": [],
+  "notes": [
+    "旁页码系统（凡例第二条所述NKZ新旧版页码对照）无法在纯文本层保真呈现，已按导入污染剔除，凡例原文保留未动。",
+    "本轮不做 {{n:x}} 注释契约迁移（属精读轮）；脚注保留为页尾原位文本块。",
+    "intakeCompleted=true 已写入 detail/books×2/philosopher/catalog；阅读判断三处（bookLibrary/authorContent/schoolContent）已支持该标记。",
+    "自著序24篇序题与正文题解均保留；〈哲學論文集第七〉无序仅有題解。"
+  ]
+}

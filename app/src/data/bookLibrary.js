@@ -245,7 +245,7 @@ export function classifyBook(book){
   if (book.id === 'e1fabd8e802c') { traditions.splice(0,traditions.length,'christian'); }
   const regions=[book.region==='东方'?'east':book.region==='西方'?'west':'other'];
   if(tags.some(t=>['比较哲学','中西比较','跨文化','跨文化哲学','东西方哲学'].includes(t)))regions.push('cross');
-  return {topics,traditions,forms:forms.length?[...new Set(forms)]:['treatise'],regions,readable:Number(book.chapterCount)>0&&book.file_type!=='txt'};
+  return {topics,traditions,forms:forms.length?[...new Set(forms)]:['treatise'],regions,readable:Number(book.chapterCount)>0&&(book.file_type!=='txt'||book.intakeCompleted===true)};
 }
 export function prepareLibrary(books){return books.map(book=>({...book,facets:classifyBook(book),searchText:[book.title,book.author,...(book.tags||[])].join(' ').normalize('NFKC').toLocaleLowerCase()}));}
 export function filterLibrary(books,f={}){const q=(f.q||'').normalize('NFKC').toLocaleLowerCase().trim();return books.filter(b=>(!q||b.searchText.includes(q))&&(!f.topic||b.facets.topics.includes(f.topic))&&(!f.tradition||b.facets.traditions.includes(f.tradition))&&(!f.region||b.facets.regions.includes(f.region))&&(!f.form||b.facets.forms.includes(f.form))&&(!f.readable||b.facets.readable));}
