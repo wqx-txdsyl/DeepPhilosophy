@@ -4,3 +4,9 @@
 .ap-portrait:has(img[data-artwork-style="graphite-pencil-paper-v1"]){background:var(--card-bg);isolation:isolate}
 .ap-portrait img[data-artwork-style="graphite-pencil-paper-v1"]{object-fit:contain;filter:none}
 html:not(.dark-mode) .ap-portrait img[data-artwork-style="graphite-pencil-paper-v1"]{filter:grayscale(1) contrast(1.06) brightness(1.04);mix-blend-mode:multiply}
+
+.ap-portrait:has(img[data-artwork-style="graphite-pencil-transparent-v1"]){background:transparent}
+.ap-portrait img[data-artwork-style="graphite-pencil-transparent-v1"]{object-fit:contain;filter:grayscale(1);mix-blend-mode:normal;background:transparent}
+
+html:not(.dark-mode) .ap-portrait:has(img[data-artwork-style="graphite-pencil-transparent-v1"]){background:var(--card-bg);isolation:isolate}
+html:not(.dark-mode) .ap-portrait img[data-artwork-style="graphite-pencil-transparent-v1"]{mix-blend-mode:multiply}

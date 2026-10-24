@@ -30,3 +30,12 @@
 #author-portrait .hp-hero-photo img[data-artwork-style="graphite-pencil-paper-v1"]{object-fit:contain;object-position:center;filter:none;mask-image:none}
 /* Remove the generated yellow paper cast, then print graphite onto page paper. */
 html:not(.dark-mode) #author-portrait:not([data-night='true']) .hp-hero-photo img[data-artwork-style="graphite-pencil-paper-v1"]{filter:grayscale(1) contrast(1.06) brightness(1.04);mix-blend-mode:multiply;mask-image:linear-gradient(to right,transparent,#000 2%,#000 98%,transparent),linear-gradient(to bottom,transparent,#000 2%,#000 98%,transparent);mask-composite:intersect}
+
+/* Genuine alpha artwork: no paper fill, tint, photo mask or face recoloring. */
+#author-portrait .hp-hero-photo[data-artwork-style="graphite-pencil-transparent-v1"]{aspect-ratio:4/5;height:auto;min-height:0;align-self:center;background:transparent}
+#author-portrait img[data-artwork-style="graphite-pencil-transparent-v1"]{object-fit:contain;object-position:center;filter:grayscale(1);mix-blend-mode:normal;mask-image:none}
+
+/* Neutral graphite prints onto page paper; blank highlights do not become white paint. */
+html:not(.dark-mode) #author-portrait:not([data-night='true']) .hp-hero:has(.hp-hero-photo[data-artwork-style="graphite-pencil-transparent-v1"]){background:var(--hp-paper)}
+html:not(.dark-mode) #author-portrait:not([data-night='true']) .hp-hero-photo[data-artwork-style="graphite-pencil-transparent-v1"]{isolation:auto}
+html:not(.dark-mode) #author-portrait:not([data-night='true']) .hp-hero-photo img[data-artwork-style="graphite-pencil-transparent-v1"]{mix-blend-mode:multiply}
