@@ -235,10 +235,12 @@ test('only reference-checked authorized paper portraits replace withdrawn AI fil
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
   assert.equal(roster['丹尼斯·林德利'].era, '1923—2013');
   assert.equal(roster['理查德·杰弗里'].era, '1926—2002');
-  for (const name of ['丹尼斯·林德利', '理查德·杰弗里']) {
-    assert.equal(roster[name].portrait, null, `${name}: 错配图不得恢复`);
-    assert.equal(roster[name].portraitReview.allowAsPortrait, false);
-  }
+  assert.equal(roster['理查德·杰弗里'].portrait, null, '错配图不得恢复');
+  assert.equal(roster['理查德·杰弗里'].portraitReview.allowAsPortrait, false);
+  const lindley = roster['丹尼斯·林德利'];
+  assert.equal(lindley.portraitReview.authorizedRound, 'pencil-20261024');
+  assert.equal(lindley.portraitReview.referenceSha256, '72e9002b6526a85403ed544d667855e8c9bb0319072b97bbfc0bce95e6784f21'); // Named Washington course photograph, not his namesake or Kendall.
+  assert.equal(lindley.portrait, '/philosopher/丹尼斯·林德利.webp');
   assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
   assert.equal(roster['卡蒂尼'].era, '1879年4月21日—1904年9月17日（爪哇）');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
