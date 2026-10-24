@@ -274,11 +274,19 @@ class Proofreader:
                     if isinstance(b, dict) and b.get("type") == "text"
                     and (b.get("value") or "").rstrip("\n").endswith(o["tail_expect"])]
             if len(hits) != 1:
-                # 幂等：合并已发生 → 存在同时含尾串+头串的块
+                # 幂等：合并已发生 → 尾+头串同块，或头串已在某块（原尾块已并入并完成改写）
                 joined = o["tail_expect"] + o.get("head_expect", "")
                 already = [bi for bi, b in enumerate(content)
                            if isinstance(b, dict) and b.get("type") == "text"
                            and joined in (b.get("value") or "")]
+                if not already and o.get("head_expect"):
+                    already = [bi for bi, b in enumerate(content)
+                               if isinstance(b, dict) and b.get("type") == "text"
+                               and o["head_expect"] in (b.get("value") or "")]
+                if not already:
+                    already = [bi for bi, b in enumerate(content)
+                               if isinstance(b, dict) and b.get("type") == "text"
+                               and o["tail_expect"] in (b.get("value") or "")]
                 if len(hits) == 0 and already:
                     self.changes.append({"kind": "merge", "ch": ch, "block": already[0],
                                          "junction": o["tail_expect"][-16:] + "⧸" + o.get("head_expect", "")[:16],
