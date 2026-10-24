@@ -4,6 +4,17 @@ export function mergeBook(id, catalogBook, detail) {
   if (!catalogBook && !detail?.title) return null;
   return { ...catalogBook, ...detail, id, title: detail?.title || catalogBook?.title || '', author: detail?.author || catalogBook?.author || '', summary: detail?.summary || catalogBook?.summary || '', tags: detail?.tags?.length ? detail.tags : (catalogBook?.tags || []), cover: detail?.cover || catalogBook?.cover || '' };
 }
+/** Official edition links complement records whose local text is unavailable. */
+export function officialReadingLinks(book) {
+  const allowed = new Set(['www.cp.com.cn', 'www.sklib.cn', 'books.google.com']);
+  return (Array.isArray(book?.readingLinks) ? book.readingLinks : []).filter(link => {
+    if (!link || typeof link.label !== 'string' || !link.label.trim()) return false;
+    try {
+      const url = new URL(link.url);
+      return url.protocol === 'https:' && allowed.has(url.hostname) && !url.username && !url.password;
+    } catch { return false; }
+  });
+}
 export function normalizeBookToc(book) {
   const original = Array.isArray(book.toc) && book.toc.length ? book.toc : (book.chapterTitles || []);
   return original.map((item, tocIndex) => typeof item === 'string' ? { type: 'chapter', title: item, index: tocIndex, tocIndex } : { ...item, tocIndex }).filter(item => item.title);
