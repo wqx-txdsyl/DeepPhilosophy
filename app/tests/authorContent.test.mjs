@@ -217,6 +217,7 @@ test('only reference-checked authorized paper portraits replace withdrawn AI fil
     assert.equal(review.authorizedRound, 'pencil-20261024', person.name);
     assert.equal(review.referenceVerified, true, person.name);
     assert.equal(review.background, 'opaque-warm-paper', person.name);
+    if (review.identityBasis === 'traditional-depiction') assert.equal(review.faceTreatment, 'lifelike-human-reconstruction', person.name);
     assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
     assert.equal(review.sourcePage, undefined);
     const digest = createHash('sha256').update(fs.readFileSync(new URL(person.portrait.slice(1), publicRoot))).digest('hex');
