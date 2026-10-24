@@ -11,7 +11,8 @@ export function authorPortraitImage(person) {
     ? `${path}${path.includes('?') ? '&' : '?'}v=${review.observedSha256.slice(0, 12)}`
     : path;
 }
-export const readableBook = book => Number(book?.chapterCount) > 0 && book?.file_type !== 'txt';
+// intakeCompleted = 本轮正式入库完成标记（分章分级+真实阅读文件），txt 来源完成后可读
+export const readableBook = book => Number(book?.chapterCount) > 0 && (book?.file_type !== 'txt' || book?.intakeCompleted === true);
 const key = text => String(text || '').replace(/[\s·•・.《》〈〉]/g, '').toLocaleLowerCase();
 let catalogPromise;
 export function loadAuthorCatalog() {
