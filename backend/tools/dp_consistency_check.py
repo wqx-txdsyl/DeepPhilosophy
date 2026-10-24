@@ -103,8 +103,8 @@ def main():
             det = load(detp)
             if det.get("chapterCount") != b.get("chapterCount"):
                 problems.append(f"{bid} {b.get('title','')[:20]}: books.json cc={b.get('chapterCount')} ≠ detail cc={det.get('chapterCount')}")
-        if b.get("file_type") == "txt" and b.get("chapterCount") != 0:
-            problems.append(f"{bid} {b.get('title','')[:20]}: txt 占位 chapterCount 应为 0 (实际 {b.get('chapterCount')})")
+        # （2026-10-24 移除"txt 占位 chapterCount 应为 0"旧规则：该规则属 2026-08-05 空txt占位时代；
+        #   现 cc>0 有磁盘 meta/文件校验、cc=0 无文件即占位，旧规则会把已导入正文的 txt 书误判。）
         cc = b.get("chapterCount", 0)
         if cc > 0:
             mp = os.path.join(ch_root, bid, "meta.json")
