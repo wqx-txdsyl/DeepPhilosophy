@@ -82,16 +82,28 @@ class Proofreader:
     def op_replace_in(self, d, ch, o):
         hits = [bi for bi, blk in enumerate(d["content"])
                 if isinstance(blk, dict) and (blk.get("value") or "").count(o["original"])]
-        if len(hits) != 1:
+        note_hits = [ni for ni, nt in enumerate(d.get("notes") or [])
+                     if isinstance(nt, dict) and (nt.get("text") or "").count(o["original"])]
+        if len(hits) + len(note_hits) != 1:
             # 幂等：原文已不存在且改后文本已存在 → 视为已应用
             already = [bi for bi, blk in enumerate(d["content"])
                        if isinstance(blk, dict) and o["proposed"] in (blk.get("value") or "")]
-            if not hits and already:
-                self.changes.append({"kind": "replace_in", "ch": ch, "block": already[0],
+            already += ["note" + str(ni) for ni, nt in enumerate(d.get("notes") or [])
+                        if isinstance(nt, dict) and o["proposed"] in (nt.get("text") or "")]
+            if not hits and not note_hits and already:
+                self.changes.append({"kind": "replace_in", "ch": ch,
+                                     "block": already[0] if isinstance(already[0], int) else str(already[0]),
                                      "original": o["original"], "proposed": o["proposed"], "skipped": "already_applied"})
                 return
-            raise ValueError(f"ch{ch} 替换目标在全章出现于 {len(hits)} 个块（需恰1块1次）: {o['original'][:40]}…")
-        self.op_replace(d, ch, {"block": hits[0], "original": o["original"], "proposed": o["proposed"]})
+            raise ValueError(f"ch{ch} 替换目标在全章出现于 {len(hits) + len(note_hits)} 处（需恰1）: {o['original'][:40]}…")
+        if hits:
+            self.op_replace(d, ch, {"block": hits[0], "original": o["original"], "proposed": o["proposed"]})
+        else:
+            nt = d["notes"][note_hits[0]]
+            nt["text"] = nt["text"].replace(o["original"], o["proposed"], 1)
+            self.replacements += 1
+            self.changes.append({"kind": "replace_in", "ch": ch, "note": note_hits[0],
+                                 "original": o["original"], "proposed": o["proposed"]})
 
     def op_replace_all_in(self, d, ch, o):
         n_total = 0
@@ -309,10 +321,25 @@ class Proofreader:
                              "junction": pv[-16:] + "⧸" + nv[:16]})
 
     def op_delete_block(self, d, ch, o):
-        blk = self._find_block(d, ch, o["block"])
+        content = d["content"]
+        if o["block"] >= len(content):
+            # 幂等：目标已不存在 → 若 expect 串在全章也已消失则视为已删除
+            exp = o["expect"].strip()
+            if exp and not any(exp in ((b.get("value") or "")) for b in content):
+                self.changes.append({"kind": "delete_block", "ch": ch, "block": o["block"],
+                                     "removed": exp[:40], "skipped": "already_applied"})
+                return
+            raise ValueError(f"ch{ch} 块{o['block']} 不存在且 expect 仍可找到")
+        blk = content[o["block"]]
         v = (blk.get("value") or "").strip()
         exp = o["expect"].strip()
         if not (v == exp or v.startswith(exp)):
+            # 幂等：expect 在全章已消失，或恰剩一次（重复块已删，保留唯一正本）→ 视为已删除
+            occur = sum(1 for b in content if exp and exp in ((b.get("value") or ""))) if exp else 0
+            if occur == 0 or occur == 1:
+                self.changes.append({"kind": "delete_block", "ch": ch, "block": o["block"],
+                                     "removed": exp[:40], "skipped": "already_applied"})
+                return
             raise ValueError(f"ch{ch} 块{o['block']} 删除内容与 expect 不符: {v[:40]}…")
         d["content"].remove(blk)
         self.pollution_removed += 1
