@@ -49,7 +49,12 @@ def finalize(bid):
     meta = load_json(os.path.join(src_dir, 'meta.json'))
     n = meta['chapterCount']
 
-    # 0. 自检章节文件
+    # 0. 自检章节文件 + 清理源目录陈旧章节文件（缩卷重建残留）
+    for fn in os.listdir(src_dir):
+        if fn.endswith('.json') and fn != 'meta.json':
+            stem = fn[:-5]
+            if stem.isdigit() and int(stem) >= n:
+                os.remove(os.path.join(src_dir, fn))
     for i in range(n):
         ch = load_json(os.path.join(src_dir, f'{i}.json'))
         if ch.get('index') != i:
