@@ -1,0 +1,47 @@
+{
+ "task": "A《谱系、神话、宗教全正文重编与星云/辞海扩充》",
+ "owner": "zcode-readable-a-20261024",
+ "session": {
+  "platform": "ZCode Desktop (GLM-5.3-Flash)",
+  "goalEstablished": true,
+  "goalEstablishedBy": "用户在任务A专属会话中通过 /goal 正式建立",
+  "goalEstablishedAt": "2026-10-24（会话内 goal 激活回执已收到）",
+  "goalText": "任务书实读全部谱系/流派/子流派、12神话和8宗教的全部前台正文，尤其简介、每条时间轴和尾声，重写成优美、通顺且有内容的读者介绍。每个对应详情页星云有效节点>=30、辞海完整独立词条>=30，按页验收，不凑总数、不虚构相关者、不漏弹层/兜底文案。先处理主检出737与清理分支639的版本分叉，核定真正基线和owner；保护书库及他人脏文件。只写独立工作区，公共投影由持锁发布者整合。建立逐对象逐字段覆盖台账。每完成一个对象汇报一次，随后立即做下一个；小批安全合并发布，不等用户回复“继续”。单页/单批完成不代表goal完成。一轮持续推进到全部可执行项和正式验收完成；真实阻断如实留证并继续其他项，不能重复不可重试请求或伪报后台执行。",
+  "goalNote": "task-a.md 正式goal原文（完整版）与本会话 goal 一致；task-a.md 原文另存于本文件 goalTextFull 字段。"
+ },
+ "goalTextFull": "逐对象、逐字段实读并完成 DeepPhilosophy 全部谱系/流派/子流派、神话及宗教页面的用户可见正文审校与重写，使其成为准确、优美、连贯且有实质内容的读者介绍；重点修复简介、时间轴和结语中的证据展板与开发记录口吻；每个对应详情页的星云至少30个有效节点、辞海至少30个有完整释义的独立词条；完成字段覆盖台账、逐对象汇报、必要测试、正式发布与主站/OSS验收，并在一轮中持续执行至全部可执行项完成，诚实保留真实阻断。",
+ "workspace": {
+  "worktree": "/Users/sen/.zcode/worktrees/zcode-readable-a-20261024/DeepPhilosophy",
+  "branch": "zcode-readable-a-20261024",
+  "base": "bca495412 (origin/master 2026-10-24 18:36)",
+  "baselineResolution": "版本分叉已核定：origin/master 的 philosophers.json LFS sha256=6529c95… 与清理分支名册一致（639人），且清理分支 3a29bb3b0 是 origin/master 的祖先——639人清理已是生产主线内容。本地 master 7751e7f91（737人）为 2026-10-18 过期分叉（含13个本机 agent 提交），不作基线、不覆盖、不改动。",
+  "protected": [
+   "主检出 /Users/sen/DeepPhilosophy 全部脏文件（App.css、discipline-art-v1/、scholarly_cache.json、tools/_tmp/、任务目录、u32.png）——只读不写",
+   "旧作者工作区 codex/zcode-author-quality-20261009（3a29bb3b0，有他人活跃脏文件）——不触碰",
+   "backend/data/book_chapters 书库章节数据——本任务不动",
+   "其他 worktree（book-candide-readable、book-quality-zcode-20261024 等）——不触碰"
+  ]
+ },
+ "queue": {
+  "order": "谱系/流派/子流派(A-S-001..175, 904分支索引) → 神话(A-T-09..20) → 宗教(A-T-01..08)",
+  "cursor": "A-S-005",
+  "completed": [
+   "A-S-001",
+   "A-S-003",
+   "A-S-004",
+   "A-S-005"
+  ],
+  "counts": {
+   "schoolsTotal": 175,
+   "branchIndexTotal": 904,
+   "topicsTotal": 20
+  }
+ },
+ "fieldCoverageRule": "coverage-a.jsonl 逐对象逐字段登记：objectId, file, fieldPath, before(摘要), readStatus, action, after(摘要), factCheck, verifiedAt。未改字段写'读过且可保留'理由。数量门槛按页验收：星云有效节点>=30（thinkers ∪ relations端点，经 isRetiredAuthor 过滤后），辞海独立词条(去重wordKey且有def)>=30。",
+ "updateLog": [
+  {
+   "at": "2026-10-24",
+   "note": "工作区建立于 origin/master bca495412；分叉核定完成；渲染组件与 normalizeSchool 过滤规则确认；ledger 建立。"
+  }
+ ]
+}
