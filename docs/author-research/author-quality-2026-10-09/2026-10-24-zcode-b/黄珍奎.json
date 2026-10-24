@@ -1,0 +1,20 @@
+{
+ "schemaVersion": 1,
+ "name": "黄珍奎",
+ "researchedAt": "2026-10-24",
+ "batch": "2026-10-24-zcode-b",
+ "identity": {
+  "verdict": "confirmed",
+  "findings": "황진규（黄珍奎），韩国哲学大众写作者，'철학흥신소（哲学侦探社）'品牌写作者；代表作《한입 매일 철학》（2018，中译《哲学，为人生烦恼找答案》）。与站内其他人物无重复（韩炳哲为其书业对读对象，独立条目）。"
+ },
+ "sources": [
+  {"id": "aladin-author", "title": "Aladin书店：황진규作者检索结果页", "url": "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=Book&SearchWord=황진규", "type": "bookstore-search-page", "accessedAt": "2026-10-24", "accessScope": "partial-text", "readScope": "本回合实际打开并读入书目列表（五本书各自的书名/品牌/出版社/年月，见readScope明细于包内sources）。"},
+  {"id": "douban", "title": "豆瓣读书《哲学，为人生烦恼找答案》条目页", "url": "https://book.douban.com/subject/35218395/", "type": "publisher-catalog-page", "accessedAt": "2026-10-24", "accessScope": "full-text", "readScope": "本回合实际打开并读入条目页（中译本书名）。"},
+  {"id": "kyobook-sam", "title": "教保文库eBook sam：《한입 매일 철학》页", "url": "https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000003107", "type": "bookstore-page", "accessedAt": "2026-10-24", "accessScope": "partial-text", "readScope": "本回合实际打开并读入书目信息（지식너머2018）。"}
+ ],
+ "checks": [
+  {"field": "profile.overview[0]与concepts[4]", "claim": "철학흥신소品牌写作与出版（平台数字撤下留证）。", "sourceId": "aladin-author", "locator": "检索结果页书目列表：스피노자/피해의식/틈을 내는 철학책等均署'황진규 (지은이) | 철학흥신소'", "verdict": "confirmed"},
+  {"field": "profile.life[0..4]与concepts[0..1]与bibliography[0..4]", "claim": "五项著作年表（2018한입/2020스피노자/2022어쩌다/2024两书）与斯宾诺莎副题、思考工具箱结构（副题'일상의 무기가 되어줄 20가지 생각 도구들'）。", "sourceId": "aladin-author", "locator": "检索结果页逐条书目（出版社与年月逐项命中：지식너머2018-6、인간사랑2020-11按包内原有著录、지경사2022-4、철학흥신소2024-2与2024-9、철학흥신소2025-11）；中译本见douban；한입试读见kyobook-sam", "verdict": "confirmed"},
+  {"field": "profile.people[0..1]与relations[0..1]与readingRoutes[0..1]", "claim": "韩炳哲对读两卡两关系（编辑性比较、无接触声明）与两条路线。", "sourceId": "aladin-author", "locator": "书目层（韩炳哲学术路径与其大众路径的书业对读为编辑性比较，正文已声明）；韩炳哲条目见站内独立包", "verdict": "confirmed"}
+ ]
+}
