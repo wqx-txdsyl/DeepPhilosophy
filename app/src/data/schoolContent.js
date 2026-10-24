@@ -71,7 +71,7 @@ export function buildSchoolReferences({ books = [], philosophers = [], schools =
       let candidates = [...(bookMap.get(key(title)) || [])];
       if (authorKey) candidates = candidates.filter(book => key(book.author) === authorKey || key(findPerson(book.author)?.name) === authorKey);
       if (!candidates.length) continue;
-      candidates.sort((a, b) => Number(b.chapterCount > 0) - Number(a.chapterCount > 0) || Number(b.file_type !== 'txt') - Number(a.file_type !== 'txt'));
+      candidates.sort((a, b) => Number(b.chapterCount > 0) - Number(a.chapterCount > 0) || Number(b.file_type !== 'txt' || b.intakeCompleted === true) - Number(a.file_type !== 'txt' || a.intakeCompleted === true));
       const book = candidates[0];
       return { ...book, href: `/book/${encodeURIComponent(book.id)}` };
     }
