@@ -26,13 +26,16 @@ test('verified replacement photos refresh both CDN and fallback without changing
   const sources = staticImageSources(image, 192);
   assert.equal(new URL(sources.primary).searchParams.get('v'), revision);
   assert.equal(sources.fallback, image);
-  assert.equal(authorPortraitImage(roster['亨佩尔']), null);
+  assert.equal(authorPortraitImage(roster['亨佩尔']), `${roster['亨佩尔'].portrait}?v=${roster['亨佩尔'].portraitReview.observedSha256.slice(0, 12)}`);
+  assert.equal(roster['亨佩尔'].portraitReview.referenceSha256, '729af7e43c9cb4fefb2ab1c87f68dab4f55942394fded2c25aa4ca244c894d89'); // Individually named Princeton photograph, not a group collage.
+  assert.equal(authorPortraitImage({ ...roster['亨佩尔'], portrait: null, portraitReview: { allowAsPortrait: false } }), null);
   assert.equal(authorPortraitImage({ portrait: person.portrait }), person.portrait);
 });
 
 test('school references honor withdrawn portraits and all shared image routes keep the current revision', () => {
   const references = buildSchoolReferences({ philosophers: read('schools/catalog.json').philosophers });
-  assert.equal(references.findPerson('亨佩尔').portrait, null);
+  assert.equal(references.findPerson('亨佩尔').portrait, roster['亨佩尔'].portrait);
+  assert.equal(new URL(staticImageSources(references.findPerson('亨佩尔').portrait, 192).primary).searchParams.get('v'), roster['亨佩尔'].portraitReview.observedSha256.slice(0, 12));
   const person = references.findPerson('大卫·艾布拉姆');
   const revision = roster[person.name].portraitReview.observedSha256.slice(0, 12);
   assert.equal(new URL(staticImageSources(person.portrait).primary).searchParams.get('v'), revision);
