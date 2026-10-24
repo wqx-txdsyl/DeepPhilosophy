@@ -1,0 +1,271 @@
+{
+  "book": "309de54e4392",
+  "title": "康德著作集（关文运/沈叔平译《法的形而上学原理》部分）",
+  "chaptersRead": [23, 24, 25, 26, 27, 28, 29, 30],
+  "method": "逐块完整实读（python3 分批打印，全部块、全部字符），疑点均经程序逐字验证",
+  "perChapter": [
+    {
+      "chapter": 23,
+      "title": "汉译世界学术名著丛书　出版说明",
+      "blocks": 6,
+      "paragraphAssessment": "ok",
+      "issues": [],
+      "noteMarkers": [],
+      "summary": "商务印书馆出版说明，6块完整。无OCR错字、无页眉页码污染、无注释标记问题。"
+    },
+    {
+      "chapter": 24,
+      "title": "译者的话",
+      "blocks": 16,
+      "paragraphAssessment": "ok",
+      "issues": [],
+      "noteMarkers": [],
+      "summary": "沈叔平译者序（含Recht、Königsberg等拉丁/德文词均完整）。16块段落完整，未发现损伤。"
+    },
+    {
+      "chapter": 25,
+      "title": "序　言",
+      "blocks": 28,
+      "paragraphAssessment": "ok",
+      "issues": [
+        {
+          "block": 10,
+          "type": "possible-dropped-char",
+          "original": "像纸牌搭的房子样，一个接一个倒塌了",
+          "proposed": null,
+          "evidence": "『房子样』疑脱『一』（通常作『像纸牌搭的房子一样』），但亦可能是原译笔法，无法对照纸书确证",
+          "confidence": "uncertain"
+        }
+      ],
+      "noteMarkers": ["[1]-[14] 文内锚点齐全，注文 b13【注释】起 b14-b27，序号连续无缺"],
+      "summary": "康德序言及拉迪/译者注释14条完整。仅1处疑似脱字（不确定）。文内强调空格（如『纯粹的 概念』式）为译本/转换惯例。"
+    },
+    {
+      "chapter": 26,
+      "title": "道德形而上学总导言",
+      "blocks": 97,
+      "paragraphAssessment": "mixed",
+      "issues": [
+        {
+          "block": "94-96",
+          "type": "cross-chapter-duplication",
+          "original": "权利科学／权利科学导言／一般的定义与分类 [1]",
+          "proposed": "删除（与 27.json b0-b2 逐字重复：『权利科学』『权利科学导言』『一般的定义与分类』）",
+          "evidence": "章末混入下一章（27 权利科学）开篇三块，属翻页切分把下一章扉页/标题页并入本章；程序验证逐字相同",
+          "confidence": "certain"
+        },
+        {
+          "block": 22,
+          "type": "orphan-note",
+          "original": "①　康德深受罗马法影响，他所说的私人权利和公共权利又可译为私法和公法。——译者",
+          "proposed": "保留为注文，但正文锚点（①）已失；建议并入本章注释序列或挂到 b6/b19 附近相应标题",
+          "evidence": "全章正文用 [1]-[19] 数字注体系，唯一一个圈码注①无任何文内锚点，是页末注文被单独切出成块",
+          "confidence": "certain"
+        },
+        {
+          "block": 23,
+          "type": "running-head-suspect",
+          "original": "道德形而上学总导言",
+          "proposed": null,
+          "evidence": "紧随 b22 页末注文之后单独成块重复章题，形似页眉（页缝产物）；也可能是导言正文部分的有意章题页，需对照纸书",
+          "confidence": "likely"
+        },
+        {
+          "block": 18,
+          "type": "midword-space",
+          "original": "超越经 验的 义务",
+          "proposed": null,
+          "evidence": "全章以空格标注原书着重字（『 法律上的义务 』式）；此处空格落在词内把『超越经验的』拆断，为代表例；同章 b59『外在的法 律』等同类",
+          "confidence": "certain"
+        },
+        {
+          "block": 67,
+          "type": "possible-dropped-char",
+          "original": "人，作为 属于智能世界中 理性的一生物，他的自由不能由仅仅可以被感知的诸表象加以解释",
+          "proposed": null,
+          "evidence": "『理性的一生物』疑似『理性的存在物／理性的有生物』之误或脱字，与上文『属于有感觉生物的一 种』句式参看；无法对照纸书确证",
+          "confidence": "uncertain"
+        }
+      ],
+      "noteMarkers": ["[1]-[19] 文内锚点齐全（b75-b93注文），另 b22 孤立圈码注①一条（无锚点）"],
+      "summary": "总导言95文本块+2分类表图片块，段落完整、[1]-[19]注释链齐。主要问题是章末混入第27章开篇三块及一条无锚点的圈码译者注。"
+    },
+    {
+      "chapter": 27,
+      "title": "权利科学",
+      "blocks": 83,
+      "paragraphAssessment": "mixed",
+      "issues": [
+        {
+          "block": "51-55",
+          "type": "cross-chapter-duplication",
+          "original": "第一部分　私人权利（私法） [26]／论一般外在的“我的和你的”的原则／那些不需要向外公布的法律的体系／论一般外在的“我的和你的”的原则／第一章　论任何外在物作为自己所有物的方式",
+          "proposed": "删除（与 28.json b0-b2 重复：28 章已含『第一部分　私人权利（私法）』『那些不需要向外公布的法律的体系　论一般外在的“我的和你的”的原则』『第一章　论任何外在物作为自己所有物的方式』）",
+          "evidence": "章末混入第28章开篇标题组；程序验证文字相同（27 侧分块更细且带注[26]锚点）",
+          "confidence": "certain"
+        },
+        {
+          "block": null,
+          "type": "missing-note-anchor",
+          "original": "[25]  德文本无此标题。——译者",
+          "proposed": "在 b54（重复标题块『论一般外在的“我的和你的”的原则』）恢复文内标记 [25]",
+          "evidence": "注文[25]存在（b81）但全章正文无 [25] 锚点（[1]-[24]、[26]齐全）；按注文内容『德文本无此标题』正对应重复出现的标题块 b54",
+          "confidence": "certain"
+        },
+        {
+          "block": 19,
+          "type": "missing-punctuation",
+          "original": "权利不能看作是由两个不同的要素组成根据那条普遍法则而来的责任，以及一种权利",
+          "proposed": "『要素组成』后疑脱冒号或破折号（组成：根据那条普遍法则而来的责任……）",
+          "evidence": "句子连读不通，对应黑斯蒂英译 right does not…consist of two elements: obligation… 处有标点；OCR 可能于页缝丢标点",
+          "confidence": "uncertain"
+        },
+        {
+          "block": 26,
+          "type": "missing-punctuation",
+          "original": "这种祸害是无法用权利（法律）的形式去消除的虽然这涉及到权利的问题",
+          "proposed": "『消除的』后疑脱逗号（消除的，虽然这涉及到权利的问题）",
+          "evidence": "『消除的虽然』连读不合语法，疑OCR丢标点；亦不排除原排版如此",
+          "confidence": "uncertain"
+        }
+      ],
+      "noteMarkers": ["[1]-[24]、[26] 文内锚点齐全（b57-b82注文）；注[25]为孤立注文，文内锚点丢失"],
+      "summary": "权利科学导言83块，段落完整、注释26条仅[25]锚点丢失。章末混入第28章开篇标题组五块为最大结构问题。"
+    },
+    {
+      "chapter": 28,
+      "title": "第一部分　私人权利（私法）",
+      "blocks": 308,
+      "paragraphAssessment": "mixed",
+      "issues": [
+        {
+          "block": 23,
+          "type": "ocr-wrong-char",
+          "original": "—个词语定义，就能够充分地把定义的对象和其他对象 区别 开",
+          "proposed": "一个词语定义，就能够充分地把定义的对象和其他对象 区别 开",
+          "evidence": "破折号（—）误作数字『一』，典型形近OCR错误（『—个词语定义』上下文要求『一个』）",
+          "confidence": "certain"
+        },
+        {
+          "block": 118,
+          "type": "duplicate-heading",
+          "original": "第三节　“有物权性质的对人权”的原则",
+          "proposed": "删除其中一块（b117 与 b118 逐字相同，程序验证）",
+          "evidence": "相邻两块完全相同的节标题，其一应为页缝/页眉混入",
+          "confidence": "certain"
+        },
+        {
+          "block": 140,
+          "type": "garbled-duplication",
+          "original": "如果人们未来的一切行为都为已经为那第一次的行动事先所决定",
+          "proposed": null,
+          "evidence": "『都为已经为那』疑OCR复字/窜字（或为『都早已为那』『都已经被那』），无法对照纸书确证原词",
+          "confidence": "uncertain"
+        },
+        {
+          "block": 225,
+          "type": "wrong-punctuation",
+          "original": "37，（1）捐赠契约",
+          "proposed": "37.（1）捐赠契约",
+          "evidence": "同系列节标题均用『38.（2）』『39.（3）』『40.（4）』句点，唯37后为逗号，疑OCR误读",
+          "confidence": "likely"
+        },
+        {
+          "block": "256-258",
+          "type": "cross-chapter-duplication",
+          "original": "第二部分　公共权利（公法）／在文明社会中权利的原则／那些需要公布的法律的体系",
+          "proposed": "删除（与 29.json b0-b1 重复：29 章已含『第二部分　公共权利（公法）』『那些需要公布的法律的体系　在文明社会中权利的原则』）",
+          "evidence": "章末混入第29章开篇标题组，程序验证文字相同",
+          "confidence": "certain"
+        }
+      ],
+      "noteMarkers": ["[1]-[48] 文内锚点齐全（b260-b307注文），序号连续无缺"],
+      "summary": "私法全篇308块（结构最完整：41节+48条注释全部锚定）。实际问题少：1处『—个』OCR错字、1对重复节标题、章末混入29章开篇三块。"
+    },
+    {
+      "chapter": 29,
+      "title": "第二部分　公共权利（公法）",
+      "blocks": 230,
+      "paragraphAssessment": "ok",
+      "issues": [
+        {
+          "block": 55,
+          "type": "ocr-garble",
+          "original": "有些臣民会比普通公民优越些，因为这些人生活在官宦家庭，我是世袭的教授",
+          "proposed": "『我是世袭的教授』存疑（疑为『他们是世袭的教授』或『如世袭的教授』之误）",
+          "evidence": "议论他人时突然插入第一人称『我是』，句子破碎；注文[16]（教授亦属世袭公职）印证此处正谈世袭教授，但原词无法确证",
+          "confidence": "likely"
+        },
+        {
+          "block": 33,
+          "type": "ocr-garble",
+          "original": "这不是一种单纯审美的感觉，来向想像力的作用；这也不是同情，把我们自己想象为那个受害者",
+          "proposed": null,
+          "evidence": "『来向想像力的作用』不成词（疑『来自』『求助于』之误），与下句『这也不是同情』对读更见断裂；无法确证原词",
+          "confidence": "uncertain"
+        },
+        {
+          "block": 214,
+          "type": "ocr-wrong-char",
+          "original": "德文版在此之后尚有“这就叫做驱逐出境”这句活。——译者",
+          "proposed": "德文版在此之后尚有“这就叫做驱逐出境”这句话。——译者",
+          "evidence": "注[24]内『这句活』为『这句话』之形近OCR错误（活/话）",
+          "confidence": "certain"
+        },
+        {
+          "block": 198,
+          "type": "ocr-wrong-char-latin",
+          "original": "德文为“bürgerliche Gesetzce”",
+          "proposed": "德文为“bürgerliche Gesetze”",
+          "evidence": "注[8]德文词 Gesetzce 为 Gesetze 之误（ce/ze 颠倒），同注前文 civil law 语境即『公民的法律』",
+          "confidence": "certain"
+        },
+        {
+          "block": 225,
+          "type": "ocr-wrong-char",
+          "original": "德语中把年长者（Ältern）—词理解为前辈（Seniores）",
+          "proposed": "德语中把年长者（Eltern）一词理解为前辈（Seniores）",
+          "evidence": "注[35]两处OCR错误连发：德文 Eltern（父母/双亲）误作 Ältern；『一词』的『一』误作破折号（—），同章他处『一』均正常",
+          "confidence": "certain"
+        },
+        {
+          "block": null,
+          "type": "missing-note-anchor",
+          "original": "[29]  德文版中，此标题为：第一章国家的权利（国家法）。——译者",
+          "proposed": null,
+          "evidence": "注文[29]存在（b219）但全章正文无 [29] 锚点（[1]-[28]、[30]-[39]齐全）；按注文序位应在 b133（注28）与 b139（注30）之间，即『结　论』或『附　录』标题附近，原锚点脱落",
+          "confidence": "certain"
+        }
+      ],
+      "noteMarkers": ["[1]-[28]、[30]-[39] 文内锚点齐全（b191-b229注文）；注[29]为孤立注文，文内锚点丢失"],
+      "summary": "公法全篇230块（宪法/国际法/世界法+附录辩驳+39条注释），段落完整。4处确定性OCR错字（多为注文内），2处文句存疑，注[29]锚点丢失。"
+    },
+    {
+      "chapter": 30,
+      "title": "汉译世界学术名著丛书（分科本）出版说明",
+      "blocks": 6,
+      "paragraphAssessment": "ok",
+      "issues": [],
+      "noteMarkers": [],
+      "summary": "分科本出版说明6块完整（『迻译』为商务规范用字，非错字）。无任何问题。"
+    }
+  ],
+  "globalFindings": {
+    "crossChapterDuplicationPattern": "26→27、27→28、28→29 三处章末均混入下一章开篇标题块（翻页切分产物），共11块冗余",
+    "orphanNotes": ["ch26 b22 圈码注①（无锚点）", "ch27 注[25]（锚点丢失，应在 b54）", "ch29 注[29]（锚点丢失）"],
+    "crossPageSentenceSplits": "未发现（8章内无句被页缝硬拆成两块的情况）",
+    "pageHeaderPollution": "仅 ch26 b23 章题单独成块疑似页眉；未发现孤立页码块",
+    "privateUseChars": "无",
+    "emphasisSpaceConvention": "ch26-29 正文以空格复现原书着重号（如『 法律上的义务 』），偶有落词内（ch26 b18『超越经 验的』等），系转换惯例而非损伤，处理时勿整体删空格"
+  },
+  "totals": {
+    "blocks": 774,
+    "issues": 21,
+    "issuesCertain": 12,
+    "issuesLikely": 3,
+    "issuesUncertain": 6,
+    "noteEntries": 146,
+    "noteAnchored": 143,
+    "orphanNotes": 3
+  }
+}
