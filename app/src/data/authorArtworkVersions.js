@@ -304,7 +304,6 @@ export const AUTHOR_ARTWORK_VERSIONS = Object.freeze({
   "/philosopher/米尔恰·伊利亚德.webp": "bc469c71f36c",
   "/philosopher/米德.webp": "5102fd402bc8",
   "/philosopher/米拉日巴.webp": "d68c8a42bdfb",
-  "/philosopher/米歇尔·福柯.jpg": "be6069f7f8d0",
   "/philosopher/米歇尔·福柯.webp": "d06b1c180cb3",
   "/philosopher/米洛万·吉拉斯.webp": "b1750fa42136",
   "/philosopher/米海尔·普塞洛斯.webp": "f49f0e1b1bdb",
