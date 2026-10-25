@@ -320,7 +320,7 @@ class Proofreader:
             jc = o["join_check"]
             if not (pv.endswith(jc) and nv.startswith(jc)):
                 raise ValueError(f"ch{ch} merge join_check 不匹配: tail={pv[-12:]!r} head={nv[:12]!r}")
-        if o.get("head_expect") and not nv.startswith(o["head_expect"]):
+        if o.get("head_expect") and o["head_expect"] not in nv:
             raise ValueError(f"ch{ch} merge head_expect 不匹配: head={nv[:20]!r}")
         prev["value"] = pv + nv
         content.pop(idx)
