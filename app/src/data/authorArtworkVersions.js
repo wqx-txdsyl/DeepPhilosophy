@@ -435,7 +435,6 @@ export const AUTHOR_ARTWORK_VERSIONS = Object.freeze({
   "/philosopher/马丁·布伯.webp": "ee87b202842a",
   "/philosopher/马丁·海德格尔.jpg": "97b17eb85118",
   "/philosopher/马克斯·霍克海默.webp": "00a1be80a3d3",
-  "/philosopher/马克斯·韦伯.jpg": "42138d6d3a7c",
   "/philosopher/马克斯·韦伯.webp": "55e5f5f6c56a",
   "/philosopher/马勒伯朗士.webp": "5a1489380b8b",
   "/philosopher/马可·奥勒留.webp": "aaad311a46af",
