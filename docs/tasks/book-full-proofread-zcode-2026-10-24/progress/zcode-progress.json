@@ -1,6 +1,6 @@
 {
  "owner": "zcode-proofread",
- "updatedAt": "2026-10-25T09:07:10+0800",
+ "updatedAt": "2026-10-25T10:06:00+0800",
  "textRead": 4,
  "textAccepted": 0,
  "introductionsReviewed": 3,
@@ -104,6 +104,17 @@
     "ch12-14索引与泰阿泰德/斐德若/卡尔弥德枚农注体系特殊保留原状（详见台账）",
     "ch4/ch8个别存疑待纸本"
    ]
+  },
+  "35279e2e439d": {
+   "title": "柏拉图对话集（王太庆）",
+   "status": "reading",
+   "chaptersRead": 17,
+   "chaptersTotal": 17,
+   "reports": [
+    "35279e2e439d.ch0-8.json (296条)",
+    "35279e2e439d.ch9-16.json (685条)"
+   ],
+   "note": "【重要】第一轮批量应用发现部分报告proposed为改写描述而非精确替换串，81条破坏性替换已识别；为保正文完整已整书回退到HEAD干净状态。恢复动作=下一上下文：①重跑149条页缝合并（apply_duihuaji.py 中 merge ops 从报告‖标记构造，clean_edge已修复双端剥离）②逐条应用非破坏修复（ strict规则：仅当 op 为词级最小替换时应用；改写描述型如 '神灵们庆恶的也是神灵们喜爱的'→'厌恶' 须转为词级 庆恶→厌恶 后在块内定位应用）③原书脚注整体丢失/希腊俄文乱码成片=专项待办④欧梯甫戎→欧悌甫戎 统一（ch1 内 82处 replace_all）⑤介绍重写+发布"
   }
  },
  "note": "books[bid] = {status, chaptersRead, chaptersTotal, blocksRead, fixes, notesMigrated, notesResidual, introChars, publishedCommit, publishedAt, residuals[]}; status ∈ pending|reading|text_repaired|notes_verified|introduction_reviewed|validated|published|accepted|reviewed_with_unresolved",
