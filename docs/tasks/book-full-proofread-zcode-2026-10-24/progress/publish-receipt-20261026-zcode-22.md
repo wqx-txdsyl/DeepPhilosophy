@@ -13,3 +13,8 @@
 
 ## 累计
 - 58/523 已逐段实读；56/523 已发布（回执#1-#22）
+
+## 生产验收（build后复核）
+- deepphilosophy.top/book_detail/ 三书 summary 全部 LIVE（818/850/894字符，即688/746/762汉字版）
+- OSS 样本命中：独白米涅教父集/De Trinitate 修复在，DeTrinitate残留0；社契官更残留0
+- 锁已释放
