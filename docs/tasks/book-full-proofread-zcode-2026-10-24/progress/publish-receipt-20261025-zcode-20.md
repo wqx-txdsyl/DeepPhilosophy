@@ -13,3 +13,8 @@
 
 ## 累计
 - 52/523 已逐段实读；50/523 已发布（回执#1-#20）
+
+## 生产验收（build后复核）
+- deepphilosophy.top/book_detail/ 三书 summary 全部 LIVE：会饮篇946字符(840汉字)/爱欲之死803(713汉字)/商君书829(696汉字)
+- 章节 OSS 三书修复样本全部命中；jsDelivr @master 偶发50MB包限制，但生产走 commit 定版 URL（__COMMIT_HASH__ 注入）实测正常
+- 锁已释放
