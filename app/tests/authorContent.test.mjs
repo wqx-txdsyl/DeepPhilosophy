@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
-import { AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { HISTORICAL_PORTRAIT_NOTICE, historicalPortraitNotice, AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
 import { buildSchoolReferences, normalizeSchool } from '../src/data/schoolContent.js';
@@ -131,7 +131,8 @@ test('the legacy Poit entry resolves to Anne Poelina through the specific Nyikin
   assert.equal(person.listingKind, 'thinker');
   assert.equal(person.displayName, 'Anne Poelina');
   assert.equal(person.country, '澳大利亚');
-  assert.equal(person.portrait, null);
+  assert.equal(person.portrait, '/philosopher/安妮·波伊特.webp');
+  assert.equal(person.portraitReview.referenceSha256, '41af876eca14683c8db9d87abdc176159d6b123469b66e4bfb7edc0680534802'); // Water Justice Hub's named Anne Poelina photograph.
   assert.ok(person.bio.includes('Nyikina'));
   assert.ok(!person.bio.includes('1940-2021'));
   assert.ok(!person.profile.bibliography.some(work => /身体与差异|存在与性别|伦理与差异/.test(work.title)));
@@ -218,7 +219,21 @@ test('only reference-checked authorized pencil portraits replace withdrawn AI fi
     }
     assert.ok(['graphite-pencil-paper-v1', 'graphite-pencil-transparent-v1'].includes(review.style), person.name);
     assert.equal(review.authorizedRound, 'pencil-20261024', person.name);
-    assert.equal(review.referenceVerified, true, person.name);
+    if (review.identityBasis === 'historical-imagination') {
+      const authorization = fs.readFileSync(new URL('../../docs/tasks/philosopher-pencil-2026-10-24/historical-imagination-authorization.json', import.meta.url), 'utf8');
+      assert.ok(JSON.parse(authorization).names.includes(person.name), person.name);
+      assert.equal(review.referenceVerified, false, person.name);
+      assert.equal(review.appearanceVerified, false, person.name);
+      assert.equal(review.historicalImaginationAuthorized, true, person.name);
+      assert.equal(review.referenceSha256, undefined, person.name);
+      assert.match(review.styleReferenceSha256, /^[a-f0-9]{64}$/, person.name);
+      assert.equal(review.faceTreatment, 'non-documentary-historical-imagination', person.name);
+      assert.equal(historicalPortraitNotice(person), HISTORICAL_PORTRAIT_NOTICE, person.name);
+    } else {
+      assert.equal(review.referenceVerified, true, person.name);
+      assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
+      assert.equal(historicalPortraitNotice(person), '', person.name);
+    }
     if (review.style === 'graphite-pencil-paper-v1') assert.equal(review.background, 'opaque-warm-paper', person.name);
     else {
       assert.equal(review.background, 'transparent', person.name);
@@ -226,7 +241,6 @@ test('only reference-checked authorized pencil portraits replace withdrawn AI fi
       assert.equal(review.displayColorMode, 'grayscale', person.name);
     }
     if (review.identityBasis === 'traditional-depiction') assert.equal(review.faceTreatment, 'lifelike-human-reconstruction', person.name);
-    assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
     assert.equal(review.sourcePage, undefined);
     const digest = createHash('sha256').update(fs.readFileSync(new URL(person.portrait.slice(1), publicRoot))).digest('hex');
     assert.equal(digest, review.observedSha256, person.name);
@@ -263,7 +277,8 @@ test('corrected identities do not inherit unrelated portraits or fabricated biog
   assert.equal(dodson.profile.englishName, 'Michael (Mick) Dodson');
   assert.equal(dodson.country, '澳大利亚');
   assert.match(dodson.era, /^1950/);
-  assert.equal(dodson.portrait, null);
+  assert.equal(dodson.portrait, '/philosopher/迈克尔·多德森.webp');
+  assert.equal(dodson.portraitReview.referenceSha256, 'b2f21e5b2e98139157c6f8a3893d8872f71804e6ad2df11d97cf12241698067b'); // Named Mick Dodson photograph at the ANU centre launch.
   assert.deepEqual(dodson.centuries, ['20世纪', '21世纪']);
   assert.ok(dodson.profile.life.some(event => event.year === '1993—1998年'));
   assert.ok(dodson.profile.bibliography.some(work => work.originalTitle === 'Bringing Them Home' && work.kind === 'collective-institutional-inquiry-report'));
@@ -322,4 +337,14 @@ test('all author graph groups fit six responsive widths without losing names or 
       }
     }
   }
+});
+
+test('historical imagination is visibly distinguished from a checked likeness', () => {
+  const portraitReview = { imageType: 'ai-generated-illustration', identityBasis: 'historical-imagination', historicalImaginationAuthorized: true, referenceVerified: false, appearanceVerified: false, imageLabel: HISTORICAL_PORTRAIT_NOTICE };
+  assert.equal(historicalPortraitNotice({ portraitReview }), HISTORICAL_PORTRAIT_NOTICE);
+  assert.equal(historicalPortraitNotice({ portraitReview: { ...portraitReview, historicalImaginationAuthorized: false } }), '');
+  assert.equal(historicalPortraitNotice({ portraitReview: { ...portraitReview, referenceVerified: true } }), '');
+  assert.equal(historicalPortraitNotice({ portraitReview: { ...portraitReview, imageLabel: '真实肖像' } }), '');
+  assert.ok(fs.readFileSync(new URL('../src/pages/AuthorDetailPage.jsx', import.meta.url), 'utf8').includes('historicalPortraitNotice(author)'));
+  assert.ok(fs.readFileSync(new URL('../src/pages/AuthorsPage.jsx', import.meta.url), 'utf8').includes('historicalPortraitNotice(author)'));
 });
