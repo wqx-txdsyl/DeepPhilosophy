@@ -105,11 +105,65 @@ export default function ChapterReader({
   onToggleToc,
   initialTocIdx = null,  // URL 直达节: toc 数组下标(标题锚点 sec-{tocIdx}，主路径)
   initialSec = null,     // URL 直达节: 章内块下标(兼容旧 URL，缺 sec 字段时定位不到)
+  initialNote = null,    // URL 直达注释: 显示号(章末注释锚点 dp-note-{ch}-{disp}，note-contract v1)
 }) {
   const scrollRef = useRef(null);
   const ch = chapters[currentChapter] || {};
   const total = chapters.length;
   const [scrollTick, setScrollTick] = useState(0);
+
+  // ── 章末注释（note-contract v1，docs/note-contract.md）──
+  // 数据: 章.notes=[{n,kind,text,imgs?}]，正文引用记号 {{n:x}}（仅此格式，由逐段实读迁移放置）。
+  // 显示号 = 按正文首次引用顺序重排（数据 n 只是稳定标识）；无引用的注释排在后面按数据序。
+  const NOTE_TOKEN_RE = /\{\{n:(\d+)\}\}/g;
+  const NOTE_KIND_LABEL = { author: '作者注', translator: '译注', editor: '编注', original: '原注' };
+  const noteIndex = useMemo(() => {
+    const notes = Array.isArray(ch.notes) ? ch.notes : null;
+    if (!notes || !notes.length || !Array.isArray(ch.content)) return null;
+    const byN = new Map(notes.map(nt => [Number(nt.n), nt]));
+    if (!byN.size) return null;
+    const order = [];
+    const seen = new Set();
+    for (const b of ch.content) {
+      if (!b || b.type !== 'text' || !b.value || !b.value.includes('{{n:')) continue;
+      NOTE_TOKEN_RE.lastIndex = 0;
+      let m;
+      while ((m = NOTE_TOKEN_RE.exec(b.value))) {
+        const n = parseInt(m[1], 10);
+        if (byN.has(n) && !seen.has(n)) { seen.add(n); order.push(n); }
+      }
+    }
+    for (const nt of notes) if (!seen.has(Number(nt.n))) order.push(Number(nt.n));
+    const disp = new Map();
+    order.forEach((n, i) => disp.set(n, i + 1));
+    return { byN, order, disp };
+  }, [ch.notes, ch.content, currentChapter]);
+  // 每条注释"最近入口"引用实例 id：点正文上标时记录，点注释号/返回时回到该实例（重复引用不回错）
+  const lastRefRef = useRef({});
+  useEffect(() => { lastRefRef.current = {}; }, [currentChapter]);
+  const [hlId, setHlId] = useState(null);
+  const hlTimer = useRef(null);
+  const flashAndScroll = useCallback((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    // 即时滚动：容器 CSS scroll-behavior:smooth 会让 behavior:'auto' 仍走动画（后台/节流标签页会卡死），
+    // 必须 instant 强制瞬时；高亮闪烁承担视觉引导
+    el.scrollIntoView({ behavior: 'instant', block: 'center' });
+    setHlId(id);
+    if (hlTimer.current) clearTimeout(hlTimer.current);
+    hlTimer.current = setTimeout(() => setHlId(null), 1800);
+  }, []);
+  const goNote = useCallback((n, disp, entryEl) => {
+    if (entryEl && entryEl.id) lastRefRef.current[n] = entryEl.id;
+    flashAndScroll(`dp-note-${currentChapter}-${disp}`);
+  }, [currentChapter, flashAndScroll]);
+  const goBackRef = useCallback((n) => {
+    const id = lastRefRef.current[n];
+    if (id) flashAndScroll(id);
+  }, [flashAndScroll]);
+  // URL 直达注释（?ch=&note=显示号）：内容渲染后滚到该注释（无入口 → 不显示返回）
+  const pendingNoteRef = useRef(initialNote);
+  useEffect(() => { pendingNoteRef.current = initialNote; }, [initialNote]);
 
   // 当前章的 section 目录条目（含 toc 全局下标 → 标题锚点 id 用）
   const secList = useMemo(() => {
@@ -135,6 +189,18 @@ export default function ChapterReader({
     else if (initialSec != null) pendingSecRef.current = { sec: initialSec };
   }, [initialTocIdx, initialSec]);
   useEffect(() => {
+    // URL 直达注释: 等该章 notes/正文渲染出锚点后滚动（与节定位互不阻塞）
+    if (pendingNoteRef.current != null && noteIndex) {
+      const disp = pendingNoteRef.current;
+      const el = document.getElementById(`dp-note-${currentChapter}-${disp}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'instant', block: 'center' });
+        setHlId(el.id);
+        if (hlTimer.current) clearTimeout(hlTimer.current);
+        hlTimer.current = setTimeout(() => setHlId(null), 1800);
+        pendingNoteRef.current = null;
+      }
+    }
     const p = pendingSecRef.current;
     if (p == null) return;
     // URL 直达(sec 数字) → 映射到当前章的 toc 条目下标，命中则用标题锚点。
@@ -152,7 +218,7 @@ export default function ChapterReader({
       pendingSecRef.current = null;
     }
     // 未找到(章节异步加载中) → 等 ch.content / currentChapter 变化再试
-  }, [currentChapter, ch?.content, scrollTick, toc]);
+  }, [currentChapter, ch?.content, ch?.notes, scrollTick, toc, noteIndex]);
 
   // 阅读设置（持久化）
   const [settings, setSettings] = useState(loadSettings);
@@ -554,9 +620,43 @@ export default function ChapterReader({
                 );
               });
             };
+            // 行内注释引用 {{n:x}} → 可点上标 [显示号]（note-contract v1; token 只由逐段实读迁移放置,
+            // 渲染层只认这一种精确格式, 数学方括号/圣经章句/引用年份不受影响）
+            const rseq = {};   // 本次渲染内各注的引用实例计数 → 实例锚点序
+            const renderWithNotes = (p) => {
+              if (typeof p !== 'string') return p;
+              if (!noteIndex || !p.includes('{{n:')) return renderText(p);
+              const out = [];
+              const re = /\{\{n:(\d+)\}\}/g;
+              let last = 0, m, k = 0;
+              while ((m = re.exec(p))) {
+                if (m.index > last) out.push(renderText(p.slice(last, m.index)));
+                const n = parseInt(m[1], 10);
+                const disp = noteIndex.disp.get(n);
+                if (disp == null) { out.push(renderText(m[0])); }
+                else {
+                  rseq[n] = (rseq[n] || 0) + 1;
+                  const rid = `dp-ref-${currentChapter}-${disp}-${rseq[n]}`;
+                  out.push(
+                    <sup key={`nt${k++}`} id={rid}
+                      className={'dp-note-ref' + (hlId === rid ? ' dp-flash' : '')}
+                      role="button" tabIndex={0} aria-label={`注释${disp}`}
+                      onClick={(e) => goNote(n, disp, e.currentTarget)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goNote(n, disp, e.currentTarget); }
+                      }}>
+                      [{disp}]
+                    </sup>
+                  );
+                }
+                last = m.index + m[0].length;
+              }
+              if (last < p.length) out.push(renderText(p.slice(last)));
+              return out;
+            };
             return (
               <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em', whiteSpace: ch.paragraphMode === 'source' ? 'pre-line' : undefined }}>
-                {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderText(p)}</Fragment>)}
+                {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderWithNotes(p)}</Fragment>)}
                 {(block.imgs || []).slice(imgCursor).map((img, j) => {
                   const isrc = toOssImage(img.src, 200);
                   return isrc ? <img key={j} src={isrc} alt="" loading="lazy" decoding="async"
@@ -568,6 +668,71 @@ export default function ChapterReader({
           })()
         ) : (
           <p>{ch.text || ''}</p>
+        )}
+
+        {/* 章末注释（note-contract v1）: 正文后集中显示；点编号/返回回到最近点击的正文引用实例 */}
+        {noteIndex && (
+          <div className="dp-notes" style={{
+            margin: '36px 0 8px', paddingTop: 18, borderTop: '1px solid var(--border)',
+            fontSize: Math.max(12, settings.fontSize - 4), lineHeight: 1.8, color: 'var(--text)',
+          }}>
+            <div style={{
+              textAlign: 'center', fontSize: Math.max(13, settings.fontSize - 4), letterSpacing: '0.3em',
+              color: 'var(--text-dim)', marginBottom: 14,
+            }}>注　释</div>
+            {noteIndex.order.map((n, i) => {
+              const disp = i + 1;
+              const nt = noteIndex.byN.get(n) || {};
+              const noteId = `dp-note-${currentChapter}-${disp}`;
+              const hasBack = lastRefRef.current[n] != null;
+              const noteBody = String(nt.text || '');
+              return (
+                <div key={n} id={noteId}
+                  className={'dp-note-item' + (hlId === noteId ? ' dp-flash' : '')}
+                  style={{ margin: '0 0 8px', paddingLeft: '2.4em', textIndent: '-2.4em' }}>
+                  <span className="dp-note-num" role="button" tabIndex={0}
+                    style={{ cursor: hasBack ? 'pointer' : 'default', color: 'var(--ochre)' }}
+                    aria-label={hasBack ? `返回正文引用${disp}` : `注释${disp}`}
+                    title={hasBack ? '回到正文引用位置' : undefined}
+                    onClick={() => goBackRef(n)}
+                    onKeyDown={(e) => {
+                      if ((e.key === 'Enter' || e.key === ' ') && hasBack) { e.preventDefault(); goBackRef(n); }
+                    }}>
+                    [{disp}]
+                  </span>
+                  {nt.kind && NOTE_KIND_LABEL[nt.kind] && (
+                    <span style={{ fontSize: '0.85em', color: 'var(--text-dim)', marginRight: 4 }}>
+                      {NOTE_KIND_LABEL[nt.kind]}：
+                    </span>
+                  )}
+                  {noteBody.split('\n').map((para, pj) => (
+                    <span key={pj} style={{ display: pj > 0 ? 'block' : 'inline' }}>
+                      {para.split('[IMG]').map((seg, sk, arr) => {
+                        if (sk === 0) return seg;
+                        const img = (nt.imgs || [])[sk - 1];
+                        const isrc = img && toOssImage(img.src, 200);
+                        return (
+                          <Fragment key={sk}>
+                            {isrc ? <img src={isrc} alt="" loading="lazy" decoding="async"
+                              style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null}
+                            {seg}
+                          </Fragment>
+                        );
+                      })}
+                    </span>
+                  ))}
+                  {hasBack && (
+                    <button className="dp-note-back" title="回到正文引用位置"
+                      style={{
+                        border: 'none', background: 'transparent', color: 'var(--ochre)', cursor: 'pointer',
+                        fontSize: '0.85em', padding: '0 2px', marginLeft: 4,
+                      }}
+                      onClick={() => goBackRef(n)}>↩</button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         )}
 
         {/* 自动阅读中提示 */}

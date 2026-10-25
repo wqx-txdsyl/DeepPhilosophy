@@ -720,3 +720,22 @@ html.mobile-mode .reader-page-wrapper {
 }
 
 @media(prefers-reduced-motion:reduce){.page-enter,.page-enter>*,.app-main.reader-mode .page-enter,.app-main.reader-mode .page-enter>*{animation:none!important}}
+
+/* 章末注释（note-contract v1）：正文引用上标 + 双向跳转高亮 */
+.dp-note-ref {
+  color: var(--ochre, #b8860b);
+  cursor: pointer;
+  font-size: 0.68em;
+  vertical-align: super;
+  line-height: 1;
+  padding: 0 1px;
+  user-select: none;
+}
+.dp-note-ref:hover { text-decoration: underline; }
+.dp-note-ref:focus-visible { outline: 2px solid var(--accent, #b8860b); outline-offset: 1px; }
+.dp-note-num:focus-visible { outline: 2px solid var(--accent, #b8860b); outline-offset: 1px; border-radius: 2px; }
+.dp-flash { animation: dpFlash 1.8s ease; border-radius: 3px; }
+@keyframes dpFlash {
+  0% { background: rgba(184, 134, 11, 0.35); }
+  100% { background: transparent; }
+}
