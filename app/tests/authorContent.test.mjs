@@ -308,9 +308,14 @@ test('every relationship endpoint is present, with context distinguished from hi
       assert.ok(names.has(relation.from), `${person.name}: ${relation.from}`);
       assert.ok(names.has(relation.to), `${person.name}: ${relation.to}`);
       if (relation.type === 'context') {
-        if (['editorial-comparison', 'historical-contact'].includes(relation.evidenceKind)) {
+        if (['editorial-comparison', 'historical-contact', 'documented'].includes(relation.evidenceKind)) {
           assert.ok(relation.detail);
           assert.doesNotMatch(relation.label, /师承|师生/);
+          if (relation.evidenceKind === 'documented') {
+            assert.ok(relation.sourceRefs?.length, `${person.name}: documented relation requires sources`);
+            const declared = new Set(person.profile.sources.map(source => source.id));
+            for (const ref of relation.sourceRefs) assert.ok(declared.has(ref), `${person.name}: undeclared relation source ${ref}`);
+          }
         } else assert.equal(relation.label, '共同思想背景');
       }
     }
