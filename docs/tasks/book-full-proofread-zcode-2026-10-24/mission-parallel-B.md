@@ -8,18 +8,12 @@
 含《汉魏两晋南北朝佛教史》《西方的没落》《人类理解论》《作为意志和表象的世界》等）。
 队列已从主队列切分，与主对话A队列**零重叠**，无需协调选书。
 
-## 工作区（重要——必须独立worktree）
-- **启动时先建独立worktree**（切勿与主对话共用工作区，books.json/progress等共享文件会冲突）：
-  ```
-  git -C /Users/sen/DeepPhilosophy worktree add \
-    /Users/sen/.codex/worktrees/book-quality-B -b codex/book-quality-zcode-B master
-  cd /Users/sen/.codex/worktrees/book-quality-B
-  ```
-- 之后所有读写在B worktree内进行；共享文件（books.json/progress.json/回执）天然隔离，
-  发布push时若与master非快进，先 `git fetch && git merge origin/master` 再推
-- 锁owner用 `zcode-proofread-B`（与主对话zcode-proofread锁互斥共库，天然协调发布时序）
+## 工作区（重要）
+- **唯一写入工作区**：`/Users/sen/.codex/worktrees/book-quality-zcode-20261024/DeepPhilosophy`
+  （分支 `codex/book-quality-zcode-20261024`，与主对话共用工作区但各自提交不冲突——
+  **每次只改自己队列的书**）
 - 提交规范：精确pathspec add，禁用 `git add -A`；commit message 用 `git commit -F` 文件方式；
-  章节数据变更后 `git push origin HEAD:master`
+  章节数据变更后 `git push origin HEAD:master`（与另一对话可能非快进，先 fetch+merge 再推）
 
 ## 每本书流程（与主对话完全一致）
 1. **派实读代理逐字通读**（不可关键词扫描/抽样/机械正则替代），报告落盘
