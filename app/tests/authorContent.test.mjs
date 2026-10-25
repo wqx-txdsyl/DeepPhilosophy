@@ -250,8 +250,9 @@ test('only reference-checked authorized pencil portraits replace withdrawn AI fi
       assert.equal(portraitImaginationNotice(person), SYMBOLIC_ARTWORK_NOTICE);
     } else if (review.identityBasis === 'user-specified-reference') {
       const authorization = JSON.parse(fs.readFileSync(new URL('../../docs/tasks/philosopher-pencil-2026-10-24/user-reference-authorization.json', import.meta.url), 'utf8'));
-      assert.ok(authorization.authorized && authorization.name === person.name);
-      assert.equal(review.referenceSha256, authorization.sha256);
+      const reference = authorization.references?.[person.name] || authorization;
+      assert.ok(authorization.authorized && reference.name === person.name);
+      assert.equal(review.referenceSha256, reference.sha256);
       assert.equal(review.referenceVerified, false);
       assert.equal(review.appearanceVerified, false);
       assert.equal(review.sourceIdentityVerified, false);
