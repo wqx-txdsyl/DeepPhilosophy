@@ -4,6 +4,17 @@ import { isRetiredAuthor } from './retiredAuthors.js';
 export const AUTHOR_KINDS = { thinker: '哲学家与思想家', context: '历史与文化', tradition: '文本与传统', review: '待核实条目' };
 export const authorPath = name => `/author/${encodeURIComponent(name)}`;
 export const authorFile = name => `/philosopher/data/${encodeURIComponent(name.replaceAll('/', '-').replaceAll(':', '：'))}.json`;
+export const HISTORICAL_PORTRAIT_NOTICE = 'AI历史想象 · 非真容复原';
+export function historicalPortraitNotice(person) {
+  const review = person?.portraitReview;
+  return review?.imageType === 'ai-generated-illustration'
+    && review.identityBasis === 'historical-imagination'
+    && review.historicalImaginationAuthorized === true
+    && review.referenceVerified === false
+    && review.appearanceVerified === false
+    && review.imageLabel === HISTORICAL_PORTRAIT_NOTICE
+    ? HISTORICAL_PORTRAIT_NOTICE : '';
+}
 export function authorPortraitImage(person) {
   const path = person?.portrait;
   const review = person?.portraitReview;
