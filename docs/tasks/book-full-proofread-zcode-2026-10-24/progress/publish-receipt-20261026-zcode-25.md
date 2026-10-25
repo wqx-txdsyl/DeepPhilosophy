@@ -16,3 +16,8 @@
 
 ## 累计
 - 69/523 已逐段实读；67/523 已发布（回执#1-#25）
+
+## 生产验收（build后复核）
+- deepphilosophy.top/book_detail/ 三书 summary 全部 LIVE（913/842/844字符，即795/739/732汉字版）
+- OSS 样本：从逻辑ch2 Dehum/insignifi-cant 清零
+- 锁已释放
