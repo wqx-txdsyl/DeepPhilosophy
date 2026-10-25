@@ -11,7 +11,7 @@ DEFAULT = Path('/Users/sen/.codex/visualizations/2026/10/20/01a1598c-e015-7a02-a
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('action', choices=['acquire', 'status', 'release'])
-    p.add_argument('--owner', choices=['codex-books', 'zcode-proofread'])
+    p.add_argument('--owner', choices=['codex-books', 'zcode-proofread', 'zcode-proofread-B'])
     p.add_argument('--lock-dir', type=Path, default=DEFAULT)
     a = p.parse_args()
     lock = a.lock_dir
