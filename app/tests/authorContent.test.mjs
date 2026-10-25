@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
-import { ILLUSTRATIVE_PORTRAIT_NOTICE, portraitImaginationNotice, HISTORICAL_PORTRAIT_NOTICE, historicalPortraitNotice, AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { SYMBOLIC_ARTWORK_NOTICE, USER_REFERENCE_NOTICE, ILLUSTRATIVE_PORTRAIT_NOTICE, portraitImaginationNotice, HISTORICAL_PORTRAIT_NOTICE, historicalPortraitNotice, AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
 import { buildSchoolReferences, normalizeSchool } from '../src/data/schoolContent.js';
@@ -239,6 +239,24 @@ test('only reference-checked authorized pencil portraits replace withdrawn AI fi
       assert.match(review.styleReferenceSha256, /^[a-f0-9]{64}$/, person.name);
       assert.equal(review.faceTreatment, 'non-documentary-illustration', person.name);
       assert.equal(portraitImaginationNotice(person), ILLUSTRATIVE_PORTRAIT_NOTICE, person.name);
+    } else if (review.identityBasis === 'symbolic-illustration') {
+      const authorization = JSON.parse(fs.readFileSync(new URL('../../docs/tasks/philosopher-pencil-2026-10-24/symbolic-illustration-authorization.json', import.meta.url), 'utf8'));
+      assert.ok(authorization.authorized && authorization.names.includes(person.name), person.name);
+      assert.equal(review.referenceVerified, false);
+      assert.equal(review.appearanceVerified, false);
+      assert.equal(review.symbolicIllustrationAuthorized, true);
+      assert.equal(review.referenceSha256, undefined);
+      assert.equal(review.faceTreatment, 'non-portrait-symbolic-artwork');
+      assert.equal(portraitImaginationNotice(person), SYMBOLIC_ARTWORK_NOTICE);
+    } else if (review.identityBasis === 'user-specified-reference') {
+      const authorization = JSON.parse(fs.readFileSync(new URL('../../docs/tasks/philosopher-pencil-2026-10-24/user-reference-authorization.json', import.meta.url), 'utf8'));
+      assert.ok(authorization.authorized && authorization.name === person.name);
+      assert.equal(review.referenceSha256, authorization.sha256);
+      assert.equal(review.referenceVerified, false);
+      assert.equal(review.appearanceVerified, false);
+      assert.equal(review.sourceIdentityVerified, false);
+      assert.equal(review.userReferenceAuthorized, true);
+      assert.equal(portraitImaginationNotice(person), USER_REFERENCE_NOTICE);
     } else {
       assert.equal(review.referenceVerified, true, person.name);
       assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
@@ -371,4 +389,12 @@ test('illustrative faces require explicit authorization and a visible non-likene
   assert.equal(portraitImaginationNotice({ portraitReview }), ILLUSTRATIVE_PORTRAIT_NOTICE);
   for (const override of [{ illustrativeImaginationAuthorized: false }, { referenceVerified: true }, { appearanceVerified: true }, { imageLabel: '真实肖像' }]) assert.equal(portraitImaginationNotice({ portraitReview: { ...portraitReview, ...override } }), '');
   assert.equal(historicalPortraitNotice({ portraitReview }), '');
+});
+
+test('symbolic illustrations and user references cannot claim verified facial identity', () => {
+  for (const [basis, flag, label] of [['symbolic-illustration', 'symbolicIllustrationAuthorized', SYMBOLIC_ARTWORK_NOTICE], ['user-specified-reference', 'userReferenceAuthorized', USER_REFERENCE_NOTICE]]) {
+    const portraitReview = { imageType: 'ai-generated-illustration', identityBasis: basis, [flag]: true, referenceVerified: false, appearanceVerified: false, sourceIdentityVerified: false, imageLabel: label };
+    assert.equal(portraitImaginationNotice({ portraitReview }), label);
+    for (const override of [{ [flag]: false }, { referenceVerified: true }, { appearanceVerified: true }, { imageLabel: '真实肖像' }]) assert.equal(portraitImaginationNotice({ portraitReview: { ...portraitReview, ...override } }), '');
+  }
 });
