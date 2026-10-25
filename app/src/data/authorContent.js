@@ -5,6 +5,7 @@ export const AUTHOR_KINDS = { thinker: '哲学家与思想家', context: '历史
 export const authorPath = name => `/author/${encodeURIComponent(name)}`;
 export const authorFile = name => `/philosopher/data/${encodeURIComponent(name.replaceAll('/', '-').replaceAll(':', '：'))}.json`;
 export const HISTORICAL_PORTRAIT_NOTICE = 'AI历史想象 · 非真容复原';
+export const SYMBOLIC_ARTWORK_NOTICE = 'AI象征插画 · 非人物肖像';
 export const ILLUSTRATIVE_PORTRAIT_NOTICE = 'AI示意像 · 非本人容貌复原';
 export function historicalPortraitNotice(person) {
   const review = person?.portraitReview;
@@ -20,6 +21,9 @@ export function portraitImaginationNotice(person) {
   const historical = historicalPortraitNotice(person);
   if (historical) return historical;
   const review = person?.portraitReview;
+  if (review?.imageType === 'ai-generated-illustration' && review.referenceVerified === false && review.appearanceVerified === false) {
+    if (review.identityBasis === 'symbolic-illustration' && review.symbolicIllustrationAuthorized === true && review.imageLabel === SYMBOLIC_ARTWORK_NOTICE) return SYMBOLIC_ARTWORK_NOTICE;
+  }
   return review?.imageType === 'ai-generated-illustration'
     && review.identityBasis === 'illustrative-imagination'
     && review.illustrativeImaginationAuthorized === true
