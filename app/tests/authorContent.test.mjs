@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
-import { HISTORICAL_PORTRAIT_NOTICE, historicalPortraitNotice, AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { ILLUSTRATIVE_PORTRAIT_NOTICE, portraitImaginationNotice, HISTORICAL_PORTRAIT_NOTICE, historicalPortraitNotice, AUTHOR_KINDS, authorBooks, authorFile, authorPortraitImage, authorSectionSources, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
 import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
 import { buildSchoolReferences, normalizeSchool } from '../src/data/schoolContent.js';
@@ -229,6 +229,16 @@ test('only reference-checked authorized pencil portraits replace withdrawn AI fi
       assert.match(review.styleReferenceSha256, /^[a-f0-9]{64}$/, person.name);
       assert.equal(review.faceTreatment, 'non-documentary-historical-imagination', person.name);
       assert.equal(historicalPortraitNotice(person), HISTORICAL_PORTRAIT_NOTICE, person.name);
+    } else if (review.identityBasis === 'illustrative-imagination') {
+      const authorization = JSON.parse(fs.readFileSync(new URL('../../docs/tasks/philosopher-pencil-2026-10-24/illustrative-imagination-authorization.json', import.meta.url), 'utf8'));
+      assert.ok(authorization.authorized && authorization.names.includes(person.name), person.name);
+      assert.equal(review.referenceVerified, false, person.name);
+      assert.equal(review.appearanceVerified, false, person.name);
+      assert.equal(review.illustrativeImaginationAuthorized, true, person.name);
+      assert.equal(review.referenceSha256, undefined, person.name);
+      assert.match(review.styleReferenceSha256, /^[a-f0-9]{64}$/, person.name);
+      assert.equal(review.faceTreatment, 'non-documentary-illustration', person.name);
+      assert.equal(portraitImaginationNotice(person), ILLUSTRATIVE_PORTRAIT_NOTICE, person.name);
     } else {
       assert.equal(review.referenceVerified, true, person.name);
       assert.match(review.referenceSha256, /^[a-f0-9]{64}$/, person.name);
@@ -257,8 +267,10 @@ test('only reference-checked authorized pencil portraits replace withdrawn AI fi
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
   assert.equal(roster['丹尼斯·林德利'].era, '1923—2013');
   assert.equal(roster['理查德·杰弗里'].era, '1926—2002');
-  assert.equal(roster['理查德·杰弗里'].portrait, null, '错配图不得恢复');
-  assert.equal(roster['理查德·杰弗里'].portraitReview.allowAsPortrait, false);
+  assert.equal(roster['理查德·杰弗里'].portraitReview.identityBasis, 'illustrative-imagination');
+  assert.equal(roster['理查德·杰弗里'].portraitReview.referenceVerified, false);
+  assert.equal(portraitImaginationNotice(roster['理查德·杰弗里']), ILLUSTRATIVE_PORTRAIT_NOTICE);
+  assert.notEqual(roster['理查德·杰弗里'].portraitReview.observedSha256, '2efc9d0ac312de89b4945533c5cdc6a17a365878aaa09a9bf333d21ac18bc126', '原Richard Rex错配图不得恢复');
   const lindley = roster['丹尼斯·林德利'];
   assert.equal(lindley.portraitReview.authorizedRound, 'pencil-20261024');
   assert.equal(lindley.portraitReview.referenceSha256, '72e9002b6526a85403ed544d667855e8c9bb0319072b97bbfc0bce95e6784f21'); // Named Washington course photograph, not his namesake or Kendall.
@@ -350,6 +362,13 @@ test('historical imagination is visibly distinguished from a checked likeness', 
   assert.equal(historicalPortraitNotice({ portraitReview: { ...portraitReview, historicalImaginationAuthorized: false } }), '');
   assert.equal(historicalPortraitNotice({ portraitReview: { ...portraitReview, referenceVerified: true } }), '');
   assert.equal(historicalPortraitNotice({ portraitReview: { ...portraitReview, imageLabel: '真实肖像' } }), '');
-  assert.ok(fs.readFileSync(new URL('../src/pages/AuthorDetailPage.jsx', import.meta.url), 'utf8').includes('historicalPortraitNotice(author)'));
-  assert.ok(fs.readFileSync(new URL('../src/pages/AuthorsPage.jsx', import.meta.url), 'utf8').includes('historicalPortraitNotice(author)'));
+  assert.ok(fs.readFileSync(new URL('../src/pages/AuthorDetailPage.jsx', import.meta.url), 'utf8').includes('portraitImaginationNotice(author)'));
+  assert.ok(fs.readFileSync(new URL('../src/pages/AuthorsPage.jsx', import.meta.url), 'utf8').includes('portraitImaginationNotice(author)'));
+});
+
+test('illustrative faces require explicit authorization and a visible non-likeness notice', () => {
+  const portraitReview = { imageType: 'ai-generated-illustration', identityBasis: 'illustrative-imagination', illustrativeImaginationAuthorized: true, referenceVerified: false, appearanceVerified: false, imageLabel: ILLUSTRATIVE_PORTRAIT_NOTICE };
+  assert.equal(portraitImaginationNotice({ portraitReview }), ILLUSTRATIVE_PORTRAIT_NOTICE);
+  for (const override of [{ illustrativeImaginationAuthorized: false }, { referenceVerified: true }, { appearanceVerified: true }, { imageLabel: '真实肖像' }]) assert.equal(portraitImaginationNotice({ portraitReview: { ...portraitReview, ...override } }), '');
+  assert.equal(historicalPortraitNotice({ portraitReview }), '');
 });
