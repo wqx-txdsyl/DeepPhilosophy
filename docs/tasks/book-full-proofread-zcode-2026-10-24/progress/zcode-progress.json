@@ -1,6 +1,6 @@
 {
  "owner": "zcode-proofread",
- "updatedAt": "2026-10-25T10:06:00+0800",
+ "updatedAt": "2026-10-25T10:11:09+0800",
  "textRead": 4,
  "textAccepted": 0,
  "introductionsReviewed": 3,
@@ -114,7 +114,7 @@
     "35279e2e439d.ch0-8.json (296条)",
     "35279e2e439d.ch9-16.json (685条)"
    ],
-   "note": "【重要】第一轮批量应用发现部分报告proposed为改写描述而非精确替换串，81条破坏性替换已识别；为保正文完整已整书回退到HEAD干净状态。恢复动作=下一上下文：①重跑149条页缝合并（apply_duihuaji.py 中 merge ops 从报告‖标记构造，clean_edge已修复双端剥离）②逐条应用非破坏修复（ strict规则：仅当 op 为词级最小替换时应用；改写描述型如 '神灵们庆恶的也是神灵们喜爱的'→'厌恶' 须转为词级 庆恶→厌恶 后在块内定位应用）③原书脚注整体丢失/希腊俄文乱码成片=专项待办④欧梯甫戎→欧悌甫戎 统一（ch1 内 82处 replace_all）⑤介绍重写+发布"
+   "note": "【恢复点】两报告(296+685条)已落盘；第一轮批量应用因部分proposed为改写描述而破坏正文，已整书回退HEAD。恢复动作：①重跑149条页缝合并（apply_duihuaji.py 的merge ops，clean_edge双端剥离已修好）②非merge修复中仅应用'词级最小替换'型（81条破坏型见wordfix_plan.txt逐条人工核定：悌统一/厌恶/揶揄/恍惚/又好又多/酣睡/毕竟/骡子/锾/明纳/阻止/制止/然而/教→救/颠覆/羞耻/肯/眼睛/鹌鹑/知识/自杀/囚禁/一干二净/沉入/贯注/啼啼/愚蠢/搞垮/嗓子/进入/贻祸/窜下/懒惰/一出一入/深入/注入/埋我/粗暴/锱铢/猥琐/大氅/啜泣/鞑鞑若/大衣/方面等）③欧梯甫戎→欧悌甫戎 replace_all（ch1 82处）④原书脚注整体丢失+ch13/15/16希腊俄文乱码=专项⑤介绍+发布"
   }
  },
  "note": "books[bid] = {status, chaptersRead, chaptersTotal, blocksRead, fixes, notesMigrated, notesResidual, introChars, publishedCommit, publishedAt, residuals[]}; status ∈ pending|reading|text_repaired|notes_verified|introduction_reviewed|validated|published|accepted|reviewed_with_unresolved",
