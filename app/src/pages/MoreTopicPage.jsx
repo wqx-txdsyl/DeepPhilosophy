@@ -27,9 +27,19 @@ function ChristianityHub({ data }) {
         backTo={moreAlbumPath('religion', 'christianity')} backLabel="返回宗教" startId="branches" startLabel="查看三大分支"
         footerMeta="东正 · 天主 · 新教" chapters={[{ id: 'branches', num: 'I', name: '三大分支' }]} />
       <div className="school-reading">
+        <section id="overview" className="school-section school-overview">
+          <header className="school-section-heading centered mtd-sec-head">
+            <span className="school-kicker">I · OVERVIEW</span>
+            <h2>概述</h2>
+          </header>
+          <div className="mtd-overview-lead">
+            {(data.overviewLead || []).map((p, i) => <p key={i}>{p}</p>)}
+          </div>
+        </section>
+
         <section id="branches" className="school-section">
           <header className="school-section-heading centered">
-            <span className="school-kicker">THREE BRANCHES</span>
+            <span className="school-kicker">II · THREE BRANCHES</span>
             <h2>三大分支</h2>
           </header>
           <div className="mtd-branch-cards">
@@ -45,6 +55,43 @@ function ChristianityHub({ data }) {
             ))}
           </div>
         </section>
+
+        <section id="keywords" className="school-section">
+          <header className="school-section-heading centered mtd-sec-head">
+            <span className="school-kicker">III · KEYWORDS</span>
+            <h2>关键词与辞海</h2>
+            <p className="mtd-sec-note">三十六个名物关键词——三十一则完整词条，点击展开。</p>
+          </header>
+          <div className="mtd-colophon">
+            <span className="school-kicker">Keywords · 名物关键词 · 点击查看辞海</span>
+            <p className="mtd-colophon-line">{(data.keywords || []).join('　·　')}</p>
+          </div>
+          <div className="mtd-glossary">
+            {(data.keywords || []).map(kw => {
+              const g = (data.keywordGlosses || {})[kw];
+              if (!g) return null;
+              return (
+                <details key={kw} className="mtd-gloss-item">
+                  <summary>{kw}</summary>
+                  <p>{g}</p>
+                </details>
+              );
+            })}
+          </div>
+        </section>
+
+        {(data.epilogue || data.heroQuoteSource) && (
+          <section id="epilogue" className="school-section">
+            <header className="school-section-heading centered mtd-sec-head">
+              <span className="school-kicker">COLOPHON</span>
+              <h2>尾声</h2>
+            </header>
+            <p className="school-closing-quote">{data.epilogue}</p>
+            <p className="mtd-colophon-line" style={{ textAlign: 'center' }}>
+              <a href="#overview">回到概述 ↑</a>
+            </p>
+          </section>
+        )}
       </div>
     </div>
   );
