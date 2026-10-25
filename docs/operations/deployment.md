@@ -70,11 +70,9 @@
 ### 2.2 Cloudflare Pages —— 平台前端
 - 构建根 `app/`，push `master` 自动 `npm run build`，生产域 `deepphilosophy.top`（构建预览域 `deepphilosophy.pages.dev`）。
 - postbuild 注入 `__COMMIT_HASH__` / `<meta name="dp-commit">`，章节 CDN 引脚随构建自动更新。
-- **改了前端引用的静态资源后**还需抓取构建产物上 OSS：
-  ```bash
-  python backend/tools/dp_grab_cf_assets.py https://deepphilosophy.pages.dev --upload
-  python backend/tools/dp_sync_oss_static.py
-  ```
+- 2026-10-25 白屏修复：HTML、入口模块、懒加载 JS/CSS 和字体同源于同一份 Pages 部署，构建后不再改写到 OSS。新页面上线即具备完整脚本，不依赖上线后的第二次资源上传。
+- `postbuild.mjs` 校验关键目录 JSON；未展开的 LFS 指针、合并冲突、无效或空目录会使构建失败，避免替换仍可用的正式部署。
+- 章节、封面、肖像及内容 JSON 的 OSS 增量同步仍按各自流程执行。`dp_grab_cf_assets.py` 可用于核查或保留旧版 OSS 资源，不再是新版页面能够启动的前置条件。
 
 ### 2.3 Cloudflare Workers —— 平台生产 API（主体）
 - `workers/auth` → worker `deepphilosophy-auth`，route `deepphilosophy.top/api/auth/*`（登录注册 JWT）

@@ -47,7 +47,7 @@ function publicLive() {
 // 启动脚本已外置 public/config-bootstrap.js（同源 'self' 加载）; JSON-LD 为 data block（非可执行脚本,
 // CSP3 不拦截, 不占 script-src 额度）; 'unsafe-eval' 从未启用, 构建产物无 eval/new Function
 // （2026-08-18 核查 dist assets 0 命中）。style-src 保留 'unsafe-inline'（React 内联 style 属性,
-// 组件级限制收益低, 最小可行取舍）。OSS 域保留: 构建脚本/CSS 资产经 postbuild.mjs 改写从 OSS CDN 加载。
+// 组件级限制收益低, 最小可行取舍）。保留 OSS 内容资源的现有访问许可。
 function cspMeta() {
   const CSP = [
     "default-src 'self'",
@@ -69,20 +69,9 @@ function cspMeta() {
 
 export default defineConfig(({ mode }) => ({
   plugins: [react(), publicLive(), cspMeta()],
-  // 2026-08-11 书架提速: 生产构建产物走 OSS（用户网络对同源 CF 边缘 4-5s/220KB, OSS 0.1s）
-  // 注意: vite base 会连带重写 index.html 的 public 引用（favicon/manifest/icons → OSS 404）,
-  //       故 base 保持 '/', 改用 postbuild.mjs 构建后只替换 dist/index.html 的 assets 引用为 OSS URL
-  //       （public 资源保持同源; 懒加载 chunk 经 mapDeps 递归, hash 以 CF 线上构建为准 → 同步走"抓 CF 产物"）
+  // HTML、模块、懒加载样式和字体由同一个 Pages 部署原子发布。
+  // 数据、正文与图片继续使用现有 CDN 路径。
   base: '/',
-  experimental: {
-    // Route CSS gates React.lazy: its preloads must use the same CDN as JS.
-    // Keep public files (favicon, manifest, static data) on their existing paths.
-    renderBuiltUrl(filename, { hostType, type }) {
-      if (hostType === 'js' && type === 'asset') {
-        return `https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/${filename}`;
-      }
-    },
-  },
   server: {
     port: 5173,
     host: true,
