@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "亚当·斯密",
   "batch": "2026-10-03-balanced-04",
-  "researchedAt": "2026-10-21",
+  "researchedAt": "2026-10-28",
   "identity": {
     "verdict": "confirmed",
     "findings": "确认为同一历史人物：亚当·斯密（Adam Smith，1723年6月生于苏格兰法夫郡柯科迪，1790年7月17日卒于爱丁堡），苏格兰启蒙运动道德哲学家与政治经济学家，格拉斯哥大学道德哲学教授（1752-1763），《道德情操论》（1759）与《国富论》（1776）的作者。站内已收录其《国富论》《道德情操论》两书，无重复条目问题。生平系年经 SEP、IEP 两百科条目与 Rae《亚当·斯密传》（1895，Gutenberg 全文）互证；关键文本史节点（1790年第六版改动、1795年《哲学论文集》编者、讲稿焚毁与1896年讲稿刊布）由 archive.org 影印的一手文本（1790年TMS广告页、1795年EPS编者按语、Cannan 1896刊本导言）逐字核对。",
@@ -141,9 +141,380 @@
       "accessedAt": "2026-10-21",
       "accessScope": "partial-text",
       "readScope": "实际下载公版并读第六版广告全文、EPS编者广告全文、TMSI1开头至假想处境/激情对应（新读约9000字符）、III4开头/自欺与一般规则、IV1必需品分配、VI2棋子前后、AstronomyIII2朱庇特前后。读的是1869重刊，不冒称1790影印新全读；短语有跨行，单行grep不能证明不存在。"
+    },
+    {
+      "id": "gla-life",
+      "title": "Adam Smith: Life · University of Glasgow",
+      "url": "https://www.gla.ac.uk/explore/adamsmith300/lifeworkandlegacy/life/",
+      "type": "institutional-biography",
+      "accessedAt": "2026-10-28",
+      "accessScope": "partial-text",
+      "readScope": "实读生平：出生日期未知、1723年6月5日受洗，格拉斯哥、牛津、欧洲旅行与海关工作。",
+      "coverage": "生平与出生日期。"
     }
   ],
   "checks": [
+    {
+      "field": "identity与life",
+      "claim": "确切生日未知；1723年6月5日受洗",
+      "sourceId": "gla-life",
+      "locator": "生平第二段",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "life",
+      "claim": "格拉斯哥、欧洲旅行、1776国富论及海关工作",
+      "sourceId": "gla-life",
+      "locator": "生平正文",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "overview与concepts",
+      "claim": "同情、公正旁观者与道德判断",
+      "sourceId": "sep",
+      "locator": "道德哲学第2节",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "overview与concepts",
+      "claim": "分工、市场范围及政府公共职责",
+      "sourceId": "wn",
+      "locator": "第一编第一—三章、第四编和第五编",
+      "verdict": "confirmed"
+    }
+  ],
+  "uncertainties": [
+    "确切生日仍不把受洗日认作出生；6月与5月底/6月初机构表述不同，本页不凑精确日。",
+    "1740休谟信MrSmith身份为Rae有条件推测，未核原作者与文本来源，不把条件句变定论。",
+    "LJB题记1766不是课堂1766；LJ新编者推1763—1764，不能说所有学者都已校同一天；LJA1762—1763与1958/1978已由正式导论补明。",
+    "LRBL正式导论回提旧法学稿发现1876，与LJ印5的1895不同；不采用旁支1876改写LJ自身传承。",
+    "康德TMS阅读只保留百科归属，未新读Mrongovius讲义或1991论文全文。",
+    "生前WN五版由馆藏核；Rae四授权表述原样存档，不推定完整合同/稿费安排已查。",
+    "Balliol转录足证在校/资格与Jurista非BA，动机和全部旧禁书故事并未获得当年原档，不假闭合。",
+    "两书关系多数拒绝利他自利对立，不等于所有思想史已无争；问题19世纪命名全部源流未全校。",
+    "本轮只读明列原典/导论指定段；1790与1795旧实际阅读仍保留，不将1869重刊说成新目验1790原印本全部。",
+    "RaeFerguson冷淡原因未明；不把Turgot书信话题拼作既定私人冲突。"
+  ],
+  "portraitNote": "unverified",
+  "historicalChecks": [
+    {
+      "archivedAt": "2026-10-21",
+      "reason": "旧2026-10-03真实指定段研究保留；发现学生报告年代、版本计数、交往缘由和规范性解释问题，逐字段修。",
+      "checks": [
+        {
+          "field": "profile.life[0].year / identity",
+          "claim": "1723年6月生于柯科迪（法夫）；遗腹子；父老亚当·斯密为柯科迪海关稽核官，1723年春去世",
+          "sourceId": "rae",
+          "locator": "第一章（'born at Kirkcaldy...on the 5th of June 1723'；父亡有殡葬费用单据）",
+          "verdict": "confirmed",
+          "notes": "IEP称确切出生日无考；Rae径作6月5日（通行多视为受洗日）。草稿按'1723年6月'处理并注明分歧。"
+        },
+        {
+          "field": "profile.life[1]",
+          "claim": "1737-1740年就读格拉斯哥学院，听哈奇森道德哲学课，未完成学位课程",
+          "sourceId": "rae",
+          "locator": "第二章标题'A.D. 1737-1740'及正文（五学年课程仅修三学年）",
+          "verdict": "confirmed",
+          "notes": "IEP亦记'In 1737, at the age of thirteen'。休谟1740-03-04致哈奇森信提及'史密斯先生'摘述《人性论》，Rae录为或然（if the Mr. Smith be the economist）。"
+        },
+        {
+          "field": "profile.life[2]",
+          "claim": "1740年6月持斯内尔奖学金入牛津贝利奥尔，居留七年，1746年返苏格兰，未获学位；私藏《人性论》被没收",
+          "sourceId": "rae",
+          "locator": "第三章标题'AT OXFORD 1740-1746'（'left Scotland for Oxford in June 1740'、'Did Smith graduate?'、'Confiscation of his copy of Hume's Treatise'）",
+          "verdict": "confirmed",
+          "notes": "'自行退学'的确切性质：Rae记其七年居留后归苏、无学位；斯内尔遗嘱圣职条款自革命定居后从未切实执行。"
+        },
+        {
+          "field": "profile.life[3]",
+          "claim": "约1748-1751年在爱丁堡开公开讲座（英语文学与修辞；另有经济讲稿），经凯姆斯勋爵建议，布莱尔等听讲",
+          "sourceId": "rae",
+          "locator": "第四章'LECTURER AT EDINBURGH'（Lord Kames, 31；Smith's class on English literature, 32；His economic lectures, 36）",
+          "verdict": "uncertain",
+          "notes": "讲座存在、性质、听者与经济讲稿均获证实；但'1748'起年为本轮所读文本未明载的通行系年，草稿作'约1748-1751'。"
+        },
+        {
+          "field": "profile.life[4]",
+          "claim": "1751年任格拉斯哥逻辑学教授（Loudon去世后递补），1752年转任道德哲学教授（哈奇森旧席），讲授法学（正义、警察、岁入、军备）至1763年12月底",
+          "sourceId": "lj1896",
+          "locator": "编辑导言（'Adam Smith lectured at Glasgow as Professor of Moral Philosophy from 1752 to the end of December, 1763'）；rae 第五章（'On the death of Mr. Loudon...Smith was appointed'；letter to Cullen）",
+          "verdict": "confirmed",
+          "notes": "IEP记1751-52逻辑讲席、随后道德哲学讲席。"
+        },
+        {
+          "field": "works.tms",
+          "claim": "《道德情操论》1759年初版；生前出六版，其中两版有重大实质修改",
+          "sourceId": "iep",
+          "locator": "§1.b（'first published in 1759'；'went through six editions in Smith's lifetime, two of which contained major substantive changes'）",
+          "verdict": "confirmed",
+          "notes": "tms1790广告页自证第一版刊于'1759年年初'。"
+        },
+        {
+          "field": "works.tms.ed6",
+          "claim": "1790年第六版：主要改动在第一编第三-section末章与第三编前四章；第六编全新；第七编将散见斯多亚段落集中并加疏解、新增论诚实段落",
+          "sourceId": "tms1790",
+          "locator": "ADVERTISEMENT（'The reader will find the principal alterations...in the last Chapter of the third Section of Part First; and in the four first Chapters of Part Third. Part Sixth...is altogether new. In Part Seventh, I have brought together...the Stoical Philosophy...'）",
+          "verdict": "confirmed",
+          "notes": "任务提示称第六版'新增同情章'：不确——第一编第一章'Of Sympathy'初版即有（tms1777目录可证）。此为对提示的更正。"
+        },
+        {
+          "field": "works.tms.promise",
+          "claim": "1790年广告页自述：早年承诺'另一部论法与政府一般原理及历代变革的书'，《国富论》部分兑现（police, revenue, arms），所余 jurisprudence 因高龄难期完成",
+          "sourceId": "tms1790",
+          "locator": "ADVERTISEMENT 末段",
+          "verdict": "confirmed",
+          "notes": "两书关系的作者自证。"
+        },
+        {
+          "field": "profile.life[5]",
+          "claim": "1764年辞格拉斯哥教席任布克莱公爵游学导师；1764-1766旅法：图卢兹、日内瓦、巴黎",
+          "sourceId": "iep",
+          "locator": "§1.b（'Smith resigned in 1764 to tutor the Duke of Buccleuch and accompany him on his travels...took him to France...two years'）",
+          "verdict": "confirmed",
+          "notes": "rae 第十一至十四章：图卢兹、日内瓦、巴黎分章。"
+        },
+        {
+          "field": "profile.life[5].geneva",
+          "claim": "日内瓦期间与伏尔泰相会五六次，赴费尔尼做客；称伏尔泰著述'为所有人而写、被所有人阅读'",
+          "sourceId": "rae",
+          "locator": "第十三章（引罗杰斯日记：'Smith told Rogers he had been in Voltaire's company on five or six different occasions'；'no living name before which Smith bowed with profounder veneration'）",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "profile.life[5].paris",
+          "claim": "1766年巴黎期间出入霍尔巴赫等沙龙，结识杜尔哥、莫雷尔与重农学派（魁奈等）",
+          "sourceId": "rae",
+          "locator": "第十四章章目（Arrival, 194. Baron d'Holbach, 199. Helvetius, 200. Morellet, 200. Turgot and D'Alembert, 202. The French economists, 215. Quesnay, 216. Activity of the sect in 1766, 219）",
+          "verdict": "confirmed",
+          "notes": "会面细节未逐段读正文，以章目与IEP'engaged with the philosophes'为据。"
+        },
+        {
+          "field": "works.wn",
+          "claim": "《国富论》1776年3月出版；生前凡四授权版",
+          "sourceId": "iep",
+          "locator": "§3.a（'published in March of 1776'）；rae（'from the four authorised editions published during his lifetime'）",
+          "verdict": "confirmed",
+          "notes": "斯密自评'对英国整个商业体系的猛烈攻击'（Corr. 208，IEP引）。"
+        },
+        {
+          "field": "profile.life[6]",
+          "claim": "1766年11月返英后居柯科迪写作约十年；1773年4月赴伦敦前致函休谟托掌文稿（函中言明'约十八本薄对开笔记'愿毁弃）",
+          "sourceId": "lj1896",
+          "locator": "编辑导言引1773年函全文（'about eighteen thin folio paper books...I desire may be destroyed without any examination'）；rae 第十七章（'Letter to Hume appointing him literary executor'）",
+          "verdict": "confirmed",
+          "notes": "与本轮休谟包（hill-1888：1773-04-16函'I have left the care of all my literary papers to you'）一致。"
+        },
+        {
+          "field": "profile.life[7]",
+          "claim": "1778年任苏格兰海关专员，居爱丁堡Canongate潘缪尔府；母1784年5月23日卒；1790年7月17日（周六）去世，葬Canongate教堂墓地",
+          "sourceId": "rae",
+          "locator": "第二十章（'Appointed Commissioner of Customs'）、第二十一章（Panmure House, Canongate）、第三十二章（'died on Saturday the 17th of July 1790'；'buried in the Canongate churchyard'；母23 May 卒于90岁）",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "profile.life[8] / manuscripts",
+          "claim": "卒前十日或两周再次嘱托友人焚毁讲义手稿；临终前销毁多数未刊手稿",
+          "sourceId": "eps1795",
+          "locator": "ADVERTISEMENT By the EDITORS（'having immediately before his death destroyed many other manuscripts which he thought unfit for being made public'）；lj1896（'ten days or a fortnight before he died'再嘱）",
+          "verdict": "confirmed",
+          "notes": "IEP有'sixteen volumes'之说，数量细节本轮未另核；草稿不写数量。"
+        },
+        {
+          "field": "works.eps",
+          "claim": "《哲学论文集》1795年编刊，编者约瑟夫·布莱克与詹姆斯·赫顿，前置斯图尔特《生平与著述述要》；含《天文学史》",
+          "sourceId": "eps1795",
+          "locator": "卷首广告页署名（'JOSEPH BLACK. JAMES HUTTON.'）与书名页（'To which is prefixed, An account of the life and writings of the author; by Dugald Stewart'）",
+          "verdict": "confirmed",
+          "notes": "IEP与SEP书目（EPS, Wightman & Bryce 编1980格拉斯哥版）互证；1990s前的初版编者即黑与赫顿。"
+        },
+        {
+          "field": "works.lj",
+          "claim": "《法学讲稿》系学生笔记：1762-63年报告由坎南1895年发现、1896年以《论正义、警察、岁入与军备》刊布；另一份注明1766年的报告与前者于1978年由米克、拉斐尔、斯坦因合编为格拉斯哥版",
+          "sourceId": "lj1896",
+          "locator": "序言（EDWIN CANNAN, OXFORD, August 1896）、导言'HISTORY OF THE REPORT'、Maconochie递藏函",
+          "verdict": "confirmed",
+          "notes": "1766年报告的发现经过（常见说法：1958年Lothian）本轮未获一手核实，草稿只写1896刊本与1978格拉斯哥版合编；SEP书目证实LJ ed. Meek/Raphael/Stein, OUP 1978。"
+        },
+        {
+          "field": "works.lrbl",
+          "claim": "《修辞学与纯文学讲稿》系学生笔记，20世纪发现刊布；布莱尔听过该讲座并受其影响",
+          "sourceId": "iep",
+          "locator": "§1.b（'the student-authored lectures notes on his course in rhetoric and belles-letters'）；rae 第四章（'The lectures Smith then delivered on English literature were burnt at his own request shortly before his death. Blair...got the use of them--or, at least, of part of them--afterwards'）",
+          "verdict": "confirmed",
+          "notes": "具体发现年代（1958/1963）仅得自检索与博客转述，见uncertainties；草稿只写'20世纪发现刊布'。"
+        },
+        {
+          "field": "works.early-wn-draft",
+          "claim": "身后另发现《国富论》部分早期草稿（约1763年）",
+          "sourceId": "iep",
+          "locator": "§1.b（'an early draft of part of The Wealth of Nations, the date of which is estimated to be about 1763'）",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "concepts.sympathy",
+          "claim": "同情：旁观者想象换位（投射式）；与休谟的传染式相区别；赞同=情感对应；设想情感天然弱于原情感",
+          "sourceId": "sep",
+          "locator": "§2-§3（'Hume's may be called a contagion account...Smith's is a projective account'；TMS 12-13, 21-2）；iep（TMS I.i.1.5 'fellow-feeling with any passion whatever'；TMS VI.iii.I.4 换位段）",
+          "verdict": "confirmed",
+          "notes": "同情章为第一编第一章，初版即有（tms1777目录）。"
+        },
+        {
+          "field": "concepts.impartial-spectator",
+          "claim": "公正旁观者：自我审查时一分为二；道德规范=见闻周全的公正旁观者会同情的情感；自我欺骗是'人生一半祸乱的根源'；1790年第六版集中于第三编前四章的修订",
+          "sourceId": "iep",
+          "locator": "§2.b（引TMS III.1.6全文、III.4.6）",
+          "verdict": "confirmed",
+          "notes": "SEP：TMS 129,135,147；tms1790广告页证实第三编前四章为本版主要改动处。"
+        },
+        {
+          "field": "concepts.invisible-hand",
+          "claim": "'看不见的手'在TMS与WN中各出现一次：TMS IV.1.10（富人分配）与WN第四编第二章（资本家用国内产业）",
+          "sourceId": "wn",
+          "locator": "WN grep 全书仅一处（'led by an invisible hand to promote an end which was no part of his intention'）；tms1777 第四编第一章末段",
+          "verdict": "confirmed",
+          "notes": "两处语境不同，草稿分别表述。"
+        },
+        {
+          "field": "concepts.division-of-labour",
+          "claim": "制针厂约十八道工序；分工是'互通有无、以物易物、彼此交易'倾向的缓慢后果而非人类智慧预见；分工受市场范围限制",
+          "sourceId": "wn",
+          "locator": "第一编第一章（'divided into about eighteen distinct operations'）、第二章引言（'propensity to truck, barter, and exchange one thing for another'；'seems more probable...necessary consequence of the faculties of reason and speech'）、第三章章名与首段",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "concepts.value-price",
+          "claim": "使用价值/交换价值之分（水与钻石）；自然价格为中心价格；劳动为交换价值的真实衡量",
+          "sourceId": "iep",
+          "locator": "§3.b（引WN I.iv.13、I.vii.15 'central price'、I.v 'labour is the real measure'）",
+          "verdict": "confirmed",
+          "notes": "IEP并指出劳动尺度含义至今有争议——草稿保留此点。"
+        },
+        {
+          "field": "concepts.natural-liberty",
+          "claim": "自然自由体系：撤除奖掖与限制体系后自行确立；君主三职责（防卫、司法、公共工程与公共机构）",
+          "sourceId": "wn",
+          "locator": "第四编第九章（'the obvious and simple system of natural liberty establishes itself of its own accord...the sovereign has only three duties'）",
+          "verdict": "confirmed",
+          "notes": "IEP引同段（WN IV.ix）；TMS 81 段（仁慈不能强求、治安官可为公益立法）见SEP §5。"
+        },
+        {
+          "field": "concepts.four-stages",
+          "claim": "四阶段说（狩猎-游牧-农耕-商业）见于法学讲稿与WN第五编；经学生米拉尔影响后世社会学",
+          "sourceId": "iep",
+          "locator": "§3.b（'four different stages...WN V.i.a, see also LJ(A) i.27; LJ(B) 25, 27, 149, 233'）",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "relations.hume",
+          "claim": "与休谟为终身挚友：1773年斯密托其掌管文稿；1776年休谟遗嘱原托斯密出版《对话录》并遗200镑，斯密辞编务、拒酬金；1777年《致斯特拉恩公开信》记其临终安详而遭宗教界攻击",
+          "sourceId": "rae",
+          "locator": "第十七章（1773函全文）、第十九至二十章（'Clamour raised by the letter to Strahan on Hume's death, 311. Bishop Horne's pamphlet'）、lj1896导言",
+          "verdict": "confirmed",
+          "notes": "与本轮批次02休谟包一致：该包作'大卫·休谟->亚当·斯密 | context | 挚友、遗嘱受托与临终见证 | historical-contact'（hill-1888/iep），本包方向相反、事实相同、无矛盾。"
+        },
+        {
+          "field": "relations.hutcheson",
+          "claim": "哈奇森为斯密的老师：1737-40听其课，1752年继其讲席；'若他是任何人的门徒，便是哈奇森的门徒'；斯密批评哈奇森把德性归于仁爱、并反对其与休谟的原功利主义；'最大多数人的最大幸福'为哈奇森所创",
+          "sourceId": "rae",
+          "locator": "哈奇森评语段；sep §1（'the phrase coined by his teacher, Frances Hutcheson'；'against the proto-utilitarianism of Hutcheson and Hume'）；iep §1.a（'Smith held his teacher Francis Hutcheson in high esteem'）",
+          "verdict": "confirmed",
+          "notes": "哈奇森生卒（约1694-1746）为通说，本轮来源未逐项核年。"
+        },
+        {
+          "field": "relations.voltaire",
+          "claim": "日内瓦会面：五六次相会、费尔尼做客、高度敬重",
+          "sourceId": "rae",
+          "locator": "第十三章",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "relations.quesnay",
+          "claim": "巴黎期间结识重农学派（魁奈等）；学术上接受生产性劳动概念、拒绝唯农业论；Rae：'有人视他为休谟的门徒，有人视他为魁奈的门徒'",
+          "sourceId": "rae",
+          "locator": "第十四章章目与哈奇森评语段；iep §3.b（'Smith is indebted to the physiocrats...accepted...productive labor...rejected...only agricultural labor'）",
+          "verdict": "confirmed",
+          "notes": "魁奈生卒（约1694-1774）为通说，本轮来源未逐项核年。"
+        },
+        {
+          "field": "relations.kant",
+          "claim": "康德读过《道德情操论》；据称视之为自己最看重的苏格兰道德感理论（Fleischacker 1991）；IEP把两人对读：斯密的行动者依一般规则行动类似康德式依原则行动，但规则来自经验",
+          "sourceId": "iep",
+          "locator": "§1.b（'(It is known that Kant read The Theory of Moral Sentiments, for example.)'）；sep §1（'Kant is said to have considered it his favorite among Scottish moral sense theories (Fleischacker 1991)'）、§2（'anticipate Kant's critique of moral sentimentalism in the Groundwork'）",
+          "verdict": "confirmed",
+          "notes": "康德伦理学讲义笔记（Mrongovius）提及斯密之说本轮未核得一手或二手全文，草稿仅在关系条目括注未核。"
+        },
+        {
+          "field": "relations.rousseau",
+          "claim": "斯密在《爱丁堡评论》（1755年7月创刊、1756年1月第二期即终刊）撰文评介卢梭《论不平等的起源》",
+          "sourceId": "rae",
+          "locator": "第八章章目（'The Edinburgh Review, 120; Smith's contributions, 121...on Rousseau's discourse on inequality, 124'）与正文（first number July 1755, second and last January 1756）",
+          "verdict": "confirmed",
+          "notes": "SEP把卢梭式'商业腐蚀'忧虑列为对读对象（§2引Dwyer/Hanley；书目Griswold 2018）。"
+        },
+        {
+          "field": "relations.ferguson",
+          "claim": "与弗格森同属苏格兰文社圈；1766年巴黎因所谓书信疑云失和，晚年和解并常来探视；两人常并称社会学先驱",
+          "sourceId": "rae",
+          "locator": "第十四章章目（'Question of literary obligations, 203. Alleged correspondence, 204'）、第三十二章（'Adam Ferguson's reconciliation and attentions, 433'）；iep §1.b（'Smith and his contemporary Adam Ferguson are sometimes credited with being the founders of sociology'）",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "debate.adam-smith-problem",
+          "claim": "'亚当·斯密问题'（两书利他与自利之争）在当代研究中不成立；学者着力于展示体系统一",
+          "sourceId": "iep",
+          "locator": "§3.c末（'This is why the Adam Smith Problem doesn't make sense and why contemporary Smith scholars are so focused on showing the systematic elements of Smith's philosophy'）",
+          "verdict": "confirmed",
+          "notes": "该问题的名称为IEP直接使用；其'19世纪德国学界建构'的起源叙事本轮仅检索得Montes 2003（EJHET 10:3）与Tribe 2008（History of European Ideas 34:4）题录及转述、未读全文，草稿不落实具体德国学者与年代。"
+        },
+        {
+          "field": "debate.same-trade",
+          "claim": "'同业者很少聚首……谈话以对付公众的密谋或抬高价格的计谋告终'；法律无法禁止聚会，但国家不应使之便利或必要——语境是反对行会登记等规制",
+          "sourceId": "wn",
+          "locator": "第一编第十章（'People of the same trade seldom meet together...'全文及下文'A regulation which obliges all those of the same trade...to enter their names...in a public register'）",
+          "verdict": "confirmed",
+          "notes": ""
+        },
+        {
+          "field": "debate.laissez-faire-label",
+          "claim": "把斯密读成全盘放任不确：SEP记其支持政府在一定程度上重新分配、为穷人辩护、反对东印度公司；WN第五编主张公共教育与反迷信",
+          "sourceId": "sep",
+          "locator": "§5（'he believed that states could and should re-distribute wealth to some degree, and defend the poor and disadvantaged'；'Smith's opposition to the East India Company'）；iep §3.c（WN V.i.f.50 分工致'心智迟钝'需政府兴学）",
+          "verdict": "confirmed",
+          "notes": "Fleischacker的再分配解读属学术解释，草稿按'SEP所记的解释立场'表述。"
+        },
+        {
+          "field": "overview.method",
+          "claim": "牛顿式方法贯穿两书：理论须无缺口、可解释可预测；斯密与弗格森等并称'人的科学'/社会学先驱",
+          "sourceId": "iep",
+          "locator": "§1.b（EPS Astronomy IV.76引文：Newton体系'人类迄今最伟大的发现'；'Smith and his contemporary Adam Ferguson are sometimes credited with being the founders of sociology'）",
+          "verdict": "confirmed",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "historicalRecordPath": "docs/author-research/2026-10-03-balanced-04/亚当·斯密.json",
+  "reviewType": "full-public-assertion-audit",
+  "actuallyReadThisRound": [
+    "1978 Glasgow LJ正式导论/LibertyFund1982原样影印公开预览20页。PDF4版权、5目录、6缩写、8—11=印1—4授课/修辞笔记、12—16=印5—9两份报告；亲眼view_image逐页读。PDF无文本层不能说已pdftotext读完，render有效。",
+    "LJ导论印5：LJB题Reportdated1766，Cannan1895见/1896刊；印6：1766是誊抄题记非课堂日；印8推为1763—1764学年；印9 LJA1762—63为1958Lothian发现后1978首次合刊，不能再倒置。印1—2 Craigie先于Smith、1月1751受任/10月开课，1752-04-22选/29就任，道德哲学课延至约1764年1月中，旧Cannan年底止说需按版本区分。",
+    "UCLA承载Bryce LRBL正式编者导论，PDF4缩写/5—6指定开头：1958发现、1961报纸公告、1963-09 Lothian刊，之后有1983 Glasgow版。文中回提法学旧报告发现1876与LJ导论1895有不同口径，不用1876覆盖具体导论。未读272PDF页全。",
+    "Rae1895新定向：牛津章六年/七年用语不一；MrSmith1740与Humeabstract为作者推测，people无条件串为Adam不对。life32全文选段：Ferguson1790和解、引1790-07-31信；明确whateveritwasabout原因不明，杜尔哥通信疑云不等于Ferguson疏远缘由。Rae确写fourauthorisededition，原材料有误/口径需留档，不照抄为总版次。",
+    "Glasgow馆藏ResearchResourcesPDF第7页WN五版实际GET200/文本实读：1776/1778/1784/1786/1789，第6版1791。仅目录支撑书目不作正文。",
+    "Balliol档案馆2009展览、2014馆员转载：公开说明与1a/1b、2a/2b/2d档案转录实读。实际在校1740-07—1746-08约6年，Snell资格至1749-02-04辞；未获学位但1744Jurista登记/礼貌Dominus不是BA，动机只是策展者猜测。",
+    "Gutenberg58559实际1869合刊已下载：TMS第六版广告全文、编者EPS广告全文、III4开头及半数灾祸/一般规则段、VI2 manofsystem棋子段前后、IV1富豪necessities/财富幸福段、AstronomyIII2前后Jupiter段。invisible\\s+hand必须跨换行计，不能只按无换行短语假报不存在。不是全部1869全文读。",
+    "WN3300新读I5劳动力购买/支配量、I7自然=当地通常平均工资利润租而非伦理应得、I8劳资不同谈判力量/雇主结盟、I10实际工资规制工人段、IV2看不见手、V1劳动fewsimpleoperations教育段。旧2026-10-03已读制针/交换/聚会/三职责保留，不假新全书通读。",
+    "SEP新读开头方法、Hutcheson段、Kant引述/自由政府/隐含非意图/三段反向解释；IEP开头SmithProblem多数拒绝利他vs利己但体系如何连仍争、Hume/Kant、June部分。旧10-03两篇全读记录保留，非新全读。"
+  ],
+  "originalEvidencePath": "docs/author-research/2026-10-03-balanced-04/亚当·斯密.json",
+  "previousChecksBefore20261028": [
     {
       "field": "profile.overview[0]",
       "claim": "身份年表/原作与报告版本/理论界限",
@@ -844,336 +1215,5 @@
       "locator": "第六版/EPS编辑广告；TMSIII4/IV1/VI2、AstronomyIII2指定段",
       "verdict": "confirmed"
     }
-  ],
-  "uncertainties": [
-    "确切生日仍不把受洗日认作出生；6月与5月底/6月初机构表述不同，本页不凑精确日。",
-    "1740休谟信MrSmith身份为Rae有条件推测，未核原作者与文本来源，不把条件句变定论。",
-    "LJB题记1766不是课堂1766；LJ新编者推1763—1764，不能说所有学者都已校同一天；LJA1762—1763与1958/1978已由正式导论补明。",
-    "LRBL正式导论回提旧法学稿发现1876，与LJ印5的1895不同；不采用旁支1876改写LJ自身传承。",
-    "康德TMS阅读只保留百科归属，未新读Mrongovius讲义或1991论文全文。",
-    "生前WN五版由馆藏核；Rae四授权表述原样存档，不推定完整合同/稿费安排已查。",
-    "Balliol转录足证在校/资格与Jurista非BA，动机和全部旧禁书故事并未获得当年原档，不假闭合。",
-    "两书关系多数拒绝利他自利对立，不等于所有思想史已无争；问题19世纪命名全部源流未全校。",
-    "本轮只读明列原典/导论指定段；1790与1795旧实际阅读仍保留，不将1869重刊说成新目验1790原印本全部。",
-    "RaeFerguson冷淡原因未明；不把Turgot书信话题拼作既定私人冲突。"
-  ],
-  "portraitNote": "unverified",
-  "historicalChecks": [
-    {
-      "archivedAt": "2026-10-21",
-      "reason": "旧2026-10-03真实指定段研究保留；发现学生报告年代、版本计数、交往缘由和规范性解释问题，逐字段修。",
-      "checks": [
-        {
-          "field": "profile.life[0].year / identity",
-          "claim": "1723年6月生于柯科迪（法夫）；遗腹子；父老亚当·斯密为柯科迪海关稽核官，1723年春去世",
-          "sourceId": "rae",
-          "locator": "第一章（'born at Kirkcaldy...on the 5th of June 1723'；父亡有殡葬费用单据）",
-          "verdict": "confirmed",
-          "notes": "IEP称确切出生日无考；Rae径作6月5日（通行多视为受洗日）。草稿按'1723年6月'处理并注明分歧。"
-        },
-        {
-          "field": "profile.life[1]",
-          "claim": "1737-1740年就读格拉斯哥学院，听哈奇森道德哲学课，未完成学位课程",
-          "sourceId": "rae",
-          "locator": "第二章标题'A.D. 1737-1740'及正文（五学年课程仅修三学年）",
-          "verdict": "confirmed",
-          "notes": "IEP亦记'In 1737, at the age of thirteen'。休谟1740-03-04致哈奇森信提及'史密斯先生'摘述《人性论》，Rae录为或然（if the Mr. Smith be the economist）。"
-        },
-        {
-          "field": "profile.life[2]",
-          "claim": "1740年6月持斯内尔奖学金入牛津贝利奥尔，居留七年，1746年返苏格兰，未获学位；私藏《人性论》被没收",
-          "sourceId": "rae",
-          "locator": "第三章标题'AT OXFORD 1740-1746'（'left Scotland for Oxford in June 1740'、'Did Smith graduate?'、'Confiscation of his copy of Hume's Treatise'）",
-          "verdict": "confirmed",
-          "notes": "'自行退学'的确切性质：Rae记其七年居留后归苏、无学位；斯内尔遗嘱圣职条款自革命定居后从未切实执行。"
-        },
-        {
-          "field": "profile.life[3]",
-          "claim": "约1748-1751年在爱丁堡开公开讲座（英语文学与修辞；另有经济讲稿），经凯姆斯勋爵建议，布莱尔等听讲",
-          "sourceId": "rae",
-          "locator": "第四章'LECTURER AT EDINBURGH'（Lord Kames, 31；Smith's class on English literature, 32；His economic lectures, 36）",
-          "verdict": "uncertain",
-          "notes": "讲座存在、性质、听者与经济讲稿均获证实；但'1748'起年为本轮所读文本未明载的通行系年，草稿作'约1748-1751'。"
-        },
-        {
-          "field": "profile.life[4]",
-          "claim": "1751年任格拉斯哥逻辑学教授（Loudon去世后递补），1752年转任道德哲学教授（哈奇森旧席），讲授法学（正义、警察、岁入、军备）至1763年12月底",
-          "sourceId": "lj1896",
-          "locator": "编辑导言（'Adam Smith lectured at Glasgow as Professor of Moral Philosophy from 1752 to the end of December, 1763'）；rae 第五章（'On the death of Mr. Loudon...Smith was appointed'；letter to Cullen）",
-          "verdict": "confirmed",
-          "notes": "IEP记1751-52逻辑讲席、随后道德哲学讲席。"
-        },
-        {
-          "field": "works.tms",
-          "claim": "《道德情操论》1759年初版；生前出六版，其中两版有重大实质修改",
-          "sourceId": "iep",
-          "locator": "§1.b（'first published in 1759'；'went through six editions in Smith's lifetime, two of which contained major substantive changes'）",
-          "verdict": "confirmed",
-          "notes": "tms1790广告页自证第一版刊于'1759年年初'。"
-        },
-        {
-          "field": "works.tms.ed6",
-          "claim": "1790年第六版：主要改动在第一编第三-section末章与第三编前四章；第六编全新；第七编将散见斯多亚段落集中并加疏解、新增论诚实段落",
-          "sourceId": "tms1790",
-          "locator": "ADVERTISEMENT（'The reader will find the principal alterations...in the last Chapter of the third Section of Part First; and in the four first Chapters of Part Third. Part Sixth...is altogether new. In Part Seventh, I have brought together...the Stoical Philosophy...'）",
-          "verdict": "confirmed",
-          "notes": "任务提示称第六版'新增同情章'：不确——第一编第一章'Of Sympathy'初版即有（tms1777目录可证）。此为对提示的更正。"
-        },
-        {
-          "field": "works.tms.promise",
-          "claim": "1790年广告页自述：早年承诺'另一部论法与政府一般原理及历代变革的书'，《国富论》部分兑现（police, revenue, arms），所余 jurisprudence 因高龄难期完成",
-          "sourceId": "tms1790",
-          "locator": "ADVERTISEMENT 末段",
-          "verdict": "confirmed",
-          "notes": "两书关系的作者自证。"
-        },
-        {
-          "field": "profile.life[5]",
-          "claim": "1764年辞格拉斯哥教席任布克莱公爵游学导师；1764-1766旅法：图卢兹、日内瓦、巴黎",
-          "sourceId": "iep",
-          "locator": "§1.b（'Smith resigned in 1764 to tutor the Duke of Buccleuch and accompany him on his travels...took him to France...two years'）",
-          "verdict": "confirmed",
-          "notes": "rae 第十一至十四章：图卢兹、日内瓦、巴黎分章。"
-        },
-        {
-          "field": "profile.life[5].geneva",
-          "claim": "日内瓦期间与伏尔泰相会五六次，赴费尔尼做客；称伏尔泰著述'为所有人而写、被所有人阅读'",
-          "sourceId": "rae",
-          "locator": "第十三章（引罗杰斯日记：'Smith told Rogers he had been in Voltaire's company on five or six different occasions'；'no living name before which Smith bowed with profounder veneration'）",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "profile.life[5].paris",
-          "claim": "1766年巴黎期间出入霍尔巴赫等沙龙，结识杜尔哥、莫雷尔与重农学派（魁奈等）",
-          "sourceId": "rae",
-          "locator": "第十四章章目（Arrival, 194. Baron d'Holbach, 199. Helvetius, 200. Morellet, 200. Turgot and D'Alembert, 202. The French economists, 215. Quesnay, 216. Activity of the sect in 1766, 219）",
-          "verdict": "confirmed",
-          "notes": "会面细节未逐段读正文，以章目与IEP'engaged with the philosophes'为据。"
-        },
-        {
-          "field": "works.wn",
-          "claim": "《国富论》1776年3月出版；生前凡四授权版",
-          "sourceId": "iep",
-          "locator": "§3.a（'published in March of 1776'）；rae（'from the four authorised editions published during his lifetime'）",
-          "verdict": "confirmed",
-          "notes": "斯密自评'对英国整个商业体系的猛烈攻击'（Corr. 208，IEP引）。"
-        },
-        {
-          "field": "profile.life[6]",
-          "claim": "1766年11月返英后居柯科迪写作约十年；1773年4月赴伦敦前致函休谟托掌文稿（函中言明'约十八本薄对开笔记'愿毁弃）",
-          "sourceId": "lj1896",
-          "locator": "编辑导言引1773年函全文（'about eighteen thin folio paper books...I desire may be destroyed without any examination'）；rae 第十七章（'Letter to Hume appointing him literary executor'）",
-          "verdict": "confirmed",
-          "notes": "与本轮休谟包（hill-1888：1773-04-16函'I have left the care of all my literary papers to you'）一致。"
-        },
-        {
-          "field": "profile.life[7]",
-          "claim": "1778年任苏格兰海关专员，居爱丁堡Canongate潘缪尔府；母1784年5月23日卒；1790年7月17日（周六）去世，葬Canongate教堂墓地",
-          "sourceId": "rae",
-          "locator": "第二十章（'Appointed Commissioner of Customs'）、第二十一章（Panmure House, Canongate）、第三十二章（'died on Saturday the 17th of July 1790'；'buried in the Canongate churchyard'；母23 May 卒于90岁）",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "profile.life[8] / manuscripts",
-          "claim": "卒前十日或两周再次嘱托友人焚毁讲义手稿；临终前销毁多数未刊手稿",
-          "sourceId": "eps1795",
-          "locator": "ADVERTISEMENT By the EDITORS（'having immediately before his death destroyed many other manuscripts which he thought unfit for being made public'）；lj1896（'ten days or a fortnight before he died'再嘱）",
-          "verdict": "confirmed",
-          "notes": "IEP有'sixteen volumes'之说，数量细节本轮未另核；草稿不写数量。"
-        },
-        {
-          "field": "works.eps",
-          "claim": "《哲学论文集》1795年编刊，编者约瑟夫·布莱克与詹姆斯·赫顿，前置斯图尔特《生平与著述述要》；含《天文学史》",
-          "sourceId": "eps1795",
-          "locator": "卷首广告页署名（'JOSEPH BLACK. JAMES HUTTON.'）与书名页（'To which is prefixed, An account of the life and writings of the author; by Dugald Stewart'）",
-          "verdict": "confirmed",
-          "notes": "IEP与SEP书目（EPS, Wightman & Bryce 编1980格拉斯哥版）互证；1990s前的初版编者即黑与赫顿。"
-        },
-        {
-          "field": "works.lj",
-          "claim": "《法学讲稿》系学生笔记：1762-63年报告由坎南1895年发现、1896年以《论正义、警察、岁入与军备》刊布；另一份注明1766年的报告与前者于1978年由米克、拉斐尔、斯坦因合编为格拉斯哥版",
-          "sourceId": "lj1896",
-          "locator": "序言（EDWIN CANNAN, OXFORD, August 1896）、导言'HISTORY OF THE REPORT'、Maconochie递藏函",
-          "verdict": "confirmed",
-          "notes": "1766年报告的发现经过（常见说法：1958年Lothian）本轮未获一手核实，草稿只写1896刊本与1978格拉斯哥版合编；SEP书目证实LJ ed. Meek/Raphael/Stein, OUP 1978。"
-        },
-        {
-          "field": "works.lrbl",
-          "claim": "《修辞学与纯文学讲稿》系学生笔记，20世纪发现刊布；布莱尔听过该讲座并受其影响",
-          "sourceId": "iep",
-          "locator": "§1.b（'the student-authored lectures notes on his course in rhetoric and belles-letters'）；rae 第四章（'The lectures Smith then delivered on English literature were burnt at his own request shortly before his death. Blair...got the use of them--or, at least, of part of them--afterwards'）",
-          "verdict": "confirmed",
-          "notes": "具体发现年代（1958/1963）仅得自检索与博客转述，见uncertainties；草稿只写'20世纪发现刊布'。"
-        },
-        {
-          "field": "works.early-wn-draft",
-          "claim": "身后另发现《国富论》部分早期草稿（约1763年）",
-          "sourceId": "iep",
-          "locator": "§1.b（'an early draft of part of The Wealth of Nations, the date of which is estimated to be about 1763'）",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "concepts.sympathy",
-          "claim": "同情：旁观者想象换位（投射式）；与休谟的传染式相区别；赞同=情感对应；设想情感天然弱于原情感",
-          "sourceId": "sep",
-          "locator": "§2-§3（'Hume's may be called a contagion account...Smith's is a projective account'；TMS 12-13, 21-2）；iep（TMS I.i.1.5 'fellow-feeling with any passion whatever'；TMS VI.iii.I.4 换位段）",
-          "verdict": "confirmed",
-          "notes": "同情章为第一编第一章，初版即有（tms1777目录）。"
-        },
-        {
-          "field": "concepts.impartial-spectator",
-          "claim": "公正旁观者：自我审查时一分为二；道德规范=见闻周全的公正旁观者会同情的情感；自我欺骗是'人生一半祸乱的根源'；1790年第六版集中于第三编前四章的修订",
-          "sourceId": "iep",
-          "locator": "§2.b（引TMS III.1.6全文、III.4.6）",
-          "verdict": "confirmed",
-          "notes": "SEP：TMS 129,135,147；tms1790广告页证实第三编前四章为本版主要改动处。"
-        },
-        {
-          "field": "concepts.invisible-hand",
-          "claim": "'看不见的手'在TMS与WN中各出现一次：TMS IV.1.10（富人分配）与WN第四编第二章（资本家用国内产业）",
-          "sourceId": "wn",
-          "locator": "WN grep 全书仅一处（'led by an invisible hand to promote an end which was no part of his intention'）；tms1777 第四编第一章末段",
-          "verdict": "confirmed",
-          "notes": "两处语境不同，草稿分别表述。"
-        },
-        {
-          "field": "concepts.division-of-labour",
-          "claim": "制针厂约十八道工序；分工是'互通有无、以物易物、彼此交易'倾向的缓慢后果而非人类智慧预见；分工受市场范围限制",
-          "sourceId": "wn",
-          "locator": "第一编第一章（'divided into about eighteen distinct operations'）、第二章引言（'propensity to truck, barter, and exchange one thing for another'；'seems more probable...necessary consequence of the faculties of reason and speech'）、第三章章名与首段",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "concepts.value-price",
-          "claim": "使用价值/交换价值之分（水与钻石）；自然价格为中心价格；劳动为交换价值的真实衡量",
-          "sourceId": "iep",
-          "locator": "§3.b（引WN I.iv.13、I.vii.15 'central price'、I.v 'labour is the real measure'）",
-          "verdict": "confirmed",
-          "notes": "IEP并指出劳动尺度含义至今有争议——草稿保留此点。"
-        },
-        {
-          "field": "concepts.natural-liberty",
-          "claim": "自然自由体系：撤除奖掖与限制体系后自行确立；君主三职责（防卫、司法、公共工程与公共机构）",
-          "sourceId": "wn",
-          "locator": "第四编第九章（'the obvious and simple system of natural liberty establishes itself of its own accord...the sovereign has only three duties'）",
-          "verdict": "confirmed",
-          "notes": "IEP引同段（WN IV.ix）；TMS 81 段（仁慈不能强求、治安官可为公益立法）见SEP §5。"
-        },
-        {
-          "field": "concepts.four-stages",
-          "claim": "四阶段说（狩猎-游牧-农耕-商业）见于法学讲稿与WN第五编；经学生米拉尔影响后世社会学",
-          "sourceId": "iep",
-          "locator": "§3.b（'four different stages...WN V.i.a, see also LJ(A) i.27; LJ(B) 25, 27, 149, 233'）",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "relations.hume",
-          "claim": "与休谟为终身挚友：1773年斯密托其掌管文稿；1776年休谟遗嘱原托斯密出版《对话录》并遗200镑，斯密辞编务、拒酬金；1777年《致斯特拉恩公开信》记其临终安详而遭宗教界攻击",
-          "sourceId": "rae",
-          "locator": "第十七章（1773函全文）、第十九至二十章（'Clamour raised by the letter to Strahan on Hume's death, 311. Bishop Horne's pamphlet'）、lj1896导言",
-          "verdict": "confirmed",
-          "notes": "与本轮批次02休谟包一致：该包作'大卫·休谟->亚当·斯密 | context | 挚友、遗嘱受托与临终见证 | historical-contact'（hill-1888/iep），本包方向相反、事实相同、无矛盾。"
-        },
-        {
-          "field": "relations.hutcheson",
-          "claim": "哈奇森为斯密的老师：1737-40听其课，1752年继其讲席；'若他是任何人的门徒，便是哈奇森的门徒'；斯密批评哈奇森把德性归于仁爱、并反对其与休谟的原功利主义；'最大多数人的最大幸福'为哈奇森所创",
-          "sourceId": "rae",
-          "locator": "哈奇森评语段；sep §1（'the phrase coined by his teacher, Frances Hutcheson'；'against the proto-utilitarianism of Hutcheson and Hume'）；iep §1.a（'Smith held his teacher Francis Hutcheson in high esteem'）",
-          "verdict": "confirmed",
-          "notes": "哈奇森生卒（约1694-1746）为通说，本轮来源未逐项核年。"
-        },
-        {
-          "field": "relations.voltaire",
-          "claim": "日内瓦会面：五六次相会、费尔尼做客、高度敬重",
-          "sourceId": "rae",
-          "locator": "第十三章",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "relations.quesnay",
-          "claim": "巴黎期间结识重农学派（魁奈等）；学术上接受生产性劳动概念、拒绝唯农业论；Rae：'有人视他为休谟的门徒，有人视他为魁奈的门徒'",
-          "sourceId": "rae",
-          "locator": "第十四章章目与哈奇森评语段；iep §3.b（'Smith is indebted to the physiocrats...accepted...productive labor...rejected...only agricultural labor'）",
-          "verdict": "confirmed",
-          "notes": "魁奈生卒（约1694-1774）为通说，本轮来源未逐项核年。"
-        },
-        {
-          "field": "relations.kant",
-          "claim": "康德读过《道德情操论》；据称视之为自己最看重的苏格兰道德感理论（Fleischacker 1991）；IEP把两人对读：斯密的行动者依一般规则行动类似康德式依原则行动，但规则来自经验",
-          "sourceId": "iep",
-          "locator": "§1.b（'(It is known that Kant read The Theory of Moral Sentiments, for example.)'）；sep §1（'Kant is said to have considered it his favorite among Scottish moral sense theories (Fleischacker 1991)'）、§2（'anticipate Kant's critique of moral sentimentalism in the Groundwork'）",
-          "verdict": "confirmed",
-          "notes": "康德伦理学讲义笔记（Mrongovius）提及斯密之说本轮未核得一手或二手全文，草稿仅在关系条目括注未核。"
-        },
-        {
-          "field": "relations.rousseau",
-          "claim": "斯密在《爱丁堡评论》（1755年7月创刊、1756年1月第二期即终刊）撰文评介卢梭《论不平等的起源》",
-          "sourceId": "rae",
-          "locator": "第八章章目（'The Edinburgh Review, 120; Smith's contributions, 121...on Rousseau's discourse on inequality, 124'）与正文（first number July 1755, second and last January 1756）",
-          "verdict": "confirmed",
-          "notes": "SEP把卢梭式'商业腐蚀'忧虑列为对读对象（§2引Dwyer/Hanley；书目Griswold 2018）。"
-        },
-        {
-          "field": "relations.ferguson",
-          "claim": "与弗格森同属苏格兰文社圈；1766年巴黎因所谓书信疑云失和，晚年和解并常来探视；两人常并称社会学先驱",
-          "sourceId": "rae",
-          "locator": "第十四章章目（'Question of literary obligations, 203. Alleged correspondence, 204'）、第三十二章（'Adam Ferguson's reconciliation and attentions, 433'）；iep §1.b（'Smith and his contemporary Adam Ferguson are sometimes credited with being the founders of sociology'）",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "debate.adam-smith-problem",
-          "claim": "'亚当·斯密问题'（两书利他与自利之争）在当代研究中不成立；学者着力于展示体系统一",
-          "sourceId": "iep",
-          "locator": "§3.c末（'This is why the Adam Smith Problem doesn't make sense and why contemporary Smith scholars are so focused on showing the systematic elements of Smith's philosophy'）",
-          "verdict": "confirmed",
-          "notes": "该问题的名称为IEP直接使用；其'19世纪德国学界建构'的起源叙事本轮仅检索得Montes 2003（EJHET 10:3）与Tribe 2008（History of European Ideas 34:4）题录及转述、未读全文，草稿不落实具体德国学者与年代。"
-        },
-        {
-          "field": "debate.same-trade",
-          "claim": "'同业者很少聚首……谈话以对付公众的密谋或抬高价格的计谋告终'；法律无法禁止聚会，但国家不应使之便利或必要——语境是反对行会登记等规制",
-          "sourceId": "wn",
-          "locator": "第一编第十章（'People of the same trade seldom meet together...'全文及下文'A regulation which obliges all those of the same trade...to enter their names...in a public register'）",
-          "verdict": "confirmed",
-          "notes": ""
-        },
-        {
-          "field": "debate.laissez-faire-label",
-          "claim": "把斯密读成全盘放任不确：SEP记其支持政府在一定程度上重新分配、为穷人辩护、反对东印度公司；WN第五编主张公共教育与反迷信",
-          "sourceId": "sep",
-          "locator": "§5（'he believed that states could and should re-distribute wealth to some degree, and defend the poor and disadvantaged'；'Smith's opposition to the East India Company'）；iep §3.c（WN V.i.f.50 分工致'心智迟钝'需政府兴学）",
-          "verdict": "confirmed",
-          "notes": "Fleischacker的再分配解读属学术解释，草稿按'SEP所记的解释立场'表述。"
-        },
-        {
-          "field": "overview.method",
-          "claim": "牛顿式方法贯穿两书：理论须无缺口、可解释可预测；斯密与弗格森等并称'人的科学'/社会学先驱",
-          "sourceId": "iep",
-          "locator": "§1.b（EPS Astronomy IV.76引文：Newton体系'人类迄今最伟大的发现'；'Smith and his contemporary Adam Ferguson are sometimes credited with being the founders of sociology'）",
-          "verdict": "confirmed",
-          "notes": ""
-        }
-      ]
-    }
-  ],
-  "historicalRecordPath": "docs/author-research/2026-10-03-balanced-04/亚当·斯密.json",
-  "reviewType": "full-public-assertion-audit",
-  "actuallyReadThisRound": [
-    "1978 Glasgow LJ正式导论/LibertyFund1982原样影印公开预览20页。PDF4版权、5目录、6缩写、8—11=印1—4授课/修辞笔记、12—16=印5—9两份报告；亲眼view_image逐页读。PDF无文本层不能说已pdftotext读完，render有效。",
-    "LJ导论印5：LJB题Reportdated1766，Cannan1895见/1896刊；印6：1766是誊抄题记非课堂日；印8推为1763—1764学年；印9 LJA1762—63为1958Lothian发现后1978首次合刊，不能再倒置。印1—2 Craigie先于Smith、1月1751受任/10月开课，1752-04-22选/29就任，道德哲学课延至约1764年1月中，旧Cannan年底止说需按版本区分。",
-    "UCLA承载Bryce LRBL正式编者导论，PDF4缩写/5—6指定开头：1958发现、1961报纸公告、1963-09 Lothian刊，之后有1983 Glasgow版。文中回提法学旧报告发现1876与LJ导论1895有不同口径，不用1876覆盖具体导论。未读272PDF页全。",
-    "Rae1895新定向：牛津章六年/七年用语不一；MrSmith1740与Humeabstract为作者推测，people无条件串为Adam不对。life32全文选段：Ferguson1790和解、引1790-07-31信；明确whateveritwasabout原因不明，杜尔哥通信疑云不等于Ferguson疏远缘由。Rae确写fourauthorisededition，原材料有误/口径需留档，不照抄为总版次。",
-    "Glasgow馆藏ResearchResourcesPDF第7页WN五版实际GET200/文本实读：1776/1778/1784/1786/1789，第6版1791。仅目录支撑书目不作正文。",
-    "Balliol档案馆2009展览、2014馆员转载：公开说明与1a/1b、2a/2b/2d档案转录实读。实际在校1740-07—1746-08约6年，Snell资格至1749-02-04辞；未获学位但1744Jurista登记/礼貌Dominus不是BA，动机只是策展者猜测。",
-    "Gutenberg58559实际1869合刊已下载：TMS第六版广告全文、编者EPS广告全文、III4开头及半数灾祸/一般规则段、VI2 manofsystem棋子段前后、IV1富豪necessities/财富幸福段、AstronomyIII2前后Jupiter段。invisible\\s+hand必须跨换行计，不能只按无换行短语假报不存在。不是全部1869全文读。",
-    "WN3300新读I5劳动力购买/支配量、I7自然=当地通常平均工资利润租而非伦理应得、I8劳资不同谈判力量/雇主结盟、I10实际工资规制工人段、IV2看不见手、V1劳动fewsimpleoperations教育段。旧2026-10-03已读制针/交换/聚会/三职责保留，不假新全书通读。",
-    "SEP新读开头方法、Hutcheson段、Kant引述/自由政府/隐含非意图/三段反向解释；IEP开头SmithProblem多数拒绝利他vs利己但体系如何连仍争、Hume/Kant、June部分。旧10-03两篇全读记录保留，非新全读。"
-  ],
-  "originalEvidencePath": "docs/author-research/2026-10-03-balanced-04/亚当·斯密.json"
+  ]
 }
