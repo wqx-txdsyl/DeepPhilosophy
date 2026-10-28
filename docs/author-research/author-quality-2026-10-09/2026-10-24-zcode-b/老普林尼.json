@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "name": "老普林尼",
-  "researchedAt": "2026-10-24",
+  "researchedAt": "2026-10-28",
   "batch": "2026-10-24-zcode-b",
   "identity": {
     "verdict": "confirmed",
-    "findings": "Gaius Plinius Secundus，公元23年生（科莫/维罗纳两说并保留），79年8月24日卒于斯塔比亚。骑士阶层，历任日耳曼骑兵指挥、近西班牙财务督察、宫廷要职、米塞努姆舰队司令。外甥小普林尼为养子。与站内其他人物无重复。"
+    "findings": "Gaius Plinius Secundus，公元23或24年生于科莫一带，79年在维苏威喷发期间去世。确切喷发月份有争论；外甥小普林尼依遗嘱于舅父身后成为养子。"
   },
   "sources": [
     {
@@ -25,9 +25,119 @@
       "accessedAt": "2026-10-24",
       "accessScope": "full-text",
       "readScope": "通读全条目文本：生卒籍贯、军旅与西班牙仕历、69年后宫廷与舰队司令、未婚与妹妹幸存、七种著作与存佚、37卷77年成书与献辞、卷一来源名单、卷二宇宙论与数学转译粗糙评价、卷八至十一亚里士多德来源、卷十二至十九植物学（Theophrastus来源与1958年浮雕证实的高卢收割机）、卷二十至三十二药物与反奢侈批评、中世纪权威地位。"
+    },
+    {
+      "id": "oxford-pliny-introduction",
+      "title": "Oxford Bibliographies：Pliny the Elder，导论",
+      "url": "https://academic.oup.com/reference/62365/reference-article-abstract/554622744?login=false",
+      "type": "scholarly-encyclopedia",
+      "accessedAt": "2026-10-28",
+      "accessScope": "partial-text",
+      "readScope": "实读可公开访问的Introduction：23/24—79年、生平官职、37卷结构与自然史中的罗马视角；订阅部分未读取。"
+    },
+    {
+      "id": "fordham-pliny-letters",
+      "title": "Fordham University：小普林尼《书信》6.16与6.20",
+      "url": "https://sourcebooks.web.fordham.edu/ancient/79plinytheelder-vesuvius.asp",
+      "type": "primary-text-transcription",
+      "accessedAt": "2026-10-28",
+      "accessScope": "partial-text",
+      "readScope": "实读书信6.16：目击异常云、求救、船队航行、斯塔比亚及身故经过；并核对书信6.20关于米塞努姆亲历的范围。"
+    },
+    {
+      "id": "dickinson-pliny-younger",
+      "title": "Dickinson College Commentaries：小普林尼生平",
+      "url": "https://dcc.dickinson.edu/pliny-letters/intro/life-of-pliny",
+      "type": "academic-commentary",
+      "accessedAt": "2026-10-28",
+      "accessScope": "partial-text",
+      "readScope": "实读第18—22段：小普林尼父亲去世、舅父照料，老普林尼79年去世后依遗嘱收养外甥。"
+    },
+    {
+      "id": "ingv-vesuvius-2022",
+      "title": "意大利国家地球物理与火山研究所：79年维苏威喷发研究",
+      "url": "https://www.ingv.it/en/urp-press/Press-office/Press-releases/vesuvio-revealed-ancient-mysteries-of-the-eruption-of-79-dc",
+      "type": "research-institution-report",
+      "accessedAt": "2026-10-28",
+      "accessScope": "partial-text",
+      "readScope": "实读研究机构报告有关喷发月份与秋季假说的段落，了解地层、物候及炭笔铭文的论证；不据此断言争议已经终结。"
+    },
+    {
+      "id": "pompeii-date-debate-2024",
+      "title": "庞贝考古公园：庞贝毁灭日期的开放讨论（2024）",
+      "url": "https://pompeiisites.org/e-journal-degli-scavi-di-pompei/la-data-della-distruzione-di-pompei-premesse-per-un-dibattito-aperto/",
+      "type": "archaeological-institution-report",
+      "accessedAt": "2026-10-28",
+      "accessScope": "partial-text",
+      "readScope": "实读网页公开摘要：8月24日的手稿传统与考古材料对8月日期的质疑；链接的全文未作已读。"
     }
   ],
   "checks": [
+    {
+      "field": "identity.era",
+      "claim": "公元23或24年生，79年去世",
+      "sourceId": "oxford-pliny-introduction",
+      "locator": "Introduction首段，b. 23/4–d. 79 CE",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.overview",
+      "claim": "37卷结构、行政经历与罗马知识视野",
+      "sourceId": "oxford-pliny-introduction",
+      "locator": "Introduction段：career；arrangement of thirty-seven books；Roman concerns",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[9]",
+      "claim": "79年在斯塔比亚附近去世；外甥区分亲见与传闻",
+      "sourceId": "fordham-pliny-letters",
+      "locator": "Epistles 6.16，从船队驶往Stabiae至死亡叙述及结尾",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.life[10]",
+      "claim": "舅父死后以遗嘱收养外甥",
+      "sourceId": "dickinson-pliny-younger",
+      "locator": "Life of Pliny，开头父亲去世后照料与79年遗嘱两段",
+      "verdict": "corrected"
+    },
+    {
+      "field": "profile.debate.paragraphs[3]",
+      "claim": "2022年火山研究提出秋季日期；月份并非无争议",
+      "sourceId": "ingv-vesuvius-2022",
+      "locator": "英文报告段落 beginning The article starts from the redefinition of the date；秋季论据",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.debate.paragraphs[3]",
+      "claim": "2024年庞贝考古公园文章指出8月24日手稿依据并承认考古疑点",
+      "sourceId": "pompeii-date-debate-2024",
+      "locator": "2024公开摘要末两段，Pedar Foss与考古证据",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[0..8]",
+      "claim": "自然整体、宇宙边界、神性、助人与知识限度",
+      "sourceId": "pliny-nh-bostock",
+      "locator": "Natural History II §§1–5、12–25；献辞",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.concepts[9..16]",
+      "claim": "目录、摘录、分类及著作涵盖的自然与艺术领域",
+      "sourceId": "oxford-pliny-introduction",
+      "locator": "Introduction末段，Books I–XXXVII概览与作品旨趣",
+      "verdict": "confirmed"
+    },
+    {
+      "field": "profile.readingRoutes[0..3]",
+      "claim": "按献辞、卷二、主题及6.16书信分别阅读",
+      "sourceId": "pliny-nh-bostock",
+      "locator": "Dedication、Book I contents、Book II opening; small-Pliny letters in introduction",
+      "verdict": "confirmed"
+    }
+  ],
+  "previousChecksBefore20261028": [
     {
       "field": "profile.overview[0]",
       "claim": "23年生、科莫出身、骑士家庭；日耳曼统领骑兵、西班牙财务督察、宫廷、米塞努姆舰队司令；夜间读书摘录、'没有一本书糟糕到毫无可取之处'；79年死于斯塔比亚救援，五十六岁。",
