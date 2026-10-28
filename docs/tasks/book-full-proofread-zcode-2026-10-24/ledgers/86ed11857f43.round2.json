@@ -1,0 +1,18 @@
+{
+  "bid": "86ed11857f43",
+  "title": "乌托邦",
+  "date": "2026-10-28",
+  "mode": "main-session-hand-read（round2）",
+  "findings": {
+    "internal_qa": "22章10.5万字：PUA 4处/控制符487处（\\r\\n附着于脚注标记）→全部清理归零；2处断句候选经核为信件标题+正文（保留）",
+    "fixes": [
+      "PUA字修复3种：U+E857→䲟（䲟鱼/remora，2处，据脚注'印头鱼'核实）；U+E55B→a（Encyclopaedia）；U+E003→删（装饰性字体残留）",
+      "全库清除EPUB换行残留\\r\\n（487+6处，均为脚注标记包裹符）",
+      "本地镜像目录整体缺失，补建23文件",
+      "介绍重写337汉字（3段，原文275汉字且含英文ou/topos）"
+    ],
+    "intro": "→337汉字重写"
+  },
+  "unresolved": [],
+  "verify": "verify_book 86ed11857f43 --vite-check 全部通过"
+}
