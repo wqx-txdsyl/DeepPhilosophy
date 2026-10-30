@@ -1,0 +1,19 @@
+{
+ "bid": "2f87c2e469fd",
+ "title": "伏尔泰传",
+ "date": "2026-10-30",
+ "mode": "main-session-hand-read（round2）",
+ "findings": {
+  "internal_qa": "24章4.9万字全扫+逐章通读（傅雷译本）：PUA/控制符/转义/页码块/重复块/半角标点/断句候选均0，文本质量优良",
+  "fixes": [
+   "注契约迁移155条：全书24章规整旧式尾注（正文[N]人名/典故引用+章末[N]注列表），逐章机械迁移至notes（token规范去除原排版空格），注/引一一对应用例校验通过",
+   "第9章title剥除「[1]」章名注标记（注1史称腓特烈，承载于title无法放token，dp_note_check WARN一条登记台账），meta/detail/toc六处同步",
+   "镜像目录缺失，新建并同步25文件"
+  ],
+  "intro": "保留（377汉字达标：启蒙领袖/巴士底狱/流亡英国西雷费尔奈/哲学通信老实人/宽容思想与通读内容相符，纯中文）；tags 启蒙运动/政治哲学/理性主义/传记 匹配"
+ },
+ "unresolved": [
+  "9.json注1（史称腓特烈）为章名注，引用标记在章题中无法以token承载，dp_note_check一条WARN，注文本保留于notes"
+ ],
+ "verify": "verify_book 2f87c2e469fd --vite-check 全部通过；dp_note_check PASS（注155条/引用154处）"
+}
