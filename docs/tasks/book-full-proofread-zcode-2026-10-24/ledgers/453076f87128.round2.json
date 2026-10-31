@@ -1,0 +1,40 @@
+{
+  "bid": "453076f87128",
+  "title": "创造进化论",
+  "author": "亨利·柏格森",
+  "date": "2026-11-01",
+  "mode": "zcode-main-session-full-read",
+  "chaptersRead": 1,
+  "totalChars": 210106,
+  "findings": {
+    "internal_qa": {
+      "pua": 0, "ctrl": 0, "esc": 0, "pagenum": 0, "dup": 0, "halfwidth_punct": 0,
+      "merge_candidates_after_clean": 0,
+      "note": "qa1 首扫全零系水印拉丁前缀(如 AbI/sFU)掩护所致，清除水印后复扫仍全零"
+    },
+    "fixes": [
+      "清除站点水印 442 处：全部为『[1-6位字母数字]中华典藏网』形态（AbI/sFU/OLC/Jzk 等 31 种前缀），涉及 415/415 块；确认无纯汉字前缀水印、无无前缀纯水印后才批量删除",
+      "删除水印后 CJK 直连粘连 21 处修复：4 个章内目录页（块9/103/210/293）条目边界补『——』分隔，目录结束接正文处补『。』；水印位即原书条目边界，不猜测额外切分",
+      "GBK 错位讹字 1 处：块240『创造了野逻辑冶』→『创造了《逻辑》』（野0xD2B0↔《0xA1B6、冶0xD2B1↔」0xA1B7 系统性错位，全文仅此一处）",
+      "删除尾部空块（原块415）",
+      "正文水印删除点 418 处经备份比对验证均为无缝还原（如块281『……个性化的倾向。在原生植物……』上下文通顺），无需介入"
+    ],
+    "intro": {
+      "action": "重写",
+      "before": 85,
+      "after": 489,
+      "paragraphs": 4,
+      "pure_chinese": true,
+      "sync": ["app/public/book_detail", "app/src/assets/books.json", "app/public/books.json", "ledgers/introductions/453076f87128.json"],
+      "errs": []
+    }
+  },
+  "structure": "序言+四章完整：块0-7序言；块8-102第一章(生命的进化:机械论与目的论)；块103-209第二章(进化方向:麻木/本能/智能)；块210-292第三章(生命的意义:自然秩序与智能形式)；块293-414第四章(机械的电影放映术与机械论错觉)，末块为全书结论段，文本完整",
+  "unresolved": [],
+  "residuals": [],
+  "verify": {
+    "verify_book": "全绿 (20/20 项通过，含 --vite-check)",
+    "mirror_md5": "c04ce02eb41cf4a924ee02bcc6cff8a8 双端一致",
+    "qa_rerun": "归零"
+  }
+}
