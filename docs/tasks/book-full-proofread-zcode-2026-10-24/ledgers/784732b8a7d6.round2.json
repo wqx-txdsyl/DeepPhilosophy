@@ -1,0 +1,28 @@
+{
+ "bid": "784732b8a7d6",
+ "title": "蒙田随笔集",
+ "date": "2026-11-01",
+ "mode": "zcode-proofread-round2-fulltext",
+ "findings": {
+  "internal_qa": {
+   "qa1_final": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 半角标点=0（原 8828 处）；merge candidates=0",
+   "structure": "单章 3151 块 70.2 万字；主要缺陷为半角标点（,7330 ;466 .207 :225 ?570 !30）与配对残缺的半角引号 36 处"
+  },
+  "fixes": [
+   "半角标点转全角 8812 处（CJK/全角右界符语境；数字语境不动）",
+   "半角引号配对统一 36 处（词内噪声引号 3 处删除、真开引号转全角、半角+全角连用去重）",
+   "介绍保留原 744 字 7 段（纯中文、质量良好）；tags 保持（怀疑论/文艺复兴/人生哲学）"
+  ],
+  "intro": {
+   "chars": 744,
+   "paragraphs": 7,
+   "pureChinese": true,
+   "note": "原介绍质量良好，保留"
+  }
+ },
+ "unresolved": [],
+ "verify": {
+  "verify_book": "全部通过（双端 MD5、toc 逐项一致、Vite 三探针 200）",
+  "qa_rescan": "qa1 全零"
+ }
+}
