@@ -1,0 +1,32 @@
+{
+  "bid": "9717f0ed5b2a",
+  "title": "管子",
+  "date": "2026-10-31",
+  "mode": "zcode-proofread-round2-fulltext",
+  "findings": {
+    "internal_qa": {
+      "qa1": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 半角标点=0，级联候选=0（终态复扫）",
+      "t2s_residual": "opencc 反查残留 4 块均为《幼官》《幼官图》「听徵声」五音正字（宫商角徵羽之徵，简体仍作徵），非讹字",
+      "notes": "无旧式注释残留，未入注释普查档案"
+    },
+    "fixes": [
+      "全书繁转简：76 章正文+标题+meta/detail/toc 全量 t2s；「徵声」五音正字保留",
+      "删除末章「四庫總目提要」：核验实为维基文库全覽垃圾导航页（目录树+Category+姊妹计划+◄►返回顶部+与正文重复的 dump 片段+]]残片），非真提要正文",
+      "重建缺失的今本存篇「七法第六」：文本取自该书全覽页内残留的四节完整 dump（言是而不能立/百匿伤上威/为兵之数/若夫曲制时举，各节尾句与右X题记齐），逐节对 ctext.org《管子·七法》网络原文核验后归位；校勘 5 处均依今本：世主所贵者实→宝、致所贵非实→宝（下文重宝互证）、不试不臧→藏、审于地啚→地图、敺/欧众→驱众；章序插入 index 5，文件重编号 5-74→6-75，六处同步（meta chapterCount/chapterTitles/toc、detail chapterCount/toc/chapterTitles、books.json、assets/books.json、镜像 rsync --delete）",
+      "订正七法篇漏转「於」1 处（同段余皆作于）",
+      "选陈段「谋十官」从今本（全覽页校勘记载刘师培「十」当作「七」、黎翔凤「十」当作「于」等异说，不采注，原读保留）"
+    ],
+    "intro": {
+      "chars": 377,
+      "paragraphs": 3,
+      "pureChinese": true,
+      "note": "重写自 84 字旧介；tags 补「法家」「黄老思想」（与韩非子/淮南子词表一致），三处同步"
+    }
+  },
+  "unresolved": [],
+  "verify": {
+    "verify_book": "全部通过（76 章文件==chapterCount、双端 MD5 一致、toc/chapterTitles 逐项一致、Vite 三探针 200）",
+    "qa_rescan": "qa1 全零、t2s 残留仅 4 处五音正字",
+    "oss": "dp_sync_oss_chapters 见 progress 落账"
+  }
+}
