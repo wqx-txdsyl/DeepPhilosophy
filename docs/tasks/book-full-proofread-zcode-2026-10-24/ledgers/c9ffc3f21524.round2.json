@@ -1,0 +1,32 @@
+{
+ "bid": "c9ffc3f21524",
+ "title": "智者与泰阿泰德篇",
+ "date": "2026-11-01",
+ "mode": "zcode-proofread-round2-fulltext",
+ "findings": {
+  "internal_qa": {
+   "qa1_final": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 半角标点=0；merge candidates=0",
+   "structure": "重大错配：书目名「泰阿泰德篇」但源文件为詹文杰译双篇合卷——《智者》全文（Stephanus 216a-268d，含逐节注释与译者跋）在前，《泰阿泰德》全文（142a-210d）在后，共 2287 块 12.7 万字。标题页/对话人列表/边码序列/结尾（美勒托指控=泰阿泰德 210d）多重证据确证"
+  },
+  "fixes": [
+   "双篇拆分：0.json=智者（1281 块）、1.json=泰阿泰德篇（1006 块），拆分点=詹文杰署名+泰阿泰德篇名页（assert 文本锚）",
+   "书名更正：泰阿泰德篇→智者与泰阿泰德篇，六处同步（meta/detail/books.json/assets/queues.json）",
+   "meta chapterCount 1→2、chapterTitles/toc 重建（智者/泰阿泰德篇）",
+   "tags 补「形而上学」（原：古希腊哲学/认识论/对话录），detail+books 两处同步",
+   "介绍重写 367 汉字 3 段纯中文（原 86 字仅覆盖泰阿泰德一篇）"
+  ],
+  "intro": {
+   "chars": 367,
+   "paragraphs": 3,
+   "pureChinese": true
+  }
+ },
+ "unresolved": [
+  "泰阿泰德篇边码 142b-142c 段含少量行内单字母（e/f）斯特芬列标残留，属译者排版体例，不破坏阅读，未做处理"
+ ],
+ "verify": {
+  "verify_book": "全部通过（2 章双端 MD5、toc 逐项一致、Vite 三探针 200）",
+  "qa_rescan": "qa1 全零",
+  "split_anchor": "拆分点 assert：块 1281 含「泰阿泰德」篇名与「欧几里德」，块 1280 为译者跋末段"
+ }
+}
