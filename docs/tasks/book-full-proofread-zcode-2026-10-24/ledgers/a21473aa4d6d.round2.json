@@ -1,0 +1,35 @@
+{
+  "bid": "a21473aa4d6d",
+  "title": "通往奴役之路",
+  "author": "弗里德里希·哈耶克",
+  "date": "2026-11-01",
+  "mode": "zcode-main-session-full-read-reorder",
+  "chaptersRead": 19,
+  "totalChars": 181342,
+  "findings": {
+    "internal_qa": {
+      "pre_reorder": "第九章错位于0.json（且头部2块为doosho.com乱码广告+1块尾部粘连）；16/17.json标题为注释首行误作章名；第十四章正文藏于13.json后半（标题讹为'十四章'），初判缺失后经全文通读纠回",
+      "pua": 0, "ctrl": 0, "esc": 0, "dup": "8.json尾38字整段重复讹变1处"
+    },
+    "fixes": [
+      "章序重排：0.json第九章正文归位至新9.json；原2-9.json第一~八章整体前移1位；16.json正名'注释'（实为第八~十五章注释）；17.json正名'译者的话与附录'（译者的话+殷海光序摘录+汪丁丁/陈奎德/杨小凯/哈耶克四篇附录完整）",
+      "第十四章找回：'十四章 物质条件与理想目标'藏于13.json块50-79（初判源级缺失系误判，全文通读后纠回），切分独立成章，标题修复'十四章'→'第十四章'；18文件→19文件，meta/detail/books.json/assets/镜像六处同步 chapterCount 19",
+      "doosho.com乱码广告清除3处（0.json块2-3整块+块1尾部粘连）",
+      "形近讹字批量修复：己经→已经31处（正则排除合法'自己'）、自已→自己26处（Unicode码点级操作，0.json[1]的'ÁÁĤĤ：doosho.com'尾部乱码同批清除）",
+      "个别讹字：理沦→理论、误人歧途→误入歧途、即然→既然、失去了了衍字、纳粹分子孤前衍字、8.json尾块38字重复段删除、英文书名Gongress→Congress/Mations→Nations/Freedonand→Freedon and",
+      "介绍重写 77→499字4段纯中文，四处同步 errs=[]"
+    ],
+    "intro": {"action": "重写", "before": 77, "after": 499, "paragraphs": 4, "pure_chinese": true, "errs": []}
+  },
+  "structure": "19章：目录与序言/第一~十五章（全书15章完整）/结论（含书目提要与各章引文出处）/注释（第八~十五章注释；引言~七章引文出处排在结论章内系源固有分配）/译者的话与附录",
+  "unresolved": [],
+  "residuals": [
+    "'把这个比例不同前社会主义者的总数相比'一句存疑（疑'不'衍字但句式无法完全确证），保留原状",
+    "注释章仅含第八~十五章注释为源文件固有分配，引言~第七章引文出处实际位于结论章末尾"
+  ],
+  "verify": {
+    "verify_book": "全绿（含 --vite-check，chapterCount=19 六处一致）",
+    "boundary_check": "全部章边界衔接抽查连贯",
+    "qa_rerun": "归零"
+  }
+}
