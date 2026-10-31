@@ -1,0 +1,42 @@
+{
+  "bid": "672fc5b6075f",
+  "title": "政治自由主义",
+  "author": "约翰·罗尔斯",
+  "date": "2026-11-01",
+  "mode": "zcode-main-session-full-read",
+  "chaptersRead": 15,
+  "totalChars": 306793,
+  "findings": {
+    "internal_qa": {
+      "pua": 0, "ctrl": 0, "esc": 0, "pagenum": 0, "dup": 0, "halfwidth_punct": 0,
+      "merge_candidates": "仅0.json卷首目录连排1处——源文件固有格式（条目以『第X讲/第X部分』标号开头可辨识，非处理事故），保留不并",
+      "bracket_census": "EPUB转换括号形态混乱：「83/」116、［60/］39、〔15/〕6、（1037/）1044"
+    },
+    "fixes": [
+      "形近/音近讹字 16 处：莱布尼教→莱布尼茨(0卷首)、政冶→政治×2(3/4章)、顿号讹句号×4(3章宗教。哲学/学说。哲学、8章学说。哲学、4章标准。并愿意)、国家权利→国家权力(3章)、4原则→原则(4章)、宗教手法→宗教教义(7章,对照Rawls原文religious doctrine)、进人→进入(7章)、学说学说→学说(8章衍字)、赢得了的→赢得了(8章衍字)、而目→而且(13章)、例如。他说→例如，他说(13章)、须制→预制(14章,全书统一译词)、consnsus→consensus(14章英文拼写)",
+      "括号栈式修复 72 处：孤立闭引号」经栈验证其配对开符为［/〔（学术插注形态［…」），改回］——如『［的观点」』→『［的观点］』『《正义论》［1971」』→［1971］",
+      "误改回滚：批量「X」→［X］变换过激进（波及合法术语引号），依 HEAD 原文逐处判别逆推，82 处还原为引语、57 处确证为插注保留（抽验含《正义论》［1971］、［公民们］等均为译者插注形态）",
+      "『1）2）3）』编号列表式孤立闭括号 10 处确认为中文出版合法格式，保留",
+      "『预制』21 处一致对译 Supposition/presupposition（含英文原注为证），系译者术语而非讹字，保留"
+    ],
+    "intro": {
+      "action": "重写",
+      "before": 80,
+      "after": 594,
+      "paragraphs": 5,
+      "pure_chinese": true,
+      "sync": ["app/public/book_detail", "app/src/assets/books.json", "app/public/books.json"],
+      "errs": []
+    }
+  },
+  "structure": "卷首(目录+导论+平装本导论)+三部分九讲(第一部分1-3讲/第二部分4-6讲/第三部分7-9讲)+附录(万俊人导读+译后记)，15章完整",
+  "unresolved": [],
+  "residuals": [
+    "英文内嵌空格丢失少量存在（如 thebur－dens、guidelinesof inquiry），系源转换固有，不影响中文阅读，保留原状"
+  ],
+  "verify": {
+    "verify_book": "全绿（含 --vite-check）",
+    "mirror": "cp 后双端一致",
+    "qa_rerun": "归零（仅目录连排1处合法保留）"
+  }
+}
