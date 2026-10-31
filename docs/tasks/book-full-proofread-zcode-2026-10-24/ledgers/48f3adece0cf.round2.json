@@ -1,0 +1,29 @@
+{
+ "bid": "48f3adece0cf",
+ "title": "论灵魂",
+ "date": "2026-11-01",
+ "mode": "zcode-proofread-round2-fulltext",
+ "findings": {
+  "internal_qa": {
+   "qa1_final": "PUA=0 ctrl=0（原 1 处 \\x1a 已删）esc=0 pagenum=0 dup=0 半角标点=0；merge candidates 余 2 处为版权页标签与索引区保留不并",
+   "structure": "重大作者错配：meta 作者「亚里士多德」实为〔阿拉伯〕伊本·西那（阿维森纳）《论灵魂——〈治疗论〉第六卷》（北京大学哲学系译，商务汉译名著；版权页/译者序/生平内容三重确证；20.1 万字亦与伊本·西那卷帙吻合而非亚氏 De Anima）；另有 EPUB 阅读器 UI 残留 2 块"
+  },
+  "fixes": [
+   "作者更正：亚里士多德→伊本·西那，五处同步（meta/app detail/books.json/assets/queues.json；backend detail 不存在）",
+   "EPUB 阅读器 UI 残留清除 2 块（选择背景色/字体选择器/上一篇下一篇导航文本）",
+   "尾块 \\x1a 控制符删除",
+   "介绍重写 438 汉字 3 段纯中文（原 86 字）；tags 保持（古希腊哲学/生命哲学/心灵哲学）",
+   "qa1 余 2 候选为版权页与索引区保留块（同中国哲学史目录块先例）"
+  ],
+  "intro": {
+   "chars": 438,
+   "paragraphs": 3,
+   "pureChinese": true
+  }
+ },
+ "unresolved": [],
+ "verify": {
+  "verify_book": "全部通过（双端 MD5、toc 逐项一致、Vite 三探针 200）",
+  "qa_rescan": "除版权/索引保留块外全零"
+ }
+}
