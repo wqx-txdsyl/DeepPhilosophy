@@ -258,6 +258,7 @@ export default function AgentWorkspace() {
     if (!accountReady || (!newConversation && activeConv?.messages_loaded === false)) return;
     const requestOwner = conversationStore.owner;
     const agent = agentOverride || composerAgentRef.current;
+    const modelProvider = getPref('modelProvider') || 'deepseek';
     if (!agentsLoading && !isAvailableResponder(agent, agents)) {
       setComposerAgent(agent); // Show the unavailable banner; do not silently impersonate another responder.
       return;
@@ -352,7 +353,7 @@ export default function AgentWorkspace() {
       try {
         const response = await fetch(`${getApiBase()}/api/agent/stream_lg`, {
           method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-          body: JSON.stringify({ message: generalTurn.message, history, agent, language: lang, conversation_id: convId, message_id: mid }),
+          body: JSON.stringify({ message: generalTurn.message, history, agent, model_provider:modelProvider, language: lang, conversation_id: convId, message_id: mid }),
           signal: controller.signal,
         });
         await readEventStream(response, evt => {
@@ -662,7 +663,7 @@ export default function AgentWorkspace() {
     apply({suggestions_status:'pending'});
     try {
       const response=await fetch(`${getApiBase()}/api/agent/exploration`,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},
-        body:JSON.stringify({message:question || '',answer:source.content,language:lang,agent:'general',previous_questions:source.suggestions || []})});
+        body:JSON.stringify({message:question || '',answer:source.content,language:lang,agent:'general',model_provider:getPref('modelProvider')||'deepseek',previous_questions:source.suggestions || []})});
       if (!response.ok) throw new Error('Generation failed');
       const result=await response.json();
       apply(result.status==='ready' && Array.isArray(result.suggestions) && result.suggestions.length

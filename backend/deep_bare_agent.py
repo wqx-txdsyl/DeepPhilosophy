@@ -24,6 +24,8 @@ async def load_tools():
 
 
 def load_model():
+    from model_providers import current_provider, openai_model
+    if current_provider.get()=='openai': return openai_model()
     from engine_langgraph import _llm_for_agent
     from routes import agent_llm
     base = _llm_for_agent('general')
@@ -93,6 +95,9 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
     from agent_release import prompt_spec, release_descriptor, fingerprint
     from routes.agent_llm import MODEL
     release = release_descriptor(language,_evaluation_prompt_profile)
+    from model_providers import public_metadata, visible_text, current_provider
+    release = {**release, **public_metadata()}
+    release['configuration_fingerprint'] = fingerprint(release)
     persona = _persona
     if agent == 'nietzsche' and persona is None:
         import nietzsche_runtime as persona
@@ -180,7 +185,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
         yield {'type':'runtime_metadata','release':release}
         registry = {tool.name: tool for tool in tools}
         model = load_model()
-        client = model.bind_tools(tools)
+        client = model.bind_tools(tools,strict=False) if current_provider.get()=='openai' else model.bind_tools(tools)
         while True:
             round_index += 1
             group = f'{invocation}:{round_index}'
@@ -194,7 +199,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 async for chunk in stream:
                     full = chunk if full is None else full + chunk
                     reasoning = (getattr(chunk, 'additional_kwargs', {}) or {}).get('reasoning_content')
-                    if reasoning:
+                    if reasoning and current_provider.get()=='deepseek':
                         if text and not call_started:
                             yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
                             yield {'type': 'answer_preview_reset'}
@@ -215,10 +220,11 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                             announced.add(key)
                             yield {'type': 'tool_start', 'name': call['name'], 'call_id': key,
                                    'tool_call_id': key, 'decision_group_id': group}
-                    if isinstance(chunk.content, str) and chunk.content:
-                        text += chunk.content
+                    public = visible_text(chunk.content)
+                    if public:
+                        text += public
                         if not call_started:
-                            yield {'type': 'answer_preview', 'id': f'{group}:note:{segment}', 'content': chunk.content}
+                            yield {'type': 'answer_preview', 'id': f'{group}:note:{segment}', 'content': public}
                         else:
                             yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
             finally:
@@ -228,7 +234,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 return
             message = message_chunk_to_message(full)
             round_usage.append(getattr(full,'usage_metadata',None))
-            actual_model=(getattr(full,'response_metadata',{}) or {}).get('model_name')
+            actual_model=(getattr(full,'response_metadata',{}) or {}).get('model_name') or (getattr(full,'response_metadata',{}) or {}).get('model')
             if actual_model: returned_models.add(actual_model)
             messages.append(message)
             requested = list(message.tool_calls or [])
@@ -237,6 +243,8 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
             requested += [{**call, '_invalid': True} for call in (message.invalid_tool_calls or [])]
             if not requested:
                 finish = (getattr(full, 'response_metadata', {}) or {}).get('finish_reason')
+                response_status=(getattr(full,'response_metadata',{}) or {}).get('status')
+                if response_status in {'incomplete','failed','cancelled'}:finish=response_status
                 complete = finish in (None, 'stop')
                 try:
                     citations, evidence = persona.citations(calls, text, language) if persona else source_metadata(calls, text, language)
@@ -252,7 +260,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 if round_usage and all(isinstance(item,dict) for item in round_usage):
                     usage = {key:sum(item.get(key,0) for item in round_usage) for key in ('input_tokens','output_tokens','total_tokens')}
                 yield {'type': 'done', 'id': f'{group}:note:{segment}', 'content': text, 'complete': complete, 'runtime_profile': 'bare',
-                       'release':release,'scope_check':scope_check,'main_model_usage':{'scope':'main_agent_only','usage':usage,
+                       'release':release,'main_model_invoked':True,'scope_check':scope_check,'main_model_usage':{'scope':'main_agent_only','usage':usage,
                          'round_count':len(round_usage),'reported_rounds':sum(isinstance(u,dict) for u in round_usage),
                          'includes_auxiliary_tool_models':False,'provider_model_names':sorted(returned_models)},
                        'citations': citations, 'evidence': evidence, 'suggestions': [],
@@ -311,7 +319,11 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
     except asyncio.CancelledError:
         raise
     except Exception as exc:
-        yield {'type': 'error', 'content': str(exc), 'runtime_profile': 'bare'}
+        if current_provider.get()=='openai':
+            from model_providers import error_event
+            yield error_event(exc)
+        else:
+            yield {'type': 'error', 'content': str(exc), 'runtime_profile': 'bare'}
     finally:
         for task in tasks:
             task.cancel()

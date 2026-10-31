@@ -61,6 +61,7 @@ class AgentChatRequest(BaseModel):
     language: Optional[str] = None # zh/en——前端语言偏好（匿名用户也能生效; 登录用户以 profile 为准）
     conversation_id: Optional[str] = None  # Phase A (A1): tool loop 观测上下文（可选）
     message_id: Optional[str] = None       # Phase A (A1): 单条消息 id（可选, 缺省自动生成）
+    model_provider: Literal['deepseek','openai'] = 'deepseek'
 
 
 def agent_access(req: AgentChatRequest, request: Request, authorization: str = Header(None)):
@@ -69,11 +70,24 @@ def agent_access(req: AgentChatRequest, request: Request, authorization: str = H
     if not is_published_agent(key):
         raise HTTPException(status_code=410 if is_retired_agent(key) else 404,
                             detail='该智能体已下架，请选择其他回答者。' if is_retired_agent(key) else '未找到该智能体。')
+    if req.model_provider=='openai':
+        from model_providers import config
+        user=guard.resolve_user(authorization)
+        if not user:raise HTTPException(401,'请先登录后使用 ChatGPT')
+        if not config('openai').api_key:raise HTTPException(503,'ChatGPT 暂未配置')
+        if os.getenv('DEEP_AGENT_RUNTIME','bare')!='bare':raise HTTPException(409,'当前运行模式暂不支持 ChatGPT')
+        return user
     if is_soul_agent(req.agent) or (req.agent or 'general') == 'nietzsche' or ((req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare'):
         # Keep identity resolution and per-user memory isolation, but no
         # experiment request rate or daily usage quota.
         return guard.resolve_user(authorization)
     return guard.agent_guard(request, authorization)
+
+
+@router.get('/api/agent/models')
+def model_options(authorization: str = Header(None)):
+    from model_providers import catalog
+    return JSONResponse(catalog(guard.resolve_user(authorization)),headers={'Cache-Control':'private, no-store'})
 
 
 class ExplorationRequest(AgentChatRequest):
@@ -84,8 +98,12 @@ class ExplorationRequest(AgentChatRequest):
 @router.post('/api/agent/exploration')
 async def regenerate_exploration(req: ExplorationRequest, _g: dict = Depends(agent_access)):
     from deep_exploration import generate_exploration
-    return await asyncio.to_thread(generate_exploration, req.message, req.answer,
-                                   req.language or 'zh', req.previous_questions)
+    from model_providers import current_provider
+    token=current_provider.set(req.model_provider)
+    try:
+        return await asyncio.to_thread(generate_exploration, req.message, req.answer,
+                                       req.language or 'zh', req.previous_questions)
+    finally:current_provider.reset(token)
 
 
 class HomeQuestionsRequest(BaseModel):
@@ -109,7 +127,7 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                           _g: dict = Depends(agent_access)):
     async def stream_events():
         import engine_langgraph as elg
-        if not API_KEY:
+        if req.model_provider=='deepseek' and not API_KEY:
             yield _sse({"type": "error", "content": "未配置 API Key"})
             return
         # 语言偏好: 请求体（前端 localStorage）优先, 登录用户以 profile.language 为准
@@ -147,12 +165,14 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                 yield frame
             return
         from deep_context import current_memory_key, general_memory_key, current_account_id, reset_owned_context
+        from model_providers import current_provider
         # Sync FastAPI dependencies execute in a worker context. Their
         # ContextVar writes do not propagate back into this SSE task.
         ip = guard.client_ip(request)
         identity_token = guard.current_user.set({"id": (_g or {}).get("id"), "ip": ip})
         scope_token = current_memory_key.set(general_memory_key(_g, ip, req.conversation_id))
         account_token = current_account_id.set((_g or {}).get("id"))
+        provider_token = current_provider.set(req.model_provider)
         stream = stream_events()
         try:
             async for frame in stream:
@@ -164,5 +184,6 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                 reset_owned_context(current_memory_key, scope_token)
                 reset_owned_context(current_account_id, account_token)
                 reset_owned_context(guard.current_user, identity_token)
+                reset_owned_context(current_provider, provider_token)
     return StreamingResponse(gen(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

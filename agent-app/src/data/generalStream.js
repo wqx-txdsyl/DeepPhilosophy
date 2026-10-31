@@ -125,6 +125,8 @@ export function reduceGeneralEvent(state, evt) {
     suggestions_status: evt.suggestions_status || (evt.suggestions?.length ? 'ready' : 'unavailable'),
     ...(evt.release ? { agent_release:evt.release } : {}),
     ...(evt.main_model_usage ? { main_model_usage:evt.main_model_usage } : {}),
+    ...(typeof evt.main_model_invoked==='boolean' ? {main_model_invoked:evt.main_model_invoked} : {}),
+    ...(evt.response_origin ? {response_origin:evt.response_origin} : {}),
   };
   if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions), suggestions_status: evt.status || (evt.suggestions?.length ? 'ready' : 'unavailable') };
   if (evt.type === 'reasoning_summary') return { ...state, reasoning_summary: text };

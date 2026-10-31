@@ -3,6 +3,7 @@ import { getApiBase } from './utils/api';
 import { conversationStore } from './data/conversationStore';
 import { ConversationSync } from './data/conversationSync';
 import { accountProfile, profilePatch, clearDeviceCache, deleteConversationHistory } from './data/accountSettings';
+import { setPref } from './data/localPrefs';
 
 /**
  * AuthContext — 用户系统（注册/登录/档案/登出）
@@ -117,6 +118,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    setPref('modelProvider','deepseek');
     tokenRef.current = null;
     window.dispatchEvent(new Event('phiagent-logout'));
     syncRef.current?.close();

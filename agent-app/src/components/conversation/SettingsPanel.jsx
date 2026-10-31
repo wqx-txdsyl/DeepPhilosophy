@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Palette, MessageCircle, SlidersHorizontal, Brain, UserRound, Database, Check, Loader2, LogOut } from 'lucide-react';
+import { X, Palette, MessageCircle, SlidersHorizontal, Brain, UserRound, Database, Check, Loader2, LogOut, Cpu } from 'lucide-react';
 import { useLang, AGENT_NAMES } from '../../utils/i18n';
 import { getTheme, setTheme } from '../../utils/theme';
 import { getPref, setPref } from '../../data/localPrefs';
 import { useAuth } from '../../auth';
 import AuthModal from '../AuthModal';
 import AccountMemory from './AccountMemory';
+import ModelSettings from './ModelSettings';
 
 const SECTIONS = [
   ['general', Palette, '外观与语言', 'Appearance & language'],
+  ['model', Cpu, '模型', 'Models'],
   ['conversation', MessageCircle, '对话', 'Conversations'],
   ['personal', SlidersHorizontal, '个性化', 'Personalization'],
   ['memory', Brain, '长期记忆', 'Memory'],
@@ -154,6 +156,7 @@ export default function SettingsPanel({ open, onClose, initialSection = 'general
             <SettingRow title={t('theme')} description={L('选择界面的明暗外观。', 'Choose how the interface looks.')}><select aria-label={t('theme')} value={theme} onChange={e => run('theme',() => { setTheme(e.target.value); setThemeState(e.target.value); })}>{[['light',t('themeLight')],['dark',t('themeDark')],['auto',t('themeAuto')]].map(([v,label]) => <option key={v} value={v}>{label}</option>)}</select></SettingRow>
             <SettingRow title={t('language')} description={L('用于界面、回答和思考过程。', 'Used for the interface, answers and reasoning.')}><select aria-label={t('language')} value={lang} disabled={!!operation} onChange={e => { const value=e.target.value;run('language', () => setLang(value), value==='zh' ? '语言偏好已保存' : 'Language preference saved'); }}><option value="zh">中文</option><option value="en">English</option></select></SettingRow>
           </>}
+          {section === 'model' && <ModelSettings lang={lang}/>}
           {section === 'conversation' && <>
             <SettingRow title={t('defaultResponder')} description={t('defaultResponderDesc')}><select aria-label={t('defaultResponder')} value={responder} onChange={e => changeLocal('defaultResponder',e.target.value,setResponder)}>{(agents.length ? agents : [{key:'general'}, {key:'nietzsche'}]).map(a => <option key={a.key} value={a.key}>{AGENT_NAMES[a.key]?.[lang] || (lang === 'en' ? a.name_en : a.name) || a.name || a.key}</option>)}</select></SettingRow>
             <SettingRow title={L('显示回答来源', 'Show answer sources')} description={L('展示回答下方的原典与补充资料，正文引用仍可点击。', 'Show sources below answers. Inline citations remain available.')}><Switch label={L('显示回答来源', 'Show answer sources')} value={sources} onChange={v => changeLocal('showCitations',v,setSources)} /></SettingRow>

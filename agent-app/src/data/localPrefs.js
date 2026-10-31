@@ -10,6 +10,7 @@ const DEFAULTS = {
   showCitations: true,               // 证据：显示"引用来源"chip 行
   toolTraceOpen: false,              // 工具披露：tool detail 默认折叠（§18 Progressive Disclosure）
   defaultResponder: 'general',       // 回答者：新对话默认 responder
+  modelProvider: 'deepseek',         // 当前设备的后续消息使用的模型服务
   sidebarCollapsed: false,           // 桌面侧栏收起
 };
 

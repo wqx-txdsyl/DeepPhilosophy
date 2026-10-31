@@ -55,6 +55,8 @@ def llm_chat(messages, tools=None, temperature=0.7, max_tokens=2000, thinking=Fa
     """chat 调用（支持 function calling; 思考模式仅 DeepSeek 有效）
     思考模式: reasoning_content 思维链 + 工具调用必须完整回传 reasoning_content（否则 400）
     """
+    from model_providers import current_provider, auxiliary_chat
+    if current_provider.get()=='openai':return auxiliary_chat(messages,max_tokens,tools)
     body = {"model": MODEL, "messages": messages, "max_tokens": max_tokens}
     if thinking and not _IS_ZHIPU:
         body["thinking"] = {"type": "enabled"}
@@ -96,6 +98,10 @@ def llm_chat(messages, tools=None, temperature=0.7, max_tokens=2000, thinking=Fa
 def llm_stream(messages, tools=None, temperature=0.7, max_tokens=2000, thinking=False):
     """OpenAI 兼容流式 chat（stream=true, 逐 delta 产出; DeepSeek 原生支持）。
     仅用于安全摘要等短文本通道; 失败抛异常（调用方尽力而为跳过）。"""
+    from model_providers import current_provider, auxiliary_chat
+    if current_provider.get()=='openai':
+        yield auxiliary_chat(messages,max_tokens,tools)['choices'][0]['message']['content']
+        return
     body = {"model": MODEL, "messages": messages, "max_tokens": max_tokens, "stream": True}
     if thinking and not _IS_ZHIPU:
         body["thinking"] = {"type": "enabled"}

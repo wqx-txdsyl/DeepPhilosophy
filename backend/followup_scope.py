@@ -61,15 +61,19 @@ def scope_input(question, history):
 
 async def assess(question, history):
     from routes import agent_llm as cfg
+    from model_providers import current_provider, auxiliary_json
     body={'model':cfg.MODEL,'messages':[{'role':'system','content':POLICY},
           {'role':'user','content':json.dumps(scope_input(question,history),ensure_ascii=False)}],
           'temperature':0,'max_tokens':256,'response_format':{'type':'json_object'}}
     if not cfg._IS_ZHIPU: body['thinking']={'type':'disabled'}
     try:
-        async with httpx.AsyncClient(timeout=httpx.Timeout(20,connect=5)) as client:
-            response=await client.post(cfg._chat_url(),json=body,headers={'Authorization':f'Bearer {cfg.API_KEY}'})
-            response.raise_for_status()
-            result=response.json();choice=result['choices'][0]
+        if current_provider.get()=='openai':
+            result=await auxiliary_json(body['messages']);choice=result['choices'][0]
+        else:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(20,connect=5)) as client:
+                response=await client.post(cfg._chat_url(),json=body,headers={'Authorization':f'Bearer {cfg.API_KEY}'})
+                response.raise_for_status()
+                result=response.json();choice=result['choices'][0]
         if choice.get('finish_reason')!='stop': raise ValueError('incomplete check')
         verdict=json.loads(choice['message']['content']).get('verdict')
         if verdict not in {'in_scope','out_of_scope','needs_clarification'}: raise ValueError('invalid verdict')

@@ -1,0 +1,96 @@
+[
+  {
+    "provider": "openai",
+    "requested_model": "gpt-6.1-terra",
+    "actual_models": [
+      "gpt-6.1-terra"
+    ],
+    "main_model_invoked": true,
+    "answer": "举例通过具体事例帮助理解观点，或表明某种情况确实存在。证明则通过理由表明结论由前提推出，单个例子通常不能证明普遍结论，但反例可以推翻普遍断言。",
+    "scope_check": null,
+    "tool_calls": [],
+    "errors": [],
+    "complete": true
+  },
+  {
+    "provider": "deepseek",
+    "requested_model": "deepseek-flash",
+    "actual_models": [
+      "deepseek-flash"
+    ],
+    "main_model_invoked": true,
+    "answer": "举例是给出一个实例，用来让概念变得可理解，或说明某种可能；举例只能充当反例，用来推翻全称命题。证明则是从已接受的前提出发，通过有效推理来确立结论为真，它要的不是再多一个实例，而是结论与前提之间必然的推导关系。",
+    "scope_check": null,
+    "tool_calls": [],
+    "errors": [],
+    "complete": true
+  },
+  {
+    "provider": "openai",
+    "requested_model": "gpt-6.1-terra",
+    "actual_models": [
+      "gpt-6.1-terra"
+    ],
+    "main_model_invoked": true,
+    "answer": "举例是用具体事例说明一个观点，有时也能为它提供支持，但有限的例子通常不足以证明一个普遍结论。证明则是从前提出发，通过有效推理确立结论；不过，对于“所有天鹅都是白的”这样的全称命题，一个黑天鹅就足以作为反例将其推翻。",
+    "scope_check": {
+      "status": "complete",
+      "verdict": "in_scope",
+      "model": "gpt-6.1-terra",
+      "usage": {
+        "input_tokens": 742,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 14,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 756
+      },
+      "policy_sha256": "509d9b3b41632fa1b1db44770a572b4aeab6c2caafad1513a2a5dcd55d84cc5e"
+    },
+    "tool_calls": [],
+    "errors": [],
+    "complete": true
+  },
+  {
+    "provider": "openai",
+    "requested_model": "gpt-6.1-terra",
+    "actual_models": null,
+    "main_model_invoked": false,
+    "answer": "这轮要延续的内容超出了哲学探究的范围，我不继续展开那项任务。若想讨论相关的概念、假设或判断依据，可以说明具体问题。",
+    "scope_check": {
+      "status": "complete",
+      "verdict": "out_of_scope",
+      "model": "gpt-6.1-terra",
+      "usage": {
+        "input_tokens": 660,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 15,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 675
+      },
+      "policy_sha256": "509d9b3b41632fa1b1db44770a572b4aeab6c2caafad1513a2a5dcd55d84cc5e"
+    },
+    "tool_calls": [],
+    "errors": [],
+    "complete": true
+  },
+  {
+    "provider": "openai",
+    "test": "Terra Responses tool roundtrip",
+    "actual_model": "gpt-6.1-terra",
+    "tool_names": [
+      "read_acceptance_note"
+    ],
+    "answer": "该论证以单一个案推断所有对象都具有相同性质，犯了以偏概全的错误。",
+    "complete": true
+  }
+]
