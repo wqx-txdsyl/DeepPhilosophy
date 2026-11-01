@@ -1,0 +1,40 @@
+{
+  "bid": "70906fb170a9",
+  "title": "实用主义",
+  "author": "威廉·詹姆斯",
+  "date": "2026-11-02",
+  "mode": "zcode-main-session-full-read",
+  "chapters": 10,
+  "chars": 136658,
+  "findings": {
+    "internal_qa": {
+      "pua": 0,
+      "ctrl": 0,
+      "esc": 0,
+      "pure_number_blocks": 0,
+      "dup_blocks": 0,
+      "halfwidth_cjk_punct": 0,
+      "merge_candidates": "19处为目录/译注块，保留"
+    },
+    "fixes": [
+      "结构重组：原3文件断章（0.json含全书530块+2个补遗碎片文件）按目录重组为10章（卷首+八讲+《真理的意义》附录与年表），序落款与第一讲篇首块内拆分，切点锚点校验",
+      "电子书导航残留清理14处：「[美]威廉·詹姆士《实用主义》上一页目录页下一页」删除",
+      "章首重复篇名去重8处（篇名A+导航+篇名B→单篇名）",
+      "通读质量优：无讹字问题"
+    ],
+    "intro": {
+      "action": "rewrite",
+      "before_chars": 0,
+      "after_chars": 456,
+      "paras": 4,
+      "note": "重写为4段456字纯中文；set_summary 四处同步 errs=[]"
+    }
+  },
+  "unresolved": [],
+  "verify": {
+    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
+    "verify_book": "全部通过（10章六处同步一致）",
+    "mirror": "cp 同步 MD5 一致",
+    "restructure": "3断章文件→10章，六处同步完成"
+  }
+}
