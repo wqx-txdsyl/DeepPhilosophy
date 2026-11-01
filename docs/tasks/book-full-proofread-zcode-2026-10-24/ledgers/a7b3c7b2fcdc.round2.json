@@ -1,0 +1,44 @@
+{
+  "bid": "a7b3c7b2fcdc",
+  "title": "确定性的终结",
+  "author": "伊利亚·普里戈金",
+  "date": "2026-11-02",
+  "mode": "zcode-main-session-full-read",
+  "chapters": 10,
+  "chars": 81566,
+  "findings": {
+    "internal_qa": {
+      "pua": 0,
+      "ctrl": 0,
+      "esc": 0,
+      "pure_number_blocks": 0,
+      "dup_blocks": 0,
+      "halfwidth_cjk_punct": "2处已修（含6.28量子刘维尔方程显式公式丢失处）",
+      "merge_candidates": 0
+    },
+    "fixes": [
+      "悬挂括号16处：「人名（“引文…」系原书「（英文名）：」的英文名与冒号在TXT转换中丢失，统一将悬挂「（”」归位为「：”」，不编造英文名",
+      "英文注名讹字：Boltzfmann→Boltzmann、Copemicus→Copernicus、Gillbert→Gilbert、ArnPenzias→Arno Penzias、Rdertson→Robertson、Pasguale Nanlone→Pasquale Nardone、MikhaiforichLifscitz→MikhailovichLifshitz",
+      "汉字讹字：滴→熵（无知量度）、量于机理→量子机理、薛定愕→薛定谔、秋拉克→狄拉克、问可夫斯基→闵可夫斯基、减者→或者（并修配对引号）、对称性户分岔→对称性。分岔、未死卢然而→未死。然而、麦克斯韦一→－、佩龙-菲罗贝尼乌斯→弗罗贝尼乌斯（全书体例统一）",
+      "格式：图8．1缺「图」补全、简称LPS补右括号、伊利亚.普利高津→·"
+    ],
+    "intro": {
+      "action": "rewrite",
+      "before_chars": 48,
+      "after_chars": 484,
+      "paras": 4,
+      "note": "原介绍占位（含\"湛敏译待核\"），重写为4段484字纯中文；set_summary 四处同步 errs=[]"
+    }
+  },
+  "unresolved": [
+    "TXT源公式系统性丢失：运动方程/时空间隔/谱分解等公式在块内呈「＝2x（mod1）」缺左端形态（数十处），无法恢复原公式，按不猜补铁律保留",
+    "人名括号内英文名约12处丢失（悬挂括号已归位，英文注名无法恢复）",
+    "6.8「本征值风构成H的谱」「省略下标叫」公式符号讹为汉字，无法确证原符号",
+    "1.26「用未来的“”替换过去的“”」箭头符号丢失；1.36「分子（个或阿伏伽德罗常量数量级）」缺10^23"
+  ],
+  "verify": {
+    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
+    "verify_book": "全部通过",
+    "mirror": "cp 同步 MD5 一致"
+  }
+}
