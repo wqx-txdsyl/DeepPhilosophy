@@ -1,0 +1,27 @@
+{
+ "bid": "0371570aa0f2",
+ "title": "公正",
+ "author": "迈克尔·桑德尔",
+ "date": "2026-11-01",
+ "mode": "zcode-main-session-round2",
+ "findings": {
+  "internal_qa": [
+   "字符级质检全零:PUA/控制符/字面转义/半角标点均无",
+   "正文抽读10章开头/中部/尾部全部通顺——原转换质量良好,无页码粘连/无正文截断拦截",
+   "唯一结构性缺陷:书末致谢后残留电子书目录页2块(Table of Contents封面扉页版权页…第十章后记)——已删除",
+   "29处JOIN均为英文尾注条目完结+新条目[编号]开头,属正常分块保留不并;本书尾注为英文参考文献列表,不在note-census旧式中文注释迁移待办中"
+  ],
+  "fixes": [
+   "9章:删除书末电子书目录页残留2块(Table of Contents…后记)",
+   "介绍重写83→585汉字4段纯中文;set_summary updated 3处 errs=[]",
+   "tags核对:政治哲学/伦理学/公共哲学质量良好,保留"
+  ],
+  "intro": "585汉字4段"
+ },
+ "unresolved": [],
+ "verify": {
+  "result": "全部通过",
+  "command": "verify_book.py 0371570aa0f2 --vite-check",
+  "chars": 207432
+ }
+}
