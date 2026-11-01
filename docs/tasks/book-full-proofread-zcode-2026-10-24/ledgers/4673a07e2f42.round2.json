@@ -1,0 +1,39 @@
+{
+  "bid": "4673a07e2f42",
+  "title": "培根论说文集",
+  "author": "弗朗西斯·培根",
+  "date": "2026-11-02",
+  "mode": "zcode-main-session-full-read",
+  "chapters": 3,
+  "chars": 87108,
+  "findings": {
+    "internal_qa": {
+      "pua": 0,
+      "ctrl": 0,
+      "esc": 0,
+      "pure_number_blocks": 0,
+      "dup_blocks": 0,
+      "halfwidth_cjk_punct": 0,
+      "merge_candidates": "7处为目录块，保留"
+    },
+    "fixes": [
+      "结构重组：原3断章文件（0=目录+绪论头/1、2=绪论列表碎片+论说正文）按目录重组为3章（卷首/绪论与书目献书表/论说文集五十八篇），2处块内拆分（译者落款与绪论、献书表落款与正文）",
+      "断章形态：正文五十八篇全部挤在2.json后段且篇首与献书表落款粘连于一块",
+      "通读质量优：水天同文言白话混合译笔为原书面貌，无讹字问题"
+    ],
+    "intro": {
+      "action": "rewrite",
+      "before_chars": 0,
+      "after_chars": 408,
+      "paras": 4,
+      "note": "重写为4段408字纯中文；set_summary 四处同步 errs=[]"
+    }
+  },
+  "unresolved": [],
+  "verify": {
+    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
+    "verify_book": "全部通过（3章六处同步一致）",
+    "mirror": "cp 同步 MD5 一致",
+    "restructure": "3断章文件→3章，六处同步完成"
+  }
+}
