@@ -1,0 +1,24 @@
+{
+ "bid": "b95e8339f817",
+ "title": "政治中的人性",
+ "author": "格雷厄姆·沃拉斯",
+ "date": "2026-11-01",
+ "mode": "full_read_publish",
+ "findings": {
+  "internal_qa": [
+   "qa1/qa2 初扫干净；亲手通读10文件11.6万字（卷首+第一部5章+第二部4章，两部章号重启）",
+   "完整性核读：与英文原版结构逐章对应无缺章；正文块尾抽验无截断",
+   "旧式页脚注普查：全书108条'标记+页底注文'交错（页码重启编号），含枚举①②干扰、双标记①①、块尾注链三种形态；逐条实读建立对应表，三处与英文原版核对（'三呼万岁'售货员注/1907冬注=沃拉斯自注，阿摩司书注=原书注）"
+  ],
+  "fixes": [
+   "108条旧式注按note-contract v1迁移notes数组+{{n:n}}受控token（105锚定+3无锚：Justices'Justice/查士丁尼两注锚点随第二章脱文佚失、汉德曼注原标记佚失——均按契约登记不造引用）；18个整块注文块删除；dp_note_check PASS",
+   "3处讹字：忙忙碌绿→碌、数埋生物学→数理生物学、公像在它的起源地→正像（据英文as at its birthplace）"
+  ],
+  "intro": "400汉字/3段/纯中文（原52字占位）；set_summary updated 3处 errs=[]；tags 政治学/政治心理学 核对无误"
+ },
+ "unresolved": [
+  "第二章27/28块之间脱文：亚里士多德polity定义至查士丁尼段（英文本Aristotle defined the word 'polity'…phrases of Justinian…约150字），其上两枚译者注已按无锚注迁移",
+  "3条无锚注文待对纸本补锚（注18/19/20）"
+ ],
+ "verify": "verify_book.py --vite-check 全绿；dp_note_check PASS(注108条/引用105处)；镜像已同步"
+}
