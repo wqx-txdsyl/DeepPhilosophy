@@ -1,0 +1,42 @@
+{
+  "bid": "97050f2d795a",
+  "title": "自然法典",
+  "author": "摩莱里",
+  "date": "2026-11-02",
+  "mode": "zcode-main-session-full-read",
+  "chapters": 8,
+  "chars": 108113,
+  "findings": {
+    "internal_qa": {
+      "pua": 0,
+      "ctrl": 0,
+      "esc": 0,
+      "pure_number_blocks": 0,
+      "dup_blocks": 0,
+      "halfwidth_cjk_punct": "1处已修（0#285国王，额前）",
+      "merge_candidates": "19处均为「——译注/法文本注」脚注完结块，保留"
+    },
+    "fixes": [
+      "结构重组：原单文件685块按目录重组为8章（出版说明/序言/四篇/附录一二），3处块内拆分（目录行与出版说明、落款与序言、落款与附录二），切点锚点校验",
+      "OCR讹字3处：摩菜里→摩莱里(2)、半角逗号(1)",
+      "序言确为原书短题词式序言（拉丁语引语+宣言），非缺文"
+    ],
+    "intro": {
+      "action": "rewrite",
+      "before_chars": 0,
+      "after_chars": 459,
+      "paras": 4,
+      "note": "重写为4段459字纯中文；set_summary 四处同步 errs=[]"
+    }
+  },
+  "unresolved": [
+    "6.104俄文转写人名（Жан Франсуа де 拉加尔普）体例保留",
+    "2.21拉丁语 minima demalis（疑为 minimae delicti 讹转）无法确证原形，保留"
+  ],
+  "verify": {
+    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
+    "verify_book": "全部通过（8章六处同步一致）",
+    "mirror": "cp 同步 MD5 一致",
+    "restructure": "单文件685块→8章，六处同步完成"
+  }
+}
