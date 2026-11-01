@@ -1,0 +1,42 @@
+{
+  "bid": "88adb98a8596",
+  "title": "政府片论",
+  "author": "杰里米·边沁",
+  "date": "2026-11-02",
+  "mode": "zcode-main-session-full-read",
+  "chapters": 9,
+  "chars": 107673,
+  "findings": {
+    "internal_qa": {
+      "pua": "1处（U+E587，落款前装饰符非句内缺字）已删",
+      "ctrl": 0,
+      "esc": 0,
+      "pure_number_blocks": 0,
+      "dup_blocks": 0,
+      "halfwidth_cjk_punct": 0,
+      "merge_candidates": "1处为卷首目录与编者前言粘连，重组后消除"
+    },
+    "fixes": [
+      "结构重组：原单文件451块（全书一章）按目录重组为9章（编者前言/编者导言/序言/导言/正文五章），编者导言篇首从落款粘连块内拆分，全部切点锚点校验",
+      "PUA字符U+E587删除（位于E.C.蒙塔古落款前的装饰符号位，非句内缺字）",
+      "通读质量优：全文讹字扫描全零（孤立标记/悬挂括号/半角标点/双句号均0），民国后译本高质量源",
+      "6.24培根拉丁文portusetsabbatum缺空格为源体例保留"
+    ],
+    "intro": {
+      "action": "rewrite",
+      "before_chars": 0,
+      "after_chars": 441,
+      "paras": 4,
+      "note": "重写为4段441字纯中文；set_summary 四处同步 errs=[]"
+    }
+  },
+  "unresolved": [
+    "6.24培根拉丁短语portum et sabbatum原文缺空格粘连，保留"
+  ],
+  "verify": {
+    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
+    "verify_book": "全部通过（9章六处同步一致）",
+    "mirror": "cp 同步 MD5 一致",
+    "restructure": "单文件451块→9章，六处同步完成"
+  }
+}
