@@ -1,0 +1,41 @@
+{
+  "bid": "980fad90c5e2",
+  "title": "人论",
+  "author": "恩斯特·卡西尔",
+  "date": "2026-11-02",
+  "mode": "zcode-main-session-full-read",
+  "chapters": 13,
+  "chars": 122704,
+  "findings": {
+    "internal_qa": {
+      "pua": 0,
+      "ctrl": 0,
+      "esc": 0,
+      "pure_number_blocks": 0,
+      "dup_blocks": 0,
+      "halfwidth_cjk_punct": 0,
+      "merge_candidates": 0
+    },
+    "fixes": [
+      "OCR讹字4处：弗芬茨瓦夫→弗罗茨瓦夫（Wrocław通行译名）、基本倾向一一→——（破折号讹为两个一）、慰借→慰藉、海伦·凯勒water拼写段讹乱修复（'W－－－－水→'W-A-T-E-R'——水，依海伦·凯勒自传常识+上下文双重确证）",
+      "章节结构完好：卷首+12章完整编号，无需重组",
+      "少量单引号（'可能的'等）与全角破折号连用为原书排版体例，保留"
+    ],
+    "intro": {
+      "action": "rewrite",
+      "before_chars": 51,
+      "after_chars": 537,
+      "paras": 4,
+      "note": "原介绍占位（51字），重写为4段537字纯中文，覆盖成书背景/符号动物纲领/下篇文化诸形态/自我解放结论；set_summary 四处同步 errs=[]"
+    }
+  },
+  "unresolved": [
+    "7.37希腊语sympatheia与8.5希腊语archaioi physiologoi字母讹乱（重音符号错乱），无法恢复原希腊文形态，保留",
+    "9.6、11.17等个别块尾全角空格悬挂，原书排版流"
+  ],
+  "verify": {
+    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
+    "verify_book": "全部通过",
+    "mirror": "cp 同步 MD5 一致"
+  }
+}
