@@ -1894,6 +1894,62 @@
    "tags": "保留",
    "han": 329,
    "paras": 3
+  },
+  "e247ad9e9eec": {
+   "title": "歧义（朗西埃）",
+   "fix": "修复截断尾，拆3段，376汉字",
+   "tags": "保留",
+   "han": 376,
+   "paras": 3
+  },
+  "be928be3b1c9": {
+   "title": "世界哲学简史",
+   "fix": "修复截断尾，拆3段，326汉字",
+   "tags": "保留",
+   "han": 326,
+   "paras": 3
+  },
+  "b3f63b5cbc2a": {
+   "title": "像哲学家一样思考",
+   "fix": "作者表述改主编，修复截断尾，拆3段，374汉字",
+   "tags": "保留",
+   "han": 374,
+   "paras": 3
+  },
+  "5c77634136c1": {
+   "title": "加缪全集小说卷",
+   "fix": "乱码弗LS→福克纳，去括注，719汉字3段",
+   "tags": "保留",
+   "han": 719,
+   "paras": 3
+  },
+  "6226193b9dbb": {
+   "title": "活出生命的意义",
+   "fix": "修复截断尾，拆3段，362汉字",
+   "tags": "保留",
+   "han": 362,
+   "paras": 3
+  },
+  "799db3e2c1b4": {
+   "title": "给青年人的哲学十二讲",
+   "fix": "修复截断尾，拆3段，416汉字",
+   "tags": "保留",
+   "han": 416,
+   "paras": 3
+  },
+  "0a9a96184411": {
+   "title": "他者的消失",
+   "fix": "修复截断尾，拆3段，346汉字",
+   "tags": "保留",
+   "han": 346,
+   "paras": 3
+  },
+  "ba0977da0443": {
+   "title": "禅与摩托车维修艺术",
+   "fix": "去M.缩写与Quality拉丁注，拆3段，294汉字",
+   "tags": "保留",
+   "han": 294,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
