@@ -2407,5 +2407,6 @@
    "paras": 5
   }
  },
- "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
+ "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]",
+ "incident": "2026-11-03 终扫发现：多轮批次因 spec 脚本中断言失败且 && 链跳过应用循环，账本曾误记完成。涉及23本（efdfdda23776/8b12ed2d593d/e58770681143/e63a26081cb9/b2fbc225f414/b8210487d306/ad4153e66d7e/68a86ad557a6/219b862077e1/80837f8e2028/e6bdf6706fda/5135fe68ee4a/62c5caa0bfde/5c0cdd5392b9/55591ecdf7e9/d6891956b037/d055b88e31ac/06906af574a4/7207d40c69a3/fb7f791bc04a/361be7bd03a4/2005aed11e34/0cf2168db645）已全部补应用；另同步2本历史遗留四路不一致（4a4a200536bd/c79128f8f04b，以detail为准）。补做后523本终扫全部通过（≥280汉字/3-8段/纯中文/四路一致）。教训：账本不得以spec输出为准，必须以apply结果为准。"
 }
