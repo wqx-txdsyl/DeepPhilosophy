@@ -1726,6 +1726,62 @@
    "tags": "保留",
    "han": 391,
    "paras": 3
+  },
+  "efdfdda23776": {
+   "title": "民主主义与教育",
+   "fix": "修复截断尾，拆3段，397汉字",
+   "tags": "保留",
+   "han": 397,
+   "paras": 3
+  },
+  "8b12ed2d593d": {
+   "title": "鼠疫",
+   "fix": "修复截断尾，拆3段，385汉字",
+   "tags": "保留",
+   "han": 385,
+   "paras": 3
+  },
+  "e58770681143": {
+   "title": "乌合之众",
+   "fix": "拆3段补读法句，294汉字",
+   "tags": "保留",
+   "han": 294,
+   "paras": 3
+  },
+  "e63a26081cb9": {
+   "title": "心理学和炼金术",
+   "fix": "修复截断尾，拆3段，324汉字",
+   "tags": "保留",
+   "han": 324,
+   "paras": 3
+  },
+  "b2fbc225f414": {
+   "title": "你的第一本哲学书",
+   "fix": "拆3段，280汉字",
+   "tags": "保留",
+   "han": 280,
+   "paras": 3
+  },
+  "b8210487d306": {
+   "title": "清醒思考的艺术",
+   "fix": "修复截断尾，拆3段，339汉字",
+   "tags": "保留",
+   "han": 339,
+   "paras": 3
+  },
+  "ad4153e66d7e": {
+   "title": "逻辑大全",
+   "fix": "拆3段，332汉字",
+   "tags": "保留",
+   "han": 332,
+   "paras": 3
+  },
+  "c3b3ed6ca815": {
+   "title": "S/Z",
+   "fix": "去英文书名引用改称本书，拆3段，429汉字",
+   "tags": "保留",
+   "han": 429,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
