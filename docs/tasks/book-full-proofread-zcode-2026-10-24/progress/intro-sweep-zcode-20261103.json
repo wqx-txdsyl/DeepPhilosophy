@@ -1446,6 +1446,62 @@
    "tags": "保留",
    "han": 289,
    "paras": 3
+  },
+  "4be7b72cf01d": {
+   "title": "图斯库兰论辩集",
+   "fix": "修复截断尾，拆3段，380汉字",
+   "tags": "保留",
+   "han": 380,
+   "paras": 3
+  },
+  "a10a36861e51": {
+   "title": "德里达中国讲演录",
+   "fix": "修复截断尾，拆3段，384汉字；tags对话/语录→讲演录等四词",
+   "tags": "纠错更新",
+   "han": 384,
+   "paras": 3
+  },
+  "472af5b267ba": {
+   "title": "文明及其不满",
+   "fix": "修复截断尾，拆3段，386汉字",
+   "tags": "保留",
+   "han": 386,
+   "paras": 3
+  },
+  "0993fa3f8cda": {
+   "title": "论至善和至恶",
+   "fix": "修复截断尾，拆3段，333汉字",
+   "tags": "保留",
+   "han": 333,
+   "paras": 3
+  },
+  "1282e86cd93b": {
+   "title": "论选择的艺术",
+   "fix": "去拉丁注（prohairesis等），763汉字4段",
+   "tags": "保留",
+   "han": 763,
+   "paras": 4
+  },
+  "4e1a78c6f009": {
+   "title": "企鹅哲学史",
+   "fix": "去A.C.缩写，修多余空格，608汉字4段",
+   "tags": "保留",
+   "han": 608,
+   "paras": 4
+  },
+  "a44cb4c8f8d9": {
+   "title": "论神性",
+   "fix": "修复截断尾，拆3段，328汉字",
+   "tags": "保留",
+   "han": 328,
+   "paras": 3
+  },
+  "26f5e0df6d76": {
+   "title": "哲学规劝录·哲学的慰藉",
+   "fix": "修复截断尾，拆3段，347汉字",
+   "tags": "保留",
+   "han": 347,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
