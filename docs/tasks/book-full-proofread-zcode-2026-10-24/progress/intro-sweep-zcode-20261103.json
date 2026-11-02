@@ -2174,6 +2174,62 @@
    "tags": "保留",
    "han": 740,
    "paras": 6
+  },
+  "5c0cdd5392b9": {
+   "title": "恋人絮语",
+   "fix": "修复截断尾，拆3段，321汉字",
+   "tags": "保留",
+   "han": 321,
+   "paras": 3
+  },
+  "55591ecdf7e9": {
+   "title": "我不想保持正确",
+   "fix": "去法文原题注，552汉字4段",
+   "tags": "保留（对话/访谈属本身体裁）",
+   "han": 552,
+   "paras": 4
+  },
+  "d6891956b037": {
+   "title": "比希莫特",
+   "fix": "修复截断尾，拆3段，349汉字",
+   "tags": "保留",
+   "han": 349,
+   "paras": 3
+  },
+  "de8732de1469": {
+   "title": "一堂终身哲学课",
+   "fix": "去J.缩写，修复截断尾，拆3段，321汉字",
+   "tags": "保留",
+   "han": 321,
+   "paras": 3
+  },
+  "921c1dcbdd17": {
+   "title": "幸福之路",
+   "fix": "修复截断尾，拆3段，399汉字",
+   "tags": "保留",
+   "han": 399,
+   "paras": 3
+  },
+  "a26240ee8f45": {
+   "title": "南怀瑾经典合集24册",
+   "fix": "拆3段补读法，291汉字（ han此前247不足，已足）",
+   "tags": "保留",
+   "han": 291,
+   "paras": 3
+  },
+  "efdd4e6d0c78": {
+   "title": "论幸福生活",
+   "fix": "去Loeb丛书注，573汉字4段",
+   "tags": "保留",
+   "han": 573,
+   "paras": 4
+  },
+  "535fc9c70153": {
+   "title": "马基雅维利（传记）",
+   "fix": "旧介绍称选集与章节传记体不符，改写为生平思想导引，拆3段，302汉字",
+   "tags": "保留",
+   "han": 302,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
