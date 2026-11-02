@@ -2230,6 +2230,62 @@
    "tags": "保留",
    "han": 302,
    "paras": 3
+  },
+  "4a7829907f07": {
+   "title": "德里达（牛津通识读本）",
+   "fix": "修复截断尾，拆3段，372汉字",
+   "tags": "保留",
+   "han": 372,
+   "paras": 3
+  },
+  "ec54e4a1b62a": {
+   "title": "符号帝国",
+   "fix": "修复截断尾，拆3段，355汉字",
+   "tags": "保留",
+   "han": 355,
+   "paras": 3
+  },
+  "102319ab18e7": {
+   "title": "论正义（斯宾塞）",
+   "fix": "修复截断尾，拆3段，295汉字",
+   "tags": "保留",
+   "han": 295,
+   "paras": 3
+  },
+  "2f87c2e469fd": {
+   "title": "伏尔泰传",
+   "fix": "修复截断尾，拆3段，386汉字",
+   "tags": "保留",
+   "han": 386,
+   "paras": 3
+  },
+  "ccc3b809947c": {
+   "title": "独白（安瑟伦）",
+   "fix": "去拉丁书名注，762汉字6段",
+   "tags": "保留",
+   "han": 762,
+   "paras": 6
+  },
+  "488a795c0d37": {
+   "title": "天真汉",
+   "fix": "拆3段，286汉字",
+   "tags": "保留",
+   "han": 286,
+   "paras": 3
+  },
+  "bf1ff4a2bb68": {
+   "title": "查第格",
+   "fix": "拆3段，289汉字",
+   "tags": "保留",
+   "han": 289,
+   "paras": 3
+  },
+  "5096433dcaa7": {
+   "title": "盐铁论",
+   "fix": "去英文注，377汉字4段",
+   "tags": "保留",
+   "han": 377,
+   "paras": 4
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
