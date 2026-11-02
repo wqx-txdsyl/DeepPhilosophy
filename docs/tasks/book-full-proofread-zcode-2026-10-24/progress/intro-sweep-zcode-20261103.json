@@ -1111,5 +1111,6 @@
    "han": 282,
    "paras": 3
   }
- }
+ },
+ "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
 }
