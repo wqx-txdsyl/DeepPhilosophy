@@ -1222,6 +1222,62 @@
    "tags": "保留",
    "han": 417,
    "paras": 3
+  },
+  "56bb065c1796": {
+   "title": "信仰寻求理解",
+   "fix": "修复截断尾，拆3段，349汉字",
+   "tags": "保留",
+   "han": 349,
+   "paras": 3
+  },
+  "5b827532ec8b": {
+   "title": "知觉现象学",
+   "fix": "去situation拉丁注，拆3段补轨迹句，294汉字",
+   "tags": "保留",
+   "han": 294,
+   "paras": 3
+  },
+  "167cb7f3a631": {
+   "title": "中国哲学十九讲",
+   "fix": "拆3段补现场感句，295汉字",
+   "tags": "保留",
+   "han": 295,
+   "paras": 3
+  },
+  "add6c213fde8": {
+   "title": "克尔恺廓尔（评传）",
+   "fix": "拆3段补三阶段讲解，316汉字",
+   "tags": "保留",
+   "han": 316,
+   "paras": 3
+  },
+  "5dcede8a79a6": {
+   "title": "原型与集体无意识",
+   "fix": "去Selbst拉丁注，拆3段补读法，281汉字",
+   "tags": "保留",
+   "han": 281,
+   "paras": 3
+  },
+  "679b795a17f8": {
+   "title": "发达资本主义时代的抒情诗人",
+   "fix": "去flâneur拉丁注，586汉字5段",
+   "tags": "保留",
+   "han": 586,
+   "paras": 5
+  },
+  "ad8775173020": {
+   "title": "哲学和自然之镜",
+   "fix": "去Bildung拉丁注，拆3段补读法，295汉字",
+   "tags": "保留",
+   "han": 295,
+   "paras": 3
+  },
+  "f8d52df0f555": {
+   "title": "西方哲学史（下卷）罗素",
+   "fix": "内容错误修正：旧介绍错挂梯利书，按罗素下卷实际结构重写，343汉字4段",
+   "tags": "保留",
+   "han": 343,
+   "paras": 4
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
