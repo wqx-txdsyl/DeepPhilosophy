@@ -1670,6 +1670,62 @@
    "tags": "保留",
    "han": 322,
    "paras": 3
+  },
+  "7ad813b418ec": {
+   "title": "理性、真理与历史",
+   "fix": "修复截断尾，拆3段，383汉字",
+   "tags": "保留",
+   "han": 383,
+   "paras": 3
+  },
+  "17fda3378628": {
+   "title": "美学理论",
+   "fix": "拆3段，418汉字",
+   "tags": "保留",
+   "han": 418,
+   "paras": 3
+  },
+  "10c315f073ef": {
+   "title": "快乐主义",
+   "fix": "修复截断尾，拆3段，384汉字",
+   "tags": "保留",
+   "han": 384,
+   "paras": 3
+  },
+  "92c62220d4a3": {
+   "title": "哲学·科学·常识",
+   "fix": "拆3段，291汉字",
+   "tags": "保留",
+   "han": 291,
+   "paras": 3
+  },
+  "834af0ef96c1": {
+   "title": "宣讲（安瑟尔谟）",
+   "fix": "去拉丁注（书名/作者名/短语），614汉字4段",
+   "tags": "保留",
+   "han": 614,
+   "paras": 4
+  },
+  "eabb3ba3c423": {
+   "title": "文心雕龙",
+   "fix": "修复截断尾，拆3段，291汉字",
+   "tags": "保留",
+   "han": 291,
+   "paras": 3
+  },
+  "9dd09c22b4c0": {
+   "title": "神话学（选译本）",
+   "fix": "选译说明改规范表述，重排3段，300汉字",
+   "tags": "保留",
+   "han": 300,
+   "paras": 3
+  },
+  "d5e5b24b0e7e": {
+   "title": "偶然、反讽与团结",
+   "fix": "修复截断尾，拆3段，391汉字",
+   "tags": "保留",
+   "han": 391,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
