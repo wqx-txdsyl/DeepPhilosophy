@@ -2286,6 +2286,62 @@
    "tags": "保留",
    "han": 377,
    "paras": 4
+  },
+  "d055b88e31ac": {
+   "title": "心经",
+   "fix": "去CBETA字样，561汉字4段",
+   "tags": "保留",
+   "han": 561,
+   "paras": 4
+  },
+  "8847c5195db3": {
+   "title": "法华经",
+   "fix": "去T262编号字样两处，583汉字5段",
+   "tags": "保留",
+   "han": 583,
+   "paras": 5
+  },
+  "3b5ea37db89d": {
+   "title": "东西文化及其哲学",
+   "fix": "去will拉丁注、modern改现代，642汉字4段",
+   "tags": "保留",
+   "han": 642,
+   "paras": 4
+  },
+  "80ba7caa35ea": {
+   "title": "奥义书",
+   "fix": "去拉丁原名注，630汉字5段",
+   "tags": "保留",
+   "han": 630,
+   "paras": 5
+  },
+  "c25873c95159": {
+   "title": "因明入正理论",
+   "fix": "去CBETA/hetuvidyā字样，544汉字4段",
+   "tags": "保留",
+   "han": 544,
+   "paras": 4
+  },
+  "9c26555bfc23": {
+   "title": "斐多篇",
+   "fix": "去Stefanus与页码字母注，676汉字5段",
+   "tags": "保留",
+   "han": 676,
+   "paras": 5
+  },
+  "6471c39c1716": {
+   "title": "申辩篇",
+   "fix": "去页码字母注，573汉字4段",
+   "tags": "保留",
+   "han": 573,
+   "paras": 4
+  },
+  "48eaeeb3cd3f": {
+   "title": "高尔吉亚篇",
+   "fix": "Stefanus→斯蒂芬努斯，767汉字6段",
+   "tags": "保留",
+   "han": 767,
+   "paras": 6
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
