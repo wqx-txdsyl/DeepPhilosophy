@@ -1950,6 +1950,62 @@
    "tags": "保留",
    "han": 294,
    "paras": 3
+  },
+  "0f00c3a90243": {
+   "title": "织梦人",
+   "fix": "拆3段补起点句，299汉字",
+   "tags": "保留",
+   "han": 299,
+   "paras": 3
+  },
+  "68a86ad557a6": {
+   "title": "论义务（西塞罗）",
+   "fix": "修复截断尾，拆3段，343汉字；tags古希腊哲学→古罗马哲学",
+   "tags": "纠错更新",
+   "han": 343,
+   "paras": 3
+  },
+  "219b862077e1": {
+   "title": "道家与道教思想简史",
+   "fix": "纠作者表述，修复截断尾，拆3段，403汉字",
+   "tags": "保留",
+   "han": 403,
+   "paras": 3
+  },
+  "80837f8e2028": {
+   "title": "人口论",
+   "fix": "修复截断尾，拆3段，324汉字（此书reviewed_with_unresolved，文本残账另计）",
+   "tags": "保留",
+   "han": 324,
+   "paras": 3
+  },
+  "e6bdf6706fda": {
+   "title": "英国工人阶级状况",
+   "fix": "拆3段补方法句，287汉字",
+   "tags": "保留",
+   "han": 287,
+   "paras": 3
+  },
+  "5135fe68ee4a": {
+   "title": "瓦尔登湖",
+   "fix": "修复截断尾，拆3段，388汉字",
+   "tags": "保留",
+   "han": 388,
+   "paras": 3
+  },
+  "62c5caa0bfde": {
+   "title": "《反杜林论》导读",
+   "fix": "修复截断尾，拆3段，379汉字",
+   "tags": "保留",
+   "han": 379,
+   "paras": 3
+  },
+  "676528b8f9b3": {
+   "title": "实用主义与社会学",
+   "fix": "去拉丁注（实用主义/集体表现），597汉字5段",
+   "tags": "保留",
+   "han": 597,
+   "paras": 5
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
