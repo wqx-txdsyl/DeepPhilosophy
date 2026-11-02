@@ -1838,6 +1838,62 @@
    "tags": "保留",
    "han": 351,
    "paras": 3
+  },
+  "1c67b29ec906": {
+   "title": "皮浪学说概要",
+   "fix": "去拉丁术语注，327汉字4段",
+   "tags": "保留",
+   "han": 327,
+   "paras": 4
+  },
+  "d8bcc10d42ff": {
+   "title": "充足理由律的四重根",
+   "fix": "修复截断尾，拆3段，360汉字",
+   "tags": "保留",
+   "han": 360,
+   "paras": 3
+  },
+  "2321fab7e032": {
+   "title": "西塞罗（生平与思想导引）",
+   "fix": "旧介绍称选集与章节生平体不符，改写为生平思想导引，拆3段，322汉字",
+   "tags": "保留",
+   "han": 322,
+   "paras": 3
+  },
+  "e95e083c59b5": {
+   "title": "刘擎西方现代思想讲义",
+   "fix": "修复截断尾，拆3段，393汉字",
+   "tags": "保留",
+   "han": 393,
+   "paras": 3
+  },
+  "2cbf90eb6f69": {
+   "title": "大问题",
+   "fix": "去Continental改欧陆哲学，625汉字4段",
+   "tags": "保留",
+   "han": 625,
+   "paras": 4
+  },
+  "cf93d305f407": {
+   "title": "手册（爱比克泰德）",
+   "fix": "去拉丁书名注，626汉字5段",
+   "tags": "保留",
+   "han": 626,
+   "paras": 5
+  },
+  "46736478a11d": {
+   "title": "苏菲的世界",
+   "fix": "修复截断尾，拆3段，353汉字",
+   "tags": "保留",
+   "han": 353,
+   "paras": 3
+  },
+  "b220d9690317": {
+   "title": "打开：周濂100堂哲学课",
+   "fix": "修复截断尾，拆3段，329汉字",
+   "tags": "保留",
+   "han": 329,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
