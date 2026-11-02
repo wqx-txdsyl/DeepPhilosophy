@@ -1334,6 +1334,62 @@
    "tags": "保留",
    "han": 304,
    "paras": 3
+  },
+  "f0bf62d7aa30": {
+   "title": "西利斯",
+   "fix": "去可疑词源注，修复截断尾，拆3段，424汉字",
+   "tags": "保留",
+   "han": 424,
+   "paras": 3
+  },
+  "1325746d6f46": {
+   "title": "卡拉马佐夫兄弟",
+   "fix": "拆3段补四气质句，293汉字",
+   "tags": "保留",
+   "han": 293,
+   "paras": 3
+  },
+  "dcead00ff195": {
+   "title": "惩罚的社会",
+   "fix": "修复截断尾，拆3段，376汉字",
+   "tags": "保留",
+   "han": 376,
+   "paras": 3
+  },
+  "37e1e8e2842b": {
+   "title": "从经验立场出发的心理学",
+   "fix": "修复截断尾，拆3段，420汉字",
+   "tags": "保留",
+   "han": 420,
+   "paras": 3
+  },
+  "b3219ec260ed": {
+   "title": "读《资本论》",
+   "fix": "修复截断尾，拆3段，465汉字",
+   "tags": "保留",
+   "han": 465,
+   "paras": 3
+  },
+  "dd03ec6572e7": {
+   "title": "孟子",
+   "fix": "拆3段补成语源流，283汉字",
+   "tags": "保留",
+   "han": 283,
+   "paras": 3
+  },
+  "d3a73d8b6f28": {
+   "title": "正义之心",
+   "fix": "修复截断尾，拆3段，330汉字",
+   "tags": "保留",
+   "han": 330,
+   "paras": 3
+  },
+  "920596aed622": {
+   "title": "如何以言行事",
+   "fix": "去J.L.缩写改全译名，修复截断尾，拆3段，286汉字",
+   "tags": "保留",
+   "han": 286,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
