@@ -2006,6 +2006,62 @@
    "tags": "保留",
    "han": 597,
    "paras": 5
+  },
+  "fa7ea6998d5b": {
+   "title": "时代的精神状况",
+   "fix": "修复截断尾，拆3段，420汉字",
+   "tags": "保留",
+   "han": 420,
+   "paras": 3
+  },
+  "91bddbb32dce": {
+   "title": "小说理论",
+   "fix": "去德文原题，633汉字5段",
+   "tags": "保留",
+   "han": 633,
+   "paras": 5
+  },
+  "c309f9dd4214": {
+   "title": "神圣家族",
+   "fix": "修复截断尾，拆3段，360汉字",
+   "tags": "保留",
+   "han": 360,
+   "paras": 3
+  },
+  "6790c4ab6254": {
+   "title": "行走，一堂哲学课",
+   "fix": "拆3段补功课句，280汉字",
+   "tags": "保留",
+   "han": 280,
+   "paras": 3
+  },
+  "4b4d8792d7c9": {
+   "title": "苏菲的哲学课",
+   "fix": "修复截断尾，拆3段，344汉字",
+   "tags": "保留",
+   "han": 344,
+   "paras": 3
+  },
+  "5bc364150c23": {
+   "title": "加缪全集戏剧卷",
+   "fix": "拆3段补现场句，293汉字",
+   "tags": "保留",
+   "han": 293,
+   "paras": 3
+  },
+  "a43cd7310a57": {
+   "title": "沉思录",
+   "fix": "去拉丁注，修复截断尾，拆3段，432汉字",
+   "tags": "保留",
+   "han": 432,
+   "paras": 3
+  },
+  "e248f347a940": {
+   "title": "存在主义咖啡馆",
+   "fix": "拆3段补伴读句，295汉字",
+   "tags": "保留",
+   "han": 295,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
