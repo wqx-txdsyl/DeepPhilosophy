@@ -1,0 +1,30 @@
+{
+ "bid": "d15dcb8e431f",
+ "title": "论自然[已佚失]",
+ "author": "阿那克西曼德",
+ "date": "2026-11-03",
+ "mode": "zcode-main-session-round2",
+ "findings": {
+  "internal_qa": [
+   "来源：队列冻结(2026-10-24)时在codexZeroChapterQueue(chapterCount=0)，冻结后被补为1章html残篇，成为全库524可读本中唯一不在zcodeTextQueue的漏网本；本轮收口全库对账时发现并亲读",
+   "1章1块110汉字(正文58+注文52)：PUA/控制符/字面转义/半角标点/断句合并均0",
+   "正文为DK 12B1残篇中译(万物由之所生的东西…相互补偿。)，注明录自斯通普夫、菲泽《西方哲学史》第9版；译文语义与通行理解一致、无讹字，不改译文",
+   "唯一结构性问题：注释为旧式HTML内嵌(blockquote+<sup><a>[1]+<h3>注释</h3>+<p id=note>)，不符note-contract v1"
+  ],
+  "fixes": [
+   "0.json：注释迁移note-contract v1——html块转text块(value不以<开头，避免reader按HTML路径渲染)，引用点逐条实读定位于引文句尾置{{n:1}}，注文入顶层notes[{n:1,kind:editor}]；旧式<h3>注释</h3>标题与注文<p>块一并删除无残留",
+   "内容保全：原HTML去标签文本 == 正文(去token)+注文，差量为空；dp_note_check PASS(注1条/引用1处)",
+   "介绍：原381汉字3段结构准确，仅含外文编号'DK 12B1'违反纯中文规则→改'第尔斯—克兰茨辑本阿那克西曼德残篇第一号'；400汉字3段纯中文，set_summary updated 3处(backend detail本不存在于此html导入新书) errs=[]",
+   "tags核对：古希腊哲学/自然哲学/宇宙论/米利都学派/前苏格拉底哲学齐全，保留",
+   "本地镜像目录缺失→mkdir+cp新建2文件，MD5一致"
+  ],
+  "intro": "400汉字3段"
+ },
+ "unresolved": [],
+ "verify": {
+  "result": "全部通过",
+  "command": "verify_book.py d15dcb8e431f --vite-check",
+  "chars": 110,
+  "note_check": "PASS"
+ }
+}
