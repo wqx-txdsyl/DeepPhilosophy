@@ -1614,6 +1614,62 @@
    "tags": "保留",
    "han": 597,
    "paras": 5
+  },
+  "1ab98deb16e9": {
+   "title": "社会是如何可能的",
+   "fix": "修复截断尾，拆3段，378汉字",
+   "tags": "保留",
+   "han": 378,
+   "paras": 3
+  },
+  "a494d6365a42": {
+   "title": "西塞罗全集修辞学卷",
+   "fix": "修复截断尾，拆3段，388汉字；tags古希腊哲学→古罗马哲学",
+   "tags": "纠错更新",
+   "han": 388,
+   "paras": 3
+  },
+  "d0c5ade4fcbd": {
+   "title": "叔本华哲学经典5册",
+   "fix": "修复截断尾，拆3段，343汉字",
+   "tags": "保留",
+   "han": 343,
+   "paras": 3
+  },
+  "795658cafeab": {
+   "title": "荀子",
+   "fix": "拆3段补诸篇句，285汉字",
+   "tags": "保留",
+   "han": 285,
+   "paras": 3
+  },
+  "d15efa67763e": {
+   "title": "图腾与禁忌",
+   "fix": "修复截断尾，拆3段，357汉字；清禁词证据→论据",
+   "tags": "保留",
+   "han": 357,
+   "paras": 3
+  },
+  "1aee525fffe2": {
+   "title": "加缪全集散文卷Ⅰ",
+   "fix": "修复截断尾，拆3段，340汉字",
+   "tags": "保留",
+   "han": 340,
+   "paras": 3
+  },
+  "1c1ec6913a67": {
+   "title": "加缪全集散文卷Ⅱ",
+   "fix": "拆3段补对观句，304汉字",
+   "tags": "保留",
+   "han": 304,
+   "paras": 3
+  },
+  "2110a49aec94": {
+   "title": "心的概念",
+   "fix": "修复截断尾，拆3段，322汉字",
+   "tags": "保留",
+   "han": 322,
+   "paras": 3
   }
  },
  "workflow": "每批8本：①python3 -c 打印剩余队列前8本的 title/han/paras/en/tags/summary前330字/章节前4条 ②写 _tmp/batch_NNN.py（Write工具，勿用heredoc传中文）生成 intro_specs_{bid}.json ③循环 python3 backend/tools/_tmp/intro_apply.py {bid} _tmp/intro_specs_{bid}.json（校验+四路写入+自动介绍台账，FIX的补字重试） ④更新本账本 books{} ⑤精确pathspec提交推送（push origin codex/book-quality-zcode-20261024:master）。标准：≥280汉字/3-8段/无[A-Za-z]/无禁词/errs=[]"
