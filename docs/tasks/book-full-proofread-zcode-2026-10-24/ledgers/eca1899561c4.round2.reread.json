@@ -1,0 +1,35 @@
+{
+ "bid": "eca1899561c4",
+ "title": "纯粹理性批判（注释本·李秋零译）",
+ "author": "伊曼努尔·康德",
+ "date": "2026-11-04",
+ "mode": "zcode-proofread-round2-reread（round-2主会话亲手通读，队列index 9）",
+ "chapters": 60,
+ "charsTotal": 434854,
+ "findings": {
+  "internal_qa": {
+   "pua": 0,
+   "ctrl": 0,
+   "esc": 0,
+   "pagenum": 0,
+   "dup": 0,
+   "hw_initial": 548,
+   "mergeCandidates_initial": 39
+  },
+  "fixes": {
+   "artifactRemoved": "30.json b12 前轮脚本残留内部作业文字'37块统一改回全角标点（，：；？（）），与全书体例一致'+尾逗号27+1字符删除（断言上下文后清除）",
+   "hwPunct": "30.json全章545逗号/27分号/23冒号/1问号/111括号/4半角方括号→全角，30处CJK邻接半角空格删除，12处'———'归一'——'，' [分子]'空格归一；20.json b78两处半角逗号",
+   "dupRemoved": "30.json b43 '但是,但是，'→'但是，'（重复转折词，康德原文无重复）",
+   "cascadeMerges": 19,
+   "mergeList": "3.json b14/15、6.json b25/26、12.json b7/8、13.json b12/13+b43/44+b65/66+b96/97、14.json b9/10(qa漏报：B块以句号开头)、16.json b8/9、20.json b52/53+b91/92+b119/120、21.json b4/5(译者注内第一版引文跨页)、23.json b17/18+b53/54、35.json b8/9、37.json b15/16+b47/48、47.json b17/18；均del bs[i+1]级联",
+   "headingKeeps": "qa2剩余21候选逐项实读核验为小节标题/类比原理标题/'证明'标签/谬误推理标题/节标题，全部保留不并（4.json×2、13.json×4、14.json、20.json×3、27.json×4、37.json×6、43.json）",
+   "dateRestored": "58.json译后记'二三年十一月七日'→'二〇〇三年十一月七日'、59.json修订补记'二一年十一月二十四日'→'二〇一一年十一月二十四日'（康德逝世200周年=2004纪念语境+'已6年有余'上下文互证，唯一可通读解析）"
+  },
+  "contentAudit": "总字数434909→434854，差-55全部对应已枚举操作：污染串27+尾逗1+重复但是3+[分子]空格1+三连破折号12+半角空格15（计数器双计30）-补〇4，零意外丢字",
+  "intro": "原630字介绍含硬伤重写为599字4段纯中文：去'页码页码'重复、去'斯蒂芬努斯页码标注/纲目索引'与本电子版不符表述、并两处重复阅读建议；tags五处（德国古典哲学/认识论/形而上学/康德/18世纪）三处一致保留；set_summary errs=[]，app detail+books.json+assets三路（backend detail无此文件）"
+ },
+ "notes": "本书无旧式注释块（译者注/科学院版编者注/康德自注均随文括注，census-v2未flag），无notes数组，不涉迁移；books.json/assets介绍已随并行会话db501162a先行入库，本提交章节与detail以精确pathspec入库",
+ "parallel": "同worktree发现并行会话（03:09-03:24康德三大批判合集+理想国追加清扫4提交）；本书改动与之零文件交集，已verify后尽快提交推送缩小窗口",
+ "unresolved": [],
+ "verify": "qa1全零(hw=0)；qa2 21保留项逐项核实；verify_book --vite-check全绿（60文件/MD5/toc/detail/books.json四层一致）；镜像61文件MD5一致；dp_note_check不适用（无notes）"
+}
