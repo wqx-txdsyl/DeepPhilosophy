@@ -1,0 +1,72 @@
+{
+ "bid": "f15e7fd89491",
+ "title": "从《理想国》到《正义论》",
+ "author": "奈杰尔·沃伯顿",
+ "date": "2026-11-03",
+ "mode": "zcode-proofread-round2",
+ "chapters": 27,
+ "charsTotal": 159713,
+ "findings": {
+  "internal_qa": {
+   "pua": 0,
+   "ctrl": 0,
+   "esc": 0,
+   "pagenum": 0,
+   "hw": 0,
+   "dupBlocks": 4,
+   "mergeCandidates": 41,
+   "note": "qa1漏报4处（逗号/引号结尾断块），逐章实读补齐"
+  },
+  "fixes": {
+   "cascadeMerges": 46,
+   "dupHeadingRemoved": "9.json 诸种观念的起源×2、休谟的叉子×2",
+   "swallowedHeadingsRestored": [
+    "15.json 消极的自由（章末批评节标题粘入段中）",
+    "21.json 过于乐观的（同上）",
+    "22.json 自我否定（同上）",
+    "23.json 自由（节标题粘段首'自由萨特相信'）",
+    "23.json 过于悲观（末节标题粘入段尾）"
+   ],
+   "glossarySplit": [
+    "21.json 关键词表粘连块拆为标题+9条",
+    "23.json 词表粘连块拆为7条"
+   ],
+   "glossaryContinuationMerged": "22.json 词表条目续块合并×4（形而上学/归纳问题/断言/假问题）",
+   "quotePairing": "23.json b0/b15 '意识的本质'引号内外层配对修复",
+   "headingInnerSpace": "4.json 魔鬼/我思 标题内空格",
+   "cjkDigitSpaces": 7
+  },
+  "intro": "保留原698字介绍（4段纯中文、结构准确）；tags 三处补'哲学入门'"
+ },
+ "unresolved": [
+  {
+   "loc": "8.json b16",
+   "issue": "段末'自然法则这个概念是政'句意中断，疑脱数字（PDF截断），不猜补保留"
+  },
+  {
+   "loc": "21.json b17尾",
+   "issue": "'过于乐观的'节标题还原后其正文整段缺失（源PDF脱文），仅存标题"
+  },
+  {
+   "loc": "23.json b0",
+   "issue": "'初读上去似乎很口'疑脱一字（拗/玄等无法核实），不猜补保留"
+  }
+ ],
+ "observations": [
+  "24.json 大事年表缺《存在主义与人道主义》出版条目（源如此，不补）",
+  "1.json 大事年表3条无年份（表格样式，源如此）",
+  "3.json 奥西尼诱骗地名(Sinigaglia)缺中文译名（不猜补）"
+ ],
+ "verify": {
+  "qa1After": {
+   "pua": 0,
+   "ctrl": 0,
+   "esc": 0,
+   "dup": 0,
+   "hw": 0,
+   "mergeCandidates": "3处均为有意保留（节标题×2+脱文登记）"
+  },
+  "verifyBook": "全绿（27章/MD5双端一致/toc/detail/books.json/Vite 200）",
+  "mirror": "cp后复验一致"
+ }
+}
