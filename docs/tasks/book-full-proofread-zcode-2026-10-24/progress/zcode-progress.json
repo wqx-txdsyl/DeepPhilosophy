@@ -1,6 +1,6 @@
 {
  "owner": "zcode-proofread",
- "updatedAt": "2026-11-03T17:00:00",
+ "updatedAt": "2026-11-03T18:30:00",
  "textRead": 525,
  "textAccepted": 0,
  "introductionsReviewed": 19,
@@ -7035,5 +7035,19 @@
   "standard": "≥280汉字/3-8段/纯中文/无内部作业词/errs=[]/顺带审tags",
   "keyFixes": "内容纠错3处（神学大全7卷错挂6卷、罗素西哲史下卷错挂梯利、哲学通信同书异名误作两部书）+西塞罗/马基雅维利体裁与章节不符改写；含23本&&链跳过应用的补做与2本历史四路不一致同步",
   "verified": "523本终扫全部通过（汉字/段数/纯中文/四路一致）"
- }
+ },
+ "finalAudit": [
+  {
+   "date": "2026-11-03",
+   "what": "全库收口复核（断点续作协议）",
+   "checks": {
+    "queue": "zcodeTextQueue 523 全 done，pending=0",
+    "books_json": "560=可读524(全在账)+零章占位36",
+    "git": "worktree 无未推送/未提交残留",
+    "oss": "dp_sync_oss_chapters --dry-run 全量幂等：16336 对象两端一致 0 待传；产线 LIVE 验证 2e66606c2854/21.json 迁移注 26注26锚",
+    "note_check": "抽验 PASS：2e66 注228/引228；26f5 注258/引253",
+    "unresolved": "5 本 reviewed_with_unresolved（新大西岛/人口论/社会分工论/神学大全选编/认识与谬误）均底本级损坏需换源，按不猜补铁律保留登记"
+   }
+  }
+ ]
 }
