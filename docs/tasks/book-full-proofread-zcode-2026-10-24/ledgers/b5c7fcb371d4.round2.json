@@ -16,5 +16,33 @@
  "unresolved": [
   "ch8两处校勘点(注49第二锚/注50原标)如需终审定谳须对郭斌和张竹明商务印书馆纸本,不猜补"
  ],
- "verify": "dp_note_check PASS(注217条/引用219处,0错,9章注24+55+19+13+29+12+11+6+35);verify_book全绿;零残留扫描通过;镜像9文件MD5一致;推送+OSS待本次"
+ "verify": "dp_note_check PASS(注217条/引用219处,0错,9章注24+55+19+13+29+12+11+6+35);verify_book全绿;零残留扫描通过;镜像9文件MD5一致;推送+OSS待本次；追加清扫(2026-11-04)：qa1全零复扫+note_check PASS+verify全绿+镜像同步",
+ "appendedSweep": {
+  "date": "2026-11-04",
+  "mode": "main-session-full-reread-round2（全 20 章逐章亲手通读，含 0-5 前置章与 16-19 索引章）",
+  "commit": "pending",
+  "oss": "pending",
+  "fixes": {
+   "c16TermIndex": 5,
+   "c16Note": "术语索引：know able→knowable 断字、rearon→reason 形近、（s o u l）→（soul）字距残留、humn→hymn 形近、哲家学→哲学家",
+   "c17Index": 6,
+   "c17Note": "索引之一：堵勒马霍斯→玻勒马霍斯（正文19处+索引之二佐证）、Gygc→Gyges、Poythia→Pythia、Musaeua→Musaeus（均以索引之二正确拼写交叉确证）、Atreus’sons/Menoitius’offspring 补空格",
+   "c18Index": 6,
+   "c18Note": "索引之二：Gygc→Gyges、Uranuis→Uranus、Hersiod→Hesiod、Theristes→Thersites（索引之一佐证）、Tpoy→Troy（r→p 形近）、Atreus’son→Atreus’s sons（中文条目「两子」确证复数）",
+   "c19Bibliography": 2,
+   "c19Note": "版本简目：徐宗林泽→徐宗林译、RobertUlich→Robert Ulich 人名粘连",
+   "introRestored": "介绍补写 434 汉字/3 段 validate PASS（前轮台账记 introChars 615 但 book_detail 现存介绍为空——判断前轮介绍曾在某次同步中丢失，本次重写；写入前 assert 无英文字母通过；三处 JSON 同步，backend/data/book_detail 不存在按设计跳过）；tags ['古希腊哲学','政治哲学','柏拉图','正义'] 原本正确未动"
+  },
+  "rescan": "qa1 PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0 全零、merge candidates=6 维持全 KEEP；dp_note_check PASS 注217/引用219 与前轮一致；verify --vite-check 全绿；修复 20 处替换先断言后统一落盘一次通过",
+  "residuals": [
+   "16.json 术语索引希腊文词头整体丢失（三百余词条原词缺失、英文括注+中文完好）——与前轮登记同源，保留不猜补",
+   "17.json 希腊文残片 ’'A / Ardiaεο / ’'H（粗气符+残字 OCR 形态）——删除亦属改动，保留登记",
+   "17/18.json「Argive 阿革俄斯」疑不对应（Agyeus?）两处一致无法核实原书，保留",
+   "18.json「V或M V，」形态异常；2.json 版权页定价空额；19.json 德文本第二条缺译者书名——均保留登记"
+  ],
+  "observations": [
+   "正文十卷通读未见需修讹字（OCR 质量优），诗体引文跨块断行系原书体例",
+   "译名一致性抽查：色弥斯托克勒（正文4处+两索引一致不带斯）、Idás 带重音为正字；「基本轮廓」撞 validate 作业词表「本轮」误报改「基本框架」后通过"
+  ]
+ }
 }
