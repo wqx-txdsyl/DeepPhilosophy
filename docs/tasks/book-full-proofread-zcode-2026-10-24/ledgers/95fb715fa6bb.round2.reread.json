@@ -1,0 +1,37 @@
+{
+ "bid": "95fb715fa6bb",
+ "title": "文集（拉康选集，褚孝泉译）",
+ "author": "雅克·拉康",
+ "date": "2026-11-04",
+ "mode": "zcode-proofread-round2-reread（round-2主会话亲手通读，队列index 12；census-v2在册）",
+ "chapters": 24,
+ "charsTotal": 415346,
+ "findings": {
+  "internal_qa": {
+   "pua": 0,
+   "ctrl": 0,
+   "esc": 0,
+   "pagenum_after": 0,
+   "hw_after": 0,
+   "hw_initial": 38,
+   "headers_removed": "ch1-12约90块页眉/页码整块删除",
+   "dup_initial": 12
+  },
+  "fixes": {
+   "boundarySurgery": "三处EPUB章界错位归位：ch7尾12块(谈心理因果标题+导言)→ch8头(含页眉删除、'在我的观点看/来'跨文件句合并)；ch11尾19块(罗马报告标题+前言)→ch12头('主体的自/主性'合并、靠着语/言的宽容注移并)；皆自git HEAD精确恢复后操作",
+   "cascadeMerges": "真断句级联合并合计约120处（del bs[i+1]级联；其中注块打断型一律移注后并）；另14处qa候选核实为节标题/图式/注尾保留不并",
+   "dedups": "ch2两组整段重复(牛津辞典purloin词源段)、ch8罗素①×3+勒费弗尔②×3注5→3、ch9四主体注11→1(成倍重复+整页重印)、ch12拉萨尔/1966重写注5→3、ch15[88][243]整块冗余+[163]块内×2、ch16[63][283][364][375]整块冗余+[245]块内×2",
+   "wordFixes": "Vemeinung→Verneinung(ch7/ch17)、wenten→werden、勇根→男根、Emest→Ernest×2、普雷梵尔→普雷韦尔/Prévert、Boehme法国→德国、--个→一个×2、刀--样→刀一样、第--个→第一个、S/₅→S/s、u- niversitas、Lé o→Léo、percipi- ens/emas- culation/Collected Pa- pers/Spalt- ung连字、·个→一个、(T)→①、约翰福音书括号、1908开区间、阿里曼奥姆兹注补名(据琐罗亚斯德教通名)",
+   "norm": "半角标点CJK邻接归一、———/————→——、年份区间——与--→—、CJK间半角空格删除"
+  },
+  "contentAudit": "全书423887→415346差-8541，全部对应已枚举删除项（页眉约90块+六组重复注文/段落去重+零星半角空格），合并均为纯拼接零丢字；每次删除均先断言重复计数/块形态",
+  "intro": "介绍470汉字4段纯中文达标保留（intro-sweep已重写334→470？实为上轮成果）；tags精神分析/结构主义/后现代/拉康三处一致保留",
+  "notes": "本书注文形态=页脚①②圈号块+行内圈号（census-v2在册章2/3/8/12/13/19）；本轮实读配对核实其均系译者注/原注且行内标与注块一一对应、位置完整，无需迁notes数组（阅读器已按块序渲染）；无空注释标题块残留"
+ },
+ "unresolved": [
+  "ch0'论著汗牛车'疑脱'充'、ch4/ch8'比勋'(=Pichon译名,非讹字)、ch8希腊引文讹形、ch8阿格丽品娜生卒'16—59'疑脱'前'、ch17[4]'[22][1。'引注号残形、ch19'm白'公式残形、ch16注文两处'·'符号残位——均不猜补保留",
+  "ch14'超出了争论的理由。'句号为本轮据文义补（原页缝脱'由'字已补+句号），已双记"
+ ],
+ "verify": "qa1全零；qa2余12候选逐项核实为标题/图式/注位保留；verify_book --vite-check全绿；镜像25文件MD5一致；dp_note_check不适用（无notes数组）",
+ "wipLedger": "docs/tasks/book-full-proofread-zcode-2026-10-24/ledgers/95fb715fa6bb.round2.reread.WIP.json（过程档案，随本提交入库）"
+}
