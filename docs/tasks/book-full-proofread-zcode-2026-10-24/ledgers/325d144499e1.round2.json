@@ -1,41 +1,19 @@
 {
-  "bid": "325d144499e1",
-  "title": "关于国家的哲学理论",
-  "author": "伯纳德·鲍桑葵",
-  "date": "2026-11-02",
-  "mode": "zcode-main-session-full-read",
-  "chapters": 12,
-  "chars": 171680,
-  "findings": {
-    "internal_qa": {
-      "pua": 0,
-      "ctrl": 0,
-      "esc": 0,
-      "pure_number_blocks": 0,
-      "dup_blocks": "1处已删（6.json重复脚注块「格林的《政治义务的原则》第18页」）",
-      "halfwidth_cjk_punct": 0,
-      "merge_candidates": "14处均为「——译者」脚注完结块，保留"
-    },
-    "fixes": [
-      "重复脚注块1处删除并镜像重同步（verify曾报MD5不一致，cp后全绿）",
-      "章节结构完好：卷首（含三个序言+第二版导言）+11章，无需重组",
-      "通读质量优：系统讹字扫描全零，商务印书馆译本源质量高",
-      "11.48戴西译者注称「英国新闻记者」（实为法学家）系原书注文原貌，不猜改"
-    ],
-    "intro": {
-      "action": "rewrite",
-      "before_chars": 0,
-      "after_chars": 469,
-      "paras": 4,
-      "note": "重写为4段469字纯中文；set_summary 四处同步 errs=[]"
-    }
-  },
-  "unresolved": [
-    "11.48戴西身份注文（新闻记者）与史实不符但系原书译者注，保留"
-  ],
-  "verify": {
-    "qa_rescan": "PUA=0 ctrl=0 esc=0 pagenum=0 dup=0 hw=0",
-    "verify_book": "全部通过",
-    "mirror": "cp 同步后 MD5 一致"
-  }
+ "bid": "325d144499e1",
+ "title": "关于国家的哲学理论（鲍桑葵，12章17.2万字）",
+ "round": 2,
+ "date": "2026-11-04",
+ "mode": "main-session-note-migration（census-v2专项）",
+ "chaptersRead": 12,
+ "readMethod": "主会话全书实读：形态=页文本块组+其后带编号前缀注块（页重启编号、前缀完好），正文标记部分散佚；页组贪心同号配对（限组内防跨页盗配）+62组错配逐组实读定位",
+ "noteMigration": {
+  "total": 436,
+  "method": "约370注编号直配；63+19条散佚标记注逐条实读内容定位（关键词检索+组全文精读：参看类注按主题句、引文注按出处句、译者注按被注词逐一锚定）；10条无锚排尾登记",
+  "structure": "146注块拆条删除（含3处双标记注⑤⑥/③④/①③按重复引用、1处超长注块>400字纠正分类、1处无前缀埃瑞璜译者注专项迁移）；2处页界断句级联合并",
+  "orphanMarkers": "7处孤标（注文散佚标记保留）——ch2块23②/ch3块18②/ch6块59①/ch8块97②/ch9块23②/ch11块9③/ch11块34②",
+  "check": "dp_note_check PASS（436注/421引；15条排尾注无引用按契约登记）"
+ },
+ "unresolved": [],
+ "residuals": "排尾待核10注：ch0剑桥1900导言页码注/ch2西季威克伦理学方法注/ch5地米斯托克利译者注/ch6理想国597注/ch7克罗诺斯+施泰因塔尔+斯托特3译注/ch8马雷特宗教起源+导言xxxiv+滚石谚语3注/ch9汤姆森等4人名注（引用位均散佚）；另ch1布伦塔诺等6注按语境定位待复核",
+ "verify": "verify_book --vite-check 全绿（含镜像MD5）；qa1全零；介绍469汉字纯中文原样保留"
 }
