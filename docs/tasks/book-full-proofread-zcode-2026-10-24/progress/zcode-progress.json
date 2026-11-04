@@ -1563,7 +1563,7 @@
   "35279e2e439d": {
    "chaptersRead": 17,
    "chaptersTotal": 17,
-   "fixesApplied": "149合并+60修复",
+   "fixesApplied": "149合并+60修复；round3乱码专项283处",
    "introChars": 621,
    "note": "【恢复点】两报告(296+685条)已落盘；第一轮批量应用因部分proposed为改写描述而破坏正文，已整书回退HEAD。恢复动作：①重跑149条页缝合并（apply_duihuaji.py 的merge ops，clean_edge双端剥离已修好）②非merge修复中仅应用'词级最小替换'型（81条破坏型见wordfix_plan.txt逐条人工核定：悌统一/厌恶/揶揄/恍惚/又好又多/酣睡/毕竟/骡子/锾/明纳/阻止/制止/然而/教→救/颠覆/羞耻/肯/眼睛/鹌鹑/知识/自杀/囚禁/一干二净/沉入/贯注/啼啼/愚蠢/搞垮/嗓子/进入/贻祸/窜下/懒惰/一出一入/深入/注入/埋我/粗暴/锱铢/猥琐/大氅/啜泣/鞑鞑若/大衣/方面等）③欧梯甫戎→欧悌甫戎 replace_all（ch1 82处）④原书脚注整体丢失+ch13/15/16希腊俄文乱码=专项⑤介绍+发布",
    "publishedCommit": "e7feef4e3",
@@ -1572,9 +1572,9 @@
     "35279e2e439d.ch9-16.json (685条)"
    ],
    "residuals": [
-    "原书脚注整体丢失（全书性）",
-    "ch13/15/16希腊俄文乱码成片待专项",
-    "克力同4处不词之词待排印本"
+    "ch13/15/16希腊俄文乱码成片——已于2026-11-04 census-v2轮完成专项修复(283处assert锚点,台账.round3.json)",
+    "克力同4处不词之词待排印本",
+    "原书脚注整体丢失(全书性,68孤标保留,换源补注专项)"
    ],
    "status": "published",
    "tagReview": "待补审",
@@ -1585,7 +1585,8 @@
    "chapters": 17,
    "commit": "7b13c9b0c",
    "oss": "成功17/失败0",
-   "ledger": "docs/tasks/book-full-proofread-zcode-2026-10-24/ledgers/35279e2e439d.round2.json"
+   "ledger": "docs/tasks/book-full-proofread-zcode-2026-10-24/ledgers/35279e2e439d.round2.json",
+   "noteCensus": "census-v2核伪:68孤标/注文全书散佚,不可迁移,登记换源专项"
   },
   "361be7bd03a4": {
    "chaptersRead": 1,
@@ -7155,7 +7156,7 @@
   "2026-11-03 全库收口对账：books.json 560 本=可读 524+零章占位 36；可读 524 = zcodeTextQueue 523(全 done) + 队列外漏网 1（论自然[已佚失] d15dcb8e431f，冻结后零章补章，已亲读发布 086c143b7）→ 全库可读本逐本亲手通读发布完成。36 本零章占位（含冻结后新增 5 本：服美役/���泽东文集/毛泽东选集/致死的疾病/非此即彼）无正文可读，不属通读范围"
  ],
  "note": "books[bid] = {status, chaptersRead, chaptersTotal, blocksRead, fixes, notesMigrated, notesResidual, introChars, publishedCommit, publishedAt, residuals[]}; status ∈ pending|reading|text_repaired|notes_verified|introduction_reviewed|validated|published|accepted|reviewed_with_unresolved | 2026-10-25批次#20：会饮篇122处/爱欲之死33处(广告3块)/商君书24处(承源以登记为主)",
- "notesSpecialSummary": "注释专项census-v2进行中(2026-11-03):已完成7本迁移共667注——尼采10/蒤因71/规劝录258/君主论228/审美无意识50;专项登记2本不迁移(阿伦特1f3f极权主义:标号讹误+散佚19%/存在与虚无274c:注文全书散佚);进行中1本:性欲三论3138(10章~90注,ch1规格草案在backend/tools/_tmp/fix_sexual_3138_ch1.py,纯块b19/b20/b22待拆,余章未动);余82本待逐本核伪迁移;真注系大项:新工具731处/观念1 156处。成熟方法:交错页注按块内页序切分+最近同号引用配对+GLUE拼断句+纯注块拆分,引擎见_tmp/fix_aesthetic_302d.py；2026-11-04 census-v2续：论说集2fa2迁移317注完成（146纯注块/18尾2头嵌注拆分/跨块标题修复），20孤标登记，census-v2余80本待逐本核伪+迁移；梅洛-庞蒂324c迁移88注完成（65断句合并+2OCR缺陷修复），census-v2余79本；关于国家的哲学理论325d迁移436注完成（本专项最大单本），census-v2余78本；图斯库兰论辩集4be7迁移761注完成（本专项单本注量第一：ch0×80/ch1×176/ch2×97/ch3×133/ch4×97/ch5×178，孤标49+无锚8登记），census-v2余77本",
+ "notesSpecialSummary": "注释专项census-v2进行中(2026-11-03):已完成7本迁移共667注——尼采10/蒤因71/规劝录258/君主论228/审美无意识50;专项登记2本不迁移(阿伦特1f3f极权主义:标号讹误+散佚19%/存在与虚无274c:注文全书散佚);进行中1本:性欲三论3138(10章~90注,ch1规格草案在backend/tools/_tmp/fix_sexual_3138_ch1.py,纯块b19/b20/b22待拆,余章未动);余82本待逐本核伪迁移;真注系大项:新工具731处/观念1 156处。成熟方法:交错页注按块内页序切分+最近同号引用配对+GLUE拼断句+纯注块拆分,引擎见_tmp/fix_aesthetic_302d.py；2026-11-04 census-v2续：论说集2fa2迁移317注完成（146纯注块/18尾2头嵌注拆分/跨块标题修复），20孤标登记，census-v2余80本待逐本核伪+迁移；梅洛-庞蒂324c迁移88注完成（65断句合并+2OCR缺陷修复），census-v2余79本；关于国家的哲学理论325d迁移436注完成（本专项最大单本），census-v2余78本；图斯库兰论辩集4be7迁移761注完成（本专项单本注量第一：ch0×80/ch1×176/ch2×97/ch3×133/ch4×97/ch5×178，孤标49+无锚8登记），census-v2余77本；2026-11-04 census-v2核伪：柏拉图对话集35279——17章68枚行内圈号俱为孤标,注文全书散佚零注块,不可迁移登记换源补注专项(与274c同型);顺带完成round2遗留ch13/15/16希腊俄文乱码专项283处assert修复(DL卷三Hicks核证/字母表24行重建/俄语还原/16页眉剥离/OCR扫尾),census-v2余76本",
  "owner": "zcode-proofread",
  "publishReceipts": [
   "publish-receipt-20261024-zcode-1.md"
@@ -7214,5 +7215,5 @@
    "unresolved": "源文本为'每节起始页'网页抓取拼贴：488节各仅1起始页块、约半数正文缺失、33文件与原书25章488节结构完全不对应；须换可靠底本(李醒民译商务印书馆2007)重制"
   }
  ],
- "updatedAt": "2026-11-04T21:30:00"
+ "updatedAt": "2026-11-04T23:30:00"
 }
