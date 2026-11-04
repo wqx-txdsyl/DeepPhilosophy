@@ -1,0 +1,27 @@
+{
+ "bid": "5d26edcad281",
+ "title": "单行道",
+ "date": "2026-11-04",
+ "mode": "census-v2主会话逐页实读迁移——译者前言交错页注全量token化(15印刷页逐页配对)",
+ "findings": {
+  "internal_qa": "qa1零缺陷(PUA0/ctrl0/esc0/CJK间半角标点0/纯数字块0); dp_note_check PASS 37注/38引用(0章失败)",
+  "fixes": [
+   "注释迁移37条notes数组化(kind=translator): 译者前言页底西文引证条目33组按行区间切出续行拼接(Ein|bahnstrasse直拼/Benja-|mins去连字符), 引用位38处→{{n:n}}token(29处可见标记替换+9处标记散佚依引文内容定位)",
+   "n35 Jennings p.518 一注三引(①第一部著作/②决定意义事件标记散佚/④核心思想)——同一注文多个引用实例",
+   "OCR讹形修复4处: の→①(117行,Lindner锚)/3→③(关注quote)/4→④(意义quote)/注文内Band且→Ⅱ(p.684同引证它页作Band II确证)",
+   "无标记注文按内容确证锚定: Steiner p.84→重新定位quote/p.85→拉西斯工程师quote; 同上p.685→被领会quote; Kracauer p.5→革新quote"
+  ],
+  "intro": "不涉(介绍652汉字/5段纯中文已达标; tags四项核对无误)"
+ },
+ "unresolved": [
+  "孤标1处保留原状(注文散佚不猜补): 0.json L252 '意义。'④'条目行OCR丢失",
+  "无引用注1条迁入notes登记: n37 Adorno p.681(第6页第5条注, 引用位不可考)",
+  "注文西文书目信息沿原书OCR形态保留(inNoten连排/空格缺失), 不作引证格式重构",
+  "0.json 硬换行为round2发布形态, 本轮不动"
+ ],
+ "verify": {
+  "dp_note_check": "PASS 37注/38引用(0章失败; 1条无引用警告已登记)",
+  "verify_book": "全部通过 --vite-check(61章双端MD5一致, Vite三探针200, 镜像已同步)",
+  "qa_rescan": "qa1全零"
+ }
+}
