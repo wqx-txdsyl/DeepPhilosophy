@@ -82,3 +82,9 @@ test('inline note images continue in source order across paragraph breaks', () =
   const images=[...html.matchAll(/<img[^>]*src="([^"]+)"/g)].map(m=>m[1].split('?')[0]);
   assert.deepEqual(images,['https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/first.png','https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/second.png']);
 });
+
+test('source formula note images remain legible and expose their faithful transcription', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'正文{{n:1}}。'}],notes:[{n:1,text:'关于克卜勒[IMG]到[IMG]。',imgs:[{src:'/api/books/test/image/fraction.webp',role:'formula',alt:'s³/t²'},{src:'/api/books/test/image/glyph.webp'}]}]});
+  assert.match(html,/<img[^>]*alt="s³\/t²"[^>]*height:2\.4em/);
+  assert.match(html,/<img[^>]*alt=""[^>]*height:1\.1em/);
+});

@@ -630,8 +630,8 @@ export default function ChapterReader({
                         const isrc = img && toOssImage(img.src, 200);
                         return (
                           <Fragment key={sk}>
-                            {isrc ? <img src={isrc} alt="" loading="lazy" decoding="async"
-                              style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null}
+                            {isrc ? <img src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
+                              style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null}
                             {words}
                           </Fragment>
                         );

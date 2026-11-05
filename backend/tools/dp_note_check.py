@@ -65,6 +65,10 @@ def check_chapter(path: Path):
         imgs = nt.get("imgs")
         if imgs is not None and not isinstance(imgs, list):
             errors.append(f"notes[{ni}].imgs 必须是数组")
+        if isinstance(text, str):
+            image_count = len(imgs) if isinstance(imgs, list) else 0
+            if text.count('[IMG]') != image_count:
+                errors.append(f"注{n}: [IMG] 占位数与 imgs 数量不一致: {text.count('[IMG]')} != {image_count}")
 
     # token 配对
     for nt in notes:
