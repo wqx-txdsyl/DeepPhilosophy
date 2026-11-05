@@ -7,6 +7,7 @@ import Icon from '../components/Icon';
 import { Fragment, useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import DOMPurify from 'dompurify';
 import { locateChapterSections } from '../data/chapterSections';
+import './readerGlyphs.css';
 
 // S9（audit 2026-08-17）：章节 HTML 渲染前用 DOMPurify 净化（防存储型 XSS）。
 // 章节内容为策展 HTML，仍按"不可信输入"处理。
@@ -265,7 +266,7 @@ export default function ChapterReader({
         className="reader-content"
         style={{
           flex: 1, minHeight: 0, overflow: 'auto', padding: '24px max(24px, 12vw) 32px',
-          fontFamily: 'var(--font-serif, "Playfair Display", serif)',
+          fontFamily: '"DP Classical Han", var(--font-serif, "Playfair Display", serif)',
           fontSize: settings.fontSize, lineHeight: settings.lineHeight,
           color: theme.color, background: theme.bg,
           wordBreak: 'break-word', scrollBehavior: 'smooth',
@@ -276,7 +277,7 @@ export default function ChapterReader({
         {ch.content?.[0]?.role === 'chapter-title' ? null : ch.type === 'section' ? (
           <h2 style={{
             textAlign: 'center', fontSize: Math.max(18, settings.fontSize - 2), fontWeight: 300, margin: '40px 0 48px',
-            fontFamily: 'var(--font-sans)', letterSpacing: '0.12em',
+            fontFamily: '"DP Classical Han", var(--font-sans)', letterSpacing: '0.12em',
             color: 'var(--ochre)', textTransform: 'uppercase',
             borderBottom: '1px solid var(--border)', paddingBottom: 16,
           }}>
@@ -285,7 +286,7 @@ export default function ChapterReader({
         ) : (
           <h2 style={{
             textAlign: 'center', fontSize: Math.max(18, settings.fontSize + 2), fontWeight: 500, margin: '0 0 32px',
-            fontFamily: 'var(--font-serif)', letterSpacing: '0.04em',
+            fontFamily: '"DP Classical Han", var(--font-serif)', letterSpacing: '0.04em',
           }}>
             {ch.title || `第${currentChapter + 1}章`}
           </h2>
@@ -541,7 +542,7 @@ export default function ChapterReader({
             const alignment = ['center', 'right'].includes(sourceBlock?.align) ? sourceBlock.align : undefined;
             const TextElement = isSourceTitle ? 'h2' : isSectionTitle ? (sourceBlock.level === 2 ? 'h3' : 'h4') : 'p';
             const paragraphStyle = isSourceTitle
-              ? { textAlign: 'center', fontSize: Math.max(18, settings.fontSize + 2), fontWeight: 500, margin: '0 0 32px', fontFamily: 'var(--font-serif)', letterSpacing: '0.04em' }
+              ? { textAlign: 'center', fontSize: Math.max(18, settings.fontSize + 2), fontWeight: 500, margin: '0 0 32px', fontFamily: '"DP Classical Han", var(--font-serif)', letterSpacing: '0.04em' }
               : isSectionTitle ? { margin: '1.2em 0 .6em', textIndent: 0, fontSize: sourceBlock.level === 2 ? '1.08em' : '1em', fontWeight: 600 }
               : { margin: '0 0 0.5em', textIndent: isQuotation || alignment ? 0 : '2em', textAlign: alignment, marginLeft: isQuotation ? '2em' : undefined, whiteSpace: ch.paragraphMode === 'source' ? 'pre-line' : undefined };
             return (
@@ -576,14 +577,35 @@ export default function ChapterReader({
               const noteId = `dp-note-${currentChapter}-${disp}`;
               const hasBack = lastRefRef.current[n] != null;
               const noteBody = String(nt.text || '');
+              let noteImageCursor = 0;
+              let noteTextOffset = 0;
+              let crossSequence = 0;
+              const renderNoteWords = (segment, start) => {
+                if (!Array.isArray(nt.crossRefs)) return segment;
+                const out = [];
+                let cursor = 0;
+                for (const ref of nt.crossRefs) {
+                  const from = ref.start - start, to = ref.end - start;
+                  const target = noteIndex.disp.get(ref.n);
+                  if (!Number.isInteger(from) || !Number.isInteger(to) || from < cursor || to <= from || to > segment.length || target == null) continue;
+                  out.push(segment.slice(cursor, from));
+                  const id = `dp-note-cross-${currentChapter}-${n}-${++crossSequence}`;
+                  out.push(<button key={id} id={id} type="button" className={'dp-note-cross' + (hlId === id ? ' dp-flash' : '')}
+                    style={{ border: 0, background: 'none', padding: 0, font: 'inherit', textIndent: 0, color: 'var(--ochre)', cursor: 'pointer' }}
+                    aria-label={`转到注释${target}`} onClick={e => goNote(ref.n, target, e.currentTarget)}>[{target}]</button>);
+                  cursor = to;
+                }
+                out.push(segment.slice(cursor));
+                return out;
+              };
               return (
                 <div key={n} id={noteId}
                   className={'dp-note-item' + (hlId === noteId ? ' dp-flash' : '')}
                   style={{ margin: '0 0 8px', paddingLeft: '2.4em', textIndent: '-2.4em' }}>
                   <span className="dp-note-num" role="button" tabIndex={0}
                     style={{ cursor: hasBack ? 'pointer' : 'default', color: 'var(--ochre)' }}
-                    aria-label={hasBack ? `返回正文引用${disp}` : `注释${disp}`}
-                    title={hasBack ? '回到正文引用位置' : undefined}
+                    aria-label={hasBack ? `返回引用位置${disp}` : `注释${disp}`}
+                    title={hasBack ? '回到引用位置' : undefined}
                     onClick={() => goBackRef(n)}
                     onKeyDown={(e) => {
                       if ((e.key === 'Enter' || e.key === ' ') && hasBack) { e.preventDefault(); goBackRef(n); }
@@ -595,24 +617,29 @@ export default function ChapterReader({
                       {NOTE_KIND_LABEL[nt.kind]}：
                     </span>
                   )}
-                  {noteBody.split('\n').map((para, pj) => (
-                    <span key={pj} style={{ display: pj > 0 ? 'block' : 'inline' }}>
-                      {para.split('[IMG]').map((seg, sk, arr) => {
-                        if (sk === 0) return seg;
-                        const img = (nt.imgs || [])[sk - 1];
+                  {noteBody.split('\n').map((para, pj) => {
+                    let segmentOffset = noteTextOffset;
+                    noteTextOffset += para.length + 1;
+                    return <span key={pj} style={{ display: pj > 0 ? 'block' : 'inline', textIndent: pj > 0 ? 0 : undefined }}>
+                      {para.split('[IMG]').map((seg, sk) => {
+                        if (sk > 0) segmentOffset += 5;
+                        const words = renderNoteWords(seg, segmentOffset);
+                        segmentOffset += seg.length;
+                        if (sk === 0) return words;
+                        const img = (nt.imgs || [])[noteImageCursor++];
                         const isrc = img && toOssImage(img.src, 200);
                         return (
                           <Fragment key={sk}>
                             {isrc ? <img src={isrc} alt="" loading="lazy" decoding="async"
                               style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null}
-                            {seg}
+                            {words}
                           </Fragment>
                         );
                       })}
-                    </span>
-                  ))}
+                    </span>;
+                  })}
                   {hasBack && (
-                    <button className="dp-note-back" title="回到正文引用位置"
+                    <button className="dp-note-back" title="回到引用位置"
                       style={{
                         border: 'none', background: 'transparent', color: 'var(--ochre)', cursor: 'pointer',
                         fontSize: '0.85em', padding: '0 2px', marginLeft: 4,

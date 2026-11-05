@@ -70,3 +70,15 @@ test('an unlocated title with an invalid block is never assigned a guessed ratio
   const html=render({paragraphMode:'source',content:[{type:'text',value:'第一段内容。'},{type:'text',value:'第二段内容。'}]},{toc:[{type:'section',title:'尚未定位的真实标题',index:0,sec:90,level:2}]});
   assert.ok(!html.includes('id="sec-0"'));
 });
+
+test('an explicit note cross-reference follows its stable target after displayed numbers change', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'先引这条{{n:29}}，再引另一条{{n:11}}。'}],notes:[{n:11,text:'被转引的原注。'},{n:29,text:'参见[99]。',crossRefs:[{n:11,start:2,end:6}]}]});
+  assert.match(html,/aria-label="转到注释2"[^>]*>\[2\]<\/button>/);
+  assert.ok(!plain(html).includes('[99]'));
+});
+
+test('inline note images continue in source order across paragraph breaks', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'正文{{n:1}}。'}],notes:[{n:1,text:'字形[IMG]甲\n次段[IMG]乙',imgs:[{src:'/api/books/test/image/first.png'},{src:'/api/books/test/image/second.png'}]}]});
+  const images=[...html.matchAll(/<img[^>]*src="([^"]+)"/g)].map(m=>m[1].split('?')[0]);
+  assert.deepEqual(images,['https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/first.png','https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/second.png']);
+});

@@ -67,6 +67,37 @@ def check_chapter(path: Path):
             errors.append(f"notes[{ni}].imgs 必须是数组")
 
     # token 配对
+    for nt in notes:
+        if not isinstance(nt, dict) or 'crossRefs' not in nt:
+            continue
+        refs = nt['crossRefs']
+        if not isinstance(refs, list):
+            errors.append(f"注{nt.get('n')}: crossRefs 必须是数组")
+            continue
+        text = nt.get('text')
+        if not isinstance(text, str):
+            continue
+        encoded = text.encode('utf-16-le')
+        previous_end = 0
+        for ri, ref in enumerate(refs):
+            if not isinstance(ref, dict):
+                errors.append(f"注{nt.get('n')}: crossRefs[{ri}] 非对象")
+                continue
+            target, start, end = ref.get('n'), ref.get('start'), ref.get('end')
+            if type(target) is not int or target not in seen_n:
+                errors.append(f"注{nt.get('n')}: 跨注目标不存在: {target!r}")
+            if (type(start) is not int or type(end) is not int or start < previous_end
+                    or end <= start or end * 2 > len(encoded)):
+                errors.append(f"注{nt.get('n')}: 跨注文本范围越界或重叠: {start!r}..{end!r}")
+                continue
+            try:
+                label = encoded[start * 2:end * 2].decode('utf-16-le')
+            except UnicodeError:
+                label = ''
+            if not re.fullmatch(r'\[\d+\]', label):
+                errors.append(f"注{nt.get('n')}: 跨注范围不是完整原注号: {label!r}")
+            previous_end = end
+
     ref_count = {}
     for bi, b in enumerate(content):
         if not isinstance(b, dict):
