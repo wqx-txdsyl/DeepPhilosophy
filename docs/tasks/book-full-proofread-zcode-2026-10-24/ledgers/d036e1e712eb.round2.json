@@ -1,0 +1,31 @@
+{
+  "bid": "d036e1e712eb",
+  "title": "最伟大的思想家 - 帕斯卡尔",
+  "date": "2026-11-05",
+  "mode": "census-v2 注释迁移（圈号章末注列表型+页注漂移混合，主会话逐条实读）",
+  "findings": {
+    "internal_qa": "census-v2 报 87 标实读定性（14 章 8.99 万字）：0.json blk2 ①②系 CIP 版权页规范数据（I.帕…I.①格②江）误报保留；1.json 总序 4 标=2 条页注漂移（贺麟注+拙文注，标记与注文开头同形①重叠隔正文）；3-12.json 十章=正文标记+章末『注释：①…』列表混合，正文标记 OCR 大量散佚（仅 4.json ③、5.json ④、9.json ②⑬、12.json ⑧ 13 处可见），注文列表跨块续接处条目圈号 OCR 丢失（5.json ⑥⑦⑨⑪、6.json ⑪-⑰、7.json ⑤⑥⑦、10.json ⑨、11.json ⑧条目整条散佚/⑫、12.json ⑤）",
+    "fixes": [
+      "102 注 57 引落盘 notes 数组（1.json 总序 2 / 3.json 2 / 4.json 7 / 5.json 11 / 6.json 17 / 7.json 7 / 8.json 6 / 9.json 13 / 10.json 15 / 11.json 13 / 12.json 9），kind=author 101 条+translator 1 条（四旬斋译注）",
+      "13 处 OCR 可见标记原位直迁（{{n:x}}）：4.json 荣耀③/5.json 充溢④/9.json 论争前①·犯错误②·斯库托⑬/12.json 灵性更新⑧ 等",
+      "44 处语义锚：引文同源直证（列维手稿论/克莱尔舍默节奏论/内格尔荒谬论/阿德勒贫乏论/摩尔决疑论/路易斯两条/斯库托奢侈行/查氏上帝必死/沃纳叠加效果/斐德鲁斯 230a/赫斯克尔题记）+ 同源页码序递进配对（4.json 父死信札 336-341 系/6.json 外省人信札 81-162 系/9.json 尼采 Daybreak 52-53 系/10.json 沙西谈话链④/12.json 普兰蒂格/Copan）+ 作者自引论文标题与节主题逐字互证（8.json Groothuis 四文/11.json Sophia 偏执论）",
+      "45 注无锚登记待核（契约§3 殿后展示，不凭空造引用）：3.json n1/4.json n1n2n7/5.json n1n2n3n6n7n8n9n11/6.json n1n2n3n4n13n15n16n17/7.json n1n4n5n6n7/9.json n6n9/10.json n2n5n6n7n8n9n10n11n13n15/11.json n4n6n10n11n13/12.json n3n4n6",
+      "印刷讹形核证修复 7 处：10.json Michael Warner→Martin Warner（联网核证 Philosophical Finesse 作者，OUP/PhilPapers，正文'马丁·沃纳'同证）/7.json Alban→Alfred Krailsheimer（注内自证）+Anzhology→Anthology/8.json 注⑤讹形'③⑤'剥除/6.json 注⑤尾'——译注'签（讹作'一译注'串入⑥头）归位/10.json 注⑩连字符断词 Pas-cal→Pascal、U-niversity→University、andOther→and Other/11.json Viii→viii/5.json ⑩讹作①、9.json ⑪讹作①、11.json ⑪讹作①剥讹标",
+      "11.json 印刷⑧条目整条散佚登记（Kolak⑦与 McDowell⑨之间注文丢失，不猜补）",
+      "3.json 两处页眉『帕斯卡尔：盛名与神秘』整段嵌入剥除（blk6/blk8 头，blk7'哲'+blk8'学护教学'接续核证）",
+      "meta.title '帕斯卡尔'→'最伟大的思想家 - 帕斯卡尔'（对齐 detail/books.json 历史遗留，数据逐键 diff 仅 title）",
+      "镜像同步 15 文件；0.json CIP 2 圈号按断点备忘保留不迁"
+    ],
+    "intro": "不涉（上轮 662c7fc08 已重写：657 汉字/6 段/纯中文复查达标）"
+  },
+  "unresolved": [
+    "45 条无锚注文登记（明细见上），锚点印制位置 OCR 散佚，建议换可靠底本补锚",
+    "11.json 印刷⑧条目整条散佚（约 1 条注文丢失）",
+    "11.json n13 Davis《灵性经验的证据力量》页码 OCR 讹形'/3.9'（疑 139）未解，保留原样",
+    "正文引文页码括注（如 988/488 布伦士维格/拉弗谟双编码）系原书体例保留"
+  ],
+  "verify": {
+    "dp_note_check": "PASS 0 章失败，注 102 条/引用 57 处（45 注无锚 WARN 按契约登记）",
+    "verify_book": "全部通过 --vite-check（含 meta.title 对齐后复检）"
+  }
+}
