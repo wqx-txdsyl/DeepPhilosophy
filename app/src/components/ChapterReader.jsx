@@ -210,6 +210,13 @@ export default function ChapterReader({
         && t.index === currentChapter && t.sec === p.sec);
       if (ti >= 0) p.tocIdx = ti;
     }
+    // Book-detail links carry toc, while sidebar clicks also carry sec. Resolve
+    // the same validated block fallback for both paths.
+    if (p.tocIdx != null && p.sec == null && Array.isArray(toc)) {
+      const target = toc[p.tocIdx];
+      if (target?.type === 'section' && target.index === currentChapter
+        && Number.isInteger(target.sec) && target.sec >= 0 && target.sec < (ch.content?.length || 0)) p.sec = target.sec;
+    }
     let el = null;
     if (p.tocIdx != null) el = document.getElementById(`sec-${p.tocIdx}`);
     if (!el && p.sec != null) el = document.getElementById(`b-${p.sec}`);
@@ -303,7 +310,7 @@ export default function ChapterReader({
           transition: 'background 0.3s, color 0.3s',
         }}>
         {/* 章标题 */}
-        {ch.type === 'section' ? (
+        {ch.paragraphMode === 'source' && ch.content?.[0]?.role === 'chapter-title' ? null : ch.type === 'section' ? (
           <h2 style={{
             textAlign: 'center', fontSize: Math.max(18, settings.fontSize - 2), fontWeight: 300, margin: '40px 0 48px',
             fontFamily: 'var(--font-sans)', letterSpacing: '0.12em',
@@ -372,7 +379,7 @@ export default function ChapterReader({
             // 「…在一起”，」行尾是逗号 → 续行; 「…不干净的"。」行尾是句号 → 切段;
             // 「…。」"」引号收尾 → 剥引号后句号 → 切段。否则「…放置在一起"，」长段会在
             // 引号处被切段, 下一段以逗号开头。
-            // 段长 300 字上限强切兜底(OCR 标点缺失时防超长段)。
+            // 不按字数强切；没有真实句末/段落边界时保留句子连续性。
             const END_SENT_RE = /[。！？….!?]$/;
             const END_CLOSE = '”』」）〉"';
             const isEndSent = (s) => {
@@ -383,20 +390,14 @@ export default function ChapterReader({
             const splitPageParas = (text) => {
               const paras = [];
               let cur = '';
-              let curLen = 0;
               for (const ln of (text || '').split('\n')) {
                 const s = ln.trim();
-                if (!s) continue;
-                cur += s; curLen += s.length;
-                if (isEndSent(s)) { paras.push(cur); cur = ''; curLen = 0; }
-                else if (curLen >= 300) {
-                  // 超长无句末标点 → 在行内最后一个句末标点处强切(太近则整段切)
-                  // 句末标点后可选跟闭合符(。「」"等), 一并带走避免下段以引号开头
-                  const m = cur.match(/.*[。！？….!?][”』」）〉"]?/);
-                  if (m && m[0].length > 50) {
-                    paras.push(m[0]); cur = cur.slice(m[0].length); curLen = cur.length;
-                  } else { paras.push(cur); cur = ''; curLen = 0; }
+                if (!s) {
+                  if (cur) { paras.push(cur); cur = ''; }
+                  continue;
                 }
+                cur += s;
+                if (isEndSent(s)) { paras.push(cur); cur = ''; }
               }
               if (cur) paras.push(cur);
               return paras;
@@ -539,6 +540,7 @@ export default function ChapterReader({
                 }
               }
             }
+            const noteReferenceSequence = {};
             return paras.map((block, i) => {
             if (block.type === 'image') {
               const src = toOssImage(block.src);   // 块级图原图直链(库内最大 ~330KB, 70vh 显示够用)
@@ -614,7 +616,7 @@ export default function ChapterReader({
                           style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
                         {first}
                       </span>
-                    ) : null}
+                    ) : first}
                     {seg.slice(first.length)}
                   </Fragment>
                 );
@@ -622,7 +624,7 @@ export default function ChapterReader({
             };
             // 行内注释引用 {{n:x}} → 可点上标 [显示号]（note-contract v1; token 只由逐段实读迁移放置,
             // 渲染层只认这一种精确格式, 数学方括号/圣经章句/引用年份不受影响）
-            const rseq = {};   // 本次渲染内各注的引用实例计数 → 实例锚点序
+            const rseq = noteReferenceSequence;   // 全章共享，不能在每个段落中重新计数
             const renderWithNotes = (p) => {
               if (typeof p !== 'string') return p;
               if (!noteIndex || !p.includes('{{n:')) return renderText(p);
@@ -654,15 +656,25 @@ export default function ChapterReader({
               if (last < p.length) out.push(renderText(p.slice(last)));
               return out;
             };
+            const sourceBlock = ch.paragraphMode === 'source' ? ch.content[block._block] : null;
+            const isSourceTitle = sourceBlock?.role === 'chapter-title';
+            const isSectionTitle = sourceBlock?.role === 'section-title';
+            const isQuotation = sourceBlock?.quote === true;
+            const alignment = ['center', 'right'].includes(sourceBlock?.align) ? sourceBlock.align : undefined;
+            const TextElement = isSourceTitle ? 'h2' : isSectionTitle ? (sourceBlock.level === 2 ? 'h3' : 'h4') : 'p';
+            const paragraphStyle = isSourceTitle
+              ? { textAlign: 'center', fontSize: Math.max(18, settings.fontSize + 2), fontWeight: 500, margin: '0 0 32px', fontFamily: 'var(--font-serif)', letterSpacing: '0.04em' }
+              : isSectionTitle ? { margin: '1.2em 0 .6em', textIndent: 0, fontSize: sourceBlock.level === 2 ? '1.08em' : '1em', fontWeight: 600 }
+              : { margin: '0 0 0.5em', textIndent: isQuotation || alignment ? 0 : '2em', textAlign: alignment, marginLeft: isQuotation ? '2em' : undefined, whiteSpace: ch.paragraphMode === 'source' ? 'pre-line' : undefined };
             return (
-              <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em', whiteSpace: ch.paragraphMode === 'source' ? 'pre-line' : undefined }}>
-                {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderWithNotes(p)}</Fragment>)}
+              <TextElement key={i} id={block.id} className={isQuotation ? 'reader-quotation' : undefined} style={paragraphStyle}>
+                {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderWithNotes(isSectionTitle && pi === 0 && typeof p === 'string' ? p.replace(/^§/, '') : p)}</Fragment>)}
                 {(block.imgs || []).slice(imgCursor).map((img, j) => {
                   const isrc = toOssImage(img.src, 200);
                   return isrc ? <img key={j} src={isrc} alt="" loading="lazy" decoding="async"
                     style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null;
                 })}
-              </p>
+              </TextElement>
             );
           });
           })()
