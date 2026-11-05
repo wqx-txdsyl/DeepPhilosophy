@@ -1,29 +1,29 @@
 {
  "bid": "48f3adece0cf",
  "title": "论灵魂",
- "date": "2026-11-01",
- "mode": "zcode-proofread-round2-fulltext",
+ "author": "伊本·西那",
+ "date": "2026-11-05",
+ "mode": "census-v2-note-migration",
  "findings": {
-  "internal_qa": {
-   "qa1_final": "PUA=0 ctrl=0（原 1 处 \\x1a 已删）esc=0 pagenum=0 dup=0 半角标点=0；merge candidates 余 2 处为版权页标签与索引区保留不并",
-   "structure": "重大作者错配：meta 作者「亚里士多德」实为〔阿拉伯〕伊本·西那（阿维森纳）《论灵魂——〈治疗论〉第六卷》（北京大学哲学系译，商务汉译名著；版权页/译者序/生平内容三重确证；20.1 万字亦与伊本·西那卷帙吻合而非亚氏 De Anima）；另有 EPUB 阅读器 UI 残留 2 块"
-  },
+  "internal_qa": "单章0.json 20万字1412块;译者注块首簇+页底注双形态;208圈号标(93块首+115内文)",
   "fixes": [
-   "作者更正：亚里士多德→伊本·西那，五处同步（meta/app detail/books.json/assets/queues.json；backend detail 不存在）",
-   "EPUB 阅读器 UI 残留清除 2 块（选择背景色/字体选择器/上一篇下一篇导航文本）",
-   "尾块 \\x1a 控制符删除",
-   "介绍重写 438 汉字 3 段纯中文（原 86 字）；tags 保持（古希腊哲学/生命哲学/心灵哲学）",
-   "qa1 余 2 候选为版权页与索引区保留块（同中国哲学史目录块先例）"
+   "簇游标配对97对:注取其前最近未耗同号引标,序言/正文分池",
+   "漂移空标块6处(bi5/68/130/195/238/781)token并入前块尾",
+   "force实读锚4处:N82胆汁例=关于胆汁句;N81想像现实注=评价机能段;N20标题增补=〔引论〕题;N21指地球=坚固的东西段",
+   "同注双标剥3处:bi418抽象作用三①;bi937天使们①+bi938天使实体②(均指星球注挂②)",
+   "截断注尾2处按截断迁移:bi826虫状突起注(页界截'达');bi206隐德来希注尾杂物剥'L C L M N L'",
+   "OCR杂物剥:bi940块头'①，';bi189页码'5'"
   ],
-  "intro": {
-   "chars": 438,
-   "paragraphs": 3,
-   "pureChinese": true
-  }
+  "intro": "summary 438汉字≥280纯中文,tags在位,未改动"
  },
- "unresolved": [],
+ "unresolved": [
+  "6条注文引标散佚残登记:序言⑤鲁世德/⑤二元一元/①思想斗争/①12世纪拉丁译/①面对现实/①神学家攻击",
+  "bi826虫状突起长注被EPUB页界截断(尾'达'处),按截断迁移"
+ ],
  "verify": {
-  "verify_book": "全部通过（双端 MD5、toc 逐项一致、Vite 三探针 200）",
-  "qa_rescan": "除版权/索引保留块外全零"
+  "dp_note_check": "PASS 注107条/引用101处(0失败)",
+  "verify_book": "全部通过 --vite-check",
+  "commit": "314345ecc",
+  "oss": "1/0"
  }
 }
