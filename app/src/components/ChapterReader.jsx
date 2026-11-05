@@ -80,7 +80,7 @@ export default function ChapterReader({
   // 数据: 章.notes=[{n,kind,text,imgs?}]，正文引用记号 {{n:x}}（仅此格式，由逐段实读迁移放置）。
   // 显示号 = 按正文首次引用顺序重排（数据 n 只是稳定标识）；无引用的注释排在后面按数据序。
   const NOTE_TOKEN_RE = /\{\{n:(\d+)\}\}/g;
-  const NOTE_KIND_LABEL = { author: '作者注', translator: '译注', editor: '编注', original: '原注' };
+  const NOTE_KIND_LABEL = { author: '作者注', translator: '译注', editor: '编注', original: '原注', recorder: '记录者' };
   const noteIndex = useMemo(() => {
     const notes = Array.isArray(ch.notes) ? ch.notes : null;
     if (!notes || !notes.length || !Array.isArray(ch.content)) return null;
@@ -638,6 +638,11 @@ export default function ChapterReader({
                       })}
                     </span>;
                   })}
+                  {nt.editorialAddendum && (
+                    <span className="dp-note-editorial-addendum" style={{ display: 'block', textIndent: 0, fontSize: '0.9em', color: 'var(--text-dim)' }}>
+                      校：{nt.editorialAddendum}
+                    </span>
+                  )}
                   {hasBack && (
                     <button className="dp-note-back" title="回到引用位置"
                       style={{

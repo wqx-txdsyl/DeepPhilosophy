@@ -35,7 +35,8 @@ def main():
     from fontTools.ttLib import TTFont
     codes = sorted({int(value.strip().upper().removeprefix('U+'), 16) for value in args.unicodes.split(',')})
     if not codes or any(not (0x3400 <= code <= 0x4DBF or 0x20000 <= code <= 0x323AF
-                            or 0x2630 <= code <= 0x2637 or 0x4DC0 <= code <= 0x4DFF) for code in codes):
+                            or 0x2630 <= code <= 0x2637 or 0x268C <= code <= 0x268F
+                            or 0x4DC0 <= code <= 0x4DFF) for code in codes):
         parser.error('Only selected rare Han or explicitly sourced trigram/hexagram signs belong in this fallback.')
     license_text = args.license.read_text()
     if args.license_kind == 'ofl' and 'SIL OPEN FONT LICENSE Version 1.1' not in license_text:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1）
+"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.2）
 
 用法:
     python3 backend/tools/dp_note_check.py <bid>            # 校验整本书全部章节
@@ -7,7 +7,7 @@
 
 检查项:
   1. notes 字段模式: 数组、每项 n 为正整数、章内唯一、text 非空字符串
-  2. kind 取值合法（author/translator/editor/original 或缺省）
+  2. kind 取值合法（author/translator/editor/original/recorder 或缺省）
   3. 正文 token {{n:x}} 与 notes 一一配对: 每个 token 有对应注; 每条注 ≥1 引用（无引用 → 警告, 迁移不得凭空造引用）
   4. token 只出现在 text 块（html/image 块内出现即失败）
   5. n 与首次引用顺序一致性（不一致 → 警告, 阅读器会重排显示号）
@@ -22,7 +22,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 TOKEN_RE = re.compile(r"\{\{n:(\d+)\}\}")
-VALID_KINDS = {"author", "translator", "editor", "original"}
+VALID_KINDS = {"author", "translator", "editor", "original", "recorder"}
 
 
 def check_chapter(path: Path):
@@ -62,6 +62,12 @@ def check_chapter(path: Path):
         kind = nt.get("kind")
         if kind is not None and kind not in VALID_KINDS:
             errors.append(f"notes[{ni}].kind 非法: {kind!r}")
+        addendum = nt.get('editorialAddendum')
+        if addendum is not None:
+            if not isinstance(addendum, str) or not addendum.strip():
+                errors.append(f"注{n}: editorialAddendum 必须是非空纯文本")
+            elif TOKEN_RE.search(addendum):
+                errors.append(f"注{n}: 编校附记不能含正文引用 token")
         imgs = nt.get("imgs")
         if imgs is not None and not isinstance(imgs, list):
             errors.append(f"notes[{ni}].imgs 必须是数组")

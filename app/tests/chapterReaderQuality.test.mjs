@@ -88,3 +88,11 @@ test('source formula note images remain legible and expose their faithful transc
   assert.match(html,/<img[^>]*alt="s³\/t²"[^>]*height:2\.4em/);
   assert.match(html,/<img[^>]*alt=""[^>]*height:1\.1em/);
 });
+
+test('a recorder attribution and editorial collation are distinguished from original note wording', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'原段{{n:1}}。'}],notes:[{n:1,kind:'recorder',text:'㽦',editorialAddendum:'此署名据文渊阁本补。'}]});
+  const noteStart=html.indexOf('id="dp-note-0-1"');
+  assert.ok(!html.slice(0,noteStart).includes('此署名据文渊阁本补'));
+  assert.ok(plain(html.slice(noteStart)).includes('记录者：㽦校：此署名据文渊阁本补。'));
+  assert.equal((html.match(/class="dp-note-editorial-addendum"/g)||[]).length,1);
+});
