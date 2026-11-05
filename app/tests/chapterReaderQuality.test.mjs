@@ -47,3 +47,10 @@ test('source section hierarchy and quotations retain their distinct reading stru
   assert.match(html, /class="reader-quotation"/);
   assert.match(html, /id="dp-ref-0-1-1"/);
 });
+
+test('a certified heading remains a boundary between OCR page fragments', () => {
+  const html = render({ content: [{ type: 'text', value: '上一节正文的结尾' }, { type: 'text', role: 'section-title', level: 2, value: 'V.6 论超越是的东西不思' }, { type: 'text', value: '1.一物思考另一物与某物思考自身。' }] });
+  assert.match(html, /<h3[^>]*>V\.6 论超越是的东西不思<\/h3>/);
+  assert.ok(!html.includes('上一节正文的结尾V.6'));
+  assert.ok(!html.includes('不思1.一物'));
+});

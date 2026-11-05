@@ -310,7 +310,7 @@ export default function ChapterReader({
           transition: 'background 0.3s, color 0.3s',
         }}>
         {/* 章标题 */}
-        {ch.paragraphMode === 'source' && ch.content?.[0]?.role === 'chapter-title' ? null : ch.type === 'section' ? (
+        {ch.content?.[0]?.role === 'chapter-title' ? null : ch.type === 'section' ? (
           <h2 style={{
             textAlign: 'center', fontSize: Math.max(18, settings.fontSize - 2), fontWeight: 300, margin: '40px 0 48px',
             fontFamily: 'var(--font-sans)', letterSpacing: '0.12em',
@@ -415,6 +415,13 @@ export default function ChapterReader({
               if (blk.type !== 'text') {
                 if (tail) { paras.push(tail); tail = null; }
                 paras.push(blk);
+                continue;
+              }
+              // Certified headings are boundaries even when their surrounding
+              // OCR page blocks still need continuation joining.
+              if (blk.role === 'section-title' || blk.role === 'chapter-title') {
+                if (tail) { paras.push(tail); tail = null; }
+                paras.push({ text: blk.value || '', id: `b-${blk._i}`, imgs: blk.imgs || [], _block: blk._i, _blockFirst: true });
                 continue;
               }
               const parts = (blk.value || '').split('[IMG]');
@@ -656,7 +663,7 @@ export default function ChapterReader({
               if (last < p.length) out.push(renderText(p.slice(last)));
               return out;
             };
-            const sourceBlock = ch.paragraphMode === 'source' ? ch.content[block._block] : null;
+            const sourceBlock = ch.content?.[block._block];
             const isSourceTitle = sourceBlock?.role === 'chapter-title';
             const isSectionTitle = sourceBlock?.role === 'section-title';
             const isQuotation = sourceBlock?.quote === true;
