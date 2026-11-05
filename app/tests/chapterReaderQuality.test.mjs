@@ -8,8 +8,8 @@ import { createServer } from 'vite';
 const server = await createServer({ root: fileURLToPath(new URL('../', import.meta.url)), server: { middlewareMode: true, watch: null }, optimizeDeps: { noDiscovery: true }, appType: 'custom', logLevel: 'error' });
 after(() => server.close());
 const { default: ChapterReader } = await server.ssrLoadModule('/src/components/ChapterReader.jsx');
-function render(chapter) {
-  return renderToStaticMarkup(React.createElement(ChapterReader, { chapters: [{ index: 0, title: '测试章节', ...chapter }], currentChapter: 0, onChapterChange() {} }));
+function render(chapter, props = {}) {
+  return renderToStaticMarkup(React.createElement(ChapterReader, { chapters: [{ index: 0, title: '测试章节', ...chapter }], currentChapter: 0, onChapterChange() {}, ...props }));
 }
 const plain = html => html.replace(/<[^>]*>/g, '');
 
@@ -53,4 +53,20 @@ test('a certified heading remains a boundary between OCR page fragments', () => 
   assert.match(html, /<h3[^>]*>V\.6 论超越是的东西不思<\/h3>/);
   assert.ok(!html.includes('上一节正文的结尾V.6'));
   assert.ok(!html.includes('不思1.一物'));
+});
+
+test('a section mentioned in prose has one anchor at its recorded heading', () => {
+  const html = render({ paragraphMode:'source', content:[{type:'text',value:'下文第一节将讨论这个问题。'},{type:'text',role:'section-title',level:2,value:'第一节'},{type:'text',value:'回顾第一节的论证。'}] }, {toc:[{type:'section',title:'第一节',index:0,sec:1,level:2}]});
+  assert.equal((html.match(/id="sec-0"/g)||[]).length,1);
+  assert.match(html,/<h3[^>]*><span[^>]*id="sec-0"[^>]*><\/span>第一节<\/h3>/);
+});
+
+test('a one-character heading never anchors an ordinary word in prose', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'这是一个普通句子。'},{type:'text',value:'作者另有一种看法。'}]},{toc:[{type:'section',title:'一',index:0,level:2}]});
+  assert.ok(!html.includes('id="sec-0"'));
+});
+
+test('an unlocated title with an invalid block is never assigned a guessed ratio anchor', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'第一段内容。'},{type:'text',value:'第二段内容。'}]},{toc:[{type:'section',title:'尚未定位的真实标题',index:0,sec:90,level:2}]});
+  assert.ok(!html.includes('id="sec-0"'));
 });

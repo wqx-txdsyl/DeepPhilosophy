@@ -6,6 +6,7 @@ import Icon from '../components/Icon';
  */
 import { Fragment, useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import DOMPurify from 'dompurify';
+import { locateChapterSections } from '../data/chapterSections';
 
 // S9（audit 2026-08-17）：章节 HTML 渲染前用 DOMPurify 净化（防存储型 XSS）。
 // 章节内容为策展 HTML，仍按"不可信输入"处理。
@@ -55,44 +56,6 @@ const loadSettings = () => {
     return { bg: s.bg || 'default', fontSize: s.fontSize || 18, lineHeight: s.lineHeight || 2.0,
              autoSpeed: s.autoSpeed || 'medium' };
   } catch { return { bg: 'default', fontSize: 18, lineHeight: 2.0, autoSpeed: 'medium' }; }
-};
-
-// 标题级锚点定位：toc section 的 sec 常缺或指向页块首（标题嵌在块内）→ 改为
-// 按标题文本在正文中定位，插入精确锚点 <span id="sec-{tocIdx}">，跳转不依赖 sec 数字。
-const norm = (s) => (s || '').replace(/\s+/g, '');
-// 候选短块与 section 标题的实质相似度：最长公共子串 + 头部一致取最大。
-// 兜底分配只认"长得像标题"的短块 —— 脚注/注释/书目块(①、[12]、英文括注)
-// 与标题相似度 0-1 分, 不分配, 避免锚点打在脚注上(上帝之城类正文无标题行)。
-const titleSim = (blockText, title) => {
-  const a = norm(blockText), b = norm(title);
-  if (!a || !b) return 0;
-  let best = 0;
-  for (let i = 0; i < a.length; i++) {
-    let k = 0;
-    for (let j = 0; j < b.length; j++) {
-      if (a[i + k] === b[j]) { k++; if (k > best) best = k; }
-      else k = 0;
-    }
-  }
-  let head = 0;
-  const L = Math.min(a.length, b.length);
-  while (head < L && a[head] === b[head]) head++;
-  return Math.max(best, head);
-};
-// 在 text 中找 title 的原文起始下标；容 OCR 错字/截断（全文匹配失败退前 8 字前缀）
-const findTitleOffset = (text, title) => {
-  const nT = norm(text), nTi = norm(title);
-  if (!nTi) return -1;
-  let hit = nT.indexOf(nTi);
-  if (hit < 0 && nTi.length > 8) hit = nT.indexOf(nTi.slice(0, 8));
-  if (hit < 0) return -1;
-  let cnt = 0;
-  for (let i = 0; i < text.length; i++) {
-    if (/\s/.test(text[i])) continue;
-    if (cnt === hit) return i;
-    cnt++;
-  }
-  return -1;
 };
 
 export default function ChapterReader({
@@ -458,7 +421,7 @@ export default function ChapterReader({
                     }
                   } else if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
                     // 页边界断句 → 拼接到前块尾段。段首内容仍是原块(常是标题块),
-                    // 必须保留 tail 的 id/_block —— b-{sec} 回退与 blockAnchors
+                    // 必须保留 tail 的 id/_block —— b-{sec} 回退与节定位
                     // 按 _block 匹配都依赖它; 被拼入的本块内容位于段中, 由标题级
                     // sec-{tocIdx} 锚点按文本位置精确定位。
                     tail.text += segText;
@@ -471,82 +434,7 @@ export default function ChapterReader({
               });
             }
             if (tail) paras.push(tail);
-            // 每块在段层中的第一个段下标 —— 兜底锚点(块级/比例级)定位用。
-            // 块首段可能因页边界断句拼入前块尾段(该段 _blockFirst=false),
-            // 但块内容仍从该拼接段中部开始 —— 锚点插在该段开头, 误差仅首段几字。
-            const blockFirstSeg = new Map();
-            paras.forEach((p, pi) => {
-              if (p._block != null && !blockFirstSeg.has(p._block)) blockFirstSeg.set(p._block, pi);
-            });
-
-            // 兜底锚点: 文本匹配不到的 section 按两级分配
-            // ① 块级: toc 顺序 ↔ 章内"短标题块"顺序, 且候选块与标题实质相似(≥6)
-            //    （南怀瑾类: 正文短标题块=节标题, 一一对应; 上帝之城/释义类: 短块
-            //      是脚注/注释/书目(相似度 0-1), 不分配 → 落第②级, 避免锚点打在脚注上）
-            // ② 比例级: 已匹配 section 的锚点块间按 toc 序比例插值(无已匹配 → 章内均匀),
-            //    保证正文无标题行的书(上帝之城等)也能落到节内容所在区域
-            const blockAnchors = new Map();
-            const ratioAnchors = new Map();
-            if (secList.length) {
-              const candidates = [];
-              (ch.content || []).forEach((b, bi) => {
-                const v = (b && (b.value || '')) || '';
-                if (v && v.length <= 60 && !/[。！？….!?]$/.test(v.trim())) candidates.push(bi);
-              });
-              const M = (ch.content || []).length;
-              const orderOf = new Map(secList.map((s, o) => [s.tocIdx, o]));  // tocIdx → 章内序
-              const matchedBlock = new Map();   // tocIdx → 文本匹配命中块(插值锚)
-              let j = 0;
-              for (const s of secList) {
-                let mBlock = -1;
-                (ch.content || []).some((b, bi) => {
-                  if (findTitleOffset((b && (b.value || '')) || '', s.item.title) >= 0) { mBlock = bi; return true; }
-                  return false;
-                });
-                if (mBlock >= 0) { matchedBlock.set(s.tocIdx, mBlock); }
-                else {
-                  const cv = norm(((ch.content || [])[candidates[j]] || {}).value || '');
-                  if (j < candidates.length
-                    && blockFirstSeg.has(candidates[j])   // 空白块无段, 分配了也跳不了
-                    && titleSim(cv, s.item.title) >= 6) {
-                    blockAnchors.set(s.tocIdx, candidates[j]);
-                  } else {
-                    // 无候选或候选与标题不相似 → 比例级
-                    const myOrder = orderOf.get(s.tocIdx);
-                    // 插值锚按章内序排列(与 tocIdx 无关, 章内序才反映内容先后)
-                    const anchors = [...matchedBlock.entries()]
-                      .sort((a, b) => orderOf.get(a[0]) - orderOf.get(b[0]))
-                      .map(([ti, bi]) => [orderOf.get(ti), bi]);
-                    let target;
-                    if (!anchors.length) {
-                      target = Math.floor((myOrder + 1) * M / (secList.length + 1));
-                    } else {
-                      let prev = null, next = null;
-                      for (const [o, bi] of anchors) {
-                        if (o < myOrder) prev = [o, bi]; else { next = [o, bi]; break; }
-                      }
-                      if (prev && next) {
-                        target = Math.round(prev[1] + (next[1] - prev[1]) * (myOrder - prev[0]) / (next[0] - prev[0]));
-                      } else if (prev) {
-                        target = Math.round(prev[1] + (M - 1 - prev[1]) * (myOrder - prev[0]) / (secList.length - 1 - prev[0]));
-                      } else {
-                        target = Math.round(next[1] * myOrder / next[0]);
-                      }
-                    }
-                    // 锚点必须落在文本块且段层有该块(image/html 或单段块首段拼入前块 → 无段)
-                    const content = ch.content || [];
-                    while (target >= 0 && target < M && !(content[target] && content[target].value)) target++;
-                    while (target >= 0 && target < M && !blockFirstSeg.has(target)) target++;
-                    if (target >= M) {   // 章尾块均无段 → 向前找最近可用块
-                      target = M - 1;
-                      while (target >= 0 && !blockFirstSeg.has(target)) target--;
-                    }
-                    ratioAnchors.set(s.tocIdx, target < 0 ? 0 : target);
-                  }
-                  j++;
-                }
-              }
-            }
+            const sectionTargets = locateChapterSections(ch.content || [], paras, secList);
             const noteReferenceSequence = {};
             return paras.map((block, i) => {
             if (block.type === 'image') {
@@ -576,25 +464,8 @@ export default function ChapterReader({
               }
               return off;
             };
-            if ((secList.length || blockAnchors.size || ratioAnchors.size) && block.text) {
-              // 锚点: ① 文本匹配 → 标题起始处(精确到标题行);
-              //       ② 块级兜底/比例级兜底 → 目标块块首
-              const hits = [];
-              if (secList.length) {
-                for (const s of secList) {
-                  const off = findTitleOffset(block.text, s.item.title);
-                  if (off >= 0) hits.push({ tocIdx: s.tocIdx, off });
-                }
-              }
-              if (blockAnchors.size || ratioAnchors.size) {
-                for (const [tocIdx, bIdx] of blockAnchors) {
-                  if (blockFirstSeg.get(bIdx) === i) hits.push({ tocIdx, off: 0 });
-                }
-                for (const [tocIdx, bIdx] of ratioAnchors) {
-                  if (blockFirstSeg.get(bIdx) === i) hits.push({ tocIdx, off: 0 });
-                }
-              }
-              hits.sort((a, b) => a.off - b.off);
+            const hits = sectionTargets.get(i) || [];
+            if (hits.length && block.text) {
               for (const h of hits) {
                 if (h.off < cursor) continue;
                 parts.push(gluePua(block.text.slice(cursor, safeOff(block.text, h.off))));

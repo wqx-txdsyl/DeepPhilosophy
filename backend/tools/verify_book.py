@@ -10,6 +10,7 @@
   6. book_detail/<bid>.json 存在 (详情页目录/摘要来源) 且 toc 同结构
   7. books.json 里该书 chapterCount 一致
   8. 正文块必须为 dict，type 为阅读器支持的 text/image/html（防缺失类型导致整页崩溃）
+  9. 章节内部 index 必须与文件名一致；已声明的 section.sec 不得越界
   9. --vite-check: curl 5173 meta.json + book_detail 真内容 (vite public 预索引, 新文件须重启 vite)
 全部通过才可宣布完成; 任何一项失败 → 修完重跑
 """
@@ -71,7 +72,9 @@ check('chapterTitles 字符串数组且长度 == chapterCount',
       isinstance(ct, list) and all(isinstance(t, str) for t in ct) and len(ct) == n,
       '%d 项' % len(ct))
 title_mismatches = []
+index_mismatches = []
 invalid_blocks = []
+chapter_lengths = {}
 for i in range(n):
     path = D + '/%d.json' % i
     if not os.path.exists(path):
@@ -80,7 +83,10 @@ for i in range(n):
         chapter = json.load(f)
     if not isinstance(chapter, dict) or i >= len(ct) or chapter.get('title') != ct[i]:
         title_mismatches.append(i)
+    if not isinstance(chapter, dict) or type(chapter.get('index')) is not int or chapter.get('index') != i:
+        index_mismatches.append(i)
     content = chapter.get('content') if isinstance(chapter, dict) else None
+    chapter_lengths[i] = len(content) if isinstance(content, list) else 0
     if not isinstance(content, list) or not content:
         invalid_blocks.append('%d.json: 正文块缺失' % i)
     else:
@@ -89,6 +95,15 @@ for i in range(n):
                 invalid_blocks.append('%d.json:%d 缺少或未知块类型' % (i, bi))
 check('meta.chapterTitles 与实际章节标题逐项一致', not title_mismatches,
       '不一致: %s' % title_mismatches[:10] if title_mismatches else '')
+check('章节内部 index 与文件名逐项一致', not index_mismatches,
+      '不一致: %s' % index_mismatches[:10] if index_mismatches else '')
+
+invalid_sections = [ti for ti, item in enumerate(toc) if isinstance(item, dict)
+                    and item.get('type') == 'section' and 'sec' in item
+                    and (type(item.get('sec')) is not int or item['sec'] < 0
+                         or item['sec'] >= chapter_lengths.get(item.get('index'), 0))]
+check('已声明的 section.sec 指向实际存在的正文块', not invalid_sections,
+      '越界目录项: %s' % invalid_sections[:12] if invalid_sections else '')
 
 check('正文块具有阅读器支持的类型', not invalid_blocks,
       '; '.join(invalid_blocks[:10]))
@@ -140,4 +155,4 @@ print()
 if fails:
     print('✗ 未通过: %s' % ', '.join(fails))
     sys.exit(1)
-print('✓ 全部通过 — 可以宣布完成')
+print('✓ 结构和同步检查通过；原文完整性、语言校勘与注释定位仍需对应来源验收')
