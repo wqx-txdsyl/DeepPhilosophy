@@ -50,8 +50,33 @@ def segs_of(v):
     return out
 
 PURE = [3, 5, 8, 10, 13, 21, 25, 27, 30, 31, 33, 34, 35, 40, 41, 44, 47, 48, 54, 55, 60, 63, 70, 71, 79, 84, 86, 90, 91, 94, 96, 99, 104, 109, 111, 112, 115, 117, 123, 124, 128, 138, 158, 159, 162, 170, 172, 176, 177, 179, 180, 183, 185, 190, 194, 197, 202, 203, 209, 213, 216, 222, 223, 226, 227, 230, 232, 238, 240, 241, 246]
-TAIL = [2, 4, 7, 9, 12, 15, 16, 18, 20, 22, 24, 26, 29, 32, 37, 39, 43, 46, 51, 52, 53, 58, 59, 62, 66, 68, 72, 74, 77, 78, 83, 87, 93, 95, 106, 108, 110, 113, 116, 119, 121, 122, 127, 130, 132, 135, 136, 137, 139, 140, 142, 144, 150, 155, 156, 157, 161, 169, 173, 174, 175, 178, 181, 182, 184, 186, 187, 188, 189, 192, 193, 195, 196, 200, 201, 206, 208, 211, 212, 214, 215, 218, 220, 221, 224, 225, 228, 229, 231, 234, 235, 236, 237, 239, 242, 243, 245]
+# 136/174/228/234/236/239/242/139/155/161/186/188/214/224/81: 块尾无注文粘连, 全标记=ref(注在下块) — 2026-11-05 实读修正
+# 82/89/98/102/126/134/165/166/171: 漏网 TAIL 补入(尾注粘连, 初分类漏) — 2026-11-05 二次全扫实读
+# 235: MID 夹断注(① 蒂迈欧39E8) → MID 条目
+TAIL = [2, 4, 7, 9, 12, 15, 16, 18, 20, 22, 24, 26, 29, 32, 37, 39, 43, 46, 51, 52, 53, 58, 59, 62, 66, 68, 72, 74, 77, 78, 82, 83, 87, 89, 93, 95, 98, 102, 106, 108, 110, 113, 116, 119, 121, 122, 126, 127, 130, 132, 134, 135, 137, 140, 142, 144, 150, 157, 165, 166, 169, 171, 173, 175, 178, 182, 184, 187, 189, 192, 193, 196, 200, 201, 206, 208, 211, 212, 215, 218, 220, 221, 225, 229, 231, 237, 243, 245]
 TAILN = {}
+
+# 页眉整块删除(V.6 running header, 2026-11-05 实读)
+PH_BLOCKS = {146, 148, 154, 160}
+
+# MID 夹断注(2026-11-05 实读)
+MID = [
+    dict(blk=235, seg='① 参见柏拉图《蒂迈欧篇》39E8。', join=('不健全', ''),
+         notes=[('参见柏拉图《蒂迈欧篇》39E8。', ('NUM', 0, 234))]),
+    # 中译者注: blk155①("那么①真正单一的")处插入短语, 注文因页断错排入 blk156
+    dict(blk=156, seg='① 插入“这种单一不是真正的单一”。——中译者注', join=('并', ''),
+         notes=[('插入“这种单一不是真正的单一”。——中译者注', ('NUM', 0, 155))]),
+]
+for su in MID:
+    v = V[su['blk']]
+    p = v.find(su['seg'])
+    assert p > 0, ('MID seg', su['blk'])
+    left, right = su['join']
+    i = v.rfind(left, max(0, p - len(left) - 60), p)
+    assert i > 0 and v[i + len(left):i + len(left) + len(su['seg'])] == su['seg'], su['blk']
+    V[su['blk']] = v[:i + len(left)] + right + v[i + len(left) + len(su['seg']):]
+    for (t, spec) in su['notes']:
+        A_NOTES.append((t, spec))
 
 plan = {}
 pending = {}
@@ -205,8 +230,20 @@ for ai, (text, spec) in enumerate(A_NOTES):
         assert v.count(tok) == 1, ('alias tok', blk, tok)
         V[blk] = v.replace(tok, '{{n:%d}}' % num_of[('A', ai)])
 
-# ============ 级联(倒序应用支持链) ============
+# ============ 级联(倒序应用支持链, 2026-11-05 --scan 全扫逐条实读) ============
 CASCADE = [
+    (2, 4), (4, 6), (9, 11), (12, 14), (15, 16), (16, 17), (18, 19),
+    (24, 26), (29, 32), (32, 36), (37, 38), (39, 42), (43, 45), (46, 49),
+    (51, 52), (53, 56), (58, 59), (59, 61), (66, 67), (68, 69), (72, 73),
+    (74, 75), (77, 78), (78, 80), (82, 83), (83, 85), (87, 88), (93, 95), (95, 97),
+    (106, 107), (108, 110), (110, 113), (114, 116), (116, 118), (119, 120),
+    (121, 122), (122, 125), (127, 129), (130, 131), (132, 133), (135, 136),
+    (137, 139), (140, 141), (142, 143), (144, 145), (150, 151),
+    (169, 171), (173, 174), (175, 178), (178, 181), (182, 184), (184, 186),
+    (187, 188), (189, 191), (192, 193), (196, 198), (200, 201), (201, 204),
+    (206, 207), (211, 212), (212, 214), (215, 217), (218, 219), (220, 221),
+    (221, 224), (225, 228), (229, 231), (231, 233), (235, 236), (243, 244),
+    (245, 247), (98, 100), (102, 103), (165, 166), (166, 167),
 ]
 merged = set()
 for (a, b) in reversed(CASCADE):
@@ -217,11 +254,25 @@ for (a, b) in reversed(CASCADE):
     merged.add(a)
     merged.add(b)
 
+# ============ 断句候选扫描(--scan: 剥注级联后状态) ============
+if '--scan' in sys.argv:
+    TERM = '。！？；：\u201c\u201d…—?!"\''
+    CJKR = re.compile(r'[\u4e00-\u9fff]')
+    alive = [(i, V[i]) for i in range(len(V)) if V[i] is not None and V[i].strip()]
+    for k in range(len(alive) - 1):
+        i, a = alive[k]
+        j, b = alive[k + 1]
+        ta, hb = a.rstrip(), b.lstrip()
+        if not ta or not hb:
+            continue
+        if CJKR.match(ta[-1]) and ta[-1] not in TERM and CJKR.match(hb[0]):
+            print(f'SCAN ({i},{j})  …{ta[-16:]} | {hb[:16]}…')
+
 # ============ 删除 + 落盘 ============
 left = [(i, V[i]) for i, v in enumerate(V) if v is not None and MR.search(v)]
 dead = set()
 for i, v in enumerate(V):
-    if v is None:
+    if v is None or i in PH_BLOCKS:
         dead.add(i)
     elif not MR.search(v):
         if i in plan and plan[i][0] and not any(plan[i][1]):
@@ -238,12 +289,24 @@ for i, v in left:
     m = MR.search(v)
     pp = m.start()
     print(f'残余 orig-blk{i}: …{v[max(0,pp-30):pp+6]}…')
+
+# ============ 拆块: blk114 V.5 论文标题独立(与 blk168/210 一致) ============
+for _k, b in enumerate(bs):
+    if b['value'].startswith('V.5论可理知者不外在于理智'):
+        _p = b['value'].find('1.谁能说')
+        assert _p > 0, ('split114', _p)
+        _rest = b['value'][_p:]
+        b['value'] = b['value'][:_p].rstrip()
+        bs.insert(_k + 1, {'type': b['type'], 'value': _rest})
+        print('拆块: V.5 论文标题独立于 blk114')
+        break
+
 if WRITE:
     with open(f'{DP}/{CH}.json', 'w', encoding='utf-8') as f:
         json.dump(d, f, ensure_ascii=False, indent=1)
     print(f'落盘: notes {len(notes_final)} 条, blocks {N0}→{len(bs)}')
 else:
-    print(f'DRY: notes {len(notes_final)} 条, blocks {N0}→{len(bs)-len(dead)}')
+    print(f'DRY: notes {len(notes_final)} 条, blocks {N0}→{len(bs)}')
     print('--- 配对总表(锚前文…【标】 | 注文前40字) ---')
     for idx, ((b, p), key) in enumerate(withref, start=1):
         ctx = V0[b][max(0, p - 16):p]
