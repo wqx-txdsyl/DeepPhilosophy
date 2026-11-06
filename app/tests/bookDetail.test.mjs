@@ -64,3 +64,20 @@ test('Kumarajiva Vimalakirti keeps its fourteen chapters under three original vo
  assert.deepEqual(roots.slice(1).flatMap(n=>n.children.map(c=>c.index)),Array.from({length:14},(_,i)=>i+1));
  assert.equal(roots[3].children.at(-1).title,'囑累品第十四');
 });
+
+test('Western9 summaries open before their prose, not at a repeated closing title',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/4a4a200536bd.json',import.meta.url)));
+ const normalized=s=>String(s||'').replace(/\s/g,'');
+ const summaries=book.toc.filter(x=>x.type==='section'&&normalized(x.title)==='总结');
+ assert.equal(summaries.length,20);
+ for(const item of summaries){
+  const chapter=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/4a4a200536bd/${item.index}.json`,import.meta.url)));
+  assert.equal(chapter.content.filter(b=>normalized(b.value)==='总结').length,1,chapter.title);
+  assert.equal(chapter.content[item.sec].role,'section-title');
+  assert.ok(chapter.content[item.sec+1]?.value?.length>50,chapter.title);
+  assert.notEqual(chapter.content[item.sec+1]?.role,'section-title');
+  const questions=book.toc.find(x=>x.index===item.index&&x.title==='研究问题');
+  assert.ok(questions.sec>item.sec+1,chapter.title);
+  assert.equal(questions.level,item.level);
+ }
+});

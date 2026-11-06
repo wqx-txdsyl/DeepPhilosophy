@@ -1,4 +1,4 @@
-const compact = value => (value || '').replace(/\s/g, '');
+const compact = value => (value || '').replace(/\{\{n:[1-9]\d*\}\}/g, '').replace(/\s/g, '');
 
 // Keep a mapping to the original string: whitespace-tolerant matching must
 // still place an anchor between complete source characters.
@@ -6,6 +6,10 @@ function titleOffsets(text, title) {
   let joined = '';
   const offsets = [];
   for (let i = 0; i < text.length; i++) {
+    if (text.startsWith('{{n:', i)) {
+      const note = /^\{\{n:[1-9]\d*\}\}/.exec(text.slice(i));
+      if (note) { i += note[0].length - 1; continue; }
+    }
     if (/\s/.test(text[i])) continue;
     joined += text[i];
     offsets.push(i);

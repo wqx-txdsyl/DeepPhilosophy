@@ -61,6 +61,15 @@ test('a section mentioned in prose has one anchor at its recorded heading', () =
   assert.match(html,/<h3[^>]*><span[^>]*id="sec-0"[^>]*><\/span>第一节<\/h3>/);
 });
 
+test('a note inside a section title keeps the literal title anchor and its own reference', () => {
+  for (const sec of [undefined, 1]) {
+    const html=render({paragraphMode:'source',content:[{type:'text',value:'下文讨论作为意志和表象的世界。'},{type:'text',role:'section-title',level:3,value:'作为意志和表象{{n:1}}的世界'},{type:'text',value:'原节正文。'}],notes:[{n:1,text:'原书用词为Vorstellung。'}]},{toc:[{type:'section',title:'作为意志和表象的世界',index:0,sec,level:3}]});
+    assert.equal((html.match(/id="sec-0"/g)||[]).length,1);
+    assert.match(html,/<h4[^>]*><span[^>]*id="sec-0"[^>]*><\/span>作为意志和表象<sup[^>]*id="dp-ref-0-1-1"/);
+    assert.ok(plain(html).includes('的世界'));
+  }
+});
+
 test('a one-character heading never anchors an ordinary word in prose', () => {
   const html=render({paragraphMode:'source',content:[{type:'text',value:'这是一个普通句子。'},{type:'text',value:'作者另有一种看法。'}]},{toc:[{type:'section',title:'一',index:0,level:2}]});
   assert.ok(!html.includes('id="sec-0"'));

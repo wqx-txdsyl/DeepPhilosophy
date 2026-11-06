@@ -185,7 +185,10 @@ export default function ChapterReader({
     if (p.tocIdx != null) el = document.getElementById(`sec-${p.tocIdx}`);
     if (!el && p.sec != null) el = document.getElementById(`b-${p.sec}`);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // An empty inline anchor sits on the text baseline. Scroll the complete
+      // heading so its first line stays visible, including titles with notes.
+      const target = el.closest('h2, h3, h4') || el;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       pendingSecRef.current = null;
     }
     // 未找到(章节异步加载中) → 等 ch.content / currentChapter 变化再试
