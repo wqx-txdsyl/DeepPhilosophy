@@ -143,3 +143,27 @@ test('Moral Sentiments introductions and sections resolve to their own original 
  assert.equal(notice.content[0].value,'告读者{{n:1}}');
  assert.ok(notice.notes[0].text.includes('第六版'));
 });
+
+test('Nan Huai-jin anthology sections stay in their own chapters and before the next book',()=>{
+ const bid='a26240ee8f45',book=JSON.parse(fs.readFileSync(new URL(`../public/book_detail/${bid}.json`,import.meta.url)));
+ const toc=normalizeBookToc(book),tree=groupBookToc(toc);assert.equal(book.chapterCount,685);assert.equal(toc.length,2087);
+ const chapters=new Map();let noteCount=0,callCount=0;
+ for(let i=0;i<685;i++){
+  const ch=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/${bid}/${i}.json`,import.meta.url)));chapters.set(i,ch);
+  noteCount+=(ch.notes||[]).length;callCount+=ch.content.reduce((n,b)=>n+(b.value?.match(/\{\{n:\d+\}\}/g)||[]).length,0);
+ }
+ for(const node of toc.filter(n=>n.type==='section')){
+  const b=chapters.get(node.index).content[node.sec];assert.equal(b.role,'section-title');
+  assert.equal(b.value.replace(/\{\{n:\d+\}\}|\s/g,''),node.title.replace(/\s/g,''));
+ }
+ assert.equal(noteCount,690);assert.equal(callCount,689);
+ const flat=flatten(tree);assert.equal(flat.length,toc.length);
+ const appendix=flat.find(n=>n.type==='chapter'&&n.index===646);
+ assert.deepEqual(appendix.children.filter(n=>n.title==='结论').map(n=>n.sec),[10,197]);
+ const history=tree.find(n=>n.type==='part'&&n.title==='历史的经验');
+ assert.equal(history.children[0].type,'chapter');assert.equal(history.children[0].index,647);
+ assert.ok(!flatten(history.children).some(n=>n.index===646));
+ assert.ok(chapters.get(683).content[0].value.startsWith('我们还有一篇没有讲的第十篇《乡党》'));
+ const doctrine=chapters.get(510).notes.find(n=>n.n===11);
+ assert.ok(doctrine.text.includes('\n以上两种外道，皆以断见为主'));
+});
