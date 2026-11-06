@@ -59,3 +59,40 @@ def test_overlapping_second_link_does_not_create_reachability(tmp_path):
     ])
     assert any('重叠' in error for error in errors)
     assert len(warnings) == 1 and '注42:' in warnings[0]
+
+
+@pytest.mark.parametrize('label', ['同上', '同上。'])
+def test_verified_same_source_words_can_reach_the_actual_original_note(tmp_path, label):
+    errors, warnings, _ = check(tmp_path, [
+        {'n': 11, 'text': '𝛂' + label, 'crossRefs': [{'n': 29, 'start': 2, 'end': 2 + len(label)}]},
+        {'n': 29, 'text': '原版所指的上一条出处。'},
+    ])
+    assert not errors and not warnings
+
+
+@pytest.mark.parametrize('label', ['同', '同\n上', '同上文', '同上!'])
+def test_a_similar_but_unsupported_label_cannot_hide_an_orphan(tmp_path, label):
+    errors, warnings, _ = check(tmp_path, [
+        {'n': 11, 'text': label, 'crossRefs': [{'n': 29, 'start': 0, 'end': len(label)}]},
+        {'n': 29, 'text': '没有合法入口。'},
+    ])
+    assert errors
+    assert any('注29:' in warning for warning in warnings)
+
+
+def test_same_source_prose_cannot_be_mislabelled_as_an_original_superscript(tmp_path):
+    errors, warnings, _ = check(tmp_path, [
+        {'n': 11, 'text': '同上。', 'crossRefs': [{'n': 29, 'start': 0, 'end': 2, 'superscript': True}]},
+        {'n': 29, 'text': '没有其他入口。'},
+    ])
+    assert any('不能改成上标' in error for error in errors)
+    assert any('注29:' in warning for warning in warnings)
+
+
+def test_an_unrooted_same_source_cycle_still_requires_a_genuine_body_call(tmp_path):
+    _, warnings, _ = check(tmp_path, [
+        {'n': 11, 'text': '正文所引原注。'},
+        {'n': 29, 'text': '同上。', 'crossRefs': [{'n': 42, 'start': 0, 'end': 2}]},
+        {'n': 42, 'text': '同上。', 'crossRefs': [{'n': 29, 'start': 0, 'end': 2}]},
+    ])
+    assert len(warnings) == 2

@@ -453,13 +453,17 @@ export default function ChapterReader({
             const noteReferenceSequence = {};
             return paras.map((block, i) => {
             if (block.type === 'image') {
-              const src = toOssImage(block.src);   // 块级图原图直链(库内最大 ~330KB, 70vh 显示够用)
+              const src = toOssImage(block.src);   // 保留原像素地址；版内缩放，细节可单独查看原图。
               if (!src) return null;   // 历史坏数据(本地/OSS 均无) → 不渲染破图
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
-                  <img src={src} alt={block.alt || ''}
-                    loading="lazy" decoding="async"
-                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4, backgroundColor: block.background === 'white' ? '#fff' : undefined }} />
+                  <a href={src} target="_blank" rel="noopener noreferrer"
+                    aria-label={typeof block.alt === 'string' && block.alt.trim() ? `查看原图：${block.alt}` : '查看原图'}
+                    title="查看原图" style={{ display: 'inline-block', maxWidth: '100%', cursor: 'zoom-in' }}>
+                    <img src={src} alt={block.alt || ''}
+                      loading="lazy" decoding="async"
+                      style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4, backgroundColor: block.background === 'white' ? '#fff' : undefined }} />
+                  </a>
                   {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
               );
@@ -620,14 +624,20 @@ export default function ChapterReader({
                 const out = [];
                 let cursor = 0;
                 for (const ref of nt.crossRefs) {
+                  if (!ref || typeof ref !== 'object') continue;
                   const from = ref.start - start, to = ref.end - start;
                   const target = noteIndex.disp.get(ref.n);
                   if (!Number.isInteger(from) || !Number.isInteger(to) || from < cursor || to <= from || to > segment.length || target == null) continue;
+                  const label = segment.slice(from, to);
+                  const sameSource = label === '同上' || label === '同上。';
+                  if ((!sameSource && !/^\[\d+\]$/.test(label))
+                    || (sameSource && ref.superscript === true)
+                    || ('superscript' in ref && typeof ref.superscript !== 'boolean')) continue;
                   out.push(renderSourceInline(segment.slice(cursor, from), noteStyles, start + cursor));
                   const id = `dp-note-cross-${currentChapter}-${n}-${++crossSequence}`;
                   out.push(<button key={id} id={id} type="button" className={'dp-note-cross' + (hlId === id ? ' dp-flash' : '')}
                     style={{ border: 0, background: 'none', padding: 0, font: 'inherit', textIndent: 0, color: 'var(--ochre)', cursor: 'pointer', ...(ref.superscript === true ? { verticalAlign: 'super', fontSize: '0.75em', lineHeight: 1 } : {}) }}
-                    aria-label={`转到注释${target}`} onClick={e => goNote(ref.n, target, e.currentTarget)}>[{target}]</button>);
+                    aria-label={`转到注释${target}`} onClick={e => goNote(ref.n, target, e.currentTarget)}>{sameSource ? label : `[${target}]`}</button>);
                   cursor = to;
                 }
                 out.push(renderSourceInline(segment.slice(cursor), noteStyles, start + cursor));

@@ -13,6 +13,51 @@ function render(chapter, props = {}) {
 }
 const plain = html => html.replace(/<[^>]*>/g, '');
 
+test('a full-page figure links to its original pixels without reducing the image or sharing its opener', () => {
+  const html = render({ content: [{ type: 'image', src: '/api/books/demo/image/source-table.png', alt: '原版统计表', w: 3330, h: 4483 }] });
+  assert.match(html, /<a href="https:\/\/deepphilosophy\.oss-cn-shanghai\.aliyuncs\.com\/book_images\/source-table\.png" target="_blank" rel="noopener noreferrer" aria-label="查看原图：原版统计表"/);
+  assert.ok(!html.includes('x-oss-process'));
+  assert.equal((html.match(/<img\b/g) || []).length, 1);
+});
+
+test('an unavailable block image does not create an empty or unsafe original-image link', () => {
+  const html = render({ content: [{ type: 'image', src: 'javascript:untrusted-image', alt: '不可用图' }, { type: 'text', value: '原文完整保留。' }] });
+  assert.ok(!html.includes('查看原图'));
+  assert.ok(!html.includes('javascript:'));
+  assert.ok(plain(html).includes('原文完整保留。'));
+});
+
+test('a verified same-source note reference keeps its original words when note numbers change', () => {
+  const html = render({ paragraphMode: 'source', content: [{ type: 'text', value: '先引这一条{{n:29}}，再引上一来源{{n:11}}。' }], notes: [
+    { n: 11, text: '原书上注。' },
+    { n: 29, text: '同上。', crossRefs: [{ n: 11, start: 0, end: 2 }] },
+  ] });
+  assert.match(html, /id="dp-note-cross-0-29-1"[^>]*aria-label="转到注释2"[^>]*>同上<\/button>。/);
+  assert.ok(!/aria-label="转到注释2"[^>]*>\[2\]/.test(html));
+});
+
+test('same-source words after an astral character use the actual UTF-16 location', () => {
+  const html = render({ content: [{ type: 'text', value: '原文{{n:1}}{{n:2}}。' }], notes: [
+    { n: 1, text: '原版书名。' },
+    { n: 2, text: '𝛂同上。', crossRefs: [{ n: 1, start: 2, end: 5 }] },
+  ] });
+  assert.match(html, /𝛂<button[^>]*aria-label="转到注释1"[^>]*>同上。<\/button>/);
+});
+
+test('unverified text, incomplete same-source words and a false superscript stay unchanged', () => {
+  for (const [text, ref] of [
+    ['不是注号。', { n: 1, start: 0, end: 4 }],
+    ['同上。', { n: 1, start: 0, end: 1 }],
+    ['同上。', { n: 1, start: 0, end: 2, superscript: true }],
+  ]) {
+    const html = render({ content: [{ type: 'text', value: '原文{{n:1}}{{n:2}}。' }], notes: [
+      { n: 1, text: '原书来源。' }, { n: 2, text, crossRefs: [ref] },
+    ] });
+    assert.ok(plain(html).includes(text));
+    assert.ok(!html.includes('dp-note-cross-0-2-1'));
+  }
+});
+
 test('source subscripts and powers retain UTF-16 offsets past a note and an inline picture', () => {
   const value='𝛂klP{{n:1}}[IMG]Q2';
   const inlineStyles=[

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.4）
+"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.5）
 
 用法:
     python3 backend/tools/dp_note_check.py <bid>            # 校验整本书全部章节
@@ -154,8 +154,12 @@ def check_chapter(path: Path):
                 label = encoded[start * 2:end * 2].decode('utf-16-le')
             except UnicodeError:
                 label = ''
-            if not re.fullmatch(r'\[\d+\]', label):
-                errors.append(f"注{nt.get('n')}: 跨注范围不是完整原注号: {label!r}")
+            same_source = label in ('同上', '同上。')
+            if not re.fullmatch(r'\[\d+\]', label) and not same_source:
+                errors.append(f"注{nt.get('n')}: 跨注范围不是完整原注号或同上原文: {label!r}")
+                valid = False
+            if same_source and ref.get('superscript') is True:
+                errors.append(f"注{nt.get('n')}: 同上原文不能改成上标注号")
                 valid = False
             if valid and type(nt.get('n')) is int and nt['n'] in seen_n:
                 note_edges.setdefault(nt['n'], set()).add(target)
