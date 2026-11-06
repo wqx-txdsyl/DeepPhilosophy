@@ -30,10 +30,10 @@ function Cover({ book, hero = false }) {
 function TocNode({ node, book, depth = 0 }) {
   const readingNode = bookTocReadingNode(node);
   const href = bookReaderPath(book.id, readingNode, book.chapterCount);
-  if (node.type === 'part' || node.children.length) return <details className={`${node.type === 'part' ? 'dp-part' : 'dp-chapter'}${node.type === 'section' ? ' bd-toc-branch-section' : ''}`}  id={`bd-toc-${node.tocIndex}`} open={depth === 0 && node.tocIndex === 0}>
+  if ((node.type === 'part' && readingNode === node) || readingNode.children.length) return <details className={`${node.type === 'part' ? 'dp-part' : 'dp-chapter'}${node.type === 'section' ? ' bd-toc-branch-section' : ''}`}  id={`bd-toc-${node.tocIndex}`} open={depth === 0 && node.tocIndex === 0}>
     <summary>{node.title}</summary><div className="bd-toc-children">{href && <Link className="bd-chapter-start" id={readingNode !== node ? `bd-toc-${readingNode.tocIndex}` : undefined} to={href}>从此处开始阅读 ↗</Link>}{readingNode.children.map(child => <TocNode key={child.tocIndex} node={child} book={book} depth={depth+1} />)}</div>
   </details>;
-  return <div className={`bd-toc-leaf${node.type === 'section' ? ' bd-toc-section' : ''}`} id={`bd-toc-${node.tocIndex}`}>{href ? <Link to={href}><span>{node.title}</span><span aria-hidden="true">↗</span></Link> : <span>{node.title}</span>}</div>;
+  return <div className={`bd-toc-leaf${node.type === 'section' ? ' bd-toc-section' : ''}`} id={`bd-toc-${node.tocIndex}`}>{href ? <Link id={readingNode !== node ? `bd-toc-${readingNode.tocIndex}` : undefined} to={href}><span>{node.title}</span><span aria-hidden="true">↗</span></Link> : <span>{node.title}</span>}</div>;
 }
 export default function BookDetailPage() {
   const { bookId } = useParams();
