@@ -5,6 +5,22 @@ import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNod
 import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
+test('Wittgenstein volumes and mathematical topics contain all real reading units without empty title pages',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/c0e78ea6f80a.json',import.meta.url)));
+ const roots=groupBookToc(normalizeBookToc(book));
+ assert.equal(roots.length,8);
+ const all=flatten(roots), reading=all.filter(n=>n.type==='chapter');
+ assert.equal(book.chapterCount,99);assert.equal(reading.length,99);
+ assert.deepEqual(reading.map(n=>n.index),Array.from({length:99},(_,i)=>i));
+ const mathematics=roots[4];
+ assert.deepEqual(mathematics.children.filter(n=>n.type==='part').map(n=>n.title),['第一部分','第二部分','第三部分']);
+ assert.equal(mathematics.children.find(n=>n.title==='第一部分').children.length,5);
+ for(const part of all.filter(n=>n.type==='part'))assert.equal(part.index,flatten(part.children).find(n=>n.type==='chapter').index);
+ for(const n of reading){
+  const c=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/c0e78ea6f80a/${n.index}.json`,import.meta.url)));
+  assert.equal(c.title,n.title);assert.notEqual(c.type,'section');
+ }
+});
 test('a one-chapter part with the same title keeps one disclosure and all real section destinations',()=>{
  const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/9dd09c22b4c0.json',import.meta.url)));
  const tree=groupBookToc(normalizeBookToc(book));
