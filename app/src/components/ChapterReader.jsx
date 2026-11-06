@@ -277,7 +277,7 @@ export default function ChapterReader({
           transition: 'background 0.3s, color 0.3s',
         }}>
         {/* 章标题 */}
-        {ch.content?.[0]?.role === 'chapter-title' ? null : ch.type === 'section' ? (
+        {ch.content?.some(block => block?.role === 'chapter-title') ? null : ch.type === 'section' ? (
           <h2 style={{
             textAlign: 'center', fontSize: Math.max(18, settings.fontSize - 2), fontWeight: 300, margin: '40px 0 48px',
             fontFamily: '"DP Classical Han", var(--font-sans)', letterSpacing: '0.12em',

@@ -55,6 +55,20 @@ test('a certified heading remains a boundary between OCR page fragments', () => 
   assert.ok(!html.includes('不思1.一物'));
 });
 
+test('a translator credit before the native title does not duplicate that title or remove its note', () => {
+  const html = render({ title: '第一章 地下室', paragraphMode: 'source', content: [
+    { type: 'text', value: '曾思艺译' },
+    { type: 'text', role: 'chapter-title', value: '第一章 地下室{{n:1}}' },
+    { type: 'text', value: '我是个病人……' },
+  ], notes: [{ n: 1, kind: 'original', text: '原书的章题说明。' }] });
+  assert.equal((html.match(/<h2\b/g) || []).length, 1);
+  assert.equal((plain(html).match(/第一章 地下室/g) || []).length, 1);
+  assert.ok(plain(html).indexOf('曾思艺译') < plain(html).indexOf('第一章 地下室'));
+  assert.match(html, /id="dp-ref-0-1-1"/);
+  assert.match(html, /id="dp-note-0-1"/);
+  assert.ok(plain(html).includes('我是个病人……'));
+});
+
 test('a section mentioned in prose has one anchor at its recorded heading', () => {
   const html = render({ paragraphMode:'source', content:[{type:'text',value:'下文第一节将讨论这个问题。'},{type:'text',role:'section-title',level:2,value:'第一节'},{type:'text',value:'回顾第一节的论证。'}] }, {toc:[{type:'section',title:'第一节',index:0,sec:1,level:2}]});
   assert.equal((html.match(/id="sec-0"/g)||[]).length,1);
