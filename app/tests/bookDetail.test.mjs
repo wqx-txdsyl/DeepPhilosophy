@@ -5,6 +5,23 @@ import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNod
 import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
+test('Capital sections stay in their own chapter and value-form subheadings keep their original nesting',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/53d1b4ff90d2.json',import.meta.url)));
+ const roots=groupBookToc(normalizeBookToc(book)), all=flatten(roots);
+ const commodity=all.find(n=>n.type==='chapter'&&n.title==='第一章 商品');
+ assert.equal(commodity.index,6);assert.equal(commodity.children.length,4);
+ const value=commodity.children.find(n=>n.title==='3.价值形式或交换价值');
+ assert.equal(value.children.length,4);assert.equal(value.children[0].children.length,4);
+ assert.ok(commodity.children.every(n=>n.index===6));
+ const supplements=all.filter(n=>n.type==='section'&&n.title.replace(/\s/g,'')==='Ⅳ.补充说明');
+ assert.deepEqual(supplements.map(n=>n.index),[59,75]);
+ assert.equal(supplements[0].sec,161);
+ for(const n of all.filter(n=>n.type==='section')){
+  const c=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/53d1b4ff90d2/${n.index}.json`,import.meta.url)));
+  assert.equal(c.content[n.sec]?.role,'section-title');
+  assert.ok(c.content[n.sec].value.replace(/\s/g,'').startsWith(n.title.replace(/\s/g,'')),n.title);
+ }
+});
 test('Wittgenstein volumes and mathematical topics contain all real reading units without empty title pages',()=>{
  const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/c0e78ea6f80a.json',import.meta.url)));
  const roots=groupBookToc(normalizeBookToc(book));

@@ -543,7 +543,9 @@ export default function ChapterReader({
             const isSectionTitle = sourceBlock?.role === 'section-title';
             const isQuotation = sourceBlock?.quote === true;
             const alignment = ['center', 'right'].includes(sourceBlock?.align) ? sourceBlock.align : undefined;
-            const TextElement = isSourceTitle ? 'h2' : isSectionTitle ? (sourceBlock.level === 2 ? 'h3' : 'h4') : 'p';
+            const sectionHeading = Number.isInteger(sourceBlock?.level)
+              ? `h${Math.min(6, Math.max(3, sourceBlock.level + 1))}` : 'h4';
+            const TextElement = isSourceTitle ? 'h2' : isSectionTitle ? sectionHeading : 'p';
             const paragraphStyle = isSourceTitle
               ? { textAlign: 'center', fontSize: Math.max(18, settings.fontSize + 2), fontWeight: 500, margin: '0 0 32px', fontFamily: '"DP Classical Han", var(--font-serif)', letterSpacing: '0.04em' }
               : isSectionTitle ? { margin: '1.2em 0 .6em', textIndent: 0, fontSize: sourceBlock.level === 2 ? '1.08em' : '1em', fontWeight: 600 }

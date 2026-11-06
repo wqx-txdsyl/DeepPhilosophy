@@ -48,6 +48,20 @@ test('source section hierarchy and quotations retain their distinct reading stru
   assert.match(html, /id="dp-ref-0-1-1"/);
 });
 
+test('nested value-form headings retain levels below the lettered subsection', () => {
+  const content = [
+    {type:'text',role:'section-title',level:2,value:'3.价值形式或交换价值'},
+    {type:'text',role:'section-title',level:3,value:'A.简单的、个别的或偶然的价值形式'},
+    {type:'text',role:'section-title',level:4,value:'（1）价值表现的两极'},
+    {type:'text',role:'section-title',level:5,value:'更深一级标题'},
+  ];
+  const html=render({paragraphMode:'source',content});
+  assert.match(html,/<h3[^>]*>3\.价值形式或交换价值<\/h3>/);
+  assert.match(html,/<h4[^>]*>A\.简单的、个别的或偶然的价值形式<\/h4>/);
+  assert.match(html,/<h5[^>]*>（1）价值表现的两极<\/h5>/);
+  assert.match(html,/<h6[^>]*>更深一级标题<\/h6>/);
+});
+
 test('a certified heading remains a boundary between OCR page fragments', () => {
   const html = render({ content: [{ type: 'text', value: '上一节正文的结尾' }, { type: 'text', role: 'section-title', level: 2, value: 'V.6 论超越是的东西不思' }, { type: 'text', value: '1.一物思考另一物与某物思考自身。' }] });
   assert.match(html, /<h3[^>]*>V\.6 论超越是的东西不思<\/h3>/);
