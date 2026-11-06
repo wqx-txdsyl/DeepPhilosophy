@@ -5,7 +5,7 @@ import CdnImage from '../components/CdnImage';
 import { useSEO } from '../utils/seo';
 import { loadAuthorCatalog, readableBook } from '../data/authorContent';
 import { BOOK_TOPICS, classifyBook } from '../data/bookLibrary';
-import { mergeBook, normalizeBookToc, groupBookToc, bookReaderPath, resumedChapter, bookAuthors, relatedBooks, officialReadingLinks } from '../data/bookDetail';
+import { mergeBook, normalizeBookToc, groupBookToc, bookReaderPath, bookTocReadingNode, resumedChapter, bookAuthors, relatedBooks, officialReadingLinks } from '../data/bookDetail';
 import { BOOK_EDITORIAL } from '../data/bookEditorial';
 import './BookDetailPage.css';
 
@@ -28,9 +28,10 @@ function Cover({ book, hero = false }) {
     : <div className="bd-cover-placeholder"><span>{book.title}</span><small>{book.author}</small></div>;
 }
 function TocNode({ node, book, depth = 0 }) {
-  const href = bookReaderPath(book.id, node, book.chapterCount);
+  const readingNode = bookTocReadingNode(node);
+  const href = bookReaderPath(book.id, readingNode, book.chapterCount);
   if (node.type === 'part' || node.children.length) return <details className={`${node.type === 'part' ? 'dp-part' : 'dp-chapter'}${node.type === 'section' ? ' bd-toc-branch-section' : ''}`}  id={`bd-toc-${node.tocIndex}`} open={depth === 0 && node.tocIndex === 0}>
-    <summary>{node.title}</summary><div className="bd-toc-children">{href && <Link className="bd-chapter-start" to={href}>从此处开始阅读 ↗</Link>}{node.children.map(child => <TocNode key={child.tocIndex} node={child} book={book} depth={depth+1} />)}</div>
+    <summary>{node.title}</summary><div className="bd-toc-children">{href && <Link className="bd-chapter-start" id={readingNode !== node ? `bd-toc-${readingNode.tocIndex}` : undefined} to={href}>从此处开始阅读 ↗</Link>}{readingNode.children.map(child => <TocNode key={child.tocIndex} node={child} book={book} depth={depth+1} />)}</div>
   </details>;
   return <div className={`bd-toc-leaf${node.type === 'section' ? ' bd-toc-section' : ''}`} id={`bd-toc-${node.tocIndex}`}>{href ? <Link to={href}><span>{node.title}</span><span aria-hidden="true">↗</span></Link> : <span>{node.title}</span>}</div>;
 }

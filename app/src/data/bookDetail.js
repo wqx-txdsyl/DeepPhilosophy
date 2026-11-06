@@ -47,6 +47,12 @@ export function bookReaderPath(id, item, chapterCount) {
   if (!item || item.type === 'part' || !Number.isInteger(item.index) || item.index < 0 || item.index >= Number(chapterCount)) return null;
   return `/reader/${encodeURIComponent(id)}?ch=${item.index}${item.type === 'section' ? `&toc=${item.tocIndex}` : ''}`;
 }
+/** A part and its sole identically named chapter share one visible disclosure. */
+export function bookTocReadingNode(node) {
+  const child = node.children?.[0];
+  return node.type === 'part' && node.children.length === 1 && child.type === 'chapter'
+    && child.index === node.index && child.title === node.title ? child : node;
+}
 export function resumedChapter(history, id, chapterCount) {
   const saved = Array.isArray(history) ? history.find(entry => entry.bookId === id) : null;
   const page = Number(saved?.page);

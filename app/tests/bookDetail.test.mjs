@@ -1,10 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks} from '../src/data/bookDetail.js';
+import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNode,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks} from '../src/data/bookDetail.js';
 import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
+test('a one-chapter part with the same title keeps one disclosure and all real section destinations',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/9dd09c22b4c0.json',import.meta.url)));
+ const tree=groupBookToc(normalizeBookToc(book));
+ const part=tree.find(n=>n.title==='第二部分 今日之神话（长文）');
+ const reading=bookTocReadingNode(part);
+ assert.equal(reading.type,'chapter');assert.equal(reading.index,45);
+ assert.equal(bookReaderPath(book.bookId,reading,book.chapterCount),'/reader/9dd09c22b4c0?ch=45');
+ assert.equal(reading.children.length,11);
+ for(const section of reading.children)assert.ok(bookReaderPath(book.bookId,section,book.chapterCount).endsWith(`&toc=${section.tocIndex}`));
+ const first=tree.find(n=>n.title==='第一部分 神话学（情景条目41篇）');
+ assert.equal(bookTocReadingNode(first),first);
+ const different={type:'part',title:'卷',index:0,children:[{type:'chapter',title:'引论',index:0,children:[]}]};
+ assert.equal(bookTocReadingNode(different),different);
+ assert.deepEqual(flatten(tree).map(n=>n.tocIndex),normalizeBookToc(book).map(n=>n.tocIndex));
+});
 test('new edition links require an exact trusted HTTPS host without embedded credentials',()=>{
  const urls=['https://ebook.dswxyjy.org.cn/detail/67','https://www.theorychina.org.cn/ztjj/','https://www.sanmin.com.tw/product/index/012901236','http://www.sanmin.com.tw/product/1','https://www.sanmin.com.tw.evil.example/','https://user:pass@ebook.dswxyjy.org.cn/detail/67','javascript:alert(1)'];
  const links=officialReadingLinks({readingLinks:urls.map(url=>({label:'版本入口',url}))});
