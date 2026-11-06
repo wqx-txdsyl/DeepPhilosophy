@@ -24,6 +24,8 @@ def main():
     parser.add_argument('--license', type=Path, required=True)
     parser.add_argument('--unicodes', required=True,
                         help='Explicit reviewed codepoint set; never silently shrink the published subset to a legacy default.')
+    parser.add_argument('--reviewed-basic-han', default='',
+                        help='Explicit individually source-reviewed rare characters in the basic CJK block; not a general base-font range.')
     parser.add_argument('--output', type=Path, default=ROOT/'app/src/assets/fonts/classical-han.woff2')
     parser.add_argument('--license-output', type=Path, default=ROOT/'app/public/fonts/classical-han-LICENSE.txt')
     parser.add_argument('--license-kind', choices=['ofl','arphic'], default='ofl')
@@ -34,9 +36,13 @@ def main():
     from fontTools import subset
     from fontTools.ttLib import TTFont
     codes = sorted({int(value.strip().upper().removeprefix('U+'), 16) for value in args.unicodes.split(',')})
+    reviewed_basic = {int(value.strip().upper().removeprefix('U+'), 16)
+                      for value in args.reviewed_basic_han.split(',') if value.strip()}
+    if not reviewed_basic <= set(codes) or any(not 0x4E00 <= code <= 0x9FFF for code in reviewed_basic):
+        parser.error('Reviewed basic Han must be an explicit subset of the requested basic CJK codepoints.')
     if not codes or any(not (0x3400 <= code <= 0x4DBF or 0x20000 <= code <= 0x323AF
                             or 0x2630 <= code <= 0x2637 or 0x268C <= code <= 0x268F
-                            or 0x4DC0 <= code <= 0x4DFF) for code in codes):
+                            or 0x4DC0 <= code <= 0x4DFF or code in reviewed_basic) for code in codes):
         parser.error('Only selected rare Han or explicitly sourced trigram/hexagram signs belong in this fallback.')
     license_text = args.license.read_text()
     if args.license_kind == 'ofl' and 'SIL OPEN FONT LICENSE Version 1.1' not in license_text:
@@ -86,6 +92,7 @@ def main():
     print(json.dumps({'fontTools':fontTools.__version__, 'sourceFontSha256':hashlib.sha256(args.font.read_bytes()).hexdigest(),
                       'subsetSha256':hashlib.sha256(output.read_bytes()).hexdigest(), 'bytes':output.stat().st_size,
                       'family':family, 'licenseKind':args.license_kind, 'modificationNotice':notice, 'unicodeRange':[f'U+{code:X}' for code in codes],
+                      'reviewedBasicHan':[f'U+{code:X}' for code in sorted(reviewed_basic)],
                       'licenseSha256':hashlib.sha256(license_output.read_bytes()).hexdigest()}, indent=2))
 
 

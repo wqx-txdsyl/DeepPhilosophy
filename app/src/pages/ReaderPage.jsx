@@ -243,9 +243,12 @@ function ReaderPage() {
     loadChapter(target);
     if (target + 1 < textChapters.length) loadChapter(target + 1);
     if (book) saveReadingProgress(bookId, book.title, book.author, target + 1, (target + 1) / textChapters.length, 'text');
-    // URL 只保留 ch/sec，不再写 type
+    // 节、目录项和注释定位都属于原章；换章后不能沿用旧定位。
     const params = new URLSearchParams(searchParams);
     params.delete('type');
+    params.delete('sec');
+    params.delete('toc');
+    params.delete('note');
     params.set('ch', target);
     navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
   }, [textChapter, textChapters, book, bookId, searchParams, navigate]);

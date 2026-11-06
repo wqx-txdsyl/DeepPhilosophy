@@ -13,6 +13,52 @@ function render(chapter, props = {}) {
 }
 const plain = html => html.replace(/<[^>]*>/g, '');
 
+test('source subscripts and powers retain UTF-16 offsets past a note and an inline picture', () => {
+  const value='𝛂klP{{n:1}}[IMG]Q2';
+  const inlineStyles=[
+    {start:value.indexOf('P'),end:value.indexOf('P')+1,kind:'sub'},
+    {start:value.indexOf('Q'),end:value.indexOf('Q')+1,kind:'sub'},
+    {start:value.indexOf('2'),end:value.indexOf('2')+1,kind:'sup'},
+  ];
+  const html=render({paragraphMode:'source',content:[{type:'text',value,inlineStyles,imgs:[{src:'/api/books/demo/image/formula.png',background:'white'}]}],notes:[{n:1,text:'原注。'}]});
+  assert.match(html,/<sub[^>]*>P<\/sub>/);
+  assert.match(html,/<sub[^>]*>Q<\/sub>/);
+  assert.match(html,/<sup[^>]*>2<\/sup>/);
+  assert.ok(plain(html).includes('𝛂klP[1]Q2'));
+  assert.match(html,/background-color:#fff/);
+  assert.equal((html.match(/id="dp-ref-0-1-1"/g)||[]).length,1);
+});
+
+test('section anchors and the hidden leading section sign do not shift a source subscript', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',role:'section-title',level:2,value:'§kP',inlineStyles:[{start:2,end:3,kind:'sub'}]}]}, {toc:[{type:'section',title:'kP',index:0,sec:0}]});
+  assert.match(html,/<h3[^>]*>.*id="sec-0".*k<sub[^>]*>P<\/sub><\/h3>/);
+  assert.ok(!plain(html).includes('§'));
+});
+
+test('source note mathematics survives a nested reference, paragraph break and picture', () => {
+  const text='klP[9]\n[IMG]Q2';
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'原文{{n:1}}。'}],notes:[
+    {n:1,text,inlineStyles:[{start:2,end:3,kind:'sub'},{start:text.indexOf('Q'),end:text.indexOf('Q')+1,kind:'sub'},{start:text.indexOf('2'),end:text.indexOf('2')+1,kind:'sup'}],crossRefs:[{n:2,start:3,end:6}],imgs:[{src:'/api/books/demo/image/formula.png',background:'white'}]},
+    {n:2,text:'原版第二层注。'},
+  ]});
+  assert.match(html,/<sub[^>]*>P<\/sub><button[^>]*aria-label="转到注释2"/);
+  assert.match(html,/<sub[^>]*>Q<\/sub><sup[^>]*>2<\/sup>/);
+  assert.match(html,/background-color:#fff/);
+});
+
+test('consecutive native pictures separated only by whitespace are all retained in their paragraph', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'[IMG] [IMG]末',imgs:[{src:'/api/books/demo/image/a.png'},{src:'/api/books/demo/image/b.png'}]}]});
+  assert.equal((html.match(/<img\b/g)||[]).length,2);
+  assert.ok(html.indexOf('/a.png')<html.indexOf('/b.png'));
+  assert.equal((plain(html).match(/末/g)||[]).length,1);
+});
+
+test('unrecognized source style metadata remains plain text', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'kP',inlineStyles:[{start:1,end:2,kind:'script'}]}]});
+  assert.ok(plain(html).includes('kP'));
+  assert.ok(!/<(?:sub|sup|script)\b/.test(html));
+});
+
 test('repeated references in separate source paragraphs have unique, sequential return targets', () => {
   const html = render({ paragraphMode: 'source', content: [{ type: 'text', value: '第一处引用{{n:1}}。' }, { type: 'text', value: '另一段再次引用{{n:1}}。' }], notes: [{ n: 1, text: '同一条章末注释。' }] });
   const ids = [...html.matchAll(/id="(dp-ref-[^"]+)"/g)].map(match => match[1]);

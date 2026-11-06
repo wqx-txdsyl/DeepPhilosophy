@@ -7,6 +7,7 @@ import Icon from '../components/Icon';
 import { Fragment, useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import DOMPurify from 'dompurify';
 import { locateChapterSections } from '../data/chapterSections';
+import { validSourceInlineStyles, sourceInlineSegments } from '../data/sourceInlineStyles';
 import './readerGlyphs.css';
 
 // S9（audit 2026-08-17）：章节 HTML 渲染前用 DOMPurify 净化（防存储型 XSS）。
@@ -50,6 +51,15 @@ const toOssImage = (src, resize) => {
 // 浏览器把私用区字符当独立断行单元，会在它和后一字之间断行 → 占位符孤悬行尾、后字换行。
 // 在占位符后补 word-joiner（U+2060，零宽不可见）：禁止其两侧断行，与后字绑定同行。
 const gluePua = (t) => t.replace(/[-]/g, (c) => c + '⁠');
+
+const renderSourceInline = (text, styles, offset = 0) => {
+  if (!styles?.length) return text;
+  return sourceInlineSegments(text, styles, offset).map((part, i) => {
+    if (!part.kind) return <Fragment key={i}>{part.text}</Fragment>;
+    const Tag = part.kind;
+    return <Tag key={i} style={{ fontSize: '0.75em', lineHeight: 1, position: 'static', verticalAlign: part.kind === 'sub' ? 'sub' : 'super' }}>{part.text}</Tag>;
+  });
+};
 
 const loadSettings = () => {
   try {
@@ -187,7 +197,7 @@ export default function ChapterReader({
     if (el) {
       // An empty inline anchor sits on the text baseline. Scroll the complete
       // heading so its first line stays visible, including titles with notes.
-      const target = el.closest('h2, h3, h4') || el;
+      const target = el.closest('h2, h3, h4, h5, h6') || el;
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       pendingSecRef.current = null;
     }
@@ -310,7 +320,8 @@ export default function ChapterReader({
           )
         ) : ch.content ? (
           (() => {
-            const isSmall = b => b.display !== 'block' && b.w && b.h
+            const hasSourceStyles = ch.paragraphMode === 'source' && ch.content.some(b => b?.inlineStyles?.length);
+            const isSmall = b => !hasSourceStyles && b.display !== 'block' && b.w && b.h
               && Math.max(b.w, b.h) < 300
               && (b.w / b.h) > 0.3 && (b.w / b.h) < 3;
             const merged = [];
@@ -386,7 +397,7 @@ export default function ChapterReader({
               }
               // Certified headings are boundaries even when their surrounding
               // OCR page blocks still need continuation joining.
-              if (blk.role === 'section-title' || blk.role === 'chapter-title') {
+              if (ch.paragraphMode === 'source' || blk.role === 'section-title' || blk.role === 'chapter-title') {
                 if (tail) { paras.push(tail); tail = null; }
                 paras.push({ text: blk.value || '', id: `b-${blk._i}`, imgs: blk.imgs || [], _block: blk._i, _blockFirst: true });
                 continue;
@@ -448,7 +459,7 @@ export default function ChapterReader({
                 <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
                   <img src={src} alt={block.alt || ''}
                     loading="lazy" decoding="async"
-                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
+                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4, backgroundColor: block.background === 'white' ? '#fff' : undefined }} />
                   {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
               );
@@ -457,6 +468,9 @@ export default function ChapterReader({
               const html = sanitizeChapterHtml(block.value || block.html || '');  // S9: 净化后渲染
               return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
             }
+            const sourceBlock = ch.content?.[block._block];
+            const sourceStyles = block.text === sourceBlock?.value ? validSourceInlineStyles(block.text, sourceBlock?.inlineStyles) : [];
+            const protectGlyphs = sourceStyles.length ? t => t : gluePua;
             const parts = [];
             let cursor = 0;
             // [IMG] 是原子单元: 锚点切点若落在标记内/中间, 推到标记后(防切碎标记)
@@ -472,34 +486,44 @@ export default function ChapterReader({
             if (hits.length && block.text) {
               for (const h of hits) {
                 if (h.off < cursor) continue;
-                parts.push(gluePua(block.text.slice(cursor, safeOff(block.text, h.off))));
+                parts.push(protectGlyphs(block.text.slice(cursor, safeOff(block.text, h.off))));
                 parts.push(<span key={`a${h.tocIdx}`} id={`sec-${h.tocIdx}`} />);
                 cursor = safeOff(block.text, h.off);
               }
             }
-            parts.push(gluePua(block.text.slice(cursor)));
+            parts.push(protectGlyphs(block.text.slice(cursor)));
             // [IMG] 拼接点渲染: 图插在标记处, 图+后字首字 nowrap 绑定
             // （图是行内原子, 行尾放不下时图+首字整体换行, 不再孤悬行尾后字下移）
             let imgCursor = 0;
-            const renderText = (s) => {
+            const renderText = (s, sourceOffset = 0) => {
               // parts 中可能混有锚点 <span> React 元素, 只处理字符串
-              if (typeof s !== 'string' || !s.includes('[IMG]')) return s;
+              if (typeof s !== 'string') return s;
+              if (!s.includes('[IMG]')) return renderSourceInline(s, sourceStyles, sourceOffset);
               const segs = s.split('[IMG]');
+              let segmentOffset = sourceOffset;
               return segs.map((seg, j) => {
-                if (j === 0) return seg;
+                if (j === 0) {
+                  const words = renderSourceInline(seg, sourceStyles, segmentOffset);
+                  segmentOffset += seg.length;
+                  return words;
+                }
+                segmentOffset += 5;
                 const img = block.imgs && block.imgs[imgCursor++];
                 const first = Array.from(seg)[0] || '';
                 const isrc = img && toOssImage(img.src, 200);   // 行内图 1.1em, 200 宽足够
+                const firstWord = renderSourceInline(first, sourceStyles, segmentOffset);
+                const rest = renderSourceInline(seg.slice(first.length), sourceStyles, segmentOffset + first.length);
+                segmentOffset += seg.length;
                 return (
                   <Fragment key={`i${j}`}>
                     {isrc ? (
                       <span style={{ whiteSpace: 'nowrap' }}>
                         <img src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
-                          style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
-                        {first}
+                          style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline', backgroundColor: img.background === 'white' ? '#fff' : undefined }} />
+                        {firstWord}
                       </span>
-                    ) : first}
-                    {seg.slice(first.length)}
+                    ) : firstWord}
+                    {rest}
                   </Fragment>
                 );
               });
@@ -507,17 +531,17 @@ export default function ChapterReader({
             // 行内注释引用 {{n:x}} → 可点上标 [显示号]（note-contract v1; token 只由逐段实读迁移放置,
             // 渲染层只认这一种精确格式, 数学方括号/圣经章句/引用年份不受影响）
             const rseq = noteReferenceSequence;   // 全章共享，不能在每个段落中重新计数
-            const renderWithNotes = (p) => {
+            const renderWithNotes = (p, sourceOffset = 0) => {
               if (typeof p !== 'string') return p;
-              if (!noteIndex || !p.includes('{{n:')) return renderText(p);
+              if (!noteIndex || !p.includes('{{n:')) return renderText(p, sourceOffset);
               const out = [];
               const re = /\{\{n:(\d+)\}\}/g;
               let last = 0, m, k = 0;
               while ((m = re.exec(p))) {
-                if (m.index > last) out.push(renderText(p.slice(last, m.index)));
+                if (m.index > last) out.push(renderText(p.slice(last, m.index), sourceOffset + last));
                 const n = parseInt(m[1], 10);
                 const disp = noteIndex.disp.get(n);
-                if (disp == null) { out.push(renderText(m[0])); }
+                if (disp == null) { out.push(renderText(m[0], sourceOffset + m.index)); }
                 else {
                   rseq[n] = (rseq[n] || 0) + 1;
                   const rid = `dp-ref-${currentChapter}-${disp}-${rseq[n]}`;
@@ -535,10 +559,9 @@ export default function ChapterReader({
                 }
                 last = m.index + m[0].length;
               }
-              if (last < p.length) out.push(renderText(p.slice(last)));
+              if (last < p.length) out.push(renderText(p.slice(last), sourceOffset + last));
               return out;
             };
-            const sourceBlock = ch.content?.[block._block];
             const isSourceTitle = sourceBlock?.role === 'chapter-title';
             const isSectionTitle = sourceBlock?.role === 'section-title';
             const isQuotation = sourceBlock?.quote === true;
@@ -550,13 +573,19 @@ export default function ChapterReader({
               ? { textAlign: 'center', fontSize: Math.max(18, settings.fontSize + 2), fontWeight: 500, margin: '0 0 32px', fontFamily: '"DP Classical Han", var(--font-serif)', letterSpacing: '0.04em' }
               : isSectionTitle ? { margin: '1.2em 0 .6em', textIndent: 0, fontSize: sourceBlock.level === 2 ? '1.08em' : '1em', fontWeight: 600 }
               : { margin: '0 0 0.5em', textIndent: isQuotation || alignment ? 0 : '2em', textAlign: alignment, marginLeft: isQuotation ? '2em' : undefined, whiteSpace: ch.paragraphMode === 'source' ? 'pre-line' : undefined };
+            let partTextOffset = 0;
             return (
               <TextElement key={i} id={block.id} className={isQuotation ? 'reader-quotation' : undefined} style={paragraphStyle}>
-                {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderWithNotes(isSectionTitle && pi === 0 && typeof p === 'string' ? p.replace(/^§/, '') : p)}</Fragment>)}
+                {parts.map((p, pi) => {
+                  const start = partTextOffset;
+                  if (typeof p === 'string') partTextOffset += p.length;
+                  const trimSectionSign = isSectionTitle && start === 0 && typeof p === 'string' && p.startsWith('§');
+                  return <Fragment key={`p${pi}`}>{renderWithNotes(trimSectionSign ? p.slice(1) : p, start + (trimSectionSign ? 1 : 0))}</Fragment>;
+                })}
                 {(block.imgs || []).slice(imgCursor).map((img, j) => {
                   const isrc = toOssImage(img.src, 200);
                   return isrc ? <img key={j} src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
-                    style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null;
+                    style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline', backgroundColor: img.background === 'white' ? '#fff' : undefined }} /> : null;
                 })}
               </TextElement>
             );
@@ -582,25 +611,26 @@ export default function ChapterReader({
               const noteId = `dp-note-${currentChapter}-${disp}`;
               const hasBack = lastRefRef.current[n] != null;
               const noteBody = String(nt.text || '');
+              const noteStyles = validSourceInlineStyles(noteBody, nt.inlineStyles);
               let noteImageCursor = 0;
               let noteTextOffset = 0;
               let crossSequence = 0;
               const renderNoteWords = (segment, start) => {
-                if (!Array.isArray(nt.crossRefs)) return segment;
+                if (!Array.isArray(nt.crossRefs)) return renderSourceInline(segment, noteStyles, start);
                 const out = [];
                 let cursor = 0;
                 for (const ref of nt.crossRefs) {
                   const from = ref.start - start, to = ref.end - start;
                   const target = noteIndex.disp.get(ref.n);
                   if (!Number.isInteger(from) || !Number.isInteger(to) || from < cursor || to <= from || to > segment.length || target == null) continue;
-                  out.push(segment.slice(cursor, from));
+                  out.push(renderSourceInline(segment.slice(cursor, from), noteStyles, start + cursor));
                   const id = `dp-note-cross-${currentChapter}-${n}-${++crossSequence}`;
                   out.push(<button key={id} id={id} type="button" className={'dp-note-cross' + (hlId === id ? ' dp-flash' : '')}
                     style={{ border: 0, background: 'none', padding: 0, font: 'inherit', textIndent: 0, color: 'var(--ochre)', cursor: 'pointer', ...(ref.superscript === true ? { verticalAlign: 'super', fontSize: '0.75em', lineHeight: 1 } : {}) }}
                     aria-label={`转到注释${target}`} onClick={e => goNote(ref.n, target, e.currentTarget)}>[{target}]</button>);
                   cursor = to;
                 }
-                out.push(segment.slice(cursor));
+                out.push(renderSourceInline(segment.slice(cursor), noteStyles, start + cursor));
                 return out;
               };
               return (
@@ -636,7 +666,7 @@ export default function ChapterReader({
                         return (
                           <Fragment key={sk}>
                             {isrc ? <img src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
-                              style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null}
+                              style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline', backgroundColor: img.background === 'white' ? '#fff' : undefined }} /> : null}
                             {words}
                           </Fragment>
                         );

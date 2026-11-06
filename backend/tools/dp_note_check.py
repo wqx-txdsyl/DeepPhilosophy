@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.3）
+"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.4）
 
 用法:
     python3 backend/tools/dp_note_check.py <bid>            # 校验整本书全部章节
@@ -25,6 +25,40 @@ TOKEN_RE = re.compile(r"\{\{n:(\d+)\}\}")
 VALID_KINDS = {"author", "translator", "editor", "original", "recorder"}
 
 
+def inline_style_errors(text, styles, forbidden=()):
+    """Validate explicit source sub/sup ranges in JavaScript UTF-16 coordinates."""
+    if not isinstance(text, str) or not isinstance(styles, list):
+        return ['inlineStyles 需要字符串正文和范围数组']
+    errors = []
+    try:
+        encoded = text.encode('utf-16-le')
+    except UnicodeError:
+        return ['inlineStyles 的正文含无效 UTF-16 字符']
+    blocked = list(forbidden)
+    for marker in re.finditer(r'\{\{n:\d+\}\}|\[IMG\]', text):
+        blocked.append((len(text[:marker.start()].encode('utf-16-le')) // 2,
+                        len(text[:marker.end()].encode('utf-16-le')) // 2))
+    previous_end = 0
+    for i, style in enumerate(styles):
+        if not isinstance(style, dict) or style.get('kind') not in ('sub', 'sup'):
+            errors.append(f'inlineStyles[{i}] 只允许 sub/sup')
+            continue
+        start, end = style.get('start'), style.get('end')
+        if (type(start) is not int or type(end) is not int or start < previous_end
+                or end <= start or end * 2 > len(encoded)):
+            errors.append(f'inlineStyles[{i}] 范围越界或重叠')
+            continue
+        try:
+            encoded[:start * 2].decode('utf-16-le')
+            encoded[start * 2:end * 2].decode('utf-16-le')
+        except UnicodeError:
+            errors.append(f'inlineStyles[{i}] 切断 UTF-16 字符')
+        if any(start < b and end > a for a, b in blocked):
+            errors.append(f'inlineStyles[{i}] 覆盖注号或图片占位')
+        previous_end = end
+    return errors
+
+
 def check_chapter(path: Path):
     errors, warnings, info = [], [], []
     try:
@@ -35,6 +69,12 @@ def check_chapter(path: Path):
         return ["顶层不是 dict"], [], []
     notes = d.get("notes")
     content = d.get("content") or []
+    for bi, block in enumerate(content):
+        if not isinstance(block, dict) or 'inlineStyles' not in block:
+            continue
+        if block.get('type') != 'text' or d.get('paragraphMode') != 'source':
+            errors.append(f'块{bi}: inlineStyles 仅用于保留源段落的 text 块')
+        errors.extend(f'块{bi}: {message}' for message in inline_style_errors(block.get('value'), block['inlineStyles']))
     if notes is None:
         # 未迁移章节: 只报告正文中的 token 残留（不该有）
         for bi, b in enumerate(content):
@@ -75,6 +115,10 @@ def check_chapter(path: Path):
             image_count = len(imgs) if isinstance(imgs, list) else 0
             if text.count('[IMG]') != image_count:
                 errors.append(f"注{n}: [IMG] 占位数与 imgs 数量不一致: {text.count('[IMG]')} != {image_count}")
+        if 'inlineStyles' in nt:
+            forbidden = [(r['start'], r['end']) for r in nt.get('crossRefs', [])
+                         if isinstance(r, dict) and type(r.get('start')) is int and type(r.get('end')) is int] if isinstance(nt.get('crossRefs', []), list) else []
+            errors.extend(f'注{n}: {message}' for message in inline_style_errors(text, nt['inlineStyles'], forbidden))
 
     # Only valid links can make a source nested note reachable from the body.
     note_edges = {}
