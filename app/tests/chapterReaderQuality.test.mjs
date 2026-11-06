@@ -132,3 +132,14 @@ test('a source star note inside another note is superscript and keeps a unique r
   assert.ok(plain(html).includes('讲座[2]，续文。'));
   assert.ok(!html.includes('dp-ref-0-2-'));
 });
+
+test('verified body fractions retain legible source height and their faithful accessible transcription',()=>{
+ const html=render({paragraphMode:'source',content:[{type:'text',value:'微分之比[IMG]，再取根式[IMG]。',imgs:[
+  {src:'/api/books/source/image/fraction.jpeg',role:'formula',alt:'dy/dx'},
+  {src:'/api/books/source/image/root.jpeg',alt:'√(−1)'},
+ ]}]});
+ assert.match(html,/<img[^>]*alt="dy\/dx"[^>]*height:2\.4em/);
+ assert.match(html,/<img[^>]*alt="√\(−1\)"[^>]*height:1\.1em/);
+ assert.ok(plain(html).includes('，再取根式'));
+ assert.ok(plain(html).includes('。'));
+});

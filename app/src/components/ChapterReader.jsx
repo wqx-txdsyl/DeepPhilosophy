@@ -494,8 +494,8 @@ export default function ChapterReader({
                   <Fragment key={`i${j}`}>
                     {isrc ? (
                       <span style={{ whiteSpace: 'nowrap' }}>
-                        <img src={isrc} alt="" loading="lazy" decoding="async"
-                          style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
+                        <img src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
+                          style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
                         {first}
                       </span>
                     ) : first}
@@ -553,8 +553,8 @@ export default function ChapterReader({
                 {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderWithNotes(isSectionTitle && pi === 0 && typeof p === 'string' ? p.replace(/^§/, '') : p)}</Fragment>)}
                 {(block.imgs || []).slice(imgCursor).map((img, j) => {
                   const isrc = toOssImage(img.src, 200);
-                  return isrc ? <img key={j} src={isrc} alt="" loading="lazy" decoding="async"
-                    style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null;
+                  return isrc ? <img key={j} src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
+                    style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null;
                 })}
               </TextElement>
             );

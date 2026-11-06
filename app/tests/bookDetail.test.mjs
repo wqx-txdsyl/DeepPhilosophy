@@ -167,3 +167,22 @@ test('Nan Huai-jin anthology sections stay in their own chapters and before the 
  const doctrine=chapters.get(510).notes.find(n=>n.n===11);
  assert.ok(doctrine.text.includes('\n以上两种外道，皆以断见为主'));
 });
+
+test('Anti-Duhring restores its three parts, original notes, formulas and distinct fragment destinations',()=>{
+ const bid='7729ccdecb0f',book=JSON.parse(fs.readFileSync(new URL(`../public/book_detail/${bid}.json`,import.meta.url)));
+ const toc=normalizeBookToc(book),tree=groupBookToc(toc),flat=flatten(tree);assert.equal(book.chapterCount,349);
+ const work=flat.find(n=>n.type==='chapter'&&n.index===277);assert.equal(work.title,'《反杜林论》引论及正文');
+ assert.deepEqual(work.children.map(n=>n.title),['引论','第一编 哲学','第二编 政治经济学','第三编 社会主义']);
+ assert.deepEqual(work.children.map(n=>n.children.length),[2,12,10,5]);
+ const ch=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/${bid}/277.json`,import.meta.url)));
+ assert.equal(ch.paragraphMode,'source');assert.equal(ch.notes.length,259);
+ assert.equal(ch.content.reduce((n,b)=>n+(b.value?.match(/\{\{n:\d+\}\}/g)||[]).length,0),260);
+ assert.equal(ch.notes.flatMap(n=>n.crossRefs||[]).length,1);
+ assert.equal(ch.content.reduce((n,b)=>n+(b.type==='image'?1:(b.imgs||[]).length),0),7);
+ assert.equal(ch.content.filter(b=>b.role==='chapter-title').length,4);
+ for(const n of toc.filter(n=>n.type==='section'&&n.index===277))assert.equal(ch.content[n.sec].value.replace(/\{\{n:\d+\}\}|\s/g,''),n.title.replace(/\s/g,''));
+ const dialectic=flat.find(n=>n.type==='chapter'&&n.index===282);const fragments=dialectic.children.find(n=>n.title==='［札记和片断］');
+ assert.deepEqual(fragments.children.map(n=>n.title),['［规律和范畴］','［认识］']);
+ assert.equal(fragments.sec,34);
+ const science=flat.find(n=>n.type==='chapter'&&n.index===283);assert.equal(science.children.find(n=>n.title==='［札记和片断］').sec,65);
+});
