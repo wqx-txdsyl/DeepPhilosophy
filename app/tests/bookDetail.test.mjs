@@ -108,3 +108,18 @@ test('Western9 summaries open before their prose, not at a repeated closing titl
   assert.equal(questions.level,item.level);
  }
 });
+
+test('Kant source review notes belong to the review, and nested notes retain real graph paths',()=>{
+ const read=index=>JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/390398aff8d0/${index}.json`,import.meta.url)));
+ const review=read(53),following=read(54);
+ assert.deepEqual(review.notes.map(n=>n.n),[9,10]);
+ assert.ok(review.content.some(b=>b.value?.includes('道德学说的尝试 {{n:9}}')));
+ assert.ok(review.content.some(b=>b.value?.includes('这里33页 {{n:10}}')));
+ assert.ok(!following.notes.some(n=>[9,10].includes(n.n)));
+ const human=read(22),byN=new Map(human.notes.map(n=>[n.n,n]));
+ assert.equal(human.notes.length,253);
+ assert.equal(human.notes.flatMap(n=>n.crossRefs||[]).length,35);
+ assert.deepEqual(byN.get(17).crossRefs.map(r=>r.n),[219]);
+ assert.ok(byN.get(89).text.includes('他从未说过一句蠢话，\n也从未做过一件聪明事。'));
+ for(const n of human.notes)for(const r of n.crossRefs||[]){assert.equal(r.superscript,true);assert.ok(byN.has(r.n));assert.match(n.text.slice(r.start,r.end),/^\[\d+\]$/);}
+});
