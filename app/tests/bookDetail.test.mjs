@@ -123,3 +123,23 @@ test('Kant source review notes belong to the review, and nested notes retain rea
  assert.ok(byN.get(89).text.includes('他从未说过一句蠢话，\n也从未做过一件聪明事。'));
  for(const n of human.notes)for(const r of n.crossRefs||[]){assert.equal(r.superscript,true);assert.ok(byN.has(r.n));assert.match(n.text.slice(r.start,r.end),/^\[\d+\]$/);}
 });
+
+test('Moral Sentiments introductions and sections resolve to their own original chapters',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/21a479c4978d.json',import.meta.url)));
+ const toc=normalizeBookToc(book),tree=groupBookToc(toc);
+ assert.equal(book.chapterCount,19);
+ assert.equal(tree.filter(n=>n.type==='part').length,7);
+ assert.deepEqual(toc.filter(n=>n.type==='section'&&n.title==='引言').map(n=>n.index),[3,5,7,11,12,16,17]);
+ assert.equal(toc.length,77);
+ let notes=0,calls=0;
+ for(let i=0;i<book.chapterCount;i++){
+  const ch=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/${book.bookId}/${i}.json`,import.meta.url)));
+  assert.equal(ch.paragraphMode,'source');notes+=(ch.notes||[]).length;
+  calls+=ch.content.reduce((n,b)=>n+(b.value?.match(/\{\{n:\d+\}\}/g)||[]).length,0);
+  for(const entry of toc.filter(n=>n.type==='section'&&n.index===i))assert.equal(ch.content[entry.sec].value.replace(/\s/g,''),entry.title.replace(/\s/g,''));
+ }
+ assert.equal(notes,294);assert.equal(calls,294);
+ const notice=JSON.parse(fs.readFileSync(new URL('../../backend/data/book_chapters/21a479c4978d/1.json',import.meta.url)));
+ assert.equal(notice.content[0].value,'告读者{{n:1}}');
+ assert.ok(notice.notes[0].text.includes('第六版'));
+});
