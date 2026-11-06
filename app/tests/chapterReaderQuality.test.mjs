@@ -126,6 +126,7 @@ test('a source star note inside another note is superscript and keeps a unique r
     {n:219,text:'原注内的科学院版编者注。'},
   ]});
   assert.match(html,/id="dp-note-cross-0-17-1"[^>]*vertical-align:super[^>]*aria-label="转到注释2"[^>]*>\[2\]<\/button>/);
+  assert.match(html,/vertical-align:super;font-size:0.75em;line-height:1/);
   assert.match(html,/id="dp-note-0-2"/);
   assert.equal((html.match(/id="dp-note-cross-0-17-1"/g)||[]).length,1);
   assert.ok(plain(html).includes('讲座[2]，续文。'));
