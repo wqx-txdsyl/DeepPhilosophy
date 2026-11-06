@@ -31,6 +31,33 @@ test('all book TOCs retain every source entry and its original reader anchor aft
 test('section positions without sec and nested volumes keep precise navigation; invalid chapters never link',()=>{
  const toc=normalizeBookToc({toc:[{type:'part',title:'卷',level:0},{type:'part',title:'篇',level:1},{type:'chapter',title:'章',index:0},{type:'section',title:'节',index:0}]});const roots=groupBookToc(toc);assert.equal(roots[0].children[0].children[0].children[0].tocIndex,3);assert.equal(bookReaderPath('a',toc[3],1),'/reader/a?ch=0&toc=3');assert.equal(bookReaderPath('a',{type:'chapter',index:2},1),null);
 });
+test('Kant volumes own their real chapters and restored related-essay prose stays out of endnotes',()=>{
+ const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/390398aff8d0.json',import.meta.url)));
+ const roots=groupBookToc(normalizeBookToc(book));
+ assert.equal(roots.length,10);
+ assert.ok(roots.every(n=>n.type==='part'&&n.children.some(c=>c.type==='chapter'&&c.title.replace(/\s/g,'')==='前言')));
+ const chapters=flatten(roots).filter(n=>n.type==='chapter');
+ assert.equal(new Set(chapters.map(n=>n.index)).size,book.chapterCount);
+ assert.equal(chapters.length,book.chapterCount);
+ for(const node of chapters){
+  const ch=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/${book.bookId}/${node.index}.json`,import.meta.url)));
+  assert.equal(node.title,ch.title,`${node.index}: wrong chapter destination`);
+  assert.equal(ch.paragraphMode,'source',`${node.index}: native EPUB paragraphs must not be joined as OCR pages`);
+ }
+ const politics=roots.find(n=>n.title.includes('政治哲学'));
+ const politicalTitles=flatten(politics.children).filter(n=>n.type==='chapter').map(n=>n.title);
+ const enlightenment='回答这个问题：什么是启蒙？';
+ assert.ok(politicalTitles.includes(enlightenment));
+ assert.ok(politicalTitles.indexOf(enlightenment)<politicalTitles.indexOf('论书籍翻印的不合法性'));
+ const moral=roots.find(n=>n.title.includes('道德哲学'));
+ assert.ok(moral.children.some(n=>n.type==='chapter'&&n.title==='纯然理性界限内的宗教'));
+ const related=moral.children.find(n=>n.type==='chapter'&&n.title==='相关论述');
+ const ch=JSON.parse(fs.readFileSync(new URL(`../../backend/data/book_chapters/${book.bookId}/${related.index}.json`,import.meta.url)));
+ assert.ok(ch.content.some(b=>(b.value||'').startsWith('人们要求有一部人的历史')));
+ assert.ok(!ch.notes.some(n=>n.text.startsWith('人们要求有一部人的历史')));
+ const essay=related.children.find(n=>n.title==='重新提出的问题：人类是否在不断地向着更善进步？');
+ assert.equal(essay.children.length,11);
+});
 test('metadata fallbacks and saved reading chapter are conservative',()=>{
  assert.equal(mergeBook('x',{title:'书',summary:'简介',tags:['伦理学'],cover:'/covers/x.webp'},{title:'书',summary:'',tags:[]}).summary,'简介');assert.equal(mergeBook('x',null,null),null);
  assert.equal(resumedChapter([{bookId:'x',page:20}],'x',3),2);assert.equal(resumedChapter([{bookId:'x',page:-2}],'x',3),null);assert.equal(resumedChapter([], 'x',3),null);
