@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.2）
+"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.3）
 
 用法:
     python3 backend/tools/dp_note_check.py <bid>            # 校验整本书全部章节
@@ -76,7 +76,8 @@ def check_chapter(path: Path):
             if text.count('[IMG]') != image_count:
                 errors.append(f"注{n}: [IMG] 占位数与 imgs 数量不一致: {text.count('[IMG]')} != {image_count}")
 
-    # token 配对
+    # Only valid links can make a source nested note reachable from the body.
+    note_edges = {}
     for nt in notes:
         if not isinstance(nt, dict) or 'crossRefs' not in nt:
             continue
@@ -94,8 +95,13 @@ def check_chapter(path: Path):
                 errors.append(f"注{nt.get('n')}: crossRefs[{ri}] 非对象")
                 continue
             target, start, end = ref.get('n'), ref.get('start'), ref.get('end')
+            valid = True
             if type(target) is not int or target not in seen_n:
                 errors.append(f"注{nt.get('n')}: 跨注目标不存在: {target!r}")
+                valid = False
+            if 'superscript' in ref and type(ref['superscript']) is not bool:
+                errors.append(f"注{nt.get('n')}: superscript 必须是布尔值")
+                valid = False
             if (type(start) is not int or type(end) is not int or start < previous_end
                     or end <= start or end * 2 > len(encoded)):
                 errors.append(f"注{nt.get('n')}: 跨注文本范围越界或重叠: {start!r}..{end!r}")
@@ -106,6 +112,9 @@ def check_chapter(path: Path):
                 label = ''
             if not re.fullmatch(r'\[\d+\]', label):
                 errors.append(f"注{nt.get('n')}: 跨注范围不是完整原注号: {label!r}")
+                valid = False
+            if valid and type(nt.get('n')) is int and nt['n'] in seen_n:
+                note_edges.setdefault(nt['n'], set()).add(target)
             previous_end = end
 
     ref_count = {}
@@ -123,9 +132,16 @@ def check_chapter(path: Path):
             ref_count[n] = ref_count.get(n, 0) + 1
             if n not in seen_n:
                 errors.append(f"块{bi}: token {{n:{n}}} 无对应 notes 条目")
+    reachable = set(ref_count) & seen_n
+    pending = list(reachable)
+    while pending:
+        for target in note_edges.get(pending.pop(), ()):
+            if target not in reachable:
+                reachable.add(target)
+                pending.append(target)
     for n in sorted(seen_n):
         c = ref_count.get(n, 0)
-        if c == 0:
+        if n not in reachable:
             warnings.append(f"注{n}: 无行内引用（需登记待核, 不得凭空造引用）")
         elif c > 1:
             info.append(f"注{n}: {c} 处引用（阅读器按实例回跳）")
@@ -145,6 +161,9 @@ def check_chapter(path: Path):
     if referenced_in_data_order and referenced_in_data_order != first_order:
         warnings.append(f"notes 数组顺序与首次引用顺序不一致（阅读器将重排显示号）: 数据{referenced_in_data_order} vs 引用{first_order}")
 
+    nested = len(reachable - set(ref_count))
+    if nested:
+        info.append(f"由真实正文入口经注内互引可达{nested}条")
     info.append(f"注{len(notes)}条/引用{sum(ref_count.values())}处")
     return errors, warnings, info
 

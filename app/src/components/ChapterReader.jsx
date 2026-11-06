@@ -594,7 +594,7 @@ export default function ChapterReader({
                   out.push(segment.slice(cursor, from));
                   const id = `dp-note-cross-${currentChapter}-${n}-${++crossSequence}`;
                   out.push(<button key={id} id={id} type="button" className={'dp-note-cross' + (hlId === id ? ' dp-flash' : '')}
-                    style={{ border: 0, background: 'none', padding: 0, font: 'inherit', textIndent: 0, color: 'var(--ochre)', cursor: 'pointer' }}
+                    style={{ border: 0, background: 'none', padding: 0, font: 'inherit', textIndent: 0, color: 'var(--ochre)', cursor: 'pointer', ...(ref.superscript === true ? { verticalAlign: 'super', fontSize: '0.75em', lineHeight: 0 } : {}) }}
                     aria-label={`转到注释${target}`} onClick={e => goNote(ref.n, target, e.currentTarget)}>[{target}]</button>);
                   cursor = to;
                 }

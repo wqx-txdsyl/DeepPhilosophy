@@ -285,7 +285,7 @@ function ReaderPage() {
         <span style={{ fontSize: 11, color: 'var(--text)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {book?.title}
           {textReady && (
-            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>第{textChapter + 1}章 / 共{textChapters.length}章</span>
+            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>阅读 {textChapter + 1} / {textChapters.length}</span>
           )}
         </span>
         {textReady && (

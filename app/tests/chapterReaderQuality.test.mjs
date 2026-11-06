@@ -119,3 +119,15 @@ test('a recorder attribution and editorial collation are distinguished from orig
   assert.ok(plain(html.slice(noteStart)).includes('记录者：㽦校：此署名据文渊阁本补。'));
   assert.equal((html.match(/class="dp-note-editorial-addendum"/g)||[]).length,1);
 });
+
+test('a source star note inside another note is superscript and keeps a unique return origin', () => {
+  const html=render({paragraphMode:'source',content:[{type:'text',value:'正文{{n:17}}。'}],notes:[
+    {n:17,text:'讲座[219]，续文。',crossRefs:[{n:219,start:2,end:7,superscript:true}]},
+    {n:219,text:'原注内的科学院版编者注。'},
+  ]});
+  assert.match(html,/id="dp-note-cross-0-17-1"[^>]*vertical-align:super[^>]*aria-label="转到注释2"[^>]*>\[2\]<\/button>/);
+  assert.match(html,/id="dp-note-0-2"/);
+  assert.equal((html.match(/id="dp-note-cross-0-17-1"/g)||[]).length,1);
+  assert.ok(plain(html).includes('讲座[2]，续文。'));
+  assert.ok(!html.includes('dp-ref-0-2-'));
+});
