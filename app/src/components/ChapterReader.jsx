@@ -85,6 +85,7 @@ export default function ChapterReader({
   const scrollRef = useRef(null);
   const ch = chapters[currentChapter] || {};
   const total = chapters.length;
+  const firstReadingIndex = chapters.findIndex(chapter => chapter.redirectTo == null);
   const [scrollTick, setScrollTick] = useState(0);
 
   // ── 章末注释（note-contract v1，docs/note-contract.md）──
@@ -723,8 +724,8 @@ export default function ChapterReader({
         background: 'var(--card-bg)', flexShrink: 0, gap: 8,
       }}>
         <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: 12 }}
-          onClick={() => currentChapter > 0 && onChapterChange(currentChapter - 1)}
-          disabled={currentChapter <= 0}>
+          onClick={() => currentChapter > firstReadingIndex && onChapterChange(currentChapter - 1)}
+          disabled={currentChapter <= firstReadingIndex}>
           ◀ 上一章
         </button>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>

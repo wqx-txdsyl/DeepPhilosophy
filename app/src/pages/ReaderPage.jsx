@@ -57,6 +57,11 @@ async function fetchChapter(path) {
   throw lastErr;
 }
 
+function nextReadingIndex(chapters, index, step) {
+  while (chapters[index]?.redirectTo != null) index += step;
+  return index;
+}
+
 function ReaderPage() {
   const { bookId } = useParams();
   const [searchParams] = useSearchParams();
@@ -161,7 +166,7 @@ function ReaderPage() {
           title: meta.chapterTitles?.[i] || `第${i + 1}章`,
           content: null,
           _loaded: false,
-          redirectTo: i > 0 && redirect === i + 1 && redirect < total && chapterRedirects[redirect] == null
+          redirectTo: Number.isInteger(redirect) && redirect > i && redirect < total && chapterRedirects[redirect] == null
             ? redirect : undefined,
         };
       });
@@ -219,7 +224,7 @@ function ReaderPage() {
   };
   const loadChapter = async (idx, chaptersArr) => {
     const chs = chaptersArr || textChapters;
-    const index = chs[idx]?.redirectTo ?? idx;
+    const index = nextReadingIndex(chs, idx, 1);
     if (!chs[index] || chs[index]._loaded || chs[index].content) return;
     if (loadingRef.current[index]) return;
     loadingRef.current[index] = true;
@@ -252,9 +257,8 @@ function ReaderPage() {
   const handleChapterChange = useCallback((ch) => {
     if (ch === textChapter) return;
     // 按翻页方向越过为旧链接保留的目录占位。
-    let target = ch;
-    const redirect = textChapters[target]?.redirectTo;
-    if (redirect != null) target = ch > textChapter ? redirect : ch - 1;
+    let target = nextReadingIndex(textChapters, ch, ch > textChapter ? 1 : -1);
+    if (target < 0 || target >= textChapters.length) return;
     if (textChapters[target]?.type === 'section') {
       target = ch > textChapter ? target + 1 : target - 1;
       if (target < 0 || target >= textChapters.length) return;

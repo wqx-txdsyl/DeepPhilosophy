@@ -52,15 +52,15 @@ check('public 双端 MD5 一致', not bad, '不一致: %s' % ','.join(bad) if ba
 
 # 3. toc 对象数组 (ChapterReader 目录渲染要求)
 # epub 多级 toc: type='part' 分组项(无 index 或 level) + type='chapter' 章节项(index 指向章节文件)
-# 实际目录覆盖所有阅读单元；旧标题占位保留文件地址，直接跳至紧邻的正文。
+# 实际目录覆盖所有阅读单元；旧标题或旧卷入口保留文件地址，直接跳至对应正文。
 redirects = meta.get('chapterRedirects', {})
 valid_redirects = isinstance(redirects, dict) and all(
     key.isascii() and key.isdigit() and str(int(key)) == key
-    and 0 < int(key) < n - 1 and type(target) is int
-    and target == int(key) + 1 and str(target) not in redirects
+    and 0 <= int(key) < n - 1 and type(target) is int
+    and int(key) < target < n and str(target) not in redirects
     for key, target in redirects.items()
 )
-check('旧章节跳转仅指向相邻正文', valid_redirects)
+check('旧章节跳转仅指向后续正文且没有链式跳转', valid_redirects)
 redirect_slots = {int(key) for key in redirects} if valid_redirects else set()
 reading_slots = set(range(n)) - redirect_slots
 toc = meta.get('toc', [])
