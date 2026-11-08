@@ -34,10 +34,17 @@ export function readingChapterTocRedirect(chapter, tocIndex, meta) {
   return { chapter: target.index, tocIndex: nextToc };
 }
 
-export function readingChapterNoteRedirect(index, meta) {
-  const note = meta.chapterNoteRedirects?.[index];
-  const chapter = readingChapterRedirect(index, meta.chapterCount, meta.chapterRedirects ?? {});
-  return chapter != null && Number.isInteger(note) && note > 0 ? { chapter, note } : null;
+export function readingChapterNoteRedirect(index, meta, legacyNote = null) {
+  const redirects = meta.chapterRedirects ?? {};
+  const chapter = readingChapterRedirect(index, meta.chapterCount, redirects);
+  if (chapter == null) return null;
+  const target = legacyNote == null
+    ? { chapter, note: meta.chapterNoteRedirects?.[index] }
+    : meta.chapterNoteTargets?.[index]?.[legacyNote];
+  if (!target || !Number.isInteger(target.chapter) || target.chapter <= index
+    || target.chapter >= meta.chapterCount || redirects[target.chapter] != null
+    || !Number.isInteger(target.note) || target.note < 1) return null;
+  return target;
 }
 
 export function normalizeBookToc(book) {

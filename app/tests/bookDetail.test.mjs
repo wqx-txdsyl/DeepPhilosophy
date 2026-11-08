@@ -6,10 +6,15 @@ import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
 test('old notes-only chapters can land on the recovered note without creating a directory section',()=>{
-  const meta={chapterCount:5,chapterRedirects:{0:2,1:3},chapterNoteRedirects:{0:60,1:0,2:76}};
+  const meta={chapterCount:5,chapterRedirects:{0:2,1:3},chapterNoteRedirects:{0:60,1:0,2:76},
+    chapterNoteTargets:{0:{17:{chapter:3,note:6},18:{chapter:1,note:1}},2:{1:{chapter:4,note:1}}}};
   assert.deepEqual(readingChapterNoteRedirect(0,meta),{chapter:2,note:60});
   assert.equal(readingChapterNoteRedirect(1,meta),null);
   assert.equal(readingChapterNoteRedirect(2,meta),null);
+  assert.deepEqual(readingChapterNoteRedirect(0,meta,17),{chapter:3,note:6});
+  assert.equal(readingChapterNoteRedirect(0,meta,18),null);
+  assert.equal(readingChapterNoteRedirect(0,meta,19),null);
+  assert.equal(readingChapterNoteRedirect(2,meta,1),null);
   assert.equal(readingChapterNoteRedirect(0,{...meta,chapterRedirects:{0:2,2:3}}),null);
 });
 test('old chapter routes resolve to original chapters while the first new reading unit can be a preface',()=>{

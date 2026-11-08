@@ -189,19 +189,22 @@ function ReaderPage() {
         startCh = histCh >= 0 ? histCh : nextReadingIndex(chapters, 0, 1);
       }
       const sectionRedirect = readingChapterTocRedirect(startCh, startCh === urlCh ? initialTocIdx : null, meta);
-      const noteRedirect = initialTocIdx == null && initialSec == null && initialNote == null
-        ? readingChapterNoteRedirect(startCh, meta) : null;
-      const redirect = sectionRedirect?.chapter ?? noteRedirect?.chapter ?? chapters[startCh].redirectTo;
+      const canUseDefaultNote = !sectionRedirect && initialTocIdx == null && initialSec == null;
+      const noteRedirect = initialNote != null || canUseDefaultNote
+        ? readingChapterNoteRedirect(startCh, meta, initialNote) : null;
+      const redirect = noteRedirect?.chapter ?? sectionRedirect?.chapter ?? chapters[startCh].redirectTo;
       if (redirect != null) {
         startCh = redirect;
         if (sectionRedirect || noteRedirect || (urlCh >= 0 && urlCh < total)) {
           const params = new URLSearchParams(searchParams);
           params.set('ch', startCh);
-          if (sectionRedirect) {
+          if (noteRedirect) {
+            params.set('note', noteRedirect.note);
+            params.delete('toc');
+            params.delete('sec');
+          } else if (sectionRedirect) {
             params.set('toc', sectionRedirect.tocIndex);
             params.delete('sec');
-          } else if (noteRedirect) {
-            params.set('note', noteRedirect.note);
           }
           navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
         }

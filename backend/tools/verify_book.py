@@ -66,6 +66,7 @@ reading_slots = set(range(n)) - redirect_slots
 toc = meta.get('toc', [])
 section_redirects = meta.get('chapterTocRedirects', {})
 note_redirects = meta.get('chapterNoteRedirects', {})
+note_targets = meta.get('chapterNoteTargets', {})
 valid_section_redirects = isinstance(section_redirects, dict) and all(
     key in redirects and isinstance(mapping, dict) and bool(mapping)
     and all((old == 'default' or (old.isascii() and old.isdigit() and str(int(old)) == old))
@@ -131,6 +132,15 @@ check('旧注释章节跳转仅指向实际章末注', valid_redirects and isins
     key in redirects and type(note) is int and 1 <= note <= chapter_note_counts.get(redirects[key], 0)
     for key, note in note_redirects.items()
 ))
+check('旧章内注号跳转仅指向实际章末注', isinstance(note_targets, dict) and all(
+    key in redirects and isinstance(mapping, dict) and bool(mapping)
+    and all(old.isascii() and old.isdigit() and str(int(old)) == old and int(old) > 0
+            and isinstance(target, dict) and type(target.get('chapter')) is int
+            and target['chapter'] in reading_slots and target['chapter'] > int(key)
+            and type(target.get('note')) is int and 1 <= target['note'] <= chapter_note_counts.get(target['chapter'], 0)
+            for old, target in mapping.items())
+    for key, mapping in note_targets.items()
+))
 
 invalid_sections = [ti for ti, item in enumerate(toc) if isinstance(item, dict)
                     and item.get('type') == 'section' and 'sec' in item
@@ -157,6 +167,7 @@ if os.path.exists(bd):
     check('book_detail 旧章节跳转与 meta 一致', d.get('chapterRedirects', {}) == redirects)
     check('book_detail 旧目录节跳转与 meta 一致', d.get('chapterTocRedirects', {}) == section_redirects)
     check('book_detail 旧注释章节跳转与 meta 一致', d.get('chapterNoteRedirects', {}) == note_redirects)
+    check('book_detail 旧章内注号跳转与 meta 一致', d.get('chapterNoteTargets', {}) == note_targets)
     check('book_detail chapterCount 一致', d.get('chapterCount') == n,
           'detail=%s meta=%s' % (d.get('chapterCount'), n))
     check('book_detail chapterTitles 与 meta 逐项一致', d.get('chapterTitles') == ct)
