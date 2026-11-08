@@ -34,6 +34,12 @@ export function readingChapterTocRedirect(chapter, tocIndex, meta) {
   return { chapter: target.index, tocIndex: nextToc };
 }
 
+export function readingChapterBlockRedirect(index, meta) {
+  const chapter = readingChapterRedirect(index, meta.chapterCount, meta.chapterRedirects ?? {});
+  const block = meta.chapterBlockRedirects?.[index];
+  return chapter != null && Number.isInteger(block) && block >= 0 ? { chapter, block } : null;
+}
+
 export function readingChapterNoteRedirect(index, meta, legacyNote = null) {
   const redirects = meta.chapterRedirects ?? {};
   const chapter = readingChapterRedirect(index, meta.chapterCount, redirects);

@@ -5,7 +5,7 @@ import CdnImage from '../components/CdnImage';
 import { useSEO } from '../utils/seo';
 import { loadAuthorCatalog, readableBook } from '../data/authorContent';
 import { BOOK_TOPICS, classifyBook } from '../data/bookLibrary';
-import { mergeBook, normalizeBookToc, groupBookToc, bookReaderPath, bookTocReadingNode, resumedChapter, bookAuthors, relatedBooks, officialReadingLinks, readingChapterRedirect, readingChapterTocRedirect, readingChapterNoteRedirect } from '../data/bookDetail';
+import { mergeBook, normalizeBookToc, groupBookToc, bookReaderPath, bookTocReadingNode, resumedChapter, bookAuthors, relatedBooks, officialReadingLinks, readingChapterRedirect, readingChapterTocRedirect, readingChapterNoteRedirect, readingChapterBlockRedirect } from '../data/bookDetail';
 import { BOOK_EDITORIAL } from '../data/bookEditorial';
 import './BookDetailPage.css';
 
@@ -73,6 +73,7 @@ function BookDetailContent({ bookId }) {
   const previousReading = resumedChapter(history, bookId, chapterCount);
   const resumeSection = previousReading == null ? null : readingChapterTocRedirect(previousReading, null, book);
   const resumeNote = previousReading == null ? null : readingChapterNoteRedirect(previousReading, book);
+  const resumeBlock = previousReading == null ? null : readingChapterBlockRedirect(previousReading, book);
   const resume = previousReading == null ? null
     : resumeSection?.chapter ?? readingChapterRedirect(previousReading, chapterCount, redirects) ?? previousReading;
   const topics = classifyBook(book).topics.map(id => BOOK_TOPICS.find(t => t.id === id)).filter(Boolean);
@@ -93,7 +94,8 @@ function BookDetailContent({ bookId }) {
   const lead = editorial?.lead || (overview[0] ? (overview[0].split('。')[0] + '。') : '从作品出发，走近它所讨论的思想与问题。');
   const routes = (editorial?.routes || []).map(route => ({ ...route, target: flatToc.find(node => node.type === 'part' && node.title === route.part) })).filter(route => route.target);
   function openPart(index) { const target = document.getElementById(`bd-toc-${index}`); if (!target) return; let current = target; while (current && current !== tocRef.current) { if (current.tagName === 'DETAILS') current.open = true; current = current.parentElement; } target.scrollIntoView({ block:'start' }); }
-  const resumeAnchor = resumeSection ? `&toc=${resumeSection.tocIndex}` : resumeNote ? `&note=${resumeNote.note}` : '';
+  const resumeAnchor = resumeSection ? `&toc=${resumeSection.tocIndex}`
+    : resumeNote ? `&note=${resumeNote.note}` : resumeBlock ? `&sec=${resumeBlock.block}` : '';
   const readAction = (first = false) => readable ? <Link className="dp-primary" to={`/reader/${encodeURIComponent(bookId)}?ch=${first ? firstReading : (resume ?? firstReading)}${first ? '' : resumeAnchor}`}>{!first && resume !== null ? `继续阅读 · ${(readingChapters.length !== chapterCount && book.chapterTitles?.[resume]) || `第 ${readingChapters.indexOf(resume) + 1} 章`}` : first ? (firstReading > 0 ? '从头阅读' : '翻开第一章') : '开始阅读'}<span aria-hidden="true">↗</span></Link> : <><p className="bd-unavailable">当前仅收录书目资料，正文尚未开放阅读。</p>{officialReadingLinks(book).map(link => <a key={link.url} className="bd-text-link" href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a>)}</>;
   const heading = (id, en, title) => <div className="dp-section-caption"><small>{sectionNumber(id)} / {en}</small><h2 className="dp-serif">{title}</h2></div>;
   return <article id="dp-book-detail">

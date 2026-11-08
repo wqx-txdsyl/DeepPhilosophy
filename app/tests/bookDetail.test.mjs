@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNode,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks,readingChapterRedirect,readingChapterTocRedirect,readingChapterNoteRedirect} from '../src/data/bookDetail.js';
+import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNode,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks,readingChapterRedirect,readingChapterTocRedirect,readingChapterNoteRedirect,readingChapterBlockRedirect} from '../src/data/bookDetail.js';
 import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
@@ -26,6 +26,15 @@ test('old chapter routes resolve to original chapters while the first new readin
   assert.equal(reading.indexOf(readingChapterRedirect(1, 5, redirects)) + 1, 3);
   assert.equal(readingChapterRedirect(2, 5, {2: 3, 3: 4}), undefined);
   assert.equal(readingChapterRedirect(2, 5, {2: 0}), undefined);
+});
+test('an old continuation opens the actual body block without creating a section',()=>{
+  const meta={chapterCount:5,chapterRedirects:{0:3,1:4},chapterBlockRedirects:{0:137,1:0,2:5}};
+  assert.deepEqual(readingChapterBlockRedirect(0,meta),{chapter:3,block:137});
+  assert.deepEqual(readingChapterBlockRedirect(1,meta),{chapter:4,block:0});
+  assert.equal(readingChapterBlockRedirect(2,meta),null);
+  assert.equal(readingChapterBlockRedirect(0,{...meta,chapterBlockRedirects:{0:-1}}),null);
+  assert.equal(readingChapterBlockRedirect(0,{...meta,chapterBlockRedirects:{0:'137'}}),null);
+  assert.equal(readingChapterBlockRedirect(0,{...meta,chapterRedirects:{0:3,3:4}}),null);
 });
 test('an old section URL follows the section into a different restored volume',()=>{
   const meta = {chapterCount: 5, chapterRedirects: {0: 2, 1: 3},

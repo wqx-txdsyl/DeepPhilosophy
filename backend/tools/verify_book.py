@@ -65,6 +65,7 @@ redirect_slots = {int(key) for key in redirects} if valid_redirects else set()
 reading_slots = set(range(n)) - redirect_slots
 toc = meta.get('toc', [])
 section_redirects = meta.get('chapterTocRedirects', {})
+block_redirects = meta.get('chapterBlockRedirects', {})
 note_redirects = meta.get('chapterNoteRedirects', {})
 note_targets = meta.get('chapterNoteTargets', {})
 valid_section_redirects = isinstance(section_redirects, dict) and all(
@@ -128,6 +129,10 @@ check('meta.chapterTitles 与实际章节标题逐项一致', not title_mismatch
       '不一致: %s' % title_mismatches[:10] if title_mismatches else '')
 check('章节内部 index 与文件名逐项一致', not index_mismatches,
       '不一致: %s' % index_mismatches[:10] if index_mismatches else '')
+check('旧续读入口仅指向真实正文块', valid_redirects and isinstance(block_redirects, dict) and all(
+    key in redirects and type(block) is int and 0 <= block < chapter_lengths.get(redirects[key], 0)
+    for key, block in block_redirects.items()
+))
 check('旧注释章节跳转仅指向实际章末注', valid_redirects and isinstance(note_redirects, dict) and all(
     key in redirects and type(note) is int and 1 <= note <= chapter_note_counts.get(redirects[key], 0)
     for key, note in note_redirects.items()
@@ -166,6 +171,7 @@ if os.path.exists(bd):
           '缺 %s' % sorted(dmiss)[:6] if dmiss else '')
     check('book_detail 旧章节跳转与 meta 一致', d.get('chapterRedirects', {}) == redirects)
     check('book_detail 旧目录节跳转与 meta 一致', d.get('chapterTocRedirects', {}) == section_redirects)
+    check('book_detail 旧续读正文块跳转与 meta 一致', d.get('chapterBlockRedirects', {}) == block_redirects)
     check('book_detail 旧注释章节跳转与 meta 一致', d.get('chapterNoteRedirects', {}) == note_redirects)
     check('book_detail 旧章内注号跳转与 meta 一致', d.get('chapterNoteTargets', {}) == note_targets)
     check('book_detail chapterCount 一致', d.get('chapterCount') == n,
