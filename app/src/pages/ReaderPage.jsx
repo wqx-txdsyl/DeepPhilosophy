@@ -152,11 +152,17 @@ function ReaderPage() {
 
       setBook({ title: meta.title || bookId, author: meta.author || '', region: meta.region, file_type: 'text' });
       setTextToc(meta.toc || []);
-      const chapters = Array.from({ length: total }, (_, i) => ({
-        title: meta.chapterTitles?.[i] || `第${i + 1}章`,
-        content: null,
-        _loaded: false,
-      }));
+      const chapterRedirects = meta.chapterRedirects ?? {};
+      const chapters = Array.from({ length: total }, (_, i) => {
+        const redirect = chapterRedirects[i];
+        return {
+          title: meta.chapterTitles?.[i] || `第${i + 1}章`,
+          content: null,
+          _loaded: false,
+          redirectTo: i > 0 && redirect === i + 1 && redirect < total && chapterRedirects[redirect] == null
+            ? redirect : undefined,
+        };
+      });
       setTextChapters(chapters);
       setError(null); setTextReady(true);
 
@@ -173,6 +179,15 @@ function ReaderPage() {
           if (entry?.page > 0 && entry.page <= total) histCh = entry.page - 1;
         } catch {}
         startCh = histCh >= 0 ? histCh : 0;
+      }
+      const redirect = chapters[startCh].redirectTo;
+      if (redirect != null) {
+        startCh = redirect;
+        if (urlCh >= 0 && urlCh < total) {
+          const params = new URLSearchParams(searchParams);
+          params.set('ch', startCh);
+          navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
+        }
       }
       setTextChapter(startCh);
 
@@ -202,23 +217,24 @@ function ReaderPage() {
   };
   const loadChapter = async (idx, chaptersArr) => {
     const chs = chaptersArr || textChapters;
-    if (!chs[idx] || chs[idx]._loaded || chs[idx].content) return;
-    if (loadingRef.current[idx]) return;
-    loadingRef.current[idx] = true;
+    const index = chs[idx]?.redirectTo ?? idx;
+    if (!chs[index] || chs[index]._loaded || chs[index].content) return;
+    if (loadingRef.current[index]) return;
+    loadingRef.current[index] = true;
     try {
-      const resp = await fetchChapter(`/${bookId}/${idx}.json`);
+      const resp = await fetchChapter(`/${bookId}/${index}.json`);
       if (resp.ok) {
         const ch = await resp.json();
         setTextChapters(prev => {
           const next = [...prev];
-          if (next[idx]) next[idx] = { ...ch, _loaded: true, _error: false };
+          if (next[index]) next[index] = { ...ch, _loaded: true, _error: false };
           return next;
         });
       } else {
-        markChapterError(idx);
+        markChapterError(index);
       }
-    } catch { markChapterError(idx); } finally {
-      loadingRef.current[idx] = false;
+    } catch { markChapterError(index); } finally {
+      loadingRef.current[index] = false;
     }
   };
   // 失败后重试: 清错误标记重新加载（失败态不再永久卡"加载中"）
@@ -233,8 +249,10 @@ function ReaderPage() {
 
   const handleChapterChange = useCallback((ch) => {
     if (ch === textChapter) return;
-    // 跳过 section 章节
+    // 按翻页方向越过为旧链接保留的目录占位。
     let target = ch;
+    const redirect = textChapters[target]?.redirectTo;
+    if (redirect != null) target = ch > textChapter ? redirect : ch - 1;
     if (textChapters[target]?.type === 'section') {
       target = ch > textChapter ? target + 1 : target - 1;
       if (target < 0 || target >= textChapters.length) return;

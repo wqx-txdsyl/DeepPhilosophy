@@ -52,16 +52,30 @@ check('public 双端 MD5 一致', not bad, '不一致: %s' % ','.join(bad) if ba
 
 # 3. toc 对象数组 (ChapterReader 目录渲染要求)
 # epub 多级 toc: type='part' 分组项(无 index 或 level) + type='chapter' 章节项(index 指向章节文件)
-# 检查标准: 对象数组 + chapter 项 index 集合 == 0..N-1 全覆盖; 不要求 len(toc)==N (part 项允许)
+# 实际目录覆盖所有阅读单元；旧标题占位保留文件地址，直接跳至紧邻的正文。
+redirects = meta.get('chapterRedirects', {})
+valid_redirects = isinstance(redirects, dict) and all(
+    key.isascii() and key.isdigit() and str(int(key)) == key
+    and 0 < int(key) < n - 1 and type(target) is int
+    and target == int(key) + 1 and str(target) not in redirects
+    for key, target in redirects.items()
+)
+check('旧章节跳转仅指向相邻正文', valid_redirects)
+redirect_slots = {int(key) for key in redirects} if valid_redirects else set()
+reading_slots = set(range(n)) - redirect_slots
 toc = meta.get('toc', [])
 check('toc 存在', bool(toc), '%d 项' % len(toc))
 if toc:
     check('toc 为对象数组 (item.title/item.index)', isinstance(toc[0], dict) and 'title' in toc[0] and 'index' in toc[0],
           repr(toc[0])[:60])
     ch_idx = [it.get('index') for it in toc if isinstance(it, dict) and isinstance(it.get('index'), int)]
-    missing = set(range(n)) - set(ch_idx)
-    check('toc chapter index 覆盖 0..%d 齐全' % (n - 1), not missing,
+    missing = reading_slots - set(ch_idx)
+    check('toc 覆盖所有正文索引', not missing,
           '缺 %s' % sorted(missing)[:6] if missing else '')
+    check('toc 不包含旧标题占位', redirect_slots.isdisjoint(ch_idx))
+    if redirect_slots:
+        chapter_entries = {it.get('index') for it in toc if isinstance(it, dict) and it.get('type') == 'chapter'}
+        check('旧章节跳转目标在目录中有正文入口', set(redirects.values()) <= chapter_entries)
     idx_ok = all(isinstance(it.get('index'), int) and 0 <= it.get('index') < n
                  for it in toc if isinstance(it, dict) and 'index' in it)
     check('toc index 均在 [0, %d)' % n, idx_ok)
@@ -117,9 +131,10 @@ if os.path.exists(bd):
           repr(dtoc[0])[:60] if dtoc else '')
     # book_detail 的 toc 与 meta 同构: chapter 项 index 覆盖一致 (part 项允许)
     dch = [it.get('index') for it in dtoc if isinstance(it, dict) and isinstance(it.get('index'), int)]
-    dmiss = set(range(n)) - set(dch)
+    dmiss = reading_slots - set(dch)
     check('book_detail toc index 覆盖一致', not dmiss,
           '缺 %s' % sorted(dmiss)[:6] if dmiss else '')
+    check('book_detail 旧章节跳转与 meta 一致', d.get('chapterRedirects', {}) == redirects)
     check('book_detail chapterCount 一致', d.get('chapterCount') == n,
           'detail=%s meta=%s' % (d.get('chapterCount'), n))
     check('book_detail chapterTitles 与 meta 逐项一致', d.get('chapterTitles') == ct)
