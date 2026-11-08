@@ -11,7 +11,7 @@ import { writeLocalNote, notePending, markNoteSynced } from '../data/readingRoom
 import { saveReadingProgress } from '../data/userData';
 import ChapterReader from '../components/ChapterReader';
 
-// 章节 CDN 双轨（2026-08-11 提速）:
+// 章节优先走 OSS，备用源使用当前部署的同一提交：
 //   OSS 优先 — 上海直连 ~80ms（backend/data/book_chapters 由 dp_sync_oss_chapters.py 增量同步到 bucket）
 //   jsDelivr 兜底 — GitHub 自动刷新（OSS 超时/缺文件时切换, 国内 ~0.9s 但可用）
 // 本地开发（localhost）→ 本地静态目录（vite dev 服务 public/backend/data/book_chapters junction, 空串拼接同源相对路径）
@@ -25,12 +25,13 @@ const CDN_BASES = (typeof location !== 'undefined' && ['localhost', '127.0.0.1']
   : [
       'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com',
       `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${DP_COMMIT}`,
+      `https://raw.githubusercontent.com/wqx-txdsyl/DeepPhilosophy/${DP_COMMIT}`,
     ];
 
 // 依次尝试各 CDN; 全部失败抛最后错误
 // 超时: OSS 2s 快超时（直连上海 ~80ms, 抖动瞬时, 失败立刻重试 1 次）;
 //       jsDelivr 10s（兜底路径, 首次回源实测 6.5s, 2s 必然超时 → 曾致"永久加载中"）
-const CDN_TIMEOUTS = [2000, 2000, 10000];
+const CDN_TIMEOUTS = [2000, 2000, 10000, 10000];
 async function fetchChapter(path) {
   let lastErr;
   const rel = path.startsWith('/') ? path.slice(1) : path;   // {bid}/{idx}.json
@@ -42,7 +43,8 @@ async function fetchChapter(path) {
     ? [
         `${CDN_BASES[0]}/book_chapters/${rel}${ossRevision}`,  // OSS
         `${CDN_BASES[0]}/book_chapters/${rel}${ossRevision}`,  // OSS 重试
-        `${CDN_BASES[1]}/backend/data/book_chapters/${rel}`,  // jsDelivr 兜底
+        `${CDN_BASES[1]}/backend/data/book_chapters/${rel}`,  // jsDelivr
+        `${CDN_BASES[2]}/backend/data/book_chapters/${rel}`,  // GitHub Raw，避免镜像包体限制
       ]
     : [`${CDN_BASES[0]}/backend/data/book_chapters${path}`];   // 本地 dev 单 base
   for (let i = 0; i < tries.length; i++) {
