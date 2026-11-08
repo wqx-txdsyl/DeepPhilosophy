@@ -264,3 +264,16 @@ test('verified body fractions retain legible source height and their faithful ac
  assert.ok(plain(html).includes('，再取根式'));
  assert.ok(plain(html).includes('。'));
 });
+
+test('a directly opened note can return to a real body reference before any click', () => {
+  const html = render({
+    paragraphMode: 'source',
+    content: [{ type: 'text', value: '正文{{n:9}}，重复引用{{n:9}}。' }],
+    notes: [{ n: 5, text: '印本中待定位的注释。' }, { n: 9, text: '可回到正文的注释。' }],
+  }, { initialNote: 1 });
+  assert.match(html, /id="dp-ref-0-1-1"/);
+  assert.match(html, /id="dp-ref-0-1-2"/);
+  assert.match(html, /aria-label="返回引用位置1"/);
+  assert.doesNotMatch(html, /aria-label="返回引用位置2"/);
+  assert.equal((html.match(/class="dp-note-back"/g) || []).length, 1);
+});

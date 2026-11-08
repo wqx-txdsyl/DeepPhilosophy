@@ -111,7 +111,7 @@ export default function ChapterReader({
     for (const nt of notes) if (!seen.has(Number(nt.n))) order.push(Number(nt.n));
     const disp = new Map();
     order.forEach((n, i) => disp.set(n, i + 1));
-    return { byN, order, disp };
+    return { byN, order, disp, bodyRefs: seen };
   }, [ch.notes, ch.content, currentChapter]);
   // 每条注释"最近入口"引用实例 id：点正文上标时记录，点注释号/返回时回到该实例（重复引用不回错）
   const lastRefRef = useRef({});
@@ -132,11 +132,11 @@ export default function ChapterReader({
     if (entryEl && entryEl.id) lastRefRef.current[n] = entryEl.id;
     flashAndScroll(`dp-note-${currentChapter}-${disp}`);
   }, [currentChapter, flashAndScroll]);
-  const goBackRef = useCallback((n) => {
-    const id = lastRefRef.current[n];
+  const goBackRef = useCallback((n, disp) => {
+    const id = lastRefRef.current[n] ?? (noteIndex?.bodyRefs.has(n) ? `dp-ref-${currentChapter}-${disp}-1` : null);
     if (id) flashAndScroll(id);
-  }, [flashAndScroll]);
-  // URL 直达注释（?ch=&note=显示号）：内容渲染后滚到该注释（无入口 → 不显示返回）
+  }, [currentChapter, flashAndScroll, noteIndex]);
+  // URL 直达注释后可回到首次正文引用；已点击过的引用优先。
   const pendingNoteRef = useRef(initialNote);
   useEffect(() => { pendingNoteRef.current = initialNote; }, [initialNote]);
 
@@ -614,7 +614,7 @@ export default function ChapterReader({
               const disp = i + 1;
               const nt = noteIndex.byN.get(n) || {};
               const noteId = `dp-note-${currentChapter}-${disp}`;
-              const hasBack = lastRefRef.current[n] != null;
+              const hasBack = lastRefRef.current[n] != null || noteIndex.bodyRefs.has(n);
               const noteBody = String(nt.text || '');
               const noteStyles = validSourceInlineStyles(noteBody, nt.inlineStyles);
               let noteImageCursor = 0;
@@ -652,9 +652,9 @@ export default function ChapterReader({
                     style={{ cursor: hasBack ? 'pointer' : 'default', color: 'var(--ochre)' }}
                     aria-label={hasBack ? `返回引用位置${disp}` : `注释${disp}`}
                     title={hasBack ? '回到引用位置' : undefined}
-                    onClick={() => goBackRef(n)}
+                    onClick={() => goBackRef(n, disp)}
                     onKeyDown={(e) => {
-                      if ((e.key === 'Enter' || e.key === ' ') && hasBack) { e.preventDefault(); goBackRef(n); }
+                      if ((e.key === 'Enter' || e.key === ' ') && hasBack) { e.preventDefault(); goBackRef(n, disp); }
                     }}>
                     [{disp}]
                   </span>
@@ -695,7 +695,7 @@ export default function ChapterReader({
                         border: 'none', background: 'transparent', color: 'var(--ochre)', cursor: 'pointer',
                         fontSize: '0.85em', padding: '0 2px', marginLeft: 4,
                       }}
-                      onClick={() => goBackRef(n)}>↩</button>
+                      onClick={() => goBackRef(n, disp)}>↩</button>
                   )}
                 </div>
               );
