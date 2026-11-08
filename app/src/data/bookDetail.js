@@ -23,12 +23,14 @@ export function readingChapterRedirect(index, total, redirects) {
 }
 
 export function readingChapterTocRedirect(chapter, tocIndex, meta) {
-  if (readingChapterRedirect(chapter, meta.chapterCount, meta.chapterRedirects ?? {}) == null
-    || !Number.isInteger(tocIndex)) return null;
-  const nextToc = meta.chapterTocRedirects?.[chapter]?.[tocIndex];
+  const nextChapter = readingChapterRedirect(chapter, meta.chapterCount, meta.chapterRedirects ?? {});
+  if (nextChapter == null) return null;
+  const key = Number.isInteger(tocIndex) ? tocIndex : 'default';
+  const nextToc = meta.chapterTocRedirects?.[chapter]?.[key];
   const target = Number.isInteger(nextToc) ? meta.toc?.[nextToc] : null;
   if (target?.type !== 'section' || !Number.isInteger(target.index) || target.index <= chapter
-    || target.index >= meta.chapterCount || meta.chapterRedirects?.[target.index] != null) return null;
+    || target.index >= meta.chapterCount || meta.chapterRedirects?.[target.index] != null
+    || (key === 'default' && target.index !== nextChapter)) return null;
   return { chapter: target.index, tocIndex: nextToc };
 }
 

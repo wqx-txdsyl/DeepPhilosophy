@@ -188,11 +188,11 @@ function ReaderPage() {
         } catch {}
         startCh = histCh >= 0 ? histCh : nextReadingIndex(chapters, 0, 1);
       }
-      const sectionRedirect = startCh === urlCh ? readingChapterTocRedirect(startCh, initialTocIdx, meta) : null;
+      const sectionRedirect = readingChapterTocRedirect(startCh, startCh === urlCh ? initialTocIdx : null, meta);
       const redirect = sectionRedirect?.chapter ?? chapters[startCh].redirectTo;
       if (redirect != null) {
         startCh = redirect;
-        if (urlCh >= 0 && urlCh < total) {
+        if (sectionRedirect || (urlCh >= 0 && urlCh < total)) {
           const params = new URLSearchParams(searchParams);
           params.set('ch', startCh);
           if (sectionRedirect) {

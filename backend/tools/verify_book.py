@@ -67,10 +67,11 @@ toc = meta.get('toc', [])
 section_redirects = meta.get('chapterTocRedirects', {})
 valid_section_redirects = isinstance(section_redirects, dict) and all(
     key in redirects and isinstance(mapping, dict) and bool(mapping)
-    and all(old.isascii() and old.isdigit() and str(int(old)) == old
+    and all((old == 'default' or (old.isascii() and old.isdigit() and str(int(old)) == old))
             and type(target) is int and 0 <= target < len(toc)
             and isinstance(toc[target], dict) and toc[target].get('type') == 'section'
             and toc[target].get('index') in reading_slots
+            and (old != 'default' or toc[target].get('index') == redirects[key])
             for old, target in mapping.items())
     for key, mapping in section_redirects.items()
 )

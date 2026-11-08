@@ -17,11 +17,13 @@ test('old chapter routes resolve to original chapters while the first new readin
 });
 test('an old section URL follows the section into a different restored volume',()=>{
   const meta = {chapterCount: 5, chapterRedirects: {0: 2, 1: 3},
-    chapterTocRedirects: {0: {7: 2, 8: 0}},
-    toc: [{type:'chapter', index:2}, {type:'chapter', index:3}, {type:'section', index:3}]};
+    chapterTocRedirects: {0: {7: 2, 8: 0, default: 3}, 1: {default: 3}},
+    toc: [{type:'chapter', index:2}, {type:'chapter', index:3}, {type:'section', index:3}, {type:'section', index:2}]};
   assert.deepEqual(readingChapterTocRedirect(0, 7, meta), {chapter:3, tocIndex:2});
   assert.equal(readingChapterTocRedirect(0, 8, meta), null);
   assert.equal(readingChapterTocRedirect(1, 7, meta), null);
+  assert.deepEqual(readingChapterTocRedirect(0, null, meta), {chapter:2, tocIndex:3});
+  assert.equal(readingChapterTocRedirect(1, null, meta), null);
   assert.equal(readingChapterTocRedirect(3, 7, meta), null);
 });
 test('Capital sections stay in their own chapter and value-form subheadings keep their original nesting',()=>{
