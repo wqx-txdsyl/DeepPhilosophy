@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.5）
+"""dp_note_check.py — 章末注释契约校验（docs/note-contract.md v1.6）
 
 用法:
     python3 backend/tools/dp_note_check.py <bid>            # 校验整本书全部章节
@@ -26,7 +26,7 @@ VALID_KINDS = {"author", "translator", "editor", "original", "recorder"}
 
 
 def inline_style_errors(text, styles, forbidden=()):
-    """Validate explicit source sub/sup ranges in JavaScript UTF-16 coordinates."""
+    """Validate explicit source typography ranges in JavaScript UTF-16 coordinates."""
     if not isinstance(text, str) or not isinstance(styles, list):
         return ['inlineStyles 需要字符串正文和范围数组']
     errors = []
@@ -40,8 +40,8 @@ def inline_style_errors(text, styles, forbidden=()):
                         len(text[:marker.end()].encode('utf-16-le')) // 2))
     previous_end = 0
     for i, style in enumerate(styles):
-        if not isinstance(style, dict) or style.get('kind') not in ('sub', 'sup'):
-            errors.append(f'inlineStyles[{i}] 只允许 sub/sup')
+        if not isinstance(style, dict) or style.get('kind') not in ('sub', 'sup', 'strong'):
+            errors.append(f'inlineStyles[{i}] 只允许 sub、sup 或 strong')
             continue
         start, end = style.get('start'), style.get('end')
         if (type(start) is not int or type(end) is not int or start < previous_end

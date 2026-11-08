@@ -56,6 +56,7 @@ const renderSourceInline = (text, styles, offset = 0) => {
   if (!styles?.length) return text;
   return sourceInlineSegments(text, styles, offset).map((part, i) => {
     if (!part.kind) return <Fragment key={i}>{part.text}</Fragment>;
+    if (part.kind === 'strong') return <strong key={i}>{part.text}</strong>;
     const Tag = part.kind;
     return <Tag key={i} style={{ fontSize: '0.75em', lineHeight: 1, position: 'static', verticalAlign: part.kind === 'sub' ? 'sub' : 'super' }}>{part.text}</Tag>;
   });
