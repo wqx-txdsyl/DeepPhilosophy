@@ -31,7 +31,7 @@ def test_source_math_and_nested_note_link_have_separate_utf16_ranges(tmp_path):
     assert not errors and not warnings
 
 
-@pytest.mark.parametrize('kind', ['strong', 'em'])
+@pytest.mark.parametrize('kind', ['strong', 'em', 'underline'])
 def test_source_emphasis_can_surround_but_not_cover_a_note(tmp_path, kind):
     errors, warnings, _ = check(tmp_path, [
         {'start': 2, 'end': 3, 'kind': kind},

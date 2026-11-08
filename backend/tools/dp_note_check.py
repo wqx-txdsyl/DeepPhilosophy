@@ -40,8 +40,8 @@ def inline_style_errors(text, styles, forbidden=()):
                         len(text[:marker.end()].encode('utf-16-le')) // 2))
     previous_end = 0
     for i, style in enumerate(styles):
-        if not isinstance(style, dict) or style.get('kind') not in ('sub', 'sup', 'strong', 'em'):
-            errors.append(f'inlineStyles[{i}] 只允许 sub、sup、strong 或 em')
+        if not isinstance(style, dict) or style.get('kind') not in ('sub', 'sup', 'strong', 'em', 'underline'):
+            errors.append(f'inlineStyles[{i}] 只允许 sub、sup、strong、em 或 underline')
             continue
         start, end = style.get('start'), style.get('end')
         if (type(start) is not int or type(end) is not int or start < previous_end

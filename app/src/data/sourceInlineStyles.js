@@ -8,7 +8,7 @@ export function validSourceInlineStyles(text, styles) {
   const tokens = [...text.matchAll(atomicTokens)].map(m => [m.index, m.index + m[0].length]);
   let end = 0;
   for (const style of styles) {
-    if (!style || !['sub', 'sup', 'strong', 'em'].includes(style.kind)
+    if (!style || !['sub', 'sup', 'strong', 'em', 'underline'].includes(style.kind)
       || !Number.isInteger(style.start) || !Number.isInteger(style.end)
       || style.start < end || style.end <= style.start || style.end > text.length
       || !boundary(text, style.start) || !boundary(text, style.end)

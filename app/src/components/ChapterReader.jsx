@@ -58,6 +58,7 @@ const renderSourceInline = (text, styles, offset = 0) => {
     if (!part.kind) return <Fragment key={i}>{part.text}</Fragment>;
     if (part.kind === 'strong') return <strong key={i}>{part.text}</strong>;
     if (part.kind === 'em') return <em key={i}>{part.text}</em>;
+    if (part.kind === 'underline') return <u key={i}>{part.text}</u>;
     const Tag = part.kind;
     return <Tag key={i} style={{ fontSize: '0.75em', lineHeight: 1, position: 'static', verticalAlign: part.kind === 'sub' ? 'sub' : 'super' }}>{part.text}</Tag>;
   });
