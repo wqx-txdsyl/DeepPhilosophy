@@ -3,12 +3,13 @@
  * 支持：章跳转、目录、批注笔记、阅读进度自动保存
  * URL 参数：ch（章）、sec（详情页目录节跳转）
  */
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
 import { writeLocalNote, notePending, markNoteSynced } from '../data/readingRoom';
 import { saveReadingProgress } from '../data/userData';
+import { readingChapterRedirect } from '../data/bookDetail';
 import ChapterReader from '../components/ChapterReader';
 
 // 章节优先走 OSS，备用源使用当前部署的同一提交：
@@ -76,6 +77,9 @@ function ReaderPage() {
   const [textLoading, setTextLoading] = useState(false);
   const [textReady, setTextReady] = useState(false);
   const [showReaderToc, setShowReaderToc] = useState(false);
+  const readingChapters = useMemo(() => textChapters.flatMap((chapter, index) =>
+    chapter.redirectTo == null ? [index] : []), [textChapters]);
+  const readingNumber = readingChapters.indexOf(textChapter) + 1;
   // URL 直达节(第X节): 详情页目录 section 跳转
   // 主路径: &toc={toc数组下标} → 标题锚点 sec-{tocIdx}，不依赖 sec 字段（缺 sec 的书也准）
   // 兼容旧 URL: &sec={章内块下标}（防御: 缺 sec 字段的书旧 URL 带 "sec=undefined" → NaN → 置 null）
@@ -118,16 +122,17 @@ function ReaderPage() {
   }, [bookId, notesKey]);
 
   // Save progress on unmount（章节阅读统一 'text' 类型）
-  const chapterPosRef = useRef({ bookId: '', title: '', author: '', ch: 0, total: 0 });
+  const chapterPosRef = useRef({ bookId: '', title: '', author: '', ch: 0, percent: 0 });
   useEffect(() => {
-    if (textReady && book) {
-      chapterPosRef.current = { bookId, title: book.title, author: book.author, ch: textChapter, total: textChapters.length };
+    if (textReady && book && readingNumber > 0) {
+      chapterPosRef.current = { bookId, title: book.title, author: book.author, ch: textChapter,
+        percent: readingNumber / readingChapters.length };
     }
-  }, [bookId, textChapter, textReady, book, textChapters.length]);
+  }, [bookId, textChapter, textReady, book, readingNumber, readingChapters.length]);
   useEffect(() => {
     return () => {
       const s = chapterPosRef.current;
-      if (s.total > 0) saveReadingProgress(s.bookId, s.title, s.author, s.ch + 1, (s.ch + 1) / s.total, 'text');
+      if (s.percent > 0) saveReadingProgress(s.bookId, s.title, s.author, s.ch + 1, s.percent, 'text');
     };
   }, []);
 
@@ -160,20 +165,16 @@ function ReaderPage() {
       setBook({ title: meta.title || bookId, author: meta.author || '', region: meta.region, file_type: 'text' });
       setTextToc(meta.toc || []);
       const chapterRedirects = meta.chapterRedirects ?? {};
-      const chapters = Array.from({ length: total }, (_, i) => {
-        const redirect = chapterRedirects[i];
-        return {
-          title: meta.chapterTitles?.[i] || `第${i + 1}章`,
-          content: null,
-          _loaded: false,
-          redirectTo: Number.isInteger(redirect) && redirect > i && redirect < total && chapterRedirects[redirect] == null
-            ? redirect : undefined,
-        };
-      });
+      const chapters = Array.from({ length: total }, (_, i) => ({
+        title: meta.chapterTitles?.[i] || `第${i + 1}章`,
+        content: null,
+        _loaded: false,
+        redirectTo: readingChapterRedirect(i, total, chapterRedirects),
+      }));
       setTextChapters(chapters);
       setError(null); setTextReady(true);
 
-      // URL 跳转：优先 ch 参数，其次历史记录，最后默认 ch=0
+      // URL 跳转：优先 ch 参数，其次历史记录，最后打开第一个实际阅读单元
       const urlCh = parseInt(searchParams.get('ch'));
       let startCh;
       if (!isNaN(urlCh) && urlCh >= 0 && urlCh < total) {
@@ -185,7 +186,7 @@ function ReaderPage() {
           const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
           if (entry?.page > 0 && entry.page <= total) histCh = entry.page - 1;
         } catch {}
-        startCh = histCh >= 0 ? histCh : 0;
+        startCh = histCh >= 0 ? histCh : nextReadingIndex(chapters, 0, 1);
       }
       const redirect = chapters[startCh].redirectTo;
       if (redirect != null) {
@@ -201,7 +202,8 @@ function ReaderPage() {
       // 2. 立即加载当前章节（通过章节 index 查找对应文件）
       await loadChapter(startCh, chapters);
       // 3. 预加载下一章
-      if (startCh + 1 < total) loadChapter(startCh + 1, chapters);
+      const next = nextReadingIndex(chapters, startCh + 1, 1);
+      if (next < total) loadChapter(next, chapters);
     } catch (e) {
       console.error('Load error:', e);
       if (!textReady) setError('无法阅读：该书籍暂无章节数据。');
@@ -265,8 +267,10 @@ function ReaderPage() {
     }
     setTextChapter(target);
     loadChapter(target);
-    if (target + 1 < textChapters.length) loadChapter(target + 1);
-    if (book) saveReadingProgress(bookId, book.title, book.author, target + 1, (target + 1) / textChapters.length, 'text');
+    const next = nextReadingIndex(textChapters, target + 1, 1);
+    if (next < textChapters.length) loadChapter(next);
+    if (book) saveReadingProgress(bookId, book.title, book.author, target + 1,
+      (readingChapters.indexOf(target) + 1) / readingChapters.length, 'text');
     // 节、目录项和注释定位都属于原章；换章后不能沿用旧定位。
     const params = new URLSearchParams(searchParams);
     params.delete('type');
@@ -275,7 +279,7 @@ function ReaderPage() {
     params.delete('note');
     params.set('ch', target);
     navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
-  }, [textChapter, textChapters, book, bookId, searchParams, navigate]);
+  }, [textChapter, textChapters, readingChapters, book, bookId, searchParams, navigate]);
 
   // Keyboard navigation: left/right arrow to switch chapters
   useEffect(() => {
@@ -312,7 +316,7 @@ function ReaderPage() {
         <span style={{ fontSize: 11, color: 'var(--text)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {book?.title}
           {textReady && (
-            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>阅读 {textChapter + 1} / {textChapters.length}</span>
+            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>阅读 {readingNumber} / {readingChapters.length}</span>
           )}
         </span>
         {textReady && (
@@ -367,7 +371,7 @@ function ReaderPage() {
             display: 'flex', flexDirection: 'column', overflow: 'auto',
           }}>
             <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
-              <Icon name="icon-edit" size={16} /> 阅读批注 · 第{textChapter + 1}章
+              <Icon name="icon-edit" size={16} /> 阅读批注 · 第{readingNumber}章
             </div>
             <textarea
               value={noteText}

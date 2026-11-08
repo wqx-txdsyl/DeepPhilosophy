@@ -15,6 +15,13 @@ export function officialReadingLinks(book) {
     } catch { return false; }
   });
 }
+// Compatibility entries must directly target a later physical reading file.
+export function readingChapterRedirect(index, total, redirects) {
+  const target = redirects[index];
+  return Number.isInteger(target) && target > index && target < total && redirects[target] == null
+    ? target : undefined;
+}
+
 export function normalizeBookToc(book) {
   const original = Array.isArray(book.toc) && book.toc.length ? book.toc : (book.chapterTitles || []);
   return original.map((item, tocIndex) => typeof item === 'string' ? { type: 'chapter', title: item, index: tocIndex, tocIndex } : { ...item, tocIndex }).filter(item => item.title);
