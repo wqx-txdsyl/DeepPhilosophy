@@ -74,20 +74,20 @@ test('source subscripts and powers retain UTF-16 offsets past a note and an inli
   assert.equal((html.match(/id="dp-ref-0-1-1"/g)||[]).length,1);
 });
 
-test('source bold quotations stay full-sized and preserve a note between their ranges', () => {
+for (const kind of ['strong', 'em']) test(`source ${kind} stays full-sized and preserves a note between ranges`, () => {
   const value = '𝛂引文{{n:1}}续引，评论。';
   const continuation = value.indexOf('续引');
   const html = render({
     paragraphMode: 'source',
     content: [{ type: 'text', value, inlineStyles: [
-      { start: 2, end: 4, kind: 'strong' },
-      { start: continuation, end: continuation + 2, kind: 'strong' },
+      { start: 2, end: 4, kind },
+      { start: continuation, end: continuation + 2, kind },
     ] }],
     notes: [{ n: 1, text: '原注。' }],
   });
-  assert.match(html, /𝛂<strong>引文<\/strong>/);
+  assert.ok(html.includes(`𝛂<${kind}>引文</${kind}>`));
   assert.match(html, /id="dp-ref-0-1-1"/);
-  assert.match(html, /<strong>续引<\/strong>，评论。/);
+  assert.ok(html.includes(`<${kind}>续引</${kind}>，评论。`));
 });
 
 test('section anchors and the hidden leading section sign do not shift a source subscript', () => {

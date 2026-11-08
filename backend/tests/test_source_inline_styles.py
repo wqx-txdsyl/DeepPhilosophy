@@ -31,13 +31,14 @@ def test_source_math_and_nested_note_link_have_separate_utf16_ranges(tmp_path):
     assert not errors and not warnings
 
 
-def test_source_bold_can_surround_but_not_cover_a_note(tmp_path):
+@pytest.mark.parametrize('kind', ['strong', 'em'])
+def test_source_emphasis_can_surround_but_not_cover_a_note(tmp_path, kind):
     errors, warnings, _ = check(tmp_path, [
-        {'start': 2, 'end': 3, 'kind': 'strong'},
-        {'start': 15, 'end': 16, 'kind': 'strong'},
+        {'start': 2, 'end': 3, 'kind': kind},
+        {'start': 15, 'end': 16, 'kind': kind},
     ])
     assert not errors and not warnings
-    errors, _, _ = check(tmp_path, [{'start': 2, 'end': 10, 'kind': 'strong'}])
+    errors, _, _ = check(tmp_path, [{'start': 2, 'end': 10, 'kind': kind}])
     assert any('覆盖注号' in e for e in errors)
 
 
