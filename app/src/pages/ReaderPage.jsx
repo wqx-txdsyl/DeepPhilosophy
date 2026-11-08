@@ -9,7 +9,7 @@ import Icon from '../components/Icon';
 import { getApiBase } from '../App';
 import { writeLocalNote, notePending, markNoteSynced } from '../data/readingRoom';
 import { saveReadingProgress } from '../data/userData';
-import { readingChapterRedirect, readingChapterTocRedirect } from '../data/bookDetail';
+import { readingChapterRedirect, readingChapterTocRedirect, readingChapterNoteRedirect } from '../data/bookDetail';
 import ChapterReader from '../components/ChapterReader';
 
 // 章节优先走 OSS，备用源使用当前部署的同一提交：
@@ -189,15 +189,19 @@ function ReaderPage() {
         startCh = histCh >= 0 ? histCh : nextReadingIndex(chapters, 0, 1);
       }
       const sectionRedirect = readingChapterTocRedirect(startCh, startCh === urlCh ? initialTocIdx : null, meta);
-      const redirect = sectionRedirect?.chapter ?? chapters[startCh].redirectTo;
+      const noteRedirect = initialTocIdx == null && initialSec == null && initialNote == null
+        ? readingChapterNoteRedirect(startCh, meta) : null;
+      const redirect = sectionRedirect?.chapter ?? noteRedirect?.chapter ?? chapters[startCh].redirectTo;
       if (redirect != null) {
         startCh = redirect;
-        if (sectionRedirect || (urlCh >= 0 && urlCh < total)) {
+        if (sectionRedirect || noteRedirect || (urlCh >= 0 && urlCh < total)) {
           const params = new URLSearchParams(searchParams);
           params.set('ch', startCh);
           if (sectionRedirect) {
             params.set('toc', sectionRedirect.tocIndex);
             params.delete('sec');
+          } else if (noteRedirect) {
+            params.set('note', noteRedirect.note);
           }
           navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
         }

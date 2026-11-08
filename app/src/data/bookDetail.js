@@ -34,6 +34,12 @@ export function readingChapterTocRedirect(chapter, tocIndex, meta) {
   return { chapter: target.index, tocIndex: nextToc };
 }
 
+export function readingChapterNoteRedirect(index, meta) {
+  const note = meta.chapterNoteRedirects?.[index];
+  const chapter = readingChapterRedirect(index, meta.chapterCount, meta.chapterRedirects ?? {});
+  return chapter != null && Number.isInteger(note) && note > 0 ? { chapter, note } : null;
+}
+
 export function normalizeBookToc(book) {
   const original = Array.isArray(book.toc) && book.toc.length ? book.toc : (book.chapterTitles || []);
   return original.map((item, tocIndex) => typeof item === 'string' ? { type: 'chapter', title: item, index: tocIndex, tocIndex } : { ...item, tocIndex }).filter(item => item.title);

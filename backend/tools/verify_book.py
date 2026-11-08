@@ -65,6 +65,7 @@ redirect_slots = {int(key) for key in redirects} if valid_redirects else set()
 reading_slots = set(range(n)) - redirect_slots
 toc = meta.get('toc', [])
 section_redirects = meta.get('chapterTocRedirects', {})
+note_redirects = meta.get('chapterNoteRedirects', {})
 valid_section_redirects = isinstance(section_redirects, dict) and all(
     key in redirects and isinstance(mapping, dict) and bool(mapping)
     and all((old == 'default' or (old.isascii() and old.isdigit() and str(int(old)) == old))
@@ -101,6 +102,7 @@ title_mismatches = []
 index_mismatches = []
 invalid_blocks = []
 chapter_lengths = {}
+chapter_note_counts = {}
 for i in range(n):
     path = D + '/%d.json' % i
     if not os.path.exists(path):
@@ -113,6 +115,8 @@ for i in range(n):
         index_mismatches.append(i)
     content = chapter.get('content') if isinstance(chapter, dict) else None
     chapter_lengths[i] = len(content) if isinstance(content, list) else 0
+    notes = chapter.get('notes') if isinstance(chapter, dict) else None
+    chapter_note_counts[i] = len(notes) if isinstance(notes, list) else 0
     if not isinstance(content, list) or not content:
         invalid_blocks.append('%d.json: 正文块缺失' % i)
     else:
@@ -123,6 +127,10 @@ check('meta.chapterTitles 与实际章节标题逐项一致', not title_mismatch
       '不一致: %s' % title_mismatches[:10] if title_mismatches else '')
 check('章节内部 index 与文件名逐项一致', not index_mismatches,
       '不一致: %s' % index_mismatches[:10] if index_mismatches else '')
+check('旧注释章节跳转仅指向实际章末注', valid_redirects and isinstance(note_redirects, dict) and all(
+    key in redirects and type(note) is int and 1 <= note <= chapter_note_counts.get(redirects[key], 0)
+    for key, note in note_redirects.items()
+))
 
 invalid_sections = [ti for ti, item in enumerate(toc) if isinstance(item, dict)
                     and item.get('type') == 'section' and 'sec' in item
@@ -148,6 +156,7 @@ if os.path.exists(bd):
           '缺 %s' % sorted(dmiss)[:6] if dmiss else '')
     check('book_detail 旧章节跳转与 meta 一致', d.get('chapterRedirects', {}) == redirects)
     check('book_detail 旧目录节跳转与 meta 一致', d.get('chapterTocRedirects', {}) == section_redirects)
+    check('book_detail 旧注释章节跳转与 meta 一致', d.get('chapterNoteRedirects', {}) == note_redirects)
     check('book_detail chapterCount 一致', d.get('chapterCount') == n,
           'detail=%s meta=%s' % (d.get('chapterCount'), n))
     check('book_detail chapterTitles 与 meta 逐项一致', d.get('chapterTitles') == ct)

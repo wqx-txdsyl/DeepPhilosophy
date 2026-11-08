@@ -111,6 +111,15 @@ def check_chapter(path: Path):
         imgs = nt.get("imgs")
         if imgs is not None and not isinstance(imgs, list):
             errors.append(f"notes[{ni}].imgs 必须是数组")
+        if isinstance(imgs, list):
+            for img in imgs:
+                if not isinstance(img, dict) or img.get('role') != 'diagram':
+                    continue
+                src, alt = img.get('src'), img.get('alt')
+                if (not isinstance(alt, str) or not alt.strip()
+                        or not all(type(img.get(key)) is int and img[key] > 0 for key in ('w', 'h'))
+                        or not isinstance(src, str) or not re.fullmatch(r'/api/books/[^/]+/image/[^/?#]+', src)):
+                    errors.append(f"注{n}: 原图图注必须有受控地址、尺寸及可读说明")
         if isinstance(text, str):
             image_count = len(imgs) if isinstance(imgs, list) else 0
             if text.count('[IMG]') != image_count:

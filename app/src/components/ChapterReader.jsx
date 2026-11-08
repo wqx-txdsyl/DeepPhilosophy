@@ -676,10 +676,17 @@ export default function ChapterReader({
                         segmentOffset += seg.length;
                         if (sk === 0) return words;
                         const img = (nt.imgs || [])[noteImageCursor++];
-                        const isrc = img && toOssImage(img.src, 200);
+                        const diagram = img?.role === 'diagram';
+                        const isrc = img && toOssImage(img.src, diagram ? undefined : 200);
                         return (
                           <Fragment key={sk}>
-                            {isrc ? <img src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
+                            {isrc && diagram ? (
+                              <a href={isrc} target="_blank" rel="noopener noreferrer" className="dp-note-diagram"
+                                aria-label={`查看原图：${img.alt}`} style={{ display: 'block', margin: '8px 0', textIndent: 0, cursor: 'zoom-in' }}>
+                                <img src={isrc} alt={img.alt} width={img.w} height={img.h} loading="lazy" decoding="async"
+                                  style={{ maxWidth: '100%', height: 'auto', maxHeight: '70vh', objectFit: 'contain', backgroundColor: img.background === 'white' ? '#fff' : undefined }} />
+                              </a>
+                            ) : isrc ? <img src={isrc} alt={img.alt || ''} loading="lazy" decoding="async"
                               style={{ height: img.role === 'formula' ? '2.4em' : '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline', backgroundColor: img.background === 'white' ? '#fff' : undefined }} /> : null}
                             {words}
                           </Fragment>
