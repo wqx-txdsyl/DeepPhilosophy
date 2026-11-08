@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNode,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks,readingChapterRedirect} from '../src/data/bookDetail.js';
+import {mergeBook,normalizeBookToc,groupBookToc,bookReaderPath,bookTocReadingNode,resumedChapter,bookAuthors,relatedBooks,officialReadingLinks,readingChapterRedirect,readingChapterTocRedirect} from '../src/data/bookDetail.js';
 import {BOOK_EDITORIAL} from '../src/data/bookEditorial.js';
 const catalog=JSON.parse(fs.readFileSync(new URL('../public/books.json',import.meta.url)));
 const flatten=nodes=>nodes.flatMap(n=>[n,...flatten(n.children)]);
@@ -14,6 +14,15 @@ test('old chapter routes resolve to original chapters while the first new readin
   assert.equal(reading.indexOf(readingChapterRedirect(1, 5, redirects)) + 1, 3);
   assert.equal(readingChapterRedirect(2, 5, {2: 3, 3: 4}), undefined);
   assert.equal(readingChapterRedirect(2, 5, {2: 0}), undefined);
+});
+test('an old section URL follows the section into a different restored volume',()=>{
+  const meta = {chapterCount: 5, chapterRedirects: {0: 2, 1: 3},
+    chapterTocRedirects: {0: {7: 2, 8: 0}},
+    toc: [{type:'chapter', index:2}, {type:'chapter', index:3}, {type:'section', index:3}]};
+  assert.deepEqual(readingChapterTocRedirect(0, 7, meta), {chapter:3, tocIndex:2});
+  assert.equal(readingChapterTocRedirect(0, 8, meta), null);
+  assert.equal(readingChapterTocRedirect(1, 7, meta), null);
+  assert.equal(readingChapterTocRedirect(3, 7, meta), null);
 });
 test('Capital sections stay in their own chapter and value-form subheadings keep their original nesting',()=>{
  const book=JSON.parse(fs.readFileSync(new URL('../public/book_detail/53d1b4ff90d2.json',import.meta.url)));

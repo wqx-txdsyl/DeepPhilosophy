@@ -64,6 +64,17 @@ check('旧章节跳转仅指向后续正文且没有链式跳转', valid_redirec
 redirect_slots = {int(key) for key in redirects} if valid_redirects else set()
 reading_slots = set(range(n)) - redirect_slots
 toc = meta.get('toc', [])
+section_redirects = meta.get('chapterTocRedirects', {})
+valid_section_redirects = isinstance(section_redirects, dict) and all(
+    key in redirects and isinstance(mapping, dict) and bool(mapping)
+    and all(old.isascii() and old.isdigit() and str(int(old)) == old
+            and type(target) is int and 0 <= target < len(toc)
+            and isinstance(toc[target], dict) and toc[target].get('type') == 'section'
+            and toc[target].get('index') in reading_slots
+            for old, target in mapping.items())
+    for key, mapping in section_redirects.items()
+)
+check('旧目录节跳转仅指向真实正文节', valid_section_redirects)
 check('toc 存在', bool(toc), '%d 项' % len(toc))
 if toc:
     check('toc 为对象数组 (item.title/item.index)', isinstance(toc[0], dict) and 'title' in toc[0] and 'index' in toc[0],
@@ -135,6 +146,7 @@ if os.path.exists(bd):
     check('book_detail toc index 覆盖一致', not dmiss,
           '缺 %s' % sorted(dmiss)[:6] if dmiss else '')
     check('book_detail 旧章节跳转与 meta 一致', d.get('chapterRedirects', {}) == redirects)
+    check('book_detail 旧目录节跳转与 meta 一致', d.get('chapterTocRedirects', {}) == section_redirects)
     check('book_detail chapterCount 一致', d.get('chapterCount') == n,
           'detail=%s meta=%s' % (d.get('chapterCount'), n))
     check('book_detail chapterTitles 与 meta 逐项一致', d.get('chapterTitles') == ct)

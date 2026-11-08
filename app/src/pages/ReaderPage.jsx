@@ -9,7 +9,7 @@ import Icon from '../components/Icon';
 import { getApiBase } from '../App';
 import { writeLocalNote, notePending, markNoteSynced } from '../data/readingRoom';
 import { saveReadingProgress } from '../data/userData';
-import { readingChapterRedirect } from '../data/bookDetail';
+import { readingChapterRedirect, readingChapterTocRedirect } from '../data/bookDetail';
 import ChapterReader from '../components/ChapterReader';
 
 // 章节优先走 OSS，备用源使用当前部署的同一提交：
@@ -188,12 +188,17 @@ function ReaderPage() {
         } catch {}
         startCh = histCh >= 0 ? histCh : nextReadingIndex(chapters, 0, 1);
       }
-      const redirect = chapters[startCh].redirectTo;
+      const sectionRedirect = startCh === urlCh ? readingChapterTocRedirect(startCh, initialTocIdx, meta) : null;
+      const redirect = sectionRedirect?.chapter ?? chapters[startCh].redirectTo;
       if (redirect != null) {
         startCh = redirect;
         if (urlCh >= 0 && urlCh < total) {
           const params = new URLSearchParams(searchParams);
           params.set('ch', startCh);
+          if (sectionRedirect) {
+            params.set('toc', sectionRedirect.tocIndex);
+            params.delete('sec');
+          }
           navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
         }
       }
