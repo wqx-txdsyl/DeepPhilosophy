@@ -363,11 +363,12 @@ export default function ChapterReader({
             // 引号处被切段, 下一段以逗号开头。
             // 不按字数强切；没有真实句末/段落边界时保留句子连续性。
             const END_SENT_RE = /[。！？….!?]$/;
-            const END_CLOSE = '”』」）〉"';
+            const END_INLINE_RE = /(?:\{\{n:\d+\}\}|[”』」）〉"])$/;
             const isEndSent = (s) => {
-              let t = String(s).trim();
-              while (t && END_CLOSE.includes(t[t.length - 1])) t = t.slice(0, -1);
-              return END_SENT_RE.test(t);
+              let text = String(s).trimEnd();
+              // Notes and closing quotation characters may follow the original punctuation.
+              while (END_INLINE_RE.test(text)) text = text.replace(END_INLINE_RE, '').trimEnd();
+              return END_SENT_RE.test(text);
             };
             const splitPageParas = (text) => {
               const paras = [];
@@ -429,7 +430,7 @@ export default function ChapterReader({
                     tail.imgs = tail.imgs.concat(segImgs);
                   } else if (hasImg || segImgs.length) {
                     // 段尾留 [IMG] 标记 + 挂图, 等 text2 首段拼入
-                    if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
+                    if (isBlockFirst && tail && !isEndSent(tail.text)) {
                       // 页边界断句拼接优先（跨块拼接段）
                       tail.text += segText;
                       tail.imgs = tail.imgs.concat(segImgs);
@@ -438,7 +439,7 @@ export default function ChapterReader({
                       tail = { text: segText, id: isBlockFirst ? `b-${blk._i}` : undefined,
                                imgs: segImgs, _block: blk._i, _blockFirst: isBlockFirst };
                     }
-                  } else if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
+                  } else if (isBlockFirst && tail && !isEndSent(tail.text)) {
                     // 页边界断句 → 拼接到前块尾段。段首内容仍是原块(常是标题块),
                     // 必须保留 tail 的 id/_block —— b-{sec} 回退与节定位
                     // 按 _block 匹配都依赖它; 被拼入的本块内容位于段中, 由标题级

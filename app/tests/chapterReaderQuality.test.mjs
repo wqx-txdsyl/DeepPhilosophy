@@ -13,6 +13,23 @@ function render(chapter, props = {}) {
 }
 const plain = html => html.replace(/<[^>]*>/g, '');
 
+test('notes after terminal punctuation preserve paragraph boundaries', () => {
+  const html = render({
+    content: [
+      { type: 'text', value: '第一段已经结束。{{n:1}}”{{n:2}}' },
+      { type: 'text', value: '第二段仍未结束，{{n:3}}' },
+      { type: 'text', value: '所以续在同一段。' },
+      { type: 'text', value: '第三段另起。' },
+    ],
+    notes: [1, 2, 3].map(n => ({ n, text: `原注${n}。` })),
+  });
+  const paragraph = id => html.match(new RegExp(`<p[^>]*id="b-${id}"[^>]*>(.*?)</p>`))?.[1];
+  assert.equal(plain(paragraph(0)), '第一段已经结束。[1]”[2]');
+  assert.equal(plain(paragraph(1)), '第二段仍未结束，[3]所以续在同一段。');
+  assert.equal(paragraph(2), undefined);
+  assert.equal(plain(paragraph(3)), '第三段另起。');
+});
+
 test('a full-page figure links to its original pixels without reducing the image or sharing its opener', () => {
   const html = render({ content: [{ type: 'image', src: '/api/books/demo/image/source-table.png', alt: '原版统计表', w: 3330, h: 4483 }] });
   assert.match(html, /<a href="https:\/\/deepphilosophy\.oss-cn-shanghai\.aliyuncs\.com\/book_images\/source-table\.png" target="_blank" rel="noopener noreferrer" aria-label="查看原图：原版统计表"/);
