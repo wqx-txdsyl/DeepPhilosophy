@@ -401,7 +401,7 @@ export const BOOK_COVER_VERSIONS = {
   "/covers/d6891956b037_cover.webp": "87651f84443d",
   "/covers/de8732de1469_cover.webp": "604348a7e0bb",
   "/covers/a8f6e375ccef_cover.webp": "f681c54fe254",
-  "/covers/9fb1dbc22de1_cover.webp": "70f7cb72c3e1",
+  "/covers/9fb1dbc22de1_cover.webp": "bdb9c0ea4c11",
   "/covers/921c1dcbdd17_3b9520312f.webp": "1d73f4cf8dae",
   "/covers/4f1eafd58548_cover.webp": "71adc9ae74f9",
   "/covers/018c84f3f5c1_cover.webp": "e6062284b862",
