@@ -19,7 +19,9 @@ test('notes after terminal punctuation preserve paragraph boundaries', () => {
       { type: 'text', value: '第一段已经结束。{{n:1}}”{{n:2}}' },
       { type: 'text', value: '第二段仍未结束，{{n:3}}' },
       { type: 'text', value: '所以续在同一段。' },
-      { type: 'text', value: '第三段另起。' },
+      { type: 'text', value: '第三段另起。②' },
+      { type: 'text', value: '第四段仍未结束，③' },
+      { type: 'text', value: '也仍然续在同一段。' },
     ],
     notes: [1, 2, 3].map(n => ({ n, text: `原注${n}。` })),
   });
@@ -27,7 +29,9 @@ test('notes after terminal punctuation preserve paragraph boundaries', () => {
   assert.equal(plain(paragraph(0)), '第一段已经结束。[1]”[2]');
   assert.equal(plain(paragraph(1)), '第二段仍未结束，[3]所以续在同一段。');
   assert.equal(paragraph(2), undefined);
-  assert.equal(plain(paragraph(3)), '第三段另起。');
+  assert.equal(plain(paragraph(3)), '第三段另起。②');
+  assert.equal(plain(paragraph(4)), '第四段仍未结束，③也仍然续在同一段。');
+  assert.equal(paragraph(5), undefined);
 });
 
 test('a verified figure caption with a note stays separate from the following prose', () => {

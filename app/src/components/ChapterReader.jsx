@@ -363,7 +363,7 @@ export default function ChapterReader({
             // 引号处被切段, 下一段以逗号开头。
             // 不按字数强切；没有真实句末/段落边界时保留句子连续性。
             const END_SENT_RE = /[。！？….!?]$/;
-            const END_INLINE_RE = /(?:\{\{n:\d+\}\}|[”』」）〉"])$/;
+            const END_INLINE_RE = /(?:\{\{n:\d+\}\}|[①-⑳”』」）〉"])$/;
             const isEndSent = (s) => {
               let text = String(s).trimEnd();
               // Notes and closing quotation characters may follow the original punctuation.
