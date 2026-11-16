@@ -231,7 +231,10 @@ test('Nan Huai-jin anthology sections stay in their own chapters and before the 
   const b=chapters.get(node.index).content[node.sec];assert.equal(b.role,'section-title');
   assert.equal(b.value.replace(/\{\{n:\d+\}\}|\s/g,''),node.title.replace(/\s/g,''));
  }
- assert.equal(noteCount,690);assert.equal(callCount,689);
+ assert.equal(noteCount,690);assert.equal(callCount,690);
+ const sutra=chapters.get(508);
+ assert.equal(sutra.content[0].value,'楞严大义今释{{n:1}}');
+ assert.ok(sutra.notes.find(n=>n.n===1).text.startsWith('楞严：大定之总名也'));
  const flat=flatten(tree);assert.equal(flat.length,toc.length);
  const appendix=flat.find(n=>n.type==='chapter'&&n.index===646);
  assert.deepEqual(appendix.children.filter(n=>n.title==='结论').map(n=>n.sec),[10,197]);
