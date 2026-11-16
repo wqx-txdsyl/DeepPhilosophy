@@ -400,9 +400,9 @@ export default function ChapterReader({
                 paras.push(blk);
                 continue;
               }
-              // Certified headings are boundaries even when their surrounding
+              // Certified headings and captions are boundaries even when surrounding
               // OCR page blocks still need continuation joining.
-              if (ch.paragraphMode === 'source' || blk.role === 'section-title' || blk.role === 'chapter-title') {
+              if (ch.paragraphMode === 'source' || blk.role === 'section-title' || blk.role === 'chapter-title' || blk.role === 'figure-caption') {
                 if (tail) { paras.push(tail); tail = null; }
                 paras.push({ text: blk.value || '', id: `b-${blk._i}`, imgs: blk.imgs || [], _block: blk._i, _blockFirst: true });
                 continue;

@@ -30,6 +30,21 @@ test('notes after terminal punctuation preserve paragraph boundaries', () => {
   assert.equal(plain(paragraph(3)), '第三段另起。');
 });
 
+test('a verified figure caption with a note stays separate from the following prose', () => {
+  const html = render({
+    content: [
+      { type: 'image', src: '/api/books/demo/image/plate.webp', w: 600, h: 800 },
+      { type: 'text', value: 'Image 45 {{n:1}}', role: 'figure-caption', align: 'center' },
+      { type: 'text', value: '图后正文另起一段。' },
+    ],
+    notes: [{ n: 1, text: '原书图注。' }],
+  });
+  const caption = html.match(/<p[^>]*id="b-1"[^>]*>(.*?)<\/p>/)?.[1];
+  assert.equal(plain(caption), 'Image 45 [1]');
+  assert.match(caption, /id="dp-ref-0-1-1"/);
+  assert.match(html, /<p[^>]*id="b-2"[^>]*>图后正文另起一段。<\/p>/);
+});
+
 test('a full-page figure links to its original pixels without reducing the image or sharing its opener', () => {
   const html = render({ content: [{ type: 'image', src: '/api/books/demo/image/source-table.png', alt: '原版统计表', w: 3330, h: 4483 }] });
   assert.match(html, /<a href="https:\/\/deepphilosophy\.oss-cn-shanghai\.aliyuncs\.com\/book_images\/source-table\.png" target="_blank" rel="noopener noreferrer" aria-label="查看原图：原版统计表"/);
