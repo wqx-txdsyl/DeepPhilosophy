@@ -96,3 +96,25 @@ def test_an_unrooted_same_source_cycle_still_requires_a_genuine_body_call(tmp_pa
         {'n': 42, 'text': '同上。', 'crossRefs': [{'n': 29, 'start': 0, 'end': 2}]},
     ])
     assert len(warnings) == 2
+
+
+def test_evidenced_editorial_related_notes_are_distinct_from_restored_source_calls(tmp_path):
+    note = {'n': 11, 'text': '含引诗的作者注。'}
+    target = {'n': 52, 'text': '原科学院版编者注。'}
+    source = '科学院版 AA II 137:32–33；第473页编者说明'
+    link = {'n': 52, 'source': source}
+    errors, warnings, info = check(tmp_path, [{**note, 'editorialRelatedNotes': [link]}, target])
+    assert not errors and not warnings
+    assert any('注52: 经有出处的编校定位可达' in item for item in info)
+    assert not any('经注内互引' in item for item in info)
+
+    for refs in ([{**link, 'source': ' '}], [{**link, 'superscript': True}], [{**link, 'n': 11}]):
+        errors, warnings, _ = check(tmp_path, [{**note, 'editorialRelatedNotes': refs}, target])
+        assert errors
+        assert any('注52:' in warning for warning in warnings)
+
+    errors, warnings, _ = check(tmp_path, [
+        note, {'n': 21, 'text': '无正文入口。', 'editorialRelatedNotes': [link]}, target,
+    ])
+    assert any('真实正文入口' in error for error in errors)
+    assert any('注52:' in warning for warning in warnings)

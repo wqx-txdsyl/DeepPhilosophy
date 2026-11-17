@@ -257,6 +257,21 @@ test('an explicit note cross-reference follows its stable target after displayed
   assert.ok(!plain(html).includes('[99]'));
 });
 
+test('an evidenced editorial pointer follows its stable target and stays outside the source note', () => {
+  const source = '科学院版 AA II 137:32–33；第473页编者说明';
+  const html = render({
+    paragraphMode: 'source',
+    content: [{ type: 'text', value: '正文引注{{n:31}}。' }],
+    notes: [
+      { n: 52, text: '引文不准确。' },
+      { n: 31, text: '引诗正文。', editorialRelatedNotes: [{ n: 52, source }] },
+    ],
+  });
+  assert.match(html, /引诗正文。<\/span><div[^>]*><button id="dp-note-editorial-0-31-52"[^>]*>编校定位 \[2\]<\/button><span>（据科学院版 AA II 137:32–33；第473页编者说明）<\/span>/);
+  assert.match(html, /id="dp-note-0-2"[\s\S]*引文不准确。/);
+  assert.doesNotMatch(html, /id="dp-ref-0-2-|id="dp-note-cross-0-31-/);
+});
+
 test('inline note images continue in source order across paragraph breaks', () => {
   const html=render({paragraphMode:'source',content:[{type:'text',value:'正文{{n:1}}。'}],notes:[{n:1,text:'字形[IMG]甲\n次段[IMG]乙',imgs:[{src:'/api/books/test/image/first.png'},{src:'/api/books/test/image/second.png'}]}]});
   const images=[...html.matchAll(/<img[^>]*src="([^"]+)"/g)].map(m=>m[1].split('?')[0]);

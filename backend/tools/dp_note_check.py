@@ -174,6 +174,34 @@ def check_chapter(path: Path):
                 note_edges.setdefault(nt['n'], set()).add(target)
             previous_end = end
 
+    # Editorial pointers are separate from transcribed source links.
+    editorial_edges = {}
+    for nt in notes:
+        if not isinstance(nt, dict) or 'editorialRelatedNotes' not in nt:
+            continue
+        origin = nt.get('n')
+        refs = nt['editorialRelatedNotes']
+        if not isinstance(refs, list) or not refs:
+            errors.append(f"注{origin}: editorialRelatedNotes 必须是非空数组")
+            continue
+        if type(origin) is not int or origin not in seen_n:
+            continue
+        targets = set()
+        for ref in refs:
+            if not isinstance(ref, dict) or set(ref) != {'n', 'source'}:
+                errors.append(f"注{origin}: 编校定位只能包含目标 n 与出处 source")
+                continue
+            target, source = ref['n'], ref['source']
+            if type(target) is not int or target not in seen_n or target == origin or target in targets:
+                errors.append(f"注{origin}: 编校定位的目标不存在、重复或指向自身: {target!r}")
+                continue
+            if not isinstance(source, str) or not source.strip() or '\n' in source or '\r' in source or TOKEN_RE.search(source):
+                errors.append(f"注{origin}: 编校定位缺少单行可核出处")
+                continue
+            targets.add(target)
+        if targets:
+            editorial_edges[origin] = targets
+
     ref_count = {}
     for bi, b in enumerate(content):
         if not isinstance(b, dict):
@@ -196,9 +224,16 @@ def check_chapter(path: Path):
             if target not in reachable:
                 reachable.add(target)
                 pending.append(target)
+    editorial_reachable = set()
+    for origin, targets in editorial_edges.items():
+        if origin not in reachable:
+            errors.append(f"注{origin}: 编校定位必须附在从真实正文入口可达的注释之后")
+            continue
+        editorial_reachable.update(targets - reachable)
+
     for n in sorted(seen_n):
         c = ref_count.get(n, 0)
-        if n not in reachable:
+        if n not in reachable and n not in editorial_reachable:
             warnings.append(f"注{n}: 无行内引用（需登记待核, 不得凭空造引用）")
         elif c > 1:
             info.append(f"注{n}: {c} 处引用（阅读器按实例回跳）")
@@ -221,6 +256,9 @@ def check_chapter(path: Path):
     nested = len(reachable - set(ref_count))
     if nested:
         info.append(f"由真实正文入口经注内互引可达{nested}条")
+    if editorial_reachable:
+        items = "、".join(str(n) for n in sorted(editorial_reachable))
+        info.append(f"注{items}: 经有出处的编校定位可达（不计入原印调用）")
     info.append(f"注{len(notes)}条/引用{sum(ref_count.values())}处")
     return errors, warnings, info
 

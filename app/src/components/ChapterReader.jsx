@@ -700,6 +700,19 @@ export default function ChapterReader({
                       校：{nt.editorialAddendum}
                     </span>
                   )}
+                  {Array.isArray(nt.editorialRelatedNotes) && nt.editorialRelatedNotes.map(ref => {
+                    const target = noteIndex.disp.get(ref?.n);
+                    if (target == null || ref.n === n || typeof ref.source !== 'string' || !ref.source.trim()) return null;
+                    const id = `dp-note-editorial-${currentChapter}-${n}-${ref.n}`;
+                    return (
+                      <div key={id} className="dp-note-editorial-addendum" style={{ textIndent: 0, fontSize: '0.9em', color: 'var(--text-dim)' }}>
+                        <button id={id} type="button" className={hlId === id ? 'dp-flash' : undefined}
+                          style={{ border: 0, background: 'none', padding: 0, font: 'inherit', color: 'var(--ochre)', cursor: 'pointer' }}
+                          onClick={e => goNote(ref.n, target, e.currentTarget)}>编校定位 [{target}]</button>
+                        <span>（据{ref.source}）</span>
+                      </div>
+                    );
+                  })}
                   {hasBack && (
                     <button className="dp-note-back" title="回到引用位置"
                       style={{
