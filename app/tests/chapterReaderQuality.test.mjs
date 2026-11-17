@@ -56,6 +56,15 @@ test('a full-page figure links to its original pixels without reducing the image
   assert.equal((html.match(/<img\b/g) || []).length, 1);
 });
 
+test('a lazy facsimile page reserves its display size before the image bytes arrive', () => {
+  const html = render({ content: [
+    { type: 'image', display: 'block', src: '/api/books/demo/image/folio.webp', w: 1200, h: 2400 },
+  ] });
+  assert.ok(html.includes('width:min(100%, 1200px, 35vh)'));
+  assert.match(html, /<img[^>]*width="1200" height="2400"[^>]*loading="lazy"/);
+  assert.ok(html.includes('width:100%;height:auto'));
+});
+
 test('an unavailable block image does not create an empty or unsafe original-image link', () => {
   const html = render({ content: [{ type: 'image', src: 'javascript:untrusted-image', alt: '不可用图' }, { type: 'text', value: '原文完整保留。' }] });
   assert.ok(!html.includes('查看原图'));

@@ -460,14 +460,21 @@ export default function ChapterReader({
             if (block.type === 'image') {
               const src = toOssImage(block.src);   // 保留原像素地址；版内缩放，细节可单独查看原图。
               if (!src) return null;   // 历史坏数据(本地/OSS 均无) → 不渲染破图
+              const sized = Number.isSafeInteger(block.w) && block.w > 0
+                && Number.isSafeInteger(block.h) && block.h > 0;
+              // Reserve the printed page's aspect ratio before lazy loading so
+              // the chapter-end notes retain their scroll position.
+              const width = sized ? `min(100%, ${block.w}px, ${70 * block.w / block.h}vh)` : undefined;
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
                   <a href={src} target="_blank" rel="noopener noreferrer"
                     aria-label={typeof block.alt === 'string' && block.alt.trim() ? `查看原图：${block.alt}` : '查看原图'}
-                    title="查看原图" style={{ display: 'inline-block', maxWidth: '100%', cursor: 'zoom-in' }}>
+                    title="查看原图" style={{ display: 'inline-block', maxWidth: '100%', width, cursor: 'zoom-in' }}>
                     <img src={src} alt={block.alt || ''}
+                      width={sized ? block.w : undefined} height={sized ? block.h : undefined}
                       loading="lazy" decoding="async"
-                      style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4, backgroundColor: block.background === 'white' ? '#fff' : undefined }} />
+                      style={{ width: sized ? '100%' : undefined, height: sized ? 'auto' : undefined,
+                        maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4, backgroundColor: block.background === 'white' ? '#fff' : undefined }} />
                   </a>
                   {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
