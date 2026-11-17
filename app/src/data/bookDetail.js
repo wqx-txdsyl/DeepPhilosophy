@@ -9,6 +9,18 @@ const verifiedTextPaths = Object.freeze({
   '8656187791f1': '/waiguomingzhu/cb83876b3049/',
   'ae0f425e5761': '/waiguomingzhu/e9d36c9fbb5f/',
 });
+const verifiedEditionLinks = Object.freeze({
+  "06e70f7483e6": [
+    "https://www.chaoren.club/10948.html",
+    "https://libm.nwupl.edu.cn/bookInfo_01h0018527.html"
+  ],
+  "217f3c1371a8": [
+    "https://marmot.overdrive.com/marmot-coloradomountaincollege/content/media/8737695"
+  ],
+  "eea73fbcba2e": [
+    "https://iscs.org.hk/Common/Reader/Products/ShowProduct.jsp?Charset=gb2312&Cid=162&Pid=9&Version=0&idx=16"
+  ]
+});
 export function officialReadingLinks(book) {
   const allowed = new Set(['www.cp.com.cn', 'www.sklib.cn', 'books.google.com', 'ebook.dswxyjy.org.cn', 'www.theorychina.org.cn', 'www.sanmin.com.tw']);
   return (Array.isArray(book?.readingLinks) ? book.readingLinks : []).filter(link => {
@@ -18,7 +30,8 @@ export function officialReadingLinks(book) {
       const prefix = verifiedTextPaths[book?.bookId || book?.id];
       const verifiedText = url.hostname === 'www.diancangwang.cn'
         && typeof prefix === 'string' && url.pathname.startsWith(prefix);
-      return url.protocol === 'https:' && (allowed.has(url.hostname) || verifiedText)
+      const verifiedEdition = verifiedEditionLinks[book?.bookId || book?.id]?.includes?.(url.href);
+      return url.protocol === 'https:' && (allowed.has(url.hostname) || verifiedText || verifiedEdition)
         && !url.username && !url.password;
     } catch { return false; }
   });

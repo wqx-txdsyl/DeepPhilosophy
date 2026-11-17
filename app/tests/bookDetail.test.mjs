@@ -271,3 +271,11 @@ test('a verified external text is allowed only for the matching book', () => {
   assert.deepEqual(officialReadingLinks({ bookId: '8656187791f1', readingLinks: [source] }), [source]);
   assert.deepEqual(officialReadingLinks({ bookId: 'ae0f425e5761', readingLinks: [source] }), []);
 });
+
+
+test('book-specific sample and library links do not leak to other book records', () => {
+  const sample = { label: '站外选读', url: 'https://www.chaoren.club/10948.html' };
+  assert.deepEqual(officialReadingLinks({ id: '06e70f7483e6', readingLinks: [sample] }), [sample]);
+  assert.deepEqual(officialReadingLinks({ id: '217f3c1371a8', readingLinks: [sample] }), []);
+  assert.deepEqual(officialReadingLinks({ id: '06e70f7483e6', readingLinks: [{ ...sample, url: sample.url + '?id=2' }] }), []);
+});
