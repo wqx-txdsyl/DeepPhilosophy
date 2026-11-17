@@ -10,6 +10,7 @@ const verifiedTextPaths = Object.freeze({
   'ae0f425e5761': '/waiguomingzhu/e9d36c9fbb5f/',
 });
 const verifiedEditionLinks = Object.freeze({
+  "6fdcfb6f97a8": ["https://www.chaoren.club/5923.html", "https://www.chaoren.club/4232.html"],
   "06e70f7483e6": [
     "https://www.chaoren.club/10948.html",
     "https://libm.nwupl.edu.cn/bookInfo_01h0018527.html"
