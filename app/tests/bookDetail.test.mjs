@@ -264,3 +264,10 @@ test('Anti-Duhring restores its three parts, original notes, formulas and distin
  assert.equal(fragments.sec,34);
  const science=flat.find(n=>n.type==='chapter'&&n.index===283);assert.equal(science.children.find(n=>n.title==='［札记和片断］').sec,65);
 });
+
+
+test('a verified external text is allowed only for the matching book', () => {
+  const source = { label: '站外正文', url: 'https://www.diancangwang.cn/waiguomingzhu/cb83876b3049/6c5dc2cd9928.html' };
+  assert.deepEqual(officialReadingLinks({ bookId: '8656187791f1', readingLinks: [source] }), [source]);
+  assert.deepEqual(officialReadingLinks({ bookId: 'ae0f425e5761', readingLinks: [source] }), []);
+});
